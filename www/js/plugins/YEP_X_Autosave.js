@@ -426,6 +426,7 @@ Game_System.prototype.initAutosave = function() {
 
 Game_System.prototype.canAutosave = function() {
   if (this._allowAutosave === undefined) this.initAutosave();
+  if(this._allowAutosave && ConfigManager.cheatDisableAutosave && Prison.easyMode()) return false;
   return this._allowAutosave;
 };
 

@@ -697,6 +697,9 @@ DreamX.Param.BSIShowBuffRate = eval(String(DreamX.Parameters['Show Buff Rate']))
         if (!(scene instanceof Scene_Battle)) {
             return;
         }
+		if (!scene._stateIconTooltipWindow) {
+            scene.createStateIconTooltipWindow();
+        }
         if (!scene._stateIconWindows) {
             scene.addBattlerStateWindows();
         }
@@ -886,7 +889,43 @@ DreamX.Param.BSIShowBuffRate = eval(String(DreamX.Parameters['Show Buff Rate']))
             this.show();
         }
         this.updateWindowPosition();
+
+		if(!!this.tooltipWindow() && this.isMouseOverStates()) {
+			if(!!this._battler) {
+				this.updateStateIconTooltipWindow();
+			}
+		}
     };
+	
+	Window_BattleStateIcon.prototype.tooltipWindow = function() {
+		return SceneManager._scene._stateIconTooltipWindow;
+	};
+
+	Window_BattleStateIcon.prototype.isMouseOverStates = function() {
+		if(!this.isFullyVisible() || x < 0 || y < 0 || this.battler().isDead()) return false;
+		if(!!SceneManager._scene._victoryTitleWindow || !!SceneManager._scene._logWindow.isOpenAndActive() || !!SceneManager._scene._statusInfoWindow.isOpenAndActive()) return false;
+		
+		let stateIconNum = 0;
+		
+		for(let i = 0; i < this.battler().states().length; i++) {
+			if(this.battler().states()[i].iconIndex > 0) stateIconNum++;
+		}
+		if(stateIconNum === 0) return false;
+		
+		var x = this.canvasToLocalX(TouchInput._mouseOverX);
+		var y = this.canvasToLocalY(TouchInput._mouseOverY);
+
+		let mouseIsOverStates = x >= this.standardPadding() 
+		&& x <= this.iconsArray().length * (DreamX.Param.BSIIconWidth + this.spacing()) + this.standardPadding()
+		&& y >= this.standardPadding()
+		&& y <= this.height - this.standardPadding();
+
+		let isSkillWindowOpen = SceneManager._scene._skillWindow.isOpenAndActive() && TouchInput._mouseOverY <= 674 && TouchInput._mouseOverY >= 440;
+		if(isSkillWindowOpen) return false;
+		if(mouseIsOverStates) this.tooltipWindow().setXYPos_states(x - this.standardPadding(), y);
+		
+		return mouseIsOverStates;
+	};
 
     Window_BattleStateIcon.prototype.refresh = function () {
         var battler = this._battler;

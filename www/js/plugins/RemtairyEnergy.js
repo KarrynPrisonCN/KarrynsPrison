@@ -48,10 +48,17 @@ Game_BattlerBase.prototype.currentPercentOfEnergy_realMax = function() {
 Game_Actor.prototype.resetEnergyCosts = function() {
 	this._tempFixClothesCost = 1;
 	this._tempCombatStanceCost = 0;
-	this._tempSexStanceCost = 0;
+	this._tempSecretaryStanceCostIncrease = 0;
+	this._tempLadyPleasureCostIncrease = 0;
 	this._tempRevitalizeExtraCooldown = 0;
 	this._tempSecondWindExtraCooldown = 0;
 	this._tempEnergyRegenPool = 0;
+};
+
+
+Game_Actor.prototype.resetEndurePleasureStanceCost = function() {
+	this._tempSecretaryStanceCostIncrease = 0;
+	//this._tempLadyPleasureCostIncrease = 0;
 };
 
 
@@ -76,7 +83,7 @@ Game_Actor.prototype.performAction = function(action) {
 };
 
 Game_Actor.prototype.hasEnergyStateCondition = function() {
-	//if(this.isInMasturbationPose()) return false;
+	//if(this.isInMasturbationCouchPose()) return false;
 	return this.energy > 0 && DEBUG_MODE;
 };
 
@@ -84,8 +91,16 @@ Game_Actor.prototype.hasEnergyStateCondition = function() {
 // Fix Clothes
 /////////////
 
-Game_Actor.prototype.skillCost_fixClothes = function() {
-	return Math.max(1, Math.ceil(this._tempFixClothesCost * this.esc));
+Game_Actor.prototype.skillCost_fixClothes = function(dontApplyEscAndRounding) {
+	let cost = this._tempFixClothesCost;
+	
+	if(dontApplyEscAndRounding) {
+		return cost;
+	}
+	else {
+		cost *= this.esc;
+		return Math.max(1, Math.ceil(cost));
+	}
 };
 
 Game_Actor.prototype.showEval_fixClothes = function() {
@@ -99,18 +114,26 @@ Game_Actor.prototype.afterEval_fixClothes = function() {
 	this.emoteMasterManager();
 	this._tempFixClothesCost += this._tempFixClothesCost;
 	this.addToFixClothesUsageCountRecord();
+	this.resetAttackSkillConsUsage();
+	this.resetSexSkillConsUsage(false);
 };
 
 ////////
 // Revitalize
 /////////////
 
-Game_Actor.prototype.skillCost_revitalize = function() {
+Game_Actor.prototype.skillCost_revitalize = function(dontApplyEscAndRounding) {
 	let percent = 0.2;
+
+	let cost = this.realMaxEnergy * percent;
 	
-	var cost = this.realMaxEnergy * percent;
-	cost *= this.esc;
-	return Math.round(cost);
+	if(dontApplyEscAndRounding) {
+		return cost;
+	}
+	else {
+		cost *= this.esc;
+		return Math.min(Math.round(cost), this.energy);
+	}
 };
 
 Game_Actor.prototype.showEval_revitalize = function() {
@@ -118,9 +141,6 @@ Game_Actor.prototype.showEval_revitalize = function() {
 };
 
 Game_Actor.prototype.dmgFormula_revitalize = function() {
-	this.gainEnergyExp(35, $gameTroop.getAverageEnemyExperienceLvl());
-	this._tempRecordDownStaminaCurrentlyCounted = false;
-
 	let percent = Math.max(0.4, this.hrg * 6);
 	if(this.hasEdict(EDICT_REVITALIZE_TRAINING_TWO)) percent += Math.max(0.2, this.hrg * 3);
 	
@@ -135,12 +155,23 @@ Game_Actor.prototype.dmgFormula_revitalize = function() {
 Game_Actor.prototype.cooldownEval_revitalize = function() {
 	let baseCD = 2;
 	let currentCD = baseCD + Math.floor(this._tempRevitalizeExtraCooldown);
-	this._tempRevitalizeExtraCooldown += 0.5;
 	return currentCD;
 };
 
 Game_Actor.prototype.afterEval_revitalize = function() {
-	this._mp -= 1;
+	this._mp = Math.max(0, this.energy - 1);
+	this.gainEnergyExp(35, $gameTroop.getAverageEnemyExperienceLvl());
+	this._tempRecordDownStaminaCurrentlyCounted = false;
+	this.resetAttackSkillConsUsage();
+	this.resetEndurePleasureStanceCost();
+	this.resetSexSkillConsUsage(false);
+	
+	let cooldown = this.cooldownEval_revitalize();
+	this.setCooldown(SKILL_REVITALIZE_ID, cooldown);
+	this.setCooldown(SKILL_CAUTIOUS_REVITALIZE_ID, cooldown);
+	this.setCooldown(SKILL_DEFENSIVE_REVITALIZE_ID, cooldown);
+	this.setCooldown(SKILL_COUNTER_REVITALIZE_ID, cooldown);
+	this._tempRevitalizeExtraCooldown += 0.5;
 };
 
 Game_Actor.prototype.passiveDownStaminaState_increaseCooldown = function() {  
@@ -164,13 +195,18 @@ Game_Actor.prototype.passiveDownStaminaState_increaseCooldown = function() {
 // Second Wind
 /////////////
 
-Game_Actor.prototype.skillCost_secondWind = function() {
+Game_Actor.prototype.skillCost_secondWind = function(dontApplyEscAndRounding) {
 	let percent = 0.35;
 	
-	var cost = this.realMaxEnergy * percent;
-	cost *= this.esc;
+	let cost = this.realMaxEnergy * percent;
 	
-	return Math.round(cost);
+	if(dontApplyEscAndRounding) {
+		return cost;
+	}
+	else {
+		cost *= this.esc;
+		return Math.round(cost);
+	}
 };
 
 Game_Actor.prototype.showEval_secondWinds = function() {
@@ -178,9 +214,6 @@ Game_Actor.prototype.showEval_secondWinds = function() {
 };
 
 Game_Actor.prototype.dmgFormula_secondWind = function() {
-	this.gainEnergyExp(70, $gameTroop.getAverageEnemyExperienceLvl());
-	this._tempRecordDownStaminaCurrentlyCounted = false;
-	
 	let percent = Math.max(0.75, this.hrg * 10);
 	//percent = Math.min(1, percent);
 	let dmg = this.maxstamina * percent;
@@ -193,12 +226,24 @@ Game_Actor.prototype.cooldownEval_secondWind = function() {
 	let baseCD = 5;
 	if(this.hasEdict(EDICT_SPEC_ENERGY_CYCLING)) baseCD--;
 	let currentCD = baseCD + this._tempSecondWindExtraCooldown;
-	this._tempSecondWindExtraCooldown++;
 	return currentCD;
 };
 
 Game_Actor.prototype.afterEval_secondWind = function() {
-	this._mp -= 1;
+	//this._mp -= 1;
+	
+	this.gainEnergyExp(70, $gameTroop.getAverageEnemyExperienceLvl());
+	this._tempRecordDownStaminaCurrentlyCounted = false;
+	this.resetAttackSkillConsUsage();
+	this.resetEndurePleasureStanceCost();
+	this.resetSexSkillConsUsage(false);
+	
+	let cooldown = this.cooldownEval_secondWind();
+	this.setCooldown(SKILL_SECOND_WIND_ID, cooldown);
+	this.setCooldown(SKILL_CAUTIOUS_SECOND_WIND_ID, cooldown);
+	this.setCooldown(SKILL_DEFENSIVE_SECOND_WIND_ID, cooldown);
+	this.setCooldown(SKILL_COUNTER_SECOND_WIND_ID, cooldown);
+	this._tempSecondWindExtraCooldown++;
 };
 
 ////////////
@@ -213,6 +258,8 @@ Game_Actor.prototype.dmgFormula_breathe = function() {
 	this.gainEnergyExp(20, $gameTroop.getAverageEnemyExperienceLvl());
 	
 	this._tempRecordDownStaminaCurrentlyCounted = false;
+	this.resetAttackSkillConsUsage();
+	this.resetSexSkillConsUsage(false);
 	
 	let percent = Math.max(0.1, this.hrg);
 	let dmg = this.maxstamina * percent;
@@ -225,9 +272,11 @@ Game_Actor.prototype.dmgFormula_breathe = function() {
 ///////////
 
 Game_Actor.prototype.showEval_fallenRest = function() {
-	return this.hasPassive(PASSIVE_FALLEN_COUNT_ONE_ID);
+	return this.hasPassive(PASSIVE_FALLEN_COUNT_TWO_ID) && this.isInDownFallDownPose();
 };
-
+Game_Actor.prototype.customReq_fallenRest = function() {
+	return this.hasPassive(PASSIVE_FALLEN_COUNT_TWO_ID) && this.isInDownFallDownPose();
+};
 Game_Actor.prototype.dmgFormula_fallenRest = function() {
 	let percent = Math.max(0.2, this.hrg * 2);
 	let dmg = this.maxstamina * percent;
@@ -237,6 +286,9 @@ Game_Actor.prototype.dmgFormula_fallenRest = function() {
 
 Game_Actor.prototype.afterEval_fallenRest = function() {
 	this.passiveFallenState_addHornyEffect();
+	this.resetAttackSkillConsUsage();
+	this.resetEndurePleasureStanceCost();
+	this.resetSexSkillConsUsage(false);
 };
 
 ////////////
@@ -245,6 +297,14 @@ Game_Actor.prototype.afterEval_fallenRest = function() {
 
 Game_Actor.prototype.showEval_karrynTaunt = function() {
 	return this.isInCombatPose() && this.hasPassive(PASSIVE_SUBDUED_COUNT_ONE_ID);
+};
+
+Game_Actor.prototype.skillCost_karrynTaunt = function() {
+	let percent = 0.1;
+	
+	let cost = this.realMaxEnergy * percent;
+	cost *= this.esc;
+	return Math.round(cost);
 };
 
 Game_Actor.prototype.customExecution_karrynTaunt = function() {
@@ -259,6 +319,8 @@ Game_Actor.prototype.customExecution_karrynTaunt = function() {
 	}
 };
 Game_Actor.prototype.afterEval_karrynTaunt = function(target) {
+	this.resetAttackSkillConsUsage();
+	this.resetSexSkillConsUsage(false);
 	if(!target._thisTurnTaunted) {
 		target._thisTurnTaunted = true;
 		target.addToEnemyTauntedCountRecord(this);
@@ -279,6 +341,7 @@ Game_Actor.prototype.afterEval_karrynTaunt = function(target) {
 		
 		if(Math.random() < angerChance) target.addAngryState();
 	}
+	
 };
 
 ////////////
@@ -308,6 +371,14 @@ Game_Actor.prototype.showEval_karrynFlaunt = function() {
 	return false;
 };
 
+Game_Actor.prototype.skillCost_karrynFlaunt = function() {
+	let percent = 0.1;
+	
+	let cost = this.realMaxEnergy * percent;
+	cost *= this.esc;
+	return Math.round(cost);
+};
+
 Game_Actor.prototype.customExecution_karrynFlaunt = function() {
 	this.addState(STATE_CONFIDENT_ID);
 	this.gainEnergyExp(10, $gameTroop.getAverageEnemyExperienceLvl());
@@ -323,6 +394,8 @@ Game_Actor.prototype.customExecution_karrynFlaunt = function() {
 };
 
 Game_Actor.prototype.afterEval_karrynFlaunt = function(target) {
+	this.resetAttackSkillConsUsage();
+	this.resetSexSkillConsUsage(false);
 	if(!target._thisTurnFlaunted) {
 		target._thisTurnFlaunted = true;
 		target.addToEnemyFlauntedCountRecord(this);
@@ -358,7 +431,7 @@ Game_Actor.prototype.resetTauntAndConfidentOnNewWave = function() {
 ////////////
 
 Game_Actor.prototype.showEval_karrynDogeza = function() {
-	return this.isInCombatPose() && this.hasPassive(PASSIVE_DEFEATED_COUNT_THREE_ID);
+	return this.isInCombatPose() && false;
 };
 
 Game_Actor.prototype.dmgFormula_karrynDogeza = function(target) {
@@ -369,7 +442,6 @@ Game_Actor.prototype.dmgFormula_karrynDogeza = function(target) {
 	}
 	
 	if(this.hasPassive(PASSIVE_DOGEZA_COUNT_TWO_ID)) {
-		this.calculateMasochismSensitivityRating();
 		let maso = this.masochismSensitivity();
 		let cockiness = this.cockiness;
 		
@@ -389,7 +461,9 @@ Game_Actor.prototype.dmgFormula_karrynDogeza = function(target) {
 };
 
 Game_Actor.prototype.afterEval_karrynDogeza = function() {
-	for(var i = 0; i < $gameTroop.membersNeededToBeSubdued().length; i++) {
+	this.resetAttackSkillConsUsage();
+	this.resetSexSkillConsUsage(false);
+	for(let i = 0; i < $gameTroop.membersNeededToBeSubdued().length; i++) {
 		$gameTroop.membersNeededToBeSubdued()[i].addToEnemyGotDogezaCountRecord(this);
 		$gameTroop.membersNeededToBeSubdued()[i].removeAngryState();
 	}
@@ -400,12 +474,37 @@ Game_Actor.prototype.afterEval_karrynDogeza = function() {
 // Cautious Stance
 /////////
 
-Game_Actor.prototype.skillCost_waitStance = function() {
-	return 0;
+Game_Actor.prototype.skillCost_cautiousStance = function() {
+	return Math.max(1, Math.min(this._mp, Math.round( (1 + this._tempCombatStanceCost) * this.esc)));
+};
+Game_Actor.prototype.skillCost_cautiousStance_revitalize = function() {
+	return Math.max(2, Math.round((1 + this._tempCombatStanceCost + this.skillCost_revitalize(true)) * this.esc));
+};
+Game_Actor.prototype.skillCost_cautiousStance_secondWind = function() {
+	return Math.max(2, Math.round((1 + this._tempCombatStanceCost + this.skillCost_secondWind(true)) * this.esc));
+};
+Game_Actor.prototype.skillCost_cautiousStance_fixClothes = function() {
+	return Math.max(2, Math.round((1 + this._tempCombatStanceCost + this.skillCost_fixClothes(true)) * this.esc));
 };
 
-Game_Actor.prototype.showEval_waitStance = function() {
-	return this.isInCombatPose();
+Game_Actor.prototype.showEval_cautiousStance = function() {
+	return this.isInCombatPose() && this.hasEdict(EDICT_CAUTIOUS_STANCE);
+};
+
+
+Game_Actor.prototype.afterEval_cautiousStance = function() {
+	this._tempCombatStanceCost++;
+	this.resetAttackSkillConsUsage();
+	this.resetEndurePleasureStanceCost();
+	this.resetSexSkillConsUsage(false);
+	this.gainEnergyExp(10, $gameTroop.getAverageEnemyExperienceLvl());
+	
+};
+
+Game_Actor.prototype.cautiousStanceXParamRate = function() {
+	if(!this.isInCombatPose()) return 1;
+	let rate = 1.33;
+	return rate;
 };
 
 
@@ -416,6 +515,15 @@ Game_Actor.prototype.showEval_waitStance = function() {
 Game_Actor.prototype.skillCost_defStance = function() {
 	return Math.max(1, Math.min(this._mp, Math.round( (1 + this._tempCombatStanceCost) * this.esc)));
 };
+Game_Actor.prototype.skillCost_defStance_revitalize = function() {
+	return Math.max(2, Math.round((1 + this._tempCombatStanceCost + this.skillCost_revitalize(true)) * this.esc));
+};
+Game_Actor.prototype.skillCost_defStance_secondWind = function() {
+	return Math.max(2, Math.round((1 + this._tempCombatStanceCost + this.skillCost_secondWind(true)) * this.esc));
+};
+Game_Actor.prototype.skillCost_defStance_fixClothes = function() {
+	return Math.max(2, Math.round((1 + this._tempCombatStanceCost + this.skillCost_fixClothes(true)) * this.esc));
+};
 
 Game_Actor.prototype.showEval_defStance = function() {
 	return this.isInCombatPose() && this.hasEdict(EDICT_DEFENSIVE_STANCE);
@@ -423,6 +531,9 @@ Game_Actor.prototype.showEval_defStance = function() {
 
 Game_Actor.prototype.afterEval_defStance = function() {
 	this._tempCombatStanceCost++;
+	this.resetAttackSkillConsUsage();
+	this.resetEndurePleasureStanceCost();
+	this.resetSexSkillConsUsage(false);
 	this.gainEnergyExp(10, $gameTroop.getAverageEnemyExperienceLvl());
 };
 
@@ -450,6 +561,15 @@ Game_Actor.prototype.defStanceSParamRate = function() {
 Game_Actor.prototype.skillCost_counterStance = function() {
 	return Math.max(1, Math.min(this._mp, Math.round( (1 + this._tempCombatStanceCost) * this.esc)));
 };
+Game_Actor.prototype.skillCost_counterStance_revitalize = function() {
+	return Math.max(2, Math.round((1 + this._tempCombatStanceCost + this.skillCost_revitalize(true)) * this.esc));
+};
+Game_Actor.prototype.skillCost_counterStance_secondWind = function() {
+	return Math.max(2, Math.round((1 + this._tempCombatStanceCost + this.skillCost_secondWind(true)) * this.esc));
+};
+Game_Actor.prototype.skillCost_counterStance_fixClothes = function() {
+	return Math.max(2, Math.round((1 + this._tempCombatStanceCost + this.skillCost_fixClothes(true)) * this.esc));
+};
 
 Game_Actor.prototype.showEval_counterStance = function() {
 	return this.isInCombatPose() && this.hasEdict(EDICT_COUNTER_STANCE);
@@ -457,6 +577,9 @@ Game_Actor.prototype.showEval_counterStance = function() {
 
 Game_Actor.prototype.afterEval_counterStance = function() {
 	this._tempCombatStanceCost++;
+	this.resetAttackSkillConsUsage();
+	this.resetEndurePleasureStanceCost();
+	this.resetSexSkillConsUsage(false);
 	this.gainEnergyExp(20, $gameTroop.getAverageEnemyExperienceLvl());
 };
 
@@ -476,10 +599,14 @@ Game_Actor.prototype.counterStanceSParamRate = function() {
 
 //////////
 // Endure Pleasure 
+// Secretary Stance
 //////////////
 
 Game_Actor.prototype.skillCost_endurePleasure = function() {
-	return Math.max(1, Math.min(this._mp, Math.round( (1 + this._tempSexStanceCost) * this.esc)));
+	if(this._tempSecretaryStanceCostIncrease < 5)
+		return Math.max(1, Math.min(this._mp, Math.round((1 + this._tempSecretaryStanceCostIncrease * 0.5) * this.esc)));
+	else
+		return Math.max(1, Math.min(this._mp, Math.round((this._tempSecretaryStanceCostIncrease * 1) * this.esc)));
 };
 
 Game_Actor.prototype.showEval_endurePleasure = function() {
@@ -487,37 +614,72 @@ Game_Actor.prototype.showEval_endurePleasure = function() {
 };
 
 Game_Actor.prototype.afterEval_endurePleasure = function() {
+	this.gainEnergyExp(15 + this._tempSecretaryStanceCostIncrease * 5, $gameTroop.getAverageEnemyExperienceLvl());
+	
 	this.increaseHornyStateTurns(-1);
-	this._tempSexStanceCost++;
+	this._tempSecretaryStanceCostIncrease++;
+	this.resetAttackSkillConsUsage();
+	this.resetSexSkillConsUsage(false);
+};
+
+Game_Actor.prototype.secretaryStanceEnemyPleasureFeedbackRate = function() {
+	if(!this.isStateAffected(STATE_SECRETARY_STANCE_ID)) return 1;
+	let rate = 1.7;
+	rate -= this.slutLvl * 0.002;
+	return Math.max(1.1, rate);
 };
 
 //////////
 // Wait Out Pleasure 
+// Lady Stance
 //////////////
 
 Game_Actor.prototype.skillCost_waitOutPleasure = function() {
-	return 0;
+	return Math.round((1 + this._tempLadyPleasureCostIncrease) * this.esc);
 };
 
 Game_Actor.prototype.showEval_waitOutPleasure = function() {
 	return (this.isInSexPose() || this.isInDownPose()) && !this.justOrgasmed();
 };
 
+Game_Actor.prototype.afterEval_waitOutPleasure = function() {
+	this.gainEnergyExp(15 + this._tempLadyPleasureCostIncrease * 10, $gameTroop.getAverageEnemyExperienceLvl());
+	this._tempLadyPleasureCostIncrease++;
+	this._tempSecretaryStanceCostIncrease = 0;
+	this.resetAttackSkillConsUsage();
+	this.resetSexSkillConsUsage(false);
+};
+
+
 //////////
 // Open Pleasure 
+// Pleasure Stance
 //////////////
 
 Game_Actor.prototype.skillCost_openPleasure = function() {
 	return 0;
 };
 
-Game_Actor.prototype.showEval_openPleasure = function() {
-	if(!this.hasPassive(PASSIVE_SEXUAL_PARTNERS_TOTAL_TWO_ID)) return false;
+Game_Actor.prototype.showEval_openPleasure = function(multiTurnVersion) {
+	let hasPassive = this.hasPassive(PASSIVE_SEXUAL_PARTNERS_TOTAL_TWO_ID);
+	
+	if(multiTurnVersion) {
+		if(!hasPassive) 
+			return false;
+	}
+	else if(!hasPassive && this.energy > 0) 
+		return false;
+	
 	return (this.isInSexPose() || this.isInDownPose()) && !this.justOrgasmed();
 };
 
-Game_Actor.prototype.afterEval_openPleasure = function() {
-	if(Math.random() < 0.25) this.addHornyState();
+Game_Actor.prototype.afterEval_openPleasure = function(extraTurns) {
+	this.resetAttackSkillConsUsage();
+	this.resetSexSkillConsUsage(false);
+	
+	if(extraTurns > 1) {
+		this.setStateTurns(STATE_PLEASURE_STANCE_ID, extraTurns);
+	}
 };
 
 
@@ -527,7 +689,7 @@ Game_Actor.prototype.afterEval_openPleasure = function() {
 
 Game_Actor.prototype.convertSwallowToEnergy = function(ml) {
 	let convertRate = 0;
-	if(this.hasPassive(PASSIVE_SWALLOW_ML_THREE_ID)) convertRate += 0.12;
+	if(this.hasPassive(PASSIVE_SWALLOW_ML_FOUR_ID)) convertRate += 0.12;
 	if(this.hasPassive(PASSIVE_MAX_SWALLOW_ML_TWO_ID)) convertRate += 0.12;
 	
 	return Math.ceil(ml * convertRate);
@@ -535,7 +697,7 @@ Game_Actor.prototype.convertSwallowToEnergy = function(ml) {
 
 Game_Actor.prototype.convertPussyCreampieToEnergy = function(ml) {
 	let convertRate = 0;
-	if(this.hasPassive(PASSIVE_PUSSY_CREAMPIE_ML_THREE_ID)) convertRate += 0.1;
+	if(this.hasPassive(PASSIVE_PUSSY_CREAMPIE_ML_FOUR_ID)) convertRate += 0.1;
 	if(this.hasPassive(PASSIVE_MAX_PUSSY_CREAMPIE_ML_TWO_ID)) convertRate += 0.1;
 	
 	return Math.ceil(ml * convertRate);
@@ -543,10 +705,22 @@ Game_Actor.prototype.convertPussyCreampieToEnergy = function(ml) {
 
 Game_Actor.prototype.convertAnalCreampieToEnergy = function(ml) {
 	let convertRate = 0;
-	if(this.hasPassive(PASSIVE_ANAL_CREAMPIE_ML_THREE_ID)) convertRate += 0.1;
+	if(this.hasPassive(PASSIVE_ANAL_CREAMPIE_ML_FOUR_ID)) convertRate += 0.1;
 	if(this.hasPassive(PASSIVE_MAX_ANAL_CREAMPIE_ML_TWO_ID)) convertRate += 0.1;
 	
 	return Math.ceil(ml * convertRate);
+};
+
+///////
+// Skip Turn
+
+Game_Actor.prototype.showEval_skipTurn = function() {
+	if(this.energy > 0 || !this.isInCombatPose()) return false;
+	
+	if(this.stamina > this.skillCost_karrynSlash() || this.stamina > this.skillCost_karrynThrust() || this.stamina > this.skillCost_karrynStrike())
+		return false;
+	
+	return true;
 };
 
 /////////
@@ -559,6 +733,8 @@ Game_Actor.prototype.showEval_giveUp = function() {
 };
 Game_Actor.prototype.afterEval_giveUp = function() {
 	this._hp = 0;
+	this.resetAttackSkillConsUsage();
+	this.resetSexSkillConsUsage(false);
 };
 
 Game_Actor.prototype.showEval_surrender = function() {
@@ -567,6 +743,9 @@ Game_Actor.prototype.showEval_surrender = function() {
 };
 Game_Actor.prototype.afterEval_surrender = function() {
 	this._mp = 0;
+	this.resetAttackSkillConsUsage();
+	this.resetEndurePleasureStanceCost();
+	this.resetSexSkillConsUsage(false);
 };
 
 /////////
@@ -576,7 +755,25 @@ Game_Actor.prototype.afterEval_surrender = function() {
 Game_Actor.prototype.showEval_regainFooting = function() {
 	return this.isInCombatPose() && this.isOffBalance;
 };
+Game_Actor.prototype.customReq_regainFooting = function() {
+	return this.isInCombatPose() && this.isOffBalance;
+};
+Game_Actor.prototype.afterEval_regainFooting = function() {
+	this.removeState(STATE_OFFBALANCE_ID);
+	this.resetAttackSkillConsUsage();
+	this.resetEndurePleasureStanceCost();
+	this.resetSexSkillConsUsage(false);
+};
 
 Game_Actor.prototype.showEval_getUp = function() {
 	return this.isInDownFallDownPose();
+};
+Game_Actor.prototype.customReq_getUp = function() {
+	return this.isInDownFallDownPose();
+};
+Game_Actor.prototype.afterEval_getUp = function() {
+	this.removeState(STATE_FALLEN_ID);
+	this.resetAttackSkillConsUsage();
+	this.resetEndurePleasureStanceCost();
+	this.resetSexSkillConsUsage(false);
 };

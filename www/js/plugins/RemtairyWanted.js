@@ -11,17 +11,18 @@ const WANTED_CHANCE_MULTIPLER_RIOT_BATTLE = 2;
 const WANTED_CHANCE_MULTIPLER_RECEPTIONIST_BATTLE = 3;
 const WANTED_CHANCE_MULTIPLER_GLORY_BATTLE = 2;
 
-const WANTED_MINIMUM_DAYS_SINCE_DEFEATED = 2;
+const WANTED_MINIMUM_DAYS_SINCE_DEFEATED = 1;
 const WANTED_LVL_INCREASE_BY_DEFEAT = 1;
 const WANTED_LVL_INCREASE_BY_DEFEAT_HALF_LVL = 2; //For when wanted lvl is half of karryn's level
 
 const WANTED_POINTS_NEEDED_PER_TYPE = 450;
-const WANTED_POINTS_NEEDED_PER_TYPE_OVER_TWO = 1000;
-const WANTED_POINTS_NEEDED_PER_TYPE_OVER_FOUR = 10000;
-const WANTED_POINTS_NEEDED_PER_TOTAL_WANTED_SIZE = 300; //For Wanted with more than two of type
+const WANTED_POINTS_NEEDED_PER_TYPE_OVER_ONE = 2000;
+const WANTED_POINTS_NEEDED_PER_TYPE_OVER_THREE = 10000;
+const WANTED_POINTS_NEEDED_PER_TOTAL_WANTED_SIZE = 500; 
 const WANTED_POINTS_BASE_REQ = 150;
 const WANTED_POINTS_STAMINA_DMG_MULTIPLER = 1;
 const WANTED_POINTS_PLEASURE_DMG_MULTIPLER = 10;
+const WANTED_PER_TYPE_LIMIT = 4;
 
 //=============================================================================
  /*:
@@ -100,20 +101,33 @@ Wanted_Enemy.prototype.initialize = function(enemy, date, wantedListId) {
 	this._enemyRecordFingerSuckedCount = enemy._enemyRecordFingerSuckedCount;
 	
 	this._enemyRecordTalkedCount = enemy._enemyRecordTalkedCount;
+	this._enemyRecordTalkedAboutMouthCount = enemy._enemyRecordTalkedAboutMouthCount;
+	this._enemyRecordTalkedAboutBoobsCount = enemy._enemyRecordTalkedAboutBoobsCount;
+	this._enemyRecordTalkedAboutPussyCount = enemy._enemyRecordTalkedAboutPussyCount;
+	this._enemyRecordTalkedAboutButtCount = enemy._enemyRecordTalkedAboutButtCount;
+	this._enemyRecordTalkedAboutCockCount = enemy._enemyRecordTalkedAboutCockCount;
 	this._enemyRecordSawCount = enemy._enemyRecordSawCount;
-	this._enemyRecordTalkCockCount = enemy._enemyRecordTalkCockCount;
+	this._enemyRecordSawMouthCount = enemy._enemyRecordSawMouthCount;
+	this._enemyRecordSawBoobsCount = enemy._enemyRecordSawBoobsCount;
+	this._enemyRecordSawPussyCount = enemy._enemyRecordSawPussyCount;
+	this._enemyRecordSawButtCount = enemy._enemyRecordSawButtCount;
+	
 	this._enemyRecordJerkoffCount = enemy._enemyRecordJerkoffCount;
 	this._enemyRecordTauntedCount = enemy._enemyRecordTauntedCount;
 	this._enemyRecordFlauntedCount = enemy._enemyRecordFlauntedCount;
 	this._enemyRecordGotDogezaCount = enemy._enemyRecordGotDogezaCount;
 	this._enemyRecordToysInsertedCount = enemy._enemyRecordToysInsertedCount;
 	this._enemyRecordBukkakeTotalCount = enemy._enemyRecordBukkakeTotalCount;
+	this._enemyRecordFaceBukkakeCount = enemy._enemyRecordFaceBukkakeCount;
 	this._enemyRecordSwallowCount = enemy._enemyRecordSwallowCount;
 	this._enemyRecordPussyCreampieCount = enemy._enemyRecordPussyCreampieCount;
 	this._enemyRecordAnalCreampieCount = enemy._enemyRecordAnalCreampieCount;
+	this._enemyRecordBeingServedInGloryHoleCount = enemy._enemyRecordBeingServedInGloryHoleCount;
 	this._enemyRecordGloryBattleEjaculationCount = enemy._enemyRecordGloryBattleEjaculationCount;
 	this._enemyRecordTotalEjaculationCount = enemy._enemyRecordTotalEjaculationCount;
 	this._enemyRecordOrgasmPresenceCount = enemy._enemyRecordOrgasmPresenceCount;
+	this._enemyRecordMasturbatedInBattlePresenceCount = enemy._enemyRecordMasturbatedInBattlePresenceCount;
+	this._enemyRecordKickCounteredCount = enemy._enemyRecordKickCounteredCount;
 	
 	if(enemy.isVisitorType) {
 		this._visitor_walkingSpeed = enemy._visitor_walkingSpeed;
@@ -206,20 +220,33 @@ Game_Enemy.prototype.setupWanted = function(wantedStatus) {
 		this._enemyRecordFingerSuckedCount = wantedStatus._enemyRecordFingerSuckedCount;
 		
 		this._enemyRecordTalkedCount = wantedStatus._enemyRecordTalkedCount;
+		this._enemyRecordTalkedAboutMouthCount = wantedStatus._enemyRecordTalkedAboutMouthCount;
+		this._enemyRecordTalkedAboutBoobsCount = wantedStatus._enemyRecordTalkedAboutBoobsCount;
+		this._enemyRecordTalkedAboutPussyCount = wantedStatus._enemyRecordTalkedAboutPussyCount;
+		this._enemyRecordTalkedAboutButtCount = wantedStatus._enemyRecordTalkedAboutButtCount;
+		this._enemyRecordTalkedAboutCockCount = wantedStatus._enemyRecordTalkedAboutCockCount;
 		this._enemyRecordSawCount = wantedStatus._enemyRecordSawCount;
-		this._enemyRecordTalkCockCount = wantedStatus._enemyRecordTalkCockCount;
+		this._enemyRecordSawMouthCount = wantedStatus._enemyRecordSawMouthCount;
+		this._enemyRecordSawBoobsCount = wantedStatus._enemyRecordSawBoobsCount;
+		this._enemyRecordSawPussyCount = wantedStatus._enemyRecordSawPussyCount;
+		this._enemyRecordSawButtCount = wantedStatus._enemyRecordSawButtCount;
+		
 		this._enemyRecordJerkoffCount = wantedStatus._enemyRecordJerkoffCount;
 		this._enemyRecordTauntedCount = wantedStatus._enemyRecordTauntedCount;
 		this._enemyRecordFlauntedCount = wantedStatus._enemyRecordFlauntedCount;
 		this._enemyRecordGotDogezaCount = wantedStatus._enemyRecordGotDogezaCount;
 		this._enemyRecordToysInsertedCount = wantedStatus._enemyRecordToysInsertedCount;
 		this._enemyRecordBukkakeTotalCount = wantedStatus._enemyRecordBukkakeTotalCount;
+		this._enemyRecordFaceBukkakeCount = wantedStatus._enemyRecordFaceBukkakeCount;
 		this._enemyRecordSwallowCount = wantedStatus._enemyRecordSwallowCount;
 		this._enemyRecordPussyCreampieCount = wantedStatus._enemyRecordPussyCreampieCount;
 		this._enemyRecordAnalCreampieCount = wantedStatus._enemyRecordAnalCreampieCount;
 		this._enemyRecordGloryBattleEjaculationCount = wantedStatus._enemyRecordGloryBattleEjaculationCount;
+		this._enemyRecordBeingServedInGloryHoleCount = wantedStatus._enemyRecordBeingServedInGloryHoleCount;
 		this._enemyRecordTotalEjaculationCount = wantedStatus._enemyRecordTotalEjaculationCount;
 		this._enemyRecordOrgasmPresenceCount = wantedStatus._enemyRecordOrgasmPresenceCount;
+		this._enemyRecordMasturbatedInBattlePresenceCount = wantedStatus._enemyRecordMasturbatedInBattlePresenceCount;
+		this._enemyRecordKickCounteredCount = wantedStatus._enemyRecordKickCounteredCount;
 		
 		this.setupEnemyLvl();
 		this.setupWantedGuardSkills();
@@ -294,24 +321,81 @@ Game_Enemy.prototype.setupEnemyRecords = function() {
 	this._enemyRecordCockPettedCount = 0;
 	this._enemyRecordFingerSuckedCount = 0;
 	this._enemyRecordTalkedCount = 0;
+	this._enemyRecordTalkedAboutMouthCount = 0;
+	this._enemyRecordTalkedAboutBoobsCount = 0;
+	this._enemyRecordTalkedAboutPussyCount = 0;
+	this._enemyRecordTalkedAboutButtCount = 0;
+	this._enemyRecordTalkedAboutCockCount = 0;
 	this._enemyRecordSawCount = 0;
+	this._enemyRecordSawMouthCount = 0;
+	this._enemyRecordSawBoobsCount = 0;
+	this._enemyRecordSawPussyCount = 0;
+	this._enemyRecordSawButtCount = 0;
 	this._enemyRecordJerkoffCount = 0;
-	this._enemyRecordTalkCockCount = 0;
 	this._enemyRecordTauntedCount = 0;
 	this._enemyRecordFlauntedCount = 0;
 	this._enemyRecordGotDogezaCount = 0;
 	this._enemyRecordToysInsertedCount = 0;
 	
+	this._enemyRecordFaceBukkakeCount = 0;
 	this._enemyRecordBukkakeTotalCount = 0;
 	this._enemyRecordSwallowCount = 0;
 	this._enemyRecordPussyCreampieCount = 0;
 	this._enemyRecordAnalCreampieCount = 0;
+	this._enemyRecordBeingServedInGloryHoleCount = 0;
 	this._enemyRecordGloryBattleEjaculationCount = 0;
 	this._enemyRecordTotalEjaculationCount = 0;
 	this._enemyRecordOrgasmPresenceCount = 0;
+	this._enemyRecordMasturbatedInBattlePresenceCount = 0;
 	
-	this._enemyTempRecordTotalEjaculationCount = 0;
+	this._enemyRecordKickCounteredCount = 0;
 };
+
+Game_Enemy.prototype.setupEnemyTempRecords = function() {
+	this._enemyTempRecordTalkedCount = 0;
+	this._enemyTempRecordTalkedAboutMouthCount = 0;
+	this._enemyTempRecordTalkedAboutBoobsCount = 0;
+	this._enemyTempRecordTalkedAboutPussyCount = 0;
+	this._enemyTempRecordTalkedAboutButtCount = 0;
+	this._enemyTempRecordTalkedAboutCockCount = 0;
+	
+	this._enemyTempRecordSawCount = 0;
+	this._enemyTempRecordSawMouthCount = 0;
+	this._enemyTempRecordSawBoobsCount = 0;
+	this._enemyTempRecordSawPussyCount = 0;
+	this._enemyTempRecordSawButtCount = 0;
+	this._enemyTempRecordOrgasmPresenceCount = 0;
+	
+	this._enemyTempRecordKissedCount = 0;
+	this._enemyTempRecordHandjobCount = 0;
+	this._enemyTempRecordBlowjobCount = 0;
+	this._enemyTempRecordTittyFuckCount = 0;
+	this._enemyTempRecordCunnilingusCount = 0;
+	this._enemyTempRecordRimmedCount = 0;
+	this._enemyTempRecordFootjobCount = 0;
+	this._enemyTempRecordSpankCount = 0;
+	this._enemyTempRecordPussyFuckedCount = 0;
+	this._enemyTempRecordAnalFuckedCount = 0;
+	this._enemyTempRecordBoobsPettedCount = 0;
+	this._enemyTempRecordNipplesPettedCount = 0;
+	this._enemyTempRecordButtPettedCount = 0;
+	this._enemyTempRecordAnalPettedCount = 0;
+	this._enemyTempRecordClitPettedCount = 0;
+	this._enemyTempRecordPussyPettedCount = 0;
+	this._enemyTempRecordCockPettedCount = 0;
+	this._enemyTempRecordFingerSuckedCount = 0;
+	
+	this._enemyTempRecordFaceBukkakeCount = 0;
+	this._enemyTempRecordTotalEjaculationCount = 0;
+	this._enemyTempRecordBeingServedInGloryHoleCount = 0;
+	
+	this._enemyTempRecordKickCounteredCount = 0;
+	
+	this._enemyTempRecordToiletBattleSexualPartner = false;
+	this._enemyTempRecordLevelTwoDefeatSexualPartner = false;
+	this._enemyTempRecordCockJustShrankFromCockStare = false;
+	
+};	
 
 Game_Enemy.prototype.setAsActorSexualPartner = function(actor) {
     if(!this._enemyRecordSexualPartner) {
@@ -321,6 +405,26 @@ Game_Enemy.prototype.setAsActorSexualPartner = function(actor) {
 			let wantedStatus = Prison.getWantedEnemyById(this.getWantedId());
 			wantedStatus._enemyRecordSexualPartner = true;
 		}
+	}
+	
+	if($gameParty.isInGloryBattle) {
+		if(!this._enemyTempRecordToiletBattleSexualPartner) {
+			actor._todayToiletBattleSexualPartners++;
+			this._enemyTempRecordToiletBattleSexualPartner = true;
+		}
+	}
+	else if(actor.isInDefeatedLevel2Pose()) {
+		if(!this._enemyTempRecordLevelTwoDefeatSexualPartner) {
+			actor._todayLevelTwoDefeatSexualPartners++;
+			this._enemyTempRecordLevelTwoDefeatSexualPartner = true;
+		}
+	}
+	
+	if(this.isGuardType) {
+		if($gameParty.isInWaitressBattle) actor._todayServedGuardInBar++;
+		else if(actor.isInDefeatedGuardPose()) actor._todayServedGuardInGuardDefeat++;
+		else if($gameParty.isInGloryBattle) actor._todayServedGuardInToiletBattle++;
+		else if($gameParty.isInGuardBattle()) actor._todayServedGuardInGuardBattle++;
 	}
 };
 
@@ -347,6 +451,21 @@ Game_Enemy.prototype.addToEnemyHandshakeWhileSexCountRecord = function(actor) {
 	}
 };
 
+Game_Enemy.prototype.addToBeingServedInGloryHoleCountRecord = function(actor) {
+	this._enemyRecordBeingServedInGloryHoleCount++;
+	this._enemyTempRecordBeingServedInGloryHoleCount++;
+	
+	if(this.isWanted) {
+		let wantedStatus = Prison.getWantedEnemyById(this.getWantedId());
+		wantedStatus._enemyRecordBeingServedInGloryHoleCount = this._enemyRecordBeingServedInGloryHoleCount;
+	}
+	let firstCount = false;
+    if(this._enemyRecordBeingServedInGloryHoleCount == 1) {
+		firstCount = true;
+	}
+	actor.addToActorGloryHoleServingRecord(firstCount, this);
+};
+
 
 Game_Enemy.prototype.addToEnemyBoobshakeCountRecord = function(actor) {
 	this._enemyRecordBoobshakeCount++;
@@ -362,6 +481,7 @@ Game_Enemy.prototype.addToEnemyBoobshakeCountRecord = function(actor) {
 };
 Game_Enemy.prototype.addToEnemyKissedCountRecord = function(actor) {
 	this._enemyRecordKissedCount++;
+	this._enemyTempRecordKissedCount++;
 	if(this.isWanted) {
 		let wantedStatus = Prison.getWantedEnemyById(this.getWantedId());
 		wantedStatus._enemyRecordKissedCount = this._enemyRecordKissedCount;
@@ -370,10 +490,15 @@ Game_Enemy.prototype.addToEnemyKissedCountRecord = function(actor) {
     if(this._enemyRecordKissedCount == 1) {
 		firstCount = true;
 	}
-	actor.addToActorKissedRecord(firstCount, this);
+	let firstCountTemp = false;
+    if(this._enemyTempRecordKissedCount == 1) {
+		firstCountTemp = true;
+	}
+	actor.addToActorKissedRecord(firstCount, this, firstCountTemp);
 };
 Game_Enemy.prototype.addToEnemyHandjobCountRecord = function(actor) {
 	this._enemyRecordHandjobCount++;
+	this._enemyTempRecordHandjobCount++;
 	if(this.isWanted) {
 		let wantedStatus = Prison.getWantedEnemyById(this.getWantedId());
 		wantedStatus._enemyRecordHandjobCount = this._enemyRecordHandjobCount;
@@ -383,10 +508,15 @@ Game_Enemy.prototype.addToEnemyHandjobCountRecord = function(actor) {
     if(this._enemyRecordHandjobCount == 1) {
 		firstCount = true;
 	}
-	actor.addToActorHandjobRecord(firstCount, this);
+	let firstCountTemp = false;
+    if(this._enemyTempRecordHandjobCount == 1) {
+		firstCountTemp = true;
+	}
+	actor.addToActorHandjobRecord(firstCount, this, firstCountTemp);
 };
 Game_Enemy.prototype.addToEnemyBlowjobCountRecord = function(actor) {
 	this._enemyRecordBlowjobCount++;
+	this._enemyTempRecordBlowjobCount++;
 	if(this.isWanted) {
 		let wantedStatus = Prison.getWantedEnemyById(this.getWantedId());
 		wantedStatus._enemyRecordBlowjobCount = this._enemyRecordBlowjobCount;
@@ -396,10 +526,15 @@ Game_Enemy.prototype.addToEnemyBlowjobCountRecord = function(actor) {
     if(this._enemyRecordBlowjobCount == 1) {
 		firstCount = true;
 	}
-	actor.addToActorBlowjobRecord(firstCount, this);
+	let firstCountTemp = false;
+    if(this._enemyTempRecordBlowjobCount == 1) {
+		firstCountTemp = true;
+	}
+	actor.addToActorBlowjobRecord(firstCount, this, firstCountTemp);
 };
 Game_Enemy.prototype.addToEnemyTittyFuckCountRecord = function(actor) {
 	this._enemyRecordTittyFuckCount++;
+	this._enemyTempRecordTittyFuckCount++;
 	if(this.isWanted) {
 		let wantedStatus = Prison.getWantedEnemyById(this.getWantedId());
 		wantedStatus._enemyRecordTittyFuckCount = this._enemyRecordTittyFuckCount;
@@ -409,10 +544,15 @@ Game_Enemy.prototype.addToEnemyTittyFuckCountRecord = function(actor) {
     if(this._enemyRecordTittyFuckCount == 1) {
 		firstCount = true;
 	}
-	actor.addToActorTittyFuckRecord(firstCount, this);
+	let firstCountTemp = false;
+    if(this._enemyTempRecordTittyFuckCount == 1) {
+		firstCountTemp = true;
+	}
+	actor.addToActorTittyFuckRecord(firstCount, this, firstCountTemp);
 };
 Game_Enemy.prototype.addToEnemyCunnilingusCountRecord = function(actor) {
 	this._enemyRecordCunnilingusCount++;
+	this._enemyTempRecordCunnilingusCount++;
 	if(this.isWanted) {
 		let wantedStatus = Prison.getWantedEnemyById(this.getWantedId());
 		wantedStatus._enemyRecordCunnilingusCount = this._enemyRecordCunnilingusCount;
@@ -422,10 +562,15 @@ Game_Enemy.prototype.addToEnemyCunnilingusCountRecord = function(actor) {
     if(this._enemyRecordCunnilingusCount == 1) {
 		firstCount = true;
 	}
-	actor.addToActorCunnilingusRecord(firstCount, this);
+	let firstCountTemp = false;
+    if(this._enemyTempRecordCunnilingusCount == 1) {
+		firstCountTemp = true;
+	}
+	actor.addToActorCunnilingusRecord(firstCount, this, firstCountTemp);
 };
 Game_Enemy.prototype.addToEnemyRimmedCountRecord = function(actor) {
 	this._enemyRecordRimmedCount++;
+	this._enemyTempRecordRimmedCount++;
 	if(this.isWanted) {
 		let wantedStatus = Prison.getWantedEnemyById(this.getWantedId());
 		wantedStatus._enemyRecordRimmedCount = this._enemyRecordRimmedCount;
@@ -435,10 +580,15 @@ Game_Enemy.prototype.addToEnemyRimmedCountRecord = function(actor) {
     if(this._enemyRecordRimmedCount == 1) {
 		firstCount = true;
 	}
-	actor.addToActorRimjobRecord(firstCount, this);
+	let firstCountTemp = false;
+    if(this._enemyTempRecordRimmedCount == 1) {
+		firstCountTemp = true;
+	}
+	actor.addToActorRimjobRecord(firstCount, this, firstCountTemp);
 };
 Game_Enemy.prototype.addToEnemyFootjobCountRecord = function(actor) {
 	this._enemyRecordFootjobCount++;
+	this._enemyTempRecordFootjobCount++;
 	if(this.isWanted) {
 		let wantedStatus = Prison.getWantedEnemyById(this.getWantedId());
 		wantedStatus._enemyRecordFootjobCount = this._enemyRecordFootjobCount;
@@ -448,12 +598,17 @@ Game_Enemy.prototype.addToEnemyFootjobCountRecord = function(actor) {
     if(this._enemyRecordFootjobCount == 1) {
 		firstCount = true;
 	}
-	actor.addToActorFootjobRecord(firstCount, this);
+	let firstCountTemp = false;
+    if(this._enemyTempRecordFootjobCount == 1) {
+		firstCountTemp = true;
+	}
+	actor.addToActorFootjobRecord(firstCount, this, firstCountTemp);
 };
 
 
 Game_Enemy.prototype.addToEnemySpankCountRecord = function(actor) {
 	this._enemyRecordSpankCount++;
+	this._enemyTempRecordSpankCount++;
 	if(this.isWanted) {
 			let wantedStatus = Prison.getWantedEnemyById(this.getWantedId());
 			wantedStatus._enemyRecordSpankCount = this._enemyRecordSpankCount;
@@ -462,10 +617,15 @@ Game_Enemy.prototype.addToEnemySpankCountRecord = function(actor) {
     if(this._enemyRecordSpankCount == 1) {
 		firstCount = true;
 	}
-	actor.addToActorButtSpankedRecord(firstCount, this);
+	let firstCountTemp = false;
+    if(this._enemyTempRecordSpankCount == 1) {
+		firstCountTemp = true;
+	}
+	actor.addToActorButtSpankedRecord(firstCount, this, firstCountTemp);
 };
 Game_Enemy.prototype.addToEnemyPussyFuckedCountRecord = function(actor) {
 	this._enemyRecordPussyFuckedCount++;
+	this._enemyTempRecordPussyFuckedCount++;
 	if(this.isWanted) {
 			let wantedStatus = Prison.getWantedEnemyById(this.getWantedId());
 			wantedStatus._enemyRecordPussyFuckedCount = this._enemyRecordPussyFuckedCount;
@@ -475,7 +635,11 @@ Game_Enemy.prototype.addToEnemyPussyFuckedCountRecord = function(actor) {
     if(this._enemyRecordPussyFuckedCount == 1) {
 		firstCount = true;
 	}
-	actor.addToActorPussyFuckedRecord(firstCount, this);
+	let firstCountTemp = false;
+    if(this._enemyTempRecordPussyFuckedCount == 1) {
+		firstCountTemp = true;
+	}
+	actor.addToActorPussyFuckedRecord(firstCount, this, firstCountTemp);
 	
 	if(firstCount && this._enemyRecordAnalFuckedCount === 0 && this.hasVirginPrefix()) {
 		actor.addToVirginityTakenViaPussyRecord();
@@ -483,6 +647,7 @@ Game_Enemy.prototype.addToEnemyPussyFuckedCountRecord = function(actor) {
 };
 Game_Enemy.prototype.addToEnemyAnalFuckedCountRecord = function(actor) {
 	this._enemyRecordAnalFuckedCount++;
+	this._enemyTempRecordAnalFuckedCount++;
 	if(this.isWanted) {
 			let wantedStatus = Prison.getWantedEnemyById(this.getWantedId());
 			wantedStatus._enemyRecordAnalFuckedCount = this._enemyRecordAnalFuckedCount;
@@ -492,7 +657,11 @@ Game_Enemy.prototype.addToEnemyAnalFuckedCountRecord = function(actor) {
     if(this._enemyRecordAnalFuckedCount == 1) {
 		firstCount = true;
 	}
-	actor.addToActorAnalFuckedRecord(firstCount, this);
+	let firstCountTemp = false;
+    if(this._enemyTempRecordAnalFuckedCount == 1) {
+		firstCountTemp = true;
+	}
+	actor.addToActorAnalFuckedRecord(firstCount, this, firstCountTemp);
 	
 	if(firstCount && this._enemyRecordPussyFuckedCount === 0 && this.hasVirginPrefix()) {
 		actor.addToVirginityTakenViaAnalRecord();
@@ -506,15 +675,29 @@ Game_Enemy.prototype.addToEnemyBukkakeCountRecord = function(actor) {
 	this.addToEnemyGloryBattleEjaculationCountRecord(actor);
 	
 	if(this.isWanted) {
-			let wantedStatus = Prison.getWantedEnemyById(this.getWantedId());
-			wantedStatus._enemyRecordBukkakeTotalCount = this._enemyRecordBukkakeTotalCount;
-			wantedStatus._enemyRecordTotalEjaculationCount = this._enemyRecordTotalEjaculationCount;
+		let wantedStatus = Prison.getWantedEnemyById(this.getWantedId());
+		wantedStatus._enemyRecordBukkakeTotalCount = this._enemyRecordBukkakeTotalCount;
+		wantedStatus._enemyRecordTotalEjaculationCount = this._enemyRecordTotalEjaculationCount;
 	}
 	let firstCount = false;
     if(this._enemyRecordBukkakeTotalCount == 1) {
 		firstCount = true;
 	}
 	actor.addToActorBukkakeTotalRecord(firstCount, this);
+};
+Game_Enemy.prototype.addToEnemyFaceBukkakeCountRecord = function(actor) {
+	this._enemyRecordFaceBukkakeCount++;
+	this._enemyTempRecordFaceBukkakeCount++;
+
+	if(this.isWanted) {
+		let wantedStatus = Prison.getWantedEnemyById(this.getWantedId());
+		wantedStatus._enemyRecordFaceBukkakeCount = this._enemyRecordFaceBukkakeCount;
+	}
+	let firstCount = false;
+    if(this._enemyRecordFaceBukkakeCount == 1) {
+		firstCount = true;
+	}
+	actor.addToActorFaceBukkakeRecord(firstCount, this);
 };
 Game_Enemy.prototype.addToEnemySwallowCountRecord = function(actor) {
 	this._enemyRecordSwallowCount++;
@@ -581,6 +764,7 @@ Game_Enemy.prototype.addToEnemyGloryBattleEjaculationCountRecord = function(acto
 
 Game_Enemy.prototype.addToEnemyOrgasmPresenceCountRecord = function(actor) {
 	this._enemyRecordOrgasmPresenceCount++;
+	this._enemyTempRecordOrgasmPresenceCount++;
 	if(this.isWanted) {
 			let wantedStatus = Prison.getWantedEnemyById(this.getWantedId());
 			wantedStatus._enemyRecordOrgasmPresenceCount = this._enemyRecordOrgasmPresenceCount;
@@ -589,11 +773,29 @@ Game_Enemy.prototype.addToEnemyOrgasmPresenceCountRecord = function(actor) {
     if(this._enemyRecordOrgasmPresenceCount == 1) {
 		firstCount = true;
 	}
-	actor.addToActorOrgasmPresenceRecord(firstCount);
+	let firstCountTemp = false;
+    if(this._enemyTempRecordOrgasmPresenceCount == 1) {
+		firstCountTemp = true;
+	}
+	actor.addToActorOrgasmPresenceRecord(firstCount, firstCountTemp);
+};
+
+Game_Enemy.prototype.addToEnemyMasturbatedInBattlePresenceCountRecord = function(actor) {
+	this._enemyRecordMasturbatedInBattlePresenceCount++;
+	if(this.isWanted) {
+			let wantedStatus = Prison.getWantedEnemyById(this.getWantedId());
+			wantedStatus._enemyRecordMasturbatedInBattlePresenceCount = this._enemyRecordMasturbatedInBattlePresenceCount;
+	}
+	let firstCount = false;
+    if(this._enemyRecordMasturbatedInBattlePresenceCount == 1) {
+		firstCount = true;
+	}
+	actor.addToActorMasturbatedInBattlePresenceRecord(firstCount);
 };
 
 Game_Enemy.prototype.addToEnemyBoobsPettedCountRecord = function(actor) {
 	this._enemyRecordBoobsPettedCount++;
+	this._enemyTempRecordBoobsPettedCount++;
 	if(this.isWanted) {
 			let wantedStatus = Prison.getWantedEnemyById(this.getWantedId());
 			wantedStatus._enemyRecordBoobsPettedCount = this._enemyRecordBoobsPettedCount;
@@ -602,10 +804,15 @@ Game_Enemy.prototype.addToEnemyBoobsPettedCountRecord = function(actor) {
     if(this._enemyRecordBoobsPettedCount == 1) {
 		firstCount = true;
 	}
-	actor.addToActorBoobsPettedRecord(firstCount);
+	let firstCountTemp = false;
+    if(this._enemyTempRecordBoobsPettedCount == 1) {
+		firstCountTemp = true;
+	}
+	actor.addToActorBoobsPettedRecord(firstCount, firstCountTemp);
 };
 Game_Enemy.prototype.addToEnemyNipplesPettedCountRecord = function(actor) {
 	this._enemyRecordNipplesPettedCount++;
+	this._enemyTempRecordNipplesPettedCount++;
 	if(this.isWanted) {
 			let wantedStatus = Prison.getWantedEnemyById(this.getWantedId());
 			wantedStatus._enemyRecordNipplesPettedCount = this._enemyRecordNipplesPettedCount;
@@ -614,10 +821,15 @@ Game_Enemy.prototype.addToEnemyNipplesPettedCountRecord = function(actor) {
     if(this._enemyRecordNipplesPettedCount == 1) {
 		firstCount = true;
 	}
-	actor.addToActorNipplesPettedRecord(firstCount);
+	let firstCountTemp = false;
+    if(this._enemyTempRecordNipplesPettedCount == 1) {
+		firstCountTemp = true;
+	}
+	actor.addToActorNipplesPettedRecord(firstCount, firstCountTemp);
 };
 Game_Enemy.prototype.addToEnemyButtPettedCountRecord = function(actor) {
 	this._enemyRecordButtPettedCount++;
+	this._enemyTempRecordButtPettedCount++;
 	if(this.isWanted) {
 			let wantedStatus = Prison.getWantedEnemyById(this.getWantedId());
 			wantedStatus._enemyRecordButtPettedCount = this._enemyRecordButtPettedCount;
@@ -626,10 +838,15 @@ Game_Enemy.prototype.addToEnemyButtPettedCountRecord = function(actor) {
     if(this._enemyRecordButtPettedCount == 1) {
 		firstCount = true;
 	}
-	actor.addToActorButtPettedRecord(firstCount);
+	let firstCountTemp = false;
+    if(this._enemyTempRecordButtPettedCount == 1) {
+		firstCountTemp = true;
+	}
+	actor.addToActorButtPettedRecord(firstCount, firstCountTemp);
 };
 Game_Enemy.prototype.addToEnemyAnalPettedCountRecord = function(actor) {
 	this._enemyRecordAnalPettedCount++;
+	this._enemyTempRecordAnalPettedCount++;
 	if(this.isWanted) {
 			let wantedStatus = Prison.getWantedEnemyById(this.getWantedId());
 			wantedStatus._enemyRecordAnalPettedCount = this._enemyRecordAnalPettedCount;
@@ -638,10 +855,15 @@ Game_Enemy.prototype.addToEnemyAnalPettedCountRecord = function(actor) {
     if(this._enemyRecordAnalPettedCount == 1) {
 		firstCount = true;
 	}
-	actor.addToActorAnalPettedRecord(firstCount);
+	let firstCountTemp = false;
+    if(this._enemyTempRecordAnalPettedCount == 1) {
+		firstCountTemp = true;
+	}
+	actor.addToActorAnalPettedRecord(firstCount, firstCountTemp);
 };
 Game_Enemy.prototype.addToEnemyClitPettedCountRecord = function(actor) {
 	this._enemyRecordClitPettedCount++;
+	this._enemyTempRecordClitPettedCount++;
 	if(this.isWanted) {
 			let wantedStatus = Prison.getWantedEnemyById(this.getWantedId());
 			wantedStatus._enemyRecordClitPettedCount = this._enemyRecordClitPettedCount;
@@ -650,10 +872,15 @@ Game_Enemy.prototype.addToEnemyClitPettedCountRecord = function(actor) {
     if(this._enemyRecordClitPettedCount == 1) {
 		firstCount = true;
 	}
-	actor.addToActorClitPettedRecord(firstCount);
+	let firstCountTemp = false;
+    if(this._enemyTempRecordClitPettedCount == 1) {
+		firstCountTemp = true;
+	}
+	actor.addToActorClitPettedRecord(firstCount, firstCountTemp);
 };
 Game_Enemy.prototype.addToEnemyPussyPettedCountRecord = function(actor) {
 	this._enemyRecordPussyPettedCount++;
+	this._enemyTempRecordPussyPettedCount++;
 	if(this.isWanted) {
 			let wantedStatus = Prison.getWantedEnemyById(this.getWantedId());
 			wantedStatus._enemyRecordPussyPettedCount = this._enemyRecordPussyPettedCount;
@@ -662,11 +889,16 @@ Game_Enemy.prototype.addToEnemyPussyPettedCountRecord = function(actor) {
     if(this._enemyRecordPussyPettedCount == 1) {
 		firstCount = true;
 	}
-	actor.addToActorPussyPettedRecord(firstCount);
+	let firstCountTemp = false;
+    if(this._enemyTempRecordPussyPettedCount == 1) {
+		firstCountTemp = true;
+	}
+	actor.addToActorPussyPettedRecord(firstCount, firstCountTemp);
 };
 
 Game_Enemy.prototype.addToEnemyCockPettedCountRecord = function(actor) {
 	this._enemyRecordCockPettedCount++;
+	this._enemyTempRecordCockPettedCount++;
 	if(this.isWanted) {
 			let wantedStatus = Prison.getWantedEnemyById(this.getWantedId());
 			wantedStatus._enemyRecordCockPettedCount = this._enemyRecordCockPettedCount;
@@ -675,11 +907,16 @@ Game_Enemy.prototype.addToEnemyCockPettedCountRecord = function(actor) {
     if(this._enemyRecordCockPettedCount == 1) {
 		firstCount = true;
 	}
-	actor.addToActorCockPettedRecord(firstCount);
+	let firstCountTemp = false;
+    if(this._enemyTempRecordCockPettedCount == 1) {
+		firstCountTemp = true;
+	}
+	actor.addToActorCockPettedRecord(firstCount, firstCountTemp);
 };
 
 Game_Enemy.prototype.addToEnemyFingerSuckedCountRecord = function(actor) {
 	this._enemyRecordFingerSuckedCount++;
+	this._enemyTempRecordFingerSuckedCount++;
 	if(this.isWanted) {
 			let wantedStatus = Prison.getWantedEnemyById(this.getWantedId());
 			wantedStatus._enemyRecordFingerSuckedCount = this._enemyRecordFingerSuckedCount;
@@ -688,11 +925,16 @@ Game_Enemy.prototype.addToEnemyFingerSuckedCountRecord = function(actor) {
     if(this._enemyRecordFingerSuckedCount == 1) {
 		firstCount = true;
 	}
-	actor.addToActorFingersSuckedRecord(firstCount);
+	let firstCountTemp = false;
+    if(this._enemyTempRecordFingerSuckedCount == 1) {
+		firstCountTemp = true;
+	}
+	actor.addToActorFingersSuckedRecord(firstCount, firstCountTemp);
 };
 
 Game_Enemy.prototype.addToEnemyTalkedCountRecord = function(actor) {
 	this._enemyRecordTalkedCount++;
+	this._enemyTempRecordTalkedCount++;
 	if(this.isWanted) {
 		let wantedStatus = Prison.getWantedEnemyById(this.getWantedId());
 		wantedStatus._enemyRecordTalkedCount = this._enemyRecordTalkedCount;
@@ -701,11 +943,102 @@ Game_Enemy.prototype.addToEnemyTalkedCountRecord = function(actor) {
     if(this._enemyRecordTalkedCount == 1) {
 		firstCount = true;
 	}
-	actor.addToActorTalkedAtRecord(firstCount);
+	let firstCountTemp = false;
+    if(this._enemyTempRecordTalkedCount == 1) {
+		firstCountTemp = true;
+	}
+	actor.addToActorTalkedAtRecord(firstCount, firstCountTemp);
+};
+
+Game_Enemy.prototype.addToEnemyTalkedAboutMouthRecord = function(actor) {
+	this._enemyRecordTalkedAboutMouthCount++;
+	this._enemyTempRecordTalkedAboutMouthCount++;
+	if(this.isWanted) {
+		let wantedStatus = Prison.getWantedEnemyById(this.getWantedId());
+		wantedStatus._enemyRecordTalkedAboutMouthCount = this._enemyRecordTalkedAboutMouthCount;
+	}
+	let firstCount = false;
+    if(this._enemyRecordTalkedAboutMouthCount == 1) {
+		firstCount = true;
+	}
+	let firstCountTemp = false;
+    if(this._enemyTempRecordTalkedAboutMouthCount == 1) {
+		firstCountTemp = true;
+	}
+	actor.addToActorEnemyTalkedAboutMouthRecord(firstCount, firstCountTemp);
+};
+Game_Enemy.prototype.addToEnemyTalkedAboutBoobsRecord = function(actor) {
+	this._enemyRecordTalkedAboutBoobsCount++;
+	this._enemyTempRecordTalkedAboutBoobsCount++;
+	if(this.isWanted) {
+		let wantedStatus = Prison.getWantedEnemyById(this.getWantedId());
+		wantedStatus._enemyRecordTalkedAboutBoobsCount = this._enemyRecordTalkedAboutBoobsCount;
+	}
+	let firstCount = false;
+    if(this._enemyRecordTalkedAboutBoobsCount == 1) {
+		firstCount = true;
+	}
+	let firstCountTemp = false;
+    if(this._enemyTempRecordTalkedAboutBoobsCount == 1) {
+		firstCountTemp = true;
+	}
+	actor.addToActorEnemyTalkedAboutBoobsRecord(firstCount, firstCountTemp);
+};
+Game_Enemy.prototype.addToEnemyTalkedAboutPussyRecord = function(actor) {
+	this._enemyRecordTalkedAboutPussyCount++;
+	this._enemyTempRecordTalkedAboutPussyCount++;
+	if(this.isWanted) {
+		let wantedStatus = Prison.getWantedEnemyById(this.getWantedId());
+		wantedStatus._enemyRecordTalkedAboutPussyCount = this._enemyRecordTalkedAboutPussyCount;
+	}
+	let firstCount = false;
+    if(this._enemyRecordTalkedAboutPussyCount == 1) {
+		firstCount = true;
+	}
+	let firstCountTemp = false;
+    if(this._enemyTempRecordTalkedAboutPussyCount == 1) {
+		firstCountTemp = true;
+	}
+	actor.addToActorEnemyTalkedAboutPussyRecord(firstCount, firstCountTemp);
+};
+Game_Enemy.prototype.addToEnemyTalkedAboutButtRecord = function(actor) {
+	this._enemyRecordTalkedAboutButtCount++;
+	this._enemyTempRecordTalkedAboutButtCount++;
+	if(this.isWanted) {
+		let wantedStatus = Prison.getWantedEnemyById(this.getWantedId());
+		wantedStatus._enemyRecordTalkedAboutButtCount = this._enemyRecordTalkedAboutButtCount;
+	}
+	let firstCount = false;
+    if(this._enemyRecordTalkedAboutButtCount == 1) {
+		firstCount = true;
+	}
+	let firstCountTemp = false;
+    if(this._enemyTempRecordTalkedAboutButtCount == 1) {
+		firstCountTemp = true;
+	}
+	actor.addToActorEnemyTalkedAboutButtRecord(firstCount, firstCountTemp);
+};
+Game_Enemy.prototype.addToEnemyTalkedAboutCockRecord = function(actor) {
+	this._enemyRecordTalkedAboutCockCount++;
+	this._enemyTempRecordTalkedAboutCockCount++;
+	if(this.isWanted) {
+		let wantedStatus = Prison.getWantedEnemyById(this.getWantedId());
+		wantedStatus._enemyRecordTalkedAboutCockCount = this._enemyRecordTalkedAboutCockCount;
+	}
+	let firstCount = false;
+    if(this._enemyRecordTalkedAboutCockCount == 1) {
+		firstCount = true;
+	}
+	let firstCountTemp = false;
+    if(this._enemyTempRecordTalkedAboutCockCount == 1) {
+		firstCountTemp = true;
+	}
+	actor.addToActorEnemyTalkedAboutCockRecord(firstCount, firstCountTemp);
 };
 
 Game_Enemy.prototype.addToEnemySawCountRecord = function(actor) {
 	this._enemyRecordSawCount++;
+	this._enemyTempRecordSawCount++;
 	if(this.isWanted) {
 		let wantedStatus = Prison.getWantedEnemyById(this.getWantedId());
 		wantedStatus._enemyRecordSawCount = this._enemyRecordSawCount;
@@ -714,20 +1047,79 @@ Game_Enemy.prototype.addToEnemySawCountRecord = function(actor) {
     if(this._enemyRecordSawCount == 1) {
 		firstCount = true;
 	}
-	actor.addToActorSeenRecord(firstCount);
+	let firstCountTemp = false;
+    if(this._enemyTempRecordSawCount == 1) {
+		firstCountTemp = true;
+	}
+	actor.addToActorSeenRecord(firstCount, firstCountTemp);
 };
-
-Game_Enemy.prototype.addToEnemyTalkedCockRecord = function(actor) {
-	this._enemyRecordTalkCockCount++;
+Game_Enemy.prototype.addToEnemySawMouthRecord = function(actor) {
+	this._enemyRecordSawMouthCount++;
+	this._enemyTempRecordSawMouthCount++;
 	if(this.isWanted) {
 		let wantedStatus = Prison.getWantedEnemyById(this.getWantedId());
-		wantedStatus._enemyRecordTalkCockCount = this._enemyRecordTalkCockCount;
+		wantedStatus._enemyRecordSawMouthCount = this._enemyRecordSawMouthCount;
 	}
 	let firstCount = false;
-    if(this._enemyRecordTalkCockCount == 1) {
+    if(this._enemyRecordSawMouthCount == 1) {
 		firstCount = true;
 	}
-	actor.addToActorEnemyTalkCockRecord(firstCount);
+	let firstCountTemp = false;
+    if(this._enemyTempRecordSawMouthCount == 1) {
+		firstCountTemp = true;
+	}
+	actor.addToActorEnemySawMouthRecord(firstCount, firstCountTemp);
+};
+Game_Enemy.prototype.addToEnemySawBoobsRecord = function(actor) {
+	this._enemyRecordSawBoobsCount++;
+	this._enemyTempRecordSawBoobsCount++;
+	if(this.isWanted) {
+		let wantedStatus = Prison.getWantedEnemyById(this.getWantedId());
+		wantedStatus._enemyRecordSawBoobsCount = this._enemyRecordSawBoobsCount;
+	}
+	let firstCount = false;
+    if(this._enemyRecordSawBoobsCount == 1) {
+		firstCount = true;
+	}
+	let firstCountTemp = false;
+    if(this._enemyTempRecordSawBoobsCount == 1) {
+		firstCountTemp = true;
+	}
+	actor.addToActorEnemySawBoobsRecord(firstCount, firstCountTemp);
+};
+Game_Enemy.prototype.addToEnemySawPussyRecord = function(actor) {
+	this._enemyRecordSawPussyCount++;
+	this._enemyTempRecordSawPussyCount++;
+	if(this.isWanted) {
+		let wantedStatus = Prison.getWantedEnemyById(this.getWantedId());
+		wantedStatus._enemyRecordSawPussyCount = this._enemyRecordSawPussyCount;
+	}
+	let firstCount = false;
+    if(this._enemyRecordSawPussyCount == 1) {
+		firstCount = true;
+	}
+	let firstCountTemp = false;
+    if(this._enemyTempRecordSawPussyCount == 1) {
+		firstCountTemp = true;
+	}
+	actor.addToActorEnemySawPussyRecord(firstCount, firstCountTemp);
+};
+Game_Enemy.prototype.addToEnemySawButtRecord = function(actor) {
+	this._enemyRecordSawButtCount++;
+	this._enemyTempRecordSawButtCount++;
+	if(this.isWanted) {
+		let wantedStatus = Prison.getWantedEnemyById(this.getWantedId());
+		wantedStatus._enemyRecordSawButtCount = this._enemyRecordSawButtCount;
+	}
+	let firstCount = false;
+    if(this._enemyRecordSawButtCount == 1) {
+		firstCount = true;
+	}
+	let firstCountTemp = false;
+    if(this._enemyTempRecordSawButtCount == 1) {
+		firstCountTemp = true;
+	}
+	actor.addToActorEnemySawButtRecord(firstCount, firstCountTemp);
 };
 
 Game_Enemy.prototype.addToEnemyJerkOffCountRecord = function(actor) {
@@ -740,7 +1132,7 @@ Game_Enemy.prototype.addToEnemyJerkOffCountRecord = function(actor) {
     if(this._enemyRecordJerkoffCount == 1) {
 		firstCount = true;
 	}
-	actor.addToActorSeeJerkOffRecord(firstCount);
+	actor.addToActorSawJerkOffRecord(firstCount);
 };
 Game_Enemy.prototype.addToEnemyTauntedCountRecord = function(actor) {
 	this._enemyRecordTauntedCount++;
@@ -782,8 +1174,8 @@ Game_Enemy.prototype.addToEnemyGotDogezaCountRecord = function(actor) {
 Game_Enemy.prototype.addToEnemyToysInsertedCountRecord = function(actor) {
 	this._enemyRecordToysInsertedCount++;
 	if(this.isWanted) {
-			let wantedStatus = Prison.getWantedEnemyById(this.getWantedId());
-			wantedStatus._enemyRecordToysInsertedCount = this._enemyRecordToysInsertedCount;
+		let wantedStatus = Prison.getWantedEnemyById(this.getWantedId());
+		wantedStatus._enemyRecordToysInsertedCount = this._enemyRecordToysInsertedCount;
 	}
 	let firstCount = false;
     if(this._enemyRecordToysInsertedCount == 1) {
@@ -792,6 +1184,23 @@ Game_Enemy.prototype.addToEnemyToysInsertedCountRecord = function(actor) {
 	actor.addToActorToysInsertedByPeopleRecord(firstCount, this);
 };
 
+Game_Enemy.prototype.addToEnemyKickCounterRecord = function(actor) {
+	this._enemyRecordKickCounteredCount++;
+	this._enemyTempRecordKickCounteredCount++;
+	if(this.isWanted) {
+			let wantedStatus = Prison.getWantedEnemyById(this.getWantedId());
+			wantedStatus._enemyRecordKickCounteredCount = this._enemyRecordKickCounteredCount;
+	}
+	let firstCount = false;
+    if(this._enemyRecordKickCounteredCount == 1) {
+		firstCount = true;
+	}
+	let firstCountTemp = false;
+    if(this._enemyTempRecordKickCounteredCount == 1) {
+		firstCountTemp = true;
+	}
+	actor.addToActorKickCounteredRecord(firstCount, firstCountTemp);
+};
 
 ////////
 // Game Troop
@@ -801,6 +1210,14 @@ Game_Troop.prototype.addToEnemyOrgasmPresenceCountRecord = function(actor) {
 	this.members().forEach(function(enemy) {
 		if(enemy.isAlive()) {
 			enemy.addToEnemyOrgasmPresenceCountRecord(actor);
+		}
+	}, this);
+};
+
+Game_Troop.prototype.addToEnemyMasturbatedInBattlePresenceCountRecord = function(actor) {
+	this.members().forEach(function(enemy) {
+		if(enemy.isAlive()) {
+			enemy.addToEnemyMasturbatedInBattlePresenceCountRecord(actor);
 		}
 	}, this);
 };
@@ -862,7 +1279,7 @@ Game_Party.prototype.setWantedIdAsDefeated = function(id) {
 			this.getWantedEnemyById(id)._wantedLvl += 1;
 		}
 		else {
-			this.getWantedEnemyById(id)._wantedLvl += 1 + Math.round(levelDifference * 0.2);
+			this.getWantedEnemyById(id)._wantedLvl += Math.round(levelDifference * 0.3);
 		}
 	}
 };
@@ -883,20 +1300,25 @@ Game_Party.prototype.checkPotentialNewWanted = function(enemy) {
 		let wantedPoints = enemy.getWantedPoints();
 		let typeCount = $gameParty.getHeadcountOfWantedType(enemy.enemyType());
 		let prisonWantedCount = $gameParty.getHeadcountOfAllPrisonWanted();
-		let noAdditionalWantedPointsAfterTwoNeededTypes = enemy.isVisitorMaleType;
+		let noAdditionalWantedPointsAfterOneNeededTypes = enemy.isVisitorMaleType;
+		
+		let typeLimit = WANTED_PER_TYPE_LIMIT;
+		
+		if(Prison.prisonLevelOneIsAnarchy()) typeLimit -= 2;
+		else if(Prison.prisonLevelTwoIsAnarchy()) typeLimit -= 1;
 		
 		let reqWantedPoints = WANTED_POINTS_BASE_REQ;
 		reqWantedPoints += WANTED_POINTS_NEEDED_PER_TYPE * typeCount;
 		
-		if(typeCount >= 2 && !noAdditionalWantedPointsAfterTwoNeededTypes) {
+		if(typeCount >= 1 && !noAdditionalWantedPointsAfterOneNeededTypes) {
 			reqWantedPoints += WANTED_POINTS_NEEDED_PER_TOTAL_WANTED_SIZE * prisonWantedCount;
-			reqWantedPoints += WANTED_POINTS_NEEDED_PER_TYPE_OVER_TWO * (typeCount - 1);
+			reqWantedPoints += WANTED_POINTS_NEEDED_PER_TYPE_OVER_ONE * (typeCount);
 		}
-		if(typeCount >= 4) {
-			reqWantedPoints += WANTED_POINTS_NEEDED_PER_TYPE_OVER_FOUR * (typeCount - 3);
+		if(typeCount >= 3) {
+			reqWantedPoints += WANTED_POINTS_NEEDED_PER_TYPE_OVER_THREE * (typeCount - 2);
 		}
 
-		if(wantedPoints >= reqWantedPoints && !enemy._tagDontAddWanted) {
+		if(typeCount < typeLimit && wantedPoints >= reqWantedPoints && !enemy._tagDontAddWanted) {
 			$gameParty.addNewWanted(enemy);
 		}
 	}
@@ -967,13 +1389,16 @@ Game_Party.prototype.findAvailableWanted = function(enemy, maxPrisonerMorphHeigh
 	if(!enemy) return false;
 	
 	let enemyIsBossType = enemy.dataEnemyType === ENEMYTYPE_YASU_TAG || enemy.dataEnemyType === ENEMYTYPE_TONKIN_TAG || enemy.dataEnemyType === ENEMYTYPE_CARGILL_TAG || enemy.dataEnemyType === ENEMYTYPE_ARON_TAG;
-	
+
 	let availableIds = this.findAvailableWantedIds(enemy, maxPrisonerMorphHeight);
 	let wantedChance = this._currentWantedChance;
+	
 	if(this.isRiotBattle()) wantedChance *= WANTED_CHANCE_MULTIPLER_RIOT_BATTLE;
 	else if(Karryn.isInReceptionistPose()) wantedChance *= WANTED_CHANCE_MULTIPLER_RECEPTIONIST_BATTLE;
 	else if(this.isInGloryBattle) wantedChance *= WANTED_CHANCE_MULTIPLER_GLORY_BATTLE;
 	else if($gameMap._mapId === MAP_ID_TESTING) return false;
+
+	
 	if(availableIds.length > 0 && 
 	((!enemy.hasTag(TAG_UNIQUE_ENEMY) && Math.random() < wantedChance) || (enemyIsBossType))) {
 		let id = availableIds[0];
@@ -1025,8 +1450,7 @@ Game_Party.prototype.findAvailableWantedIds = function(enemy, maxPrisonerMorphHe
 		}
 		else return [];
 	}
-	
-		
+
 	
 	for(let i = 0; i < this._wantedEnemies.length; i++) {
 		let wantedEnemy = this._wantedEnemies[i];
@@ -1036,7 +1460,7 @@ Game_Party.prototype.findAvailableWantedIds = function(enemy, maxPrisonerMorphHe
 		(wantedEnemy._enemyType == type || 
 		(type == ENEMYTYPE_PRISONER_TAG && !enemy._tagDontMorph && !wantedEnemy.enemyTypeIsNotForMorphing() && $dataEnemies[wantedEnemy._enemyId].dataRowHeight <= maxPrisonerMorphHeight)
 		) &&
-		Prison.date + WANTED_MINIMUM_DAYS_SINCE_DEFEATED > wantedEnemy._lastDefeated &&
+		Prison.date > wantedEnemy._lastDefeated + WANTED_MINIMUM_DAYS_SINCE_DEFEATED &&
 		Prison.date > wantedEnemy._recentAppearance) {
 			availableWantedIds.push(wantedEnemy._wantedId);
 		}

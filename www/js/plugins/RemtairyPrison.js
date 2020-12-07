@@ -9,8 +9,8 @@ const PRISON_STARTING_CORRUPTION = 1;
 const PRISON_STARTING_FUNDING = 2000;
 
 const PRISON_FATIGUE_FROM_ESCAPING = 1;
-const PRISON_FATIGUE_PER_TURN_COMBAT = 0.5;
-const PRISON_FATIGUE_PER_TURN_OTHER = 0.1;
+const PRISON_FATIGUE_PER_TURN_COMBAT = 0.25;
+const PRISON_FATIGUE_PER_TURN_OTHER = 0.15;
 
 const PRISON_BANKRUPTCY_ORDER_NO_TITLE = 10;
 
@@ -49,16 +49,17 @@ const PRISON_LEVEL_FOUR_RIOTING_ORDER_CHANGE = 2;
 const PRISON_LEVEL_FIVE_ANARCHY_ORDER_CHANGE = 13;
 const PRISON_LEVEL_FIVE_RIOTING_ORDER_CHANGE = 2;
 const PRISON_FIRST_DAY_RIOTING_ORDER_CHANGE_MULTIPLER = 0.5;
+const PRISON_RIOTING_ORDER_CHANGE_EASY_DIVIDER = 2;
 
-const PRISON_ANARCHY_GRACE_PERIOD_EASY = 60;
+const PRISON_ANARCHY_GRACE_PERIOD_EASY = 60; //unused
 const PRISON_ANARCHY_GRACE_PERIOD_NORMAL = 14;
 const PRISON_ANARCHY_GRACE_PERIOD_HARD = 7;
 
 const PRISON_ANARCHY_GRACE_LEVEL_ONE_MULTIPLER = 1;
 const PRISON_ANARCHY_GRACE_LEVEL_TWO_MULTIPLER = 3;
-const PRISON_ANARCHY_GRACE_LEVEL_THREE_MULTIPLER = 4;
+const PRISON_ANARCHY_GRACE_LEVEL_THREE_MULTIPLER = 3;
 const PRISON_ANARCHY_GRACE_LEVEL_FOUR_MULTIPLER = 3;
-const PRISON_ANARCHY_GRACE_LEVEL_FIVE_MULTIPLER = 1.5;
+const PRISON_ANARCHY_GRACE_LEVEL_FIVE_MULTIPLER = 1;
 
 const PRISON_ANARCHY_DEC_EASY_DIVIDER = 3;
 const PRISON_ANARCHY_DEC_LEVEL_ONE_DIVIDER = 1;
@@ -84,6 +85,7 @@ const DIFFICULTY_HARD_GROWTH_RATE = 0.9;
 
 const BATTLEBACK1_DEFEATED_LV1_NAME = 'Defeated1';
 const BATTLEBACK1_DEFEATED_LV2_NAME = 'Defeated2';
+const BATTLEBACK1_DEFEATED_LV3_NAME = 'Defeated3';
 const BATTLEBACK1_DEFEATED_GUARD_NAME = 'Defeated_guard';
 
 
@@ -113,12 +115,17 @@ const VARIABLE_IN_LEVEL_ID = 21; //currently unused?
 const VARIABLE_DEFEATED_IN_LEVEL_ID = 22; //currently unused?
 const VARIABLE_DEFEATED_SPRITES_ID = 25; 
 const VARIABLE_NEW_TITLE_NAME_ID = 26; 
+const VARIABLE_NEW_TITLE_ICON_ID = 27; 
 
 const VARIABLE_PROLOGUE_PROGRESS_ID = 30;
 const VARIABLE_BEAT_LEVEL_ID = 33;
 const VARIABLE_FIRST_RIOT_PROGRESS_ID = 34;
 const VARIABLE_FIRST_RIOT_LEVEL_ID = 35;
 const VARIABLE_FIRST_DEFEAT_PROGRESS_ID = 36;
+
+const VARIABLE_LOST_TO_TONKIN_COUNT_ID = 61;
+const VARIABLE_LOST_TO_CARGILL_COUNT_ID = 62;
+const VARIABLE_LOST_TO_ARON_COUNT_ID = 66;
 
 const VARIABLE_MOG_TURNS_SHOWED_1_ID = 161;
 const VARIABLE_MOG_TURNS_SHOWED_2_ID = 162;
@@ -204,6 +211,7 @@ const SWITCH_DEFEATED_IN_LEVEL_THREE_ID = 114;
 const SWITCH_DEFEATED_IN_LEVEL_FOUR_ID = 115;
 const SWITCH_DEFEATED_IN_LEVEL_FIVE_ID = 116;
 const SWITCH_DEFEATED_IN_GUARD_BATTLE_ID = 117;
+const SWITCH_PETTED_THE_KITTY_ID = 118;
 
 const SWITCH_CREATOR_STEP_1_COMPLETED_ID = 121;
 const SWITCH_CREATOR_STEP_2_COMPLETED_ID = 122;
@@ -214,6 +222,7 @@ const SWITCH_WON_BOSS_BATTLE_LV2_ID = 132;
 const SWITCH_WON_BOSS_BATTLE_LV3_ID = 133;
 const SWITCH_WON_BOSS_BATTLE_LV4_ID = 134;
 const SWITCH_WON_BOSS_BATTLE_LV5_ID = 135;
+const SWITCH_BOSS_CLEAR_BONUS_ID = 137;
 
 const SWITCH_TODAY_GUARD_BATTLE_ID = 141;
 const SWITCH_YESTERDAY_DEFEATED_LV1_ID = 142;
@@ -264,6 +273,9 @@ function Prison() {
 
 Object.defineProperty(Prison, 'date', {
     get: function() { return $gameParty.date; }, configurable: true
+});
+Object.defineProperty(Prison, 'currentRunsDays', {
+    get: function() { return $gameParty.currentRunsDays; }, configurable: true
 });
 
 Object.defineProperty(Prison, 'order', {
@@ -695,6 +707,16 @@ Prison.canOpenSaveMenu = function() {
 Object.defineProperty(Game_Party.prototype, "date", { 
 	get: function () { return this._dayCount - this._startingDate + 1; }, configurable: true
 });
+Object.defineProperty(Game_Party.prototype, "playthroughDays", { 
+	get: function () { return this.date; }, configurable: true
+});
+Object.defineProperty(Game_Party.prototype, "currentRunsDays", { 
+	get: function () { 
+		if(!this._startingRunDate) this.setStartingRunDate(this._startingDate);
+		return this._dayCount - this._startingRunDate + 1; 
+	}, configurable: true
+});
+
 Object.defineProperty(Game_Party.prototype, "order", { 
 	get: function () { return this._order; }, configurable: true
 });
@@ -744,6 +766,7 @@ Game_Party.prototype.setupPrison = function() {
 	$gameParty.gainTitle(TITLE_ID_NEWBIE);
 	
 	this.setStartingDate(1);
+	this.setStartingRunDate(1);
 	this.setDayCount(1);
 	this._totalPlaythroughs = 0;
 	this._endingsSeenCount = 0;
@@ -773,11 +796,14 @@ Game_Party.prototype.setPrisonToStartingState = function() {
 	actor.setHalberdAsDefiled(false);
 	actor.resetStoreItem();
 	actor.resetArtisanMeal();
+	actor.resetFirstTimeTitleEquipRegister();
 	
-	this.titlesSetStartingOrder();
+	//this.titlesSetStartingOrder();
+	this.setOrder(PRISON_STARTING_ORDER);
 	this.setOrderChangePerDay(PRISON_STARTING_ORDER_PER_DAY); 
 	this.setCorruption(PRISON_STARTING_CORRUPTION);
 	this._lastDefeatedDate = -1;
+	this.setStartingRunDate(this._dayCount);
 	this._gold = PRISON_STARTING_FUNDING;
 	this._storedEdictPoints = 0;
 	this._daysInBankruptcy = 0;
@@ -799,7 +825,11 @@ Game_Party.prototype.setPrisonToStartingState = function() {
 	this._daysSinceLastLevelFourRiot = 0;
 	this._daysSinceLastLevelFiveRiot = 0;
 	this._daysWithoutDoingWaitressBar = 0;
+	this._todayBarRepDecayed = false;
 	this._daysWithoutDoingVisitorReceptionist = 0;
+	this._todayVisitorRepDecayed = false;
+	this._daysWithoutDoingGloryHole = 0;
+	this._todayGloryHoleRepDecayed = false;
 	this._daysWithoutVisitingGlory = 0;
 	this._prisonLevelOne_riotingDays = 0;
 	this._prisonLevelTwo_riotingDays = 0;
@@ -813,9 +843,10 @@ Game_Party.prototype.setPrisonToStartingState = function() {
 	this.initializeReceptionistSettings();
 	this.setGuardAggression(0);
 	this.setupPrisonLevels();
+	this.recalculateBaseOrderChange();
 	this.respawnAnarchyEnemies();
-	//this.calculateIncomeMultipler();
-	//this.calculateExpenseMultipler();
+	
+	actor.registerFirstTimeTitleEquip();
 	
 	$gameSelfSwitches.setValue([MAP_ID_RECEPTION, 32, "A"], false); //Tonkin boss
 	$gameSelfSwitches.setValue([MAP_ID_VISITOR_CENTER_BROKEN, 31, "D"], false); //Door guard
@@ -833,8 +864,10 @@ Game_Party.prototype.setPrisonToStartingState = function() {
 	$gameSelfSwitches.setValue([MAP_ID_COMMON_AREA_NORTH_EAST, 3, "A"], false); //Aron boss
 	$gameSelfSwitches.setValue([MAP_ID_COMMON_AREA_NORTH_EAST, 10, "A"], false); //Aron boss
 	$gameSelfSwitches.setValue([MAP_ID_COMMON_AREA_SOUTH_EAST, 6, "D"], false); //Door guard
+	$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_SOUTH, 33, "D"], false); //Entrance
 	$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_SOUTH, 40, "D"], false); //Door guard
 	$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_NORTH_EAST, 25, "D"], false);  //Door guard
+	$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_NORTH_EAST, 29, "D"], false);  //Entrance
 	
 	this.resetDifficulty();
 	this.closeEdictsMenuCalculations();
@@ -878,21 +911,21 @@ Game_Party.prototype.characterCreatorNotCompleted = function() {
 };
 
 Game_Party.prototype.resetCharacterCreator = function() {
-	$gameParty.gainItem($dataArmors[TITLE_ID_EFFICIENT_ADMINSTRATOR],-1,true);
-	$gameParty.gainItem($dataArmors[TITLE_ID_CORRUPTED_OFFICIAL],-1,true);
-	$gameParty.gainItem($dataArmors[TITLE_ID_CORPORAL_PUNISHER],-1,true);
-	$gameParty.gainItem($dataArmors[TITLE_ID_CAREFUL_SUPERVISOR],-1,true);
-	$gameParty.gainItem($dataArmors[TITLE_ID_WORKAHOLIC],-1,true);
-	$gameParty.gainItem($dataArmors[TITLE_ID_CORNERCUTTING_EMPLOYER],-1,true);
+	$gameParty.gainItem($dataArmors[TITLE_ID_CC_SKILLED_MANAGER],-1,true);
+	$gameParty.gainItem($dataArmors[TITLE_ID_CC_AMBITIOUS_EXPERIMENTER],-1,true);
+	$gameParty.gainItem($dataArmors[TITLE_ID_CC_HARDLINE_DEBATER],-1,true);
+	$gameParty.gainItem($dataArmors[TITLE_ID_CC_COST_SAVING_SUPERVISOR],-1,true);
+	$gameParty.gainItem($dataArmors[TITLE_ID_CC_HARDWORKING_TUTOR],-1,true);
+	$gameParty.gainItem($dataArmors[TITLE_ID_CC_MANAGEMENT_CONSULTANT],-1,true);
 	
 	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
 	
-	actor._obtainedTitles[TITLE_ID_EFFICIENT_ADMINSTRATOR] = false;
-	actor._obtainedTitles[TITLE_ID_CORRUPTED_OFFICIAL] = false;
-	actor._obtainedTitles[TITLE_ID_CORPORAL_PUNISHER] = false;
-	actor._obtainedTitles[TITLE_ID_CAREFUL_SUPERVISOR] = false;
-	actor._obtainedTitles[TITLE_ID_WORKAHOLIC] = false;
-	actor._obtainedTitles[TITLE_ID_CORNERCUTTING_EMPLOYER] = false;
+	actor._obtainedTitles[TITLE_ID_CC_SKILLED_MANAGER] = false;
+	actor._obtainedTitles[TITLE_ID_CC_AMBITIOUS_EXPERIMENTER] = false;
+	actor._obtainedTitles[TITLE_ID_CC_HARDLINE_DEBATER] = false;
+	actor._obtainedTitles[TITLE_ID_CC_COST_SAVING_SUPERVISOR] = false;
+	actor._obtainedTitles[TITLE_ID_CC_HARDWORKING_TUTOR] = false;
+	actor._obtainedTitles[TITLE_ID_CC_MANAGEMENT_CONSULTANT] = false;
 	
 	actor.forgetSkill(CHARA_CREATE_TWO_BOOBS_ID);
 	actor.forgetSkill(CHARA_CREATE_TWO_NIPPLES_ID);
@@ -901,7 +934,7 @@ Game_Party.prototype.resetCharacterCreator = function() {
 	actor.forgetSkill(CHARA_CREATE_TWO_BUTT_ID);
 	actor.forgetSkill(CHARA_CREATE_TWO_ANAL_ID);
 	actor.forgetSkill(CHARA_CREATE_TWO_MOUTH_ID);
-	actor.forgetSkill(CHARA_CREATE_TWO_PETTING_ID);
+	actor.forgetSkill(CHARA_CREATE_TWO_BODY_ID);
 	
 	actor.forgetSkill(CHARA_CREATE_THREE_MOUTH_ID);
 	actor.forgetSkill(CHARA_CREATE_THREE_BOOBS_ID);
@@ -924,8 +957,8 @@ Game_Party.prototype.checkCharacterCreatorDifficultyExclusives = function() {
 	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
 	
 	if(!this.hardMode()) {
-		if(actor.hasSkill(CHARA_CREATE_TWO_PETTING_ID)) {
-			actor.forgetSkill(CHARA_CREATE_TWO_PETTING_ID);
+		if(actor.hasSkill(CHARA_CREATE_TWO_BODY_ID)) {
+			actor.forgetSkill(CHARA_CREATE_TWO_BODY_ID);
 			$gameSwitches.setValue(SWITCH_CREATOR_STEP_2_COMPLETED_ID, false);
 		}
 		if(actor.hasSkill(CHARA_CREATE_THREE_ONANI_ID)) {
@@ -1018,6 +1051,7 @@ Game_Party.prototype.setDifficultyToEasy = function() {
 	Karryn.learnSkill(EDICT_SECRETARY_MODE_TWO);
 	this.income;
 	this.expense;
+	this.recalculateBaseOrderChange();
 };
 Game_Party.prototype.setDifficultyToNormal = function() {
 	//this.increaseIncome(400);
@@ -1031,6 +1065,7 @@ Game_Party.prototype.setDifficultyToNormal = function() {
 	Karryn.learnSkill(EDICT_WARDEN_MODE);
 	this.income;
 	this.expense;
+	this.recalculateBaseOrderChange();
 };
 Game_Party.prototype.setDifficultyToHard = function() {
 	//this.increaseGuardAggression(10);
@@ -1044,6 +1079,7 @@ Game_Party.prototype.setDifficultyToHard = function() {
 	Karryn.learnSkill(EDICT_PRISONER_MODE_TWO);
 	this.income;
 	this.expense;
+	this.recalculateBaseOrderChange();
 };
 
 Game_Party.prototype.easyMode = function() {
@@ -1097,6 +1133,9 @@ Game_Party.prototype.increaseDayCount = function(value) {
 Game_Party.prototype.setStartingDate = function(value) {
 	this._startingDate = value;
 };
+Game_Party.prototype.setStartingRunDate = function(value) {
+	this._startingRunDate = value;
+};
 
 // Advance Next Day
 Game_Party.prototype.advanceNextDay = function() {
@@ -1113,7 +1152,12 @@ Game_Party.prototype.advanceNextDay = function() {
 	this.resetSpecialBattles();
 	this.nextDayRiotManager();
 	this.recalculateBaseOrderChange();
-	this.increaseOrderFromDayChange();
+	if($gameSwitches.value(SWITCH_BOSS_CLEAR_BONUS_ID)) {
+		if(this.orderChange > 0)
+			this.increaseOrderFromDayChange();
+	}	
+	else
+		this.increaseOrderFromDayChange();
 	this.respawnAnarchyEnemies();
 	this.increaseDaysInAnarchy();
 	this.increaseDaysInRioting();
@@ -1124,8 +1168,8 @@ Game_Party.prototype.advanceNextDay = function() {
 	this.recalculateBaseIncomeAndExpense();
 	this.gainGold(this.calculateBalance(false));
 	
-	if(this._gold === 0) {
-		this.titlesBankruptcyOrder();
+	if(Prison.funding === 0) {
+		this.titlesBankruptcyOrder(false);
 		this._daysInBankruptcy++;
 		this._gold = 0;
 	}
@@ -1140,7 +1184,7 @@ Game_Party.prototype.advanceNextDay = function() {
 	actor.restoreClothingDurability();
 	actor.putOnGlovesAndHat();
 	actor.resetArtisanMeal();
-	actor.resetTodayVariables();
+	actor.resetTodayRecords();
 	actor.cleanUpLiquids();
 	actor.checkTitleFlagsOnNewDay();
 	$gameScreen.setMapInfoRefreshNeeded();
@@ -1151,11 +1195,7 @@ Game_Party.prototype.restAtOffice = function() {
 	
 	let recovery = actor.fatigueRecoveryNumber();
 	let sleepQuality = actor.edictsSleepQuality();
-	if(this._masturbatedBeforeRestToday) {
-		this._masturbatedBeforeRestToday = false;
-		sleepQuality++;
-	}
-	if(actor.isAroused()) sleepQuality--;
+	sleepQuality += actor.masturbationSleepQuality();
 	
 	if($gameSwitches.value(SWITCH_HALF_FATIGUE_RECOVERY_ID)) {
 		recovery *= 0.5;
@@ -1164,9 +1204,8 @@ Game_Party.prototype.restAtOffice = function() {
 	}
 	actor.recoverFatigue(recovery);
 	actor.setSleepQuality(sleepQuality);
-	
-	actor.recoverAll_nextDay();
 	actor.removeState(STATE_HORNY_ID);
+	actor.recoverAll_nextDay();
 	actor.setHalberdAsDefiled(false);
 	
 	this.advanceNextDay();
@@ -1176,11 +1215,16 @@ Game_Party.prototype.restAtOffice = function() {
 
 Game_Party.prototype.restOutside = function() {
 	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
+	let mapId = $gameMap._mapId;
 	
-	//let recovery = actor.edictsFatigueRestOutside();
 	let recovery = actor.fatigueRecoveryNumber();
 	let sleepQuality = actor.edictsSleepQuality();
-	if(actor.isAroused()) sleepQuality--;
+	sleepQuality += actor.masturbationSleepQuality();
+	
+	if(!actor.hasPassive(PASSIVE_DEFEATED_COUNT_FOUR_ID)) {
+		if(mapId === MAP_ID_BAR_STORAGE || mapId === MAP_ID_BATHROOM_FIXED || mapId === MAP_ID_BATHROOM_BROKEN || mapId === MAP_ID_LVL3_DEFEAT_SOLITARY_CELL)
+			sleepQuality--;
+	}
 	
 	if($gameSwitches.value(SWITCH_HALF_FATIGUE_RECOVERY_ID)) {
 		recovery *= 0.5;
@@ -1189,13 +1233,11 @@ Game_Party.prototype.restOutside = function() {
 	}
 	actor.recoverFatigue(recovery);
 	actor.setSleepQuality(sleepQuality);
-	
-	actor.recoverAll_nextDay();
 	actor.removeState(STATE_HORNY_ID);
+	actor.recoverAll_nextDay();
 	
 	this.advanceNextDay();
 	
-	let mapId = $gameMap._mapId;
 	if(mapId === MAP_ID_LVL1_GUARD_STATION || mapId === MAP_ID_LVL2_GUARD_STATION || mapId === MAP_ID_LVL3_GUARD_STATION || mapId === MAP_ID_LVL4_GUARD_STATION) {
 		actor.transferEdictPointsFromStorage();
 		actor.setHalberdAsDefiled(false);
@@ -1229,43 +1271,49 @@ Game_Party.prototype.exitOffice_EdictsStorage = function() {
 Game_Party.prototype.resetSpecialBattles = function() {
 	$gameSwitches.setValue(SWITCH_TODAY_GUARD_BATTLE_ID, false);
 	$gameSwitches.setValue(SWITCH_INVASION_BATTLE_ID, false);
+	this._todayBarRepDecayed = false;
+	this._todayVisitorRepDecayed = false;
+	this._todayGloryHoleRepDecayed = false;
 	
 	if($gameSwitches.value(SWITCH_TODAY_WAITRESS_BATTLE_ID)) {
 		$gameSwitches.setValue(SWITCH_TODAY_WAITRESS_BATTLE_ID, false);
 		this._daysWithoutDoingWaitressBar = 0;
 	}
-	else {
-		this._daysWithoutDoingWaitressBar++;
-		if(this._daysWithoutDoingWaitressBar >= 3) {
+	else if(Karryn.hasEdict(EDICT_BAR_WAITRESS_OUTFIT_I) && this._barReputation > this.getMinimumBarReputation()) {
+		if(this._daysWithoutDoingWaitressBar >= WAITRESS_REP_DECAY_DAYS) {
 			this._daysWithoutDoingWaitressBar = 0;
 			this.increaseBarReputation(-1);
+			this._todayBarRepDecayed = true;
 		}
+		this._daysWithoutDoingWaitressBar++;
 	}
 	
 	if($gameSwitches.value(SWITCH_TODAY_RECEPTIONIST_BATTLE_ID)) {
 		$gameSwitches.setValue(SWITCH_TODAY_RECEPTIONIST_BATTLE_ID, false);
 		this._daysWithoutDoingVisitorReceptionist = 0;
 	}
-	else {
-		this._daysWithoutDoingVisitorReceptionist++;
-		if(this._daysWithoutDoingVisitorReceptionist >= 3) {
+	else if(Karryn.hasEdict(EDICT_RECEPTIONIST_OUTFIT_I) && this._receptionistSatisfaction > this.getMinimumReceptionistSatisfaction()) {
+		if(this._daysWithoutDoingVisitorReceptionist >= RECEPTIONIST_REP_DECAY_DAYS) {
 			this._daysWithoutDoingVisitorReceptionist = 0;
 			this.increaseReceptionistSatisfaction(-1);
 			this.increaseReceptionistFame(-1);
 			this.increaseReceptionistNotoriety(-1);
+			this._todayVisitorRepDecayed = true;
 		}
+		this._daysWithoutDoingVisitorReceptionist++;
 	}
 	
 	if($gameSwitches.value(SWITCH_TODAY_GLORYHOLE_BATTLE_ID)) {
 		$gameSwitches.setValue(SWITCH_TODAY_GLORYHOLE_BATTLE_ID, false);
 		this._daysWithoutVisitingGlory = 0;
 	}
-	else {
-		this._daysWithoutVisitingGlory++;
-		if(this._daysWithoutVisitingGlory >= 3) {
-			this._daysWithoutVisitingGlory = 0;
+	else if(Karryn.hasEdict(EDICT_REFIT_MIDDLE_STALL) && this._gloryReputation > this.getMinimumGloryHoleReputation()){
+		if(this._daysWithoutDoingGloryHole >= GLORY_HOLE_REP_DECAY_DAYS) {
+			this._daysWithoutDoingGloryHole = 0;
 			this.increaseGloryReputation(-1);
+			this._todayGloryHoleRepDecayed = true;
 		}
+		this._daysWithoutDoingGloryHole++;
 	}
 	
 	if($gameSwitches.value(SWITCH_TODAY_STRIPPER_BATTLE_ID)) {
@@ -1378,7 +1426,9 @@ Game_Party.prototype.recalculateBaseOrderChange = function() {
 	}
 };
 
+//Order Change
 //aka this.orderChange
+//Control value
 Game_Party.prototype.orderChangeValue = function() {
 	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
 	let control = this._orderChangePerDay;
@@ -1389,6 +1439,11 @@ Game_Party.prototype.orderChangeValue = function() {
 	
 	if(actor.isUsingThisTitle(TITLE_ID_FULL_ORDER_TWO) && actor._flagEquippedFullOrderTwoTitleForWholeDay) {
 		control *= 0.5;
+	}
+	
+	if(Prison.easyMode()) {
+		if(ConfigManager.cheatLessControlFive) control -= 5;
+		if(ConfigManager.cheatLessControlTen) control -= 10;
 	}
 
 	return Math.round(control);
@@ -1516,7 +1571,7 @@ Game_Party.prototype.calculateBalance = function(estimated) {
 
 Game_Party.prototype.calculateSubsidies = function(estimated) {
 	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
-	let subsidies = 1250;
+	let subsidies = 1300;
 	
 	subsidies += this.titlesSubsidies();
 	subsidies += actor.edictsSubsidies_Flat();
@@ -1565,7 +1620,7 @@ Game_Party.prototype.setGuardAggression = function(value) {
 	let minGuardAgg = 0;
 		
 	this._guardAggression = Math.max(value, minGuardAgg);
-	this._guardAggression = Math.min(value, LIMIT_GUARD_AGGRESSION);
+	this._guardAggression = Math.min(value, Karryn.getWardenLevelLimit() + 10);
 	$gameVariables.setValue(VARIABLE_GUARD_AGGRESSION_ID, this.guardAggression);
 };
 Game_Party.prototype.increaseGuardAggression = function(value) {
@@ -1623,7 +1678,19 @@ Game_Party.prototype.prisonLevelOneIsRioting = function() {
 	return this._prisonLevelOneStatus === PRISON_LEVEL_STATUS_RIOTING;
 };
 Game_Party.prototype.prisonLevelOneStatusText = function() {
-	if(this.prisonLevelOneIsAnarchy()) return TextManager.prisonLevelStatusAnarchy;
+	if(this.prisonLevelOneIsAnarchy()) {
+		let anarchyText = TextManager.prisonLevelStatusAnarchy;
+		let anarchyGracePeriod = this.anarchyGracePeriod();
+		let anarchyDecreaseDivider = this.anarchyDecreaseDivider();
+	
+		let levelAnarchyGracePeriod =  anarchyGracePeriod * PRISON_ANARCHY_GRACE_LEVEL_ONE_MULTIPLER;
+		anarchyDecreaseDivider *= PRISON_ANARCHY_DEC_LEVEL_ONE_DIVIDER;
+		if(this._prisonLevelOne_anarchyDays + this._levelOneBonusGracePeriod > levelAnarchyGracePeriod) {
+			anarchyText += ' (' + Math.ceil((this._prisonLevelOne_anarchyDays + this._levelOneBonusGracePeriod - levelAnarchyGracePeriod)/anarchyDecreaseDivider) + ')';
+		}
+		
+		return anarchyText;
+	}
 	else if(this.prisonLevelOneIsSubjugated()) return TextManager.prisonLevelStatusSubjugated;
 	else if(this.prisonLevelOneIsRioting()) {
 		let riotText = TextManager.prisonLevelStatusRioting;
@@ -1654,7 +1721,19 @@ Game_Party.prototype.prisonLevelTwoIsRioting = function() {
 	return this._prisonLevelTwoStatus === PRISON_LEVEL_STATUS_RIOTING;
 };
 Game_Party.prototype.prisonLevelTwoStatusText = function() {
-	if(this.prisonLevelTwoIsAnarchy()) return TextManager.prisonLevelStatusAnarchy;
+	if(this.prisonLevelTwoIsAnarchy()) {
+		let anarchyText = TextManager.prisonLevelStatusAnarchy;
+		let anarchyGracePeriod = this.anarchyGracePeriod();
+		let anarchyDecreaseDivider = this.anarchyDecreaseDivider();
+	
+		let levelAnarchyGracePeriod =  anarchyGracePeriod * PRISON_ANARCHY_GRACE_LEVEL_TWO_MULTIPLER;
+		anarchyDecreaseDivider *= PRISON_ANARCHY_DEC_LEVEL_TWO_DIVIDER;
+		if(this._prisonLevelTwo_anarchyDays + this._levelTwoBonusGracePeriod > levelAnarchyGracePeriod) {
+			anarchyText += ' (' + Math.ceil((this._prisonLevelTwo_anarchyDays + this._levelTwoBonusGracePeriod - levelAnarchyGracePeriod)/anarchyDecreaseDivider) + ')';
+		}
+		
+		return anarchyText;
+	}
 	else if(this.prisonLevelTwoIsSubjugated()) return TextManager.prisonLevelStatusSubjugated;
 	else if(this.prisonLevelTwoIsRioting()) {
 		let riotText = TextManager.prisonLevelStatusRioting;
@@ -1738,11 +1817,11 @@ Game_Party.prototype.getCurrentPrisonLevelEnemyLevelFromRioting = function() {
 	let mapId = $gameMap._mapId;
 	let level = 0;
 	if(this.currentlyPrisonLevelOne()) {
-		if(mapId === MAP_ID_WORKSHOP || mapId === MAP_ID_DISH_WASHING || mapId === MAP_ID_RECEPTION || mapId === MAP_ID_LAUNDRY || mapId === MAP_ID_LVL1_GUARD_STATION || mapId === MAP_ID_BAR_STORAGE)
+		if(mapId === MAP_ID_WORKSHOP || mapId === MAP_ID_DISH_WASHING || mapId === MAP_ID_RECEPTION || mapId === MAP_ID_LAUNDRY || mapId === MAP_ID_LVL1_GUARD_STATION || mapId === MAP_ID_BAR_STORAGE || mapId === MAP_ID_BAR || mapId === MAP_ID_VISITOR_CENTER)
 			level = Math.round(this._prisonLevelOneRiotCount * PRISON_LEVEL_ONE_ENEMY_LEVEL_RIOT_CHANGE);
 	}
 	else if(this.currentlyPrisonLevelTwo()) {
-		if(mapId === MAP_ID_READING_ROOM || mapId === MAP_ID_CLASSROOM || mapId === MAP_ID_STAFF_LOUNGE || mapId === MAP_ID_RESEARCH || mapId === MAP_ID_MEETING_ROOM || mapId === MAP_ID_LVL2_GUARD_STATION)
+		if(mapId === MAP_ID_READING_ROOM || mapId === MAP_ID_CLASSROOM || mapId === MAP_ID_STAFF_LOUNGE || mapId === MAP_ID_RESEARCH || mapId === MAP_ID_MEETING_ROOM || mapId === MAP_ID_LVL2_GUARD_STATION  || mapId === MAP_ID_BATHROOM_BROKEN  || mapId === MAP_ID_BATHROOM_FIXED)
 			level = Math.round(this._prisonLevelTwoRiotCount * PRISON_LEVEL_TWO_ENEMY_LEVEL_RIOT_CHANGE);
 	}
 	else if(this.currentlyPrisonLevelThree()) 
@@ -1821,7 +1900,7 @@ Game_Party.prototype.changeCurrentPrisonOnTransfer = function() {
 	}
 	else if($gamePlayer.getReturnMapID() === MAP_ID_VISITOR_CENTER || $gamePlayer.getReturnMapID() === MAP_ID_VISITOR_CENTER_BROKEN 
 	|| $gamePlayer.getReturnMapID() === MAP_ID_VISITOR_ROOM || $gamePlayer.getReturnMapID() === MAP_ID_VISITOR_ROOM_BROKEN
-	|| $gamePlayer.getReturnMapID() === MAP_ID_BAR_BROKEN || $gamePlayer.getReturnMapID() === MAP_ID_LVL1_STAIRS_TO_LVL3 || $gamePlayer.getReturnMapID() === MAP_ID_LVL1_STAIRS_TO_LVL2) {
+	|| $gamePlayer.getReturnMapID() === MAP_ID_BAR_BROKEN || $gamePlayer.getReturnMapID() === MAP_ID_LVL1_STAIRS_TO_LVL3 || $gamePlayer.getReturnMapID() === MAP_ID_LVL1_STAIRS_TO_LVL2 || $gamePlayer.getReturnMapID() === MAP_ID_BAR_STORAGE) {
 		this.changeCurrentPrisonLevelToLevelOne();
 		$gameScreen.setMapInfoRefreshNeeded();
 	}
@@ -2008,11 +2087,11 @@ Game_Party.prototype.preDefeatedLevelThreeBattleSetup = function() {
 	actor.setDefeatedLevel3Pose();
 	actor.refreshSlutLvlStageVariables_General();
 	
-	//let bathroomFactor = actor.getDefeatedLvlThreeFactor();
-	//$gameVariables.setValue(VARIABLE_DEFEATED_SPRITES_ID, Math.max(3, bathroomFactor));
+	let soloCellFactor = actor.getDefeatedLvlThreeFactor();
+	$gameVariables.setValue(VARIABLE_DEFEATED_SPRITES_ID, Math.max(3, soloCellFactor));
 	
 	//$gameMap.setupBattleback(); 
-	//$gameMap.changeBattleback(BATTLEBACK1_DEFEATED_LV2_NAME, null);
+	//$gameMap.changeBattleback(BATTLEBACK1_DEFEATED_LV3_NAME, null);
 	
 	this._gainHalfOrderFlag = false;
 	this._gainHalfFatigueFlag = false;
@@ -2058,7 +2137,7 @@ Game_Party.prototype.postBattleCleanup = function() {
 	$gameActors.actor(ACTOR_KARRYN_ID).postBattleCleanup();
 	
 	this.clearPrisonResults();
-	this.postRiotBattleCleanup();
+	this.riotingRoomsCheck();
 	
 	BattleManager.setBMAllowTachieUpdate(true);
 }; 
@@ -2074,7 +2153,7 @@ Game_Party.prototype.postGuardBattleCleanup  = function() {
 	this.postBattleCleanup();
 };
 
-Game_Party.prototype.postRiotBattleCleanup  = function() {
+Game_Party.prototype.riotingRoomsCheck = function() {
 	//Level One
 	if(this._prisonLevelOne_workshopRioting && $gameSelfSwitches.value([MAP_ID_WORKSHOP, 5, "D"]))
 		this._prisonLevelOne_workshopRioting = false;
@@ -2130,9 +2209,9 @@ Game_Party.prototype.postDefeat_preRest = function() {
 		actor.setPleasure(0);
 	}
 	
-	
 	$gameVariables.setValue(VARIABLE_DEFEATED_SPRITES_ID, 0);
 	$gameSwitches.setValue(SWITCH_TODAY_GOBLIN_BAR_STORAGE_ID, false);
+	$gameSwitches.setValue(SWITCH_TODAY_GLORYHOLE_DEFEAT_ID, false);
 	//in common events, rest gets called after this
 };
 
@@ -2192,8 +2271,7 @@ Game_Party.prototype.setDefeatedSwitchesOff = function() {
 
 // Close Edicts Menu
 Game_Party.prototype.closeEdictsMenuCalculations = function() {
-	//$gameParty.calculateIncomeMultipler();
-	//$gameParty.calculateExpenseMultipler();
+	
 };
 
 ////////
@@ -2223,9 +2301,17 @@ Game_Party.prototype.onTurnEndSpecial = function() {
 	else if(Karryn.isInDefeatedLevel2Pose()) {
 		$gameTroop.onTurnEndSpecial_defeatedLevelTwoBattle();
 	}
+	else if(Karryn.isInDefeatedLevel3Pose()) {
+		$gameTroop.onTurnEndSpecial_defeatedLevelThreeBattle();
+	}
 	else if(Karryn.isInDefeatedGuardPose()) {
 		$gameTroop.onTurnEndSpecial_defeatedGuardBattle();
 	}
+};
+
+Game_Party.prototype.isInGuardBattle = function() {
+	let mapId = $gameMap._mapId;
+	return mapId === MAP_ID_EB_HALLWAY && $gameTroop._troopId === TROOP_GUARD_ID;
 };
 
 //////////////
@@ -2240,62 +2326,30 @@ Game_Party.prototype.onTurnEndSpecial = function() {
 
 Game_Party.prototype.orderChangeRiotManager = function() {
 	let orderChange = 0;
-	let anarchyGracePeriod = PRISON_ANARCHY_GRACE_PERIOD_EASY;
-	if(this.hardMode()) anarchyGracePeriod = PRISON_ANARCHY_GRACE_PERIOD_HARD;
-	else if(this.normalMode()) anarchyGracePeriod = PRISON_ANARCHY_GRACE_PERIOD_NORMAL;
-	
-	let anarchyDecreaseDivider = 1;
-	if(this.easyMode()) anarchyDecreaseDivider = PRISON_ANARCHY_DEC_EASY_DIVIDER;
-	if(Karryn.hasEdict(EDICT_ADVANCED_GUARD_TRAINING)) anarchyDecreaseDivider += 0.2;
-	else if(Karryn.hasEdict(EDICT_BASIC_GUARD_TRAINING)) anarchyDecreaseDivider += 0.1;
-	if(Karryn.hasEdict(EDICT_REINFORCED_EQUIPMENT)) anarchyDecreaseDivider += 0.1;
-	else if(Karryn.hasEdict(EDICT_STANDARD_EQUIPMENT)) anarchyDecreaseDivider += 0.05;
+	let anarchyGracePeriod = this.anarchyGracePeriod();
+	let anarchyDecreaseDivider = this.anarchyDecreaseDivider();
 	
 	if(this.prisonLevelOneIsAnarchy()) {
 		orderChange += PRISON_LEVEL_ONE_ANARCHY_ORDER_CHANGE;
 		let levelAnarchyGracePeriod =  anarchyGracePeriod * PRISON_ANARCHY_GRACE_LEVEL_ONE_MULTIPLER;
 		anarchyDecreaseDivider *= PRISON_ANARCHY_DEC_LEVEL_ONE_DIVIDER;
-		if(this._prisonLevelOne_anarchyDays + this._levelOneBonusGracePeriod > levelAnarchyGracePeriod) 
+		if(!Prison.easyMode() && this._prisonLevelOne_anarchyDays + this._levelOneBonusGracePeriod > levelAnarchyGracePeriod) 
 			orderChange += Math.ceil((this._prisonLevelOne_anarchyDays + this._levelOneBonusGracePeriod - levelAnarchyGracePeriod)/anarchyDecreaseDivider);
 	}
 	
 	else if(this.prisonLevelOneIsRioting()) {
-		let riotingOrderChange = 0;
-		
-		if(this._prisonLevelOne_workshopRioting) riotingOrderChange += PRISON_LEVEL_ONE_RIOTING_ORDER_CHANGE;
-		if(this._prisonLevelOne_laundryRioting) riotingOrderChange += PRISON_LEVEL_ONE_RIOTING_ORDER_CHANGE;
-		if(this._prisonLevelOne_dishwashingRioting) riotingOrderChange += PRISON_LEVEL_ONE_RIOTING_ORDER_CHANGE;
-		if(this._prisonLevelOne_receptionRioting) riotingOrderChange += PRISON_LEVEL_ONE_RIOTING_ORDER_CHANGE;
-		riotingOrderChange += this._prisonLevelOne_riotingDays;
-		
-		if(this._prisonLevelOne_riotingDays === 1)
-			riotingOrderChange = Math.round(riotingOrderChange * PRISON_FIRST_DAY_RIOTING_ORDER_CHANGE_MULTIPLER);
-		
-		orderChange += riotingOrderChange;
+		orderChange += this.riotingOrderChange(1);
 	}
 	
 	if(this.prisonLevelTwoIsAnarchy()) {
 		orderChange += PRISON_LEVEL_TWO_ANARCHY_ORDER_CHANGE;
 		let levelAnarchyGracePeriod =  anarchyGracePeriod * PRISON_ANARCHY_GRACE_LEVEL_TWO_MULTIPLER;
 		anarchyDecreaseDivider *= PRISON_ANARCHY_DEC_LEVEL_TWO_DIVIDER;
-		if(this._prisonLevelTwo_anarchyDays + this._levelTwoBonusGracePeriod > levelAnarchyGracePeriod) 
+		if(!Prison.easyMode() && this._prisonLevelTwo_anarchyDays + this._levelTwoBonusGracePeriod > levelAnarchyGracePeriod) 
 			orderChange += Math.ceil((this._prisonLevelTwo_anarchyDays + this._levelTwoBonusGracePeriod - levelAnarchyGracePeriod)/anarchyDecreaseDivider);
 	}
 	else if(this.prisonLevelTwoIsRioting()) {
-		let riotingOrderChange = 0;
-		
-		if(this._prisonLevelTwo_meetingRoomRioting) riotingOrderChange += PRISON_LEVEL_TWO_RIOTING_ORDER_CHANGE;
-		if(this._prisonLevelTwo_researchRioting) riotingOrderChange += PRISON_LEVEL_TWO_RIOTING_ORDER_CHANGE;
-		if(this._prisonLevelTwo_staffLoungeRioting) riotingOrderChange += PRISON_LEVEL_TWO_RIOTING_ORDER_CHANGE;
-		if(this._prisonLevelTwo_classroomRioting) riotingOrderChange += PRISON_LEVEL_TWO_RIOTING_ORDER_CHANGE;
-		if(this._prisonLevelTwo_readingRoomRioting) riotingOrderChange += PRISON_LEVEL_TWO_RIOTING_ORDER_CHANGE;
-
-		riotingOrderChange += this._prisonLevelTwo_riotingDays;
-		
-		if(this._prisonLevelTwo_riotingDays === 1)
-			riotingOrderChange = Math.round(riotingOrderChange * PRISON_FIRST_DAY_RIOTING_ORDER_CHANGE_MULTIPLER);
-		
-		orderChange += riotingOrderChange;
+		orderChange += this.riotingOrderChange(2);
 	}
 	
 	if(this.prisonLevelThreeIsAnarchy()) {
@@ -2323,6 +2377,56 @@ Game_Party.prototype.orderChangeRiotManager = function() {
 	return orderChange;
 };
 
+Game_Party.prototype.anarchyGracePeriod = function() {
+	let anarchyGracePeriod = PRISON_ANARCHY_GRACE_PERIOD_EASY;
+	if(this.hardMode()) anarchyGracePeriod = PRISON_ANARCHY_GRACE_PERIOD_HARD;
+	else if(this.normalMode()) anarchyGracePeriod = PRISON_ANARCHY_GRACE_PERIOD_NORMAL;
+	return anarchyGracePeriod;
+};
+Game_Party.prototype.anarchyDecreaseDivider = function() {
+	let anarchyDecreaseDivider = 1;
+	
+	if(this.easyMode()) anarchyDecreaseDivider = PRISON_ANARCHY_DEC_EASY_DIVIDER;
+	if(Karryn.hasEdict(EDICT_ADVANCED_GUARD_TRAINING)) anarchyDecreaseDivider += 0.2;
+	else if(Karryn.hasEdict(EDICT_BASIC_GUARD_TRAINING)) anarchyDecreaseDivider += 0.1;
+	if(Karryn.hasEdict(EDICT_REINFORCED_EQUIPMENT)) anarchyDecreaseDivider += 0.1;
+	else if(Karryn.hasEdict(EDICT_STANDARD_EQUIPMENT)) anarchyDecreaseDivider += 0.05;
+	
+	return anarchyDecreaseDivider;
+};
+
+Game_Party.prototype.riotingOrderChange = function(level) {
+	let value = 0;
+	
+	if(level === 1) {
+		if(this._prisonLevelOne_workshopRioting) value += PRISON_LEVEL_ONE_RIOTING_ORDER_CHANGE;
+		if(this._prisonLevelOne_laundryRioting) value += PRISON_LEVEL_ONE_RIOTING_ORDER_CHANGE;
+		if(this._prisonLevelOne_dishwashingRioting) value += PRISON_LEVEL_ONE_RIOTING_ORDER_CHANGE;
+		if(this._prisonLevelOne_receptionRioting) value += PRISON_LEVEL_ONE_RIOTING_ORDER_CHANGE;
+		
+		value += this._prisonLevelOne_riotingDays;
+		
+		if(this._prisonLevelOne_riotingDays === 1)
+			value = Math.round(value * PRISON_FIRST_DAY_RIOTING_ORDER_CHANGE_MULTIPLER);
+	}
+	else if(level === 2) {
+		if(this._prisonLevelTwo_meetingRoomRioting) value += PRISON_LEVEL_TWO_RIOTING_ORDER_CHANGE;
+		if(this._prisonLevelTwo_researchRioting) value += PRISON_LEVEL_TWO_RIOTING_ORDER_CHANGE;
+		if(this._prisonLevelTwo_staffLoungeRioting) value += PRISON_LEVEL_TWO_RIOTING_ORDER_CHANGE;
+		if(this._prisonLevelTwo_classroomRioting) value += PRISON_LEVEL_TWO_RIOTING_ORDER_CHANGE;
+		if(this._prisonLevelTwo_readingRoomRioting) value += PRISON_LEVEL_TWO_RIOTING_ORDER_CHANGE;
+		
+		value += this._prisonLevelTwo_riotingDays;
+		
+		if(this._prisonLevelTwo_riotingDays === 1)
+			value = Math.round(value * PRISON_FIRST_DAY_RIOTING_ORDER_CHANGE_MULTIPLER);
+	}
+	
+	if(Prison.easyMode()) value = Math.round(value / PRISON_RIOTING_ORDER_CHANGE_EASY_DIVIDER);
+	
+	return value;
+};
+
 
 ////////
 // Next Day Riot Manager
@@ -2340,6 +2444,8 @@ Game_Party.prototype.nextDayRiotManager = function() {
 		if(this.prisonLevelOneIsSubjugated()) {
 			this._prisonLevelOneRiotBuildup = Math.max(0, this._prisonLevelOneRiotBuildup + this.prisonLevelOneRiotChance());
 			
+			if(ConfigManager.cheatInstantRiotsOne && Prison.easyMode()) this._prisonLevelOneRiotBuildup = 100;
+			
 			if(this._daysSinceLastLevelOneRiot >= RIOT_MIN_DAYS_BEFORE_BUILDUP && Math.random() * 100 < this._prisonLevelOneRiotBuildup) {
 				this.riotOutbreakPrisonLevelOne();
 				newRiotCount++;
@@ -2351,6 +2457,7 @@ Game_Party.prototype.nextDayRiotManager = function() {
 		if(this.prisonLevelTwoIsSubjugated()) {
 			this._prisonLevelTwoRiotBuildup = Math.max(0, this._prisonLevelTwoRiotBuildup + this.prisonLevelTwoRiotChance());
 
+			if(ConfigManager.cheatInstantRiotsTwo && Prison.easyMode()) this._prisonLevelTwoRiotBuildup = 100;
 			
 			if(this._daysSinceLastLevelTwoRiot >= RIOT_MIN_DAYS_BEFORE_BUILDUP && Math.random() * 100 < this._prisonLevelTwoRiotBuildup) {
 				this.riotOutbreakPrisonLevelTwo();
@@ -2363,6 +2470,8 @@ Game_Party.prototype.nextDayRiotManager = function() {
 		if(this.prisonLevelThreeIsSubjugated()) {
 			this._prisonLevelThreeRiotBuildup = Math.max(0, this._prisonLevelThreeRiotBuildup + this.prisonLevelThreeRiotChance());
 			
+			if(ConfigManager.cheatInstantRiotsThree && Prison.easyMode()) this._prisonLevelThreeRiotBuildup = 100;
+			
 			if(this._daysSinceLastLevelThreeRiot >= RIOT_MIN_DAYS_BEFORE_BUILDUP && Math.random() * 100 < this._prisonLevelThreeRiotBuildup) {
 				this.setPrisonLevelThreeRiot();
 				newRiotCount++;
@@ -2373,6 +2482,8 @@ Game_Party.prototype.nextDayRiotManager = function() {
 		}
 		if(this.prisonLevelFourIsSubjugated()) {
 			this._prisonLevelFourRiotBuildup = Math.max(0, this._prisonLevelFourRiotBuildup + this.prisonLevelFourRiotChance());
+
+			if(ConfigManager.cheatInstantRiotsFour && Prison.easyMode()) this._prisonLevelFourRiotBuildup = 100;
 
 			if(this._daysSinceLastLevelFourRiot >= RIOT_MIN_DAYS_BEFORE_BUILDUP && Math.random() * 100 < this._prisonLevelFourRiotBuildup) {
 				this.setPrisonLevelFourRiot();
@@ -2422,6 +2533,8 @@ Game_Party.prototype.nextDayRiotManager = function() {
 	*/
 	
 	//Remove rioting status
+	this.riotingRoomsCheck();
+	
 	if(this.prisonLevelOneIsRioting() && !this._prisonLevelOne_workshopRioting && !this._prisonLevelOne_laundryRioting && !this._prisonLevelOne_dishwashingRioting && !this._prisonLevelOne_receptionRioting) {
 		actor._playthroughRecordLevelOneRiotSuppressedCount++;
 		actor._playthroughRecordLevelTotalRiotsSuppressedCount++;
@@ -2484,9 +2597,14 @@ Game_Party.prototype.setCancelFollowingNextDayRiotManager = function(status) {
 Game_Party.prototype.increaseDaysInAnarchy = function() {
 	if(this.prisonLevelOneIsAnarchy())
 		this._prisonLevelOne_anarchyDays++;
-	if(this.prisonLevelTwoIsAnarchy())
+	else if(this.prisonLevelTwoIsAnarchy())
 		this._prisonLevelTwo_anarchyDays++;
-	//todo
+	else if(this.prisonLevelThreeIsAnarchy())
+		this._prisonLevelThree_anarchyDays++;
+	else if(this.prisonLevelFourIsAnarchy())
+		this._prisonLevelFour_anarchyDays++;
+	else if(this.prisonLevelFiveIsAnarchy())
+		this._prisonLevelFive_anarchyDays++;
 };
 
 Game_Party.prototype.increaseDaysInRioting = function() {
@@ -2685,6 +2803,7 @@ Game_Party.prototype.firstSubjugationPrisonLevelOne = function() {
 	Karryn.learnSkill(EDICT_LEVEL_ONE_SUBJUGATED);
 	Karryn.learnSkill(EDICT_THE_THUG_PROBLEM);
 	Karryn.learnSkill(EDICT_THE_GOBLIN_PROBLEM);
+	this.recalculateBaseOrderChange();
 };
 Game_Party.prototype.firstSubjugationPrisonLevelTwo = function() {
 	this.setPrisonLevelTwoSubjugated();
@@ -2692,6 +2811,7 @@ Game_Party.prototype.firstSubjugationPrisonLevelTwo = function() {
 	Karryn.learnSkill(EDICT_LEVEL_TWO_SUBJUGATED);
 	Karryn.learnSkill(EDICT_THE_NERD_PROBLEM);
 	Karryn.learnSkill(EDICT_THE_ROGUE_PROBLEM);
+	this.recalculateBaseOrderChange();
 };
 Game_Party.prototype.firstSubjugationPrisonLevelThree = function() {
 	this.setPrisonLevelThreeSubjugated();
@@ -2699,6 +2819,7 @@ Game_Party.prototype.firstSubjugationPrisonLevelThree = function() {
 	Karryn.learnSkill(EDICT_LEVEL_THREE_SUBJUGATED);
 	//Karryn.learnSkill(EDICT_THE_ORC_PROBLEM);
 	//Karryn.learnSkill(EDICT_THE_LIZARDMAN_PROBLEM);
+	this.recalculateBaseOrderChange();
 	
 	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
 	actor._recordPreLevelFourOldSexualPartners = actor._recordSexualPartnersTotal;
@@ -2707,6 +2828,8 @@ Game_Party.prototype.firstSubjugationPrisonLevelFour = function() {
 	this.setPrisonLevelFourSubjugated();
 	this.setPrisonLevelFiveAnarchy();
 	Karryn.learnSkill(EDICT_LEVEL_FOUR_SUBJUGATED);
+	
+	this.recalculateBaseOrderChange();
 };
 
 ////////////
@@ -2750,7 +2873,7 @@ Game_Party.prototype.riotOutbreakPrisonLevelOne = function() {
 		$gameVariables.setValue(VARIABLE_FIRST_RIOT_LEVEL_ID, 1);
 	}
 	
-	this._prisonLevelOne_riotingDays = 1;
+	this._prisonLevelOne_riotingDays = 0;
 	this._daysSinceLastLevelOneRiot = 0;
 	this._daysSinceLastPrisonRiot = 0;
 };
@@ -2800,7 +2923,7 @@ Game_Party.prototype.riotOutbreakPrisonLevelTwo = function() {
 		$gameVariables.setValue(VARIABLE_FIRST_RIOT_LEVEL_ID, 2);
 	}
 	
-	this._prisonLevelTwo_riotingDays = 1;
+	this._prisonLevelTwo_riotingDays = 0;
 	this._daysSinceLastLevelTwoRiot = 0;
 	this._daysSinceLastPrisonRiot = 0;
 };
@@ -2811,7 +2934,6 @@ Game_Party.prototype.riotOutbreakPrisonLevelThree = function() {
 	$gameSelfSwitches.setValue([MAP_ID_COMMON_AREA_SOUTH_EAST, 3, "D"], false);
 	$gameSelfSwitches.setValue([MAP_ID_COMMON_AREA_SOUTH_EAST, 4, "D"], false);
 	$gameSelfSwitches.setValue([MAP_ID_COMMON_AREA_SOUTH_EAST, 5, "D"], false);
-	$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_SOUTH, 33, "D"], false);
 	$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_SOUTH, 34, "D"], false);
 	$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_SOUTH, 35, "D"], false);
 	$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_SOUTH, 36, "D"], false);
@@ -2858,7 +2980,6 @@ Game_Party.prototype.riotOutbreakPrisonLevelThree = function() {
 	$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_NORTH_EAST, 26, "D"], false);
 	$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_NORTH_EAST, 27, "D"], false);
 	$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_NORTH_EAST, 28, "D"], false);
-	$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_NORTH_EAST, 29, "D"], false);
 	$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_NORTH_EAST, 20, "D"], false);
 	$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_NORTH_EAST, 21, "D"], false);
 	$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_NORTH_EAST, 22, "D"], false);
@@ -2876,7 +2997,7 @@ Game_Party.prototype.riotOutbreakPrisonLevelThree = function() {
 		$gameVariables.setValue(VARIABLE_FIRST_RIOT_LEVEL_ID, 3);
 	}
 	
-	this._prisonLevelThree_riotingDays = 1;
+	this._prisonLevelThree_riotingDays = 0;
 	this._daysSinceLastLevelThreeRiot = 0;
 	this._daysSinceLastPrisonRiot = 0;
 };

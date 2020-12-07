@@ -14,7 +14,7 @@ const VAR_ACCESSORY_CHARM_REQ_4 = 42;
 const VAR_ACCESSORY_CHARM_REQ_5 = 69;
 
 const VAR_NONATTACK_DESIRE_REQ = 0.66;
-const VAR_PANTIES_TOY_DESIRE_REQ = 1.15;
+const VAR_PANTIES_TOY_DESIRE_REQ = 1.15; //unused
 
 const VAR_BREATH_H = 0.05;
 const VAR_BREATH_SPEED_MIN = 0.4;
@@ -88,6 +88,7 @@ const CUM_CREAMPIE_PUSSY = 'creampiepussy';
 const CUM_CREAMPIE_ANAL = 'creampieanal';
 const CUM_INTO_MUG = 'cumintomug';
 const CUM_ONTO_DESK = 'cumontodesk';
+const CUM_ONTO_FLOOR = 'cumontofloor';
 
 //=============================================================================
  /*:
@@ -322,6 +323,21 @@ Object.defineProperty(Karryn, 'pussyDesire', {
 Object.defineProperty(Karryn, 'buttDesire', {
     get: function() { return $gameActors.actor(ACTOR_KARRYN_ID).buttDesire; }, configurable: true
 });
+Object.defineProperty(Karryn, 'maxCockDesire', {
+    get: function() { return $gameActors.actor(ACTOR_KARRYN_ID).maxCockDesire; }, configurable: true
+});
+Object.defineProperty(Karryn, 'maxMouthDesire', {
+    get: function() { return $gameActors.actor(ACTOR_KARRYN_ID).maxMouthDesire; }, configurable: true
+});
+Object.defineProperty(Karryn, 'maxBoobsDesire', {
+    get: function() { return $gameActors.actor(ACTOR_KARRYN_ID).maxBoobsDesire; }, configurable: true
+});
+Object.defineProperty(Karryn, 'maxPussyDesire', {
+    get: function() { return $gameActors.actor(ACTOR_KARRYN_ID).maxPussyDesire; }, configurable: true
+});
+Object.defineProperty(Karryn, 'maxButtDesire', {
+    get: function() { return $gameActors.actor(ACTOR_KARRYN_ID).maxButtDesire; }, configurable: true
+});
 
 Object.defineProperty(Karryn, 'fatigue', {
     get: function() { return $gameActors.actor(ACTOR_KARRYN_ID).fatigue; }, configurable: true
@@ -386,6 +402,11 @@ Karryn.stenchTolerance = function() {
 Karryn.getWardenLevelLimit = function() { 
 	return $gameActors.actor(ACTOR_KARRYN_ID).getWardenLevelLimit();
 };
+
+Karryn.isNaked = function() { 
+	return $gameActors.actor(ACTOR_KARRYN_ID).isNaked();
+};
+
 
 Karryn.getReactionScore = function() { 
 	return $gameActors.actor(ACTOR_KARRYN_ID).getReactionScore();
@@ -493,21 +514,38 @@ Karryn.setPleasureToOrgasmPoint = function() {
 };
 
 
-Karryn.gainCockDesire = function(value) { 
-	$gameActors.actor(ACTOR_KARRYN_ID).gainCockDesire(value);
+Karryn.gainCockDesire = function(value, fromWillpowerSkill, fromDesireRegen) { 
+	$gameActors.actor(ACTOR_KARRYN_ID).gainCockDesire(value, fromWillpowerSkill, fromDesireRegen);
 };
-Karryn.gainMouthDesire = function(value) { 
-	$gameActors.actor(ACTOR_KARRYN_ID).gainMouthDesire(value);
+Karryn.gainMouthDesire = function(value, fromWillpowerSkill, fromDesireRegen) { 
+	$gameActors.actor(ACTOR_KARRYN_ID).gainMouthDesire(value, fromWillpowerSkill, fromDesireRegen);
 };
-Karryn.gainBoobsDesire = function(value) { 
-	$gameActors.actor(ACTOR_KARRYN_ID).gainBoobsDesire(value);
+Karryn.gainBoobsDesire = function(value, fromWillpowerSkill, fromDesireRegen) { 
+	$gameActors.actor(ACTOR_KARRYN_ID).gainBoobsDesire(value, fromWillpowerSkill, fromDesireRegen);
 };
-Karryn.gainPussyDesire = function(value) { 
-	$gameActors.actor(ACTOR_KARRYN_ID).gainPussyDesire(value);
+Karryn.gainPussyDesire = function(value, fromWillpowerSkill, fromDesireRegen) { 
+	$gameActors.actor(ACTOR_KARRYN_ID).gainPussyDesire(value, fromWillpowerSkill, fromDesireRegen);
 };
-Karryn.gainButtDesire = function(value) { 
-	$gameActors.actor(ACTOR_KARRYN_ID).gainButtDesire(value);
+Karryn.gainButtDesire = function(value, fromWillpowerSkill, fromDesireRegen) { 
+	$gameActors.actor(ACTOR_KARRYN_ID).gainButtDesire(value, fromWillpowerSkill, fromDesireRegen);
 };
+
+Karryn.topDesireIsMouthDesire = function() { 
+	return $gameActors.actor(ACTOR_KARRYN_ID).topDesireIsMouthDesire();
+};
+Karryn.topDesireIsBoobsDesire = function() { 
+	return $gameActors.actor(ACTOR_KARRYN_ID).topDesireIsBoobsDesire();
+};
+Karryn.topDesireIsPussyDesire = function() { 
+	return $gameActors.actor(ACTOR_KARRYN_ID).topDesireIsPussyDesire();
+};
+Karryn.topDesireIsButtDesire = function() { 
+	return $gameActors.actor(ACTOR_KARRYN_ID).topDesireIsButtDesire();
+};
+Karryn.topDesireIsCockDesire = function() { 
+	return $gameActors.actor(ACTOR_KARRYN_ID).topDesireIsCockDesire();
+};
+
 
 Karryn.setPose = function(value) { 
 	$gameActors.actor(ACTOR_KARRYN_ID).setPose(value);
@@ -576,6 +614,10 @@ Karryn.setKarrynSleepSprite = function() {
 };
 Karryn.setKarrynReceptionistSprite = function() { 
 	$gameActors.actor(ACTOR_KARRYN_ID).setKarrynReceptionistSprite();
+};
+
+Karryn.hasTachieCutInOnScreen = function() { 
+	return $gameActors.actor(ACTOR_KARRYN_ID).hasTachieCutInOnScreen();
 };
 
 Karryn.isWearingGlovesAndHat = function() { 
@@ -684,6 +726,17 @@ Karryn.turnOffJustEscapedFlag = function() {
 Karryn.isInFuckedFromBehindSexPose = function() { 
 	return $gameActors.actor(ACTOR_KARRYN_ID).isInFuckedFromBehindSexPose();
 };
+Karryn.isInCowgirlSexPose = function() { 
+	return $gameActors.actor(ACTOR_KARRYN_ID).isInCowgirlSexPose();
+};
+
+Karryn.isInRestrainedPose = function() { 
+	return $gameActors.actor(ACTOR_KARRYN_ID).isInRestrainedPose();
+};
+Karryn.isNotInRestrainedPose = function() { 
+	return $gameActors.actor(ACTOR_KARRYN_ID).isNotInRestrainedPose();
+};
+
 Karryn.isInThugGangbangPose = function() { 
 	return $gameActors.actor(ACTOR_KARRYN_ID).isInThugGangbangPose();
 };
@@ -757,11 +810,11 @@ Karryn.isInToiletStandRightPose = function() {
 	return $gameActors.actor(ACTOR_KARRYN_ID).isInToiletStandRightPose();
 };
 
-Karryn.isInMasturbationPose = function() { 
-	return $gameActors.actor(ACTOR_KARRYN_ID).isInMasturbationPose();
+Karryn.isInMasturbationCouchPose = function() { 
+	return $gameActors.actor(ACTOR_KARRYN_ID).isInMasturbationCouchPose();
 };
-Karryn.isInMasturbationLevel1Pose = function() { 
-	return $gameActors.actor(ACTOR_KARRYN_ID).isInMasturbationLevel1Pose();
+Karryn.isInMasturbationInBattlePose = function() { 
+	return $gameActors.actor(ACTOR_KARRYN_ID).isInMasturbationInBattlePose();
 };
 
 Karryn.isInDefeatedPose = function() { 
@@ -772,6 +825,9 @@ Karryn.isInDefeatedLevel1Pose = function() {
 };
 Karryn.isInDefeatedLevel2Pose = function() { 
 	return $gameActors.actor(ACTOR_KARRYN_ID).isInDefeatedLevel2Pose();
+};
+Karryn.isInDefeatedLevel3Pose = function() { 
+	return $gameActors.actor(ACTOR_KARRYN_ID).isInDefeatedLevel3Pose();
 };
 Karryn.isInDefeatedGuardPose = function() { 
 	return $gameActors.actor(ACTOR_KARRYN_ID).isInDefeatedGuardPose();
@@ -856,6 +912,11 @@ Karryn.addHornyState = function() {
 	$gameActors.actor(ACTOR_KARRYN_ID).addHornyState();
 };
 
+Karryn.wasDefeatedYesterday = function() { 
+	return $gameActors.actor(ACTOR_KARRYN_ID).wasDefeatedYesterday();
+};
+
+
 Karryn.orgasmLockOn = function() { 
 	$gameActors.actor(ACTOR_KARRYN_ID).orgasmLockOn();
 };
@@ -863,6 +924,21 @@ Karryn.orgasmLockOff = function() {
 	$gameActors.actor(ACTOR_KARRYN_ID).orgasmLockOff();
 };
 
+Karryn.setCockDesire = function(value, fromWillpowerSkill) { 
+	$gameActors.actor(ACTOR_KARRYN_ID).setCockDesire(value, fromWillpowerSkill);
+};
+Karryn.setMouthDesire = function(value, fromWillpowerSkill) { 
+	$gameActors.actor(ACTOR_KARRYN_ID).setMouthDesire(value, fromWillpowerSkill);
+};
+Karryn.setBoobsDesire = function(value, fromWillpowerSkill) { 
+	$gameActors.actor(ACTOR_KARRYN_ID).setBoobsDesire(value, fromWillpowerSkill);
+};
+Karryn.setPussyDesire = function(value, fromWillpowerSkill) { 
+	$gameActors.actor(ACTOR_KARRYN_ID).setPussyDesire(value, fromWillpowerSkill);
+};
+Karryn.setButtDesire = function(value, fromWillpowerSkill) { 
+	$gameActors.actor(ACTOR_KARRYN_ID).setButtDesire(value, fromWillpowerSkill);
+};
 
 
 ////////////
@@ -905,6 +981,8 @@ Object.defineProperty(Game_Actor.prototype, 'inBattleCharm', {
 		let multipler = 1;
 		if(this.isEquippingThisAccessory(MISC_CALFSKINBELT_ID)) multipler *= 0.8;
 		if(this.isEquippingThisAccessory(NECKLACE_DIAMOND_ID)) multipler *= 1.1;
+		
+		if(this.isUsingThisTitle(TITLE_ID_TOILET_EAT_ORGASM)) multipler *= 1.07;
 		
 		if(this.isInEnemiesJoinArousedAndStayArousedPose()) {
 			multipler *= 1.4;
@@ -973,6 +1051,21 @@ Object.defineProperty(Game_Actor.prototype, "pussyDesire", {
 Object.defineProperty(Game_Actor.prototype, "buttDesire", {
 	get: function () { return Math.round(this._buttDesire); }, configurable: true
 });
+Object.defineProperty(Game_Actor.prototype, "maxCockDesire", {
+	get: function () { return Math.round(this._maxCockDesire); }, configurable: true
+});
+Object.defineProperty(Game_Actor.prototype, "maxMouthDesire", {
+	get: function () { return Math.round(this._maxMouthDesire); }, configurable: true
+});
+Object.defineProperty(Game_Actor.prototype, "maxBoobsDesire", {
+	get: function () { return Math.round(this._maxBoobsDesire); }, configurable: true
+});
+Object.defineProperty(Game_Actor.prototype, "maxPussyDesire", {
+	get: function () { return Math.round(this._maxPussyDesire); }, configurable: true
+});
+Object.defineProperty(Game_Actor.prototype, "maxButtDesire", {
+	get: function () { return Math.round(this._maxButtDesire); }, configurable: true
+});
 Object.defineProperty(Game_Actor.prototype, "clothingDurability", {
 	get: function () { return this._clothingDurability; }, configurable: true
 });
@@ -985,86 +1078,113 @@ Object.defineProperty(Game_Actor.prototype, "clothingStage", {
 //Getter Functions
 //Skill Rating
 Game_Actor.prototype.pettingSkillRating = function() {
+	this.calculatePettingSkillRating();
 	return this._pettingSkillRating;
 };
 Game_Actor.prototype.kissSkillRating = function() {
+	this.calculateKissSkillRating();
 	return this._kissSkillRating;
 };
 Game_Actor.prototype.handjobSkillRating = function() {
+	this.calculateHandjobSkillRating();
 	return this._handjobSkillRating;
 };
 Game_Actor.prototype.blowjobSkillRating = function() {
+	this.calculateBlowjobSkillRating();
 	return this._blowjobSkillRating;
 };
 Game_Actor.prototype.rimjobSkillRating = function() {
+	this.calculateRimjobSkillRating();
 	return this._rimjobSkillRating;
 };
 Game_Actor.prototype.footjobSkillRating = function() {
+	this.calculateTittyFuckSkillRating();
 	return this._footjobSkillRating;
 };
 Game_Actor.prototype.tittyFuckSkillRating = function() {
+	this.calculateFootjobSkillRating();
 	return this._tittyFuckSkillRating;
 };
 Game_Actor.prototype.pussySexSkillRating = function() {
+	this.calculatePussySexSkillRating();
 	return this._pussySexSkillRating;
 };
 Game_Actor.prototype.analSexSkillRating = function() {
+	this.calculateAnalSexSkillRating();
 	return this._analSexSkillRating;
 };
 Game_Actor.prototype.masturbateSkillRating = function() {
+	this.calculateMasturbateSkillRating();
 	return this._masturbateSkillRating;
 };
 
 //Body Sensitivity
 Game_Actor.prototype.mouthSensitivity = function() {
+	this.calculateMouthSensitivityRating();
 	return this._mouthSensitivityRating;
 };
 Game_Actor.prototype.boobsSensitivity = function() {
+	this.calculateBoobsSensitivityRating();
 	return this._boobsSensitivityRating;
 };
 Game_Actor.prototype.nipplesSensitivity = function() {
+	this.calculateNipplesSensitivityRating();
 	return this._nipplesSensitivityRating;
 };
 Game_Actor.prototype.clitSensitivity = function() {
+	this.calculateClitSensitivityRating();
 	return this._clitSensitivityRating;
 };
 Game_Actor.prototype.pussySensitivity = function() {
+	this.calculatePussySensitivityRating();
 	return this._pussySensitivityRating;
 };
 Game_Actor.prototype.buttSensitivity = function() {
+	this.calculateButtSensitivityRating();
 	return this._buttSensitivityRating;
 };
 Game_Actor.prototype.analSensitivity = function() {
+	this.calculateAnalSensitivityRating();
 	return this._analSensitivityRating;
 };
 Game_Actor.prototype.fingerSensitivity = function() {
+	this.calculateFingerSensitivityRating();
 	return this._fingerSensitivityRating;
 };
 Game_Actor.prototype.footSensitivity = function() {
+	this.calculateFootSensitivityRating();
 	return this._footSensitivityRating;
 };
 Game_Actor.prototype.talkSensitivity = function() {
+	this.calculateTalkSensitivityRating();
 	return this._talkSensitivityRating;
 };
 Game_Actor.prototype.sightSensitivity = function() {
+	this.calculateSightSensitivityRating();
 	return this._sightSensitivityRating;
 };
 Game_Actor.prototype.swallowSensitivity = function() {
+	this.calculateSwallowSensitivityRating();
 	return this._swallowSensitivityRating;
 };
 Game_Actor.prototype.pussyCreampieSensitivity = function() {
+	this.calculatePussyCreampieSensitivityRating();
 	return this._pussyCreampieSensitivityRating;
 };
 Game_Actor.prototype.analCreampieSensitivity = function() {
+	this.calculateAnalCreampieSensitivityRating();
 	return this._analCreampieSensitivityRating;
 };
 Game_Actor.prototype.bukkakeSensitivity = function() {
+	this.calculateBukkakeSensitivityRating();
 	return this._bukkakeSensitivityRating;
 };
 Game_Actor.prototype.masochismSensitivity = function() {
+	this.calculateMasochismSensitivityRating();
 	return this._masochismSensitivityRating;
 };
 Game_Actor.prototype.sadismSensitivity = function() {
+	this.calculateSadismSensitivityRating();
 	return this._sadismSensitivityRating;
 };
 
@@ -1086,13 +1206,19 @@ Game_Actor.prototype.setUpAsKarryn = function() {
 	this.setupRecords();
 	this.setupPlaythroughRecords();
 	this.clearTempRecords();
+	this.resetTodayRecords();
+	this.clearBattleSkillsFlags();
+	this.resetOnaniFrustration();
+	this.resetOnaniInBattleDesireToBase();
 	this.setupTitleFlags();
 	this.setupStartingEdicts();
 	this.resetAllGifts();
-	this.recalculateBodySensitivities();
 	this.recalculateSkillLvls();
+	this.recalculateBodySensitivities();
+	this.calculateAllMaxDesires();
 	this.setWillToMax();
 	this.setFatigue(0);
+	this.setPleasure(0);
 	this.setAccessoryBonus();
 	this.setStench(3);
 	this.changeStanceToSlash();
@@ -1119,14 +1245,20 @@ Game_Actor.prototype.setUpAsKarryn_newGamePlusContinue = function() {
 	this.enableMentalPhase();
 	this.enterMentalPhase();
 	this.clearTempRecords();
+	this.resetTodayRecords();
+	this.clearBattleSkillsFlags();
 	this.setupPlaythroughRecords();
 	this.setupTitleFlags();
+	this.resetOnaniFrustration();
+	this.resetOnaniInBattleDesireToBase();
 	this.setupStartingEdicts();
 	this.resetAllGifts();
-	this.recalculateBodySensitivities();
 	this.recalculateSkillLvls();
+	this.recalculateBodySensitivities();
+	this.calculateAllMaxDesires();
 	this.setWillToMax();
 	this.setFatigue(0);
+	this.setPleasure(0);
 	this.setAccessoryBonus();
 	this.changeStanceToSlash();
 	this.changeToWardenClothing();
@@ -1187,11 +1319,24 @@ Game_Actor.prototype.setupKarrynSkills = function() {
 	for(let i = 70; i <= 79; i++) {
 		this.learnSkill(i);
 	}
-	this.learnSkill(SKILL_KARRYN_TAUNT_ID); //Taunt
-	this.learnSkill(SKILL_KARRYN_DOGEZA_ID); //Dogeza
+	this.learnSkill(SKILL_KARRYN_TAUNT_ID); 
+	this.learnSkill(SKILL_KARRYN_DOGEZA_ID); 
 	this.learnSkill(SKILL_KARRYN_FLAUNT_ID);
 	this.learnSkill(SKILL_GIVE_UP_ID);
 	this.learnSkill(SKILL_SURRENDER_ID);
+	this.learnSkill(SKILL_KARRYN_OPEN_PLEASURE_3TURNS_ID);
+	this.learnSkill(SKILL_KARRYN_OPEN_PLEASURE_5TURNS_ID);
+	this.learnSkill(SKILL_KARRYN_OPEN_PLEASURE_10TURNS_ID);
+	this.learnSkill(SKILL_CAUTIOUS_REVITALIZE_ID);
+	this.learnSkill(SKILL_CAUTIOUS_SECOND_WIND_ID);
+	this.learnSkill(SKILL_CAUTIOUS_FIX_CLOTHES_ID);
+	this.learnSkill(SKILL_DEFENSIVE_REVITALIZE_ID);
+	this.learnSkill(SKILL_DEFENSIVE_SECOND_WIND_ID);
+	this.learnSkill(SKILL_DEFENSIVE_FIX_CLOTHES_ID);
+	this.learnSkill(SKILL_COUNTER_REVITALIZE_ID);
+	this.learnSkill(SKILL_COUNTER_SECOND_WIND_ID);
+	this.learnSkill(SKILL_COUNTER_FIX_CLOTHES_ID);
+
 	
 	//willpower skills
 	for(let i = WILLPOWER_SKILL_START; i <= WILLPOWER_SKILL_END; i++) {
@@ -1226,11 +1371,17 @@ Game_Actor.prototype.setupKarrynSkills = function() {
 	this.learnSkill(SKILL_KARRYN_PUSSYSEX_SELECTOR_CANT_ID); 
 	
 	this.learnSkill(SKILL_KARRYN_REMOVE_TOY_ID); 
+	this.learnSkill(SKILL_KARRYN_REMOVE_TOY_CANT_ID);
 	
 	//masturbate skills
-	this.learnSkill(SKILL_KARRYN_MAS_TOUCH_SELECTOR_ID); //Touch selector
-	this.learnSkill(SKILL_KARRYN_MAS_FINGER_SELECTOR_ID); //Finger selector
-	this.learnSkill(SKILL_KARRYN_MAS_SUCK_SELECTOR_ID); //Suck selector
+	this.learnSkill(SKILL_KARRYN_MAS_TOUCH_SELECTOR_ID); 
+	this.learnSkill(SKILL_KARRYN_MAS_FINGER_SELECTOR_ID); 
+	this.learnSkill(SKILL_KARRYN_MAS_SUCK_SELECTOR_ID); 
+	this.learnSkill(SKILL_KARRYN_MAS_STOP_BATTLE_ID);
+	
+	for(let i = MASTURBATE_INBATTLE_SKILL_START; i <= MASTURBATE_INBATTLE_SKILL_END; i++) {
+		this.learnSkill(i); 
+	}
 	
 	//Waitress skills
 	for(let i = WAITRESS_SKILL_START; i <= WAITRESS_SKILL_END; i++) {
@@ -1264,6 +1415,7 @@ Game_Actor.prototype.preBattleSetup = function() {
 	this.enterMentalPhase();
 	this.disableAllPoseSkills();
 	this.setupStatsBeforeBattle();
+	this.cacheDesireTooltips();
 	this.setupDesires();
 	this.clearBattleSkillsFlags();
 	this.resetCockTargets();
@@ -1271,14 +1423,17 @@ Game_Actor.prototype.preBattleSetup = function() {
 	this.clearParamExp();
 	this.clearTempRecords();
 	this.setUpPussyJuice();
+	this.resetOnaniInBattleDesireToBase();
 	this.preBattleConfidentPassiveEffects();
+	this.preBattleHornyPassiveEffects();
+	this.preBattleClothingPassiveEffects();
 	this.removeState(STATE_DISARMED_ID);
+	this.preBattleAddIsVirginState();
 	this.setPreBattlePose();
 	this._dontResetSexPose = false;
 	this._emoteMasterManagerIsRunning = false;
 	this._orgasmCallQueuedUp = false;
 	this._dirty = true;
-	//this.restoreClothingDurability(); //Don't call this pre battle because maybe we want to have special events before battle or whatever??
 }; 
 
 //same as normal prebattle except dont reset desire or pussy juice
@@ -1287,13 +1442,16 @@ Game_Actor.prototype.preInvasionBattleSetup = function() {
 	this.enterMentalPhase();
 	this.disableAllPoseSkills();
 	this.setupStatsBeforeBattle();
+	this.cacheDesireTooltips();
 	this.clearBattleSkillsFlags();
 	this.resetCockTargets();
 	this.resetRemLineActorVariables();
 	this.clearParamExp();
 	this.clearTempRecords();
 	this.preBattleConfidentPassiveEffects();
-	//this.setPreBattlePose();
+	this.preBattleHornyPassiveEffects();
+	this.preBattleAddIsVirginState();
+	//this.setPreBattlePose(); //called in game party version
 	this._dontResetSexPose = false;
 	this._emoteMasterManagerIsRunning = false;
 	this._orgasmCallQueuedUp = false;
@@ -1307,6 +1465,7 @@ Game_Actor.prototype.preDefeatedBattleSetup = function() {
 	this.enterMentalPhase();
 	this.disableAllPoseSkills();
 	this.setupStatsBeforeBattle();
+	this.cacheDesireTooltips();
 	this.clearBattleSkillsFlags();
 	this.resetRemLineActorVariables();
 	this.clearParamExp();
@@ -1314,6 +1473,7 @@ Game_Actor.prototype.preDefeatedBattleSetup = function() {
 	this.setUpPussyJuice();
 	//this.preBattlePassiveEffects();
 	this.addState(STATE_DEFEATED_ID);
+	this.preBattleAddIsVirginState();
 	this.setAsNoHalberdBattle();
 	this.takeOffPanties();
 	this.removeClothing();
@@ -1352,20 +1512,21 @@ Game_Actor.prototype.postBattleCleanup = function() {
 /////////
 
 Game_Actor.prototype.setupDesires = function() {
-	this.setCockDesire(this.startingCockDesire());
-	this.setMouthDesire(this.startingMouthDesire());
-	this.setBoobsDesire(this.startingBoobsDesire());
-	this.setPussyDesire(this.startingPussyDesire());
-	this.setButtDesire(this.startingButtDesire());
+	this.setCockDesire(this.startingCockDesire(), false);
+	this.setMouthDesire(this.startingMouthDesire(), false);
+	this.setBoobsDesire(this.startingBoobsDesire(), false);
+	this.setPussyDesire(this.startingPussyDesire(), false);
+	this.setButtDesire(this.startingButtDesire(), false);
 	this.startingRandomDesire();
 };
 
 Game_Actor.prototype.resetDesires = function() {
-	this._cockDesire = 0;
-	this._mouthDesire = 0;
-	this._boobsDesire = 0;
-	this._pussyDesire = 0;
-	this._buttDesire = 0;
+	let minDesire = this.minimumDesireLimit();
+	this._cockDesire = minDesire;
+	this._mouthDesire = minDesire;
+	this._boobsDesire = minDesire;
+	this._pussyDesire = minDesire;
+	this._buttDesire = minDesire;
 };
 
 ////////
@@ -1381,25 +1542,21 @@ Game_Actor.prototype.getBreathSpeed = function() {
 
 Game_Actor.prototype.resetCockiness = function() {
 	this._cockiness = 0;
-	this._tempRecordCockinessReset = true;
 }; 
 
 Game_Actor.prototype.addCockiness = function(value) {
 	let potentialHundred = false;
-	let actualGains = 0;
+	value = Math.round(value);
+
 	if(this.cockiness < 100) {
 		potentialHundred = true;
-		if(this.cockiness + value > 100) {
-			let extra = this.cockiness + value - 100;
-			actualGains = value - extra;
-		}
-		else actualGains = value;
 	}
 	this._cockiness = Math.min(100, this.cockiness + value);
+	this._cockiness = Math.max(0, this.cockiness);
 	if(potentialHundred && this.cockiness === 100) this.addToActorCockinessMaxRecord();
-	//if(actualGains > 0) this.addToActorCockinessGainedRecord(actualGains);
-	this.addToActorCockinessGainedRecord(value);
-	this._tempRecordCockinessIncrease = true;
+
+	if(value > 0)
+		this.addToActorCockinessGainedRecord(value);
 }; 
 
 Game_Actor.prototype.addCockinessFromSubduingEnemy = function(enemyLvl) {
@@ -1412,12 +1569,25 @@ Game_Actor.prototype.addCockinessFromSubduingEnemy = function(enemyLvl) {
 	}
 }; 
 Game_Actor.prototype.addCockinessFromTaunting = function() {
-	if(this.hasPassive(PASSIVE_SUBDUED_COUNT_TWO_ID))
+	if(this.hasPassive(PASSIVE_TAUNT_COUNT_THREE_ID))
+		this.addCockiness(3);
+	else if(this.hasPassive(PASSIVE_TAUNT_COUNT_ONE_ID))
+		this.addCockiness(2);
+	else if(this.hasPassive(PASSIVE_SUBDUED_COUNT_TWO_ID))
 		this.addCockiness(1);
 }; 
+Game_Actor.prototype.addCockinessFromConsAttackUsage = function() {
+	if(this.hasPassive(PASSIVE_SUBDUED_COUNT_TWO_ID))
+		this.addCockiness(1);
+};
 Game_Actor.prototype.addCockinessFromCockKicking = function() {
 	if(this.hasPassive(PASSIVE_COCKKICK_COUNT_ONE_ID))
 		this.addCockiness(1);
+}; 
+
+Game_Actor.prototype.reduceCockinessFromEscaping = function() {
+	if(this.hasPassive(PASSIVE_SUBDUED_COUNT_TWO_ID))
+		this.addCockiness(Math.min(-20, Math.round(this.cockiness * -0.33)));
 }; 
 
 ///////////
@@ -1451,10 +1621,10 @@ Game_Actor.prototype.criticalChanceRate = function() {
 	
 	if(this.isStateAffected(STATE_COCK_KICK_CRIT_BONUS_ID)) {
 		if(this.hasPassive(PASSIVE_COCKKICK_COUNT_TWO_ID)) {
-			rate += 0.5;
+			rate += 0.4;
 		}
 		else {
-			rate += 0.25;
+			rate += 0.2;
 		}
 	}
 	
@@ -1478,10 +1648,10 @@ Game_Actor.prototype.criticalDamageBonus = function() {
 	
 	if(this.isStateAffected(STATE_COCK_KICK_CRIT_BONUS_ID)) {
 		if(this.hasPassive(PASSIVE_COCKKICK_COUNT_TWO_ID)) {
-			bonus += 1.0;
+			bonus += 0.4;
 		}
 		else {
-			bonus += 0.6;
+			bonus += 0.2;
 		}
 	}
 	
@@ -1502,9 +1672,17 @@ Game_Actor.prototype.criticalDamageBonus = function() {
 ////////
 // Speed
 
-Game_Actor.prototype.bonusActionSpeed = function() {
+Game_Actor.prototype.bonusActionSpeed = function(item) {
     let bonusSpeed = 0;
+	let itemId = item.id;
+	
 	if(this.isStateAffected(STATE_KARRYN_FIRST_TURN_ID)) bonusSpeed += 9999;
+	
+	if((item.id === SKILL_KARRYN_BLOWJOB_SELECTOR_ID) && this.hasPassive(PASSIVE_BJ_PEOPLE_TWO_ID)) bonusSpeed += 9999;
+	
+	if($gameTemp.isPlaytest() && TESTING_ALWAYS_FIRST) bonusSpeed += 9999;
+	
+	
 	return bonusSpeed;
 };
 
@@ -1516,9 +1694,15 @@ Game_Actor.prototype.bonusActionSpeed = function() {
 Game_Actor.prototype.fatigueGainRate = function() {
 	let rate = 1;
 	
-	rate *= this.titleCornerCuttingEmployer_fatigueGainRate();
+	rate *= this.titlesFatigueGainRate();
 	if(this.ateArtisanMeal(ARTISAN_MEAL_ARMED)) rate *= 0.67;
 	if(this.isUsingStoreItem(STORE_ITEM_ENERGY_DRINK)) rate *= 0.8;
+	
+	if(this.hasPassive(PASSIVE_ORGASM_ML_TWO_ID) && this._todayOrgasmML > 0)
+		rate *= 1 + Math.min(0.33, this._todayOrgasmML * 0.0003);
+	if(this.hasPassive(PASSIVE_HJ_COUNT_ONE_ID) && this._tempRecordHandjobPeople > 0)
+		rate *= 1 + Math.min(0.33, this._tempRecordHandjobPeople * 0.01);
+	
 	
 	return rate;
 };
@@ -1527,10 +1711,14 @@ Game_Actor.prototype.gainFatigue = function(value) {
 	this.setFatigue(this.fatigue + value);
 };
 
+//Fatigue Recovery
 Game_Actor.prototype.fatigueRecoveryRate = function() {
 	let rate = 1;
 	
 	rate *= this.titleWorkaholic_fatigueRecoveryRate();
+	
+	if(this.hasPassive(PASSIVE_ORGASM_ML_TWO_ID) && this._todayOrgasmML > 0)
+		rate *= 1 + Math.min(1, this._todayOrgasmML * 0.003);
 	
 	if(Prison.easyMode()) rate *= 1.5;
 	
@@ -1539,10 +1727,15 @@ Game_Actor.prototype.fatigueRecoveryRate = function() {
 
 Game_Actor.prototype.fatigueRecoveryNumber = function() {
 	let num = 0;
-	if(Prison.currentlyOutsidePrison()) num = this.edictsFatigueRestOffice();
-	else num = this.edictsFatigueRestOutside();
+	if(Prison.currentlyOutsidePrison()) 
+		num = this.edictsFatigueRestOffice();
+	else 
+		num = this.edictsFatigueRestOutside();
 
-	if(this.isAroused()) num *= this.fatigueRecoveryNumberRateWhenAroused();
+	if(this.isAroused() && !this._todayMasturbatedBeforeRest) {
+		num *= this.fatigueRecoveryNumberRateWhenAroused();
+		this.increaseOnaniFrustration();
+	}
 
 	num *= this.fatigueRecoveryRate();
 
@@ -1612,11 +1805,18 @@ Game_Actor.prototype.recoverAll_nextDay = function() {
     this.clearStates(); //todo: remove day specific states only?
     this._hp = this.mhp;
 	this._mp = this.mmp;
-	this.setPleasure(0); //todo: or set to minimal pleasure
+	
+	let mapId = $gameMap._mapId;
+	
+	if(this._todayMasturbatedBeforeRest)
+		this.setPleasure(0); 
+	else
+		this.setPleasure(Math.ceil(this.pleasure * 0.5));
 }; 
 
 Game_Actor.prototype.removeStatesOnNewWave = function() {
     this.removeState(STATE_WEAKNESS_EXPOSED_ID);
+	this.removeState(STATE_PLEASURE_STANCE_ID);
 }; 
 
 Game_Actor.prototype.resetGotHitBySkillType = function() { 
@@ -1656,6 +1856,13 @@ Game_Actor.prototype.regenerateHp = function() {
 	}
 	else {
 		let value = Math.floor(this.maxstamina * this.staminaregen) * this.regenerateStaminaRate();
+		
+		if(Prison.easyMode()) {
+			if(ConfigManager.cheatActorHalfStaminaRegen) value *= 0.5;
+			if(ConfigManager.cheatActorThirdStaminaRegen) value *= 0.33;
+		}
+		
+		value = Math.floor(value);
 		if (value !== 0) {
 			this.gainHp(value);
 		}
@@ -1664,7 +1871,7 @@ Game_Actor.prototype.regenerateHp = function() {
 
 Game_Actor.prototype.regenerateStaminaRate = function() {
 	let rate = 1;
-	if(this.hasNoStamina() || this.isInMasturbationPose()) rate = 0;
+	if(this.hasNoStamina() || this.isInMasturbationCouchPose()) rate = 0;
 	return rate;
 };
 
@@ -1694,7 +1901,7 @@ Game_Actor.prototype.regenerateMp = function() {
 
 Game_Actor.prototype.regenerateEnergyRate = function() {
 	let rate = 1;
-	if(this.isInMasturbationPose() || this.isInJobPose()) rate = 0;
+	if(this.isInMasturbationCouchPose() || this.isInJobPose()) rate = 0;
 	return rate;
 };
 
@@ -1764,11 +1971,11 @@ Game_Actor.prototype.recalculateSkillLvls = function() {
 /////////////////
 
 Game_Actor.prototype.arousalPoint = function() { 
-	let value = this._arousalBasePoint + this.end * VAR_AP_PER_END;
+	let value = this._arousalBasePoint + this.end * VAR_AP_PER_END + this.level * VAR_AP_PER_CLVL;
 	return value;
 };
 Game_Actor.prototype.orgasmPoint = function() { 
-	let value = this._orgasmBasePoint + this.end * VAR_OP_PER_END;
+	let value = this._orgasmBasePoint + this.end * VAR_OP_PER_END + this.level * VAR_OP_PER_CLVL;
 	return value;
 };
 
@@ -1800,11 +2007,12 @@ Game_Actor.prototype.paramBase = function(paramId) {
 	let num = 0;
 	if(this._paramLvl) {
 		num = this._paramLvl[paramId];
-		if(paramId === PARAM_MAXSTAMINA_ID) num *= RESULTS_STAMINA_PER_PLVL;
-		else if(paramId === PARAM_MAXENERGY_ID) num = Math.round(num * RESULTS_ENERGY_PER_PLVL);
-		
 		if(paramId === PARAM_MAXSTAMINA_ID) {
+			num *= RESULTS_STAMINA_PER_PLVL;
 			num += this.end * RESULTS_STAMINA_PER_ENDURANCE;
+		}
+		else if(paramId === PARAM_MAXENERGY_ID) {
+			num = Math.round(num * RESULTS_ENERGY_PER_PLVL);
 		}
 	}
 	num += this.passiveParamBonus(paramId); 
@@ -1814,17 +2022,23 @@ Game_Actor.prototype.paramBase = function(paramId) {
 
 	if(paramId === PARAM_CHARM_ID) {
 		num += this.totalAccessoriesOwnedCount();
+		
 		if(this.slutLvl <= 100) {
-			num -= Math.round(this.slutLvl * 0.05);
+			num -= Math.floor(this.slutLvl * 0.03);
 		}
 		else if(this.slutLvl <= 200) {
-			num -= 5;
-			num -= Math.round((this.slutLvl - 100) * 0.08);
+			num -= 3;
+			num -= Math.floor((this.slutLvl - 100) * 0.04);
+		}
+		else if(this.slutLvl <= 300) {
+			num -= 7;
+			num -= Math.floor((this.slutLvl - 200) * 0.05);
 		}
 		else {
-			num -= 13;
-			num -= Math.round((this.slutLvl - 200) * 0.1);
+			num -= 12;
+			num -= Math.floor((this.slutLvl - 300) * 0.067);
 		}
+		
 	}
 	
     return Remtairy.Karryn.Game_Actor_paramBase.call(this, paramId) + num;
@@ -1850,6 +2064,8 @@ Game_Actor.prototype.paramRate = function(paramId) {
 	rate *= this.confidentParamRate(paramId);
 	rate *= this.fatigueLevelParamRate(paramId);
 	rate *= this.sleepQualityParamRate(paramId);
+	rate *= this.onaniFrustrationParamRate(paramId);
+	rate *= this.virginityParamRate(paramId);
 	rate *= this.giftsParamRate(paramId);
 	rate *= this.waitressParamRate(paramId);
 	rate *= this.receptionistParamRate(paramId);
@@ -1909,6 +2125,13 @@ Game_Actor.prototype.xparamPlus = function(id) {
 	else if(id === XPARAM_CRIT_ID && this.isUsingHalberd() && this.isUsingStoreItem(STORE_ITEM_WELTSTONE)) 
 		value += 0.25;
 	
+	if(this.isCoolAndCollected()) {
+		if(id === XPARAM_STA_REGEN_ID) 
+			value += 0.02;
+		else if(id === XPARAM_EN_REGEN_ID)
+			value += 0.02;
+	}
+	
     return value;
 };
 
@@ -1925,17 +2148,29 @@ Game_Actor.prototype.xparamRate = function(id) {
 	value *= this.passiveXParamRate(id);
 	value *= this.passiveDebuffXParamRate(id);
 	value *= this.exposedWeaknessXParamRate(id);
+	value *= this.onaniFrustrationXParamRate(id);
+	value *= this.coolXParamRate(id);
+	value *= this.desireXParamRate(id);
 	value *= this.giftsXParamRate(id);
 	value *= this.waitressXParamRate(id);
 	value *= this.receptionistXParamRate(id);
 	value *= this.gloryXParamRate(id);
 	
-	//Down Pose Penalty
-	if(id === XPARAM_EVA_ID && this.isInDownPose()) value = 0;
+	//Non combat evasion
+	if(id === XPARAM_EVA_ID && (this.isInSexPose() || this.isInDownPose() || this.isInMasturbationPose())) value = 0;
+
 	//Poison
 	if(id === XPARAM_STA_REGEN_ID && this.isStateAffected(STATE_POISON_ID)) value = 0;
 	
 	if(id === XPARAM_EVA_ID && $gameTemp.isPlaytest() && TESTING_KARRYN_NO_EVADE) value = 0;
+	
+	if(id === XPARAM_EVA_ID && Prison.easyMode() && ConfigManager.cheatActorNoEvasion) value = 0;
+	
+	if((id === XPARAM_EVA_ID || id === XPARAM_CRIT_EVA_ID) && this.isStateAffected(STATE_CAUTIOUS_STANCE_ID)) {
+		value *= this.cautiousStanceXParamRate();
+	}
+	
+	if(id === XPARAM_HIT_ID) value *= 1 + this._tempAttackSkillConsUsage * 0.05;
 	
     return value;
 };
@@ -1970,6 +2205,11 @@ Game_Actor.prototype.sparamPlus = function(id) {
 	
 	if(id === SPARAM_WP_REGEN_ID && this.ateArtisanMeal(ARTISAN_MEAL_COMFY)) value += 0.05;
 	
+	if(this.isCoolAndCollected()) {
+		if(id === SPARAM_WP_REGEN_ID) 
+			value += 0.02;
+	}
+	
     return value;
 };
 
@@ -1990,6 +2230,8 @@ Game_Actor.prototype.sparamRate = function(id) {
 	
 	if(id === SPARAM_EXR_ID && this.metalExpRateBonus() > 0) value *= (1 + (this.metalExpRateBonus() * 0.01));
 	
+	if(id === SPARAM_EXR_ID && Prison.easyMode() && ConfigManager.cheatActorHalfExpRate) value *= 0.5;
+	
 	if(id === SPARAM_WPATK_ID && this.isStateAffected(STATE_COUNTER_STANCE_ID)) {
 		value *= this.counterStanceSParamRate();
 	}
@@ -2005,6 +2247,9 @@ Game_Actor.prototype.sparamRate = function(id) {
 	value *= this.passiveDebuffSParamRate(id);
 	value *= this.willpowerSParamRate(id);
 	value *= this.giftsSParamRate(id);
+	value *= this.passiveSParamRate(id);
+	value *= this.onaniFrustrationSParamRate(id);
+	value *= this.desireSParamRate(id);
 	value *= this.waitressSParamRate(id);
 	value *= this.receptionistSParamRate(id);
 	value *= this.glorySParamRate(id);
@@ -2032,7 +2277,10 @@ Game_Actor.prototype.criticalMultiplierBonus = function() {
 	}
 	
 	if(this.hasGift(GIFT_ID_EMPEROR_LV3_CRIT_DAMAGE)) 
-		multiplier += 0.10;
+		multiplier += 0.1;
+	
+	multiplier += this.passiveCriticalDamageBonus();
+	multiplier += this.desireCriticalMultiplierBonus();
 	
     return multiplier;
 };
@@ -2080,15 +2328,16 @@ Game_Actor.prototype.elementRate = function(elementId) {
 	}
 	else if(elementId === ELEMENT_SLASH_ID || elementId === ELEMENT_PIERCE_ID || elementId === ELEMENT_BLUNT_ID) {
 
-		bonus += this.karrynPassiveCombatElementRate();
+		bonus += this.karrynPassiveCombatElementRate(elementId);
 		
 		if(this.isUsingStoreItem(STORE_ITEM_PAIN_RESIST_PILL)) bonus -= 0.15;
 	}
 	 
 	bonus += this.willpowerElementRate(elementId);
-	bonus += this.downPoseAndNoStaminaElementRate(elementId);
+	//bonus += this.downPoseAndNoStaminaElementRate(elementId);
 	bonus += this.exposedWeaknessElementRate(elementId, rate, bonus);
-	bonus += this.enemyLizardmanElementRate(elementId);
+	bonus += this.passiveLizardmanElementRate(elementId);
+	bonus += this.desireElementRate(elementId);
 	
 	let elementRate = rate + bonus;
 	
@@ -2096,6 +2345,7 @@ Game_Actor.prototype.elementRate = function(elementId) {
 		elementRate = 1 + (elementRate - 1) * 0.5;
 	}
 	
+	//the following don't get reduced in half
 	elementRate += this.karrynAccessoryElementRate(elementId);
 	elementRate += this.titlesElementRate(elementId);
 	elementRate += this.giftsElementRate(elementId);
@@ -2104,16 +2354,17 @@ Game_Actor.prototype.elementRate = function(elementId) {
 	return elementRate;
 };
 
+//unused
 Game_Actor.prototype.downPoseAndNoStaminaElementRate = function(elementId) {
 	if(this.isInDownPose() || this.hasNoStamina()) {
 		if(elementId === ELEMENT_TALK_ID) {
-			return 0.2;
+			return 0.1;
 		}
 		else if(elementId === ELEMENT_SIGHT_ID) {
-			return 0.2;
+			return 0.1;
 		}
 		else if(elementId === ELEMENT_STRIP_ID) {
-			return 0.25;
+			return 0.1;
 		}
 		else if(elementId === ELEMENT_PETTING_ID) {
 			return 0.1;
@@ -2188,7 +2439,7 @@ Game_Actor.prototype.karrynAccSightElementRate = function() {
 Game_Actor.prototype.karrynAccPettingElementRate = function() {
 	let accBonus = 0;
 	
-	if(this.isEquippingThisAccessory(RING_SCORPION_ID)) accBonus -= 0.25;
+	if(this.isEquippingThisAccessory(RING_SCORPION_ID)) accBonus -= 0.3;
 	
 	if(this.isEquippingThisAccessory(MISC_LIPGLOSS_ID)) accBonus -= 0.05;
 	if(this.isEquippingThisAccessory(MISC_PHONESTRAP_ID)) accBonus += 0.2;
@@ -2202,7 +2453,7 @@ Game_Actor.prototype.karrynAccPettingElementRate = function() {
 Game_Actor.prototype.karrynAccSexElementRate = function() {
 	let accBonus = 0;
 	
-	if(this.isEquippingThisAccessory(RING_GOLDGLASS_ID)) accBonus -= 0.25;
+	if(this.isEquippingThisAccessory(RING_GOLDGLASS_ID)) accBonus -= 0.3;
 	if(this.isEquippingThisAccessory(NECKLACE_EMERALD_ID)) accBonus += 0.2;
 	if(this.isEquippingThisAccessory(MISC_EYELINER_ID)) accBonus += 0.15;
 	if(this.isEquippingThisAccessory(MISC_PERFUME_ID)) accBonus += 0.2;
@@ -2368,24 +2619,43 @@ Game_Actor.prototype.setAllBodySlotsUnavailableExceptToy = function() {
 	this.setAllBodySlotsExceptToy(SLOT_UNAVAILABLE);
 };
 
+Game_Actor.prototype.setAllBodySlotsExceptPettedInsert = function(st) { 
+	//st = Body Status
+	for(let i = 0; i < this._body.length; i++) {
+		if(this.getBodySlotStatus(i) !== SLOT_PENIS && this.getBodySlotStatus(i) !== SLOT_ANUS && this.getBodySlotStatus(i) !== SLOT_TONGUE && this.getBodySlotStatus(i) !== SLOT_PETTED) {
+			this.setBodyPart(i, st);
+		}
+	}
+};
+Game_Actor.prototype.setAllBodySlotsFreeExceptPettedInsert = function() { 
+	this.setAllBodySlotsExceptPettedInsert(SLOT_FREE);
+};
+
+
 Game_Actor.prototype.setBodyPart = function(slotId, status) {
 	this._body[slotId] = status;
 };
 Game_Actor.prototype.setBodyPartFree = function(slotId) {
 	this.setBodyPart(slotId, SLOT_FREE);
 };
+
+//unused
 Game_Actor.prototype.setBodyPartFree_NoToys = function(slotId) {
 	this.setBodyPart(slotId, SLOT_FREE_NO_TOYS);
 };
+
 Game_Actor.prototype.setBodyPartFree_PettingOnly = function(slotId) {
 	if(this.getBodySlotStatus(slotId) === SLOT_TOY || this.getBodySlotStatus(slotId) === SLOT_TOY_PETTING_ONLY || this.getBodySlotStatus(slotId) === SLOT_UNAVAILABLE_BUT_HAS_TOY)
 		this.setBodyPart(slotId, SLOT_TOY_PETTING_ONLY);
 	else
 		this.setBodyPart(slotId, SLOT_FREE_PETTING_ONLY);
 };
+
+//unused
 Game_Actor.prototype.setBodyPartFree_PettingOnly_NoToys = function(slotId) {
 	this.setBodyPart(slotId, SLOT_FREE_PETTING_ONLY_NO_TOYS);
 };
+
 Game_Actor.prototype.setBodyPartUnavailable = function(slotId) {
 	if(this.getBodySlotStatus(slotId) === SLOT_TOY)
 		this.setBodyPart(slotId, SLOT_UNAVAILABLE_BUT_HAS_TOY);
@@ -2435,7 +2705,12 @@ Game_Actor.prototype.isBodySlotTongue = function(slotId) {
 };
 
 Game_Actor.prototype.isBodySlotToy = function(slotId) {
-	return this.getBodySlotStatus(slotId) === SLOT_TOY || this.getBodySlotStatus(slotId) === SLOT_TOY_PETTING_ONLY;
+	if(slotId === CLIT_ID) return this._wearingClitToy !== NO_TOY;
+	else if(slotId === PUSSY_ID) return this._wearingPussyToy !== NO_TOY;
+	else if(slotId === ANAL_ID) return this._wearingAnalToy !== NO_TOY;
+	else return false
+	
+	//return this.getBodySlotStatus(slotId) === SLOT_TOY || this.getBodySlotStatus(slotId) === SLOT_TOY_PETTING_ONLY;
 };
 
 Game_Actor.prototype.isBodySlotInserted = function(slotId) {
@@ -2445,6 +2720,8 @@ Game_Actor.prototype.isBodySlotInserted = function(slotId) {
 Game_Actor.prototype.isBodySlotAvailableForPetting = function(slotId) {
 	return this.getBodySlotStatus(slotId) < SLOT_PETTED_PETTING_ONLY;
 };
+
+//unused
 Game_Actor.prototype.isBodySlotAvailableForToy = function(slotId) {
 	return (this.getBodySlotStatus(slotId) < SLOT_TOY && 
 	this.getBodySlotStatus(slotId) !== SLOT_FREE_NO_TOYS && 
@@ -2472,17 +2749,20 @@ Game_Actor.prototype.isWearingAnyToy = function() {
 };
 
 Game_Actor.prototype.isWearingClitToy = function() {
-	return this.getBodySlotStatus(CLIT_ID) === SLOT_TOY || this.getBodySlotStatus(CLIT_ID) === SLOT_TOY_PETTING_ONLY || this.getBodySlotStatus(CLIT_ID) === SLOT_UNAVAILABLE_BUT_HAS_TOY;
+	return this._wearingClitToy !== NO_TOY;
+	//return this.getBodySlotStatus(CLIT_ID) === SLOT_TOY || this.getBodySlotStatus(CLIT_ID) === SLOT_TOY_PETTING_ONLY || this.getBodySlotStatus(CLIT_ID) === SLOT_UNAVAILABLE_BUT_HAS_TOY;
 };
 Game_Actor.prototype.isWearingPussyToy = function() {
-	return this.getBodySlotStatus(PUSSY_ID) === SLOT_TOY || this.getBodySlotStatus(PUSSY_ID) === SLOT_TOY_PETTING_ONLY || this.getBodySlotStatus(PUSSY_ID) === SLOT_UNAVAILABLE_BUT_HAS_TOY;
+	return this._wearingPussyToy !== NO_TOY;
+	//return this.getBodySlotStatus(PUSSY_ID) === SLOT_TOY || this.getBodySlotStatus(PUSSY_ID) === SLOT_TOY_PETTING_ONLY || this.getBodySlotStatus(PUSSY_ID) === SLOT_UNAVAILABLE_BUT_HAS_TOY;
 };
 Game_Actor.prototype.isWearingAnalToy = function() {
-	return this.getBodySlotStatus(ANAL_ID) === SLOT_TOY || this.getBodySlotStatus(ANAL_ID) === SLOT_TOY_PETTING_ONLY || this.getBodySlotStatus(ANAL_ID) === SLOT_UNAVAILABLE_BUT_HAS_TOY;
+	return this._wearingAnalToy !== NO_TOY;
+	//return this.getBodySlotStatus(ANAL_ID) === SLOT_TOY || this.getBodySlotStatus(ANAL_ID) === SLOT_TOY_PETTING_ONLY || this.getBodySlotStatus(ANAL_ID) === SLOT_UNAVAILABLE_BUT_HAS_TOY;
 };
 
 Game_Actor.prototype.setClitToy_PinkRotor = function(enemy) {
-	this.setBodyPartToy(CLIT_ID);
+	//this.setBodyPartToy(CLIT_ID);
 	this._wearingClitToy = CLIT_TOY_PINK_ROTOR;
 	if(enemy) {
 		let multipler = 0.4 + enemy.toyLvl() * 0.1;
@@ -2490,7 +2770,7 @@ Game_Actor.prototype.setClitToy_PinkRotor = function(enemy) {
 	}
 };
 Game_Actor.prototype.setPussyToy_PenisDildo = function(enemy) {
-	this.setBodyPartToy(PUSSY_ID);
+	//this.setBodyPartToy(PUSSY_ID);
 	this._wearingPussyToy = PUSSY_TOY_PENIS_DILDO;
 	if(enemy) {
 		let multipler = 0.4 + enemy.toyLvl() * 0.1;
@@ -2498,7 +2778,7 @@ Game_Actor.prototype.setPussyToy_PenisDildo = function(enemy) {
 	}
 };
 Game_Actor.prototype.setAnalToy_AnalBeads = function(enemy) {
-	this.setBodyPartToy(ANAL_ID);
+	//this.setBodyPartToy(ANAL_ID);
 	this._wearingAnalToy = ANAL_TOY_ANAL_BEADS;
 	if(enemy) {
 		let multipler = 0.4 + enemy.toyLvl() * 0.1;
@@ -2526,35 +2806,35 @@ Game_Actor.prototype.removeClitToy = function() {
 	this._wearingClitToy = NO_TOY;
 	this._toyValue_clitToy = 0;
 	
-	if(this.getBodySlotStatus(CLIT_ID) == SLOT_TOY_PETTING_ONLY)
-		this.setBodyPart(CLIT_ID, SLOT_FREE_PETTING_ONLY);
-	else
-		this.setBodyPart(CLIT_ID, SLOT_FREE);
+	//if(this.getBodySlotStatus(CLIT_ID) == SLOT_TOY_PETTING_ONLY)
+	//	this.setBodyPart(CLIT_ID, SLOT_FREE_PETTING_ONLY);
+	//else
+	//	this.setBodyPart(CLIT_ID, SLOT_FREE);
 };
 Game_Actor.prototype.removePussyToy = function() {
 	this.setToyInserted_PussyToy_PenisDildo(false);
 	this._wearingPussyToy = NO_TOY;
 	this._toyValue_pussyToy = 0;
 	
-	if(this.getBodySlotStatus(PUSSY_ID) == SLOT_TOY_PETTING_ONLY)
-		this.setBodyPart(PUSSY_ID, SLOT_FREE_PETTING_ONLY);
-	else
-		this.setBodyPart(PUSSY_ID, SLOT_FREE);
+	//if(this.getBodySlotStatus(PUSSY_ID) == SLOT_TOY_PETTING_ONLY)
+	//	this.setBodyPart(PUSSY_ID, SLOT_FREE_PETTING_ONLY);
+	//else
+	//	this.setBodyPart(PUSSY_ID, SLOT_FREE);
 };
 Game_Actor.prototype.removeAnalToy = function() {
 	this.setToyInserted_AnalToy_AnalBeads(false);
 	this._wearingAnalToy = NO_TOY;
 	this._toyValue_analToy = 0;
 	
-	if(this.getBodySlotStatus(ANAL_ID) == SLOT_TOY_PETTING_ONLY)
-		this.setBodyPart(ANAL_ID, SLOT_FREE_PETTING_ONLY);
-	else
-		this.setBodyPart(ANAL_ID, SLOT_FREE);
+	//if(this.getBodySlotStatus(ANAL_ID) == SLOT_TOY_PETTING_ONLY)
+	//	this.setBodyPart(ANAL_ID, SLOT_FREE_PETTING_ONLY);
+	//else
+	//	this.setBodyPart(ANAL_ID, SLOT_FREE);
 };
 
 Game_Actor.prototype.getClitToyId = function() {
 	if(this.isBodySlotToy(CLIT_ID) && this._wearingClitToy) 
-		return this._wearingClitToy;
+		return '' + this.getTachieClitToyExtension() + this._wearingClitToy;
 	else return NO_TOY;
 };
 Game_Actor.prototype.getPussyToyId = function() {
@@ -2568,6 +2848,17 @@ Game_Actor.prototype.getAnalToyId = function() {
 	else return NO_TOY;
 };
 
+
+
+Game_Actor.prototype.getTachieClitToyExtension = function() {
+	if(this.isInKarrynCowgirlPose()) {
+		let clitToyExt = 'close_';
+		if(this.tachieLegs.includes('far'))
+			clitToyExt = 'far_';
+		return clitToyExt;
+	}
+	else return '';
+};
 Game_Actor.prototype.getTachiePussyToyExtension = function() {
 	if($gameParty.isInGloryBattle) 
 		return this.getTachiePussyToyExtension_gloryBattle();
@@ -2607,6 +2898,8 @@ Game_Actor.prototype.orgasm = function() {
 		this._orgasmCallQueuedUp = true;
 		//this.addToActorSpecificOrgasmRecord();
 		this.removeState(STATE_HORNY_ID);
+		this.resetOnaniFrustration();
+		this.resetOnaniInBattleDesireToBase();
 		this._hornyTimeLimit = -1;
 		this.setOrgasmTachieChange();
 		let isDisabled = this.isStateAffected(STATE_DISABLED_ID);
@@ -2625,6 +2918,9 @@ Game_Actor.prototype.postOrgasmPleasure = function() {
 
 Game_Actor.prototype.postOrgasmToys = function(orgasmCount) { 
 	let chance = orgasmCount - 1;
+	if(this.hasPassive(PASSIVE_TOYS_ORGASM_TWO_ID))
+		chance = 0;
+		
 	if(this.isWearingClitToy() && Math.random() < (chance * 0.25)) {
 		this.removeClitToy();
 	}
@@ -2679,7 +2975,7 @@ Game_Actor.prototype.checkJustOrgasmStateAtTurnEnd = function() {
 
 Game_Actor.prototype.stenchTolerance = function() { 
 	var value = this.stench;
-	//todo: states, accessories, edicts etc that adds to stench tolerance
+
 	return value;
 };
 
@@ -2739,21 +3035,26 @@ Game_Actor.prototype.minimumClothingDurabilityForCurrentStage = function() {
 	return minimum;
 };
 
-Game_Actor.prototype.damageClothing = function(damage) { 
+Game_Actor.prototype.damageClothing = function(damage, dontHitMax) { 
 	if(damage <= 0 || this.isClothingMaxDamaged() || !DEBUG_MODE) return;
 	
 	let minimum = this.minimumClothingDurabilityForCurrentStage();
 	let outcome = this.clothingDurability - damage;
 	
 	if(outcome <= minimum) {
-		outcome = minimum;
-		this._clothingStage++; 
-		//todo: Play clothes breaking sound effect when new stage?
+		if(dontHitMax && this._clothingStage + 1 === this._clothingMaxStage) {
+			outcome += 1;
+		}
+		else {
+			outcome = minimum;
+			this._clothingStage++; 
+		}
 	}
 	
 	this._clothingDurability = outcome;
 	
-	if(this.isClothingMaxDamaged()) this.addToClothesStrippedRecord();
+	if(this.isClothingMaxDamaged() && this.isWearingWardenClothing()) 
+		this.addToClothesStrippedRecord();
 };
 
 //For event use
@@ -2925,6 +3226,13 @@ Game_Actor.prototype.getPantiesType = function() {
 	return this._pantiesType;
 };
 
+Game_Actor.prototype.showPantiesStateIcon = function() { 
+	if(this.isNaked() || !DEBUG_MODE) return false;
+	else if(this.isInWaitressSexPose() || $gameParty.isInGloryBattle) return false;
+	else if(this.isInCombatPose() || this.isInDownPose() || this.isInJobPose()) return true;
+	else return false;
+};
+
 Game_Actor.prototype.isNaked = function() { 
 	return this.isClothingMaxDamaged() && !this.isWearingPanties();
 };
@@ -2947,9 +3255,16 @@ Game_Actor.prototype.putOnGlovesAndHat = function() {
 ////////
 
 Game_Actor.prototype.isEquippingThisAccessory = function(id) {
-	for(let i = EQUIP_SLOT_ACCESSORY_START_ID; i <= EQUIP_SLOT_ACCESSORY_END_ID; ++i) {
-		if(this.equips()[i]) {
-			if(id == this.equips()[i].id) return true;
+	if(this.isUsingThisTitle(TITLE_ID_FINAL_DESTINATION)) {
+		if(this.equips()[EQUIP_SLOT_ACCESSORY_START_ID]) {
+			if(id == this.equips()[EQUIP_SLOT_ACCESSORY_START_ID].id) return true;
+		}
+	}
+	else {
+		for(let i = EQUIP_SLOT_ACCESSORY_START_ID; i <= EQUIP_SLOT_ACCESSORY_END_ID; ++i) {
+			if(this.equips()[i]) {
+				if(id == this.equips()[i].id) return true;
+			}
 		}
 	}
 	return false;
@@ -3076,12 +3391,64 @@ Remtairy.Karryn.Game_Actor_changeEquip = Game_Actor.prototype.changeEquip;
 Game_Actor.prototype.changeEquip = function(slotId, item) {
 	Remtairy.Karryn.Game_Actor_changeEquip.call(this, slotId, item);
 	this.setAccessoryBonus();
+	this.registerFirstTimeTitleEquip();
 };
 
 Remtairy.Karryn.Game_Actor_forceChangeEquip = Game_Actor.prototype.forceChangeEquip;
 Game_Actor.prototype.forceChangeEquip = function(slotId, item) {
     Remtairy.Karryn.Game_Actor_forceChangeEquip.call(this, slotId, item);
 	this.setAccessoryBonus();
+};
+
+///////////
+// Virgin
+
+Game_Actor.prototype.isVirgin = function() {
+    return !this._firstPussySexDate && !this._firstPussySexWasToy;
+};
+Game_Actor.prototype.preBattleAddIsVirginState = function() {
+    if(this.isVirgin()) this.addState(STATE_IS_VIRGIN_ID);
+};
+Game_Actor.prototype.virginityParamRate = function(paramId) {
+    let rate = 1;
+	if(paramId === PARAM_CHARM_ID && this.isVirgin()) {
+		if(Karryn.hasEdict(EDICT_PUBLISH_VIRGIN_STATUS)) {
+			rate = 1.15;
+		}
+		else {
+			if(this.hasPassive(PASSIVE_SEXUAL_PARTNERS_TOTAL_THREE_ID))
+				rate = 1;
+			else if(this.hasPassive(PASSIVE_SEXUAL_PARTNERS_TOTAL_TWO_ID))
+				rate = 1.05;
+			else
+				rate = 1.1
+		}
+	}
+	return rate;
+};
+
+////////
+// Cool
+
+Game_Actor.prototype.isCoolAndCollected = function() {
+	if(!this.isInCombatPose() && !this.isInWaitressServingPose() && !this.isInReceptionistPose())
+		return false;
+	
+	if(this.isInWaitressServingPose() && this.isTipsy) return false;
+	
+	if(this.mouthDesire >= 50 || this.boobsDesire >= 50 || this.pussyDesire >= 50 || this.buttDesire >= 50 || this.cockDesire >= 50) return false;
+	
+	if(this.isHorny || this.isOnaniFrustrated() || this.justOrgasmed()) return false;
+	
+	return true;
+};
+Game_Actor.prototype.coolXParamRate = function(paramId) {
+	let rate = 1;
+	if(this.isCoolAndCollected()) {
+		if(paramId === XPARAM_HIT_ID || paramId === XPARAM_EVA_ID || paramId === XPARAM_CRIT_ID || paramId === XPARAM_CRIT_EVA_ID)
+			rate = 1.05;
+	}
+	return rate;
 };
 
 ////////
@@ -3165,14 +3532,13 @@ Game_Actor.prototype.exposedWeaknessElementRate = function(elementId, rate, bonu
 
 /////////
 // Enemy Lizardman
-Game_Actor.prototype.enemyLizardmanElementRate = function(elementId) {
+Game_Actor.prototype.passiveLizardmanElementRate = function(elementId) {
 	let lizBonus = 0;
 
 	let lizardmanCount = $gameTroop.getCountOfLizardmanPresent();
 	if(this.hasPassive(PASSIVE_SEXUAL_PARTNERS_LIZARDMAN_TWO_ID) && lizardmanCount > 1) {
 		let rate = 0.02;
-		if(this.hasPassive(PASSIVE_SEXUAL_PARTNERS_LIZARDMAN_THREE_ID)) rate = 0.04;
-		
+	
 		lizBonus -= rate * lizardmanCount;
 	}
 
@@ -3212,13 +3578,122 @@ Game_Actor.prototype.isUsingAnyStoreItem = function() {
 };
 
 ////////
-// Today Variables
+// Today Records
 
-Game_Actor.prototype.resetTodayVariables = function() {
-	this._todaySubduedMetalEnemiesCount = 0;
+Game_Actor.prototype.resetTodayRecords = function() {
 	this._startOfInvasionBattle = false;
+	
+	this._todayTalkedAtAboutMouthPeople = 0;
+	this._todayTalkedAtAboutBoobsPeople = 0;
+	this._todayTalkedAtAboutPussyPeople = 0;
+	this._todayTalkedAtAboutButtPeople = 0;
+	this._todayTalkedAtAboutCockPeople = 0;
+	
+	this._todayEnemySawPeople = 0;
+	this._todayEnemySawMouthPeople = 0;
+	this._todayEnemySawBoobsPeople = 0;
+	this._todayEnemySawPussyPeople = 0;
+	this._todayEnemySawButtPeople = 0;
+	
+	this._todayKissedCount = 0;
+	this._todayHandjobCount = 0;
+	this._todayBlowjobCount = 0;
+	this._todayTittyFuckCount = 0;
+	this._todayPussyFuckedCount = 0;
+	this._todayAnalFuckedCount = 0;
+	this._todayBoobsPettedCount = 0;
+	this._todayNipplesPettedCount = 0;
+	this._todayButtPettedCount = 0;
+	this._todayAnalPettedCount = 0;
+	this._todayClitPettedCount = 0;
+	this._todayPussyPettedCount = 0;
+	this._todayButtSpankedCount = 0;
+	this._todaySeeJerkOffCount = 0;
+	this._todayCunnilingusCount = 0;
+	this._todayRimjobCount = 0;
+	this._todayFootjobCount = 0;
+	this._todayCockPettedCount = 0;
+	this._todayFingersSuckedCount = 0;
+	
+	this._todayKissedPeople = 0;
+	this._todayHandjobPeople = 0;
+	this._todayBlowjobPeople = 0;
+	this._todayTittyFuckedPeople = 0;
+	this._todayPussyFuckedPeople = 0;
+	this._todayAnalFuckedPeople = 0;
+	this._todayBukkakePeople = 0;
+	this._todayFaceBukkakePeople = 0;
+	this._todaySwallowPeople = 0;
+	this._todayPussyCreampiePeople = 0;
+	this._todayAnalCreampiePeople = 0;
+	this._todayOrgasmPresencePeople = 0;
+	this._todayCunnilingusPeople = 0;
+	this._todayRimjobPeople = 0;
+	this._todayFootjobPeople = 0;
+	this._todayButtSpankedPeople = 0;
+	this._todayCockPettedPeople = 0;
+	this._todayFingersSuckedPeople = 0;
+	this._todayBoobsPettedPeople = 0;
+	this._todayNipplesPettedPeople = 0;
+	this._todayClitPettedPeople = 0;
+	this._todayPussyPettedPeople = 0;
+	this._todayButtPettedPeople = 0;
+	this._todayAnalPettedPeople = 0;
+	
+	this._todayCockKickUsageCount = 0;
+	this._todayCockStareUsageCount = 0;
+	this._todayCockPetUsageCount = 0;
+	
+	this._todayTotalToysInsertedCount = 0;
+	this._todayClitToyInsertedCount = 0;
+	this._todayPussyToyInsertedCount = 0;
+	this._todayAnalToyInsertedCount = 0;
+	
+	this._todayTotalToysUsedByEnemyCount = 0;
+	this._todayClitToyUsedByEnemyCount = 0;
+	this._todayPussyToyUsedByEnemyCount = 0;
+	this._todayAnalToyUsedByEnemyCount = 0;
+	
+	this._todayDoublePenetrationCount = 0;
+	this._todayTriplePenetrationCount = 0;
+	this._todayBlowbangCount = 0;
+	
+	this._todayTauntCount = 0;
+	this._todaySexPose_KickCounterCount = 0;
+	this._todaySubduedEnemiesWithAttack = 0;
+	this._todaySubduedTotal = 0;
+	
+	this._todaySwallowML = 0;
+	this._todayPussyCreampieML = 0;
+	this._todayAnalCreampieML = 0;
+	this._todaySwallowMaxML = 0;
+	this._todayPussyCreampieMaxML = 0;
+	this._todayAnalCreampieMaxML = 0;
+	this._todayFloorEjaculationCount = 0;
+	this._todayFloorEjaculationML = 0;
+	this._todayTotalEjaculationCount = 0;
+	this._todayTotalEjaculationML = 0;
+	
+	this._todayPussyDripTenthML = 0;
+	this._todayOrgasmCount = 0;
+	this._todayOrgasmML = 0;
+	
+	this._todaySubduedMetalEnemiesCount = 0;
+	this._todayMasturbatedBeforeRest = false;
+	this._todayServedGuardInBar = 0;
+	this._todayServedGuardInGuardBattle = 0;
+	this._todayServedGuardInToiletBattle = 0;
+	this._todayServedGuardInGuardDefeat = 0;
+	this._todayToiletBattleSexualPartners = 0;
+	this._todayLevelTwoDefeatSexualPartners = 0;
 	$gameVariables.setValue(VARIABLE_DEFEATED_SPRITES_ID, 0);
 };
+
+// Yesterday Defeat
+Game_Actor.prototype.wasDefeatedYesterday = function() {
+	return $gameParty._lastDefeatedDate + 1 >= Prison.date;
+};
+
 
 /////////
 // Metal Exp Rate
@@ -3254,74 +3729,872 @@ Game_Actor.prototype.setKarrynReceptionistSprite = function() {
 /////////////
 //////////
 
-Game_Actor.prototype.setCockDesire = function(value) { 
-	this._cockDesire = value.clamp(0, this.maxCockDesire()); 
+Game_Actor.prototype.setCockDesire = function(value, fromWillpowerSkill) { 
+	if(fromWillpowerSkill && value < this.cockDesire) value = Math.max(value, this.getSuppressCockDesireLowerLimit());
+	this._cockDesire = value.clamp(0, this.maxCockDesire); 
 	this.addToMaxReachedCockDesireRecord();
 };
-Game_Actor.prototype.setMouthDesire = function(value) { 
-	this._mouthDesire = value.clamp(0, this.maxMouthDesire()); 
+Game_Actor.prototype.setMouthDesire = function(value, fromWillpowerSkill) { 
+	if(fromWillpowerSkill && value < this.mouthDesire) value = Math.max(value, this.getSuppressMouthDesireLowerLimit());
+	this._mouthDesire = value.clamp(0, this.maxMouthDesire); 
 	this.addToMaxReachedMouthDesireRecord();
 };
-Game_Actor.prototype.setBoobsDesire = function(value) {
-	this._boobsDesire = value.clamp(0, this.maxBoobsDesire());
+Game_Actor.prototype.setBoobsDesire = function(value, fromWillpowerSkill) {
+	if(fromWillpowerSkill && value < this.boobsDesire) value = Math.max(value, this.getSuppressBoobsDesireLowerLimit());
+	this._boobsDesire = value.clamp(0, this.maxBoobsDesire);
 	this.addToMaxReachedBoobsDesireRecord();
 };
-Game_Actor.prototype.setPussyDesire = function(value) { 
-	this._pussyDesire = value.clamp(0, this.maxPussyDesire()); 
+Game_Actor.prototype.setPussyDesire = function(value, fromWillpowerSkill) {
+	if(fromWillpowerSkill && value < this.pussyDesire) value = Math.max(value, this.getSuppressPussyDesireLowerLimit());	
+	this._pussyDesire = value.clamp(0, this.maxPussyDesire); 
 	this.addToMaxReachedPussyDesireRecord();
 };
-Game_Actor.prototype.setButtDesire = function(value) { 
-	this._buttDesire = value.clamp(0, this.maxButtDesire()); 
+Game_Actor.prototype.setButtDesire = function(value, fromWillpowerSkill) {
+	if(fromWillpowerSkill && value < this.buttDesire) value = Math.max(value, this.getSuppressButtDesireLowerLimit());
+	this._buttDesire = value.clamp(0, this.maxButtDesire); 
 	this.addToMaxReachedButtDesireRecord();
 };
 
-Game_Actor.prototype.gainCockDesire = function(value) { 
-	value *= this.gainCockDesirePassiveMultipler();
-	if(value > 0 && this.isEquippingThisAccessory(RING_GEMSTONE_ID)) value *= 0.5;
-	this.setCockDesire(Math.round(this.cockDesire + value)); 
+
+Game_Actor.prototype.gainMouthDesire = function(value, fromWillpowerSkill, fromDesireRegen) {
+	let rawValue = value;
+	let addedDesire = 0;
+	let currentDesire = this.mouthDesire;
+	let tempMulti = 0;
+	let tempCap = 0;
+	
+	if(fromDesireRegen) {
+		if(this.isEquippingThisAccessory(RING_DOUBLE_ID)) rawValue *= 0.34;
+	}
+	else if(rawValue > 0 && !fromWillpowerSkill) {
+		rawValue *= this.gainMouthDesirePassiveMultipler();
+		if(this.isEquippingThisAccessory(RING_DOUBLE_ID)) rawValue *= 0.34;
+	}
+	
+	if(rawValue > 0) {
+		tempCap = 50;
+		tempMulti = 1;
+		if(rawValue > 0 && currentDesire + addedDesire < tempCap) {
+			if(Math.round(currentDesire + addedDesire + rawValue * (1/tempMulti)) <= tempCap) {
+				addedDesire += Math.round(rawValue * (1/tempMulti));
+				rawValue = 0;
+			}
+			else {
+				let removedRawValue = (tempCap - currentDesire - addedDesire) * tempMulti;
+				rawValue -= removedRawValue;
+				addedDesire += tempCap - currentDesire - addedDesire;
+			}
+		}
+		
+		tempCap = 75;
+		tempMulti = 2;
+		if(rawValue > 0 && currentDesire + addedDesire < tempCap) {
+			if(Math.round(currentDesire + addedDesire + rawValue * (1/tempMulti)) <= tempCap) {
+				addedDesire += Math.round(rawValue * (1/tempMulti));
+				rawValue = 0;
+			}
+			else {
+				let removedRawValue = (tempCap - currentDesire - addedDesire) * tempMulti;
+				rawValue -= removedRawValue;
+				addedDesire += tempCap - currentDesire - addedDesire;
+			}
+		}
+		
+		tempCap = 100;
+		tempMulti = 3;
+		if(rawValue > 0 && currentDesire + addedDesire < tempCap) {
+			if(Math.round(currentDesire + addedDesire + rawValue * (1/tempMulti)) <= tempCap) {
+				addedDesire += Math.round(rawValue * (1/tempMulti));
+				rawValue = 0;
+			}
+			else {
+				let removedRawValue = (tempCap - currentDesire - addedDesire) * tempMulti;
+				rawValue -= removedRawValue;
+				addedDesire += tempCap - currentDesire - addedDesire;
+			}
+		}
+		
+		tempCap = 150;
+		tempMulti = 5;
+		if(rawValue > 0 && currentDesire + addedDesire < tempCap) {
+			if(Math.round(currentDesire + addedDesire + rawValue * (1/tempMulti)) <= tempCap) {
+				addedDesire += Math.round(rawValue * (1/tempMulti));
+				rawValue = 0;
+			}
+			else {
+				let removedRawValue = (tempCap - currentDesire - addedDesire) * tempMulti;
+				rawValue -= removedRawValue;
+				addedDesire += tempCap - currentDesire - addedDesire;
+			}
+		}
+		
+		tempCap = 200;
+		tempMulti = 10;
+		if(rawValue > 0 && currentDesire + addedDesire < tempCap) {
+			if(Math.round(currentDesire + addedDesire + rawValue * (1/tempMulti)) <= tempCap) {
+				addedDesire += Math.round(rawValue * (1/tempMulti));
+				rawValue = 0;
+			}
+			else {
+				let removedRawValue = (tempCap - currentDesire - addedDesire) * tempMulti;
+				rawValue -= removedRawValue;
+				addedDesire += tempCap - currentDesire - addedDesire;
+			}
+		}
+	}
+	else if(rawValue < 0) {
+		tempCap = 150;
+		tempMulti = 10;
+		if(rawValue < 0 && currentDesire + addedDesire > tempCap) {
+			if(Math.round(currentDesire + addedDesire + rawValue * (1/tempMulti)) >= tempCap) {
+				addedDesire += Math.round(rawValue * (1/tempMulti));
+				rawValue = 0;
+			}
+			else {
+				let removedRawValue = -1 * (currentDesire + addedDesire - tempCap) * tempMulti;
+				rawValue -= removedRawValue;
+				addedDesire += tempCap - currentDesire - addedDesire;
+			}
+		}
+		
+		tempCap = 100;
+		tempMulti = 5;
+		if(rawValue < 0 && currentDesire + addedDesire > tempCap) {
+			if(Math.round(currentDesire + addedDesire + rawValue * (1/tempMulti)) >= tempCap) {
+				addedDesire += Math.round(rawValue * (1/tempMulti));
+				rawValue = 0;
+			}
+			else {
+				let removedRawValue = -1 * (currentDesire + addedDesire - tempCap) * tempMulti;
+				rawValue -= removedRawValue;
+				addedDesire += tempCap - currentDesire - addedDesire;
+			}
+		}
+		
+		tempCap = 75;
+		tempMulti = 3;
+		if(rawValue < 0 && currentDesire + addedDesire > tempCap) {
+			if(Math.round(currentDesire + addedDesire + rawValue * (1/tempMulti)) >= tempCap) {
+				addedDesire += Math.round(rawValue * (1/tempMulti));
+				rawValue = 0;
+			}
+			else {
+				let removedRawValue = -1 * (currentDesire + addedDesire - tempCap) * tempMulti;
+				rawValue -= removedRawValue;
+				addedDesire += tempCap - currentDesire - addedDesire;
+			}
+		}
+		
+		tempCap = 50;
+		tempMulti = 2;
+		if(rawValue < 0 && currentDesire + addedDesire > tempCap) {
+			if(Math.round(currentDesire + addedDesire + rawValue * (1/tempMulti)) >= tempCap) {
+				addedDesire += Math.round(rawValue * (1/tempMulti));
+				rawValue = 0;
+			}
+			else {
+				let removedRawValue = -1 * (currentDesire + addedDesire - tempCap) * tempMulti;
+				rawValue -= removedRawValue;
+				addedDesire += tempCap - currentDesire - addedDesire;
+			}
+		}
+		
+		tempCap = 0;
+		tempMulti = 1;
+		if(rawValue < 0 && currentDesire + addedDesire > tempCap) {
+			if(Math.round(currentDesire + addedDesire + rawValue * (1/tempMulti)) >= tempCap) {
+				addedDesire += Math.round(rawValue * (1/tempMulti));
+				rawValue = 0;
+			}
+			else {
+				let removedRawValue = -1 * (currentDesire + addedDesire - tempCap) * tempMulti;
+				rawValue -= removedRawValue;
+				addedDesire += tempCap - currentDesire - addedDesire;
+			}
+		}
+	}
+	
+	this.setMouthDesire(Math.round(this.mouthDesire + addedDesire), fromWillpowerSkill); 
 };
-Game_Actor.prototype.gainMouthDesire = function(value) { 
-	value *= this.gainMouthDesirePassiveMultipler();
-	if(value > 0 && this.isEquippingThisAccessory(RING_FINGERCLAW_ID)) value *= 0.5;
-	this.setMouthDesire(Math.round(this.mouthDesire + value)); 
+Game_Actor.prototype.gainBoobsDesire = function(value, fromWillpowerSkill, fromDesireRegen) { 
+	let rawValue = value;
+	let addedDesire = 0;
+	let currentDesire = this.boobsDesire;
+	let tempMulti = 0;
+	let tempCap = 0;
+	
+	if(fromDesireRegen) {
+		if(this.isEquippingThisAccessory(RING_FINGERCLAW_ID)) rawValue *= 0.34;
+	}
+	else if(rawValue > 0 && !fromWillpowerSkill) {
+		rawValue *= this.gainBoobsDesirePassiveMultipler();
+		if(this.isEquippingThisAccessory(RING_FINGERCLAW_ID)) rawValue *= 0.34;
+	}
+	
+	if(rawValue > 0) {
+		tempCap = 50;
+		tempMulti = 1;
+		if(rawValue > 0 && currentDesire + addedDesire < tempCap) {
+			if(Math.round(currentDesire + addedDesire + rawValue * (1/tempMulti)) <= tempCap) {
+				addedDesire += Math.round(rawValue * (1/tempMulti));
+				rawValue = 0;
+			}
+			else {
+				let removedRawValue = (tempCap - currentDesire - addedDesire) * tempMulti;
+				rawValue -= removedRawValue;
+				addedDesire += tempCap - currentDesire - addedDesire;
+			}
+		}
+		
+		tempCap = 75;
+		tempMulti = 2;
+		if(rawValue > 0 && currentDesire + addedDesire < tempCap) {
+			if(Math.round(currentDesire + addedDesire + rawValue * (1/tempMulti)) <= tempCap) {
+				addedDesire += Math.round(rawValue * (1/tempMulti));
+				rawValue = 0;
+			}
+			else {
+				let removedRawValue = (tempCap - currentDesire - addedDesire) * tempMulti;
+				rawValue -= removedRawValue;
+				addedDesire += tempCap - currentDesire - addedDesire;
+			}
+		}
+		
+		tempCap = 100;
+		tempMulti = 3;
+		if(rawValue > 0 && currentDesire + addedDesire < tempCap) {
+			if(Math.round(currentDesire + addedDesire + rawValue * (1/tempMulti)) <= tempCap) {
+				addedDesire += Math.round(rawValue * (1/tempMulti));
+				rawValue = 0;
+			}
+			else {
+				let removedRawValue = (tempCap - currentDesire - addedDesire) * tempMulti;
+				rawValue -= removedRawValue;
+				addedDesire += tempCap - currentDesire - addedDesire;
+			}
+		}
+		
+		tempCap = 150;
+		tempMulti = 5;
+		if(rawValue > 0 && currentDesire + addedDesire < tempCap) {
+			if(Math.round(currentDesire + addedDesire + rawValue * (1/tempMulti)) <= tempCap) {
+				addedDesire += Math.round(rawValue * (1/tempMulti));
+				rawValue = 0;
+			}
+			else {
+				let removedRawValue = (tempCap - currentDesire - addedDesire) * tempMulti;
+				rawValue -= removedRawValue;
+				addedDesire += tempCap - currentDesire - addedDesire;
+			}
+		}
+		
+		tempCap = 200;
+		tempMulti = 10;
+		if(rawValue > 0 && currentDesire + addedDesire < tempCap) {
+			if(Math.round(currentDesire + addedDesire + rawValue * (1/tempMulti)) <= tempCap) {
+				addedDesire += Math.round(rawValue * (1/tempMulti));
+				rawValue = 0;
+			}
+			else {
+				let removedRawValue = (tempCap - currentDesire - addedDesire) * tempMulti;
+				rawValue -= removedRawValue;
+				addedDesire += tempCap - currentDesire - addedDesire;
+			}
+		}
+	}
+	else if(rawValue < 0) {
+		tempCap = 150;
+		tempMulti = 10;
+		if(rawValue < 0 && currentDesire + addedDesire > tempCap) {
+			if(Math.round(currentDesire + addedDesire + rawValue * (1/tempMulti)) >= tempCap) {
+				addedDesire += Math.round(rawValue * (1/tempMulti));
+				rawValue = 0;
+			}
+			else {
+				let removedRawValue = -1 * (currentDesire + addedDesire - tempCap) * tempMulti;
+				rawValue -= removedRawValue;
+				addedDesire += tempCap - currentDesire - addedDesire;
+			}
+		}
+		
+		tempCap = 100;
+		tempMulti = 5;
+		if(rawValue < 0 && currentDesire + addedDesire > tempCap) {
+			if(Math.round(currentDesire + addedDesire + rawValue * (1/tempMulti)) >= tempCap) {
+				addedDesire += Math.round(rawValue * (1/tempMulti));
+				rawValue = 0;
+			}
+			else {
+				let removedRawValue = -1 * (currentDesire + addedDesire - tempCap) * tempMulti;
+				rawValue -= removedRawValue;
+				addedDesire += tempCap - currentDesire - addedDesire;
+			}
+		}
+		
+		tempCap = 75;
+		tempMulti = 3;
+		if(rawValue < 0 && currentDesire + addedDesire > tempCap) {
+			if(Math.round(currentDesire + addedDesire + rawValue * (1/tempMulti)) >= tempCap) {
+				addedDesire += Math.round(rawValue * (1/tempMulti));
+				rawValue = 0;
+			}
+			else {
+				let removedRawValue = -1 * (currentDesire + addedDesire - tempCap) * tempMulti;
+				rawValue -= removedRawValue;
+				addedDesire += tempCap - currentDesire - addedDesire;
+			}
+		}
+		
+		tempCap = 50;
+		tempMulti = 2;
+		if(rawValue < 0 && currentDesire + addedDesire > tempCap) {
+			if(Math.round(currentDesire + addedDesire + rawValue * (1/tempMulti)) >= tempCap) {
+				addedDesire += Math.round(rawValue * (1/tempMulti));
+				rawValue = 0;
+			}
+			else {
+				let removedRawValue = -1 * (currentDesire + addedDesire - tempCap) * tempMulti;
+				rawValue -= removedRawValue;
+				addedDesire += tempCap - currentDesire - addedDesire;
+			}
+		}
+		
+		tempCap = 0;
+		tempMulti = 1;
+		if(rawValue < 0 && currentDesire + addedDesire > tempCap) {
+			if(Math.round(currentDesire + addedDesire + rawValue * (1/tempMulti)) >= tempCap) {
+				addedDesire += Math.round(rawValue * (1/tempMulti));
+				rawValue = 0;
+			}
+			else {
+				let removedRawValue = -1 * (currentDesire + addedDesire - tempCap) * tempMulti;
+				rawValue -= removedRawValue;
+				addedDesire += tempCap - currentDesire - addedDesire;
+			}
+		}
+	}
+	
+	this.setBoobsDesire(Math.round(this.boobsDesire + addedDesire), fromWillpowerSkill); 
 };
-Game_Actor.prototype.gainBoobsDesire = function(value) { 
-	value *= this.gainBoobsDesirePassiveMultipler();
-	if(value > 0 && this.isEquippingThisAccessory(RING_DOUBLE_ID)) value *= 0.5;
-	this.setBoobsDesire(Math.round(this.boobsDesire + value)); 
+Game_Actor.prototype.gainPussyDesire = function(value, fromWillpowerSkill, fromDesireRegen) { 
+	let rawValue = value;
+	let addedDesire = 0;
+	let currentDesire = this.pussyDesire;
+	let tempMulti = 0;
+	let tempCap = 0;
+	
+	if(fromDesireRegen) {
+		if(this.isEquippingThisAccessory(RING_PEARL_ID)) rawValue *= 0.34;
+	}
+	else if(rawValue > 0 && !fromWillpowerSkill) {
+		rawValue *= this.gainPussyDesirePassiveMultipler();
+		if(this.isEquippingThisAccessory(RING_PEARL_ID)) rawValue *= 0.34;
+	}
+	
+	if(rawValue > 0) {
+		tempCap = 50;
+		tempMulti = 1;
+		if(rawValue > 0 && currentDesire + addedDesire < tempCap) {
+			if(Math.round(currentDesire + addedDesire + rawValue * (1/tempMulti)) <= tempCap) {
+				addedDesire += Math.round(rawValue * (1/tempMulti));
+				rawValue = 0;
+			}
+			else {
+				let removedRawValue = (tempCap - currentDesire - addedDesire) * tempMulti;
+				rawValue -= removedRawValue;
+				addedDesire += tempCap - currentDesire - addedDesire;
+			}
+		}
+		
+		tempCap = 75;
+		tempMulti = 2;
+		if(rawValue > 0 && currentDesire + addedDesire < tempCap) {
+			if(Math.round(currentDesire + addedDesire + rawValue * (1/tempMulti)) <= tempCap) {
+				addedDesire += Math.round(rawValue * (1/tempMulti));
+				rawValue = 0;
+			}
+			else {
+				let removedRawValue = (tempCap - currentDesire - addedDesire) * tempMulti;
+				rawValue -= removedRawValue;
+				addedDesire += tempCap - currentDesire - addedDesire;
+			}
+		}
+		
+		tempCap = 100;
+		tempMulti = 3;
+		if(rawValue > 0 && currentDesire + addedDesire < tempCap) {
+			if(Math.round(currentDesire + addedDesire + rawValue * (1/tempMulti)) <= tempCap) {
+				addedDesire += Math.round(rawValue * (1/tempMulti));
+				rawValue = 0;
+			}
+			else {
+				let removedRawValue = (tempCap - currentDesire - addedDesire) * tempMulti;
+				rawValue -= removedRawValue;
+				addedDesire += tempCap - currentDesire - addedDesire;
+			}
+		}
+		
+		tempCap = 150;
+		tempMulti = 5;
+		if(rawValue > 0 && currentDesire + addedDesire < tempCap) {
+			if(Math.round(currentDesire + addedDesire + rawValue * (1/tempMulti)) <= tempCap) {
+				addedDesire += Math.round(rawValue * (1/tempMulti));
+				rawValue = 0;
+			}
+			else {
+				let removedRawValue = (tempCap - currentDesire - addedDesire) * tempMulti;
+				rawValue -= removedRawValue;
+				addedDesire += tempCap - currentDesire - addedDesire;
+			}
+		}
+		
+		tempCap = 200;
+		tempMulti = 10;
+		if(rawValue > 0 && currentDesire + addedDesire < tempCap) {
+			if(Math.round(currentDesire + addedDesire + rawValue * (1/tempMulti)) <= tempCap) {
+				addedDesire += Math.round(rawValue * (1/tempMulti));
+				rawValue = 0;
+			}
+			else {
+				let removedRawValue = (tempCap - currentDesire - addedDesire) * tempMulti;
+				rawValue -= removedRawValue;
+				addedDesire += tempCap - currentDesire - addedDesire;
+			}
+		}
+	}
+	else if(rawValue < 0) {
+		tempCap = 150;
+		tempMulti = 10;
+		if(rawValue < 0 && currentDesire + addedDesire > tempCap) {
+			if(Math.round(currentDesire + addedDesire + rawValue * (1/tempMulti)) >= tempCap) {
+				addedDesire += Math.round(rawValue * (1/tempMulti));
+				rawValue = 0;
+			}
+			else {
+				let removedRawValue = -1 * (currentDesire + addedDesire - tempCap) * tempMulti;
+				rawValue -= removedRawValue;
+				addedDesire += tempCap - currentDesire - addedDesire;
+			}
+		}
+		
+		tempCap = 100;
+		tempMulti = 5;
+		if(rawValue < 0 && currentDesire + addedDesire > tempCap) {
+			if(Math.round(currentDesire + addedDesire + rawValue * (1/tempMulti)) >= tempCap) {
+				addedDesire += Math.round(rawValue * (1/tempMulti));
+				rawValue = 0;
+			}
+			else {
+				let removedRawValue = -1 * (currentDesire + addedDesire - tempCap) * tempMulti;
+				rawValue -= removedRawValue;
+				addedDesire += tempCap - currentDesire - addedDesire;
+			}
+		}
+		
+		tempCap = 75;
+		tempMulti = 3;
+		if(rawValue < 0 && currentDesire + addedDesire > tempCap) {
+			if(Math.round(currentDesire + addedDesire + rawValue * (1/tempMulti)) >= tempCap) {
+				addedDesire += Math.round(rawValue * (1/tempMulti));
+				rawValue = 0;
+			}
+			else {
+				let removedRawValue = -1 * (currentDesire + addedDesire - tempCap) * tempMulti;
+				rawValue -= removedRawValue;
+				addedDesire += tempCap - currentDesire - addedDesire;
+			}
+		}
+		
+		tempCap = 50;
+		tempMulti = 2;
+		if(rawValue < 0 && currentDesire + addedDesire > tempCap) {
+			if(Math.round(currentDesire + addedDesire + rawValue * (1/tempMulti)) >= tempCap) {
+				addedDesire += Math.round(rawValue * (1/tempMulti));
+				rawValue = 0;
+			}
+			else {
+				let removedRawValue = -1 * (currentDesire + addedDesire - tempCap) * tempMulti;
+				rawValue -= removedRawValue;
+				addedDesire += tempCap - currentDesire - addedDesire;
+			}
+		}
+		
+		tempCap = 0;
+		tempMulti = 1;
+		if(rawValue < 0 && currentDesire + addedDesire > tempCap) {
+			if(Math.round(currentDesire + addedDesire + rawValue * (1/tempMulti)) >= tempCap) {
+				addedDesire += Math.round(rawValue * (1/tempMulti));
+				rawValue = 0;
+			}
+			else {
+				let removedRawValue = -1 * (currentDesire + addedDesire - tempCap) * tempMulti;
+				rawValue -= removedRawValue;
+				addedDesire += tempCap - currentDesire - addedDesire;
+			}
+		}
+	}
+	
+	this.setPussyDesire(Math.round(this.pussyDesire + addedDesire), fromWillpowerSkill); 
 };
-Game_Actor.prototype.gainPussyDesire = function(value) { 
-	value *= this.gainPussyDesirePassiveMultipler();
-	if(value > 0 && this.isEquippingThisAccessory(RING_CHAINHAND_ID)) value *= 0.5;
-	this.setPussyDesire(Math.round(this.pussyDesire + value)); 
+Game_Actor.prototype.gainButtDesire = function(value, fromWillpowerSkill, fromDesireRegen) { 
+	let rawValue = value;
+	let addedDesire = 0;
+	let currentDesire = this.buttDesire;
+	let tempMulti = 0;
+	let tempCap = 0;
+	
+	if(fromDesireRegen) {
+		if(this.isEquippingThisAccessory(RING_CHAINHAND_ID)) rawValue *= 0.34;
+	}
+	else if(rawValue > 0 && !fromWillpowerSkill) {
+		rawValue *= this.gainButtDesirePassiveMultipler();
+		if(this.isEquippingThisAccessory(RING_CHAINHAND_ID)) rawValue *= 0.34;
+	}
+	
+	if(rawValue > 0) {
+		tempCap = 50;
+		tempMulti = 1;
+		if(rawValue > 0 && currentDesire + addedDesire < tempCap) {
+			if(Math.round(currentDesire + addedDesire + rawValue * (1/tempMulti)) <= tempCap) {
+				addedDesire += Math.round(rawValue * (1/tempMulti));
+				rawValue = 0;
+			}
+			else {
+				let removedRawValue = (tempCap - currentDesire - addedDesire) * tempMulti;
+				rawValue -= removedRawValue;
+				addedDesire += tempCap - currentDesire - addedDesire;
+			}
+		}
+		
+		tempCap = 75;
+		tempMulti = 2;
+		if(rawValue > 0 && currentDesire + addedDesire < tempCap) {
+			if(Math.round(currentDesire + addedDesire + rawValue * (1/tempMulti)) <= tempCap) {
+				addedDesire += Math.round(rawValue * (1/tempMulti));
+				rawValue = 0;
+			}
+			else {
+				let removedRawValue = (tempCap - currentDesire - addedDesire) * tempMulti;
+				rawValue -= removedRawValue;
+				addedDesire += tempCap - currentDesire - addedDesire;
+			}
+		}
+		
+		tempCap = 100;
+		tempMulti = 3;
+		if(rawValue > 0 && currentDesire + addedDesire < tempCap) {
+			if(Math.round(currentDesire + addedDesire + rawValue * (1/tempMulti)) <= tempCap) {
+				addedDesire += Math.round(rawValue * (1/tempMulti));
+				rawValue = 0;
+			}
+			else {
+				let removedRawValue = (tempCap - currentDesire - addedDesire) * tempMulti;
+				rawValue -= removedRawValue;
+				addedDesire += tempCap - currentDesire - addedDesire;
+			}
+		}
+		
+		tempCap = 150;
+		tempMulti = 5;
+		if(rawValue > 0 && currentDesire + addedDesire < tempCap) {
+			if(Math.round(currentDesire + addedDesire + rawValue * (1/tempMulti)) <= tempCap) {
+				addedDesire += Math.round(rawValue * (1/tempMulti));
+				rawValue = 0;
+			}
+			else {
+				let removedRawValue = (tempCap - currentDesire - addedDesire) * tempMulti;
+				rawValue -= removedRawValue;
+				addedDesire += tempCap - currentDesire - addedDesire;
+			}
+		}
+		
+		tempCap = 200;
+		tempMulti = 10;
+		if(rawValue > 0 && currentDesire + addedDesire < tempCap) {
+			if(Math.round(currentDesire + addedDesire + rawValue * (1/tempMulti)) <= tempCap) {
+				addedDesire += Math.round(rawValue * (1/tempMulti));
+				rawValue = 0;
+			}
+			else {
+				let removedRawValue = (tempCap - currentDesire - addedDesire) * tempMulti;
+				rawValue -= removedRawValue;
+				addedDesire += tempCap - currentDesire - addedDesire;
+			}
+		}
+	}
+	else if(rawValue < 0) {
+		tempCap = 150;
+		tempMulti = 10;
+		if(rawValue < 0 && currentDesire + addedDesire > tempCap) {
+			if(Math.round(currentDesire + addedDesire + rawValue * (1/tempMulti)) >= tempCap) {
+				addedDesire += Math.round(rawValue * (1/tempMulti));
+				rawValue = 0;
+			}
+			else {
+				let removedRawValue = -1 * (currentDesire + addedDesire - tempCap) * tempMulti;
+				rawValue -= removedRawValue;
+				addedDesire += tempCap - currentDesire - addedDesire;
+			}
+		}
+		
+		tempCap = 100;
+		tempMulti = 5;
+		if(rawValue < 0 && currentDesire + addedDesire > tempCap) {
+			if(Math.round(currentDesire + addedDesire + rawValue * (1/tempMulti)) >= tempCap) {
+				addedDesire += Math.round(rawValue * (1/tempMulti));
+				rawValue = 0;
+			}
+			else {
+				let removedRawValue = -1 * (currentDesire + addedDesire - tempCap) * tempMulti;
+				rawValue -= removedRawValue;
+				addedDesire += tempCap - currentDesire - addedDesire;
+			}
+		}
+		
+		tempCap = 75;
+		tempMulti = 3;
+		if(rawValue < 0 && currentDesire + addedDesire > tempCap) {
+			if(Math.round(currentDesire + addedDesire + rawValue * (1/tempMulti)) >= tempCap) {
+				addedDesire += Math.round(rawValue * (1/tempMulti));
+				rawValue = 0;
+			}
+			else {
+				let removedRawValue = -1 * (currentDesire + addedDesire - tempCap) * tempMulti;
+				rawValue -= removedRawValue;
+				addedDesire += tempCap - currentDesire - addedDesire;
+			}
+		}
+		
+		tempCap = 50;
+		tempMulti = 2;
+		if(rawValue < 0 && currentDesire + addedDesire > tempCap) {
+			if(Math.round(currentDesire + addedDesire + rawValue * (1/tempMulti)) >= tempCap) {
+				addedDesire += Math.round(rawValue * (1/tempMulti));
+				rawValue = 0;
+			}
+			else {
+				let removedRawValue = -1 * (currentDesire + addedDesire - tempCap) * tempMulti;
+				rawValue -= removedRawValue;
+				addedDesire += tempCap - currentDesire - addedDesire;
+			}
+		}
+		
+		tempCap = 0;
+		tempMulti = 1;
+		if(rawValue < 0 && currentDesire + addedDesire > tempCap) {
+			if(Math.round(currentDesire + addedDesire + rawValue * (1/tempMulti)) >= tempCap) {
+				addedDesire += Math.round(rawValue * (1/tempMulti));
+				rawValue = 0;
+			}
+			else {
+				let removedRawValue = -1 * (currentDesire + addedDesire - tempCap) * tempMulti;
+				rawValue -= removedRawValue;
+				addedDesire += tempCap - currentDesire - addedDesire;
+			}
+		}
+	}
+	
+	this.setButtDesire(Math.round(this.buttDesire + addedDesire), fromWillpowerSkill); 
 };
-Game_Actor.prototype.gainButtDesire = function(value) { 
-	value *= this.gainButtDesirePassiveMultipler();
-	if(value > 0 && this.isEquippingThisAccessory(RING_PEARL_ID)) value *= 0.5;
-	this.setButtDesire(Math.round(this.buttDesire + value)); 
+Game_Actor.prototype.gainCockDesire = function(value, fromWillpowerSkill, fromDesireRegen) { 
+	let rawValue = value;
+	let addedDesire = 0;
+	let currentDesire = this.cockDesire;
+	let tempMulti = 0;
+	let tempCap = 0;
+	
+	if(fromDesireRegen) {
+		if(this.isEquippingThisAccessory(RING_GEMSTONE_ID)) rawValue *= 0.34;
+	}
+	else if(rawValue > 0 && !fromWillpowerSkill) {
+		rawValue *= this.gainCockDesirePassiveMultipler();
+		if(this.isEquippingThisAccessory(RING_GEMSTONE_ID)) rawValue *= 0.34;
+	}
+	
+	if(rawValue > 0) {
+		tempCap = 50;
+		tempMulti = 1;
+		if(rawValue > 0 && currentDesire + addedDesire < tempCap) {
+			if(Math.round(currentDesire + addedDesire + rawValue * (1/tempMulti)) <= tempCap) {
+				addedDesire += Math.round(rawValue * (1/tempMulti));
+				rawValue = 0;
+			}
+			else {
+				let removedRawValue = (tempCap - currentDesire - addedDesire) * tempMulti;
+				rawValue -= removedRawValue;
+				addedDesire += tempCap - currentDesire - addedDesire;
+			}
+		}
+		
+		tempCap = 75;
+		tempMulti = 2;
+		if(rawValue > 0 && currentDesire + addedDesire < tempCap) {
+			if(Math.round(currentDesire + addedDesire + rawValue * (1/tempMulti)) <= tempCap) {
+				addedDesire += Math.round(rawValue * (1/tempMulti));
+				rawValue = 0;
+			}
+			else {
+				let removedRawValue = (tempCap - currentDesire - addedDesire) * tempMulti;
+				rawValue -= removedRawValue;
+				addedDesire += tempCap - currentDesire - addedDesire;
+			}
+		}
+		
+		tempCap = 100;
+		tempMulti = 3;
+		if(rawValue > 0 && currentDesire + addedDesire < tempCap) {
+			if(Math.round(currentDesire + addedDesire + rawValue * (1/tempMulti)) <= tempCap) {
+				addedDesire += Math.round(rawValue * (1/tempMulti));
+				rawValue = 0;
+			}
+			else {
+				let removedRawValue = (tempCap - currentDesire - addedDesire) * tempMulti;
+				rawValue -= removedRawValue;
+				addedDesire += tempCap - currentDesire - addedDesire;
+			}
+		}
+		
+		tempCap = 150;
+		tempMulti = 5;
+		if(rawValue > 0 && currentDesire + addedDesire < tempCap) {
+			if(Math.round(currentDesire + addedDesire + rawValue * (1/tempMulti)) <= tempCap) {
+				addedDesire += Math.round(rawValue * (1/tempMulti));
+				rawValue = 0;
+			}
+			else {
+				let removedRawValue = (tempCap - currentDesire - addedDesire) * tempMulti;
+				rawValue -= removedRawValue;
+				addedDesire += tempCap - currentDesire - addedDesire;
+			}
+		}
+		
+		tempCap = 200;
+		tempMulti = 10;
+		if(rawValue > 0 && currentDesire + addedDesire < tempCap) {
+			if(Math.round(currentDesire + addedDesire + rawValue * (1/tempMulti)) <= tempCap) {
+				addedDesire += Math.round(rawValue * (1/tempMulti));
+				rawValue = 0;
+			}
+			else {
+				let removedRawValue = (tempCap - currentDesire - addedDesire) * tempMulti;
+				rawValue -= removedRawValue;
+				addedDesire += tempCap - currentDesire - addedDesire;
+			}
+		}
+	}
+	else if(rawValue < 0) {
+		tempCap = 150;
+		tempMulti = 10;
+		if(rawValue < 0 && currentDesire + addedDesire > tempCap) {
+			if(Math.round(currentDesire + addedDesire + rawValue * (1/tempMulti)) >= tempCap) {
+				addedDesire += Math.round(rawValue * (1/tempMulti));
+				rawValue = 0;
+			}
+			else {
+				let removedRawValue = -1 * (currentDesire + addedDesire - tempCap) * tempMulti;
+				rawValue -= removedRawValue;
+				addedDesire += tempCap - currentDesire - addedDesire;
+			}
+		}
+		
+		tempCap = 100;
+		tempMulti = 5;
+		if(rawValue < 0 && currentDesire + addedDesire > tempCap) {
+			if(Math.round(currentDesire + addedDesire + rawValue * (1/tempMulti)) >= tempCap) {
+				addedDesire += Math.round(rawValue * (1/tempMulti));
+				rawValue = 0;
+			}
+			else {
+				let removedRawValue = -1 * (currentDesire + addedDesire - tempCap) * tempMulti;
+				rawValue -= removedRawValue;
+				addedDesire += tempCap - currentDesire - addedDesire;
+			}
+		}
+		
+		tempCap = 75;
+		tempMulti = 3;
+		if(rawValue < 0 && currentDesire + addedDesire > tempCap) {
+			if(Math.round(currentDesire + addedDesire + rawValue * (1/tempMulti)) >= tempCap) {
+				addedDesire += Math.round(rawValue * (1/tempMulti));
+				rawValue = 0;
+			}
+			else {
+				let removedRawValue = -1 * (currentDesire + addedDesire - tempCap) * tempMulti;
+				rawValue -= removedRawValue;
+				addedDesire += tempCap - currentDesire - addedDesire;
+			}
+		}
+		
+		tempCap = 50;
+		tempMulti = 2;
+		if(rawValue < 0 && currentDesire + addedDesire > tempCap) {
+			if(Math.round(currentDesire + addedDesire + rawValue * (1/tempMulti)) >= tempCap) {
+				addedDesire += Math.round(rawValue * (1/tempMulti));
+				rawValue = 0;
+			}
+			else {
+				let removedRawValue = -1 * (currentDesire + addedDesire - tempCap) * tempMulti;
+				rawValue -= removedRawValue;
+				addedDesire += tempCap - currentDesire - addedDesire;
+			}
+		}
+		
+		tempCap = 0;
+		tempMulti = 1;
+		if(rawValue < 0 && currentDesire + addedDesire > tempCap) {
+			if(Math.round(currentDesire + addedDesire + rawValue * (1/tempMulti)) >= tempCap) {
+				addedDesire += Math.round(rawValue * (1/tempMulti));
+				rawValue = 0;
+			}
+			else {
+				let removedRawValue = -1 * (currentDesire + addedDesire - tempCap) * tempMulti;
+				rawValue -= removedRawValue;
+				addedDesire += tempCap - currentDesire - addedDesire;
+			}
+		}
+	}
+	
+	this.setCockDesire(Math.round(this.cockDesire + addedDesire), fromWillpowerSkill); 
 };
 
-Game_Actor.prototype.gainRandomDesire = function(value) { 
-	this.gainRandomDesireWithCockWeight(value, 1);
+Game_Actor.prototype.gainRandomDesire = function(value, fromDesireRegen) { 
+	this.gainRandomDesireWithCockWeight(value, 1, fromDesireRegen);
 };
-Game_Actor.prototype.gainRandomDesireWithCockWeight = function(value, weight) { 
+Game_Actor.prototype.gainRandomDesireWithCockWeight = function(value, weight, fromDesireRegen) { 
 	switch(Math.randomInt(4 + weight)) {
 		case 0:
-			this.gainMouthDesire(value); 
+			this.gainMouthDesire(value, false, fromDesireRegen); 
 			break;
 		case 1:
-			this.gainBoobsDesire(value);
+			this.gainBoobsDesire(value, false, fromDesireRegen);
 			break;
 		case 2:
-			this.gainPussyDesire(value);
+			this.gainPussyDesire(value, false, fromDesireRegen);
 			break;
 		case 3:
-			this.gainButtDesire(value);
+			this.gainButtDesire(value, false, fromDesireRegen);
 			break;
 		default:
-			this.gainCockDesire(value);
+			this.gainCockDesire(value, false, fromDesireRegen);
 	} 
 };
+
+Game_Actor.prototype.topDesireIsMouthDesire = function() { 
+	return this.mouthDesire > this.boobsDesire && this.mouthDesire > this.pussyDesire && this.mouthDesire > this.buttDesire && this.mouthDesire > this.cockDesire;
+};
+Game_Actor.prototype.topDesireIsBoobsDesire = function() { 
+	return this.boobsDesire > this.mouthDesire && this.boobsDesire > this.pussyDesire && this.boobsDesire > this.buttDesire && this.boobsDesire > this.cockDesire;
+};
+Game_Actor.prototype.topDesireIsPussyDesire = function() { 
+	return this.pussyDesire > this.boobsDesire && this.pussyDesire > this.mouthDesire && this.pussyDesire > this.buttDesire && this.pussyDesire > this.cockDesire;
+};
+Game_Actor.prototype.topDesireIsButtDesire = function() { 
+	return this.buttDesire > this.boobsDesire && this.buttDesire > this.pussyDesire && this.buttDesire > this.mouthDesire && this.buttDesire > this.cockDesire;
+};
+Game_Actor.prototype.topDesireIsCockDesire = function() { 
+	return this.cockDesire > this.boobsDesire && this.cockDesire > this.pussyDesire && this.cockDesire > this.buttDesire && this.cockDesire > this.mouthDesire;
+};
+
 
 ////////////////////////
 ////////////////////////
@@ -3339,10 +4612,10 @@ Game_Actor.prototype.canGetBoobsSeen = function() {
 	return !this.isBodySlotUnavailable(BOOBS_ID);
 };
 Game_Actor.prototype.canGetNipplesSeen = function() { 
-	return (this.isAroused() || this.isClothingAtStageSeeBothBoobs()) && !this.isBodySlotUnavailable(NIPPLES_ID);
+	return (this.isAroused() && this.isClothingAtStageSeeBothBoobs()) && !this.isBodySlotUnavailable(NIPPLES_ID);
 };
 Game_Actor.prototype.canGetClitSeen = function() { 
-	return this.isAroused() && (this.isClothingAtStageSeePussy() && !this.isWearingPanties()) && !this.isBodySlotUnavailable(CLIT_ID);
+	return this.isClothingAtStageSeePussy() && !this.isWearingPanties() && !this.isBodySlotUnavailable(CLIT_ID);
 };
 Game_Actor.prototype.canGetPussySeen = function() { 
 	return this.isClothingAtStageSeePussy() && !this.isWearingPanties() && !this.isBodySlotUnavailable(PUSSY_ID);
@@ -3376,6 +4649,14 @@ Game_Actor.prototype.canGetMouthSwallowSeen = function() {
 /////////////////////////////////////
 // Petting
 
+Game_Actor.prototype.canSuckFingers = function() { 
+	let mouthReq = this.suckFingersMouthDesireRequirement();
+	
+	if(this.isInWaitressSexPose() && (this.tachieStraw !== REM_TACHIE_NULL && this.tachieStraw !== 'empty') && this._karrynMugContent > 0)
+		return false;
+	
+	return this.mouthDesire >= mouthReq && this.isBodySlotAvailableForPetting(MOUTH_ID);
+};
 Game_Actor.prototype.canGetKissed = function(kissingLvl) { 
 	let req = this.kissingMouthDesireRequirement(kissingLvl);
 	
@@ -3426,7 +4707,7 @@ Game_Actor.prototype.canGetAnalPetted = function() {
 // Toys
 
 Game_Actor.prototype.canGetClitToyInserted = function() { 
-	if(!this.isBodySlotAvailableForToy(CLIT_ID)) return false;
+	if(!this._clitToyInsertablePose || this._wearingClitToy || this.isBodySlotPenis(CLIT_ID)) return false;
 	let poseName = this.poseName;
 	let req = this.clitToyPussyDesireRequirement();
 
@@ -3434,7 +4715,7 @@ Game_Actor.prototype.canGetClitToyInserted = function() {
 	return this.pussyDesire >= req && pettable;
 };
 Game_Actor.prototype.canGetPussyToyInserted = function() { 
-	if(!this.isBodySlotAvailableForToy(PUSSY_ID) || !this.isWet) return false;
+	if(!this._pussyToyInsertablePose || this.isBodySlotPenis(PUSSY_ID) || this._wearingPussyToy || !this.isWet) return false;
 	let req = this.pussyToyPussyDesireRequirement();
 	
 	let meetDesireReq = this.pussyDesire >= req;
@@ -3442,7 +4723,7 @@ Game_Actor.prototype.canGetPussyToyInserted = function() {
 	return meetDesireReq && insertable;
 };
 Game_Actor.prototype.canGetAnalToyInserted = function() { 
-	if(!this.isBodySlotAvailableForToy(ANAL_ID)) return false;
+	if(!this._analToyInsertablePose || this._wearingAnalToy || this.isBodySlotPenis(ANAL_ID)) return false;
 	let req = this.analToyButtDesireRequirement();
 	
 	let meetDesireReq = this.buttDesire >= req;
@@ -3457,16 +4738,6 @@ Game_Actor.prototype.canGetSpanked = function() {
 	let req = this.spankingButtDesireRequirement();
 
 	return this.buttDesire >= req && this.isBodySlotAvailableForPetting(BUTT_ID) && this.isPoseSpankable();
-};
-
-Game_Actor.prototype.canSuckFingers = function() { 
-	let cockReq = this.suckFingersCockDesireRequirement();
-	let mouthReq = this.suckFingersMouthDesireRequirement();
-	
-	if(this.isInWaitressSexPose() && (this.tachieStraw !== REM_TACHIE_NULL && this.tachieStraw !== 'empty') && this._karrynMugContent > 0)
-		return false;
-	
-	return this.cockDesire >= cockReq && this.mouthDesire >= mouthReq && this.isBodySlotAvailableForPetting(MOUTH_ID);
 };
 
 Game_Actor.prototype.canGetCunnilingus = function() { 
@@ -3570,19 +4841,43 @@ Game_Actor.prototype.canPetWithLeftHand = function() {
 ////////
 // Ejaculation
 
-Game_Actor.prototype.canBePussyCreampied = function() { 
+Game_Actor.prototype.canGetFaceBukkaked = function(target) { 
+	let req = this.faceBukkakeCockDesireRequirement();
+	if(!target)
+		return this.cockDesire >= req;
+	else
+		return this.cockDesire >= req;
+};
+Game_Actor.prototype.canGetBodyBukkaked = function(target) { 
+	let req = this.bodyBukkakeCockDesireRequirement();
+	if(!target)
+		return this.cockDesire >= req;
+	else
+		return this.cockDesire >= req;
+};
+
+Game_Actor.prototype.canBePussyCreampied = function(target) { 
 	let req = this.pussyCreampieCockDesireRequirement();
-	return this.cockDesire >= req;
+	if(!target)
+		return this.cockDesire >= req;
+	else
+		return this.cockDesire >= req && target.isUsingBodySlotPenis(PUSSY_ID);
 };
 
-Game_Actor.prototype.canBeAnalCreampied = function() { 
+Game_Actor.prototype.canBeAnalCreampied = function(target) { 
 	let req = this.analCreampieCockDesireRequirement();
-	return this.cockDesire >= req;
+	if(!target)
+		return this.cockDesire >= req;
+	else
+		return this.cockDesire >= req && target.isUsingBodySlotPenis(ANAL_ID);
 };
 
-Game_Actor.prototype.canMouthSwallow = function() { 
+Game_Actor.prototype.canMouthSwallow = function(target) { 
 	let req = this.mouthSwallowCockDesireRequirement();
-	return this.cockDesire >= req;
+	if(!target)
+		return this.cockDesire >= req;
+	else
+		return this.cockDesire >= req && target.isUsingBodySlotPenis(MOUTH_ID);
 };
 
 //None

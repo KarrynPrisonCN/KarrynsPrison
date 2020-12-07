@@ -119,6 +119,18 @@ const BM_DEFEATED_LV2_SLUTTY_BGM_PAN = 0;
 const BM_DEFEATED_LV2_SLUTTY_BGM_PITCH = 100;
 const BM_DEFEATED_LV2_SLUTTY_BGM_VOLUME = 80;
 
+//defeated lvl 3 - normal
+const BM_DEFEATED_LV3_NORMAL_BGM_NAME = "H_Defeated1";
+const BM_DEFEATED_LV3_NORMAL_BGM_PAN = 0;
+const BM_DEFEATED_LV3_NORMAL_BGM_PITCH = 100;
+const BM_DEFEATED_LV3_NORMAL_BGM_VOLUME = 70;
+
+//defeated lvl 3 - slutty
+const BM_DEFEATED_LV3_SLUTTY_BGM_NAME = "H_Slut2";
+const BM_DEFEATED_LV3_SLUTTY_BGM_PAN = 0;
+const BM_DEFEATED_LV3_SLUTTY_BGM_PITCH = 100;
+const BM_DEFEATED_LV3_SLUTTY_BGM_VOLUME = 80;
+
 //defeated guard - normal
 const BM_DEFEATED_GUARD_NORMAL_BGM_NAME = "H_Defeated1";
 const BM_DEFEATED_GUARD_NORMAL_BGM_PAN = 0;
@@ -214,7 +226,7 @@ BattleManager.playBattleBgm = function() {
 	let bgmPitch = 100;
 	let mapId = $gameMap._mapId;
 	
-	if(Karryn.isInMasturbationPose()) {
+	if(Karryn.isInMasturbationCouchPose()) {
 		bgmName = BM_MAS_BGM_NAME;
 		bgmVolume = BM_MAS_BGM_VOLUME;
 	}
@@ -247,6 +259,20 @@ BattleManager.playBattleBgm = function() {
 				bgmPitch = BM_DEFEATED_LV2_NORMAL_BGM_PITCH;
 				bgmPan = BM_DEFEATED_LV2_NORMAL_BGM_PAN;
 				bgmVolume = BM_DEFEATED_LV2_NORMAL_BGM_VOLUME;
+			}
+		}
+		else if(Karryn.isInDefeatedLevel3Pose()) {
+			if(useSluttyDefeatedVersion) {
+				bgmName = BM_DEFEATED_LV3_SLUTTY_BGM_NAME;
+				bgmPitch = BM_DEFEATED_LV3_SLUTTY_BGM_PITCH;
+				bgmPan = BM_DEFEATED_LV3_SLUTTY_BGM_PAN;
+				bgmVolume = BM_DEFEATED_LV3_SLUTTY_BGM_VOLUME;
+			}
+			else {
+				bgmName = BM_DEFEATED_LV3_NORMAL_BGM_NAME;
+				bgmPitch = BM_DEFEATED_LV3_NORMAL_BGM_PITCH;
+				bgmPan = BM_DEFEATED_LV3_NORMAL_BGM_PAN;
+				bgmVolume = BM_DEFEATED_LV3_NORMAL_BGM_VOLUME;
 			}
 		}
 		else if(Karryn.isInDefeatedGuardPose()) {
@@ -297,6 +323,10 @@ BattleManager.playBattleBgm = function() {
 		if(mapId === MAP_ID_KARRYN_OFFICE && $gameVariables.value(VARIABLE_PROLOGUE_PROGRESS_ID) === 5 && !$gameSwitches.value(SWITCH_PROLOGUE_ENDED)) {
 			bgmName = BM_TUTORIAL_BGM_NAME;
 			bgmVolume = BM_TUTORIAL_BGM_VOLUME;
+		}
+		else if(Prison.currentlyOutsidePrison()) {
+			bgmName = BM_EB_BGM_NAME;
+			bgmVolume = BM_EB_BGM_VOLUME;
 		}
 		else if(Prison.currentlyPrisonLevelOne()) {
 			bgmName = BM_PLVL1_NORMAL_BGM_NAME;
@@ -498,7 +528,7 @@ BattleManager.pullOutAllEnemies = function() {
 };
 
 BattleManager.pullOutEnemy = function(enemy) {
-	if(!enemy.isInAPose()) return;
+	if(!enemy || !enemy.isInAPose()) return;
 	let actor = enemy.getPoseSkillTarget();
 
 	//Karryn first needs to uninsert ungrope untoy everything the enemy is doing
@@ -544,30 +574,38 @@ BattleManager.removeEnemyPenisStatus = function(enemy, actor) {
 	if(enemy.isUsingBodySlotPenis(MOUTH_ID)) {
 		actor.disableBlowjobPoseSkills();
 		actor.setMouthInserted(false);
+		actor._tempBlowjobConsUsage = 0;
+		actor._tempRimjobConsUsage = 0;
 	}
 	if(enemy.isUsingBodySlotPenis(RIGHT_HAND_ID)) {
 		actor.disableRightHandjobPoseSkills();
 		actor.setRightHandInserted(false);
+		if(!actor.isBodySlotInserted(LEFT_HAND_ID)) actor._tempHandjobConsUsage = 0;
 	}
 	if(enemy.isUsingBodySlotPenis(LEFT_HAND_ID)) {
 		actor.disableLeftHandjobPoseSkills();
 		actor.setLeftHandInserted(false);
+		if(!actor.isBodySlotInserted(RIGHT_HAND_ID)) actor._tempHandjobConsUsage = 0;
 	}
 	if(enemy.isUsingBodySlotPenis(BOOBS_ID)) {
 		actor.disableTittyFuckPoseSkills();
 		actor.setBoobsInserted(false);
+		actor._tempTitjobConsUsage = 0;
 	}
 	if(enemy.isUsingBodySlotPenis(PUSSY_ID)) {
 		actor.disablePussySexPoseSkills();
 		actor.setPussyInserted(false);
+		actor._tempPussySexConsUsage = 0;
 	}
 	if(enemy.isUsingBodySlotPenis(ANAL_ID)) {
 		actor.disableAnalSexPoseSkills();
 		actor.setAnalInserted(false);
+		actor._tempAnalSexConsUsage = 0;
 	}
 	if(enemy.isUsingBodySlotPenis(FEET_ID)) {
 		actor.disableFootjobPoseSkills();
 		actor.setFeetInserted(false);
+		actor._tempFootjobConsUsage = 0;
 	}
 	
 	
@@ -584,6 +622,99 @@ BattleManager.removeEnemyPenisStatus = function(enemy, actor) {
 		actor.setOther4Inserted(false);
 	}
 };
+
+/////////
+// Upgrade Pose
+///////////
+
+BattleManager.upgradingPoseReinsertBody = function(actor) {	
+	$gameTroop.aliveMembers().forEach(function(enemy) {
+		if(enemy.isPoseHelper()) {
+			BattleManager.reinsertEnemyPenisStatus(enemy, actor);
+			BattleManager.reinsertEnemyPettedStatus(enemy, actor);
+		}
+	});
+}
+
+BattleManager.reinsertEnemyPenisStatus = function(enemy, actor) {
+	if(enemy.isUsingBodySlotPenis(MOUTH_ID)) {
+		actor.setMouthInserted(true, enemy);
+	}
+	if(enemy.isUsingBodySlotPenis(RIGHT_HAND_ID)) {
+		if(actor.isBodySlotUnavailable(RIGHT_HAND_ID)) {
+			actor.setRightHandInserted(false);
+			actor.setBodyPartUnavailable(RIGHT_HAND_ID);
+			actor.disableRightHandjobPoseSkills();
+			enemy.removeState(STATE_RIGHTHAND_ENEMYPOSE_ID);
+			enemy.setBodySlotFree(RIGHT_HAND_ID);
+			enemy._targetForHandjob = false;
+			enemy.resetPoseStatus();
+			
+			if(actor.isBodySlotAvailableForPenis(LEFT_HAND_ID)) {
+				enemy.beforeEval_join_generic_lefthand(actor, true);
+				enemy.removeState(STATE_JUST_JOINED_ID);
+			}
+		}
+		else {
+			actor.setRightHandInserted(true, enemy);
+		}
+	}
+	if(enemy.isUsingBodySlotPenis(LEFT_HAND_ID)) {
+		if(actor.isBodySlotUnavailable(LEFT_HAND_ID)) {
+			actor.setLeftHandInserted(false);
+			actor.setBodyPartUnavailable(LEFT_HAND_ID);
+			actor.disableLeftHandjobPoseSkills();
+			enemy.removeState(STATE_LEFTHAND_ENEMYPOSE_ID);
+			enemy.setBodySlotFree(LEFT_HAND_ID);
+			enemy._targetForHandjob = false;
+			enemy.resetPoseStatus();
+			
+			if(actor.isBodySlotAvailableForPenis(RIGHT_HAND_ID)) {
+				enemy.beforeEval_join_generic_righthand(actor, true);
+				enemy.removeState(STATE_JUST_JOINED_ID);
+			}
+		}
+		else {
+			actor.setLeftHandInserted(true, enemy);
+		}
+	}
+	if(enemy.isUsingBodySlotPenis(BOOBS_ID)) {
+		actor.setBoobsInserted(true, enemy);
+	}
+	if(enemy.isUsingBodySlotPenis(PUSSY_ID)) {
+		actor.setPussyInserted(true, enemy);
+	}
+	if(enemy.isUsingBodySlotPenis(ANAL_ID)) {
+		actor.setAnalInserted(true, enemy);
+	}
+	if(enemy.isUsingBodySlotPenis(FEET_ID)) {
+		actor.setFeetInserted(true, enemy);
+	}
+	
+	
+	if(enemy.isUsingBodySlotPenis(OTHER_1_ID)) {
+		actor.setOther1Inserted(true, enemy);
+	}
+	if(enemy.isUsingBodySlotPenis(OTHER_2_ID)) {
+		actor.setOther2Inserted(true, enemy);
+	}
+	if(enemy.isUsingBodySlotPenis(OTHER_3_ID)) {
+		actor.setOther3Inserted(true, enemy);
+	}
+	if(enemy.isUsingBodySlotPenis(OTHER_4_ID)) {
+		actor.setOther4Inserted(true, enemy);
+	}
+};
+BattleManager.reinsertEnemyPettedStatus = function(enemy, actor) {
+	if(enemy.isUsingBodySlotAnus(MOUTH_ID)) {
+		actor.setMouthRimming(true, enemy);
+	}
+	if(enemy.isUsingBodySlotPenis(CLIT_ID)) {
+		actor.setPussyCunni(true, enemy);
+	}
+	actor.setKissedChange(false, enemy);
+};
+
 
 /////////
 // Swap Master
@@ -779,7 +910,7 @@ Game_Action.prototype.isActorSexSkill = function() {
     }
 };
 
-Game_Action.prototype.isKickSkill = function() {
+Game_Action.prototype.isActorKickSkill = function() {
     if (this.isSkill()) {
         return this.item().hasTag(TAG_KICK_SKILL);
     } else {
@@ -794,7 +925,10 @@ Game_Action.prototype.isActorCombatStanceSkill = function() {
 		//for testing empty attack skillIds
 		//console.log(skillId);
 		
-		return skillId === SKILL_CAUTIOUS_STANCE_ID || skillId === SKILL_DEFENSIVE_STANCE_ID || skillId === SKILL_COUNTER_STANCE_ID;
+		return skillId === SKILL_CAUTIOUS_STANCE_ID || skillId === SKILL_DEFENSIVE_STANCE_ID || skillId === SKILL_COUNTER_STANCE_ID || (skillId >= SKILL_CAUTIOUS_REVITALIZE_ID && skillId <= SKILL_COUNTER_FIX_CLOTHES_ID);
+
+
+
     } else {
         return false;
     }
@@ -861,14 +995,19 @@ Game_Action.prototype.targetsForOpponents = function() {
 };
 
 Game_Action.prototype.executeMpDamage = function(target, value) {
-    if (!this.isMpRecover()) {
+	let isFemaleOrgasmSkill = this.item().hasTag(TAG_FEMALE_ORGASM_SKILL);
+    if(!this.isMpRecover()) {
         value = Math.min(target.mp, value);
     }
-    if (value !== 0 || this.item().hasTag(TAG_FEMALE_ORGASM_SKILL)) {
+    if(value !== 0 || isFemaleOrgasmSkill) {
         this.makeSuccess(target);
     }
     target.gainMp(-value);
     this.gainDrainedMp(value);
+	
+	if(target.energy <= 0 && isFemaleOrgasmSkill) {
+		target.passivePostOrgasmRevivalEffect();
+	}
 };
 
 //////////
@@ -878,6 +1017,8 @@ Game_Action.prototype.executeMpDamage = function(target, value) {
 Game_Actor.prototype.clearBattleSkillsFlags = function() {
 	this.resetEnergyCosts();
 	this.resetWillpowerCosts();
+	this.resetAttackSkillConsUsage();
+	this.resetSexSkillConsUsage();
 	this._isCurrentlyUsingSkewer = false;
 };
 
@@ -1083,6 +1224,8 @@ BattleManager.processVictoryFinish = function() {
     $gameParty.clearVictoryData();
     this.endBattle(this._victoryType);
 	AudioManager.stopBgm();
+	this._playingSpecialBgm = false;
+	this._playingDownBgmChange = false;
     this.replayBgmAndBgs();
 	this._victoryType = -1;
     this._victoryPhase = false;
@@ -1090,10 +1233,12 @@ BattleManager.processVictoryFinish = function() {
 
 
 BattleManager.processAbort = function() {
+	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
     $gameParty.removeBattleStates();
 	$gameParty.addRecordEscaped();
-	$gameParty.increaseFatigueGain(PRISON_FATIGUE_FROM_ESCAPING);
-	Karryn.turnOnJustEscapedFlag();
+	if(!Prison.easyMode()) $gameParty.increaseFatigueGain(PRISON_FATIGUE_FROM_ESCAPING);
+	actor.reduceCockinessFromEscaping();
+	actor.turnOnJustEscapedFlag();
 	this._phase = 'rem abort';
 	this._victoryPhase = true;
 	this._victoryType = 1;
@@ -1103,7 +1248,7 @@ BattleManager.processAbort = function() {
 };
 
 BattleManager.processDefeat = function() {
-	if(!Karryn.isInMasturbationPose()) {
+	if(!Karryn.isInMasturbationCouchPose() && !$gameParty.isInGloryBattle) {
 		$gameParty.addRecordDefeated();
 		$gameParty.setDefeatedSwitchesOn();
 		//$gameParty._halfGoldRewardsFlag = true;

@@ -55,8 +55,10 @@ const BATTLEBACK2_BAR_WAITRESS_SERVE_NAME = 'BarTables';
 
 const ITEM_SECOND_COST_ID = 2;
 
-const WAITRESS_SKILL_START = 1668;
+const WAITRESS_SKILL_START = 1667;
 const WAITRESS_SKILL_END = 1698;
+
+const WAITRESS_REP_DECAY_DAYS = 4;
 
 const BAR_SPAWN_INTERVAL = 30;
 const BAR_BASE_SPAWN_CHANCE = 0.005;
@@ -154,17 +156,18 @@ Game_Party.prototype.setWaitressBattleTimeLimit = function(minutes) {
 };
 
 Game_Party.prototype.setBarReputation = function(value) {
-	let minBarRep = 0;
-	if(Karryn.hasThisTitle(TITLE_ID_BUSTY_BARMAID)) minBarRep += 1; 
-	if(Karryn.hasThisTitle(TITLE_ID_WAITRESS_ORGASM)) minBarRep += 1; 
-	if(Karryn.hasThisTitle(TITLE_ID_CUM_GUZZLER)) minBarRep += 1; 
-	if(Karryn.hasEdict(EDICT_HIRE_BAR_WAITERS)) minBarRep += 2; 
+	let minBarRep = this.getMinimumBarReputation();
 	
 	this._barReputation = Math.max(minBarRep, value);
 	$gameVariables.setValue(VARIABLE_BAR_REPUTATION_ID, this._barReputation);
 };
 Game_Party.prototype.increaseBarReputation = function(value) {
 	this.setBarReputation(this._barReputation + value);
+};
+Game_Party.prototype.getMinimumBarReputation = function() {
+	let minBarRep = 0;
+	if(Karryn.hasEdict(EDICT_HIRE_BAR_WAITERS)) minBarRep += 2; 
+	return minBarRep;
 };
 
 Game_Party.prototype.preWaitressBattleSetup = function() {
@@ -216,7 +219,6 @@ Game_Party.prototype.postWaitressBattleCleanup  = function() {
 	actor.resetAlcoholRate(true);
 	actor.changeToWardenClothing();
 	actor.waitressBattle_fullResetTray();
-	//this.postBattleCleanup();
 };
 
 Game_Party.prototype.addWaitressTips = function(value) {
@@ -854,7 +856,7 @@ Game_Actor.prototype.waitressBattle_askedForFlash = function(target) {
 	if(!flashReqMet) {
 		BattleManager._logWindow.push('addText', TextManager.waitressWontFlash.format(this.displayName()));
 		AudioManager.playSe({name:'Cancel1', pan:0, pitch:100, volume:100});
-		this.gainBoobsDesire(Math.randomInt(3) + 1);
+		this.gainBoobsDesire(Math.randomInt(3) + 3, false);
 	}
 	else {
 		this.waitressBattle_flashes();
@@ -931,15 +933,15 @@ Game_Actor.prototype.afterEval_waitressSex_drinkMug = function() {
 	else {
 		let drinkAmount = 2;
 		
-		if(this.hasPassive(PASSIVE_SWALLOW_ML_THREE_ID)) drinkAmount += 35 + Math.randomInt(20);
-		else if(this.hasPassive(PASSIVE_SWALLOW_ML_TWO_ID)) drinkAmount += 25 + Math.randomInt(15);
-		else if(this.hasPassive(PASSIVE_SWALLOW_ML_ONE_ID)) drinkAmount += 20 + Math.randomInt(12);
-		else if(this.hasPassive(PASSIVE_SWALLOW_PEOPLE_TWO_ID)) drinkAmount += 12 + Math.randomInt(8);
-		else if(this.hasPassive(PASSIVE_SWALLOW_PEOPLE_ONE_ID)) drinkAmount += 5 + Math.randomInt(4);
-		else drinkAmount += 2 + Math.randomInt(3);
+		if(this.hasPassive(PASSIVE_SWALLOW_ML_FOUR_ID)) drinkAmount += 16 + Math.randomInt(20);
+		else if(this.hasPassive(PASSIVE_SWALLOW_ML_THREE_ID)) drinkAmount += 16 + Math.randomInt(15);
+		else if(this.hasPassive(PASSIVE_SWALLOW_ML_TWO_ID)) drinkAmount += 14 + Math.randomInt(12);
+		else if(this.hasPassive(PASSIVE_SWALLOW_ML_ONE_ID)) drinkAmount += 12 + Math.randomInt(8);
+		else if(this.hasPassive(PASSIVE_FIRST_SWALLOW_ID)) drinkAmount += 8 + Math.randomInt(4);
+		else drinkAmount += 5 + Math.randomInt(3);
 		
-		if(this.hasPassive(PASSIVE_MAX_SWALLOW_ML_TWO_ID)) drinkAmount += 20 + Math.randomInt(12);
-		else if(this.hasPassive(PASSIVE_MAX_SWALLOW_ML_ONE_ID))	drinkAmount += 10 + Math.randomInt(6);
+		if(this.hasPassive(PASSIVE_MAX_SWALLOW_ML_TWO_ID)) drinkAmount += 10 + Math.randomInt(12);
+		else if(this.hasPassive(PASSIVE_MAX_SWALLOW_ML_ONE_ID))	drinkAmount += 5 + Math.randomInt(6);
 		
 		drinkAmount += Math.randomInt(drinkAmount);
 		drinkAmount = Math.min(drinkAmount, this._karrynMugAmount);
@@ -1015,32 +1017,20 @@ Game_Actor.prototype.updateTachieStraw = function() {
 };
 
 Game_Actor.prototype.waitressBattle_flashRequirementMet = function() {
-	let flashRequirements = 100;
+	let flashRequirements = 75;
 	let boobsDesire = this.boobsDesire;
 	
-	if(this.isDrunk || this.isDeadDrunk || this.isHorny)
-		flashRequirements -= boobsDesire;
+	if(this.isDeadDrunk)
+		flashRequirements *= 0.5;
+	else if(this.isDrunk || this.isHorny)
+		flashRequirements *= 0.66;
 	else if(this.isTipsy)
-		flashRequirements -= boobsDesire * 0.7;
-	else
-		flashRequirements -= boobsDesire * 0.3;
+		flashRequirements *= 0.75;
+
+	if(this.hasPassive(PASSIVE_WAITRESS_FLASH_COUNT_TWO_ID)) flashRequirements -= 25;
+	else if(this.hasPassive(PASSIVE_WAITRESS_FLASH_COUNT_ONE_ID)) flashRequirements -= 15;
 	
-	if(this.hasPassive(PASSIVE_FLAUNT_COUNT_THREE_ID)) flashRequirements -= 100;
-	else if(this.hasPassive(PASSIVE_FLAUNT_COUNT_TWO_ID)) flashRequirements -= 75;
-	else if(this.hasPassive(PASSIVE_FLAUNT_COUNT_ONE_ID)) flashRequirements -= 40;
-	
-	if(this.hasPassive(PASSIVE_SIGHT_PEOPLE_FOUR_ID)) flashRequirements -= 60;
-	else if(this.hasPassive(PASSIVE_SIGHT_PEOPLE_THREE_ID)) flashRequirements -= 45;
-	else if(this.hasPassive(PASSIVE_SIGHT_PEOPLE_TWO_ID)) flashRequirements -= 30;
-	else if(this.hasPassive(PASSIVE_SIGHT_PEOPLE_ONE_ID)) flashRequirements -= 15;
-	
-	if(this.hasPassive(PASSIVE_SIGHT_PLEASURE_TWO_ID)) flashRequirements -= 20;
-	else if(this.hasPassive(PASSIVE_SIGHT_PLEASURE_ONE_ID)) flashRequirements -= 10;
-	
-	if(this.hasPassive(PASSIVE_WAITRESS_FLASH_COUNT_TWO_ID)) flashRequirements -= 40;
-	else if(this.hasPassive(PASSIVE_WAITRESS_FLASH_COUNT_ONE_ID)) flashRequirements -= 20;
-	
-	return flashRequirements <= 0;
+	return boobsDesire >= flashRequirements && boobsDesire > 10;
 };
 
 // Karryn flashes
@@ -1048,25 +1038,7 @@ Game_Actor.prototype.waitressBattle_flashes = function() {
 	let isTrayEmpty = this.waitressBattle_isTrayEmpty();
 	let witnesses = $gameTroop.waitressBattle_getHarassmentMembersOfTable(this._barLocation);
 	let numOfWitnesses = witnesses.length;
-	//let clothingStage = this.clothingStage;
-	
-	/*
-	if(!isTrayEmpty) {
-		this.setTachieLeftArm('naked5');
-		this.setTachieRightArmInFrontOfBoobs(false);
-		let fileId = 'waitress_1_flash';
-		if((this.isAroused() || this.justOrgasmed()) && this.tachieHasBoobsHard()) fileId += '_hard';
-		this.setTachieBoobs(fileId);
-	}
-	else {
-		this.setTachieLeftArm('naked5');
-		this.setTachieRightArm('zipper_1');
-		this.setTachieRightArmInFrontOfBoobs(true);
-		let fileId = 'waitress_2_flash';
-		if((this.isAroused() || this.justOrgasmed()) && this.tachieHasBoobsHard()) fileId += '_hard';
-		this.setTachieBoobs(fileId);
-	}
-	*/
+
 	if(this.hasPassive(PASSIVE_FLAUNT_COUNT_TWO_ID)) {
 		if(Math.random() < 0.3)
 			this.addHornyState();
@@ -1102,7 +1074,8 @@ Game_Actor.prototype.waitressBattle_flashes = function() {
 	BattleManager._logWindow.push('addText', TextManager.waitressFlashes.format(this.displayName()));
 	AudioManager.playSe({name:'Equip3', pan:10, pitch:110, volume:100});
 	BattleManager.actionRemLines(KARRYN_LINE_WAITRESS_SERVE_FLASH);
-	//this.emoteWaitressServingPose(true);
+	
+	this.emoteWaitressServingPose();
 };
 
 Game_Actor.prototype.showEval_tableServeDrink = function(drink) {
@@ -1160,6 +1133,8 @@ Game_Actor.prototype.afterEval_tableServeDrink = function(target, drink) {
 		
 		this.gainStaminaExp(10, this.level);
 		this.gainDexterityExp(30, this.level);
+		
+		if(target.isGuardType) this._todayServedGuardInBar++;
 	}
 	else {
 		BattleManager._logWindow.push('addText', TextManager.waitressEnemyRefusesDrink.format(target.displayName()));
@@ -1679,8 +1654,11 @@ Game_Actor.prototype.waitressXParamRate = function(id) {
 	if($gameParty.isInWaitressBattle) {
 		if(id === XPARAM_CRIT_EVA_ID || id === XPARAM_EVA_ID) {
 			passiveRate -= this.getAlcoholRate() * 0.5;
+		}
+		else if(id === XPARAM_EVA_ID) {
+			passiveRate -= this.getAlcoholRate() * 0.5;
 						
-			if(!this.waitressBattle_isTrayEmpty()) {
+			if(!this.waitressBattle_isTrayEmpty() && this.isInWaitressServingPose()) {
 				passiveRate *= 0.33;
 			}
 			
@@ -1697,8 +1675,13 @@ Game_Actor.prototype.waitressXParamRate = function(id) {
 Game_Actor.prototype.waitressSParamRate = function(id) {
 	let passiveRate = 1;
 	if(this.isInWaitressServingPose()) {
-		if(id === SPARAM_WP_REGEN_ID && this.isNotAcceptingAnyAlcohol()) {
-			passiveRate *= 0.5;
+		if(id === SPARAM_WP_REGEN_ID) {
+			if(this.isNotAcceptingAnyAlcohol())
+				passiveRate *= 0.5;
+			
+			if(this.isDeadDrunk) passiveRate *= 0.3;
+			else if(this.isDrunk) passiveRate *= 0.5;
+			else if(this.isTipsy) passiveRate *= 0.7;
 		}
 	}
 	return passiveRate;
@@ -1712,8 +1695,7 @@ Game_Actor.prototype.canStartWaitressSex = function() {
 	let isDrunk = this.isDrunk;
 	let isDeadDrunk = this.isDeadDrunk;
 	
-	//if(!isTipsy && !isDrunk && !isDeadDrunk && !this.hasPassive(PASSIVE_BAR_WAITRESS_SEX_COUNT_THREE_ID)) return;
-	if(!isTipsy && !isDrunk && !isDeadDrunk) return;
+	if(!isTipsy && !isDrunk && !isDeadDrunk) return false;
 	
 	return this.canGetRightHandInserted() || this.canGetMouthInserted() || this.canGetPussyInserted() || this.canGetAnalInserted() || isDeadDrunk;
 };
@@ -1760,27 +1742,21 @@ Game_Actor.prototype.postDamage_basicPetting_waitressServing = function(target, 
 	let tipValue = target.pettingLvl();
 	
 	if(area == AREA_BOOBS) {
-		this.calculateBoobsSensitivityRating();
 		tipValue += BASEDMG_PETTING_BOOBS;
 	}
 	else if(area == AREA_NIPPLES) {
-		this.calculateNipplesSensitivityRating();
 		tipValue += BASEDMG_PETTING_NIPPLES;	
 	}
 	else if(area == AREA_CLIT) {
-		this.calculateClitSensitivityRating();
 		tipValue += BASEDMG_PETTING_CLIT;
 	}
 	else if(area == AREA_PUSSY) {
-		this.calculatePussySensitivityRating();
 		tipValue += BASEDMG_PETTING_PUSSY;
 	}
 	else if(area == AREA_BUTT) {
-		this.calculateButtSensitivityRating();
 		tipValue += BASEDMG_PETTING_BUTT;
 	}
 	else if(area == AREA_ANAL) {
-		this.calculateAnalSensitivityRating();
 		tipValue += BASEDMG_PETTING_ANAL;
 	}
 	
@@ -1812,6 +1788,9 @@ Game_Actor.prototype.postDamage_ejaculation_waitressSex = function(target, area,
 	else if(area == CUM_INTO_MUG) {
 		tipValue *= 0;
 	}
+	else if(area == CUM_ONTO_FLOOR) {
+		tipValue *= 0;
+	}
 	else {
 		tipValue *= 0.9;
 		$gameParty.increaseWaitressCustomerSatisfaction(1);
@@ -1819,7 +1798,7 @@ Game_Actor.prototype.postDamage_ejaculation_waitressSex = function(target, area,
 	
 	if(area == CUM_SWALLOW_MOUTH) {
 		if(this._karrynMugContent === ALCOHOL_TYPE_SEMEN || 
-		(this.canMouthSwallow() && this._karrynMugAmount === 0)) {
+		(this.canMouthSwallow(false) && this._karrynMugAmount === 0)) {
 			this._karrynMugContent = ALCOHOL_TYPE_SEMEN;
 			returnSemen = Math.randomInt(semen);
 			this._karrynMugAmount += returnSemen;
@@ -3415,7 +3394,7 @@ Game_Enemy.prototype.waitressBattle_action_harassWaitress = function(target) {
 
 Game_Enemy.prototype.waitressSex_refillWaitressMug = function(target) {
 	if(target._karrynMugContent === ALCOHOL_TYPE_PALE_ALE && target._karrynMugAmount === 0) {
-		if(target.canMouthSwallow()) {
+		if(target.canMouthSwallow(false)) {
 			return false;
 		}
 		else if(Math.random() < 0.4) {
@@ -3434,7 +3413,7 @@ Game_Enemy.prototype.waitressSex_refillWaitressMug = function(target) {
 
 Game_Enemy.prototype.waitressSex_dumpWaitressMug = function(target) {
 	if(target._karrynMugContent === ALCOHOL_TYPE_PALE_ALE && target._karrynMugAmount > 0) {
-		if(target.canMouthSwallow()) {
+		if(target.canMouthSwallow(false)) {
 			BattleManager._logWindow.push('addText', TextManager.waitressEnemyDumpsKarrynMug.format(this.displayName(), target.displayName()));
 			AudioManager.playSe({name:'+Waitress_Dump1', pan:0, pitch:100, volume:70});
 			target._karrynMugAmount = 0;

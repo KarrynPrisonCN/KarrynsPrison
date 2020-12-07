@@ -410,7 +410,6 @@ Game_Actor.prototype.setupStartingEdicts = function() {
 	this.learnSkill(EDICT_SLASH_TRAINING_ONE);
 	this.learnSkill(EDICT_THRUST_TRAINING_ONE);
 	this.learnSkill(EDICT_REVITALIZE_TRAINING_ONE);
-	this.learnSkill(EDICT_CAUTIOUS_STANCE);
 	this.learnSkill(EDICT_SUPPRESS_DESIRES);
 	this.learnSkill(EDICT_PRISON_GUARDS);
 	this.learnSkill(EDICT_REFORMED_CONVICT_EMPLOYMENT);
@@ -443,6 +442,7 @@ Game_Actor.prototype.setupStartingEdicts = function() {
 	if(this.hasThisTitle(TITLE_ID_AGILITY_THREE)) this.learnSkill(EDICT_SKEWER_TRAINING_ONE);
 	if(this.hasThisTitle(TITLE_ID_ENDURANCE_THREE)) this.learnSkill(EDICT_DEFENSIVE_STANCE);
 	if(this.hasThisTitle(TITLE_ID_MIND_THREE)) this.learnSkill(EDICT_HEALING_THOUGHTS_ONE);
+	if(this.hasThisTitle(TITLE_ID_EVASION_THREE)) this.learnSkill(EDICT_CAUTIOUS_STANCE);
 };
 
 Remtairy.Edicts.Game_Actor_learnSkill = Game_Actor.prototype.learnSkill;
@@ -678,36 +678,80 @@ Game_Actor.prototype.getStatTrainingEdictGoldRate = function() {
 
 Game_Actor.prototype.edictsFatigueRestOffice = function() {
 	let mapId = $gameMap._mapId;
-	let recovery = 25;
+	let recovery = 30;
+	let bonusRecovery = 0.004;
 	
-	//if(this.hasEdict(EDICT_HIRE_A_PHYSICAL_THERAPIST)) recovery += 3;
-	
-	if(this.hasEdict(EDICT_OFFICE_BED_UPGRADE_THREE)) recovery += 15;
-	else if(this.hasEdict(EDICT_OFFICE_BED_UPGRADE_TWO)) recovery += 8;
-	else if(this.hasEdict(EDICT_OFFICE_BED_UPGRADE_ONE)) recovery += 4;
+	if(this.hasEdict(EDICT_OFFICE_BED_UPGRADE_THREE)) {
+		recovery += 18;
+		bonusRecovery = 0.01;
+	}
+	else if(this.hasEdict(EDICT_OFFICE_BED_UPGRADE_TWO)) {
+		recovery += 10;
+		bonusRecovery = 0.008;
+	}
+	else if(this.hasEdict(EDICT_OFFICE_BED_UPGRADE_ONE)) {
+		recovery += 4;
+		bonusRecovery = 0.006;
+	}
 	
 	if(this.hasEdict(EDICT_OFFICE_AUTO_ELECTRONIC_LOCK)) recovery += 6;
 	else if(this.hasEdict(EDICT_OFFICE_HEAVY_DUTY_LOCK)) recovery += 3;
 	
-	let fatigueRate = 1 + this.fatigue * 0.015;
+	let fatigueRate = 1 + this.fatigue * bonusRecovery;
 	return Math.round(recovery * fatigueRate);
 };
 
 Game_Actor.prototype.edictsFatigueRestOutside = function(prisonLevel) {
 	let mapId = $gameMap._mapId;
-	let recovery = 20;
+	let recovery = 25;
+	let bonusRecovery = 0.004;
 	
+
 	if(mapId === MAP_ID_LVL1_GUARD_STATION || mapId === MAP_ID_LVL2_GUARD_STATION || mapId === MAP_ID_LVL3_GUARD_STATION || mapId === MAP_ID_LVL4_GUARD_STATION) {
-		if(this.hasPassive(PASSIVE_SEXUAL_PARTNERS_GUARD_THREE_ID)) recovery = 38;
-		else if(this.hasPassive(PASSIVE_SEXUAL_PARTNERS_GUARD_TWO_ID)) recovery = 32;
-		else if(this.hasPassive(PASSIVE_SEXUAL_PARTNERS_GUARD_ONE_ID)) recovery = 28;
-		else recovery = 24;
+		if(this.hasPassive(PASSIVE_SEXUAL_PARTNERS_GUARD_THREE_ID)) {
+			recovery += 18;
+			bonusRecovery = 0.007;
+		}
+		else if(this.hasPassive(PASSIVE_SEXUAL_PARTNERS_GUARD_TWO_ID)) { 
+			recovery += 12;
+			bonusRecovery = 0.006;
+		}
+		else if(this.hasPassive(PASSIVE_SEXUAL_PARTNERS_GUARD_ONE_ID)) { 
+			recovery += 6;
+			bonusRecovery = 0.005;
+		}
+	}
+	else {
+		if(this.hasPassive(PASSIVE_SEXUAL_PARTNERS_TOTAL_FIVE_ID)) recovery += 6;
+		else if(this.hasPassive(PASSIVE_SEXUAL_PARTNERS_TOTAL_FOUR_ID)) recovery += 4;
+		else if(this.hasPassive(PASSIVE_SEXUAL_PARTNERS_TOTAL_THREE_ID)) recovery += 2;
+		else if(this.hasPassive(PASSIVE_SEXUAL_PARTNERS_TOTAL_TWO_ID)) recovery += 1;
+	
+		if(mapId === MAP_ID_BAR_STORAGE) {
+			if(this.hasPassive(PASSIVE_BLOWBANG_COUNT_THREE_ID)) recovery += 2;
+			else if(this.hasPassive(PASSIVE_BLOWBANG_COUNT_TWO_ID)) {
+				recovery += 1;
+				bonusRecovery = 0.006;
+			}
+		}
+		else if(mapId === MAP_ID_BATHROOM_BROKEN || mapId === MAP_ID_BATHROOM_FIXED) {
+			if(this.hasPassive(PASSIVE_URINAL_COUNT_THREE_ID)) recovery += 2;
+			else if(this.hasPassive(PASSIVE_URINAL_COUNT_TWO_ID)) {
+				recovery += 1;
+				bonusRecovery = 0.006;
+			}
+		}
+		else if(mapId === MAP_ID_LVL3_DEFEAT_SOLITARY_CELL) {
+			if(this.hasPassive(PASSIVE_TIED_SEX_COUNT_THREE_ID)) {
+				recovery += 2;
+				bonusRecovery = 0.006;
+			}
+			else if(this.hasPassive(PASSIVE_TIED_SEX_COUNT_TWO_ID)) recovery += 1;
+		}
 	}
 	
-	
-	if(this.hasEdict(EDICT_HIRE_A_PHYSICAL_THERAPIST)) recovery += 3;
-	
-	let fatigueRate = 1 + this.fatigue * 0.015;
+
+	let fatigueRate = 1 + this.fatigue * bonusRecovery;
 	return Math.round(recovery * fatigueRate);
 };
 
@@ -726,13 +770,21 @@ Game_Actor.prototype.edictsSleepQuality = function() {
 			sleepLvl += 1;
 	}
 	else if(mapId === MAP_ID_LVL1_GUARD_STATION || mapId === MAP_ID_LVL2_GUARD_STATION || mapId === MAP_ID_LVL3_GUARD_STATION || mapId === MAP_ID_LVL4_GUARD_STATION) {
-		if(this.hasPassive(PASSIVE_SEXUAL_PARTNERS_GUARD_THREE_ID)) sleepLvl = 2;
-		else if(this.hasPassive(PASSIVE_SEXUAL_PARTNERS_GUARD_TWO_ID)) sleepLvl = 1;
-		else if(this.hasPassive(PASSIVE_SEXUAL_PARTNERS_GUARD_ONE_ID)) sleepLvl = 0;
+		if(this.hasPassive(PASSIVE_SEXUAL_PARTNERS_GUARD_THREE_ID)) sleepLvl += 3;
+		else if(this.hasPassive(PASSIVE_SEXUAL_PARTNERS_GUARD_TWO_ID)) sleepLvl += 2;
+		else if(this.hasPassive(PASSIVE_SEXUAL_PARTNERS_GUARD_ONE_ID)) sleepLvl += 1;
 		
 		if(this.hasEdict(EDICT_RESEARCH_STAFF_SLEEP_PERK)) sleepLvl += 1;
 	}
-	
+	else if(mapId === MAP_ID_BAR_STORAGE) {
+		if(this.hasPassive(PASSIVE_BLOWBANG_COUNT_THREE_ID)) sleepLvl += 1;
+	}
+	else if(mapId === MAP_ID_BATHROOM_BROKEN || mapId === MAP_ID_BATHROOM_FIXED) {
+		if(this.hasPassive(PASSIVE_URINAL_COUNT_TWO_ID)) sleepLvl += 1;
+	}
+	else if(mapId === MAP_ID_LVL3_DEFEAT_SOLITARY_CELL) {
+		if(this.hasPassive(PASSIVE_TIED_SEX_COUNT_THREE_ID)) sleepLvl += 1;
+	}
 	
 	let rand = Math.randomInt(6);
 	if(rand === 2) sleepLvl--;
@@ -873,9 +925,6 @@ Game_Actor.prototype.karrynEdictParamRate = function(paramId) {
 	
 	if(trainingCount > 0) {
 		let multi = 0.05 * trainingCount;
-		//for(let i = 1; i < trainingCount; ++i) 
-		//	multi += i / 100;
-
 		rate += multi;
 	}
 	
@@ -1218,9 +1267,10 @@ Game_Actor.prototype.edictSkilledStaffMultipler = function() {
 	let rate = 1;
 
 	if($gameParty._gold === 0) {
-		rate = 0;
+		rate -= 1;
 	}
-	else if(!Karryn.hasEdict(EDICT_REPAIR_STAFF_LOUNGE)) {
+	
+	if(!Karryn.hasEdict(EDICT_REPAIR_STAFF_LOUNGE)) {
 		rate -= 0.5;
 		if(Karryn.hasEdict(EDICT_STAFF_NEED_TO_PAY_IN_STORE))
 			rate -= 0.2;
@@ -1231,8 +1281,10 @@ Game_Actor.prototype.edictSkilledStaffMultipler = function() {
 		
 	}
 	
+	rate += $gameParty.gloryHoleReputationEffect_staffEfficiency();
+	
 	rate = Math.max(0, rate);
-	rate = Math.min(1, rate);
+	rate = Math.min(2, rate);
 	
 	return rate;
 };
@@ -1407,6 +1459,11 @@ Game_Enemy.prototype.prisonGuardEdictParamRate = function(paramId) {
 		if(this.isStateAffected(STATE_SLOW_ID) && Karryn.hasEdict(EDICT_SPEC_LEG_THRUST_POWER))
 			rate *= 0.5;
 	}
+	
+	if(paramId === PARAM_STRENGTH_ID) {
+		if(this.isStateAffected(STATE_WEAKEN_ID) && Karryn.hasEdict(EDICT_SPEC_ARM_SLASH_POWER))
+			rate *= 0.6;
+	}
 
 	//Guard Training
 	let trainingRate = 1;
@@ -1506,6 +1563,11 @@ Game_Enemy.prototype.inmateEdictParamRate = function(paramId) {
 	else if(Karryn.hasEdict(EDICT_STOCK_WITH_ADULT_BOOKS) && paramId === PARAM_CHARM_ID) {
 		if(Karryn.hasEdict(EDICT_ALLOW_BORROWING_ADULT_BOOKS)) rate *= 1.3;
 		else rate *= 1.1;
+	}
+	
+	if(paramId === PARAM_STRENGTH_ID) {
+		if(this.isStateAffected(STATE_WEAKEN_ID) && Karryn.hasEdict(EDICT_SPEC_ARM_SLASH_POWER))
+			rate *= 0.6;
 	}
 	
 	////////
@@ -1641,8 +1703,68 @@ Game_Enemy.prototype.inmateEdictAILevel = function() {
 	
 	if(Karryn.hasEdict(EDICT_RECREATIONAL_DRUGS_FOR_INMATES)) bonus -= 0.1;
 
-	
 	return bonus;
+};
+
+//////////
+// Initial Pleasure Edict
+
+Game_Enemy.prototype.enemyInitialPleasureEdicts = function() {
+	let addedMulti = 0;
+
+	//General
+	if(!Karryn.hasEdict(EDICT_REPAIR_KITCHEN_AND_MESS_HALL)) addedMulti -= 1;
+	else addedMulti += 1;
+	
+	if(Karryn.hasEdict(EDICT_RESEARCH_APHRODISIAC_CONTRACT)) addedMulti += 1.5;
+	
+	if(Karryn.hasEdict(EDICT_ANATOMY_CLASSES) && Karryn.hasEdict(EDICT_REPAIR_CLASSROOM)) {
+		if(Karryn.hasEdict(EDICT_SUPPLY_MODEL_OF_KARRYNS_BODY))
+			addedMulti += 2.5;
+		else
+			addedMulti += 1;
+	}
+	
+	if(Karryn.hasEdict(EDICT_STOCK_WITH_ADULT_BOOKS) && Karryn.hasEdict(EDICT_REPAIR_READING_ROOM)) {
+		if(Karryn.hasEdict(EDICT_ALLOW_BORROWING_ADULT_BOOKS))
+			addedMulti += 2.5;
+		else
+			addedMulti += 1;
+	}
+
+	//Specific
+	if(this.isPrisonGuard) {
+		if(Karryn.hasEdict(EDICT_APHRODISIACS_IN_GUARD_FOOD)) addedMulti += 1.5;
+		if(Karryn.hasEdict(EDICT_PERFORMANCE_ENHANCEMENT_DRUGS_FOR_GUARDS)) addedMulti += 1.5;
+		if(Karryn.hasEdict(EDICT_SEX_ENDURANCE_DRUGS_FOR_GUARDS)) addedMulti -= 1;
+	}
+	else if(this.isInmate) {
+		//All Inmates
+		if(Karryn.hasEdict(EDICT_APHRODISIACS_IN_INMATE_FOOD)) addedMulti += 1.5;
+		if(Karryn.hasEdict(EDICT_APHRODISIACS_DRUGS_FOR_INMATES)) addedMulti += 1.5;
+		if(Karryn.hasEdict(EDICT_SEX_ENDURANCE_DRUGS_FOR_INMATES)) addedMulti += 1;
+		
+		if(this.isThugType) {
+			if(Karryn.hasEdict(EDICT_THUGS_STRESS_RELIEF)) addedMulti += 2;
+			else if(Karryn.hasEdict(EDICT_WEAKEN_THE_THUGS)) addedMulti -= 3;
+		}
+		else if(this.isGoblinType) {
+			if(Karryn.hasEdict(EDICT_BAIT_GOBLINS)) addedMulti += 2;
+			else if(Karryn.hasEdict(EDICT_DEMEAN_GOBLINS)) addedMulti -= 3;
+		}
+		else if(this.isRogueType) {
+			if(Karryn.hasEdict(EDICT_FIGHT_ROGUE_DISTRACTIONS_WITH_DISTRACTIONS)) addedMulti += 2;
+			else if(Karryn.hasEdict(EDICT_FORCE_ROGUES_INTO_LABOR)) addedMulti -= 3;
+		}
+		else if(this.isNerdType) {
+			if(Karryn.hasEdict(EDICT_GIVE_IN_TO_NERD_BLACKMAIL)) addedMulti += 2;
+			else if(Karryn.hasEdict(EDICT_THREATEN_THE_NERDS)) addedMulti -= 3;
+		}
+	}
+	
+	
+
+	return addedMulti;
 };
 
 /////////////

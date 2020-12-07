@@ -716,52 +716,66 @@ var Saba;
             _Game_Interpreter.prototype.tachieActorCommnad = function (actor, command, arg2, args) {
                 switch (command) {
                     case 'face':
-                        actor.setTachieFace(parseInt(arg2));
+                        if(arg2 == 0) actor.resetTachieFace();
+						else actor.setTachieFace(parseInt(arg2));
                         break;
                     case 'pose':
                         actor.setPose(arg2);
                         break;
                     case 'hoppe':
-                        actor.setTachieHoppe(arg2);
+						if(arg2 == 0) actor.resetTachieHoppe();
+                        else actor.setTachieHoppe(arg2);
                         break;
 					case 'sweat':
-						actor.setTachieSweat(arg2);
+						if(arg2 == 0) actor.resetTachieSweat();
+						else actor.setTachieSweat(arg2);
 						break;
 					case 'eyebrows':
-						actor.setTachieEyebrows(arg2);
+						if(arg2 == 0) actor.resetTachieEyebrows();
+						else actor.setTachieEyebrows(arg2);
 						break;
 					case 'eyes':
-						actor.setTachieEyes(arg2);
+						if(arg2 == 0) actor.resetTachieEyes();
+						else actor.setTachieEyes(arg2);
 						break;
 					case 'hair':
-						actor.setTachieHair(arg2);
+						if(arg2 == 0) actor.resetTachieHair();
+						else actor.setTachieHair(arg2);
 						break;
 					case 'mouth':
-						actor.setTachieMouth(arg2);
+						if(arg2 == 0) actor.resetTachieMouth();
+						else actor.setTachieMouth(arg2);
 						break;
 					case 'body':
-                        actor.setTachieBody(arg2);
+                        if(arg2 == 0) actor.resetTachieBody();
+						else actor.setTachieBody(arg2);
                         break;
 					case 'bodyEXT':
                         actor.setTachieBodyExtension(arg2);
                         break;	
 					case 'leftarm':
-                        actor.setTachieLeftArm(arg2);
+                        if(arg2 == 0) actor.resetTachieLeftArm();
+						else actor.setTachieLeftArm(arg2);
                         break;
 					case 'rightarm':
-                        actor.setTachieRightArm(arg2);
+                        if(arg2 == 0) actor.resetTachieRightArm();
+						else actor.setTachieRightArm(arg2);
                         break;
 					case 'glasses':
-                        actor.setTachieGlasses(arg2);
+                        if(arg2 == 0) actor.resetTachieGlasses();
+						else actor.setTachieGlasses(arg2);
                         break;
 					case 'head':
-                        actor.setTachieHead(arg2);
+                        if(arg2 == 0) actor.resetTachieHead();
+						else actor.setTachieHead(arg2);
                         break;	
 					case 'hat':
-                        actor.setTachieHat(arg2);
+                        if(arg2 == 0) actor.resetTachieHat();
+						else actor.setTachieHat(arg2);
                         break;	
 					case 'frontA':
-						actor.setTachieFrontA(arg2);
+						if(arg2 == 0) actor.resetTachieFrontA();
+						else actor.setTachieFrontA(arg2);
                         break;	
                 }
             };
@@ -1434,7 +1448,7 @@ var Saba;
                 if (this._tachieFace === n) {
                     return;
                 }
-                this._tachieFace = n;
+                this._tachieFace = '' + n;
                 this.setDirty();
             };
 			_Game_Actor.prototype.resetTachieFace = function () {
@@ -1445,7 +1459,7 @@ var Saba;
                 if (this._tachieHoppe === n) {
                     return;
                 }
-                this._tachieHoppe = n;
+                this._tachieHoppe = '' + n;
                 this.setDirty();
             };
 			_Game_Actor.prototype.resetTachieHoppe = function () {
@@ -1456,7 +1470,7 @@ var Saba;
                 if (this._tachieSweat === n) {
                     return;
                 }
-                this._tachieSweat = n;
+                this._tachieSweat = '' + n;
                 this.setDirty();
             };
 			_Game_Actor.prototype.resetTachieSweat = function () {
@@ -1467,14 +1481,14 @@ var Saba;
                 if (this._tachieEyebrows === n) {
                     return;
                 }
-                this._tachieEyebrows = n;
+                this._tachieEyebrows = '' + n;
                 this.setDirty();
             };
 			//_Game_Actor.prototype.setTachieCutIn = function (n) {
             //    if (this._tachieCutIn === n) {
             //        return;
             //    }
-            //    this._tachieCutIn = n;
+            //    this._tachieCutIn = '' + n;
 			//	this._cutInFrame = 0;
 			//	BattleManager.cutinWait();
             //    this.setDirty();
@@ -1493,7 +1507,7 @@ var Saba;
                 if (this._tachieHair === n) {
                     return;
                 }
-                this._tachieHair = n;
+                this._tachieHair = '' + n;
                 this.setDirty();
             };
 			_Game_Actor.prototype.resetTachieHair = function () {
@@ -1504,7 +1518,7 @@ var Saba;
                 if (this._tachieEyes === n) {
                     return;
                 }
-                this._tachieEyes = n;
+                this._tachieEyes = '' + n;
                 this.setDirty();
             };
 			_Game_Actor.prototype.resetTachieEyes = function () {
@@ -1515,7 +1529,7 @@ var Saba;
                 if (this._tachieMouth === n) {
                     return;
                 }
-                this._tachieMouth = n;
+                this._tachieMouth = '' + n;
                 this.setDirty();
             };
 			_Game_Actor.prototype.resetTachieMouth = function () {
@@ -1526,7 +1540,7 @@ var Saba;
                 if (this._tachieBody === n) {
                     return;
                 }
-                this._tachieBody = n;
+                this._tachieBody = '' + n;
                 this.setCacheChanged();
             };	
 			_Game_Actor.prototype.resetTachieBody = function () {
@@ -1537,7 +1551,7 @@ var Saba;
                 if (this._tachieBodyExtension === n) {
                     return;
                 }
-                this._tachieBodyExtension = n;
+                this._tachieBodyExtension = '' + n;
                 this.setCacheChanged();
             };	
 			_Game_Actor.prototype.resetTachieBodyExtension = function () {
@@ -1548,7 +1562,7 @@ var Saba;
                 if (this._tachieHead === n) {
                     return;
                 }
-                this._tachieHead = n;
+                this._tachieHead = '' + n;
                 this.setCacheChanged();
             };
 			_Game_Actor.prototype.resetTachieHead = function () {
@@ -1564,7 +1578,7 @@ var Saba;
                 if (this._tachieHat === n) {
                     return;
                 }
-				this._tachieHat = n;
+				this._tachieHat = '' + n;
                 this.setCacheChanged();
             };
 			_Game_Actor.prototype.resetTachieHat = function () {
@@ -1575,7 +1589,7 @@ var Saba;
                 if (this._tachieGlasses === n) {
                     return;
                 }
-                this._tachieGlasses = n;
+                this._tachieGlasses = '' + n;
                 this.setCacheChanged();
             };
 			_Game_Actor.prototype.resetTachieGlasses = function () {
@@ -1586,7 +1600,7 @@ var Saba;
                 if (this._tachieTie === n) {
                     return;
                 }
-                this._tachieTie = n;
+                this._tachieTie = '' + n;
                 this.setCacheChanged();
             };
 			_Game_Actor.prototype.resetTachieTie = function () {
@@ -1597,7 +1611,7 @@ var Saba;
                 if (this._tachiePanties === n) {
                     return;
                 }
-                this._tachiePanties = n;
+                this._tachiePanties = '' + n;
                 this.setCacheChanged();
             };
 			_Game_Actor.prototype.resetTachiePanties = function () {
@@ -1608,7 +1622,7 @@ var Saba;
                 if (this._tachieHolePussy === n) {
                     return;
                 }
-                this._tachieHolePussy = n;
+                this._tachieHolePussy = '' + n;
                 this.setCacheChanged();
             };
 			_Game_Actor.prototype.resetTachieHolePussy = function () {
@@ -1619,7 +1633,7 @@ var Saba;
                 if (this._tachieHoleAnus === n) {
                     return;
                 }
-                this._tachieHoleAnus = n;
+                this._tachieHoleAnus = '' + n;
                 this.setCacheChanged();
             };
 			_Game_Actor.prototype.resetTachieHoleAnus = function () {
@@ -1631,7 +1645,7 @@ var Saba;
                 if (this._tachieClothes === n) {
                     return;
                 }
-                this._tachieClothes = n;
+                this._tachieClothes = '' + n;
                 this.setCacheChanged();
             };
 			_Game_Actor.prototype.resetTachieClothes = function () {
@@ -1643,7 +1657,7 @@ var Saba;
                 if (this._tachieSkirt === n) {
                     return;
                 }
-                this._tachieSkirt = n;
+                this._tachieSkirt = '' + n;
                 this.setCacheChanged();
             };
 			_Game_Actor.prototype.resetTachieSkirt = function () {
@@ -1655,7 +1669,7 @@ var Saba;
                 if (this._tachieLegs === n) {
                     return;
                 }
-                this._tachieLegs = n;
+                this._tachieLegs = '' + n;
                 this.setCacheChanged();
             };
 			_Game_Actor.prototype.resetTachieLegs = function () {
@@ -1667,7 +1681,7 @@ var Saba;
                 if (this._tachieStraw === n) {
                     return;
                 }
-                this._tachieStraw = n;
+                this._tachieStraw = '' + n;
                 this.setCacheChanged();
             };
 			_Game_Actor.prototype.resetTachieStraw = function () {
@@ -1679,7 +1693,7 @@ var Saba;
                 if (this._tachieLeftHole === n) {
                     return;
                 }
-                this._tachieLeftHole = n;
+                this._tachieLeftHole = '' + n;
                 this.setCacheChanged();
             };
 			_Game_Actor.prototype.resetTachieLeftHole = function () {
@@ -1691,7 +1705,7 @@ var Saba;
                 if (this._tachieRightHole === n) {
                     return;
                 }
-                this._tachieRightHole = n;
+                this._tachieRightHole = '' + n;
                 this.setCacheChanged();
             };
 			_Game_Actor.prototype.resetTachieRightHole = function () {
@@ -1703,7 +1717,7 @@ var Saba;
                 if (this._tachieWeapon === n) {
                     return;
                 }
-                this._tachieWeapon = n;
+                this._tachieWeapon = '' + n;
                 this.setCacheChanged();
             };
 			_Game_Actor.prototype.resetTachieWeapon = function () {
@@ -1714,7 +1728,7 @@ var Saba;
                 if (this._tachieLeftArm === n) {
                     return;
                 }
-                this._tachieLeftArm = n;
+                this._tachieLeftArm = '' + n;
                 this.setCacheChanged();
             };
 			_Game_Actor.prototype.resetTachieLeftArm = function () {
@@ -1725,7 +1739,7 @@ var Saba;
                 if (this._tachieRightArm === n) {
                     return;
                 }
-                this._tachieRightArm = n;
+                this._tachieRightArm = '' + n;
                 this.setCacheChanged();
             };
 			_Game_Actor.prototype.resetTachieRightArm = function () {
@@ -1736,7 +1750,7 @@ var Saba;
                 if (this._tachieBoobs === n) {
                     return;
                 }
-                this._tachieBoobs = n;
+                this._tachieBoobs = '' + n;
                 this.setCacheChanged();
             };
 			_Game_Actor.prototype.resetTachieBoobs = function () {
@@ -1747,7 +1761,7 @@ var Saba;
                 if (this._tachieLeftBoob === n) {
                     return;
                 }
-                this._tachieLeftBoob = n;
+                this._tachieLeftBoob = '' + n;
                 this.setCacheChanged();
             };
 			_Game_Actor.prototype.resetTachieLeftBoob = function () {
@@ -1758,7 +1772,7 @@ var Saba;
                 if (this._tachieRightBoob === n) {
                     return;
                 }
-                this._tachieRightBoob = n;
+                this._tachieRightBoob = '' + n;
                 this.setCacheChanged();
             };
 			_Game_Actor.prototype.resetTachieRightBoob = function () {
@@ -1777,7 +1791,7 @@ var Saba;
                 if (this._tachieButt === n) {
                     return;
                 }
-                this._tachieButt = n;
+                this._tachieButt = '' + n;
                 this.setCacheChanged();
             };
 			_Game_Actor.prototype.resetTachieButt = function () {
@@ -1789,7 +1803,7 @@ var Saba;
                 if (this._tachieCock === n) {
                     return;
                 }
-                this._tachieCock = n;
+                this._tachieCock = '' + n;
                 this.setCacheChanged();
             };
 			_Game_Actor.prototype.resetTachieCock = function () {
@@ -1800,7 +1814,7 @@ var Saba;
                 if (this._tachieCockBoobs === n) {
                     return;
                 }
-                this._tachieCockBoobs = n;
+                this._tachieCockBoobs = '' + n;
                 this.setCacheChanged();
             };
 			_Game_Actor.prototype.resetTachieCockBoobs = function () {
@@ -1811,7 +1825,7 @@ var Saba;
                 if (this._tachieCockMouth === n) {
                     return;
                 }
-                this._tachieCockMouth = n;
+                this._tachieCockMouth = '' + n;
                 this.setCacheChanged();
             };
 			_Game_Actor.prototype.resetTachieCockMouth = function () {
@@ -1822,7 +1836,7 @@ var Saba;
                 if (this._tachieCockFeet === n) {
                     return;
                 }
-                this._tachieCockFeet = n;
+                this._tachieCockFeet = '' + n;
                 this.setCacheChanged();
             };
 			_Game_Actor.prototype.resetTachieCockFeet = function () {
@@ -1833,7 +1847,7 @@ var Saba;
                 if (this._tachieCockPussy === n) {
                     return;
                 }
-                this._tachieCockPussy = n;
+                this._tachieCockPussy = '' + n;
                 this.setCacheChanged();
             };
 			_Game_Actor.prototype.resetTachieCockPussy = function () {
@@ -1844,7 +1858,7 @@ var Saba;
                 if (this._tachieCockAnal === n) {
                     return;
                 }
-                this._tachieCockAnal = n;
+                this._tachieCockAnal = '' + n;
                 this.setCacheChanged();
             };
 			_Game_Actor.prototype.resetTachieCockAnal = function () {
@@ -1856,7 +1870,7 @@ var Saba;
                 if (this._tachieCockLeftArm === n) {
                     return;
                 }
-                this._tachieCockLeftArm = n;
+                this._tachieCockLeftArm = '' + n;
                 this.setCacheChanged();
             };
 			_Game_Actor.prototype.resetTachieCockLeftArm = function () {
@@ -1867,7 +1881,7 @@ var Saba;
                 if (this._tachieCockRightArm === n) {
                     return;
                 }
-                this._tachieCockRightArm = n;
+                this._tachieCockRightArm = '' + n;
                 this.setCacheChanged();
             };
 			_Game_Actor.prototype.resetTachieCockRightArm = function () {
@@ -1879,28 +1893,28 @@ var Saba;
                 if (this._tachieVisitorA === n) {
                     return;
                 }
-                this._tachieVisitorA = n;
+                this._tachieVisitorA = '' + n;
                 this.setCacheChanged();
             };
 			_Game_Actor.prototype.setTachieVisitorB = function (n) {
                 if (this._tachieVisitorB === n) {
                     return;
                 }
-                this._tachieVisitorB = n;
+                this._tachieVisitorB = '' + n;
                 this.setCacheChanged();
             };
 			_Game_Actor.prototype.setTachieVisitorC = function (n) {
                 if (this._tachieVisitorC === n) {
                     return;
                 }
-                this._tachieVisitorC = n;
+                this._tachieVisitorC = '' + n;
                 this.setCacheChanged();
             };
 			_Game_Actor.prototype.setTachieVisitorD = function (n) {
                 if (this._tachieVisitorD === n) {
                     return;
                 }
-                this._tachieVisitorD = n;
+                this._tachieVisitorD = '' + n;
                 this.setCacheChanged();
             };
 			_Game_Actor.prototype.resetTachieVisitorA = function () {
@@ -1932,35 +1946,35 @@ var Saba;
                 if (this._tachieBackA === n) {
                     return;
                 }
-                this._tachieBackA = n;
+                this._tachieBackA = '' + n;
                 this.setCacheChanged();
             };
 			_Game_Actor.prototype.setTachieBackB = function (n) {
                 if (this._tachieBackB === n) {
                     return;
                 }
-                this._tachieBackB = n;
+                this._tachieBackB = '' + n;
                 this.setCacheChanged();
             };
 			_Game_Actor.prototype.setTachieBackC = function (n) {
                 if (this._tachieBackC === n) {
                     return;
                 }
-                this._tachieBackC = n;
+                this._tachieBackC = '' + n;
                 this.setCacheChanged();
             };
 			_Game_Actor.prototype.setTachieBackD = function (n) {
                 if (this._tachieBackD === n) {
                     return;
                 }
-                this._tachieBackD = n;
+                this._tachieBackD = '' + n;
                 this.setCacheChanged();
             };
 			_Game_Actor.prototype.setTachieBackE = function (n) {
                 if (this._tachieBackE === n) {
                     return;
                 }
-                this._tachieBackE = n;
+                this._tachieBackE = '' + n;
                 this.setCacheChanged();
             };
 			
@@ -1998,35 +2012,35 @@ var Saba;
                 if (this._tachieFrontA === n) {
                     return;
                 }
-                this._tachieFrontA = n;
+                this._tachieFrontA = '' + n;
                 this.setCacheChanged();
             };			
 			_Game_Actor.prototype.setTachieFrontB = function (n) {
                 if (this._tachieFrontB === n) {
                     return;
                 }
-                this._tachieFrontB = n;
+                this._tachieFrontB = '' + n;
                 this.setCacheChanged();
             };
 			_Game_Actor.prototype.setTachieFrontC = function (n) {
                 if (this._tachieFrontC === n) {
                     return;
                 }
-                this._tachieFrontC = n;
+                this._tachieFrontC = '' + n;
                 this.setCacheChanged();
             };
 			_Game_Actor.prototype.setTachieFrontD = function (n) {
                 if (this._tachieFrontD === n) {
                     return;
                 }
-                this._tachieFrontD = n;
+                this._tachieFrontD = '' + n;
                 this.setCacheChanged();
             };
 			_Game_Actor.prototype.setTachieFrontE = function (n) {
                 if (this._tachieFrontE === n) {
                     return;
                 }
-                this._tachieFrontE = n;
+                this._tachieFrontE = '' + n;
                 this.setCacheChanged();
             };
 			
@@ -2168,6 +2182,8 @@ var Saba;
 				this.doPreloadTachie(this.tachieSemenCockAnalFile());
 				this.doPreloadTachie(this.tachieSemenCockFeetFile());
 				this.doPreloadTachie(this.tachieSemenCockNormalFile());
+				this.doPreloadTachie(this.tachieSemenHoleLeftFile());
+				this.doPreloadTachie(this.tachieSemenHoleRightFile());
 				this.doPreloadTachie(this.tachieSemenFrontAFile());
 				this.doPreloadTachie(this.tachieSemenFrontBFile());
 				this.doPreloadTachie(this.tachieSemenFrontCFile());
@@ -2578,6 +2594,18 @@ var Saba;
 				if(!id) return null;
                 return this.tachieBaseId + 'zaa_chin_' + id;
             };
+			
+			_Game_Actor.prototype.tachieSemenHoleLeftFile = function () {
+				let id = this.getTachieSemenHoleLeftId();
+				if(!id) return null;
+                return this.tachieBaseId + 'zaa_hole_left_' + id;
+            };
+			_Game_Actor.prototype.tachieSemenHoleRightFile = function () {
+				let id = this.getTachieSemenHoleRightId();
+				if(!id) return null;
+                return this.tachieBaseId + 'zaa_hole_right_' + id;
+            };
+			
 			
 			
 			_Game_Actor.prototype.tachieSemenFrontAFile = function () {
@@ -3039,6 +3067,12 @@ var Saba;
 								this.drawTachieDroolFingers(actor, cache);
 							else if(layerType === LAYER_TYPE_DROOL_NIPPLES)
 								this.drawTachieDroolNipples(actor, cache);
+							else if(layerType === LAYER_TYPE_SEMEN_HOLE_LEFT)
+								this.drawTachieSemenHoleLeft(actor, cache);
+							else if(layerType === LAYER_TYPE_SEMEN_HOLE_RIGHT)
+								this.drawTachieSemenHoleRight(actor, cache);
+							
+							
 							
 						}
 					}
@@ -3104,6 +3138,14 @@ var Saba;
 					}
 					
 					if(!actor.tachieBoobsInFrontOfBody()) {
+						if(!actor.tachieSemenBellyInFrontOfBoobs()) {
+							this.drawTachieSemenBelly(actor, cache);
+						}
+						if(!actor.tachieSemenBoobsInFrontOfBoobs()) {
+							this.drawTachieSemenBoobs(actor, cache);
+							this.drawTachieSemenLeftBoob(actor, cache);
+							this.drawTachieSemenRightBoob(actor, cache);
+						}
 					
 						if(!actor.tachieCockBoobsInFrontOfBoobs()) {
 							this.drawTachieCockBoobs(actor, cache);	
@@ -3118,8 +3160,11 @@ var Saba;
 						
 						this.drawTachieBoobsErection(actor, cache);
 						
-						if(actor.tachieSemenBellyAndBoobsInFrontOfBoobs()) {
+						
+						if(actor.tachieSemenBellyInFrontOfBoobs()) {
 							this.drawTachieSemenBelly(actor, cache);
+						}
+						if(actor.tachieSemenBoobsInFrontOfBoobs()) {
 							this.drawTachieSemenBoobs(actor, cache);
 							this.drawTachieSemenLeftBoob(actor, cache);
 							this.drawTachieSemenRightBoob(actor, cache);
@@ -3182,7 +3227,7 @@ var Saba;
 					this.drawTachieBody(actor, cache);	
 					this.drawTachiePubic(actor, cache);
 					
-					this.drawTachieMug(actor, cache);	
+					//this.drawTachieMug(actor, cache);	
 						
 					
 					if(actor.tachieHolesCocksToysInFrontOfBody()) {
@@ -3193,6 +3238,9 @@ var Saba;
 						this.drawTachieSemenAnal(actor, cache);
 						this.drawTachieSemenCrotch(actor, cache);
 						
+						if(actor.tachieClitToyBehindCocks()) 
+							this.drawTachieClitToy(actor, cache);
+						
 						this.drawTachieCockPussy(actor, cache);
 						this.drawTachieCockAnal(actor, cache);
 						this.drawTachieSemenCockPussy(actor, cache);
@@ -3202,7 +3250,7 @@ var Saba;
 						
 						//Toys
 						if(!actor.tachieToysInFrontOfEverything() && !actor.tachieToysInBehindOfEverything()) {
-							if(!actor.tachieClitToyInFrontOfMainToys()) 
+							if(!actor.tachieClitToyInFrontOfMainToys() && !actor.tachieClitToyBehindCocks()) 
 								this.drawTachieClitToy(actor, cache);
 							
 							if(!actor.tachiePussyToyInFrontOfAnalToy()) 
@@ -3214,7 +3262,7 @@ var Saba;
 							if(actor.tachiePussyToyInFrontOfAnalToy()) 
 								this.drawTachiePussyToy(actor, cache);
 							
-							if(actor.tachieClitToyInFrontOfMainToys()) 
+							if(actor.tachieClitToyInFrontOfMainToys() && !actor.tachieClitToyBehindCocks()) 
 								this.drawTachieClitToy(actor, cache);
 						}//Toys end
 					}	
@@ -3239,8 +3287,18 @@ var Saba;
 					}
 					
 					if(actor.tachieBoobsInFrontOfBody()) {
+						
 						if(actor.tachieWeaponInFrontOfBody() && !actor.tachieWeaponInFrontOfBoobs()  && !actor.tachieWeaponBehindEverything())
 							this.drawTachieWeapon(actor, cache);	
+						
+						if(!actor.tachieSemenBellyInFrontOfBoobs()) {
+							this.drawTachieSemenBelly(actor, cache);
+						}
+						if(!actor.tachieSemenBoobsInFrontOfBoobs()) {
+							this.drawTachieSemenBoobs(actor, cache);
+							this.drawTachieSemenLeftBoob(actor, cache);
+							this.drawTachieSemenRightBoob(actor, cache);
+						}
 						
 						if(!actor.tachieCockBoobsInFrontOfBoobs()) {
 							this.drawTachieCockBoobs(actor, cache);	
@@ -3255,8 +3313,10 @@ var Saba;
 						
 						this.drawTachieBoobsErection(actor, cache);
 						
-						if(actor.tachieSemenBellyAndBoobsInFrontOfBoobs()) {
+						if(actor.tachieSemenBellyInFrontOfBoobs()) {
 							this.drawTachieSemenBelly(actor, cache);
+						}
+						if(actor.tachieSemenBoobsInFrontOfBoobs()) {
 							this.drawTachieSemenBoobs(actor, cache);
 							this.drawTachieSemenLeftBoob(actor, cache);
 							this.drawTachieSemenRightBoob(actor, cache);
@@ -3298,16 +3358,11 @@ var Saba;
 					//this.drawTachieDroolFingers(actor, cache);
 					
 					this.drawTachieSemenRightArm(actor, cache);	
-					this.drawTachieSemenLeftArm(actor, cache);		
+					if(!actor.tachieSemenLeftArmInFrontOfFront()) 
+						this.drawTachieSemenLeftArm(actor, cache);		
 					this.drawTachieSemenCockRightArm(actor, cache);	
 					this.drawTachieSemenCockLeftArm(actor, cache);	
 					
-					if(!actor.tachieSemenBellyAndBoobsInFrontOfBoobs()) {
-						this.drawTachieSemenBelly(actor, cache);
-						this.drawTachieSemenBoobs(actor, cache);
-						this.drawTachieSemenLeftBoob(actor, cache);
-						this.drawTachieSemenRightBoob(actor, cache);
-					}
 					
 					this.drawTachieSemenRightLeg(actor, cache);	
 					this.drawTachieSemenLeftLeg(actor, cache);	
@@ -3341,8 +3396,11 @@ var Saba;
 					
 					this.drawTachieCockFeet(actor, cache);
 					
-					if(!actor.tachieFrontInFrontOfFace())
+					if(!actor.tachieFrontInFrontOfFace()) {
 						this.drawTachieFront(actor, cache);
+						if(actor.tachieSemenLeftArmInFrontOfFront()) 
+							this.drawTachieSemenLeftArm(actor, cache);
+					}
                 }
                 if (!$gameTemp.tachieTmpBitmap) {
                     $gameTemp.tachieTmpBitmap = new Bitmap(Graphics.width + TACHIE_REM_CUSTOM_WIDTH, Graphics.height+TACHIE_REM_CUSTOM_HEIGHT);
@@ -3358,7 +3416,7 @@ var Saba;
 				this.drawTachieSweat(actor, tempBitmap);
 				this.drawTachieHair(actor, tempBitmap);
 				this.drawTachieMouth(actor, tempBitmap);
-				this.drawTachieStraw(actor, tempBitmap);
+				//this.drawTachieStraw(actor, tempBitmap);
 				this.drawTachieEyes(actor, tempBitmap);
 				this.drawTachieEyebrows(actor, tempBitmap);
 				
@@ -3376,8 +3434,11 @@ var Saba;
 					this.drawTachieSemenCockMouth(actor, tempBitmap);	
 				}
 				
-				if(actor.tachieFrontInFrontOfFace())
-						this.drawTachieFront(actor, tempBitmap);
+				if(actor.tachieFrontInFrontOfFace()) {
+					this.drawTachieFront(actor, tempBitmap);
+					if(actor.tachieSemenLeftArmInFrontOfFront()) 
+						this.drawTachieSemenLeftArm(actor, tempBitmap);
+				}
 				
 				this.drawTachieCutIn(actor, tempBitmap);
                 this.drawTachieCache(actor, tempBitmap, bitmap, x, y, rect, scale);
@@ -3867,6 +3928,12 @@ var Saba;
 			this.drawTachieSemenCockNormal = function (actor, bitmap) {
                 this.drawTachieFile(actor.tachieSemenCockNormalFile(), bitmap, actor);
             };
+			this.drawTachieSemenHoleLeft = function (actor, bitmap) {
+                this.drawTachieFile(actor.tachieSemenHoleLeftFile(), bitmap, actor);
+            };
+			this.drawTachieSemenHoleRight = function (actor, bitmap) {
+                this.drawTachieFile(actor.tachieSemenHoleRightFile(), bitmap, actor);
+            };
 			
 			this.drawTachieDroolMouth = function (actor, bitmap) {
                 this.drawTachieFile(actor.tachieDroolMouthFile(), bitmap, actor);
@@ -3883,10 +3950,10 @@ var Saba;
             };
 			
             this.drawTachieFace = function (actor, bitmap, tachieFace) {
-                if (tachieFace === 0) {
+			   if(tachieFace == 0) {
                     tachieFace = actor.tachieFace;
                 }
-				if (tachieFace === 0) {
+				if(tachieFace == 0) {
 					return;
 				}
                 var file = actor.tachieBaseId + 'face_' + tachieFace;

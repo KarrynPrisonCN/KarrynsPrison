@@ -92,6 +92,9 @@ Game_Actor.prototype.setSpriteBattlerPosData = function(poseName) {
 	} else if(poseName == POSE_DEFEATED_LEVEL2) {
 		this._sbp_current_x = 850;
 		this._sbp_current_y = -180;
+	} else if(poseName == POSE_DEFEATED_LEVEL3) {
+		this._sbp_current_x = 1165;
+		this._sbp_current_y = -150;
 	} else if(poseName == POSE_DEFEATED_GUARD) {
 		this._sbp_current_x = 900;
 		this._sbp_current_y = -230;		
@@ -129,8 +132,8 @@ Game_Actor.prototype.setSpriteBattlerPosData = function(poseName) {
 		this._sbp_current_x = 1005;
 		this._sbp_current_y = -280;	
 	} else if(poseName == POSE_KARRYN_COWGIRL) {
-		this._sbp_current_x = 1005;
-		this._sbp_current_y = -45;	
+		this._sbp_current_x = 1025;
+		this._sbp_current_y = -135;	
 	} else if(poseName == POSE_LIZARDMAN_COWGIRL) {
 		this._sbp_current_x = 1100;
 		this._sbp_current_y = -320;	
@@ -143,8 +146,11 @@ Game_Actor.prototype.setSpriteBattlerPosData = function(poseName) {
 	} else if(poseName == POSE_KICKCOUNTER) {
 		this._sbp_current_x = 1165;
 		this._sbp_current_y = -250;
-	} else if(poseName == POSE_MASTURBATE1) {
+	} else if(poseName == POSE_MASTURBATE_COUCH) {
 		this._sbp_current_x = 880;
+		this._sbp_current_y = -110;
+	} else if(poseName == POSE_MASTURBATE_COUCH) {
+		this._sbp_current_x = 1040;
 		this._sbp_current_y = -110;
 		
 	//Use pose standby values when none of the above

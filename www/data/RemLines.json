@@ -5586,7 +5586,7 @@
 
 "karryn_poseinvite_handjob_exp3_2":{
 "en":["\\C[5]\"It would be a waste to leave your cock alone.♥",
-	"\\C[5]All dicks in this place belongs to me.♥\""],
+	"\\C[5]All dicks in this place belong to me.♥\""],
 "jp":["\\C[5]「余ってるチンポもったいなァい♥全部私のモノォ♥」"],
 "sch":["\\C[5]\"这根阳具可不能被冷落了呢♥我可是这里所有肉棒的主人♥\""],
 "tch":["\\C[5]\"這根陽具可不能被冷落了呢♥我可是這裡所有肉棒的主人♥\""] 
@@ -8614,7 +8614,7 @@
 
 "karryn_cock_stare_exp0_4":{
 "en":["\\C[5]\"Does it look like I'm interested?",
-	"\\C[5]I rather die a thousand times...\""],
+	"\\C[5]I'd rather die a thousand times...\""],
 "jp":["\\C[5]「興味ないわ。ただ不快なだけ……」"],
 "sch":["\\C[5]\"我宁愿死一千遍也不会对你那玩意有兴趣……\""],
 "tch":["\\C[5]\"我寧願死一千遍也不會對你那玩意有興趣……\""] 
@@ -9285,9 +9285,9 @@
 "jp":["\\C[5]「はぁ～イ♥ようこそ要塞ガナンの特設男子便女へ～♥",
 	"\\C[5]いっぱい排泄してって下さ～い♥」"],
 "sch":["\\C[5]\"哈喽~♥欢迎来到盖侬要塞的男用特设小便池~♥",
-	"\\C[5555]请随意在此排出你们的体液~♥\""],
+	"\\C[5]请随意在此排出你们的体液~♥\""],
 "tch":["\\C[5]\"哈嘍~♥歡迎來到蓋儂要塞的男用特設小便池~♥",
-	"\\C[5555]請隨意在此排出你們的體液~♥\""]
+	"\\C[5]請隨意在此排出你們的體液~♥\""]
 },
 
 "defeat_lv2_start_exp3_2":{
@@ -9339,6 +9339,190 @@
 	"\\C[5]馬上就要被當做肉便器了呢~感覺好性福~♥",
 	"\\C[5]褲子脫下來~肉棒挺起來~精液射出來~下個插進來♥\""]
 },
+
+
+"defeat_lv3_start_exp0_1":{
+"en":["\\C[5]\"W-What are you people planning?!",
+	"\\C[5]Nnggh...... Let me go!",
+	"\\C[5]I can't move......!!\""],
+"jp":["\\C[5]「な……貴様ら一体何を？！",
+	"\\C[5]んんっ……離せ！クソッ…身動きができないッ……！！」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"defeat_lv3_start_exp0_2":{
+"en":["\\C[5]\"Is this a solitary cell?!",
+	"\\C[5]Let me out of here, right this instant!!",
+	"\\C[5]Huh?! No way...... my arms and legs are......",
+	"\\C[5]Nnnrrgghh...!!\""],
+"jp":["\\C[5]「まさかここは独房！？すぐに私を解放しなさい！！",
+	"\\C[5]えっ？！そんな……手足の自由が……うぐぐっ…！！」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"defeat_lv3_start_exp1_1":{
+"en":["\\C[5]\"Grr!! You ball-less cowards......!!",
+	"\\C[5]Watch what will happen to you all",
+	"\\C[5]if you do anything weird to me!!\""],
+"jp":["\\C[5]「クッ！！卑怯者どもめ……！！",
+	"\\C[5]これ以上変な事したらタダじゃおかないわよ！！」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"defeat_lv3_start_exp1_2":{
+"en":["\\C[5]\"You all are deviants!",
+	"\\C[5]What could possibly be so amusing about",
+	"\\C[5]doing this to me?! I won't forget this...",
+	"\\C[5]Prepare for an awakening after this!!\""],
+"jp":["\\C[5]「この変態ども！こんな格好させて何が楽しいのよ！？",
+	"\\C[5]許さない……後で覚悟しておくがいいわ！！」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"defeat_lv3_start_exp1_3":{
+"en":["\\C[5]\"Uuu......",
+	"\\C[5]Why do I have to go through this......",
+	"\\C[5]The price for embarrassing me like this is high!!\""],
+"jp":["\\C[5]「うぅっ……こんな情けない格好あり得ない……。",
+	"\\C[5]この私に恥をかかせた罪は重いわよ！！」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"defeat_lv3_start_exp1_4":{
+"en":["\\C[5]\"Nrgh...... Again I have to go",
+	"\\C[5]through with this humilation......",
+	"\\C[5]But too bad! I'm not the type of woman",
+	"\\C[5]who will submit just from something like this!\""],
+"jp":["\\C[5]「んぐっ……またこうやって私に屈辱を味合わせる気ね……。",
+	"\\C[5]お生憎様よ！この程度で堕ちるほど安い女じゃないわ！」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"defeat_lv3_start_exp1_5":{
+"en":["\\C[5]\"I will admit that I lost the fight...!",
+	"\\C[5]But my heart will never submit to you...!!\""],
+"jp":["\\C[5]「戦いに負けたことは認めるわ……！",
+	"\\C[5]しかし私の心までは貴様らに屈したりなどしない……！！」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"defeat_lv3_start_exp2_1":{
+"en":["\\C[5]\"Ohh......",
+	"\\C[5]It kind of hurts a bit......",
+	"\\C[5]I won't run away even if you don't",
+	"\\C[5]bound me so tightly......\""],
+"jp":["\\C[5]「あぁっ……もう痛いじゃないの……。",
+	"\\C[5]そんなにキツく縛らなくても逃げたりしないわよ……。」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"defeat_lv3_start_exp2_2":{
+"en":["\\C[5]\"Hmph......",
+	"\\C[5]Just look at how hard you all are......",
+	"\\C[5]Do you only have balls when you're up",
+	"\\C[5]against someone who can't fight back?\""],
+"jp":["\\C[5]「フン……もう股間がはち切れそうじゃない……。",
+	"\\C[5]抵抗出来ない女を好き放題とは全くいい趣味だわ……」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"defeat_lv3_start_exp2_3":{
+"en":["\\C[5]\"It's such a pain to go through",
+	"\\C[5]with all this bondage......",
+	"\\C[5]Just fuck me if you want to fuck me!\""],
+"jp":["\\C[5]「いちいち拘束してまどろっこしいわね……。",
+	"\\C[5]ヤるならさっさとヤりなさい！」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"defeat_lv3_start_exp2_4":{
+"en":["\\C[5]\"This is the fate of the loser......",
+	"\\C[5]I won't resist, so......",
+	"\\C[5]D-Do as you will with me......\""],
+"jp":["\\C[5]「負けたんだから仕方がないわ……。",
+	"\\C[5]悪あがきはしないから……す……好きにしなさいよ……」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"defeat_lv3_start_exp2_5":{
+"en":["\\C[5](I can't let anyone see me like this.",
+	"\\C[5]No one must know that the Imperial Secretary",
+	"\\C[5]is tied up in a prison......)"],
+"jp":["\\C[5]（皇帝秘書ともあろう者が……無様だわ……。",
+	"\\C[5]こんなみっともない姿……誰にも見せられない……）"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"defeat_lv3_start_exp3_1":{
+"en":["\\C[5]\"Haa...... Haa......♥",
+	"\\C[5]Well, what are you waiting for?♥",
+	"\\C[5]There's a tied up woman here surrounded on",
+	"\\C[5]all sides by big, hard cocks......♥\""],
+"jp":["\\C[5]「はァ……はァ……♥いいわよ♥来なさい♥",
+	"\\C[5]独房に拘束された女一人と、それを囲むビンビンの勃起チンポ達……。",
+	"\\C[5]なんてゾクゾクするシチュエーションかしら♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"defeat_lv3_start_exp3_2":{
+"en":["\\C[5]\"I am now your prize.♥",
+	"\\C[5]Whatever you want to do, I can't stop you.♥",
+	"\\C[5]So come here and release all your desires",
+	"\\C[5]inside me until I'm broken.♥♥\""],
+"jp":["\\C[5]「さぁ♥私を好きしなさい♥ここでは全てアナタ達の自由♥",
+	"\\C[5]溜まった性欲を遠慮なくぶち撒けるのよッ♥♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"defeat_lv3_start_exp3_3":{
+"en":["\\C[5]\"Fufufu♥",
+	"\\C[5]Well you suddenly know how to set the mood for me.♥",
+	"\\C[5]I can't wait any moment longer.♥",
+	"\\C[5]Punish me! I've been a bad bitch.♥♥\""],
+"jp":["\\C[5]「フフフ♥どうすれば私が喜ぶか、よぉ～く分かってるみたいね♥",
+	"\\C[5]もう我慢の限界よ♥早くお仕置きしてちょうだいッ♥♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"defeat_lv3_start_exp3_4":{
+"en":["\\C[5]\"Oh no~♥ I've been captured again.♥",
+	"\\C[5]I didn't lose on purpose you know?",
+	"\\C[5]I'm serious.♥\""],
+"jp":["\\C[5]「ヤダ～♥私ったらまた捕まっちゃったわ♥",
+	"\\C[5]別にわざとじゃないわよ？ホントなんだからね♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"defeat_lv3_start_exp3_5":{
+"en":["\\C[5]\"Haahnng♥ What is going to happen to me...?",
+	"\\C[5]Every cock here is already dripping with pre-cum.♥",
+	"\\C[5]Is there any woman who won't submit to this",
+	"\\C[5]type of torture?♥\""],
+"jp":["\\C[5]「はっぁあ♥これから私をどんな目に合わせる気かしら……？",
+	"\\C[5]どのチンポも亀頭からドクドク汁を垂らして凶悪過ぎるゥ♥",
+	"\\C[5]そんなので拷問されて堕ちないメスはいないわよ♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+
+
 
 
 "defeat_guard_start_exp1_1":{
@@ -10144,7 +10328,7 @@
 	"\\C[5]as she sucks her fingers while imagining it's a well-endowed cock.♥♥",
 	"\\C[5]\"My finger cocks are sooo YUMMYYY♥♥\""],
 "jp":["\\C[5]「じゅぽッ！！じゅぽじゅぽッ♥♥ぢゅるるるゥゥ～♥♥",
-	"\\C[5]指フェラたまんないッ♥美味し♥♥"],
+	"\\C[5]指フェラたまんないッ♥美味しィ♥♥」"],
 "sch":["\\C[5]凯瑞恩把手指吸溜吸溜地全部弄上了口水，",
 	"\\C[5]想象着她在吸吮一根巨大的肉棒♥♥",
 	"\\C[5]\"手指……肉棒……好好吃呢♥♥\""],
@@ -10253,6 +10437,650 @@
 "tch":["\\C[5]\"啾嚕♥這麼敏感的奶頭真的好淫蕩♥",
 	"\\C[5]真是怎麼也吸不夠呢♥\""]	
 },
+
+
+"karryn_toy_karrynplay_clit_exp1_1":{
+"en":["\\C[5]\"\""],
+"jp":["\\C[5]「ンヒィ？！やっぱり刺激が強いィィッ！」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_toy_karrynplay_clit_exp1_2":{
+"en":["\\C[5]\"\""],
+"jp":["\\C[5]「あっ♥んぐぅ……♥腰の力が全部持っていかれそうだわ…ッ」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_toy_karrynplay_clit_exp1_3":{
+"en":["\\C[5]\"\""],
+"jp":["\\C[5]「こ……こんな強い刺激……！んあぁぁッ♥ダメェッ！」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_toy_karrynplay_clit_exp2_1":{
+"en":["\\C[5]\"\""],
+"jp":["\\C[5]「はうぅ…ッ……んく……あぁぁ…やっぱり…気持ちイイ……♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_toy_karrynplay_clit_exp2_2":{
+"en":["\\C[5]\"\""],
+"jp":["\\C[5]「はぁっ♥ウ……ッ♥ス……ッゴぉぉッ……♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_toy_karrynplay_clit_exp2_3":{
+"en":["\\C[5]\"\""],
+"jp":["\\C[5]「んくゥ…♥クリから登ってくる快感…たまらないィ♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_toy_karrynplay_clit_exp2_4":{
+"en":["\\C[5]\"\""],
+"jp":["\\C[5]「あぁぁ～～ッ！気持ちよすぎて……はしたない顔しちゃうゥぅ…」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_toy_karrynplay_clit_exp3_1":{
+"en":["\\C[5]\"\""],
+"jp":["\\C[5]「ふぎゅゥゥッ♥クリ～ッ♥♥クリぎぼぢイイぃいイィんッ♥♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_toy_karrynplay_clit_exp3_2":{
+"en":["\\C[5]\"\""],
+"jp":["\\C[5]「アッ♥ンホぉぉッ♥これッ♥やっぱりクリにはこれよォッ♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_toy_karrynplay_clit_exp3_3":{
+"en":["\\C[5]\"\""],
+"jp":["\\C[5]「ああぁぁ♥見てェ♥私のクリちゃん凄いコトになっちゃってるゥ♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_toy_karrynplay_clit_exp3_4":{
+"en":["\\C[5]\"\""],
+"jp":["\\C[5]「ンッ♥…オッ♥…アヘぇッ♥んふぅ……オぉホッ！！」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_toy_karrynplay_clit_exp3_5":{
+"en":["\\C[5]\"\""],
+"jp":["\\C[5]「クリッ♥クリしゅごいッ♥クリトリアクメしちゃう♥クリ最ッ高～ッ♥♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+
+"karryn_toy_karrynplay_pussy_exp1_1":{
+"en":["\\C[5]\"\""],
+"jp":["\\C[5]「あっ……んく……こんなの挿れて……変態みたい……」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_toy_karrynplay_pussy_exp1_2":{
+"en":["\\C[5]\"\""],
+"jp":["\\C[5]「ふぅー…ふぅー……なんとか落ち着いてきたわ……」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_toy_karrynplay_pussy_exp1_3":{
+"en":["\\C[5]\"\""],
+"jp":["\\C[5]「はァ……はァ……カタチが……リアル過ぎるわ……」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_toy_karrynplay_pussy_exp2_1":{
+"en":["\\C[5]\"\""],
+"jp":["\\C[5]「あうぅっ……ングッ♥これで早くマンコの疼きを沈めなきゃ……♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_toy_karrynplay_pussy_exp2_2":{
+"en":["\\C[5]\"\""],
+"jp":["\\C[5]「はぁァァ……ッ♥マンコが寂しい……もっとほじくらないとッ♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_toy_karrynplay_pussy_exp2_3":{
+"en":["\\C[5]\"\""],
+"jp":["\\C[5]「ンッ♥ンッ♥ンッ♥あっ♥あっ♥あっ♥あっ♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_toy_karrynplay_pussy_exp2_4":{
+"en":["\\C[5]\"\""],
+"jp":["\\C[5]「んっ……こうやってオモチャでマンコをほじってると…",
+	"\\C[5]改めて生チンポのスゴさを思い知らされるわ……」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_toy_karrynplay_pussy_exp3_1":{
+"en":["\\C[5]\"\""],
+"jp":["\\C[5]「あぁっ♥生チンポ挿れたいィ♥オモチャじゃ物足りないのォ♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_toy_karrynplay_pussy_exp3_2":{
+"en":["\\C[5]\"\""],
+"jp":["\\C[5]「えぐっちゃうゥ♥恥ずかしげもなくニセチンポでオナっちゃう♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_toy_karrynplay_pussy_exp3_3":{
+"en":["\\C[5]\"\""],
+"jp":["\\C[5]「んぐぐっ♥気持ちイッ♥このホンモノみたいな感触ッ♥好きッ♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_toy_karrynplay_pussy_exp3_4":{
+"en":["\\C[5]\"\""],
+"jp":["\\C[5]「はあァ～♥やっぱりマンコに棒が入ってると落ち着くゥ♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_toy_karrynplay_pussy_exp3_5":{
+"en":["\\C[5]\"\""],
+"jp":["\\C[5]「あはッ♥エロいマンコに出たり入ったり♥超気持ちイィイッ♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+
+"karryn_toy_karrynplay_anal_exp1_1":{
+"en":["\\C[5]\"\""],
+"jp":["\\C[5]「あぁぁ～～……お尻の穴がバカになりそう～～……」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_toy_karrynplay_anal_exp1_2":{
+"en":["\\C[5]\"\""],
+"jp":["\\C[5]「んんん……んひっ…んくっ！んあぁぁ……ッ」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_toy_karrynplay_anal_exp1_3":{
+"en":["\\C[5]\"\""],
+"jp":["\\C[5]「んふぅぅ～……そぉーっと…慎重にやらないと……ッ」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_toy_karrynplay_anal_exp2_1":{
+"en":["\\C[5]\"\""],
+"jp":["\\C[5]「うぅッ……このお尻に来るズルズルっとした感触……素敵♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_toy_karrynplay_anal_exp2_2":{
+"en":["\\C[5]\"\""],
+"jp":["\\C[5]「あ……あぁ……う……♥チンポじゃ味わえない気持ち良さよね♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_toy_karrynplay_anal_exp2_3":{
+"en":["\\C[5]\"\""],
+"jp":["\\C[5]「はぁはぁ……ングッ♥んんん……あッはぁぁぁ～～～♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_toy_karrynplay_anal_exp2_4":{
+"en":["\\C[5]\"\""],
+"jp":["\\C[5]「んあぅ～～……引きずり出されちゃうゥ……スゴイィィ……♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_toy_karrynplay_anal_exp3_1":{
+"en":["\\C[5]\"\""],
+"jp":["\\C[5]「んひィ～～ッ♥ケツ穴ホジホジッ♥病みつきになっちゃってるッ♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_toy_karrynplay_anal_exp3_2":{
+"en":["\\C[5]\"\""],
+"jp":["\\C[5]「フヒィンッ♥チンポとは違うこの感じッ♥気持ち良すぎるぅゥッ♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_toy_karrynplay_anal_exp3_3":{
+"en":["\\C[5]\"\""],
+"jp":["\\C[5]「あはぁ～～♥オモチャもいいけどッ♥そろそろ生チンポも挿れたいわ♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_toy_karrynplay_anal_exp3_4":{
+"en":["\\C[5]\"\""],
+"jp":["\\C[5]「キク～～ッ♥ケツ穴ホジくるのヤバ過ぎて頭チカチカ来るゥ♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_toy_karrynplay_anal_exp3_5":{
+"en":["\\C[5]\"\""],
+"jp":["\\C[5]「ケツほじるのがこんなに楽しいなんて♥私ったら変態みたい♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+
+"karryn_mas_halberd_lick_exp1_1":{
+"en":["\\C[5]\"Hng♥ My mouth needs something......",
+	"\\C[5]Long...♥ And hard.♥\""],
+"jp":["\\C[5]「はァン♥おクチが寂しい……♥ペロッ♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_mas_halberd_lick_exp1_2":{
+"en":["\\C[5]Karryn licks up and down the shaft."],
+"jp":["\\C[5]「れろ……ッ……ぇぇるお♥れろぉ～～～♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_mas_halberd_lick_exp1_3":{
+"en":["\\C[5]\"Hng......♥ Uhhh......♥",
+	"\\C[5]So long and hard.........♥\""],
+"jp":["\\C[5]「ん……♥あはぁ……♥硬くて長いの………♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_mas_halberd_lick_exp2_1":{
+"en":["\\C[5]\"Fufufu♥",
+	"\\C[5]I want to taste yours too.♥\""],
+"jp":["\\C[5]「じゅるっ……♥フフフ♥アナタも舐めて欲しいのね♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_mas_halberd_lick_exp2_2":{
+"en":["\\C[5]\"Fufu......♥",
+	"\\C[5]I wonder if yours is as hard.♥\""],
+"jp":["\\C[5]「れろ～♥フフ……アナタの股間もこれくらい硬いのかしら♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_mas_halberd_lick_exp2_3":{
+"en":["\\C[5]Karryn noisily licks the shaft.♥"],
+"jp":["\\C[5]「れ～ろっ♥じゅる♥ちゅぱっ♥れろれろっ♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_mas_halberd_lick_exp2_4":{
+"en":["\\C[5]\"I just can't stop licking hard things.♥\""],
+"jp":["\\C[5]「んむっ♥はむっ♥舐めだしたら舌が止まらなくなっちゃう♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_mas_halberd_lick_exp3_1":{
+"en":["\\C[5]\"I want to lick♥ A real cock.♥",
+	"\\C[5]This isn't enough, I need something hotter.♥\""],
+"jp":["\\C[5]「チンポッ♥舐めたいッ♥こんなのじゃなくて…ホンモノのオスのヤツッ♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_mas_halberd_lick_exp3_2":{
+"en":["\\C[5]\"Look carefully.♥",
+	"\\C[5]This could be yours right now~♥\""],
+"jp":["\\C[5]「レロレロレロッ♥ホラ良く見て♥私の自慢のフェラテク～♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_mas_halberd_lick_exp3_3":{
+"en":["\\C[5]\"I can't help it,",
+	"\\C[5]put something long and hard near me",
+	"\\C[5]and I'll lick it.♥\""],
+"jp":["\\C[5]「えろろろ～♥棒があったらすぐに舐めたくなっちゃうのォ♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_mas_halberd_lick_exp3_4":{
+"en":["\\C[5]Saliva splashes all over as Karryn",
+	"\\C[5]devotedly licks her halberd.♥♥"],
+"jp":["\\C[5]「べろろっ♥ベチョルロロロッ♥レロッ♥レロン♥じゅるるうぅ♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_mas_halberd_lick_exp3_5":{
+"en":["\\C[5]\"Hng♥ Hmm♥ No, not like.♥",
+	"\\C[5]I need something that can cum.♥\""],
+"jp":["\\C[5]「へぁっ♥あふぁっ♥これじゃもの足りないィン♥",
+	"\\C[5]もっと皮の余った汁まみれの肉棒が舐めたいのよォッ♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+
+"karryn_mas_halberd_paizuri_exp1_1":{
+"en":["\\C[5]\"Look~... See how soft these are...♥\""],
+"jp":["\\C[5]「ほ～ら……こんなにたっぷり谷間に包まれてる…♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_mas_halberd_paizuri_exp1_2":{
+"en":["\\C[5]\"Haa... haa......",
+	"\\C[5]Wow...... It's so hard......\""],
+"jp":["\\C[5]「ハァ……ハァ…ッ……スゴッ……硬いわ……ッ」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_mas_halberd_paizuri_exp1_3":{
+"en":["\\C[5]\"I was born with these huge boobs.",
+	"\\C[5]So why not use them.\""],
+"jp":["\\C[5]「せっかくの爆乳……使わなきゃ勿体ないわ」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_mas_halberd_paizuri_exp2_1":{
+"en":["\\C[5]\"I lovveee......♥",
+	"\\C[5]having something hard in between my boobs......♥\""],
+"jp":["\\C[5]「おっぱいに硬いのが擦れるの……好きィ……♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_mas_halberd_paizuri_exp2_2":{
+"en":["\\C[5]\"Want me to do this to you too?\""],
+"jp":["\\C[5]「アナタのもこうやって優しくシゴいてあげるわよ？」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_mas_halberd_paizuri_exp2_3":{
+"en":["\\C[5]\"Aha...♥ Haa... hnnggg......♥♥\""],
+"jp":["\\C[5]「あはぁ……♥はぁ……あぁぁん……♥ンフッ…♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_mas_halberd_paizuri_exp2_4":{
+"en":["\\C[5]\"I feel restless unless I got something",
+	"\\C[5]long and hard pressed up against my naughty boobs.♥\""],
+"jp":["\\C[5]「エロ乳に硬い棒を挟むのは基本中のキ・ホ・ン♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_mas_halberd_paizuri_exp3_1":{
+"en":["\\C[5]\"Haa♥ I love giving titjobs.♥",
+	"\\C[5]My boobs feel soo goood doing it.♥\""],
+"jp":["\\C[5]「はぁぁッ♥パイズリ好きッ♥おっぱい気持ち良過ぎるゥッ♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_mas_halberd_paizuri_exp3_2":{
+"en":["\\C[5]\"My boobs want a real cock.♥",
+	"\\C[5]They want to make them cum.♥\""],
+"jp":["\\C[5]「おっぱいがチンポ欲しがってるッ♥チンポ挟んでイカせたいッ♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_mas_halberd_paizuri_exp3_3":{
+"en":["\\C[5]\"Nmh♥ Maybe this halberd will make me",
+	"\\C[5]come like a real cock soon.♥\""],
+"jp":["\\C[5]「ンッ♥このままじゃハルバードもチンポみたいにイカせちゃうかも♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_mas_halberd_paizuri_exp3_4":{
+"en":["\\C[5]\"I think I would rather have a thick,",
+	"\\C[5]hard cock instead right now......♥\""],
+"jp":["\\C[5]「やっぱり生の勃起チンポに比べるとズリ甲斐ないわね……♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_mas_halberd_paizuri_exp3_5":{
+"en":["\\C[5]\"Why do I feel so excited while",
+	"\\C[5]giving titty fucks.♥\""],
+"jp":["\\C[5]「パイズリってどうしてこんなにドキドキしちゃうのかしら♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+
+"karryn_mas_halberd_clit_exp1_1":{
+"en":["\\C[5]\"Uhh...... ah......",
+	"\\C[5]I need more...... Hahnn......\""],
+"jp":["\\C[5]「あぁ……あ……ムズムズするわ……はぁン……」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_mas_halberd_clit_exp1_2":{
+"en":["\\C[5]\"It's rubbing me so hard~!\""],
+"jp":["\\C[5]「ビンカンなトコロに当たってるゥ～ッ！」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_mas_halberd_clit_exp1_3":{
+"en":["\\C[5]\"Uhh♥ This......",
+	"\\C[5]Is actually pretyy...... gooood......\""],
+"jp":["\\C[5]「アァッ♥コレ……結構……キッくぅぅう……」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_mas_halberd_clit_exp2_1":{
+"en":["\\C[5]\"My clitoris......♥",
+	"\\C[5]My clit♥ Hnng♥ Soo... goood......♥\""],
+"jp":["\\C[5]「クリトリ……スッ♥んふッ♥イイッ♥すっごく…イイ……ッ♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_mas_halberd_clit_exp2_2":{
+"en":["\\C[5]\"Haa haa......♥",
+	"\\C[5]I don't want to stop......♥\""],
+"jp":["\\C[5]「はぁはぁ……♥もっとクリシコって気持ちよくなりたい……♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_mas_halberd_clit_exp2_3":{
+"en":["\\C[5]\"Ohhh---......♥♥",
+	"\\C[5]Phew-......♥",
+	"\\C[5]What a strangely strong sensation...♥\""],
+"jp":["\\C[5]「ンフーーー……♥♥んふーッ……♥なんて絶妙な快感なのぉ…♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_mas_halberd_clit_exp2_4":{
+"en":["\\C[5]\"I have to stop.♥",
+	"\\C[5]I shouldn't be playing with my clit.♥",
+	"\\C[5]In front of other people.♥\""],
+"jp":["\\C[5]「あぁんヤダ♥私ったら人前でクリオナだなんて♥みっともないわ♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_mas_halberd_clit_exp3_1":{
+"en":["\\C[5]\"Uh♥ Ah♥ Uh♥ I'm♥ Coming♥",
+	"\\C[5]I'm coming from rubbing my clit.♥\""],
+"jp":["\\C[5]「アッ♥アッ♥アッ♥イッちゃう♥クリオナでイッちゃうゥンッ♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_mas_halberd_clit_exp3_2":{
+"en":["\\C[5]\"Nnheee♥ This feels so gooood♥ I love this.♥\""],
+"jp":["\\C[5]「ンヒィィッ♥気持ちイィィッ♥クリトリ好きィィッ♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_mas_halberd_clit_exp3_3":{
+"en":["\\C[5]\"Haa♥ Haa♥ Haa♥ Haa...♥ Haa♥\""],
+"jp":["\\C[5]「ハァッ♥ハァッ♥ハァッ♥ハァッ♥…ハァッ♥ハァッ♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_mas_halberd_clit_exp3_4":{
+"en":["\\C[5]\"Nnggghh♥♥ Almost♥ Almost there.♥♥\""],
+"jp":["\\C[5]「ンググググッ♥ンッ♥もうちょっとでイクッ♥ンンンンッ♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_mas_halberd_clit_exp3_5":{
+"en":["\\C[5]\"Nnghh♥ My clit is so big now.♥",
+	"\\C[5]Nhee♥ My hips can't stop rubbing against my halberd.♥♥\""],
+"jp":["\\C[5]「ンんんッあふ♥クリ勃起しゅごッ♥ィヒッ♥腰が止まらないッ♥♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+
+"karryn_mas_halberd_pussy_exp1_1":{
+"en":["\\C[5]\"Oh...... What am I doing...... Haa......\""],
+"jp":["\\C[5]「あっ……腰が自然に動いちゃう……はぁっ………」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_mas_halberd_pussy_exp1_2":{
+"en":["\\C[5]\"Don't stop me, okay?",
+	"\\C[5]I'm in the middle of... nngh......",
+	"\\C[5]A very important masturbation!\""],
+"jp":["\\C[5]「邪魔しないでよ？オナってる最中…ンッ……なんだからッ」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_mas_halberd_pussy_exp1_3":{
+"en":["\\C[5]\"If everyone else here can play with",
+	"\\C[5]their shaft whenever they want to,",
+	"\\C[5]it's only fair if I can too, right?\""],
+"jp":["\\C[5]「ここではいつでも好きな時にオナニーするのが普通でしょ？」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_mas_halberd_pussy_exp2_1":{
+"en":["\\C[5]\"I-It's not like I'm trying to",
+	"\\C[5]pole dance for you all here!",
+	"\\C[5]I'm just masturbating, that's all.♥\""],
+"jp":["\\C[5]「べ…別にポールダンスしてるわけじゃないわよ？！",
+	"\\C[5]マンコ擦りつけて気持ち良くしてるだけよッ♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_mas_halberd_pussy_exp2_2":{
+"en":["\\C[5]\"Haa~♥ This feels soo goood.♥",
+	"\\C[5]My pussy is getting so hot~♥\""],
+"jp":["\\C[5]「はァ～♥マンズリイイッ♥お股熱くなっちゃうゥ～ッ♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_mas_halberd_pussy_exp2_3":{
+"en":["\\C[5]\"Huff--...... Puff.........",
+	"\\C[5]Mmn...♥ Nrg...... Mmmnnn......♥\""],
+"jp":["\\C[5]「ふぅー……ンふぅ………♥ンッ♥…んく……あぁふゥン……♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_mas_halberd_pussy_exp2_4":{
+"en":["\\C[5]\"I can't bear it any longer......",
+	"\\C[5]I need something in my pussy!\""],
+"jp":["\\C[5]「あぁもう限界……このままじゃマンコおかしくなっちゃうッ！」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_mas_halberd_pussy_exp3_1":{
+"en":["\\C[5]\"Ngh I want to fuck someone.",
+	"\\C[5]Someone put their hard cock that is",
+	"\\C[5]waiting to cum inside my pussy.\""],
+"jp":["\\C[5]「ンくゥ♥早く挿れたいッ♥硬くて汁まみれの勃起チンポォッ♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_mas_halberd_pussy_exp3_2":{
+"en":["\\C[5]\"This is not nearly enough.♥",
+	"\\C[5]I need a cock.♥\""],
+"jp":["\\C[5]「こんなのじゃ満足出来ないのッ♥チンポが欲しいのッ♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_mas_halberd_pussy_exp3_3":{
+"en":["\\C[5]\"O-Oh no! I got my halberd all wet.♥♥\""],
+"jp":["\\C[5]「ヤ……ヤバいわ！マン汁が止まらなくなっちゃうッ♥♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_mas_halberd_pussy_exp3_4":{
+"en":["\\C[5]\"I want to have sex...♥",
+	"\\C[5]Someone fuck me.♥ Give me their cock.♥\""],
+"jp":["\\C[5]「セックスしたいィィ…♥生ハメしたいよォ♥チンポォちょうだいィ♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
+"karryn_mas_halberd_pussy_exp3_5":{
+"en":["\\C[5]\"Look♥ You can see it right♥",
+	"\\C[5]My pussy is waiting for someone.♥",
+	"\\C[5]And until that someone comes, enjoy the show.♥♥\""],
+"jp":["\\C[5]「ほらッ♥分かるでしょ♥マンコが物欲しそうにヒクヒクしてるッ♥",
+	"\\C[5]私のマンズリショーでシコってもイイわよ♥♥」"],
+"sch":["\\C[5]\"\""],
+"tch":["\\C[5]\"\""]
+},
+
 
 
 
@@ -10446,7 +11274,7 @@
 },
 
 "invasionbattle_start_yes_zecchou_exp2_1":{
-"en":["\\C[5]\"Really?! You all purposedly",
+"en":["\\C[5]\"Really?! You all purposely",
 	"\\C[5]picked this moment to come in, didn't you?!\""],
 "jp":["\\C[5]「わざとよね？！絶対わざとこのタイミングで入ってきたわよね！？」"],
 "sch":["\\C[5]\"故意的吗？！你们绝对是商量好等我高潮后精疲力尽的时候闯进来的！\""],
@@ -12334,7 +13162,7 @@
 
 "karryn_receptionist_summon_visitor_normal_exp1_2":{
 "en":["\\C[5]\"Please come up to the front desk.\""],
-"jp":["\\C[5]「カウンターまでお越し下さい」"],
+"jp":["\\C[5]「受付デスクまでお越し下さい」"],
 "sch":["\\C[5]\"请到服务台来\""],
 "tch":["\\C[5]\"請到服務台來\""] 
 },
@@ -12400,7 +13228,7 @@
 "karryn_receptionist_summon_visitor_sexual_exp1_2":{
 "en":["\\C[5]\"Uh...... nrgh...",
 	"\\C[5]Please come up... to the front desk...\""],
-"jp":["\\C[5]「あっ……んぐ…カウンターへ…来て下さい…」"],
+"jp":["\\C[5]「あっ……んぐ…受付デスクまで…来て下さい…」"],
 "sch":["\\C[5]\"啊……嗯……请到……前台来……\""],
 "tch":["\\C[5]\"啊……嗯……請到……前台來……\""] 
 },
@@ -12426,7 +13254,7 @@
 "en":["\\C[5]\"Nnh... hrgh......",
 	"\\C[5]Please cum... up to the front desk...",
 	"\\C[5]Nnh... ah...\""],
-"jp":["\\C[5]「ンッ…ふぐっ……カウンターまで…んっ…アッ…」"],
+"jp":["\\C[5]「ンッ…ふぐっ……デスクに…んっ…アッ…」"],
 "sch":["\\C[5]\"嗯……呼……到前台……嗯……啊……\""],
 "tch":["\\C[5]\"嗯……呼……到前台……嗯……啊……\""] 
 },
@@ -13427,7 +14255,7 @@
 
 "karryn_ejaculate_desk_exp1_2":{
 "en":["\\C[5]\"Great, now there's semen on my desk......\""],
-"jp":["\\C[5]「カウンターが汁まみれだわ……」"],
+"jp":["\\C[5]「デスクが汁まみれだわ……」"],
 "sch":["\\C[5]\"柜台上满满都是精液……\""],
 "tch":["\\C[5]\"櫃檯上滿滿都是精液……\""] 
 },
@@ -13518,7 +14346,7 @@
 "karryn_ejaculate_desk_exp3_4":{
 "en":["\\C[5]\"Now my desk is going to smell",
 	"\\C[5]like your dick for the rest of my shift.♥\""],
-"jp":["\\C[5]「カウンターがチンポ臭くなっちゃうじゃない♥」"],
+"jp":["\\C[5]「デスクがチンポ臭くなっちゃうじゃない♥」"],
 "sch":["\\C[5]\"这下柜台上会一直散发着肉棒的味道了♥\""],
 "tch":["\\C[5]\"這下櫃檯上會一直散發著肉棒的味道了♥\""] 
 },
@@ -13988,7 +14816,7 @@
 
 "visitor_fan_greet_handjob_exp3_4":{
 "en":["\\C[14]\"Jerk me off. I'm going to cum all over your desk.\""],
-"jp":["\\C[14]「シコってよ。カウンターをザーメンまみれにしてやるから」"],
+"jp":["\\C[14]「シコってよ。受付デスクをザーメンまみれにしてやるから」"],
 "sch":["\\C[14]\"给老子撸管。我要把柜台上弄得满是精液。\""],
 "tch":["\\C[14]\"給老子擼管。我要把櫃檯上弄得滿是精液。\""] 
 },
@@ -14019,7 +14847,7 @@
 },
 
 "visitor_fan_greet_blowjob_exp1_3":{
-"en":["\\C[14]\"Please give me a fellatio!",
+"en":["\\C[14]\"Please give me one fellatio to go!",
 	"\\C[14]Don't worry, no one will notice",
 	"\\C[14]if you don't make too much noise!\""],
 "jp":["\\C[14]「音立てないでしゃぶれば誰にも気づかれないと思うんで、",
@@ -14357,8 +15185,8 @@
 },
 
 "visitor_fan_ejaculate_boobs_exp3_3":{
-"en":["\\C[14]\"I'm going to cum",
-	"\\C[14]until my scent stays on your boob forever!\""],
+"en":["\\C[14]\"I'm going to cum until my scent",
+	"\\C[14]stays on your boobs forever!\""],
 "jp":["\\C[14]「匂いがとれないくらいたっぷり染み込ませてやる！」"],
 "sch":["\\C[14]\"你的胸部将永远都是我的精液味！\""],
 "tch":["\\C[14]\"妳的胸部將永遠都是我的精液味！\""] 
@@ -14494,7 +15322,7 @@
 
 "visitor_fan_ejaculate_desk_exp1_1":{
 "en":["\\C[14]\"I'm sorry Miss Karryn, but I'm going to cum on your desk!\""],
-"jp":["\\C[14]「カリンさんにかけるのは申し訳ないので、カウンターに出しておきます！」"],
+"jp":["\\C[14]「カリンさんにかけるのは申し訳ないので、机に出しておきます！」"],
 "sch":["\\C[14]\"很抱歉凯瑞恩小姐，我要射在柜台上了！\""],
 "tch":["\\C[14]\"很抱歉凱瑞恩小姐，我要射在櫃檯上了！\""] 
 },
@@ -14516,7 +15344,7 @@
 "visitor_fan_ejaculate_desk_exp1_4":{
 "en":["\\C[14]\"You won't get in trouble",
 	"\\C[14]if I cum on your desk instead, right?!\""],
-"jp":["\\C[14]「カウンターに出しとけば迷惑じゃないですよね！？」"],
+"jp":["\\C[14]「机に出しとけば迷惑じゃないですよね！？」"],
 "sch":["\\C[14]\"射在柜台上就不用麻烦你清洗衣服和身体了吧？！\""],
 "tch":["\\C[14]\"射在櫃檯上就不用麻煩妳清洗衣服和身體了吧？！\""] 
 },
@@ -14532,8 +15360,8 @@
 "visitor_fan_ejaculate_desk_exp2_1":{
 "en":["\\C[14]\"You'll always remember me",
 	"\\C[14]if I cum on your desk, right...?!\""],
-"jp":["\\C[14]「カウンターの上に射精しとけば、",
-	"\\C[14]いつでも僕のこと思い出してもらえますよね……！？」"],
+"jp":["\\C[14]「デスクの上に射精しとけば、",
+	"\\C[14]いつでも僕のこと思い出してもらえますね……！？」"],
 "sch":["\\C[14]\"如果射在柜台上的话，你就会记住我了吧……？！\""],
 "tch":["\\C[14]\"如果射在櫃檯上的話，妳就會記住我了吧……？！\""]	
 },
@@ -14579,7 +15407,7 @@
 "visitor_fan_ejaculate_desk_exp3_2":{
 "en":["\\C[14]\"Just how many men have already cummed on your desk...",
 	"\\C[14]Well, add me to that list.\""],
-"jp":["\\C[14]「色んな男のザーメンでカピカピになってるカウンター、更に汚してやるよ」"],
+"jp":["\\C[14]「色んな男のザーメンでカピカピになってる仕事机、更に汚してやるよ」"],
 "sch":["\\C[14]\"柜台被各种男人的精液弄得油光发亮……我来把它再弄脏一点吧~\""],
 "tch":["\\C[14]\"櫃檯被各種男人的精液弄得油光發亮……我來把它再弄髒一點吧~\""] 
 },
@@ -14601,7 +15429,7 @@
 "visitor_fan_ejaculate_desk_exp3_5":{
 "en":["\\C[14]\"Did you know that us fans",
 	"\\C[14]have been referring to this desk as our toilet?\""],
-"jp":["\\C[14]「このカウンターは俺らファンの便器だって知ってた？」"],
+"jp":["\\C[14]「この受付デスク、俺らファンの便器だって知ってた？」"],
 "sch":["\\C[14]\"你知道吗？这张柜台对我们粉丝来说就像厕所！\""],
 "tch":["\\C[14]\"妳知道嗎？這張櫃檯對我們粉絲來說就像廁所！\""] 
 },
@@ -14932,7 +15760,7 @@
 },
 
 "visitor_perv_greet_handjob_exp2_4":{
-"en":["\\C[14]\"Come put on your hand on my cock.\""],
+"en":["\\C[14]\"Come put your hand on my cock.\""],
 "jp":["\\C[14]「手がいいです」"],
 "sch":["\\C[14]\"把手伸出来握住这里\""],
 "tch":["\\C[14]\"把手伸出來握住這裡\""] 
@@ -15004,7 +15832,7 @@
 "visitor_perv_greet_blowjob_exp1_2":{
 "en":["\\C[14]\"This is the place where we pull out our dick",
 	"\\C[14]and you start sucking us off, right?\""],
-"jp":["\\C[14]「こちらがカウンター越しにフェラしてもらえる受付ですよね」"],
+"jp":["\\C[14]「こちらがデスク越しにフェラしてもらえる受付ですよね」"],
 "sch":["\\C[14]\"这就是可以通过柜台进行口交的接待处吗？\""],
 "tch":["\\C[14]\"這就是可以通過櫃檯進行口交的接待處嗎？\""] 
 },
@@ -15478,7 +16306,7 @@
 "visitor_perv_second_handjob_exp3_5":{
 "en":["\\C[14]\"You know what you need to do",
 	"\\C[14]to get my cum all over your desk.\""],
-"jp":["\\C[14]「カウンターに俺のザーメン、撒き散らして欲しいんでしょ？",
+"jp":["\\C[14]「机に俺のザーメン、撒き散らして欲しいんでしょ？",
 	"\\C[14]じゃ、分かるよね？」"],
 "sch":["\\C[14]\"想要柜台上满满的都是精液？你知道该怎么做的~\""],
 "tch":["\\C[14]\"想要櫃檯上滿滿的都是精液？妳知道該怎麼做的~\""]	
@@ -16140,7 +16968,7 @@
 "visitor_perv_ejaculate_desk_exp2_2":{
 "en":["\\C[14]\"I asked someone beforehand",
 	"\\C[14]if it's okay to cum on your desk!\""],
-"jp":["\\C[14]「カウンターに出しとけば大丈夫って警備兵が言ってた！」"],
+"jp":["\\C[14]「デスク上に出しとけば大丈夫って警備兵が言ってた！」"],
 "sch":["\\C[14]\"卫兵告诉我说，可以射在你的桌子上没关系！\""],
 "tch":["\\C[14]\"衛兵告訴我說，可以射在妳的桌子上沒關係！\""] 
 },
@@ -16203,7 +17031,7 @@
 "visitor_perv_ejaculate_desk_exp3_5":{
 "en":["\\C[14]\"I'm cumming on your desk.",
 	"\\C[14]Don't forget to lick it clean before you leave, alright?\""],
-"jp":["\\C[14]「カウンターに出すから、後で舐めてキレイにしておけよ？」"],
+"jp":["\\C[14]「デスクの上に出すから、後で舐めてキレイにしておけよ？」"],
 "sch":["\\C[14]\"我射在你的柜台上了，下班前别忘了要舔干净，好吗？\""],
 "tch":["\\C[14]\"我射在妳的櫃檯上了，下班前別忘了要舔乾淨，好嗎？\""] 
 },
@@ -22370,153 +23198,6 @@
 
 
 
-"enemy_cock_stare_exp0_1":{
-"en":["\\C[0]He slumps his shoulders......"],
-"jp":["\\C[0]彼はガックリと肩を落とした……。"],
-"sch":["\\C[0]他垮了垮肩膀……"],
-"tch":["\\C[0]他垮了垮肩膀……"] 
-},
-
-"enemy_cock_stare_exp0_2":{
-"en":["\\C[0]He bitterly turns his head away for a moment......"],
-"jp":["\\C[0]彼はかなり残念そうな顔をしている……。"],
-"sch":["\\C[0]他的表情显得很失望……"],
-"tch":["\\C[0]他的表情顯得很失望……"] 
-},
-
-"enemy_cock_stare_exp0_3":{
-"en":["\\C[0]His heart is rended into a hundred pieces......"],
-"jp":["\\C[0]彼の心は深く傷ついた……。"],
-"sch":["\\C[0]他的内心受到了重创……"],
-"tch":["\\C[0]他的內心受到了重創……"] 
-},
-
-"enemy_cock_stare_exp0_4":{
-"en":["\\C[0]He stares back in shock at those words......"],
-"jp":["\\C[0]彼はかなりショックを受けた……。"],
-"sch":["\\C[0]这些话让他受到了很大的打击……"],
-"tch":["\\C[0]這些話讓他受到了很大的打擊……"] 
-},
-
-"enemy_cock_stare_exp0_5":{
-"en":["\\C[0]His mental takes a critical hit......"],
-"jp":["\\C[0]彼のメンタルは病んだ……。"],
-"sch":["\\C[0]他的内心受到了一万点暴击……"],
-"tch":["\\C[0]他的內心受到了一萬點暴擊……"] 
-},
-
-"enemy_cock_stare_exp1_1":{
-"en":["\\C[0]He frowns in response..."],
-"jp":["\\C[0]彼は悔しそうにした…。"],
-"sch":["\\C[0]他委屈地皱皱眉……"],
-"tch":["\\C[0]他委屈地皺皺眉……"] 
-},
-
-"enemy_cock_stare_exp1_2":{
-"en":["\\C[0]He looks slightly depressed after hearing that..."],
-"jp":["\\C[0]彼は少し落ち込んだ…。"],
-"sch":["\\C[0]他看上去有点失落……"],
-"tch":["\\C[0]他看上去有點失落……"] 
-},
-
-"enemy_cock_stare_exp1_3":{
-"en":["\\C[0]He clicks his tongue."],
-"jp":["\\C[0]彼は舌打ちをした。"],
-"sch":["\\C[0]他砸了咂嘴。"],
-"tch":["\\C[0]他砸了咂嘴。"] 
-},
-
-"enemy_cock_stare_exp1_4":{
-"en":["\\C[0]He doesn't like that reaction..."],
-"jp":["\\C[0]彼は少し残念そうにした…。"],
-"sch":["\\C[0]他看上去有点怨念……"],
-"tch":["\\C[0]他看上去有點怨念……"] 
-},
-
-"enemy_cock_stare_exp1_5":{
-"en":["\\C[0]He closes his eyes and breathes out..."],
-"jp":["\\C[0]彼はちょっとガッカリした…。"],
-"sch":["\\C[0]他闭上眼睛，深吸一口气……"],
-"tch":["\\C[0]他閉上眼睛，深吸一口氣……"] 
-},
-
-"enemy_cock_stare_exp2_1":{
-"en":["\\C[0]He smirks back."],
-"jp":["\\C[0]彼はニヤニヤした。"],
-"sch":["\\C[0]他得意地笑了笑。"],
-"tch":["\\C[0]他得意地笑了笑。"] 
-},
-
-"enemy_cock_stare_exp2_2":{
-"en":["\\C[0]He stands a little straighter in response."],
-"jp":["\\C[0]彼は喜んだ。"],
-"sch":["\\C[0]他改变了站姿，看上去很高兴。"],
-"tch":["\\C[0]他改變了站姿，看上去很高興。"] 
-},
-
-"enemy_cock_stare_exp2_3":{
-"en":["\\C[0]He smiles smugly."],
-"jp":["\\C[0]彼はドヤ顔をした。"],
-"sch":["\\C[0]他一副自鸣得意的样子。"],
-"tch":["\\C[0]他一副自鳴得意的樣子。"] 
-},
-
-"enemy_cock_stare_exp2_4":{
-"en":["\\C[0]He looks happy hearing that."],
-"jp":["\\C[0]彼は満足そうにした。"],
-"sch":["\\C[0]他看起来很高兴。"],
-"tch":["\\C[0]他看起來很高興。"] 
-},
-
-"enemy_cock_stare_exp2_5":{
-"en":["\\C[0]He shows off his guns to no one in particular."],
-"jp":["\\C[0]彼はガッツポーズをした。"],
-"sch":["\\C[0]他摆出一个胜利的姿势。"],
-"tch":["\\C[0]他擺出一個勝利的姿勢。"] 
-},
-
-"enemy_cock_stare_exp3_1":{
-"en":["\\C[0]His cock is raring to have a run at her!"],
-"jp":["\\C[0]彼のチンポは誇らしげに反り返り、更に硬くなった！"],
-"sch":["\\C[0]他的龟头翘得更高，肉棒变得更硬了！"],
-"tch":["\\C[0]他的龜頭翹得更高，肉棒變得更硬了！"] 
-},
-
-"enemy_cock_stare_exp3_2":{
-"en":["\\C[0]His cock angles up even higher",
-	"\\C[0]towards the ceiling in response!"],
-"jp":["\\C[0]彼のチンポは血管をバキバキに盛り上がらせた！"],
-"sch":["\\C[0]他的肉棒青筋暴起，一柱擎天！"],
-"tch":["\\C[0]他的肉棒青筋暴起，一柱擎天！"] 
-},
-
-"enemy_cock_stare_exp3_3":{
-"en":["\\C[0]Precum drips out of his cock",
-	"\\C[0]after hearing those words!"],
-"jp":["\\C[0]彼のチンポは大量のガマン汁を出して更なるアピールをした！"],
-"sch":["\\C[0]听到这些话，他的龟头前端流出了大量的先走汁！"],
-"tch":["\\C[0]聽到這些話，他的龜頭前端流出了大量的先走汁！"] 
-},
-
-"enemy_cock_stare_exp3_4":{
-"en":["\\C[0]His balls begin pulsing in anticipation",
-	"\\C[0]for a big explosion!"],
-"jp":["\\C[0]彼のキンタマはグツグツとザーメンを煮えたぎらせた！"],
-"sch":["\\C[0]他的鸡巴一颤一颤地，精液呼之欲出！"],
-"tch":["\\C[0]他的雞巴一顫一顫地，精液呼之欲出！"] 
-},
-
-"enemy_cock_stare_exp3_5":{
-"en":["\\C[0]The veins on his cock grow larger",
-	"\\C[0]alongside his cock!"],
-"jp":["\\C[0]彼のチンポはもはや爆発寸前だ！"],
-"sch":["\\C[0]他的肉棒上血管尽显，像是快要爆发了！"],
-"tch":["\\C[0]他的肉棒上血管盡顯，像是快要爆發了！"] 
-},
-
-
-
-
 "guard_talk_random_exp0_1":{
 "en":["\\C[8]\"C-Chief Warden Karryn...\""],
 "jp":["\\C[8]「カ…カリン長官…」"],
@@ -22668,7 +23349,7 @@
 
 "guard_talk_random_exp3_1":{
 "en":["\\C[8]\"How dare you make our dicks hard you......",
-	"\\C[8]you slutty chief warden......\""],
+	"\\C[8]you slutty Chief Warden......\""],
 "jp":["\\C[8]「エロ長官め……ムラムラさせてくれる……」"],
 "sch":["\\C[8]\"\""],
 "tch":["\\C[8]\"\""]
@@ -22794,7 +23475,7 @@
 },
 
 "guard_posestart_gangbang_exp1_4":{
-"en":["\\C[8]\"Huhuhu. You might be our chief warden,",
+"en":["\\C[8]\"Huhuhu. You might be our Chief Warden,",
 	"\\C[8]but you're still just a common bitch in heat!",
 	"\\C[8]There's no way you can win against our cocks!\""],
 "jp":["\\C[8]「ふふふ。カリン長官と言えど、所詮はメス！",
@@ -23870,7 +24551,7 @@
 },
 
 "guard_ejaculate_anal_exp3_3":{
-"en":["\\C[8]\"Boy, we sure a blessed with a good boss.",
+"en":["\\C[8]\"Boy, we sure are blessed with a good boss.",
 	"\\C[8]She's letting us cum inside her ass whenever we want to.♥\""],
 "jp":["\\C[8]「気軽にケツで中出し出来て、僕らイイ上司を持ちましたよ♥」"],
 "sch":["\\C[8]\"\""],
@@ -24407,7 +25088,7 @@
 },
 
 "nerd_talk_boobs_exp3_5":{
-"en":["\\C[25]\"This must the work of an enemy boobies!♥",
+"en":["\\C[25]\"This must be the work of an enemy boobies!♥",
 	"\\C[25]Something is rising and it's in my pants.♥\""],
 "jp":["\\C[25]「おぉっ♥これが童貞殺しの異名を持つ伝説の魔乳ッ♥」"],
 "sch":["\\C[25]\"\""],
@@ -24591,7 +25272,7 @@
 },
 
 "nerd_ejaculate_random_exp2_1":{
-"en":["\\C[25]\"This incoming ejaculation...... I r8 8/8 g8!!\""],
+"en":["\\C[25]\"This incoming ejaculation...... I r8 8/8 gr8!!\""],
 "jp":["\\C[25]「この射精……プライスレスぅううう！！」"],
 "sch":["\\C[25]\"\""],
 "tch":["\\C[25]\"\""]
@@ -24678,8 +25359,8 @@
 },
 
 "rogue_talk_mouth_exp0_2":{
-"en":["\\C[22]\"Let this be known, wrench, you will soon know",
-	"\\C[22]what a dick taste like in this prison...\""],
+"en":["\\C[22]\"Let this be known, wench, you will soon know",
+	"\\C[22]what a dick tastes like in this prison...\""],
 "jp":["\\C[22]「これから監獄でチンポの味を知っていくと良い……」"],
 "sch":["\\C[22]\"\""],
 "tch":["\\C[22]\"\""]
@@ -24728,7 +25409,7 @@
 },
 
 "rogue_talk_mouth_exp2_3":{
-"en":["\\C[22]\"More, swallow more semen, wrench.\""],
+"en":["\\C[22]\"More, swallow more semen, wench.\""],
 "jp":["\\C[22]「もっとザーメンを飲むとイイ」"],
 "sch":["\\C[22]\"\""],
 "tch":["\\C[22]\"\""] 
@@ -24874,7 +25555,7 @@
 
 
 "rogue_petting_spank_exp1_1":{
-"en":["\\C[22]\"Feel my wraith, wrench.\""],
+"en":["\\C[22]\"Feel my wraith, wench.\""],
 "jp":["\\C[22]「少し灸を据えてやろう」"],
 "sch":["\\C[22]\"\""],
 "tch":["\\C[22]\"\""] 
@@ -24895,7 +25576,7 @@
 },
 
 "rogue_petting_spank_exp1_4":{
-"en":["\\C[22]\"Get used to being spanked around here, wrench.\""],
+"en":["\\C[22]\"Get used to being spanked around here, wench.\""],
 "jp":["\\C[22]「まだまだ叩かれ慣れんようだな」"],
 "sch":["\\C[22]\"\""],
 "tch":["\\C[22]\"\""] 
@@ -25039,7 +25720,7 @@
 },
 
 "rogue_petting_anal_exp2_4":{
-"en":["\\C[22]\"Wrench, what are those sounds",
+"en":["\\C[22]\"Wench, what are those sounds",
 	"\\C[22]coming out of your mouth hole?\""],
 "jp":["\\C[22]「イヤらしい音を立てて……期待しているな？」"],
 "sch":["\\C[22]\"\""],
@@ -25069,7 +25750,7 @@
 },
 
 "rogue_petting_anal_exp3_3":{
-"en":["\\C[22]\"What a wrenched ass vagina......",
+"en":["\\C[22]\"What a wretched ass vagina......",
 	"\\C[22]I kneel to you!\""],
 "jp":["\\C[22]「はしたないケツマンコめ……褒めてやるぞ！」"],
 "sch":["\\C[22]\"\""],
@@ -25092,7 +25773,7 @@
 
 
 "rogue_posestart_rimjob_exp0_1":{
-"en":["\\C[22]\"Over here, wrench... That's right, my anus......",
+"en":["\\C[22]\"Over here, wench... That's right, my anus......",
 	"\\C[22]Now lick it with your tongue... What's that?",
 	"\\C[22]You've never licked a man's anus before...?",
 	"\\C[22]Huhuhu... You won't be able to stop soon enough......\""],
@@ -25152,7 +25833,7 @@
 },
 
 "rogue_posestart_rimjob_exp2_3":{
-"en":["\\C[22]\"A wrench like you deserve not",
+"en":["\\C[22]\"A wench like you deserve not",
 	"\\C[22]a man's penis, but a man's anus.\""],
 "jp":["\\C[22]「お前にはチンポより、ケツ穴がお似合いなのだ」"],
 "sch":["\\C[22]\"\""],
@@ -25176,7 +25857,7 @@
 },
 
 "rogue_posestart_rimjob_exp3_2":{
-"en":["\\C[22]\"Wrenched anus licking addict.",
+"en":["\\C[22]\"Wretched anus licking addict.",
 	"\\C[22]Come satisfy your desires with my anus.\""],
 "jp":["\\C[22]「ケツ舐め中毒者め。好きなだけ舐め回すがイイ」"],
 "sch":["\\C[22]\"\""],
@@ -25264,7 +25945,7 @@
 
 "rogue_posejoin_analsex_exp2_1":{
 "en":["\\C[22]\"Prove it to me!",
-	"\\C[22]Let me see how good the chief warden's anus is!\""],
+	"\\C[22]Let me see how good the Chief Warden's anus is!\""],
 "jp":["\\C[22]「見せてもらおうか。看守長官のアナルの実力！」"],
 "sch":["\\C[22]\"\""],
 "tch":["\\C[22]\"\""] 
@@ -25327,7 +26008,7 @@
 },
 
 "rogue_posejoin_analsex_exp3_4":{
-"en":["\\C[22]\"Will this wrenched ass vagina",
+"en":["\\C[22]\"Will this wretched ass vagina",
 	"\\C[22]siphon everything out of me today too?!\""],
 "jp":["\\C[22]「今日もこのケツマンコに搾り取られてしまうのか！？」"],
 "sch":["\\C[22]\"\""],
@@ -25389,7 +26070,7 @@
 },
 
 "rogue_poseskill_anal_exp2_3":{
-"en":["\\C[22]\"Watch wrench, as you and I connect into one",
+"en":["\\C[22]\"Watch wench, as you and I connect into one",
 	"\\C[22]through the hole that is your anus.\""],
 "jp":["\\C[22]「アナルとチンポが繋がっているのをよく見るんだ」"],
 "sch":["\\C[22]\"\""],
@@ -25443,7 +26124,7 @@
 },
 
 "rogue_poseskill_anal_exp3_5":{
-"en":["\\C[22]\"H-How is it...? Y-You wrench...? Haa haa......",
+"en":["\\C[22]\"H-How is it...? Y-You wench...? Haa haa......",
 	"\\C[22]Are you at awe by my technique?!\""],
 "jp":["\\C[22]「どうだ……？す……素晴らしいだろう……？はぁはぁ……。",
 	"\\C[22]アナルにチンポが出たり入ったりしているんだぞ！」"],
@@ -25491,7 +26172,7 @@
 },
 
 "rogue_ejaculate_random_exp2_1":{
-"en":["\\C[22]\"Kuh...... You've improved, wrench!!\""],
+"en":["\\C[22]\"Kuh...... You've improved, wench!!\""],
 "jp":["\\C[22]「くっ……少しは出来るようになったな、カリン！！」"],
 "sch":["\\C[22]\"\""],
 "tch":["\\C[22]\"\""]
@@ -25519,7 +26200,7 @@
 },
 
 "rogue_ejaculate_random_exp2_5":{
-"en":["\\C[22]\"UWOAH?! I thought you were just a wrench......",
+"en":["\\C[22]\"UWOAH?! I thought you were just a wench......",
 	"\\C[22]but you've surpassed my expectations!!\""],
 "jp":["\\C[22]「うおぉっ？！小娘と思っていたが……成長したな、カリン！！」"],
 "sch":["\\C[22]\"\""],
@@ -25542,7 +26223,7 @@
 
 "rogue_ejaculate_random_exp3_3":{
 "en":["\\C[22]\"Kargh?! ......Is this monster......",
-	"\\C[22]Really the same wrench from before?!\""],
+	"\\C[22]Really the same wench from before?!\""],
 "jp":["\\C[22]「ぐほぁ！？……こいつ……本当にあのカリンなのか？！」"],
 "sch":["\\C[22]\"\""],
 "tch":["\\C[22]\"\""]
@@ -25573,7 +26254,7 @@
 },
 
 "rogue_ejaculate_anal_exp1_2":{
-"en":["\\C[22]\"I will unload my magnum in your anus, wrench!!\""],
+"en":["\\C[22]\"I will unload my magnum in your anus, wench!!\""],
 "jp":["\\C[22]「ケツに出る！！」"],
 "sch":["\\C[22]\"\""],
 "tch":["\\C[22]\"\""] 
@@ -25609,7 +26290,7 @@
 },
 
 "rogue_ejaculate_anal_exp2_2":{
-"en":["\\C[22]\"Let go of me, you wrenched hole!!",
+"en":["\\C[22]\"Let go of me, you wretched hole!!",
 	"\\C[22]Who said you could deliver such pleasure to me......!\""],
 "jp":["\\C[22]「ええいっ！！このアナル…気持ちよすぎる……！」"],
 "sch":["\\C[22]\"\""],
@@ -26759,7 +27440,7 @@
 },
 
 "lizardman_talk_random_exp3_3":{
-"en":["\\C[10]\"I love degenerate chicks who gave in to their lust!\""],
+"en":["\\C[10]\"I love degenerate chicks who give in to their lust!\""],
 "jp":["\\C[10]「エロに貪欲なメスは大好きだ！」"],
 "sch":["\\C[10]\"\""],
 "tch":["\\C[10]\"\""]
@@ -27033,5 +27714,192 @@
 
 
 
+
+"enemy_cock_stare_exp0_1":{
+"en":["\\C[0]He slumps his shoulders......"],
+"jp":["\\C[0]彼はガックリと肩を落とした……。"],
+"sch":["\\C[0]他垮了垮肩膀……"],
+"tch":["\\C[0]他垮了垮肩膀……"] 
+},
+
+"enemy_cock_stare_exp0_2":{
+"en":["\\C[0]He bitterly turns his head away for a moment......"],
+"jp":["\\C[0]彼はかなり残念そうな顔をしている……。"],
+"sch":["\\C[0]他的表情显得很失望……"],
+"tch":["\\C[0]他的表情顯得很失望……"] 
+},
+
+"enemy_cock_stare_exp0_3":{
+"en":["\\C[0]His heart is rended into a hundred pieces......"],
+"jp":["\\C[0]彼の心は深く傷ついた……。"],
+"sch":["\\C[0]他的内心受到了重创……"],
+"tch":["\\C[0]他的內心受到了重創……"] 
+},
+
+"enemy_cock_stare_exp0_4":{
+"en":["\\C[0]He stares back in shock at those words......"],
+"jp":["\\C[0]彼はかなりショックを受けた……。"],
+"sch":["\\C[0]这些话让他受到了很大的打击……"],
+"tch":["\\C[0]這些話讓他受到了很大的打擊……"] 
+},
+
+"enemy_cock_stare_exp0_5":{
+"en":["\\C[0]His mental takes a critical hit......"],
+"jp":["\\C[0]彼のメンタルは病んだ……。"],
+"sch":["\\C[0]他的内心受到了一万点暴击……"],
+"tch":["\\C[0]他的內心受到了一萬點暴擊……"] 
+},
+
+"enemy_cock_stare_exp1_1":{
+"en":["\\C[0]He frowns in response..."],
+"jp":["\\C[0]彼は悔しそうにした…。"],
+"sch":["\\C[0]他委屈地皱皱眉……"],
+"tch":["\\C[0]他委屈地皺皺眉……"] 
+},
+
+"enemy_cock_stare_exp1_2":{
+"en":["\\C[0]He looks slightly depressed after hearing that..."],
+"jp":["\\C[0]彼は少し落ち込んだ…。"],
+"sch":["\\C[0]他看上去有点失落……"],
+"tch":["\\C[0]他看上去有點失落……"] 
+},
+
+"enemy_cock_stare_exp1_3":{
+"en":["\\C[0]He clicks his tongue."],
+"jp":["\\C[0]彼は舌打ちをした。"],
+"sch":["\\C[0]他砸了咂嘴。"],
+"tch":["\\C[0]他砸了咂嘴。"] 
+},
+
+"enemy_cock_stare_exp1_4":{
+"en":["\\C[0]He doesn't like that reaction..."],
+"jp":["\\C[0]彼は少し残念そうにした…。"],
+"sch":["\\C[0]他看上去有点怨念……"],
+"tch":["\\C[0]他看上去有點怨念……"] 
+},
+
+"enemy_cock_stare_exp1_5":{
+"en":["\\C[0]He closes his eyes and breathes out..."],
+"jp":["\\C[0]彼はちょっとガッカリした…。"],
+"sch":["\\C[0]他闭上眼睛，深吸一口气……"],
+"tch":["\\C[0]他閉上眼睛，深吸一口氣……"] 
+},
+
+"enemy_cock_stare_exp2_1":{
+"en":["\\C[0]He smirks back."],
+"jp":["\\C[0]彼はニヤニヤした。"],
+"sch":["\\C[0]他得意地笑了笑。"],
+"tch":["\\C[0]他得意地笑了笑。"] 
+},
+
+"enemy_cock_stare_exp2_2":{
+"en":["\\C[0]He stands a little straighter in response."],
+"jp":["\\C[0]彼は喜んだ。"],
+"sch":["\\C[0]他改变了站姿，看上去很高兴。"],
+"tch":["\\C[0]他改變了站姿，看上去很高興。"] 
+},
+
+"enemy_cock_stare_exp2_3":{
+"en":["\\C[0]He smiles smugly."],
+"jp":["\\C[0]彼はドヤ顔をした。"],
+"sch":["\\C[0]他一副自鸣得意的样子。"],
+"tch":["\\C[0]他一副自鳴得意的樣子。"] 
+},
+
+"enemy_cock_stare_exp2_4":{
+"en":["\\C[0]He looks happy hearing that."],
+"jp":["\\C[0]彼は満足そうにした。"],
+"sch":["\\C[0]他看起来很高兴。"],
+"tch":["\\C[0]他看起來很高興。"] 
+},
+
+"enemy_cock_stare_exp2_5":{
+"en":["\\C[0]He shows off his guns to no one in particular."],
+"jp":["\\C[0]彼はガッツポーズをした。"],
+"sch":["\\C[0]他摆出一个胜利的姿势。"],
+"tch":["\\C[0]他擺出一個勝利的姿勢。"] 
+},
+
+"enemy_cock_stare_exp3_1":{
+"en":["\\C[0]His cock is raring to have a run at her!"],
+"jp":["\\C[0]彼のチンポは誇らしげに反り返り、更に硬くなった！"],
+"sch":["\\C[0]他的龟头翘得更高，肉棒变得更硬了！"],
+"tch":["\\C[0]他的龜頭翹得更高，肉棒變得更硬了！"] 
+},
+
+"enemy_cock_stare_exp3_2":{
+"en":["\\C[0]His cock angles up even higher",
+	"\\C[0]towards the ceiling in response!"],
+"jp":["\\C[0]彼のチンポは血管をバキバキに盛り上がらせた！"],
+"sch":["\\C[0]他的肉棒青筋暴起，一柱擎天！"],
+"tch":["\\C[0]他的肉棒青筋暴起，一柱擎天！"] 
+},
+
+"enemy_cock_stare_exp3_3":{
+"en":["\\C[0]Precum drips out of his cock",
+	"\\C[0]after hearing those words!"],
+"jp":["\\C[0]彼のチンポは大量のガマン汁を出して更なるアピールをした！"],
+"sch":["\\C[0]听到这些话，他的龟头前端流出了大量的先走汁！"],
+"tch":["\\C[0]聽到這些話，他的龜頭前端流出了大量的先走汁！"] 
+},
+
+"enemy_cock_stare_exp3_4":{
+"en":["\\C[0]His balls begin pulsing in anticipation",
+	"\\C[0]for a big explosion!"],
+"jp":["\\C[0]彼のキンタマはグツグツとザーメンを煮えたぎらせた！"],
+"sch":["\\C[0]他的鸡巴一颤一颤地，精液呼之欲出！"],
+"tch":["\\C[0]他的雞巴一顫一顫地，精液呼之欲出！"] 
+},
+
+"enemy_cock_stare_exp3_5":{
+"en":["\\C[0]The veins on his cock grow larger",
+	"\\C[0]alongside his cock!"],
+"jp":["\\C[0]彼のチンポはもはや爆発寸前だ！"],
+"sch":["\\C[0]他的肉棒上血管尽显，像是快要爆发了！"],
+"tch":["\\C[0]他的肉棒上血管盡顯，像是快要爆發了！"] 
+},
+
+
+"enemy_toilet_left_cock_stare_exp1_1":{
+"en":["\\C[0]\"The cock on the left shrinks......\""],
+"jp":["\\C[0]左のチンポは萎えてしまった……。"],
+"sch":["\\C[0]\"\""],
+"tch":["\\C[0]\"\""]
+},
+
+"enemy_toilet_right_cock_stare_exp1_1":{
+"en":["\\C[0]\"The cock on the right shrinks......\""],
+"jp":["\\C[0]右のチンポは萎えてしまった……。"],
+"sch":["\\C[0]\"\""],
+"tch":["\\C[0]\"\""]
+},
+
+"enemy_toilet_left_cock_stare_exp2_1":{
+"en":["\\C[0]\"The cock on the left twitches up and down in delight!\""],
+"jp":["\\C[0]左のチンポはピクピクして喜んでいる！"],
+"sch":["\\C[0]\"\""],
+"tch":["\\C[0]\"\""]
+},
+
+"enemy_toilet_right_cock_stare_exp2_1":{
+"en":["\\C[0]\"The cock on the right twitches up and down in delight!\""],
+"jp":["\\C[0]右のチンポはピクピクして喜んでいる！"],
+"sch":["\\C[0]\"\""],
+"tch":["\\C[0]\"\""]
+},
+
+"enemy_toilet_left_cock_stare_exp3_1":{
+"en":["\\C[0]\"The cock on the left towers up higher and harder!!\""],
+"jp":["\\C[0]左のチンポは血管をバキバキにさせて硬さを増した！！"],
+"sch":["\\C[0]\"\""],
+"tch":["\\C[0]\"\""]
+},
+
+"enemy_toilet_right_cock_stare_exp3_1":{
+"en":["\\C[0]\"The cock on the right towers up higher and harder!!\""],
+"jp":["\\C[0]右のチンポは血管をバキバキにさせて硬さを増した！！"],
+"sch":["\\C[0]\"\""],
+"tch":["\\C[0]\"\""]
+},
 
 "end":0}

@@ -7,21 +7,25 @@ const RESULTS_EXP_LINE_HEIGHT = 0.9;
 const RESULTS_PASSIVES_MAX_LINES = 15;
 const RESULTS_PASSIVES_LINE_HEIGHT = 1;
 
-const RESULTS_STAMINA_PER_PLVL = 25;
-const RESULTS_ENERGY_PER_PLVL = 1.1;
-const RESULTS_STAMINA_PER_ENDURANCE = 12; //Karryn only
+const RESULTS_STAMINA_PER_PLVL = 34;
+const RESULTS_ENERGY_PER_PLVL = 1.6;
+const RESULTS_STAMINA_PER_ENDURANCE = 8; //Karryn only
 
-const RESULTS_EXP_BASE_PARAM = 100;
+const RESULTS_EXP_BASE_PARAM = 150;
 const RESULTS_EXP_PER_PARAM_LVL = 75;
+const RESULTS_EXP_PER_WARDEN_LVL = 25;
+const RESULTS_EXP_MULTI_PER_PARAM_LVL = 0.013;
+const RESULTS_EXP_MULTI_PER_WARDEN_LVL = 0.008;
 const RESULTS_PLVL_REQ_FOR_MAIN_LVL = 5;
 
-const RESULTS_PLVLS_BEFORE_EXP_REDUCE = 12;
+const RESULTS_PLVLS_BEFORE_EXP_REDUCE = 10;
 const RESULTS_PLVLS_BEFORE_EXP_REDUCE_EASY_MODE = 20;
 
+const RESULTS_EXP_REDUCE_RATE = 0.15;
 const RESULTS_MIN_EXP_RATE_EASY_MODE = 0.25; //unused
 const RESULTS_MIN_EXP_RATE_NORMAL_MODE = 0.2; //unused
 const RESULTS_MIN_EXP_RATE_HARD_MODE = 0.15; //unused
-const RESULTS_MIN_EXP_RATE = 0.2;
+const RESULTS_MIN_EXP_RATE = 0.1;
 
 //=============================================================================
  /*:
@@ -67,7 +71,7 @@ Game_Actor.prototype.clearParamExp = function() {
 Game_Actor.prototype.resetParamExp = function() {
 	this.clearParamExp();
 	let repplMain = RESULTS_EXP_BASE_PARAM + RESULTS_EXP_PER_PARAM_LVL;
-	let repplMinor = RESULTS_EXP_BASE_PARAM;
+	let repplMinor = RESULTS_EXP_PER_PARAM_LVL;
 	this._paramToNextLvl = [ repplMain, repplMinor, repplMain, repplMain, repplMain, repplMinor, repplMain, repplMinor];
 	this._paramLvl = [ 1, 1, 1, 1, 1, 1, 1, 1];
 };
@@ -90,14 +94,18 @@ Game_Actor.prototype.getParamGrowthRate = function(paramId, useExpRate) {
 Game_Actor.prototype.getStaminaGrowthRate = function(useExpRate) {
 	let growthRate = 1;
 	
-	if(this.hasEdict(EDICT_STAMINA_TRAINING_THREE)) growthRate *= 1.2;
-	if(this.hasEdict(EDICT_STAMINA_TRAINING_TWO)) growthRate *= 1.2;
-	if(this.hasEdict(EDICT_STAMINA_TRAINING_ONE)) growthRate *= 1.2;
+	if(this.hasEdict(EDICT_STAMINA_TRAINING_THREE)) growthRate *= 1.25;
+	if(this.hasEdict(EDICT_STAMINA_TRAINING_TWO)) growthRate *= 1.25;
+	if(this.hasEdict(EDICT_STAMINA_TRAINING_ONE)) growthRate *= 1.25;
 	
 	growthRate *= this.passiveGrowthRate(PARAM_MAXSTAMINA_ID);
 	
 	if(this.isEquippingThisAccessory(EARRING_TEAR_ID)) growthRate *= 1.2;
 	if(this.isEquippingThisAccessory(EARRING_SUN_ID)) growthRate *= 0.25;
+	
+	if(this.isUsingThisTitle(TITLE_ID_BATHROOM_QUEEN)) growthRate *= 1.75;
+	else if(this.isUsingThisTitle(TITLE_ID_EVASION_ONE)) growthRate *= 0.8;
+	else if(this.isUsingThisTitle(TITLE_ID_EVASION_TWO)) growthRate *= 0.6;
 	
 	if(useExpRate) growthRate *= this.exr;
 	growthRate *= $gameParty.difficultyGrowthRate();
@@ -108,8 +116,8 @@ Game_Actor.prototype.getStaminaGrowthRate = function(useExpRate) {
 Game_Actor.prototype.getEnergyGrowthRate = function(useExpRate) {
 	let growthRate = 1;
 	
-	if(this.hasEdict(EDICT_ENERGY_TRAINING_TWO)) growthRate *= 1.2;
-	if(this.hasEdict(EDICT_ENERGY_TRAINING_ONE)) growthRate *= 1.2;
+	if(this.hasEdict(EDICT_ENERGY_TRAINING_TWO)) growthRate *= 1.25;
+	if(this.hasEdict(EDICT_ENERGY_TRAINING_ONE)) growthRate *= 1.25;
 	
 	
 	growthRate *= this.passiveGrowthRate(PARAM_MAXENERGY_ID);
@@ -131,7 +139,7 @@ Game_Actor.prototype.getStrengthGrowthRate = function(useExpRate) {
 	
 	let trainingCount = this.karrynTrainingEdictsCount_Strength();
 	for(let i = 0; i < trainingCount; ++i) {
-		growthRate *= 1.2;
+		growthRate *= 1.25;
 	}
 	
 	growthRate *= 1 + (0.03 * this.sadismLvl());
@@ -145,7 +153,7 @@ Game_Actor.prototype.getStrengthGrowthRate = function(useExpRate) {
 	
 	if(this.isUsingThisTitle(TITLE_ID_HARDCORE_MASOCHIST)) growthRate *= 0.25;
 	else if(this.isUsingThisTitle(TITLE_ID_SOFTCORE_MASOCHIST)) growthRate *= 0.5;
-	if(this.isUsingThisTitle(TITLE_ID_STRENGTH_TWO)) growthRate *= 1.42;
+	else if(this.isUsingThisTitle(TITLE_ID_STRENGTH_TWO)) growthRate *= 1.42;
 	else if(this.isUsingThisTitle(TITLE_ID_STRENGTH_ONE)) growthRate *= 1.25;
 	
 	if(useExpRate) growthRate *= this.exr;
@@ -159,7 +167,7 @@ Game_Actor.prototype.getDexterityGrowthRate = function(useExpRate) {
 	
 	let trainingCount = this.karrynTrainingEdictsCount_Dexterity();
 	for(let i = 0; i < trainingCount; ++i) {
-		growthRate *= 1.2;
+		growthRate *= 1.25;
 	}
 	
 	growthRate *= this.passiveGrowthRate(PARAM_DEXTERITY_ID);
@@ -182,7 +190,7 @@ Game_Actor.prototype.getAgilityGrowthRate = function(useExpRate) {
 	
 	let trainingCount = this.karrynTrainingEdictsCount_Agility();
 	for(let i = 0; i < trainingCount; ++i) {
-		growthRate *= 1.2;
+		growthRate *= 1.25;
 	}
 	
 	growthRate *= this.passiveGrowthRate(PARAM_AGILITY_ID);
@@ -208,7 +216,7 @@ Game_Actor.prototype.getEnduranceGrowthRate = function(useExpRate) {
 	
 	let trainingCount = this.karrynTrainingEdictsCount_Endurance();
 	for(let i = 0; i < trainingCount; ++i) {
-		growthRate *= 1.2;
+		growthRate *= 1.25;
 	}
 	
 	growthRate *= 1 + (0.01 * this.sadismLvl());
@@ -221,6 +229,7 @@ Game_Actor.prototype.getEnduranceGrowthRate = function(useExpRate) {
 	if(this.isUsingThisTitle(TITLE_ID_FREELOADING_DRINKER)) growthRate *= 1.25;
 	else if(this.isUsingThisTitle(TITLE_ID_HARDCORE_MASOCHIST)) growthRate *= 1.5;
 	else if(this.isUsingThisTitle(TITLE_ID_SOFTCORE_MASOCHIST)) growthRate *= 1.3;
+	else if(this.isUsingThisTitle(TITLE_ID_FINAL_DESTINATION)) growthRate *= 0.36;
 	
 	if(useExpRate) growthRate *= this.exr;
 	growthRate *= $gameParty.difficultyGrowthRate();
@@ -233,7 +242,7 @@ Game_Actor.prototype.getMindGrowthRate = function(useExpRate) {
 	
 	let trainingCount = this.karrynTrainingEdictsCount_Mind();
 	for(let i = 0; i < trainingCount; ++i) {
-		growthRate *= 1.2;
+		growthRate *= 1.25;
 	}
 	
 	growthRate *= 1 - (0.02 * this.sadismLvl());
@@ -297,10 +306,9 @@ Game_Actor.prototype.calculateParamExpRate = function(enemyLvl) {
 
 	let plvlsBeforeExpReduce = RESULTS_PLVLS_BEFORE_EXP_REDUCE;
 	if(Prison.easyMode()) plvlsBeforeExpReduce = RESULTS_PLVLS_BEFORE_EXP_REDUCE_EASY_MODE;
-	if(this._totalParamLvlsGained >= plvlsBeforeExpReduce) {
-		expRate *= Math.max(this.minimumExpRate(), 1 + (plvlsBeforeExpReduce * 0.1) - (this._totalParamLvlsGained * 0.1))
+	if(this._totalParamLvlsGained > plvlsBeforeExpReduce) {
+		expRate *= Math.max(this.minimumExpRate(), 1 + ((plvlsBeforeExpReduce - this._totalParamLvlsGained ) * RESULTS_EXP_REDUCE_RATE))
 	}
-	
 	
 
 	return expRate;
@@ -397,7 +405,12 @@ Game_Actor.prototype.gainCharmExp = function(exp, enemyLvl) {
 
 Game_Actor.prototype.seeIfParamLvlGained = function(paramId) {
 	while(this._paramExp[paramId] >= this._paramToNextLvl[paramId]) {
-		this._paramToNextLvl[paramId] += RESULTS_EXP_BASE_PARAM + this._paramLvl[paramId] * RESULTS_EXP_PER_PARAM_LVL;
+		let nextLvlExp = RESULTS_EXP_BASE_PARAM + this._paramLvl[paramId] * RESULTS_EXP_PER_PARAM_LVL;
+		if(paramId !== PARAM_CHARM_ID) nextLvlExp += RESULTS_EXP_PER_WARDEN_LVL * this.level;
+		nextLvlExp = Math.round(nextLvlExp * (1 + this._paramLvl[paramId] * RESULTS_EXP_MULTI_PER_PARAM_LVL));
+		if(paramId !== PARAM_CHARM_ID) nextLvlExp = Math.round(nextLvlExp * (1 + this.level * RESULTS_EXP_MULTI_PER_WARDEN_LVL));
+		
+		this._paramToNextLvl[paramId] += nextLvlExp;
 		this._paramLvlGained[paramId]++;
 		this._paramLvl[paramId]++;
 		this._totalParamLvlsGained++;
@@ -419,7 +432,12 @@ Game_Actor.prototype.seeIfMainLvlGained = function() {
 Game_Actor.prototype.calculateParamLvlsGained = function() {
 	for(let i = 0; i < 8; i++) {
 		while(this._paramExp[i] >= this._paramToNextLvl[i]) {
-			this._paramToNextLvl[i] += RESULTS_EXP_BASE_PARAM + this._paramLvl[i] * RESULTS_EXP_PER_PARAM_LVL;
+			let nextLvlExp = RESULTS_EXP_BASE_PARAM + this._paramLvl[i] * RESULTS_EXP_PER_PARAM_LVL;
+			if(i !== PARAM_CHARM_ID) nextLvlExp += RESULTS_EXP_PER_WARDEN_LVL * this.level;
+			nextLvlExp = Math.round(nextLvlExp * (1 + this._paramLvl[i] * RESULTS_EXP_MULTI_PER_PARAM_LVL));
+			if(i !== PARAM_CHARM_ID) nextLvlExp = Math.round(nextLvlExp * (1 + this.level * RESULTS_EXP_MULTI_PER_WARDEN_LVL));
+			
+			this._paramToNextLvl[i] += nextLvlExp;
 			this._paramLvlGained[i]++;
 			this._paramLvl[i]++;
 			this._totalParamLvlsGained++;
@@ -475,9 +493,11 @@ Game_Party.prototype.increaseOrderGain = function(value) {
     this._orderResult += value;
 };
 
+//unused
 Game_Party.prototype.gainOrderFromVictory = function() {
     this._orderResult = this._orderGainAtVictory;
 };
+//unused
 Game_Party.prototype.gainOrderFromDefeat = function() {
 	this._orderResult = this._orderGainAtDefeat;
 };
@@ -588,7 +608,7 @@ Scene_Battle.prototype.resultsTitleText = function() {
 	
 	
 	
-	if(Karryn.isInMasturbationPose()) {
+	if(Karryn.isInMasturbationCouchPose()) {
 		let num = $gameActors.actor(ACTOR_KARRYN_ID)._tempRecordOrgasmCount;
 		if(num === 0) title = TextManager.resultsMasturbateBattleNone;
 		else if(num === 1) title = TextManager.resultsMasturbateBattleSingle;
@@ -640,6 +660,7 @@ Scene_Battle.prototype.updateVictorySteps = function() {
 			this.processNextVictoryStep(); 
 		}
 	}
+	$gameActors.actor(ACTOR_KARRYN_ID).calculateAllMaxDesires();
 };
 
 Scene_Battle.prototype.updateVictoryPassives = function() {
@@ -746,22 +767,32 @@ Window_VictoryExp.prototype.drawPrisonResults = function() {
 	//cockiness
 	if(Karryn.hasPassive(PASSIVE_SUBDUED_COUNT_TWO_ID)) {
 		let actor = $gameActors.actor(ACTOR_KARRYN_ID);
-		if(actor._tempRecordCockinessReset) {
-			this._resultsLine++;
-			var text = TextManager.cockinessReset;
-			this.drawText(text, x, y, width, 'left');	
+		if(actor._tempRecordCockinessPreBattle < actor.cockiness) {
+			if(actor.cockiness === 100) {
+				this._resultsLine++;
+				var text = TextManager.cockinessMaxxedOut;
+				text = text.format(actor.cockiness);
+				this.drawText(text, x, y, width, 'left');	
+			}
+			else {
+				this._resultsLine++;
+				var text = TextManager.cockinessIncrease;
+				text = text.format(actor.cockiness);
+				this.drawText(text, x, y, width, 'left');	
+			}
 		}
-		else if(actor.cockiness === 100) {
-			this._resultsLine++;
-			var text = TextManager.cockinessMaxxedOut;
-			text = text.format(actor.cockiness);
-			this.drawText(text, x, y, width, 'left');	
-		}
-		else if(actor._tempRecordCockinessIncrease) {
-			this._resultsLine++;
-			var text = TextManager.cockinessIncrease;
-			text = text.format(actor.cockiness);
-			this.drawText(text, x, y, width, 'left');	
+		else if(actor._tempRecordCockinessPreBattle > actor.cockiness) {
+			if(actor.cockiness === 0) {
+				this._resultsLine++;
+				var text = TextManager.cockinessReset;
+				this.drawText(text, x, y, width, 'left');	
+			}
+			else {
+				this._resultsLine++;
+				var text = TextManager.cockinessDecrease;
+				text = text.format(actor.cockiness);
+				this.drawText(text, x, y, width, 'left');	
+			}
 		}
 	}
 	
@@ -769,11 +800,12 @@ Window_VictoryExp.prototype.drawPrisonResults = function() {
 	if($gameParty.hasOrderResults()) {
 		y = -this._scrollY + this.lineHeight() * this._resultsLine;
 		this._resultsLine++;
-		var orderResults = $gameParty.getOrderResults();
+		let orderResults = $gameParty.getOrderResults();
+		let text = '';
 		if(orderResults > 0)
-			var text = TextManager.resultsOrderIncrease;
+			text = TextManager.resultsOrderIncrease;
 		else
-			var text = TextManager.resultsOrderDecrease;
+			text = TextManager.resultsOrderDecrease;
 		
 		text = text.format(orderResults);
 		this.drawText(text, x, y, width, 'left');		
@@ -782,12 +814,14 @@ Window_VictoryExp.prototype.drawPrisonResults = function() {
 	//funding
 	let funding = BattleManager._rewards.gold;
 	if(funding !== 0) {
+		let text = '';
 		y = -this._scrollY + this.lineHeight() * this._resultsLine;
 		this._resultsLine++;
+		
 		if(funding > 0)
-			var text = TextManager.resultsFundingIncrease;
+			text = TextManager.resultsFundingIncrease;
 		else
-			var text = TextManager.resultsFundingDecrease;
+			text = TextManager.resultsFundingDecrease;
 		
 		text = text.format(funding);
 		this.drawText(text, x, y, width, 'left');			
@@ -796,10 +830,10 @@ Window_VictoryExp.prototype.drawPrisonResults = function() {
 	//fatigue
 	let fatigue = $gameParty.getFatigueResults();
 	if(fatigue !== 0) {
+		let text = '';
 		y = -this._scrollY + this.lineHeight() * this._resultsLine;
 		this._resultsLine++;
-		let text = '';
-		
+
 		if(fatigue > 0) {
 			text = TextManager.resultsFatigueIncrease;
 		}
@@ -860,10 +894,12 @@ Window_VictoryExp.prototype.drawExpBreakdown = function(actor, rect) {
 			let wy = -this._scrollY + this.lineHeight() * this._resultsLine + this.lineHeight() * expLines * RESULTS_EXP_LINE_HEIGHT;
 			expLines++;
 			let columnX = 0;
+			/*
 			//if(expLines > RESULTS_EXP_MAX_LINES) {
 			//	columnX += (rect.width - 4)/2;
 			//	wy -= this.lineHeight() * RESULTS_EXP_MAX_LINES * RESULTS_EXP_LINE_HEIGHT;
 			//}
+			*/
 			this.changeTextColor(this.normalColor());
 			let text = TextManager.paramLevelGainedSingular;
 			if(value > 1) text = TextManager.paramLevelGainedPlural;
@@ -939,9 +975,9 @@ Window_VictoryPassives.prototype.lineHeight = function() {
 };
 
 Window_VictoryPassives.prototype.itemHeight = function() {
-    var clientHeight = this.height - this.padding * 2;
-    var clientHeight = Math.floor(clientHeight / this.maxItems());
-    var clientHeight = Math.max(clientHeight, this.lineHeight() * 2);
+    let clientHeight = this.height - this.padding * 2;
+    clientHeight = Math.floor(clientHeight / this.maxItems());
+    clientHeight = Math.max(clientHeight, this.lineHeight() * 2);
     return clientHeight;
 };
 
@@ -971,4 +1007,77 @@ Window_VictoryPassives.prototype.drawActorNewPassives = function(actor, index) {
 	}
 	
 	this.changeTextColor(this.normalColor());
+};
+
+
+Remtairy.Results.Window_VictoryPassives_update = Window_VictoryPassives.prototype.update;
+Window_VictoryPassives.prototype.update = function() {
+    Remtairy.Results.Window_VictoryPassives_update.call(this);
+    if(!!this.tooltipWindow() && this.isMouseOverPassives()) {
+        this._battler = $gameActors.actor(ACTOR_KARRYN_ID);
+        if(!!this._battler) {
+            this.updateStateIconTooltipWindow();
+        }
+    }
+};
+
+Window_VictoryPassives.prototype.updateStateIconTooltipWindow = function() {
+    this.tooltipWindow().setTargetHost(this, true);
+};
+
+Window_VictoryPassives.prototype.tooltipWindow = function() {
+    return SceneManager._scene._stateIconTooltipWindow;
+};
+
+Window_VictoryPassives.prototype.canvasToLocalX = function(x) {
+    var node = this;
+    while (node) {
+        x -= node.x;
+        node = node.parent;
+    }
+    return x;
+};
+
+Window_VictoryPassives.prototype.canvasToLocalY = function(y) {
+    var node = this;
+    while (node) {
+        y -= node.y;
+        node = node.parent;
+    }
+    return y;
+};
+
+Window_VictoryPassives.prototype.isFullyVisible = function() {
+    var node = this;
+    while (node) {
+        if (!this.visible) {
+            return false;
+        } else if (this.opacity <= 0) {
+            return false;
+        } else {
+            node = node.parent;
+        }
+    }
+    return true;
+};
+
+Window_VictoryPassives.prototype.isMouseOverPassives = function() {
+	if(!this.isFullyVisible() || x < 0 || y < 0) return false;
+    var x = this.canvasToLocalX(TouchInput._mouseOverX);
+    var y = this.canvasToLocalY(TouchInput._mouseOverY);
+
+	let bufferY = 20;
+
+	let mouseIsOverPassives = x >= this._scrollX + this.standardPadding() * 2 + Window_Base._faceWidth 
+		&& x <= (this.width - 240)/2
+		&& y >= bufferY;
+		
+	if(y > (REM_OLIVIA_TOOLTIP_PASSIVE_LINEHEIGHT * $gameActors.actor(ACTOR_KARRYN_ID)._newPassivesUnlocked.length) + bufferY)
+		mouseIsOverPassives = false;
+	
+	if(mouseIsOverPassives) 
+		this.tooltipWindow().setXYPos_passives(x, y - 20);
+	
+	
+    return mouseIsOverPassives;
 };

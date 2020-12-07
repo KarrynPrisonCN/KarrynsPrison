@@ -31,7 +31,7 @@ const REM_ENERGY_GAUGE_BACK_COLOR = 19;
 const REM_ENERGY_GAUGE_COLOR_1 = 31;
 const REM_ENERGY_GAUGE_COLOR_2 = 30;
 
-const REM_TACHIE_NULL = 0;
+const REM_TACHIE_NULL = '';
 
 const BATTLETACHIE_FULLSCREEN_APPEAR_X = 0;
 const BATTLETACHIE_NORMAL_APPEAR_X = 0;
@@ -83,6 +83,7 @@ const TAG_KICK_SKILL = 'KickSkill';
 const TAG_KISS_SKILL = 'KissSkill';
 const TAG_COCK_PET_SKILL = 'CockPetSkill';
 const TAG_ACTOR_SEX_SKILL = 'ActorSexSkill';
+const TAG_ACTOR_ONANI_SKILL = 'ActorOnaniSkill';
 const TAG_DONT_AUTO_SELECT_SKILL = 'DontAutoSelectSkill';
 const TAG_ENEMY_ATTACK_SKILL = 'EnemyAttackSkill';
 const TAG_ENEMY_TALK_SKILL = 'EnemyTalkSkill';
@@ -109,6 +110,9 @@ const TAG_DONT_COUNT_SUBDUED  = 'DontCountSubdued';
 const TAG_SELECTION_FLASH_WHITER  = 'SelectionFlashWhiter';
 const TAG_HAS_DAMAGED_FACE  = 'HasDamagedFace';
 const TAG_DONT_DRAW_SELECTION  = 'DontDrawSelection';
+const TAG_HAS_PINK_ROTOR  = 'HasPinkRotor';
+const TAG_HAS_PENIS_DILDO  = 'HasPenisDildo';
+const TAG_HAS_ANAL_BEADS  = 'HasAnalBeads';
 
 const TAG_BLANK_TYPE_HALF  = 'BlankTypeHalf';
 const TAG_BLANK_TYPE_DOT  = 'BlankTypeDot';
@@ -344,6 +348,52 @@ Window_Message.prototype.updatePlacement = function() {
 	else Remtairy.Misc.Window_Message_updatePlacement.call(this);
 };
 
+Remtairy.Misc.Window_Message_processEscapeCharacter = Window_Message.prototype.processEscapeCharacter;
+Window_Message.prototype.processEscapeCharacter = function(code, textState) {
+    switch (code) {
+    case 'RLI':
+        this.processDrawLanguageIcon(this.obtainEscapeParam(textState), textState);
+        break;
+    default:
+      Remtairy.Misc.Window_Message_processEscapeCharacter.call(this,
+        code, textState);
+      break;
+    }
+};
+
+/////////
+// Window StateIconTooltip
+///////////////
+
+Remtairy.Misc.Window_StateIconTooltip_processEscapeCharacter = Window_StateIconTooltip.prototype.processEscapeCharacter;
+Window_StateIconTooltip.prototype.processEscapeCharacter = function(code, textState) {
+    switch (code) {
+    case 'RLI':
+        this.processDrawLanguageIcon(this.obtainEscapeParam(textState), textState);
+        break;
+    default:
+      Remtairy.Misc.Window_StateIconTooltip_processEscapeCharacter.call(this,
+        code, textState);
+      break;
+    }
+};
+
+Window_StateIconTooltip.prototype.drawLanguageIcon = function(iconIndex, x, y) {
+    let iconSetName = false;
+	if(TextManager.isEnglish) iconSetName = "IconSet_Language_EN";
+	else if(TextManager.isJapanese) iconSetName = "IconSet_Language_JP";
+    
+	if(!iconSetName) return;
+	
+	var bitmap = ImageManager.loadSystem(iconSetName);
+    var pw = Window_Base._iconWidth;
+    var ph = Window_Base._iconHeight;
+    var sx = iconIndex % 16 * pw;
+    var sy = Math.floor(iconIndex / 16) * ph;
+    var rate = this.scaleRate();
+    this.contents.blt(bitmap, sx, sy, pw, ph, x, y, Math.round(pw * rate), Math.round(ph * rate));
+};
+
 /////////
 // Window TitleCommand
 ///////////////
@@ -555,6 +605,7 @@ Window_Base.prototype.standardFontFace = function() {
     return $gameSystem.getMessageFontName();
 };
 
+//unused?
 Window_Base.prototype.drawActorIcons = function(actor, x, y, width) {
     width = width || 144;
     var icons = actor.allIcons().slice(0, Math.floor(width / Window_Base._iconWidth));
@@ -564,16 +615,28 @@ Window_Base.prototype.drawActorIcons = function(actor, x, y, width) {
     }
 };
 
-Window_Base.prototype.drawIconGray = function(iconIndex, x, y) {
+Window_Base.prototype.drawIcon = function(iconIndex, x, y, scale) {
+	if(!scale) scale = 1;
+    var bitmap = ImageManager.loadSystem('IconSet');
+    var pw = Window_Base._iconWidth;
+    var ph = Window_Base._iconHeight;
+    var sx = iconIndex % 16 * pw;
+    var sy = Math.floor(iconIndex / 16) * ph;
+    this.contents.blt(bitmap, sx, sy, pw, ph, x, y, Math.round(pw * scale), Math.round(ph * scale));
+};
+
+Window_Base.prototype.drawIconGray = function(iconIndex, x, y, scale) {
+	if(!scale) scale = 1;
     var bitmap = ImageManager.loadSystem('IconSetGray');
     var pw = Window_Base._iconWidth;
     var ph = Window_Base._iconHeight;
     var sx = iconIndex % 16 * pw;
     var sy = Math.floor(iconIndex / 16) * ph;
-    this.contents.blt(bitmap, sx, sy, pw, ph, x, y);
+    this.contents.blt(bitmap, sx, sy, pw, ph, x, y, Math.round(pw * scale), Math.round(ph * scale));
 };
 
-Window_Base.prototype.drawLanguageIcon = function(iconIndex, x, y) {
+Window_Base.prototype.drawLanguageIcon = function(iconIndex, x, y, scale) {
+	if(!scale) scale = 1;
 	let iconSetName = false;
 	if(TextManager.isEnglish) iconSetName = "IconSet_Language_EN";
 	else if(TextManager.isJapanese) iconSetName = "IconSet_Language_JP";
@@ -585,7 +648,13 @@ Window_Base.prototype.drawLanguageIcon = function(iconIndex, x, y) {
     var ph = Window_Base._iconHeight;
     var sx = iconIndex % 16 * pw;
     var sy = Math.floor(iconIndex / 16) * ph;
-    this.contents.blt(bitmap, sx, sy, pw, ph, x, y);
+    this.contents.blt(bitmap, sx, sy, pw, ph, x, y, Math.round(pw * scale), Math.round(ph * scale));
+};
+
+Window_Base.prototype.processDrawLanguageIcon = function(iconIndex, textState, scale) {
+	if(!scale) scale = 1;
+    this.drawLanguageIcon(iconIndex, textState.x + 2, textState.y + 2, scale);
+    textState.x += Window_Base._iconWidth + REM_X_ICON_PADDING;
 };
 
 //Fix yanfly misalign text
@@ -605,8 +674,9 @@ Window_Base.prototype.drawTextEx = function(text, x, y, dontResetFontSettings) {
 };
 
 //Fix misalign icon
-Window_Base.prototype.processDrawIcon = function(iconIndex, textState) {
-    this.drawIcon(iconIndex, textState.x + 2, textState.y + 2);
+Window_Base.prototype.processDrawIcon = function(iconIndex, textState, scale) {
+    if(!scale) scale = 1;
+	this.drawIcon(iconIndex, textState.x + 2, textState.y + 2, scale);
     textState.x += Window_Base._iconWidth + REM_X_ICON_PADDING;
 };
 
@@ -1450,8 +1520,8 @@ Window_MessageBacklog.prototype.processHandling = function() {
 
 //Help window height
 Window_Help.prototype.initialize = function(numLines) {
-    var width = Graphics.boxWidth;
-	var height = this.fittingHeight(numLines || 2.5);
+    let width = Graphics.boxWidth;
+	let height = this.fittingHeight(numLines || 2.5);
     Window_Base.prototype.initialize.call(this, 0, 0, width, height);
     this._text = '';
 };
@@ -1650,9 +1720,10 @@ Window_Selectable.prototype.drawItemName = function(item, x, y, width) {
 /////////////////
 //////////////
 
+
 Remtairy.Misc.Window_Base_convertExtraEscapeCharacters = Window_Base.prototype.convertExtraEscapeCharacters;
 Window_Base.prototype.convertExtraEscapeCharacters = function(text) {
-    //REM_SLVL[n]
+	//REM_SLVL[n]
 	text = text.replace(/\x1bREM_SLVL\[(\d+)\]/gi, function() {
         return this.remMiscSLVL(parseInt(arguments[1]));
     }.bind(this));
@@ -1692,6 +1763,10 @@ Window_Base.prototype.convertExtraEscapeCharacters = function(text) {
 	text = text.replace(/\x1bREM_WANTEDIC\[(\d+)\]/gi, function() {
         return $gameParty.getHeadcountOfAllPrisonWanted(parseInt(arguments[1]));
     }.bind(this));
+	//REM_GHRSE[n]
+	text = text.replace(/\x1bREM_GHRSE\[(\d+)\]/gi, function() {
+        return this.remMiscGloryHoleRepStaffEff(parseInt(arguments[1]));
+    }.bind(this));
 	
 	//REM_RAC[n]
 	text = text.replace(/\x1bREM_RAC\[(\d+)\]/gi, function() {
@@ -1709,6 +1784,18 @@ Window_Base.prototype.convertExtraEscapeCharacters = function(text) {
 	text = text.replace(/\x1bREM_CANT\[(\d+)\]/gi, function() {
         return this.remMiscSkillCant(parseInt(arguments[1]));
     }.bind(this));
+	//REM_CANT[n]
+	text = text.replace(/\x1bREM_TITLE_FIRST_EQUIP\[(\d+)\]/gi, function() {
+        return this.remMiscSkillTitleFirstEquip(parseInt(arguments[1]));
+    }.bind(this));
+	//REM_DAILY_REPORT[n]
+	text = text.replace(/\x1bREM_DAILY_REPORT\[(\d+)\]/gi, function() {
+        return this.remMiscDailyReport(parseInt(arguments[1]));
+    }.bind(this));
+	//REM_VARIABLE_ICON[n]
+	text = text.replace(/\x1bREM_VARIABLE_ICON\[(\d+)\]/gi, function() {
+        return this.remMiscVariableIcon(parseInt(arguments[1]));
+    }.bind(this));
 	
 	return Remtairy.Misc.Window_Base_convertExtraEscapeCharacters.call(this, text);
 };
@@ -1723,6 +1810,7 @@ Window_Base.prototype.remMiscSLVL = function(n) {
     let actor = n >= 1 ? $gameActors.actor(n) : null;
     return actor ? actor.slutLvl : '';
 };
+
 
 Window_Base.prototype.remMiscSD_SKR = function(n) {
     let actor = $gameActors.actor(ACTOR_KARRYN_ID);
@@ -1760,6 +1848,11 @@ Window_Base.prototype.remMiscAvailableVisitorRooms = function(n) {
 	return $gameParty.maxAvailableVisitorRooms();
 };
 
+Window_Base.prototype.remMiscGloryHoleRepStaffEff = function(n) {
+	return Math.round($gameParty.gloryHoleReputationEffect_staffEfficiency() * 100);
+};
+
+
 Window_Base.prototype.remMiscRejectAlcoholCost = function(n) {
 	return $gameActors.actor(ACTOR_KARRYN_ID).rejectAlcoholWillCost();
 };
@@ -1796,9 +1889,33 @@ Window_Base.prototype.remMiscSkillCant = function(n) {
 		text = $gameActors.actor(ACTOR_KARRYN_ID).skillDescription_cant_karrynAnalSexSkill();
 	else if(n === SKILL_KARRYN_PUSSYSEX_SELECTOR_CANT_ID)
 		text = $gameActors.actor(ACTOR_KARRYN_ID).skillDescription_cant_karrynPussySexSkill();
+	else if(n === SKILL_KARRYN_REMOVE_TOY_CANT_ID)
+		text = $gameActors.actor(ACTOR_KARRYN_ID).skillDescription_cant_removeToy();
+	else if(n === SKILL_RECEPTIONIST_ACCEPT_REQUEST_CANT_ID)
+		text = $gameActors.actor(ACTOR_KARRYN_ID).skillDescription_cant_receptionistBattle_acceptRequest();
 	
 	
 	return text;
+};
+
+Window_Base.prototype.remMiscSkillTitleFirstEquip = function(n) {
+	if($gameActors.actor(ACTOR_KARRYN_ID).titleHasBeenEquippedOnceBefore(n)) {
+		return '';
+	}
+	else {
+		return this.convertEscapeCharacters(TextManager.TitleDescriptionFirstTimeTitleEquip);
+	}
+};
+
+Window_Base.prototype.remMiscDailyReport = function(n) {
+	return this.convertEscapeCharacters(this.remDailyReportText(n));
+};
+
+Window_Base.prototype.remMiscVariableIcon = function(n) {
+	let text = '\\I[';
+	text += $gameVariables.value(n);
+	text += ']';
+	return this.convertEscapeCharacters(text);
 };
 
 
@@ -2325,61 +2442,77 @@ Game_Action.prototype.applySexValues = function(target, critical) {
 	result.bukkakeBoobs = Math.round(result.bukkakeBoobs);
 	result.bukkakeButt = Math.round(result.bukkakeButt);
 	
+	
 	//Gain desire
-	if(this.item().hasTag(TAG_ENEMY_PETTING_SKILL)) {
-		result.skillTypeEnemyPetting = true;
+	if(this.item().hasTag(TAG_ENEMY_PETTING_SKILL) || this.item().hasTag(TAG_ACTOR_ONANI_SKILL)) {
+		if(this.item().hasTag(TAG_ENEMY_PETTING_SKILL))
+			result.skillTypeEnemyPetting = true;
+		else if(this.item().hasTag(TAG_ACTOR_ONANI_SKILL))
+			result.skillTypeActorOnani = true;
+		
 		let area = result.desireTarget;
 		if(area == AREA_MOUTH) {
-			target.gainMouthDesire(result.desireAreaDamage);
-			target.gainRandomDesireWithCockWeight(result.desireRandomDamage, result.desireCockWeight);
+			target.gainMouthDesire(result.desireAreaDamage, false, false);
+			target.gainRandomDesireWithCockWeight(result.desireRandomDamage, result.desireCockWeight, false);
 		}
 		else if(area == AREA_BOOBS || area == AREA_NIPPLES) {
-			target.gainBoobsDesire(result.desireAreaDamage);
-			target.gainRandomDesireWithCockWeight(result.desireRandomDamage, result.desireCockWeight);
+			target.gainBoobsDesire(result.desireAreaDamage, false, false);
+			target.gainRandomDesireWithCockWeight(result.desireRandomDamage, result.desireCockWeight, false);
 		}
 		else if(area == AREA_CLIT || area == AREA_PUSSY) {
-			target.gainPussyDesire(result.desireAreaDamage);
-			target.gainRandomDesireWithCockWeight(result.desireRandomDamage, result.desireCockWeight);
+			target.gainPussyDesire(result.desireAreaDamage, false, false);
+			target.gainRandomDesireWithCockWeight(result.desireRandomDamage, result.desireCockWeight, false);
 		}
 		else if(area == AREA_BUTT || area == AREA_ANAL) {
-			target.gainButtDesire(result.desireAreaDamage);
-			target.gainRandomDesireWithCockWeight(result.desireRandomDamage, result.desireCockWeight);
+			target.gainButtDesire(result.desireAreaDamage, false, false);
+			target.gainRandomDesireWithCockWeight(result.desireRandomDamage, result.desireCockWeight, false);
 		}
 		else if(area == AREA_FINGERS || area == AREA_HANDSHAKE) {
-			target.gainCockDesire(result.desireAreaDamage);
-			target.gainRandomDesireWithCockWeight(result.desireRandomDamage, result.desireCockWeight);
+			target.gainCockDesire(result.desireAreaDamage, false, false);
+			target.gainRandomDesireWithCockWeight(result.desireRandomDamage, result.desireCockWeight, false);
 		}
 	}
 	else if(this.item().hasTag(TAG_KISS_SKILL)) {
-		this.subject().gainMouthDesire(result.desireAreaDamage);
-		this.subject().gainRandomDesireWithCockWeight(result.desireRandomDamage, result.desireCockWeight);
+		this.subject().gainMouthDesire(result.desireAreaDamage, false, false);
+		this.subject().gainRandomDesireWithCockWeight(result.desireRandomDamage, result.desireCockWeight, false);
 	}
 	else if(this.item().hasTag(TAG_COCK_PET_SKILL)) {
-		this.subject().gainCockDesire(result.desireAreaDamage);
-		this.subject().gainRandomDesireWithCockWeight(result.desireRandomDamage, result.desireCockWeight);
+		this.subject().gainCockDesire(result.desireAreaDamage, false, false);
+		this.subject().gainRandomDesireWithCockWeight(result.desireRandomDamage, result.desireCockWeight, false);
 	}
 	else if(this.item().hasTag(TAG_ENEMY_SEX_SKILL)) {
 		result.skillTypeEnemySex = true;
-		target.gainCockDesire(result.desireAreaDamage);
-		target.gainRandomDesireWithCockWeight(result.desireRandomDamage, result.desireCockWeight);
+		target.gainCockDesire(result.desireAreaDamage, false, false);
+		target.gainRandomDesireWithCockWeight(result.desireRandomDamage, result.desireCockWeight, false);
 	}
-	else if(this.item().hasTag(TAG_ACTOR_SEX_SKILL)) {
-		this.subject().gainCockDesire(result.desireAreaDamage);
-		this.subject().gainRandomDesireWithCockWeight(result.desireRandomDamage, result.desireCockWeight);
+	else if(this.isActorSexSkill()) {
+		this.subject().gainCockDesire(result.desireAreaDamage, false, false);
+		this.subject().gainRandomDesireWithCockWeight(result.desireRandomDamage, result.desireCockWeight, false);
 	}
 	else if(this.item().hasTag(TAG_CREAMPIE_SKILL) || this.item().hasTag(TAG_BUKKAKE_SKILL) || this.item().hasTag(TAG_SWALLOW_SKILL)) {
 		result.skillTypeEnemyBukkake = true;
-		target.gainCockDesire(result.desireAreaDamage);
-		target.gainRandomDesireWithCockWeight(result.desireRandomDamage, result.desireCockWeight);
+		target.gainCockDesire(result.desireAreaDamage, false, false);
+		target.gainRandomDesireWithCockWeight(result.desireRandomDamage, result.desireCockWeight, false);
 	
 	}
 
 	//Target pleasure damage
 	if(result.pleasureDamage > 0) {
+		
+		if(Prison.easyMode() && target.isActor() && this.subject().isEnemy()) {
+			if(ConfigManager.cheatEnemyDoubleSexualDamage) result.pleasureDamage *= 2;
+			if(ConfigManager.cheatEnemyTripleSexualDamage) result.pleasureDamage *= 3;
+		}
+
 		target.gainPleasure(result.pleasureDamage);
+
 		if(target.isActor() && !this.subject().isActor()) {
 			let percentOfOrgasmFromValue = target.getPercentOfOrgasmFromValue(result.pleasureDamage);
 			target.gainEnduranceExp(Math.min(120, Math.max(30, percentOfOrgasmFromValue * 4)), this.subject().enemyExperienceLvl());
+		}
+		else if(target.isActor() && this.subject().isActor()) {
+			let percentOfOrgasmFromValue = target.getPercentOfOrgasmFromValue(result.pleasureDamage);
+			target.gainDexterityExp(Math.min(120, Math.max(30, percentOfOrgasmFromValue * 4)), this.level);
 		}
 	}
 
@@ -2397,10 +2530,12 @@ Game_Action.prototype.applySexValues = function(target, critical) {
 	
 	//Clothing damage
 	if(result.clothingDamage > 0 && DEBUG_MODE)  {
-		if(target.isActor()) 
-			target.damageClothing(result.clothingDamage);
-		else if(this.subject().isActor()) 
-			this.subject().damageClothing(result.clothingDamage);
+		if(target.isActor()) {
+			target.damageClothing(result.clothingDamage, false);
+		}
+		else if(this.subject().isActor()) {
+			this.subject().damageClothing(result.clothingDamage, true);
+		}
 	}
 
 	//Check for orgasms
@@ -2425,8 +2560,10 @@ Game_Action.prototype.applySexValues = function(target, critical) {
 	}
 	
 	//Apply Wanted Points
-	if(result.staminaDamage > 0) this.subject().addWantedPoints(result.staminaDamage * WANTED_POINTS_STAMINA_DMG_MULTIPLER);
-	if(result.pleasureDamage > 0) this.subject().addWantedPoints(result.pleasureDamage * WANTED_POINTS_PLEASURE_DMG_MULTIPLER);
+	if(result.staminaDamage > 0 && this.subject().isEnemy()) 
+		this.subject().addWantedPoints(result.staminaDamage * WANTED_POINTS_STAMINA_DMG_MULTIPLER);
+	if(result.pleasureDamage > 0 && this.subject().isEnemy()) 
+		this.subject().addWantedPoints(result.pleasureDamage * WANTED_POINTS_PLEASURE_DMG_MULTIPLER);
 };
 
 Game_Action.prototype.applyOverblowProtection = function(value, target) {
@@ -2454,6 +2591,7 @@ Game_ActionResult.prototype.clear = function() {
 	this.skillTypeEnemyPetting = false;
 	this.skillTypeEnemySex = false;
 	this.skillTypeEnemyBukkake = false;
+	this.skillTypeActorOnani = false;
 	this.desireAreaDamage = 0;
 	this.desireTarget = false;
 	this.desireRandomDamage = 0;

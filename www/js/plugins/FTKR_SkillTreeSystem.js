@@ -3620,7 +3620,7 @@ function Scene_STS() {
 			this.drawIcon(this.ftItemIcon(skill), rect.x + ssi.offsetX, rect.y + ssi.offsetY);
 		}
 		else {
-			this.drawIconGray(this.ftItemIcon(skill), rect.x + ssi.offsetX, rect.y + ssi.offsetY);
+			this.drawIconGray(this.ftItemIcon(skill), rect.x + ssi.offsetX, rect.y + ssi.offsetY, 1);
 		}
     };
 

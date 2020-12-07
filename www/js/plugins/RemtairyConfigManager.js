@@ -39,6 +39,23 @@ ConfigManager.displayPubic = false;
 ConfigManager.displayPleasureAsPercent = true;
 ConfigManager.shorterDefeatBattles = false;
 
+ConfigManager.cheatEnemyDoublePhysicalDamage = false;
+ConfigManager.cheatEnemyTriplePhysicalDamage = false;
+ConfigManager.cheatEnemyDoubleSexualDamage = false;
+ConfigManager.cheatEnemyTripleSexualDamage = false;
+ConfigManager.cheatEnemyAlwaysAct = false;
+ConfigManager.cheatActorHalfStaminaRegen = false;
+ConfigManager.cheatActorThirdStaminaRegen = false;
+ConfigManager.cheatActorHalfExpRate = false;
+ConfigManager.cheatActorNoEvasion = false;
+ConfigManager.cheatLessControlFive = false;
+ConfigManager.cheatLessControlTen = false;
+ConfigManager.cheatInstantRiotsOne = false;
+ConfigManager.cheatInstantRiotsTwo = false;
+ConfigManager.cheatInstantRiotsThree = false;
+ConfigManager.cheatInstantRiotsFour = false;
+ConfigManager.cheatDisableAutosave = false;
+
 Remtairy.CM.ConfigManager_applyData = ConfigManager.applyData;
 ConfigManager.applyData = function(config) {
 	Remtairy.CM.ConfigManager_applyData.call(this, config);
@@ -69,6 +86,24 @@ ConfigManager.applyData = function(config) {
 	this.cancelSkipMentalPhase = config['cancelSkipMentalPhase'];
 	this.displayPubic = config['displayPubic'];
 	this.shorterDefeatBattles = config['shorterDefeatBattles'];
+	
+	this.cheatEnemyDoublePhysicalDamage = config['cheatEnemyDoublePhysicalDamage'];
+	this.cheatEnemyTriplePhysicalDamage = config['cheatEnemyTriplePhysicalDamage'];
+	this.cheatEnemyDoubleSexualDamage = config['cheatEnemyDoubleSexualDamage'];
+	this.cheatEnemyTripleSexualDamage = config['cheatEnemyTripleSexualDamage'];
+	this.cheatEnemyAlwaysAct = config['cheatEnemyAlwaysAct'];
+	this.cheatActorHalfStaminaRegen = config['cheatActorHalfStaminaRegen'];
+	this.cheatActorThirdStaminaRegen = config['cheatActorThirdStaminaRegen'];
+	this.cheatActorHalfExpRate = config['cheatActorHalfExpRate'];
+	this.cheatActorNoEvasion = config['cheatActorNoEvasion'];
+	this.cheatLessControlFive = config['cheatLessControlFive'];
+	this.cheatLessControlTen = config['cheatLessControlTen'];
+	this.cheatInstantRiotsOne = config['cheatInstantRiotsOne'];
+	this.cheatInstantRiotsTwo = config['cheatInstantRiotsTwo'];
+	this.cheatInstantRiotsThree = config['cheatInstantRiotsThree'];
+	this.cheatInstantRiotsFour = config['cheatInstantRiotsFour'];
+	this.cheatDisableAutosave = config['cheatDisableAutosave'];
+
 };
 
 Remtairy.CM.ConfigManager_makeData = ConfigManager.makeData;
@@ -106,6 +141,38 @@ ConfigManager.readRemConfig = function(config, name) {
 		else if(name == 'disableRimjobs')
 			return false;
 		
+		else if(name == 'cheatEnemyDoublePhysicalDamage')
+			return false;
+		else if(name == 'cheatEnemyTriplePhysicalDamage')
+			return false;
+		else if(name == 'cheatEnemyDoubleSexualDamage')
+			return false;
+		else if(name == 'cheatEnemyTripleSexualDamage')
+			return false;
+		else if(name == 'cheatEnemyAlwaysAct')
+			return false;
+		else if(name == 'cheatActorHalfStaminaRegen')
+			return false;
+		else if(name == 'cheatActorThirdStaminaRegen')
+			return false;
+		else if(name == 'cheatActorHalfExpRate')
+			return false;
+		else if(name == 'cheatActorNoEvasion')
+			return false;
+		else if(name == 'cheatLessControlFive')
+			return false;
+		else if(name == 'cheatLessControlTen')
+			return false;
+		else if(name == 'cheatInstantRiotsOne')
+			return false;
+		else if(name == 'cheatInstantRiotsTwo')
+			return false;
+		else if(name == 'cheatInstantRiotsThree')
+			return false;
+		else if(name == 'cheatInstantRiotsFour')
+			return false;
+		else if(name == 'cheatDisableAutosave')
+			return false;
 		
 		else if(name == 'sortPassivesAscending')
 			return false;

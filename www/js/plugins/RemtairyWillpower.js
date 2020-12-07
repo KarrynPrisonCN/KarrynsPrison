@@ -17,10 +17,10 @@ Remtairy.Willpower = Remtairy.Willpower || {};
 const WILLPOWER_BASE_WP = 38;
 const ITEM_WILL_COST_ID = 1; //Item Id of the Willpower item
 const WILLPOWER_PER_MIND = 0.8;
-const WILLPOWER_PER_MIND_PLVL = 0.8;
+const WILLPOWER_PER_MIND_PLVL = 0.7;
 
 const WILLPOWER_SKILL_START = 81;
-const WILLPOWER_SKILL_END = 105;
+const WILLPOWER_SKILL_END = 109;
 
 const WILLPOWER_REJECT_ALCOHOL_COST = 15;
 
@@ -120,6 +120,8 @@ Window_SkillList.prototype.costWidth = function() {
 Game_Actor.prototype.resetWillpowerCosts = function() {
 	this._tempHealingThoughtsExtraCooldown = 0;
 	this._tempMindOverMatterExtraCooldown = 0;
+	this._denyingExternalEjaculations = false;
+	this._denyingInternalEjaculations = false;
 };
 
 /////////
@@ -133,9 +135,15 @@ Game_Actor.prototype.enterMentalPhase = function() {
 	this._mentalPhase = true;
 };
 
-//Action Phase
+//Enter Action Phase
+//Called also by Skill 2
 Game_Actor.prototype.enterActionPhase = function() {
 	this._mentalPhase = false;
+	
+	if(this.energy > 0 || this.isInCombatPose()) {
+		this.checkOnaniInBattleDesire();
+	}
+	
 	if(!this.isDontGainFatiguePerTurnPose()) {
 		if(this.isInCombatPose()) {
 			$gameParty.increaseFatigueGain(PRISON_FATIGUE_PER_TURN_COMBAT);
@@ -147,6 +155,7 @@ Game_Actor.prototype.enterActionPhase = function() {
 			$gameParty.increaseFatigueGain(PRISON_FATIGUE_PER_TURN_OTHER);
 		}
 	}
+	
 	
 	if(this.isStateAffected(STATE_KARRYN_RESIST_ORGASM_ID) && 
 	this._stateTurns[STATE_KARRYN_RESIST_ORGASM_ID] === 1) {
@@ -224,9 +233,30 @@ Game_Actor.prototype.onStartOfConBat = function() {
 ////////////
 
 Game_Actor.prototype.maxWill = function() {
-	let value = WILLPOWER_BASE_WP;
-	value += Math.round(this.mind * WILLPOWER_PER_MIND + this._paramLvl[PARAM_MIND_ID] * WILLPOWER_PER_MIND_PLVL);
-	return value;
+	let value = WILLPOWER_BASE_WP * this.paramRate(PARAM_MIND_ID);
+	value += this.mind * WILLPOWER_PER_MIND;
+	value += this._paramLvl[PARAM_MIND_ID] * WILLPOWER_PER_MIND_PLVL * this.paramRate(PARAM_MIND_ID);
+	
+	if(this._denyingInternalEjaculations) {
+		if(value < 10) {
+			this._denyingInternalEjaculations = false;
+			this.cacheDesireTooltips();
+		}
+		else {
+			value -= 10;
+		}
+	}
+	if(this._denyingExternalEjaculations) {
+		if(value < 10) {
+			this._denyingExternalEjaculations = false;
+			this.cacheDesireTooltips();
+		}
+		else {
+			value -= 10;
+		}
+	}
+
+	return Math.max(0, Math.round(value));
 };
 
 Game_Actor.prototype.willRegenMultipler = function() {
@@ -366,19 +396,21 @@ Game_Actor.prototype.willpowerElementRate = function(elementId) {
 
 Game_Actor.prototype.showEval_suppressDesires = function(area) {
 	if(!DEBUG_MODE || this.justOrgasmed()) return false;
+	
+	
+	return true;
+};
+
+Game_Actor.prototype.customReq_suppressDesires = function(area) {
 	if(this.isInSexPose()) {
-		if(area == AREA_COCK && 
-		(this.isBodySlotPenis(MOUTH_ID) || this.isBodySlotPenis(BOOBS_ID) || this.isBodySlotPenis(PUSSY_ID) || this.isBodySlotPenis(ANAL_ID) || this.isBodySlotPenis(LEFT_HAND_ID) || this.isBodySlotPenis(RIGHT_HAND_ID)) ) 
+		if(area == AREA_COCK && this.cockDesire <= this.getSuppressCockDesireLowerLimit()) 
 			return false;
-		else if(area == AREA_MOUTH && (this.isBodySlotPenis(MOUTH_ID) || this.isBodySlotAnus(MOUTH_ID))) return false;
-		else if(area == AREA_BOOBS && this.isBodySlotPenis(BOOBS_ID)) return false;
-		else if(area == AREA_PUSSY && (this.isBodySlotPenis(PUSSY_ID) || this.isBodySlotTongue(PUSSY_ID))) return false;
-		else if(area == AREA_BUTT && (this.isBodySlotPenis(ANAL_ID))) return false;
+		else if(area == AREA_MOUTH && this.mouthDesire <= this.getSuppressMouthDesireLowerLimit()) return false;
+		else if(area == AREA_BOOBS && this.boobsDesire <= this.getSuppressBoobsDesireLowerLimit()) return false;
+		else if(area == AREA_PUSSY && this.pussyDesire <= this.getSuppressPussyDesireLowerLimit()) return false;
+		else if(area == AREA_BUTT && this.buttDesire <= this.getSuppressButtDesireLowerLimit()) return false;
 	}
 
-	if(area == AREA_PUSSY && (this.isWearingClitToy() || this.isWearingPussyToy())) return false;
-	else if(area == AREA_BUTT && (this.isWearingAnalToy())) return false;
-	
 	
 	if(area == AREA_COCK) return this.cockDesire > 0;	
 	else if(area == AREA_MOUTH) return this.mouthDesire > 0;	
@@ -386,58 +418,197 @@ Game_Actor.prototype.showEval_suppressDesires = function(area) {
 	else if(area == AREA_PUSSY) return this.pussyDesire > 0;	
 	else if(area == AREA_BUTT) return this.buttDesire > 0;	
 	
-	return false;
+	
+	return true;
 };
 
 Game_Actor.prototype.afterEval_suppressDesires = function(area) {
-	let baseValue = 15;
-	baseValue += this.mind / 3;
+	let baseValue = -5;
+	baseValue += this.mind * 1.5;
+	let variance = baseValue * 0.1;
+	baseValue += Math.random() * variance;
+	baseValue -= Math.random() * variance;
 
-	this.gainMindExp(35, $gameTroop.getAverageEnemyExperienceLvl());
+	let cockMultipler = 1;
+	let mouthMultipler = 1;
+	let boobsMultipler = 1;
+	let pussyMultipler = 1;
+	let buttMultipler = 1;
+
+	if(this.hasPassive(CHARA_CREATE_THREE_SADO_ID) || this.hasPassive(CHARA_CREATE_THREE_MAZO_ID))
+		cockMultipler *= 0.7;
+	else if(this.hasPassive(CHARA_CREATE_THREE_ONANI_ID)) {
+		mouthMultipler *= 0.85;
+		boobsMultipler *= 0.85;
+		pussyMultipler *= 0.85;
+		buttMultipler *= 0.85;
+	}
+	else if(this.hasPassive(CHARA_CREATE_THREE_MOUTH_ID))
+		mouthMultipler *= 0.7;
+	else if(this.hasPassive(CHARA_CREATE_THREE_BOOBS_ID))
+		boobsMultipler *= 0.7;
+	else if(this.hasPassive(CHARA_CREATE_THREE_PUSSY_ID))
+		pussyMultipler *= 0.7;
+	else if(this.hasPassive(CHARA_CREATE_THREE_BUTT_ID))
+		buttMultipler *= 0.7;
 	
-	if(area == AREA_COCK) return this.gainCockDesire(-baseValue);	
-	else if(area == AREA_MOUTH) return this.gainMouthDesire(-baseValue);	
-	else if(area == AREA_BOOBS) return this.gainBoobsDesire(-baseValue);	
-	else if(area == AREA_PUSSY) return this.gainPussyDesire(-baseValue);	
-	else if(area == AREA_BUTT) return this.gainButtDesire(-baseValue);	
+	cockMultipler *= 1 - (this.masochismLvl() + this.sadismLvl()) * 0.01;
+	mouthMultipler *= 1 - this.masturbateLvl() * 0.02;
+	boobsMultipler *= 1 - this.masturbateLvl() * 0.02;
+	pussyMultipler *= 1 - this.masturbateLvl() * 0.02;
+	buttMultipler *= 1 - this.masturbateLvl() * 0.02;
+	
+	if(area == AREA_COCK)
+		this.gainMindExp(50, $gameTroop.getAverageEnemyExperienceLvl());
+	else
+		this.gainMindExp(35, $gameTroop.getAverageEnemyExperienceLvl());
+	
+	baseValue = Math.max(1, baseValue);
+	
+	if(area == AREA_COCK) return this.gainCockDesire(-baseValue * cockMultipler, true, false);	
+	else if(area == AREA_MOUTH) return this.gainMouthDesire(-baseValue * mouthMultipler, true, false);	
+	else if(area == AREA_BOOBS) return this.gainBoobsDesire(-baseValue * boobsMultipler, true, false);	
+	else if(area == AREA_PUSSY) return this.gainPussyDesire(-baseValue * pussyMultipler, true, false);	
+	else if(area == AREA_BUTT) return this.gainButtDesire(-baseValue * buttMultipler, true, false);	
 	else console.log('afterEval_suppressDesires area error');
+	
+
 };
+
+Game_Actor.prototype.getSuppressMouthDesireLowerLimit = function() {
+	let lowerLimit = 0;
+	
+	if(this.isBodySlotPenis(MOUTH_ID))
+		lowerLimit = Math.max(lowerLimit, this.blowjobMouthDesireRequirement());
+	if(this.isBodySlotAnus(MOUTH_ID))
+		lowerLimit = Math.max(lowerLimit, this.rimjobMouthDesireRequirement());
+	
+	let inKissingPose = false;
+	if(this.isInKickCounterSexPose()) 
+		inKissingPose = (this.tachieBody == 'kiss' || this.tachieBody == 'kiss_naked');
+	else if(this.isInReceptionistPose()) 
+		inKissingPose = this.receptionistBattle_isKissing();
+	if(inKissingPose)
+		lowerLimit = Math.max(lowerLimit, this.kissingMouthDesireRequirement());
+	
+	return Math.max(this.minimumDesireLimit(), lowerLimit); 
+};
+Game_Actor.prototype.getSuppressBoobsDesireLowerLimit = function() {
+	let lowerLimit = 0;
+	
+	if(this.isBodySlotPenis(BOOBS_ID))
+		lowerLimit = Math.max(lowerLimit, this.tittyFuckBoobsDesireRequirement());
+	
+	let inBoobsPettingPose = false;
+	if(this.isInReceptionistPose()) 
+		inBoobsPettingPose = this.receptionistBattle_gettingBoobsRubbed();
+	if(inBoobsPettingPose)
+		lowerLimit = Math.max(lowerLimit, this.boobsPettingBoobsDesireRequirement());
+	
+	return Math.max(this.minimumDesireLimit(), lowerLimit); 
+};
+Game_Actor.prototype.getSuppressPussyDesireLowerLimit = function() {
+	let lowerLimit = 0;
+	
+	if(this.isBodySlotPenis(PUSSY_ID))
+		lowerLimit = Math.max(lowerLimit, this.pussySexPussyDesireRequirement());
+	if(this.isBodySlotTongue(PUSSY_ID))
+		lowerLimit = Math.max(lowerLimit, this.cunnilingusPussyDesireRequirement());
+	if(this.isWearingPussyToy())
+		lowerLimit = Math.max(lowerLimit, this.pussyToyPussyDesireRequirement());
+	if(this.isWearingClitToy())
+		lowerLimit = Math.max(lowerLimit, this.clitToyPussyDesireRequirement());
+	
+	return Math.max(this.minimumDesireLimit(), lowerLimit); 
+};
+Game_Actor.prototype.getSuppressButtDesireLowerLimit = function() {
+	let lowerLimit = 0;
+	
+	if(this.isBodySlotPenis(ANAL_ID))
+		lowerLimit = Math.max(lowerLimit, this.analSexButtDesireRequirement());
+	if(this.isWearingAnalToy())
+		lowerLimit = Math.max(lowerLimit, this.analToyButtDesireRequirement());
+	
+	return Math.max(this.minimumDesireLimit(), lowerLimit); 
+};
+Game_Actor.prototype.getSuppressCockDesireLowerLimit = function() {
+	let lowerLimit = 0;
+	
+	if(this.isBodySlotPenis(MOUTH_ID))
+		lowerLimit = Math.max(lowerLimit, this.blowjobCockDesireRequirement());
+	if(this.isBodySlotPenis(BOOBS_ID))
+		lowerLimit = Math.max(lowerLimit, this.tittyFuckCockDesireRequirement());
+	if(this.isBodySlotPenis(PUSSY_ID))
+		lowerLimit = Math.max(lowerLimit, this.pussySexCockDesireRequirement());
+	if(this.isBodySlotPenis(ANAL_ID))
+		lowerLimit = Math.max(lowerLimit, this.analSexCockDesireRequirement());
+	if(this.isBodySlotPenis(LEFT_HAND_ID) || this.isBodySlotPenis(RIGHT_HAND_ID))
+		lowerLimit = Math.max(lowerLimit, this.handjobCockDesireRequirement());
+	if(this.isBodySlotPenis(FEET_ID))
+		lowerLimit = Math.max(lowerLimit, this.footjobCockDesireRequirement());
+	
+	return Math.max(this.minimumDesireLimit(), lowerLimit); 
+};
+
 
 /////////////
 // Conscious Desires 
+// Release Desires
 ///////////////
 
 Game_Actor.prototype.showEval_consciousDesires = function(area) {
 	if(!DEBUG_MODE || this.justOrgasmed()) return false;
 	
 	if($gameParty.isInWaitressBattle) {
-		if(!this.hasPassive(PASSIVE_BAR_WAITRESS_SEX_COUNT_ONE_ID)) return; 
+		if(!this.hasPassive(PASSIVE_BAR_WAITRESS_SEX_COUNT_ONE_ID)) return false; 
 	}
 	else if(this.isInReceptionistPose()) {
-		if(!this.hasPassive(PASSIVE_RECEPTIONIST_VISITOR_SEX_COUNT_ONE_ID)) return; 
+		if(!this.hasPassive(PASSIVE_RECEPTIONIST_VISITOR_SEX_COUNT_ONE_ID)) return false; 
 	}
 	
-	if(area == AREA_COCK) return this.hasEdict(EDICT_RELEASE_COCK_DESIRE) && this.cockDesire < this.maxCockDesire();	
-	else if(area == AREA_MOUTH) return this.hasEdict(EDICT_RELEASE_DESIRES) && this.mouthDesire < this.maxMouthDesire();	
-	else if(area == AREA_BOOBS) return this.hasEdict(EDICT_RELEASE_DESIRES) && this.boobsDesire < this.maxBoobsDesire();	
-	else if(area == AREA_PUSSY) return this.hasEdict(EDICT_RELEASE_DESIRES) && this.pussyDesire < this.maxPussyDesire();	
-	else if(area == AREA_BUTT) return this.hasEdict(EDICT_RELEASE_DESIRES) && this.buttDesire < this.maxButtDesire();	
+	if(area == AREA_COCK) return this.hasEdict(EDICT_RELEASE_COCK_DESIRE);	
+	else if(area == AREA_MOUTH) return this.hasEdict(EDICT_RELEASE_DESIRES);	
+	else if(area == AREA_BOOBS) return this.hasEdict(EDICT_RELEASE_DESIRES);	
+	else if(area == AREA_PUSSY) return this.hasEdict(EDICT_RELEASE_DESIRES);	
+	else if(area == AREA_BUTT) return this.hasEdict(EDICT_RELEASE_DESIRES);	
 	
 	return false;
 };
 
+Game_Actor.prototype.customReq_consciousDesires = function(area) {
+	if(area == AREA_COCK) {
+		return this.cockDesire < this.maxCockDesire;	
+	}
+	else if(area == AREA_MOUTH) {
+		return this.mouthDesire < this.maxMouthDesire;	
+	}
+	else if(area == AREA_BOOBS) {
+		return this.boobsDesire < this.maxBoobsDesire;	
+	}
+	else if(area == AREA_PUSSY) {
+		return this.pussyDesire < this.maxPussyDesire;	
+	}
+	else if(area == AREA_BUTT) { 
+		return this.buttDesire < this.maxButtDesire;	
+	}
+	
+	return false
+};
 
 Game_Actor.prototype.afterEval_consciousDesires = function(area) {
-	let baseValue = 10;
-	baseValue += this.mind / 4;
+	let baseValue = -8;
+	baseValue += this.mind * 1.33;
+	let variance = baseValue * 0.1;
+	baseValue += Math.random() * variance;
+	baseValue -= Math.random() * variance;
 
 	this.gainMindExp(35, $gameTroop.getAverageEnemyExperienceLvl());
 	
-	if(area == AREA_COCK) return this.gainCockDesire(baseValue);	
-	else if(area == AREA_MOUTH) return this.gainMouthDesire(baseValue);	
-	else if(area == AREA_BOOBS) return this.gainBoobsDesire(baseValue);	
-	else if(area == AREA_PUSSY) return this.gainPussyDesire(baseValue);	
-	else if(area == AREA_BUTT) return this.gainButtDesire(baseValue);	
+	if(area == AREA_COCK) return this.gainCockDesire(baseValue, true, false);	
+	else if(area == AREA_MOUTH) return this.gainMouthDesire(baseValue, true, false);	
+	else if(area == AREA_BOOBS) return this.gainBoobsDesire(baseValue, true, false);	
+	else if(area == AREA_PUSSY) return this.gainPussyDesire(baseValue, true, false);	
+	else if(area == AREA_BUTT) return this.gainButtDesire(baseValue, true, false);	
 	else console.log('afterEval_consciousDesires area error');
 };
 
@@ -547,22 +718,46 @@ Game_Actor.prototype.showEval_speakNoEvil = function() {
 		return this.hasEdict(EDICT_SPEAK_NO_EVIL);
 };
 Game_Actor.prototype.showEval_speakNoEvilGray = function() {
-	if(this.isInSexPose() || !this.hasEdict(EDICT_SPEAK_NO_EVIL)  || !DEBUG_MODE) return false;
+	if(this.justOrgasmed() || this.isInSexPose() || !this.hasEdict(EDICT_SPEAK_NO_EVIL) || !DEBUG_MODE) return false;
 	if(this.isStateAffected(STATE_SEE_NO_EVIL_ID) && this.isStateAffected(STATE_HEAR_NO_EVIL_ID)) return false;
 	return true;
 };
 
 Game_Actor.prototype.afterEval_speakNoEvil = function() {
-	let baseValue = 20;
-	baseValue += this.mind / 3;
+	let baseValue = -10;
+	baseValue += this.mind * 1.33;
+	let variance = baseValue * 0.1;
 	
-	this.gainCockDesire(-baseValue);	
-	this.gainMouthDesire(-baseValue);	
-	this.gainBoobsDesire(-baseValue);	
-	this.gainPussyDesire(-baseValue);	
-	this.gainButtDesire(-baseValue);	
+	let mouthValue = baseValue;
+	let boobsValue = baseValue;
+	let pussyValue = baseValue;
+	let buttValue = baseValue;
+	let cockValue = baseValue;
 	
-	this.gainMindExp(45, $gameTroop.getAverageEnemyExperienceLvl());
+	mouthValue += Math.random() * variance;
+	mouthValue -= Math.random() * variance;
+	boobsValue += Math.random() * variance;
+	boobsValue -= Math.random() * variance;
+	pussyValue += Math.random() * variance;
+	pussyValue -= Math.random() * variance;
+	buttValue += Math.random() * variance;
+	buttValue -= Math.random() * variance;
+	cockValue += Math.random() * variance;
+	cockValue -= Math.random() * variance;
+	
+	mouthValue = Math.max(1, mouthValue);
+	boobsValue = Math.max(1, boobsValue);
+	pussyValue = Math.max(1, pussyValue);
+	buttValue = Math.max(1, buttValue);
+	cockValue = Math.max(1, cockValue);
+	
+	this.gainMouthDesire(-mouthValue, true, false);	
+	this.gainBoobsDesire(-boobsValue, true, false);
+	this.gainPussyDesire(-pussyValue, true, false);
+	this.gainButtDesire(-buttValue, true, false);
+	this.gainCockDesire(-cockValue, true, false);	
+	
+	this.gainMindExp(50, $gameTroop.getAverageEnemyExperienceLvl());
 };
 
 /////////////
@@ -745,7 +940,7 @@ Game_Actor.prototype.willpowerResistOrgasmEffect = function() {
 // Restore Mind
 
 Game_Actor.prototype.showEval_restoreMind = function() {
-	return this.justOrgasmed() && !this.isInMasturbationLevel1Pose();
+	return this.justOrgasmed() && !this.isInMasturbationCouchPose();
 };
 Game_Actor.prototype.afterEval_restoreMind = function() {
 	let chance = this.mind * 2.5;
@@ -781,6 +976,38 @@ Game_Actor.prototype.afterEval_restoreMind = function() {
 		this.gainMindExp(25, $gameTroop.getAverageEnemyExperienceLvl());	
 	}
 	if(!this.hasEdict(EDICT_SPEC_SENSUAL_MIND_RESTORE)) this.enterActionPhase();
+};
+
+/////////////
+// Deny Ejaculations
+///////////////
+
+Game_Actor.prototype.showEval_denyExternalEjaculations = function() {
+	if(this.justOrgasmed()) return false;
+	return DEBUG_MODE && !this._denyingExternalEjaculations && this.hasPassive(PASSIVE_FLOOR_EJACULATION_COUNT_ONE_ID);
+};
+Game_Actor.prototype.showEval_acceptExternalEjaculations = function() {
+	if(this.justOrgasmed()) return false;
+	return DEBUG_MODE && this._denyingExternalEjaculations && this.hasPassive(PASSIVE_FLOOR_EJACULATION_COUNT_ONE_ID);
+};
+Game_Actor.prototype.showEval_denyInternalEjaculations = function() {
+	if(this.justOrgasmed()) return false;
+	return DEBUG_MODE && !this._denyingInternalEjaculations && this.hasPassive(PASSIVE_FLOOR_EJACULATION_COUNT_TWO_ID);
+};
+Game_Actor.prototype.showEval_acceptInternalEjaculations = function() {
+	if(this.justOrgasmed()) return false;
+	return DEBUG_MODE && this._denyingInternalEjaculations && this.hasPassive(PASSIVE_FLOOR_EJACULATION_COUNT_TWO_ID);
+};
+
+Game_Actor.prototype.afterEval_denyExternalEjaculation = function(status) {
+	this._denyingExternalEjaculations = status;
+	this.cacheDesireTooltips();
+	if(status) this.gainWill(-10);
+};
+Game_Actor.prototype.afterEval_denyInternalEjaculation = function(status) {
+	this._denyingInternalEjaculations = status;
+	this.cacheDesireTooltips();
+	if(status) this.gainWill(-10);
 };
 
 //unused

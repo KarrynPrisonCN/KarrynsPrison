@@ -17,12 +17,12 @@ Remtairy.KarrynTitles = Remtairy.KarrynTitles || {};
 const TITLE_ID_EMPEROR_SECRETARY = 2;
 const TITLE_ID_NEWBIE = 3;
 
-const TITLE_ID_EFFICIENT_ADMINSTRATOR = 6;
-const TITLE_ID_CORRUPTED_OFFICIAL = 7;
-const TITLE_ID_CORPORAL_PUNISHER = 8;
-const TITLE_ID_CAREFUL_SUPERVISOR = 9;
-const TITLE_ID_WORKAHOLIC = 10;
-const TITLE_ID_CORNERCUTTING_EMPLOYER = 11;
+const TITLE_ID_CC_SKILLED_MANAGER = 6;
+const TITLE_ID_CC_AMBITIOUS_EXPERIMENTER = 7;
+const TITLE_ID_CC_HARDLINE_DEBATER = 8;
+const TITLE_ID_CC_COST_SAVING_SUPERVISOR = 9;
+const TITLE_ID_CC_HARDWORKING_TUTOR = 10;
+const TITLE_ID_CC_MANAGEMENT_CONSULTANT = 11;
 
 const TITLE_ID_BEAUTIFUL_WARDEN = 53;
 const TITLE_ID_STUNNING_WARDEN = 54;
@@ -109,6 +109,17 @@ const TITLE_ID_GOLDEN_WAITRESS = 133;
 const TITLE_ID_WORLD_CLASS_RECEPTIONIST = 134; 
 const TITLE_ID_REDEEMED_ONE = 135; //Not implemented
 const TITLE_ID_REDEEMED_TWO = 136; //Not implemented
+const TITLE_ID_PUSSY_PETTER = 137;
+const TITLE_ID_GUARD_MAID = 138;
+const TITLE_ID_GLORIOUS_HOLES = 139;
+const TITLE_ID_TOILET_QUEUE = 140;
+const TITLE_ID_BATHROOM_QUEEN = 141;
+const TITLE_ID_TOILET_EAT_ORGASM = 142;
+const TITLE_ID_FINAL_DESTINATION = 143;
+const TITLE_ID_TOILET_RESTER = 144;
+const TITLE_ID_EVASION_ONE = 145;
+const TITLE_ID_EVASION_TWO = 146;
+const TITLE_ID_EVASION_THREE = 147;
 
 //////
 // Scene Equip
@@ -170,6 +181,93 @@ Game_Actor.prototype.getTotalTitlesCount = function() {
 	return count;
 };
 
+//////////////
+// Register Title Equip
+
+Game_Actor.prototype.registerFirstTimeTitleEquip = function() {
+	if(this.equips()[EQUIP_SLOT_TITLE_ID]) {
+		let id = this.equips()[EQUIP_SLOT_TITLE_ID].id;
+		
+		if(!this.titleHasBeenEquippedOnceBefore(id)) {
+			//Order
+			if(id === TITLE_ID_BEAUTIFUL_WARDEN) {
+				if(Prison.order != 0) $gameParty.increaseOrder(10);
+			}
+			else if(id === TITLE_ID_FULL_ORDER_TWO) {
+				if(Prison.order != 0) $gameParty.increaseOrder(10);
+			}
+			else if(id === TITLE_ID_HELL_WARDEN_TWO) {
+				if(Prison.order != 0) $gameParty.increaseOrder(20);
+			}
+			else if(id === TITLE_ID_HELL_WARDEN_ONE) {
+				if(Prison.order != 0) $gameParty.increaseOrder(15);
+			}
+			else if(id === TITLE_ID_RECEPTIONIST_RADIO_ORGASM) {
+				if(Prison.order != 0) $gameParty.increaseOrder(-10);
+			}
+			else if(id === TITLE_ID_GUARD_MAID) {
+				if(Prison.order != 0) $gameParty.increaseOrder(-10);
+			}
+			else if(id === TITLE_ID_DISAPPOINTMENT) {
+				if(Prison.order != 0) $gameParty.increaseOrder(-20);
+			}
+			//Funding
+			else if(id === TITLE_ID_FULL_ORDER_THREE) {
+				$gameParty.gainGold(250);
+			}
+			//Receptionist
+			else if(id === TITLE_ID_RECEPTIONIST_HANDSHAKE) {
+				$gameParty.increaseReceptionistFame(3);
+			}
+			else if(id === TITLE_ID_RECEPTIONIST_HANDSHAKE) {
+				$gameParty.increaseReceptionistFame(2);
+				$gameParty.increaseReceptionistNotoriety(3);
+			}
+			else if(id === TITLE_ID_VISITOR_SWALLOWER) {
+				$gameParty.increaseReceptionistNotoriety(4);
+			}
+			else if(id === TITLE_ID_SCANDELOUS_IDOL) {
+				$gameParty.increaseReceptionistFame(1);
+				$gameParty.increaseReceptionistNotoriety(3);
+			}
+			//Waitress
+			else if(id === TITLE_ID_BUSTY_BARMAID) {
+				$gameParty.increaseBarReputation(1);
+			}
+			else if(id === TITLE_ID_WAITRESS_ORGASM) {
+				$gameParty.increaseBarReputation(1);
+			}
+			else if(id === TITLE_ID_CUM_GUZZLER) {
+				$gameParty.increaseBarReputation(1);
+			}
+			
+			//Glory Hole
+			else if(id === TITLE_ID_TOILET_QUEUE) {
+				$gameParty.increaseGloryReputation(2);
+			}
+			else if(id === TITLE_ID_BATHROOM_QUEEN) {
+				$gameParty.increaseGloryReputation(2);
+			}
+			else if(id === TITLE_ID_TOILET_EAT_ORGASM) {
+				$gameParty.increaseGloryReputation(2);
+			}
+			else if(id === TITLE_ID_FINAL_DESTINATION) {
+				$gameParty.increaseGloryReputation(2);
+			}
+		}
+		
+		this._titlesEquippedOnceRegister[id] = true;
+	}
+};
+
+Game_Actor.prototype.resetFirstTimeTitleEquipRegister = function() {
+	this._titlesEquippedOnceRegister = [];
+};
+
+Game_Actor.prototype.titleHasBeenEquippedOnceBefore = function(id) {
+	return this._titlesEquippedOnceRegister[id];
+};
+
 //////////////////
 // Check For New Title
 ///////////////////
@@ -178,11 +276,11 @@ Game_Party.prototype.checkForNewTitle = function() {
 	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
 	this._newTitlesGainedItem = [];
 	this._newTitlesGainedName = [];
+	this._newTitlesGainedIcon = [];
 	
 	//Beautiful Warden
 	if(!actor.hasThisTitle(TITLE_ID_BEAUTIFUL_WARDEN) && actor.charm >= VAR_ACCESSORY_CHARM_REQ_2) {
 		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_BEAUTIFUL_WARDEN]);
-		if(Prison.order != 0) this.increaseOrder(10);
 	}
 	//Stunning Warden
 	else if(!actor.hasThisTitle(TITLE_ID_STUNNING_WARDEN) && actor.charm >= VAR_ACCESSORY_CHARM_REQ_3) {
@@ -272,10 +370,10 @@ Game_Party.prototype.checkForNewTitle = function() {
 	if(!actor.hasThisTitle(TITLE_ID_HARDCORE_MASOCHIST) && masoDiff >= 13) {
 		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_HARDCORE_MASOCHIST]);
 	}
-	if(!actor.hasThisTitle(TITLE_ID_SOFTCORE_SADIST) && sadoDiff >= 5) {
+	if(!actor.hasThisTitle(TITLE_ID_SOFTCORE_SADIST) && sadoDiff >= 6) {
 		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_SOFTCORE_SADIST]);
 	}
-	if(!actor.hasThisTitle(TITLE_ID_HARDCORE_SADIST) && sadoDiff >= 12) {
+	if(!actor.hasThisTitle(TITLE_ID_HARDCORE_SADIST) && sadoDiff >= 13) {
 		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_HARDCORE_SADIST]);
 	}
 	
@@ -400,19 +498,15 @@ Game_Party.prototype.checkForNewTitle = function() {
 	//Receptionist
 	if(!actor.hasThisTitle(TITLE_ID_RECEPTIONIST_HANDSHAKE) && actor._playthroughRecordReceptionistHandshakePeople >= 42) {
 		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_RECEPTIONIST_HANDSHAKE]);
-		this.increaseReceptionistFame(3);
 	}
 	if(!actor.hasThisTitle(TITLE_ID_VISITOR_FIRST_KISS) && actor._firstKissWasVisitor) {
 		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_VISITOR_FIRST_KISS]);
-		this.increaseReceptionistFame(2);
-		this.increaseReceptionistNotoriety(3);
 	}
 	if(!actor.hasThisTitle(TITLE_ID_RECEPTIONIST_THIRTY_SHIFTS) && actor._playthroughRecordReceptionistBattleTotalShiftsCount >= 30) {
 		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_RECEPTIONIST_THIRTY_SHIFTS]);
 	}
 	if(!actor.hasThisTitle(TITLE_ID_VISITOR_SWALLOWER) && actor._playthroughRecordVisitorSwallowML >= 420) {
 		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_VISITOR_SWALLOWER]);
-		this.increaseReceptionistNotoriety(4);
 	}
 	if(!actor.hasThisTitle(TITLE_ID_VISITOR_GOBLIN_CREAMPIE) && actor._playthroughRecordReceptionistGoblinCreampieML >= 420) {
 		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_VISITOR_GOBLIN_CREAMPIE]);
@@ -422,8 +516,6 @@ Game_Party.prototype.checkForNewTitle = function() {
 	}
 	if(!actor.hasThisTitle(TITLE_ID_SCANDELOUS_IDOL) && actor._playthroughRecordReceptionistHandshakeWhileSexPeople >= 15) {
 		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_SCANDELOUS_IDOL]);
-		this.increaseReceptionistFame(1);
-		this.increaseReceptionistNotoriety(3);
 	} 
 	if(!actor.hasThisTitle(TITLE_ID_RECEPTIONIST_RADIO_ORGASM) && actor._playthroughRecordReceptionistOrgasmWhileCallingCount >= 1) {
 		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_RECEPTIONIST_RADIO_ORGASM]);
@@ -431,15 +523,12 @@ Game_Party.prototype.checkForNewTitle = function() {
 
 	if(!actor.hasThisTitle(TITLE_ID_BUSTY_BARMAID) && actor._playthroughRecordWaitressServingPettedCount >= 25) {
 		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_BUSTY_BARMAID]);
-		this.increaseBarReputation(1);
 	}
 	if(!actor.hasThisTitle(TITLE_ID_WAITRESS_ORGASM) && actor._playthroughRecordWaitressServingOrgasmCount >= 3) {
 		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_WAITRESS_ORGASM]);
-		this.increaseBarReputation(1);
 	}
 	if(!actor.hasThisTitle(TITLE_ID_CUM_GUZZLER) && actor._playthroughRecordWaitressBattleDrankSemenMugML >= 300) {
 		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_CUM_GUZZLER]);
-		this.increaseBarReputation(1);
 	}
 	
 	if(!actor.hasThisTitle(TITLE_ID_GOLDEN_WAITRESS) && $gameParty._barReputation >= 30) {
@@ -451,10 +540,57 @@ Game_Party.prototype.checkForNewTitle = function() {
 	}
 	
 	
-	//Ending Titles
 	if(!actor.hasThisTitle(TITLE_ID_DISAPPOINTMENT) && $gameSwitches.value(SWITCH_BAD_END_A_ID)) {
 		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_DISAPPOINTMENT]);
 	}
+	
+	if(!actor.hasThisTitle(TITLE_ID_PUSSY_PETTER) && $gameSwitches.value(SWITCH_PETTED_THE_KITTY_ID)) {
+		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_PUSSY_PETTER]);
+	}
+	
+	//Glory Hole Toilet
+	if(!actor.hasThisTitle(TITLE_ID_GUARD_MAID) && actor._todayServedGuardInBar >= 1 && actor._todayServedGuardInGuardBattle >= 1 && actor._todayServedGuardInToiletBattle >= 1 && actor._todayServedGuardInGuardDefeat >= 1) {
+		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_GUARD_MAID]);
+	}
+	
+	if(!actor.hasThisTitle(TITLE_ID_GLORIOUS_HOLES) && $gameParty._gloryReputation >= 30) {
+		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_GLORIOUS_HOLES]);
+	}
+	
+	if(!actor.hasThisTitle(TITLE_ID_TOILET_QUEUE) && actor._playthroughRecordGloryLongestStallQueue >= 7) {
+		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_TOILET_QUEUE]);
+	}
+	
+	if(!actor.hasThisTitle(TITLE_ID_BATHROOM_QUEEN) && actor._todayToiletBattleSexualPartners >= 5 && actor._todayLevelTwoDefeatSexualPartners >= 5 && (actor._todayToiletBattleSexualPartners + actor._todayLevelTwoDefeatSexualPartners) >= 20) {
+		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_BATHROOM_QUEEN]);
+	}
+	
+	if(!actor.hasThisTitle(TITLE_ID_TOILET_EAT_ORGASM) && actor._playthroughRecordGloryOrgasmWhileGuestEatingCount >= 1) {
+		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_TOILET_EAT_ORGASM]);
+	}
+	
+	if(!actor.hasThisTitle(TITLE_ID_FINAL_DESTINATION) && actor._playthroughRecordGloryFinishedPissingCocksServingCount >= 10) {
+		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_FINAL_DESTINATION]);
+	}
+	
+	if(!actor.hasThisTitle(TITLE_ID_TOILET_RESTER) && actor._playthroughRecordGloryTurnsSpentResting >= 99) {
+		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_TOILET_RESTER]);
+	}
+	
+	//Evasion
+	if(!actor.hasThisTitle(TITLE_ID_EVASION_ONE) && actor._playthroughRecordAttackEvadedCount >= 10 && actor._playthroughRecordAttackEvadedCount > actor._playthroughRecordFullHitTakenCount + 2) {
+		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_EVASION_ONE]);
+	}
+	
+	if(!actor.hasThisTitle(TITLE_ID_EVASION_TWO) && actor._playthroughRecordAttackEvadedCount >= 42 && actor._playthroughRecordAttackEvadedCount > actor._playthroughRecordFullHitTakenCount * 1.15 && actor.level > 15) {
+		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_EVASION_TWO]);
+	}
+	
+	if(!actor.hasThisTitle(TITLE_ID_EVASION_THREE) && actor._playthroughRecordAttackEvadedCount >= 150 && actor._playthroughRecordAttackEvadedCount > actor._playthroughRecordFullHitTakenCount * 1.3 && actor.level > 35) {
+		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_EVASION_THREE]);
+		if(!actor.hasEdict(EDICT_CAUTIOUS_STANCE)) actor.learnSkill(EDICT_CAUTIOUS_STANCE);
+	}
+
 	
 	///////////////
 	//New Title Text
@@ -469,11 +605,14 @@ Game_Party.prototype.checkForNewTitle = function() {
 		else if(TextManager.isTChinese && item.hasRemNameTCH) this._newTitlesGainedName.push(item.remNameTCH);
 		else if(TextManager.isKorean && item.hasRemNameKR) this._newTitlesGainedName.push(item.remNameKR);
 		else this._newTitlesGainedName.push(item.name);
+		
+		this._newTitlesGainedIcon.push(item.iconIndex);
 	}
 };
 
 Game_Party.prototype.setNewTitleVariable = function() {
 	$gameVariables.setValue(VARIABLE_NEW_TITLE_NAME_ID, this._newTitlesGainedName.pop());
+	$gameVariables.setValue(VARIABLE_NEW_TITLE_ICON_ID, this._newTitlesGainedIcon.pop());
 };
 
 ///////
@@ -491,6 +630,7 @@ Game_Actor.prototype.setupTitleFlags = function() {
 	this._flagEquippedHellWardenTwoTitleForWholeDay = false;
 	this._flagEquippedFullOrderTwoTitleForWholeDay = false;
 	this._flagEquippedRadioOrgasmTitleForWholeDay = false;
+	this._flagEquippedToiletQueueTitleForWholeDay = false;
 	
 	this._flagEquippedJadeNecklaceForWholeDay = false;
 };
@@ -510,6 +650,8 @@ Game_Actor.prototype.checkTitleFlagsAfterClosingEquipScreen = function() {
 		this._flagEquippedFullOrderTwoTitleForWholeDay = false;
 	if(this._flagEquippedRadioOrgasmTitleForWholeDay && !this.isUsingThisTitle(TITLE_ID_RECEPTIONIST_RADIO_ORGASM))
 		this._flagEquippedRadioOrgasmTitleForWholeDay = false;
+	if(this._flagEquippedToiletQueueTitleForWholeDay && !this.isUsingThisTitle(TITLE_ID_TOILET_QUEUE))
+		this._flagEquippedToiletQueueTitleForWholeDay = false;
 	
 	if(this._flagEquippedJadeNecklaceForWholeDay && !this.isEquippingThisAccessory(NECKLACE_JADE_ID))
 		this._flagEquippedJadeNecklaceForWholeDay = false;
@@ -525,6 +667,7 @@ Game_Actor.prototype.checkTitleFlagsOnNewDay = function() {
 	this._flagEquippedHellWardenOneTitleForWholeDay = false;
 	this._flagEquippedHellWardenTwoTitleForWholeDay = false;
 	this._flagEquippedFullOrderTwoTitleForWholeDay = false;
+	this._flagEquippedToiletQueueTitleForWholeDay = false;
 	
 	if(this.isUsingThisTitle(TITLE_ID_BEAUTIFUL_WARDEN)) {
 		this._flagEquippedBeautifulWardenTitleForWholeDay = true;
@@ -539,8 +682,12 @@ Game_Actor.prototype.checkTitleFlagsOnNewDay = function() {
 		this._flagEquippedRadioOrgasmTitleForWholeDay = true;
 	}
 	else if(this.isUsingThisTitle(TITLE_ID_FULL_ORDER_TWO)) {
-		this._flagEquippedFullOrderTwoTitleForWholeDay  = true;
+		this._flagEquippedFullOrderTwoTitleForWholeDay = true;
 	}
+	else if(this.isUsingThisTitle(TITLE_ID_TOILET_QUEUE)) {
+		this._flagEquippedToiletQueueTitleForWholeDay = true;
+	}
+	
 
 	if(this.isEquippingThisAccessory(NECKLACE_JADE_ID)) {
 		this._flagEquippedJadeNecklaceForWholeDay  = true;
@@ -556,6 +703,7 @@ Game_Actor.prototype.titleParamBonus = function(paramId) {
 	if(paramId === PARAM_CHARM_ID) {
 		if(this.hasThisTitle(TITLE_ID_SLEEPY_BEAUTY)) bonus += 1;
 		if(this.hasThisTitle(TITLE_ID_FIRST_KISS_TO_ANUS)) bonus += 1;
+		if(this.hasThisTitle(TITLE_ID_GLORIOUS_HOLES)) bonus += 1;
 	}
 	else if(paramId === PARAM_MAXENERGY_ID) {
 		if(this.hasThisTitle(TITLE_ID_FIX_CLOTHES_TWO)) bonus += 2;
@@ -674,6 +822,10 @@ Game_Actor.prototype.titlesSParamRate = function(id) {
 		if(this.isUsingThisTitle(TITLE_ID_SEXSKILL_TWO)) titleRate -= 0.5;
 		else if(this.isUsingThisTitle(TITLE_ID_SEXSKILL_ONE)) titleRate -= 0.25;
 	}
+	else if(id === XPARAM_CRIT_ID) {
+		if(this.isUsingThisTitle(TITLE_ID_FINAL_DESTINATION)) titleRate += 1;
+	}
+	
 
 	return titleRate;
 };
@@ -685,12 +837,12 @@ Game_Actor.prototype.titlesElementRate = function(elementId) {
 		
 		if(this.isUsingThisTitle(TITLE_ID_NEWBIE)) elementRate += 0.1;
 		
-		else if(this.isUsingThisTitle(TITLE_ID_EFFICIENT_ADMINSTRATOR)) elementRate += 0.05;
-		else if(this.isUsingThisTitle(TITLE_ID_CORRUPTED_OFFICIAL)) elementRate += 0.1;
-		else if(this.isUsingThisTitle(TITLE_ID_CORPORAL_PUNISHER)) elementRate += 0.1;
-		else if(this.isUsingThisTitle(TITLE_ID_CAREFUL_SUPERVISOR)) elementRate += 0.05;
-		else if(this.isUsingThisTitle(TITLE_ID_WORKAHOLIC)) elementRate += 0.05;
-		else if(this.isUsingThisTitle(TITLE_ID_CORNERCUTTING_EMPLOYER)) elementRate += 0.1;
+		else if(this.isUsingThisTitle(TITLE_ID_CC_SKILLED_MANAGER)) elementRate += 0.05;
+		else if(this.isUsingThisTitle(TITLE_ID_CC_AMBITIOUS_EXPERIMENTER)) elementRate += 0.1;
+		else if(this.isUsingThisTitle(TITLE_ID_CC_HARDLINE_DEBATER)) elementRate += 0.1;
+		else if(this.isUsingThisTitle(TITLE_ID_CC_COST_SAVING_SUPERVISOR)) elementRate += 0.05;
+		else if(this.isUsingThisTitle(TITLE_ID_CC_HARDWORKING_TUTOR)) elementRate += 0.05;
+		else if(this.isUsingThisTitle(TITLE_ID_CC_MANAGEMENT_CONSULTANT)) elementRate += 0.1;
 		else if(this.isUsingThisTitle(TITLE_ID_BANKRUPTCY_THREE)) elementRate += 0.2;
 		else if(this.isUsingThisTitle(TITLE_ID_BANKRUPTCY_TWO)) elementRate += 0.1;
 		else if(this.isUsingThisTitle(TITLE_ID_BANKRUPTCY_ONE)) elementRate += 0.05;
@@ -700,6 +852,8 @@ Game_Actor.prototype.titlesElementRate = function(elementId) {
 		else if(this.isUsingThisTitle(TITLE_ID_KICK_REWARD_TWO)) elementRate -= 0.2;
 		else if(this.isUsingThisTitle(TITLE_ID_VISITOR_SWALLOWER)) elementRate += 0.3;
 		else if(this.isUsingThisTitle(TITLE_ID_SCANDELOUS_IDOL)) elementRate += 0.3;
+		else if(this.isUsingThisTitle(TITLE_ID_GLORIOUS_HOLES)) elementRate -= 0.15;
+		
 		
 	}
 	else if(elementId === ELEMENT_SIGHT_ID) {
@@ -714,6 +868,7 @@ Game_Actor.prototype.titlesElementRate = function(elementId) {
 		else if(this.isUsingThisTitle(TITLE_ID_RECEPTIONIST_HANDSHAKE)) elementRate += 0.3;
 		else if(this.isUsingThisTitle(TITLE_ID_SCANDELOUS_IDOL)) elementRate += 0.3;
 		else if(this.isUsingThisTitle(TITLE_ID_WORLD_CLASS_RECEPTIONIST)) elementRate -= 0.2;
+		else if(this.isUsingThisTitle(TITLE_ID_TOILET_EAT_ORGASM)) elementRate += 0.2;
 	}
 	else if(elementId === ELEMENT_STRIP_ID) {
 		if(this.isUsingThisTitle(TITLE_ID_FIX_CLOTHES_TWO)) elementRate -= 0.4;
@@ -724,14 +879,19 @@ Game_Actor.prototype.titlesElementRate = function(elementId) {
 		else if(this.isUsingThisTitle(TITLE_ID_RECEPTIONIST_PAPERWORK_PROCESSOR)) elementRate += 0.3;
 		else if(this.isUsingThisTitle(TITLE_ID_HARDWORKING_WAITRESS)) elementRate += 0.3;
 		else if(this.isUsingThisTitle(TITLE_ID_EXPERIENCED_WAITRESS)) elementRate -= 0.15;
+		else if(this.isUsingThisTitle(TITLE_ID_TOILET_QUEUE)) elementRate += 0.3;
+		else if(this.isUsingThisTitle(TITLE_ID_EVASION_THREE)) elementRate += 0.15;
 	}
 	else if(elementId === ELEMENT_PETTING_ID) {
 		if(this.isUsingThisTitle(TITLE_ID_VISITOR_FIRST_KISS)) elementRate += 0.2;
 		else if(this.isUsingThisTitle(TITLE_ID_BUSTY_BARMAID)) elementRate += 0.15;
 		else if(this.isUsingThisTitle(TITLE_ID_GOLDEN_WAITRESS)) elementRate -= 0.15;
+		else if(this.isUsingThisTitle(TITLE_ID_PUSSY_PETTER)) elementRate += 0.25;
 	}
 	else if(elementId === ELEMENT_SEX_ID) {
 		if(this.isUsingThisTitle(TITLE_ID_CUM_GUZZLER)) elementRate += 0.25;
+		else if(this.isUsingThisTitle(TITLE_ID_GLORIOUS_HOLES)) elementRate -= 0.1;
+		
 	}
 	
 	return elementRate;
@@ -766,7 +926,7 @@ Game_Actor.prototype.titlesUnarmedDefense = function() {
 Game_Actor.prototype.titlesEdictCostRate = function() {
 	let rate = 1;
 	
-	if(this.hasThisTitle(TITLE_ID_CAREFUL_SUPERVISOR)) rate *= 0.9;
+	if(this.hasThisTitle(TITLE_ID_CC_COST_SAVING_SUPERVISOR)) rate *= 0.87;
 	
 	return rate;
 };
@@ -774,7 +934,7 @@ Game_Actor.prototype.titlesEdictCostRate = function() {
 Game_Actor.prototype.titlesFlatIncome = function() {
 	let value = 0;
 	
-	if(this.hasThisTitle(TITLE_ID_CORRUPTED_OFFICIAL)) value += 400;
+	if(this.hasThisTitle(TITLE_ID_CC_AMBITIOUS_EXPERIMENTER)) value += 400;
 	
 	return value;
 };
@@ -791,9 +951,10 @@ Game_Actor.prototype.titlesFlatExpense = function() {
 Game_Actor.prototype.titlesIncomeRate = function() {
 	let rate = 1;
 	
-	if(this.hasThisTitle(TITLE_ID_WORKAHOLIC)) rate *= 1.05;
+	if(this.hasThisTitle(TITLE_ID_CC_HARDWORKING_TUTOR)) rate *= 1.08;
 	
 	if(this.isUsingThisTitle(TITLE_ID_FULL_ORDER_TWO) && this._flagEquippedFullOrderTwoTitleForWholeDay) rate *= 1.05;
+	else if(this.isUsingThisTitle(TITLE_ID_TOILET_QUEUE) && this._flagEquippedToiletQueueTitleForWholeDay) rate *= 1.05;
 
 	
 	return rate;
@@ -810,6 +971,7 @@ Game_Actor.prototype.titlesExpenseRate = function() {
 	else if(this.hasThisTitle(TITLE_ID_BANKRUPTCY_ONE)) rate *= 0.99;
 	
 	if(this.isUsingThisTitle(TITLE_ID_FULL_ORDER_ONE)) rate *= 1.05;
+	else if(this.isUsingThisTitle(TITLE_ID_TOILET_QUEUE) && this._flagEquippedToiletQueueTitleForWholeDay) rate *= 1.05;
 	
 	return rate;
 };
@@ -818,9 +980,9 @@ Game_Actor.prototype.titlesOrderChange = function() {
 	let value = 0;
 	
 	//Character Creator titles
-	if(this.hasThisTitle(TITLE_ID_CORRUPTED_OFFICIAL)) value -= 1;
-	else if(this.hasThisTitle(TITLE_ID_CORPORAL_PUNISHER)) value += 1;
-	else if(this.hasThisTitle(TITLE_ID_WORKAHOLIC)) value += 1;
+	if(this.hasThisTitle(TITLE_ID_CC_AMBITIOUS_EXPERIMENTER)) value -= 1;
+	else if(this.hasThisTitle(TITLE_ID_CC_HARDLINE_DEBATER)) value += 2;
+	else if(this.hasThisTitle(TITLE_ID_CC_HARDWORKING_TUTOR)) value += 1;
 	
 	//Redeemed titles
 	if(this.hasThisTitle(TITLE_ID_REDEEMED_TWO) || this.hasThisTitle(TITLE_ID_REDEEMED_ONE)) value += 1;
@@ -862,8 +1024,33 @@ Game_Actor.prototype.titleEnemyParamRate = function(paramId, enemy) {
 		}
 	}
 	
+	if(enemy.isGuardType) {
+		if(this.isUsingThisTitle(TITLE_ID_GUARD_MAID))
+			rate += 0.3;
+		else if(this.isUsingThisTitle(TITLE_ID_RECEPTIONIST_RADIO_ORGASM))
+			rate += 0.3;
+	}
+	
+
+	
 	return rate;
 };
+
+Game_Actor.prototype.titleEnemyXParamRate = function(paramId, enemy) {
+	let rate = 1;
+	
+	if(paramId === XPARAM_CRIT_ID) {
+		if(this.isUsingThisTitle(TITLE_ID_FINAL_DESTINATION)) 
+			rate += 1;
+	}
+	else if(paramId === XPARAM_CRIT_EVA_ID) {
+		if(this.isUsingThisTitle(TITLE_ID_ENCHANTING_WARDEN)) 
+			rate -= 0.25;
+	}
+	
+	return rate;
+};
+
 
 Game_Actor.prototype.titleEnemyEjaculationVolume = function(enemy) {
 	let multipler = 1;
@@ -873,6 +1060,9 @@ Game_Actor.prototype.titleEnemyEjaculationVolume = function(enemy) {
 	}
 	if(this.isUsingThisTitle(TITLE_ID_VISITOR_FIRST_KISS) && enemy.isVisitorMaleType) {
 		multipler += 0.5;
+	}
+	if(this.isUsingThisTitle(TITLE_ID_GUARD_MAID) && enemy.isGuardType) {
+		multipler += 0.33;
 	}
 	
 	return multipler;
@@ -885,10 +1075,11 @@ Game_Party.prototype.titlesSubsidies = function() {
 	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
 	let value = 0;
 	
-	if(actor.hasThisTitle(TITLE_ID_FULL_ORDER_THREE)) value += 50;
-	else if(actor.hasThisTitle(TITLE_ID_FULL_ORDER_TWO)) value += 25;
+	if(actor.hasThisTitle(TITLE_ID_FULL_ORDER_TWO)) value += 25;
 	
 	if(actor.hasThisTitle(TITLE_ID_REDEEMED_TWO)) value += 25;
+	
+	if(actor.hasThisTitle(TITLE_ID_PUSSY_PETTER)) value += 10;
 	
 	
 	return value;
@@ -905,6 +1096,7 @@ Game_Party.prototype.titlesGlobalRiotChance = function() {
 	return value;
 }
 
+//unused
 Game_Party.prototype.titlesSetStartingOrder = function() {
 	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
 	let value = PRISON_STARTING_ORDER;
@@ -926,15 +1118,19 @@ Game_Party.prototype.titlesSetStartingOrder = function() {
 };
 
 
-Game_Party.prototype.titlesBankruptcyOrder = function() {
+Game_Party.prototype.titlesBankruptcyOrder = function(estimated) {
 	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
 	let value = PRISON_BANKRUPTCY_ORDER_NO_TITLE;
 	
-	if(actor.hasThisTitle(TITLE_ID_BANKRUPTCY_THREE)) value = 4;
-	else if(actor.hasThisTitle(TITLE_ID_BANKRUPTCY_TWO)) value = 7;
+	if(actor.hasThisTitle(TITLE_ID_BANKRUPTCY_THREE)) value -= 4;
+	else if(actor.hasThisTitle(TITLE_ID_BANKRUPTCY_TWO)) value -= 2;
 	
-	value *= -1;
-	this.increaseOrder(value);
+	if(estimated) {
+		return value;
+	}
+	else {
+		this.increaseOrder(-1 * value);
+	}
 };
 
 Game_Party.prototype.titlesBankruptcyRiotChance = function(useOnlyTodaysGoldForBankruptcyChance) {
@@ -956,6 +1152,16 @@ Game_Party.prototype.titlesBankruptcyRiotChance = function(useOnlyTodaysGoldForB
 // Specific effects
 //////////////
 
+Game_Actor.prototype.titlesFatigueGainRate = function() {
+	let rate = 1;
+	if(this.hasThisTitle(TITLE_ID_CC_MANAGEMENT_CONSULTANT)) rate *= 0.85;
+	if(this.hasThisTitle(TITLE_ID_TOILET_RESTER)) rate *= 0.95;
+	
+	if(this.isUsingThisTitle(TITLE_ID_TOILET_RESTER)) rate *= 0.85;
+	
+	return rate;
+};
+
 Game_Actor.prototype.titleStunningWarden_stunChance = function() {
 	let chance = 0;
 	if(this.hasThisTitle(TITLE_ID_STUNNING_WARDEN)) {
@@ -966,21 +1172,17 @@ Game_Actor.prototype.titleStunningWarden_stunChance = function() {
 };
 
 Game_Actor.prototype.titleEfficientAdminstrator_carryoverUnusedEdictPoint = function() {
-	if(this.hasThisTitle(TITLE_ID_EFFICIENT_ADMINSTRATOR)) return 1;
+	if(this.hasThisTitle(TITLE_ID_CC_SKILLED_MANAGER)) return 1;
 	else return 0;
 };
 
 Game_Actor.prototype.titleCorporalPunisher_riotChance = function() {
-	if(this.hasThisTitle(TITLE_ID_CORPORAL_PUNISHER)) return 2;
+	if(this.hasThisTitle(TITLE_ID_CC_HARDLINE_DEBATER)) return 2;
 	else return 0;
 };
 
 Game_Actor.prototype.titleWorkaholic_fatigueRecoveryRate = function() {
-	if(this.hasThisTitle(TITLE_ID_WORKAHOLIC)) return 0.9;
+	if(this.hasThisTitle(TITLE_ID_CC_HARDWORKING_TUTOR)) return 0.88;
 	else return 1;
 };
 
-Game_Actor.prototype.titleCornerCuttingEmployer_fatigueGainRate = function() {
-	if(this.hasThisTitle(TITLE_ID_CORNERCUTTING_EMPLOYER)) return 0.9;
-	else return 1;
-};

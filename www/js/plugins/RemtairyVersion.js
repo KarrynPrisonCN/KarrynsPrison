@@ -14,7 +14,7 @@ Remtairy.Version = Remtairy.Version || {};
  */
 //=============================================================================
 
-const KARRYN_PRISON_GAME_VERSION = 49;
+const KARRYN_PRISON_GAME_VERSION = 53;
 
 ///////////
 // Game Party
@@ -395,18 +395,18 @@ Game_Party.prototype.updateGameVersion = function() {
 	
 	if(this._karrynPrisonVersion < 33) {
 		if(actor._obtainedTitles) {
-			if(!$gameParty.hasItem($dataArmors[TITLE_ID_EFFICIENT_ADMINSTRATOR], true) && actor._obtainedTitles[TITLE_ID_EFFICIENT_ADMINSTRATOR]) 
-				actor._obtainedTitles[TITLE_ID_EFFICIENT_ADMINSTRATOR] = false;
-			if(!$gameParty.hasItem($dataArmors[TITLE_ID_CORRUPTED_OFFICIAL], true) && actor._obtainedTitles[TITLE_ID_CORRUPTED_OFFICIAL]) 
-				actor._obtainedTitles[TITLE_ID_CORRUPTED_OFFICIAL] = false;
-			if(!$gameParty.hasItem($dataArmors[TITLE_ID_CORPORAL_PUNISHER], true) && actor._obtainedTitles[TITLE_ID_CORPORAL_PUNISHER]) 
-				actor._obtainedTitles[TITLE_ID_CORPORAL_PUNISHER] = false;
-			if(!$gameParty.hasItem($dataArmors[TITLE_ID_CAREFUL_SUPERVISOR], true) && actor._obtainedTitles[TITLE_ID_CAREFUL_SUPERVISOR]) 
-				actor._obtainedTitles[TITLE_ID_CAREFUL_SUPERVISOR] = false;
-			if(!$gameParty.hasItem($dataArmors[TITLE_ID_WORKAHOLIC], true) && actor._obtainedTitles[TITLE_ID_WORKAHOLIC]) 
-				actor._obtainedTitles[TITLE_ID_WORKAHOLIC] = false;
-			if(!$gameParty.hasItem($dataArmors[TITLE_ID_CORNERCUTTING_EMPLOYER], true) && actor._obtainedTitles[TITLE_ID_CORNERCUTTING_EMPLOYER]) 
-				actor._obtainedTitles[TITLE_ID_CORNERCUTTING_EMPLOYER] = false;
+			if(!$gameParty.hasItem($dataArmors[TITLE_ID_CC_SKILLED_MANAGER], true) && actor._obtainedTitles[TITLE_ID_CC_SKILLED_MANAGER]) 
+				actor._obtainedTitles[TITLE_ID_CC_SKILLED_MANAGER] = false;
+			if(!$gameParty.hasItem($dataArmors[TITLE_ID_CC_AMBITIOUS_EXPERIMENTER], true) && actor._obtainedTitles[TITLE_ID_CC_AMBITIOUS_EXPERIMENTER]) 
+				actor._obtainedTitles[TITLE_ID_CC_AMBITIOUS_EXPERIMENTER] = false;
+			if(!$gameParty.hasItem($dataArmors[TITLE_ID_CC_HARDLINE_DEBATER], true) && actor._obtainedTitles[TITLE_ID_CC_HARDLINE_DEBATER]) 
+				actor._obtainedTitles[TITLE_ID_CC_HARDLINE_DEBATER] = false;
+			if(!$gameParty.hasItem($dataArmors[TITLE_ID_CC_COST_SAVING_SUPERVISOR], true) && actor._obtainedTitles[TITLE_ID_CC_COST_SAVING_SUPERVISOR]) 
+				actor._obtainedTitles[TITLE_ID_CC_COST_SAVING_SUPERVISOR] = false;
+			if(!$gameParty.hasItem($dataArmors[TITLE_ID_CC_HARDWORKING_TUTOR], true) && actor._obtainedTitles[TITLE_ID_CC_HARDWORKING_TUTOR]) 
+				actor._obtainedTitles[TITLE_ID_CC_HARDWORKING_TUTOR] = false;
+			if(!$gameParty.hasItem($dataArmors[TITLE_ID_CC_MANAGEMENT_CONSULTANT], true) && actor._obtainedTitles[TITLE_ID_CC_MANAGEMENT_CONSULTANT]) 
+				actor._obtainedTitles[TITLE_ID_CC_MANAGEMENT_CONSULTANT] = false;
 		}
 	}
 	
@@ -503,16 +503,14 @@ Game_Party.prototype.updateGameVersion = function() {
 		
 		actor._recordPettedWhileWorkingCount = 0;
 		actor._recordWaitressFlashedCount = 0;
-		actor._recordSeeEnemyTalkCockCount = 0;
 		actor._recordSeeJerkOffPeople = 0;
-		actor._recordSeeEnemyTalkCockPeople = 0;
 		actor._recordCockStareUsageCount = 0;
 		actor._recordOrgasmFromSpankingCount = 0;
 		
 		actor._recordSubduedMetalEnemies = 0;
 		actor._recordMetalSexualPartnersCount = 0;
 		
-		actor.resetTodayVariables();
+		actor.resetTodayRecords();
 		
 		this.update_addToAllWanted_Records_v36();
 		
@@ -555,10 +553,6 @@ Game_Party.prototype.updateGameVersion = function() {
 	}
 	
 	if(this._karrynPrisonVersion < 41) {
-		for(let i = GLORY_SKILL_START; i <= GLORY_SKILL_END; i++) {
-			actor.learnSkill(i); 
-		}
-		
 		actor.resetTachieTie();
 		actor.resetTachieLeftHole();
 		actor.resetTachieRightHole();
@@ -604,7 +598,6 @@ Game_Party.prototype.updateGameVersion = function() {
 		actor._recordSexualPartnersHomeless = 0;
 		actor._recordSexPose_OrcPaizuriCount = 0;
 		actor._recordSexPose_LizardmanCowgirlCount = 0;
-		actor._recordGloryBattleCockHandledCount = 0;
 		actor._recordGloryBattleCockEjaculationCount = 0;
 		actor._playthroughRecordGloryCocksAppearedCount = 0;
 		actor._playthroughRecordGloryCocksServed = 0;
@@ -614,7 +607,7 @@ Game_Party.prototype.updateGameVersion = function() {
 		actor._recordPreLevelFourOldSexualPartners = 0;
 		actor._recordPostLevelThreeNewSexualPartners = 0;
 		
-		actor._recordSexPose_KickCounterCount = Math.min(actor._recordSexPose_KickCounterCount,LIMIT_KICK_COUNTER_SEX_COUNT);
+		//actor._recordSexPose_KickCounterCount = Math.min(actor._recordSexPose_KickCounterCount,LIMIT_KICK_COUNTER_SEX_COUNT);
 		
 		this.update_addToAllWanted_Records_v41();
 		
@@ -663,7 +656,7 @@ Game_Party.prototype.updateGameVersion = function() {
 	}
 
 	if(this._karrynPrisonVersion < 46) {
-		$gameParty.postRiotBattleCleanup();
+		$gameParty.riotingRoomsCheck();
 		this._prisonLevelOne_anarchyDays = 0;
 		this._prisonLevelTwo_anarchyDays = 0;
 		this._prisonLevelThree_anarchyDays = 0;
@@ -680,8 +673,8 @@ Game_Party.prototype.updateGameVersion = function() {
 		actor.forgetPassive(241);
 		actor.forgetPassive(243);
 		actor.forgetPassive(844);
-		actor._recordPussyPettedCount = Math.min(actor._recordPussyPettedCount, LIMIT_PUSSY_PETTED_COUNT);
-		actor._recordDebuffFallenCount = Math.min(actor._recordDebuffFallenCount, LIMIT_DEBUFF_FALLEN_COUNT);
+		//actor._recordPussyPettedCount = Math.min(actor._recordPussyPettedCount, LIMIT_PUSSY_PETTED_COUNT);
+		//actor._recordDebuffFallenCount = Math.min(actor._recordDebuffFallenCount, LIMIT_DEBUFF_FALLEN_COUNT);
 		
 		this._levelOneBonusGracePeriod = 0;
 		this._levelTwoBonusGracePeriod = 0;
@@ -696,6 +689,288 @@ Game_Party.prototype.updateGameVersion = function() {
 		this.recalculateBaseOrderChange();
 	}
 	
+	if(this._karrynPrisonVersion < 50) {
+		delete actor._recordSeeEnemyTalkCockCount;
+		delete actor._recordSeenPeople;
+		delete actor._recordSeenMouthCount;
+		delete actor._recordSeenBoobsCount;
+		delete actor._recordSeenNipplesCount;
+		delete actor._recordSeenClitCount;
+		delete actor._recordSeenPussyCount;
+		delete actor._recordSeenButtCount;
+		delete actor._recordSeenAnalCount;
+		delete actor._recordSeenAnalCreampieCount;
+		delete actor._recordSeenPussyCreampieCount;
+		delete actor._recordSeenBukkakeFaceCount;
+		delete actor._recordSeenBukkakeBoobsCount;
+		delete actor._recordSeenBukkakeButtCount;
+		delete actor._recordSeenMouthSwallowCount;
+		delete actor._recordSeenTotalCount;
+		
+		for(let i = GLORY_SKILL_START; i <= GLORY_SKILL_END; i++) {
+			actor.learnSkill(i); 
+		}
+		this.riotingRoomsCheck();
+		this.update_addToAllWanted_Records_v50();
+		this.setStartingRunDate(this._startingDate);
+		
+		actor.clearTempRecords();
+		actor._recordSoloCellCount = 0;
+		actor._liquidOnFloor = 0;
+		actor._firstFaceBukkakeWantedID = -1;
+		actor._firstFaceBukkakeDate = false;
+		actor._firstFaceBukkakeName = false;
+		actor._firstFaceBukkakeMapID = -1;
+		actor._lastFaceBukkakeName = false;
+		actor._lastFaceBukkakeDate = false;
+		actor._lastFaceBukkakeMapID = -1;
+		
+		actor._recordFloorEjaculationCount = 0;
+		actor._recordFloorEjaculationML = 0;
+		actor._recordBukkakeLegsCount = 0;
+		actor._recordTalkedAtAboutMouthPeople = 0;
+		actor._recordTalkedAtAboutBoobsPeople = 0;
+		actor._recordTalkedAtAboutPussyPeople = 0;
+		actor._recordTalkedAtAboutButtPeople = 0;
+		actor._recordTalkedAtAboutCockPeople = 0;
+		actor._recordTalkedAtAboutMouthPostFirstDefeatCount = 0;
+		actor._recordTalkedAtAboutBoobsPostFirstDefeatCount = 0;
+		actor._recordTalkedAtAboutPussyPostFirstDefeatCount = 0;
+		actor._recordTalkedAtAboutButtPostFirstDefeatCount = 0;
+		actor._recordTalkedAtAboutCockPostFirstDefeatCount = 0;
+		actor._recordDebuffOffBalancedPostFirstDefeatCount = 0;
+		actor._recordDebuffFallenPostFirstDefeatCount = 0;
+		actor._recordDebuffDisarmedPostFirstDefeatCount = 0;
+		actor._recordDebuffDownStaminaPostFirstDefeatCount = 0;
+		
+		actor._todayTalkedAtAboutMouthPeople = 0;
+		actor._todayTalkedAtAboutBoobsPeople = 0;
+		actor._todayTalkedAtAboutPussyPeople = 0;
+		actor._todayTalkedAtAboutButtPeople = 0;
+		actor._todayTalkedAtAboutCockPeople = 0;
+		
+		actor._recordEnemySawCount = 0;
+		actor._recordEnemySawMouthPostFirstPublicOrgasmCount = 0;
+		actor._recordEnemySawBoobsPostFirstPublicOrgasmCount = 0;
+		actor._recordEnemySawPussyPostFirstPublicOrgasmCount = 0;
+		actor._recordEnemySawButtPostFirstPublicOrgasmCount = 0;
+		
+		actor._todayEnemySawPeople = 0;
+		actor._todayEnemySawMouthPeople = 0;
+		actor._todayEnemySawBoobsPeople = 0;
+		actor._todayEnemySawPussyPeople = 0;
+		actor._todayEnemySawButtPeople = 0;
+		
+		actor._todayKissedCount = 0;
+		actor._todayHandjobCount = 0;
+		actor._todayBlowjobCount = 0;
+		actor._todayTittyFuckCount = 0;
+		actor._todayPussyFuckedCount = 0;
+		actor._todayAnalFuckedCount = 0;
+		actor._todayBoobsPettedCount = 0;
+		actor._todayNipplesPettedCount = 0;
+		actor._todayButtPettedCount = 0;
+		actor._todayAnalPettedCount = 0;
+		actor._todayClitPettedCount = 0;
+		actor._todayPussyPettedCount = 0;
+		actor._todayButtSpankedCount = 0;
+		actor._todaySeeJerkOffCount = 0;
+		actor._todayCunnilingusCount = 0;
+		actor._todayRimjobCount = 0;
+		actor._todayFootjobCount = 0;
+		actor._todayCockPettedCount = 0;
+		actor._todayFingersSuckedCount = 0;
+		
+		actor._todayKissedPeople = 0;
+		actor._todayHandjobPeople = 0;
+		actor._todayBlowjobPeople = 0;
+		actor._todayTittyFuckedPeople = 0;
+		actor._todayPussyFuckedPeople = 0;
+		actor._todayAnalFuckedPeople = 0;
+		actor._todayBukkakePeople = 0;
+		actor._todayFaceBukkakePeople = 0;
+		actor._todaySwallowPeople = 0;
+		actor._todayPussyCreampiePeople = 0;
+		actor._todayAnalCreampiePeople = 0;
+		actor._todayOrgasmPresencePeople = 0;
+		actor._todayCunnilingusPeople = 0;
+		actor._todayRimjobPeople = 0;
+		actor._todayFootjobPeople = 0;
+		actor._todayButtSpankedPeople = 0;
+		actor._todayCockPettedPeople = 0;
+		actor._todayFingersSuckedPeople = 0;
+		actor._todayBoobsPettedPeople = 0;
+		actor._todayNipplesPettedPeople = 0;
+		actor._todayClitPettedPeople = 0;
+		actor._todayPussyPettedPeople = 0;
+		actor._todayButtPettedPeople = 0;
+		actor._todayAnalPettedPeople = 0;
+		
+		actor._todayCockKickUsageCount = 0;
+		actor._todayCockStareUsageCount = 0;
+		actor._todayCockPetUsageCount = 0;
+		
+		actor._todayTotalToysInsertedCount = 0;
+		actor._todayClitToyInsertedCount = 0;
+		actor._todayPussyToyInsertedCount = 0;
+		actor._todayAnalToyInsertedCount = 0;
+		
+		actor._todayTotalToysUsedByEnemyCount = 0;
+		actor._todayClitToyUsedByEnemyCount = 0;
+		actor._todayPussyToyUsedByEnemyCount = 0;
+		actor._todayAnalToyUsedByEnemyCount = 0;
+		
+		actor._todayDoublePenetrationCount = 0;
+		actor._todayTriplePenetrationCount = 0;
+		actor._todayBlowbangCount = 0;
+		
+		actor._todayTauntCount = 0;
+		actor._todaySexPose_KickCounterCount = 0;
+		actor._todaySubduedTotal = 0;
+		
+		actor._todaySwallowML = 0;
+		actor._todayPussyCreampieML = 0;
+		actor._todayAnalCreampieML = 0;
+		actor._todaySwallowMaxML = 0;
+		actor._todayPussyCreampieMaxML = 0;
+		actor._todayAnalCreampieMaxML = 0;
+		actor._todayFloorEjaculationCount = 0;
+		actor._todayFloorEjaculationML = 0;
+		actor._todayTotalEjaculationCount = 0;
+		actor._todayTotalEjaculationML = 0;
+		
+		actor._todayPussyDripTenthML = 0;
+		actor._todayOrgasmCount = 0;
+		actor._todayOrgasmML = 0;
+		
+		actor._recordClothesStrippedPostFirstPublicOrgasmCount = 0;
+		actor._recordPantiesStrippedPostFirstPublicOrgasmCount = 0;
+		
+		actor._denyingExternalEjaculations = false;
+		actor._denyingInternalEjaculations = false;
+		actor.resetAttackSkillConsUsage();
+		actor.resetOnaniFrustration();
+		actor.resetEnergyCosts();
+		actor.resetSexSkillConsUsage();
+		actor.calculateAllMaxDesires();
+		actor.learnSkill(SKILL_KARRYN_REMOVE_TOY_CANT_ID);
+		actor.learnSkill(SKILL_RECEPTIONIST_ACCEPT_REQUEST_CANT_ID);
+		actor.learnSkill(SKILL_KARRYN_MAS_STOP_BATTLE_ID);
+		actor.learnSkill(SKILL_KARRYN_OPEN_PLEASURE_3TURNS_ID);
+		actor.learnSkill(SKILL_KARRYN_OPEN_PLEASURE_5TURNS_ID);
+		actor.learnSkill(SKILL_KARRYN_OPEN_PLEASURE_10TURNS_ID);
+		actor.learnSkill(SKILL_CAUTIOUS_REVITALIZE_ID);
+		actor.learnSkill(SKILL_CAUTIOUS_SECOND_WIND_ID);
+		actor.learnSkill(SKILL_CAUTIOUS_FIX_CLOTHES_ID);
+		actor.learnSkill(SKILL_DEFENSIVE_REVITALIZE_ID);
+		actor.learnSkill(SKILL_DEFENSIVE_SECOND_WIND_ID);
+		actor.learnSkill(SKILL_DEFENSIVE_FIX_CLOTHES_ID);
+		actor.learnSkill(SKILL_COUNTER_REVITALIZE_ID);
+		actor.learnSkill(SKILL_COUNTER_SECOND_WIND_ID);
+		actor.learnSkill(SKILL_COUNTER_FIX_CLOTHES_ID);
+		actor.learnSkill(1667);
+		actor.learnSkill(106);
+		actor.learnSkill(107);
+		actor.learnSkill(108);
+		actor.learnSkill(109);
+		
+		actor.forgetPassive(164);
+		actor.forgetPassive(247);
+		actor.forgetPassive(709);
+		actor.forgetPassive(710);
+		actor.forgetPassive(718);
+		
+		actor.resetFirstTimeTitleEquipRegister();
+		actor._flagEquippedToiletQueueTitleForWholeDay = false;
+		actor.setWantsToOnaniInBattle(false);
+		actor.setOnaniInBattleDesireBuildup(0);
+		actor.setTachieClitToyBehindCocks(false);
+		actor.setTachieSemenLeftArmInFrontOfFront(false);
+		
+		actor._playthroughRecordFullHitTakenCount = 0;
+		actor._playthroughRecordAttackEvadedCount = 0;
+		
+		actor._recordMaxReached50MouthDesireCount = 0;
+		actor._recordMaxReached50BoobsDesireCount = 0;
+		actor._recordMaxReached50PussyDesireCount = 0;
+		actor._recordMaxReached50ButtDesireCount = 0;
+		actor._recordMaxReached50CockDesireCount = 0;
+		actor._recordMaxReached75MouthDesireCount = 0;
+		actor._recordMaxReached75BoobsDesireCount = 0;
+		actor._recordMaxReached75PussyDesireCount = 0;
+		actor._recordMaxReached75ButtDesireCount = 0;
+		actor._recordMaxReached75CockDesireCount = 0;
+		actor._recordMaxReached100MouthDesireCount = 0;
+		actor._recordMaxReached100BoobsDesireCount = 0;
+		actor._recordMaxReached100PussyDesireCount = 0;
+		actor._recordMaxReached100ButtDesireCount = 0;
+		actor._recordMaxReached100CockDesireCount = 0;
+		actor._recordMaxReached150MouthDesireCount = 0;
+		actor._recordMaxReached150BoobsDesireCount = 0;
+		actor._recordMaxReached150PussyDesireCount = 0;
+		actor._recordMaxReached150ButtDesireCount = 0;
+		actor._recordMaxReached150CockDesireCount = 0;
+		actor._recordMaxReached250TotalDesireCount = 0;
+		actor._recordMaxReached375TotalDesireCount = 0;
+		actor._recordMaxReached500TotalDesireCount = 0;
+		actor._recordMaxReached750TotalDesireCount = 0;
+		
+		actor._recordMasturbatedCouchTotalCount = 0; 
+		actor._recordMasturbatedTotalCount = 0;
+		actor._recordMasturbatedInBattleCount = 0; 
+		actor._recordMasturbatedUsingHalberdCount = 0; 
+		actor._recordMasturbatedGloryHoleCount = 0;
+		actor._recordMasturbatedInBattlePresencePeople = 0;
+		actor._recordOrgasmFromMasturbationCount = 0;
+		
+		actor._recordGloryBattleCount = 0;
+		actor._recordGloryBattleCocksAppearedCount = 0;
+		actor._recordGloryBattleCockBeingServedPeople = 0;
+		actor._playthroughRecordGloryFinishedPissingCocksServingCount = 0;
+		actor._playthroughRecordGloryLongestStallQueue = 0;
+		actor._playthroughRecordGloryTurnsSpentResting = 0;
+		
+		actor._todayServedGuardInBar = 0;
+		actor._todayServedGuardInGuardBattle = 0;
+		actor._todayServedGuardInToiletBattle = 0;
+		actor._todayServedGuardInGuardDefeat = 0;
+		actor._todayToiletBattleSexualPartners = 0;
+		actor._todayLevelTwoDefeatSexualPartners = 0;
+		
+		for(let i = MASTURBATE_INBATTLE_SKILL_START; i <= MASTURBATE_INBATTLE_SKILL_END; i++) {
+			actor.learnSkill(i); 
+		}
+		
+		this._newTitlesGainedIcon = [];
+		this.setIsInGloryBattleFlag(false);
+		this._todayBarRepDecayed = false;
+		this._todayVisitorRepDecayed = false;
+		this._daysWithoutDoingGloryHole = 0;
+		this._todayGloryHoleRepDecayed = false;
+		
+		actor.recalculateSlutLvl();
+	}
+	
+	if(this._karrynPrisonVersion < 51) {
+		actor._recordSubduedEnemiesWithAttack = 0;
+		actor._todaySubduedEnemiesWithAttack = 0;
+		actor.resetDesires();
+		actor.calculateAllMaxDesires();
+		if(!Karryn.isInMapPose())
+			actor.setupDesires();
+	}
+	
+	if(this._karrynPrisonVersion < 52) {
+		this.update_addToAllWanted_Records_v52();
+	}
+	
+	if(this._karrynPrisonVersion < 53) {
+		actor.forgetPassive(PASSIVE_SADISM_ORGASM_TWO_ID);
+		actor.forgetPassive(PASSIVE_MASOCHISM_ORGASM_TWO_ID);
+	}
+	
+	
+	actor.cacheDesireTooltips();
 	this.setCurrentGameVersion();
 }; 
 
@@ -783,7 +1058,7 @@ Game_Party.prototype.fixCharacterCreatorSwitches = function() {
 	console.log('fixCharacterCreatorSwitches');
 	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
 	
-	if(!actor.hasSkill(CHARA_CREATE_TWO_BOOBS_ID) && !actor.hasSkill(CHARA_CREATE_TWO_NIPPLES_ID) && !actor.hasSkill(CHARA_CREATE_TWO_CLIT_ID) && !actor.hasSkill(CHARA_CREATE_TWO_PUSSY_ID) && !actor.hasSkill(CHARA_CREATE_TWO_BUTT_ID) && !actor.hasSkill(CHARA_CREATE_TWO_ANAL_ID) && !actor.hasSkill(CHARA_CREATE_TWO_MOUTH_ID) && !actor.hasSkill(CHARA_CREATE_TWO_PETTING_ID)) {
+	if(!actor.hasSkill(CHARA_CREATE_TWO_BOOBS_ID) && !actor.hasSkill(CHARA_CREATE_TWO_NIPPLES_ID) && !actor.hasSkill(CHARA_CREATE_TWO_CLIT_ID) && !actor.hasSkill(CHARA_CREATE_TWO_PUSSY_ID) && !actor.hasSkill(CHARA_CREATE_TWO_BUTT_ID) && !actor.hasSkill(CHARA_CREATE_TWO_ANAL_ID) && !actor.hasSkill(CHARA_CREATE_TWO_MOUTH_ID) && !actor.hasSkill(CHARA_CREATE_TWO_BODY_ID)) {
 		$gameSwitches.setValue(SWITCH_CREATOR_STEP_2_COMPLETED_ID, false);
 	}
 	else {
@@ -794,12 +1069,11 @@ Game_Party.prototype.fixCharacterCreatorSwitches = function() {
 		console.log(actor.hasSkill(CHARA_CREATE_TWO_BUTT_ID));
 		console.log(actor.hasSkill(CHARA_CREATE_TWO_ANAL_ID));
 		console.log(actor.hasSkill(CHARA_CREATE_TWO_MOUTH_ID));
-		console.log(actor.hasSkill(CHARA_CREATE_TWO_PETTING_ID));
+		console.log(actor.hasSkill(CHARA_CREATE_TWO_BODY_ID));
 	}
 
 	if(!actor.hasSkill(CHARA_CREATE_THREE_MOUTH_ID) && !actor.hasSkill(CHARA_CREATE_THREE_BOOBS_ID) && !actor.hasSkill(CHARA_CREATE_THREE_PUSSY_ID) && !actor.hasSkill(CHARA_CREATE_THREE_BUTT_ID) && !actor.hasSkill(CHARA_CREATE_THREE_ONANI_ID) && !actor.hasSkill(CHARA_CREATE_THREE_SADO_ID) && !actor.hasSkill(CHARA_CREATE_THREE_MAZO_ID)) {
 		$gameSwitches.setValue(SWITCH_CREATOR_STEP_3_COMPLETED_ID, false);
-		console.log('call 2');
 	}
 	else {
 		console.log(actor.hasSkill(CHARA_CREATE_THREE_MOUTH_ID));
@@ -831,8 +1105,6 @@ Game_Party.prototype.update_addToAllWanted_Records_v8 = function() {
 Game_Party.prototype.update_addToAllWanted_Records_v36 = function() {
 	for(let i = 0; i < $gameParty._wantedEnemies.length; ++i) {
 		let wanted = $gameParty._wantedEnemies[i];
-		if(!wanted._enemyRecordTalkCockCount)
-			wanted._enemyRecordTalkCockCount = 0;
 		if(!wanted._enemyRecordHandshakeCount)
 			wanted._enemyRecordHandshakeCount = 0;
 		if(!wanted._enemyRecordBoobshakeCount)
@@ -864,6 +1136,47 @@ Game_Party.prototype.update_addToAllWanted_Records_v41 = function() {
 	}
 };
 
+Game_Party.prototype.update_addToAllWanted_Records_v50 = function() {
+	for(let i = 0; i < $gameParty._wantedEnemies.length; ++i) {
+		let wanted = $gameParty._wantedEnemies[i];
+		if(!wanted._enemyRecordMasturbatedInBattlePresenceCount)
+			wanted._enemyRecordMasturbatedInBattlePresenceCount = 0;
+		if(!wanted._enemyRecordBeingServedInGloryHoleCount)
+			wanted._enemyRecordBeingServedInGloryHoleCount = 0;
+		if(!wanted._enemyRecordGloryBattleEjaculationCount)
+			wanted._enemyRecordGloryBattleEjaculationCount = 0;
+		if(!wanted._enemyRecordFaceBukkakeCount)
+			wanted._enemyRecordFaceBukkakeCount = 0;
+		if(!wanted._enemyRecordTalkedAboutMouthCount)
+			wanted._enemyRecordTalkedAboutMouthCount = 0;
+		if(!wanted._enemyRecordTalkedAboutBoobsCount)
+			wanted._enemyRecordTalkedAboutBoobsCount = 0;
+		if(!wanted._enemyRecordTalkedAboutPussyCount)
+			wanted._enemyRecordTalkedAboutPussyCount = 0;
+		if(!wanted._enemyRecordTalkedAboutButtCount)
+			wanted._enemyRecordTalkedAboutButtCount = 0;
+		if(!wanted._enemyRecordTalkedAboutCockCount)
+			wanted._enemyRecordTalkedAboutCockCount = 0;
+		if(!wanted._enemyRecordSawMouthCount)
+			wanted._enemyRecordSawMouthCount = 0;
+		if(!wanted._enemyRecordSawBoobsCount)
+			wanted._enemyRecordSawBoobsCount = 0;
+		if(!wanted._enemyRecordSawPussyCount)
+			wanted._enemyRecordSawPussyCount = 0;
+		if(!wanted._enemyRecordSawButtCount)
+			wanted._enemyRecordSawButtCount = 0;
+		if(!wanted._enemyRecordKickCounteredCount)
+			wanted._enemyRecordKickCounteredCount = 0;
+	}
+};
+
+Game_Party.prototype.update_addToAllWanted_Records_v52 = function() {
+	for(let i = 0; i < $gameParty._wantedEnemies.length; ++i) {
+		let wanted = $gameParty._wantedEnemies[i];
+		if(!wanted._enemyRecordBeingServedInGloryHoleCount)
+			wanted._enemyRecordBeingServedInGloryHoleCount = 0;
+	}
+};
 
 Game_Party.prototype.update_setActorPassivesObtainedOnArray = function() {
 	let actor = $gameActors.actor(ACTOR_KARRYN_ID);

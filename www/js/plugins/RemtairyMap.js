@@ -69,6 +69,10 @@ const MAP_LEVEL_THREE_RIOTING_BGM_VOLUME = 80;
 const MAP_BAR_BGM_NAME = 'Bar1';
 const MAP_BAR_BGM_VOLUME = 75;
 
+//Toilet BGM
+const MAP_TOILET_BGM_NAME = 'Prison_Others2';
+const MAP_TOILET_BGM_VOLUME = 80;
+
 //Map Borders
 const MAP_LOWER_BORDERS_NORMAL = "MapBorders_Normal";
 const MAP_LOWER_BORDERS_CHAT = "MapBorders_Chat";
@@ -271,7 +275,7 @@ Scene_Map.prototype.removeRemUpperBorders = function() {
 Scene_Map.prototype.launchBattle = function() {
     BattleManager.saveBgmAndBgs();
     this.stopAudioOnBattleStart();
-	if(Karryn.isInMasturbationPose()) {
+	if(Karryn.isInMasturbationCouchPose()) {
 		this._encounterEffectDuration = 0;
 	}
 	else {
@@ -294,7 +298,7 @@ Scene_Map.prototype.fadeInForTransfer = function() {
 };
 
 Scene_Map.prototype.updateEncounterEffect = function() {
-	if(Karryn.isInMasturbationPose() && this._encounterEffectDuration > 0) {
+	if(Karryn.isInMasturbationCouchPose() && this._encounterEffectDuration > 0) {
 		this._encounterEffectDuration = 0;
 	}
 	else {
@@ -389,6 +393,10 @@ Scene_Map.prototype.changeBGMOnTransfer = function() {
 		if(mapId === MAP_ID_LVL2_STAIRS_TO_LVL1) {
 			bgmName = false;
 		}
+		else if(mapId === MAP_ID_BATHROOM_FIXED) {
+			bgmName = MAP_TOILET_BGM_NAME;
+			bgmVolume = MAP_TOILET_BGM_VOLUME;
+		}
 		else if(Prison.prisonLevelTwoIsAnarchy()) {
 			bgmName = MAP_LEVEL_TWO_ANARCHY_BGM_NAME;
 			bgmVolume = MAP_LEVEL_TWO_ANARCHY_BGM_VOLUME;
@@ -431,8 +439,10 @@ Scene_Map.prototype.changeBGMOnTransfer = function() {
 		}
 	}	
 		
-	if(bgmName)
+	if(bgmName) {
 		AudioManager.playBgm({name:bgmName, pan:0, pitch:100, pos:0, volume:bgmVolume});
+		//console.log('playing map BGM ' + bgmName);
+	}
 	else
 		AudioManager.stopBgm();
 };
@@ -587,7 +597,10 @@ Game_Screen.prototype.changeMapBordersBackgroundOnTransfer = function() {
 	else if(mapId === MAP_ID_KARRYN_OFFICE || mapId === MAP_ID_EB_HALLWAY || mapId === MAP_ID_EB_MESS_HALL || mapId === MAP_ID_EB_INFIRMARY || mapId === MAP_ID_EB_GUARD_QUARTERS ) {
 		this.setMapBordersBackgroundEB();
 	}
-	else if(Prison.currentlyPrisonLevelThree()) {
+	else if(mapId === MAP_ID_LVL1_STAIRS_TO_LVL3 || mapId === MAP_ID_LVL1_STAIRS_TO_LVL2) {
+		this.setMapBordersBackgroundDefault();
+	}
+	else if(mapId === MAP_ID_LVL3_STAIRS_TO_LVL1_LVL4 || Prison.currentlyPrisonLevelThree()) {
 		this.setMapBordersBackgroundBasement1();
 	}
 	else

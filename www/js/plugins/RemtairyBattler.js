@@ -4,15 +4,16 @@ Remtairy.Battler = Remtairy.Battler || {};
 const VAR_NO_ENERGY_STAMINA_DAMAGE = 0.3;
 const VAR_AP_PER_END = 10;
 const VAR_OP_PER_END = 30;
+const VAR_AP_PER_CLVL = 5;
+const VAR_OP_PER_CLVL = 15;
 
 const VAR_STANCE_STRONG_HIT = 0.15;
 const VAR_STANCE_WEAK_HIT = -0.1;
 const VAR_STANCE_STRONG_DMG = 1.25;
 const VAR_STANCE_WEAK_DMG = 0.85;
 
-const VAR_CRITICAL_DAMAGE_MIN_MULTIPLER = 1.25;
-const VAR_HIGHER_DEX_MAX_CRIT_MULTI = 25; //unused
-
+const VAR_CRITICAL_DAMAGE_MIN = 1.05;
+const VAR_CRITICAL_DAMAGE_BASE = 1.33;
 
 //=============================================================================
  /*:
@@ -55,19 +56,19 @@ Game_BattlerBase.prototype.initMembers = function() {
 	this._baseToyLvl = 0;
 	this._baseSemenLvl = 0;
 	this._baseStripLvl = 0;
-	this._baseKissLvl = 1;
-	this._baseHandjobLvl = 1;
-	this._baseBlowjobLvl = 1;
-	this._baseFootjobLvl = 1;
-	this._baseRimjobLvl = 1;
-	this._baseTittyFuckLvl = 1;
-	this._basePussySexLvl = 1;
-	this._baseAnalSexLvl = 1;
-	this._baseMasturbateLvl = 1;
-	this._baseMasochismLvl = 1;
-	this._baseSadismLvl = 1;
+	this._baseKissLvl = 0;
+	this._baseHandjobLvl = 0;
+	this._baseBlowjobLvl = 0;
+	this._baseFootjobLvl = 0;
+	this._baseRimjobLvl = 0;
+	this._baseTittyFuckLvl = 0;
+	this._basePussySexLvl = 0;
+	this._baseAnalSexLvl = 0;
+	this._baseMasturbateLvl = 0;
+	this._baseMasochismLvl = 0;
+	this._baseSadismLvl = 0;
 	this._wantedPoints = 0;
-	this._enemyTurnCount = 0;
+	this.setupDoNothingCounts();
 	this.resetGotHitBySkillType();
 	this.changeStanceToNone();
 	this.orgasmLockOff();
@@ -306,6 +307,7 @@ Game_BattlerBase.prototype.currentPercentOfStamina = function() {
 	return value;
 };
 
+//returns whole numbers, divide by 100 for percent
 //MaxHundred = don't return more than 100
 Game_BattlerBase.prototype.getPercentOfStaminaFromValue = function(value, maxHundred) { 
 	let percent = Math.floor(value * 100 / this.maxstamina);
@@ -325,7 +327,7 @@ Game_BattlerBase.prototype.currentPercentOfStamina_realMax = function() {
 ///////////
 
 Game_BattlerBase.prototype.setFatigue = function(value) {
-	this._fatigue = Math.max(Math.round(value), 0);
+	this._fatigue = Math.min(100, Math.max(Math.round(value), 0));
 	$gameScreen.setMapInfoRefreshNeeded();
 };
 
@@ -347,7 +349,7 @@ Game_BattlerBase.prototype.fatigueMultipler = function() {
 ////////
 // Speed
 
-Game_BattlerBase.prototype.bonusActionSpeed = function() {
+Game_BattlerBase.prototype.bonusActionSpeed = function(item) {
     return 0;
 };
 
@@ -387,13 +389,10 @@ Game_BattlerBase.prototype.moddedWeaponDefense = function() {
 
 ////////
 // Critical Chance
+// Critical Rate
 
 Game_BattlerBase.prototype.criticalChanceFormula = function(target) {
 	let value = this.cri - target.cev;
-	//if(this.dex > target.dex && this.dex > target.end) {
-		//let diff = this.dex - Math.max(target.dex, target.end);
-		//value += 0.01 * Math.min(diff, VAR_HIGHER_DEX_MAX_CRIT_MULTI); }
-		
 	value *= this.criticalChanceRate();
 	value += this.criticalChanceBonus();
 	return value;
@@ -416,9 +415,9 @@ Game_BattlerBase.prototype.criticalChanceBonus = function() {
 Game_BattlerBase.prototype.criticalDamageFormula = function(target, bonus) {
 	let damageMultipler = 0;
 	if(target)
-		damageMultipler = Math.max(VAR_CRITICAL_DAMAGE_MIN_MULTIPLER, VAR_CRITICAL_DAMAGE_MIN_MULTIPLER + bonus + this.atk/200 - target.atk/200);
+		damageMultipler = Math.max(VAR_CRITICAL_DAMAGE_MIN, VAR_CRITICAL_DAMAGE_BASE + bonus + this.dex/200 - target.dex/200);
 	else
-		damageMultipler = VAR_CRITICAL_DAMAGE_MIN_MULTIPLER + bonus + this.atk/200;
+		damageMultipler = VAR_CRITICAL_DAMAGE_BASE + bonus + this.dex/200;
 	
 	damageMultipler = (damageMultipler + this.criticalDamageBonus()) * this.criticalDamageRate();
 	
@@ -570,23 +569,41 @@ Game_BattlerBase.prototype.increaseStench = function(value) {
 // Slammed Cleaved Skewered
 ////////////
 
-Game_BattlerBase.prototype.isSlammed = function() {
-	return this.isStateAffected(STATE_SLAMMED_ID);
+Game_BattlerBase.prototype.isSlammedThisBattle = function() {
+	return this.isStateAffected(STATE_SLAMMED_THIS_BATTLE_ID);
 };
-Game_BattlerBase.prototype.isCleaved = function() {
-	return this.isStateAffected(STATE_CLEAVED_ID);
+Game_BattlerBase.prototype.isCleavedThisBattle = function() {
+	return this.isStateAffected(STATE_CLEAVED_THIS_BATTLE_ID);
 };
-Game_BattlerBase.prototype.isSkewered = function() {
-	return this.isStateAffected(STATE_SKEWERED_ID);
+Game_BattlerBase.prototype.isSkeweredThisBattle = function() {
+	return this.isStateAffected(STATE_SKEWERED_THIS_BATTLE_ID);
 };
+
+Game_BattlerBase.prototype.isSlammedThisTurn = function() {
+	return this.isStateAffected(STATE_SLAMMED_THIS_TURN_ID);
+};
+Game_BattlerBase.prototype.isCleavedThisTurn = function() {
+	return this.isStateAffected(STATE_CLEAVED_THIS_TURN_ID);
+};
+Game_BattlerBase.prototype.isSkeweredThisTurn = function() {
+	return this.isStateAffected(STATE_SKEWERED_THIS_TURN_ID);
+};
+
 
 //////
 // Do Nothing Skill
 ////////////
 
+Game_BattlerBase.prototype.setupDoNothingCounts = function() {
+	this._didNothing = false;
+	this._enemyTurnCount = 0;
+	this._didNothingCount = 0;
+	this._didNothingCountThisBattle = 0;
+};
 Game_BattlerBase.prototype.doNothing = function() {
 	this._didNothing = true;
 	this._enemyTurnCount++;
+	this._didNothingCountThisBattle++;
 };
 Game_BattlerBase.prototype.resetDidNothingCount = function() {
 	this._didNothingCount = 0;
@@ -614,10 +631,10 @@ Game_BattlerBase.prototype.decreaseEvadeReductionStage = function() {
 };
 Game_BattlerBase.prototype.evadeReductionStageXParamRate = function() {
 	let rate = 1;
-	let eachStageEffect = 0.34;
-	if(Prison.easyMode()) eachStageEffect = 0.45;
+	let eachStageEffect = 0.42;
+	if(Prison.easyMode()) eachStageEffect = 0.69;
 	rate -= eachStageEffect * this._evadeReductionStage;
-	return rate;
+	return Math.max(0.01, rate);
 };
 
 ////////////
@@ -636,6 +653,10 @@ Game_BattlerBase.prototype.hasOverblowProtection = function() {
 //////////////
 
 Game_BattlerBase.prototype.useAISkill = function(skillId, target) {
+	if(!skillId) {
+		console.log('useAISkill error: no skillId');
+		return;
+	}
 	if(!target) {
 		target = this._targetIndex;
 	}
@@ -669,9 +690,8 @@ Game_BattlerBase.prototype.setPleasure = function(value) {
 	this.setTp(value); 
 };
 
-Game_BattlerBase.prototype.gainPleasure = function(value) {
-	//if(this.isHorny) value = Math.round(value * 1.1);
-	this._result.tpDamage = -value;
+Game_BattlerBase.prototype.gainPleasure = function(value, dontAddToResults) {
+	if(!dontAddToResults) this._result.tpDamage = -value;
 	this.setPleasure(this.pleasure + value);
 };
 
@@ -729,7 +749,7 @@ Game_BattlerBase.prototype.currentPercentOfArousal = function(oneMax) {
 Game_BattlerBase.prototype.resetGotHitBySkillType = function() { 
 	this._justGotHitBySkillType = 0;
 };
-Game_BattlerBase.prototype.justGotHitBySkillType = function(skillType) { 
+Game_BattlerBase.prototype.justGotHitBySkillType = function(skillType) {
 	this._justGotHitBySkillType = skillType;
 };
 Game_BattlerBase.prototype.didLastGetHitBySkillType = function(skillType) { 
@@ -742,6 +762,14 @@ Game_BattlerBase.prototype.didLastGetHitBySkillType = function(skillType) {
 
 Game_BattlerBase.prototype.masochismSensitivity = function() { 
 	return 0;
+};
+
+//////
+// State
+///////
+
+Game_BattlerBase.prototype.dontDisplayStateLogMessages = function() {
+	return this.isAlive();
 };
 
 //////////

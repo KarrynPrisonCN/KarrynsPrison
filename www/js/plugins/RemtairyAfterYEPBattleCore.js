@@ -53,7 +53,7 @@ Game_Battler.prototype.startDamagePopup = function() {
 Sprite_Damage.prototype.setup = function(target) {
     this._result = target.shiftDamagePopup();
 	let result = this._result;
-	let isSexualDamage = result.skillTypeEnemyPetting || result.skillTypeEnemySex || result.skillTypeEnemyBukkake || result.skillTypeEnemyTalk || result.skillTypeEnemySight;
+	let isSexualDamage = result.skillTypeEnemyPetting || result.skillTypeEnemySex || result.skillTypeEnemyBukkake || result.skillTypeEnemyTalk || result.skillTypeEnemySight || result.skillTypeActorOnani;
 	let isEnemySelfFeedback = target.isEnemy() && isSexualDamage;
 	if(target.isActor() && isSexualDamage && !ConfigManager.remShowSexualDamagePopup) return;
 	if(isEnemySelfFeedback) return;
@@ -76,7 +76,7 @@ Sprite_Damage.prototype.setup = function(target) {
     } else if (result.hpAffected) {
 		if(result.hpDamage < 0) 
 			this.createDigits(1, result.hpDamage);
-		else if(result.hpDamage > 0) 
+		else if(result.hpDamage > 0 && target.hp > 0) 
 			this.createDigits(0, result.hpDamage);
 		
 		if (result.critical) {

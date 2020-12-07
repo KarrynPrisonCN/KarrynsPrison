@@ -1358,6 +1358,7 @@ Game_Action.prototype.evalDamageFormula = function(target) {
     var sign = ([3, 4].contains(item.damage.type) ? -1 : 1);
     var value = 0;
     if (item.damage.custom) {
+		//console.log(item.damage.formula)
       eval(item.damage.formula);
       value = Math.max(value, 0) * sign;
     } else {

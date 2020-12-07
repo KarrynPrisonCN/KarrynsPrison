@@ -12,14 +12,20 @@ const REM_BHD_BC_NAME_FONT_SIZE = 22;
 const REM_BHD_BC_NAME_WIDTH = 130;
 const REM_BHD_BC_NAME_HEIGHT = 32;
 
-const REM_BHD_BC_MASTURBATE_ONE_X = 560;
-const REM_BHD_BC_MASTURBATE_ONE_Y = -110;
+const REM_BHD_BC_MASTURBATE_COUCH_X = 560;
+const REM_BHD_BC_MASTURBATE_COUCH_Y = -110;
+
+const REM_BHD_BC_MASTURBATE_INBATTLE_X = -95;
+const REM_BHD_BC_MASTURBATE_INBATTLE_Y = 10;
 
 const REM_BHD_BC_DEFEATED_ONE_X = -550;
 const REM_BHD_BC_DEFEATED_ONE_Y = 30;
 
 const REM_BHD_BC_DEFEATED_TWO_X = 585;
 const REM_BHD_BC_DEFEATED_TWO_Y = -210;
+
+const REM_BHD_BC_DEFEATED_THREE_X = -400;
+const REM_BHD_BC_DEFEATED_THREE_Y = 0;
 
 const REM_BHD_BC_DEFEATED_GUARD_X = -530;
 const REM_BHD_BC_DEFEATED_GUARD_Y = -150;
@@ -78,8 +84,8 @@ const REM_BHD_BC_RECEPTIONIST_Y = -170;
 const REM_BHD_BC_REVERSE_COWGIRL_X = 570;
 const REM_BHD_BC_REVERSE_COWGIRL_Y = -265;
 
-const REM_BHD_BC_KARRYN_COWGIRL_X = -100;
-const REM_BHD_BC_KARRYN_COWGIRL_Y = 60;
+const REM_BHD_BC_KARRYN_COWGIRL_X = 560;
+const REM_BHD_BC_KARRYN_COWGIRL_Y = -350;
 
 const REM_BHD_BC_LIZARDMAN_COWGIRL_X = -120;
 const REM_BHD_BC_LIZARDMAN_COWGIRL_Y = -250;
@@ -514,9 +520,13 @@ Window_ActorCommand.prototype.create_layout = function() {
 		this._layout.x += REM_BHD_BC_DOWN_STAMINA_X;
 		this._layout.y += REM_BHD_BC_DOWN_STAMINA_Y;
 	}
-	else if(Karryn.isInMasturbationLevel1Pose()) {
-		this._layout.x += REM_BHD_BC_MASTURBATE_ONE_X;
-		this._layout.y += REM_BHD_BC_MASTURBATE_ONE_Y;
+	else if(Karryn.isInMasturbationCouchPose()) {
+		this._layout.x += REM_BHD_BC_MASTURBATE_COUCH_X;
+		this._layout.y += REM_BHD_BC_MASTURBATE_COUCH_Y;
+	}
+	else if(Karryn.isInMasturbationInBattlePose()) {
+		this._layout.x += REM_BHD_BC_MASTURBATE_INBATTLE_X;
+		this._layout.y += REM_BHD_BC_MASTURBATE_INBATTLE_Y;
 	}
 	else if(Karryn.isInDefeatedLevel1Pose()) {
 		this._layout.x += REM_BHD_BC_DEFEATED_ONE_X;
@@ -525,6 +535,10 @@ Window_ActorCommand.prototype.create_layout = function() {
 	else if(Karryn.isInDefeatedLevel2Pose()) {
 		this._layout.x += REM_BHD_BC_DEFEATED_TWO_X;
 		this._layout.y += REM_BHD_BC_DEFEATED_TWO_Y;
+	}
+	else if(Karryn.isInDefeatedLevel3Pose()) {
+		this._layout.x += REM_BHD_BC_DEFEATED_THREE_X;
+		this._layout.y += REM_BHD_BC_DEFEATED_THREE_Y;
 	}
 	else if(Karryn.isInDefeatedGuardPose()) {
 		this._layout.x += REM_BHD_BC_DEFEATED_GUARD_X;
@@ -716,9 +730,13 @@ Window_ActorCommand.prototype.create_com_name = function() {
 		this._com_name.x += REM_BHD_BC_DOWN_STAMINA_X;
 		this._com_name.y += REM_BHD_BC_DOWN_STAMINA_Y; 
 	}
-	else if(Karryn.isInMasturbationLevel1Pose()) {
-		this._com_name.x += REM_BHD_BC_MASTURBATE_ONE_X;
-		this._com_name.y += REM_BHD_BC_MASTURBATE_ONE_Y; 
+	else if(Karryn.isInMasturbationCouchPose()) {
+		this._com_name.x += REM_BHD_BC_MASTURBATE_COUCH_X;
+		this._com_name.y += REM_BHD_BC_MASTURBATE_COUCH_Y; 
+	}
+	else if(Karryn.isInMasturbationInBattlePose()) {
+		this._com_name.x += REM_BHD_BC_MASTURBATE_INBATTLE_X;
+		this._com_name.y += REM_BHD_BC_MASTURBATE_INBATTLE_Y; 
 	}
 	else if(Karryn.isInDefeatedLevel1Pose()) {
 		this._com_name.x += REM_BHD_BC_DEFEATED_ONE_X;
@@ -727,6 +745,10 @@ Window_ActorCommand.prototype.create_com_name = function() {
 	else if(Karryn.isInDefeatedLevel2Pose()) {
 		this._com_name.x += REM_BHD_BC_DEFEATED_TWO_X;
 		this._com_name.y += REM_BHD_BC_DEFEATED_TWO_Y; 
+	}
+	else if(Karryn.isInDefeatedLevel3Pose()) {
+		this._com_name.x += REM_BHD_BC_DEFEATED_THREE_X;
+		this._com_name.y += REM_BHD_BC_DEFEATED_THREE_Y; 
 	}
 	else if(Karryn.isInDefeatedGuardPose()) {
 		this._com_name.x += REM_BHD_BC_DEFEATED_GUARD_X;
@@ -873,9 +895,13 @@ Window_ActorCommand.prototype.refresh_bitmap_com = function() {
 			this._com_sprites[i].x += REM_BHD_BC_DOWN_STAMINA_X;
 			this._com_sprites[i].y += REM_BHD_BC_DOWN_STAMINA_Y;	
 		}
-		else if(Karryn.isInMasturbationLevel1Pose()) {
-			this._com_sprites[i].x += REM_BHD_BC_MASTURBATE_ONE_X;
-			this._com_sprites[i].y += REM_BHD_BC_MASTURBATE_ONE_Y;	
+		else if(Karryn.isInMasturbationCouchPose()) {
+			this._com_sprites[i].x += REM_BHD_BC_MASTURBATE_COUCH_X;
+			this._com_sprites[i].y += REM_BHD_BC_MASTURBATE_COUCH_Y;	
+		}
+		else if(Karryn.isInMasturbationInBattlePose()) {
+			this._com_sprites[i].x += REM_BHD_BC_MASTURBATE_INBATTLE_X;
+			this._com_sprites[i].y += REM_BHD_BC_MASTURBATE_INBATTLE_Y;	
 		}
 		else if(Karryn.isInDefeatedLevel1Pose()) {
 			this._com_sprites[i].x += REM_BHD_BC_DEFEATED_ONE_X;
@@ -884,6 +910,10 @@ Window_ActorCommand.prototype.refresh_bitmap_com = function() {
 		else if(Karryn.isInDefeatedLevel2Pose()) {
 			this._com_sprites[i].x += REM_BHD_BC_DEFEATED_TWO_X;
 			this._com_sprites[i].y += REM_BHD_BC_DEFEATED_TWO_Y;	
+		}
+		else if(Karryn.isInDefeatedLevel3Pose()) {
+			this._com_sprites[i].x += REM_BHD_BC_DEFEATED_THREE_X;
+			this._com_sprites[i].y += REM_BHD_BC_DEFEATED_THREE_Y;	
 		}
 		else if(Karryn.isInDefeatedGuardPose()) {
 			this._com_sprites[i].x += REM_BHD_BC_DEFEATED_GUARD_X;
@@ -1290,9 +1320,13 @@ Window_ActorCommand.prototype.refresh_ring_command = function() {
 			this._com_sprites[i].x += REM_BHD_BC_DOWN_STAMINA_X;
 			this._com_sprites[i].y += REM_BHD_BC_DOWN_STAMINA_Y;	
 		}
-		else if(Karryn.isInMasturbationLevel1Pose()) {
-			this._com_sprites[i].x += REM_BHD_BC_MASTURBATE_ONE_X;
-			this._com_sprites[i].y += REM_BHD_BC_MASTURBATE_ONE_Y;	
+		else if(Karryn.isInMasturbationCouchPose()) {
+			this._com_sprites[i].x += REM_BHD_BC_MASTURBATE_COUCH_X;
+			this._com_sprites[i].y += REM_BHD_BC_MASTURBATE_COUCH_Y;	
+		}
+		else if(Karryn.isInMasturbationInBattlePose()) {
+			this._com_sprites[i].x += REM_BHD_BC_MASTURBATE_INBATTLE_X;
+			this._com_sprites[i].y += REM_BHD_BC_MASTURBATE_INBATTLE_Y;	
 		}
 		else if(Karryn.isInDefeatedLevel1Pose()) {
 			this._com_sprites[i].x += REM_BHD_BC_DEFEATED_ONE_X;
@@ -1301,6 +1335,10 @@ Window_ActorCommand.prototype.refresh_ring_command = function() {
 		else if(Karryn.isInDefeatedLevel2Pose()) {
 			this._com_sprites[i].x += REM_BHD_BC_DEFEATED_TWO_X;
 			this._com_sprites[i].y += REM_BHD_BC_DEFEATED_TWO_Y;	
+		}
+		else if(Karryn.isInDefeatedLevel3Pose()) {
+			this._com_sprites[i].x += REM_BHD_BC_DEFEATED_THREE_X;
+			this._com_sprites[i].y += REM_BHD_BC_DEFEATED_THREE_Y;	
 		}
 		else if(Karryn.isInDefeatedGuardPose()) {
 			this._com_sprites[i].x += REM_BHD_BC_DEFEATED_GUARD_X;
@@ -1407,9 +1445,13 @@ Window_ActorCommand.prototype.update_position = function(i) {
 			this._np[0] += REM_BHD_BC_DOWN_STAMINA_X;
 			this._np[1] += REM_BHD_BC_DOWN_STAMINA_Y;	
 		}
-		else if(Karryn.isInMasturbationLevel1Pose()) {
-			this._np[0] += REM_BHD_BC_MASTURBATE_ONE_X;
-			this._np[1] += REM_BHD_BC_MASTURBATE_ONE_Y;	
+		else if(Karryn.isInMasturbationCouchPose()) {
+			this._np[0] += REM_BHD_BC_MASTURBATE_COUCH_X;
+			this._np[1] += REM_BHD_BC_MASTURBATE_COUCH_Y;	
+		}
+		else if(Karryn.isInMasturbationInBattlePose()) {
+			this._np[0] += REM_BHD_BC_MASTURBATE_INBATTLE_X;
+			this._np[1] += REM_BHD_BC_MASTURBATE_INBATTLE_Y;	
 		}
 		else if(Karryn.isInDefeatedLevel1Pose()) {
 			this._np[0] += REM_BHD_BC_DEFEATED_ONE_X;
@@ -1418,6 +1460,10 @@ Window_ActorCommand.prototype.update_position = function(i) {
 		else if(Karryn.isInDefeatedLevel2Pose()) {
 			this._np[0] += REM_BHD_BC_DEFEATED_TWO_X;
 			this._np[1] += REM_BHD_BC_DEFEATED_TWO_Y;	
+		}	
+		else if(Karryn.isInDefeatedLevel3Pose()) {
+			this._np[0] += REM_BHD_BC_DEFEATED_THREE_X;
+			this._np[1] += REM_BHD_BC_DEFEATED_THREE_Y;	
 		}	
 		else if(Karryn.isInDefeatedGuardPose()) {
 			this._np[0] += REM_BHD_BC_DEFEATED_GUARD_X;
@@ -1516,9 +1562,13 @@ Window_ActorCommand.prototype.update_position = function(i) {
 			this._np[0] += REM_BHD_BC_DOWN_STAMINA_X;
 			this._np[1] += REM_BHD_BC_DOWN_STAMINA_Y;	
 		}
-		else if(Karryn.isInMasturbationLevel1Pose()) {
-			this._np[0] += REM_BHD_BC_MASTURBATE_ONE_X;
-			this._np[1] += REM_BHD_BC_MASTURBATE_ONE_Y;	
+		else if(Karryn.isInMasturbationCouchPose()) {
+			this._np[0] += REM_BHD_BC_MASTURBATE_COUCH_X;
+			this._np[1] += REM_BHD_BC_MASTURBATE_COUCH_Y;	
+		}	
+		else if(Karryn.isInMasturbationInBattlePose()) {
+			this._np[0] += REM_BHD_BC_MASTURBATE_INBATTLE_X;
+			this._np[1] += REM_BHD_BC_MASTURBATE_INBATTLE_Y;	
 		}	
 		else if(Karryn.isInDefeatedLevel1Pose()) {
 			this._np[0] += REM_BHD_BC_DEFEATED_ONE_X;
@@ -1527,6 +1577,10 @@ Window_ActorCommand.prototype.update_position = function(i) {
 		else if(Karryn.isInDefeatedLevel2Pose()) {
 			this._np[0] += REM_BHD_BC_DEFEATED_TWO_X;
 			this._np[1] += REM_BHD_BC_DEFEATED_TWO_Y;	
+		}	
+		else if(Karryn.isInDefeatedLevel3Pose()) {
+			this._np[0] += REM_BHD_BC_DEFEATED_THREE_X;
+			this._np[1] += REM_BHD_BC_DEFEATED_THREE_Y;	
 		}	
 		else if(Karryn.isInDefeatedGuardPose()) {
 			this._np[0] += REM_BHD_BC_DEFEATED_GUARD_X;

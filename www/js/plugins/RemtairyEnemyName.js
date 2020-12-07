@@ -124,7 +124,16 @@ const ENEMY_NAMES_ROGUE_JP = [
 ];
 
 const ENEMY_NAMES_HOMELESS_EN = [
+	"Staubhold", "Blink", "Zass", "Gary", "Smelly", "Aloysius", "Rajing", "Rich",
+	"Bruce", "Roger", "Harang", "Boggs", "Yu", "Demitri", "Mortimer", "Donovan",
+	"Hanssen", "Somkiet", "Blanch", "Greg", "Mason", "Tyrone", "Bob", "James",
+	"Nathan", "Jibada", "Ejvind", "Robert", "Mustafa", "Rick", "Bobandy", "Kang",
+	"Goon", "Jimmi", "Yong", "Donald", "David", "Strider", "Luis", "Quark",
+	"Wasuri", "Ronald", "Raven", "Edmin", "Elbert", "Hank", "Han", "Gregor",
+	"Kars", "Books", "Mangbug", "Mxy", "Scruffy", //November Subscribers
 	
+	"Stinky", "Lazlo", "Dirty Mike", "Oscar", "Hung Lo", "Wilhelm", "Stick", "Harry Dick",
+	"Lester", "Kris", "Jacky", "Gary", "Bevys", "Nasty Nate", "Janitor" //November Subscribers
 ];
 
 const ENEMY_NAMES_HOMELESS_JP = [
@@ -596,8 +605,8 @@ Game_Troop.prototype.makePrefix = function(enemy) {
 		
 		//Type Based
 		if(enemy.isThugType) {
-			if(Karryn.hasPassive(PASSIVE_SEXUAL_PARTNERS_THUG_THREE_ID)) {
-				availablePrefixSet.push(ENEMY_PREFIX_SADO, ENEMY_PREFIX_SADO, ENEMY_PREFIX_HORNY);
+			if(Karryn.hasPassive(PASSIVE_SEXUAL_PARTNERS_THUG_TWO_ID)) {
+				availablePrefixSet.push(ENEMY_PREFIX_SADO, ENEMY_PREFIX_SADO, ENEMY_PREFIX_HORNY, ENEMY_PREFIX_HORNY);
 			}
 			
 			if(Karryn.hasEdict(EDICT_THE_THUG_PROBLEM)) {
@@ -617,7 +626,7 @@ Game_Troop.prototype.makePrefix = function(enemy) {
 		}
 		else if(enemy.isGoblinType) {
 			if(Karryn.hasPassive(PASSIVE_SEXUAL_PARTNERS_GOBLIN_TWO_ID)) {
-				availablePrefixSet.push(ENEMY_PREFIX_HORNY, ENEMY_PREFIX_HORNY);
+				availablePrefixSet.push(ENEMY_PREFIX_HORNY, ENEMY_PREFIX_HORNY, ENEMY_PREFIX_GOOD, ENEMY_PREFIX_GOOD);
 			}
 			
 			if(Karryn.hasEdict(EDICT_THE_GOBLIN_PROBLEM)) {
@@ -638,7 +647,7 @@ Game_Troop.prototype.makePrefix = function(enemy) {
 		}
 		else if(enemy.isRogueType) {
 			if(Karryn.hasPassive(PASSIVE_SEXUAL_PARTNERS_ROGUE_TWO_ID)) {
-				availablePrefixSet.push(ENEMY_PREFIX_SADO, ENEMY_PREFIX_SADO, ENEMY_PREFIX_HORNY);
+				availablePrefixSet.push(ENEMY_PREFIX_SADO, ENEMY_PREFIX_SADO, ENEMY_PREFIX_HORNY, ENEMY_PREFIX_HORNY);
 			}
 			
 			if(Karryn.hasEdict(EDICT_THE_ROGUE_PROBLEM)) {
@@ -657,8 +666,8 @@ Game_Troop.prototype.makePrefix = function(enemy) {
 			}
 		}
 		else if(enemy.isNerdType) {
-			if(Karryn.hasPassive(PASSIVE_SEXUAL_PARTNERS_NERD_THREE_ID)) {
-				availablePrefixSet.push(ENEMY_PREFIX_MASO, ENEMY_PREFIX_MASO, ENEMY_PREFIX_HORNY);
+			if(Karryn.hasPassive(PASSIVE_SEXUAL_PARTNERS_NERD_TWO_ID)) {
+				availablePrefixSet.push(ENEMY_PREFIX_MASO, ENEMY_PREFIX_MASO, ENEMY_PREFIX_HORNY, ENEMY_PREFIX_HORNY);
 			}
 			
 			if(Karryn.hasEdict(EDICT_THE_NERD_PROBLEM)) {
@@ -692,12 +701,34 @@ Game_Troop.prototype.makePrefix = function(enemy) {
 				availablePrefixSet.push(ENEMY_PREFIX_DEXTEROUS);
 			}
 		}
+		else if(enemy.isLizardmanType) {
+			if(Karryn.hasPassive(PASSIVE_SEXUAL_PARTNERS_LIZARDMAN_TWO_ID)) {
+				availablePrefixSet.push(ENEMY_PREFIX_HORNY, ENEMY_PREFIX_SADO, ENEMY_PREFIX_SADO, ENEMY_PREFIX_HORNY);
+			}
+			
+		}
+		else if(enemy.isOrcType) {
+			if(Karryn.hasPassive(PASSIVE_SEXUAL_PARTNERS_ORC_TWO_ID)) {
+				availablePrefixSet.push(ENEMY_PREFIX_HORNY, ENEMY_PREFIX_MASO, ENEMY_PREFIX_MASO, ENEMY_PREFIX_HORNY);
+			}
+			
+		}
+		else if(enemy.isHomelessType) {
+			if(Karryn.hasPassive(PASSIVE_SEXUAL_PARTNERS_HOMELESS_TWO_ID)) {
+				availablePrefixSet.push(ENEMY_PREFIX_HORNY, ENEMY_PREFIX_GOOD, ENEMY_PREFIX_GOOD, ENEMY_PREFIX_HORNY);
+			}
+			
+		}
 		
 		
 	}//End Inmate
 	
 	//Guards
 	if(enemy.isGuardType) {	
+		if(Karryn.hasPassive(PASSIVE_SEXUAL_PARTNERS_GUARD_TWO_ID)) {
+			availablePrefixSet.push(ENEMY_PREFIX_HORNY, ENEMY_PREFIX_SADO, ENEMY_PREFIX_SADO, ENEMY_PREFIX_HORNY);
+		}
+			
 		//Kitchen
 		if(Karryn.hasEdict(EDICT_REPAIR_KITCHEN_AND_MESS_HALL)) {
 			//Better Guard Meals
@@ -809,6 +840,9 @@ Game_Troop.prototype.makePrefix = function(enemy) {
 	
 	// Passives based
 	if(Karryn.hasPassive(PASSIVE_VIRGINS_TOTAL_THREE_ID)) {
+		availablePrefixSet.push(ENEMY_PREFIX_VIRGIN, ENEMY_PREFIX_VIRGIN, ENEMY_PREFIX_VIRGIN, ENEMY_PREFIX_VIRGIN);
+	}
+	else if(Karryn.hasPassive(PASSIVE_VIRGINS_TOTAL_TWO_ID)) {
 		availablePrefixSet.push(ENEMY_PREFIX_VIRGIN, ENEMY_PREFIX_VIRGIN);
 	}
 	
@@ -1307,15 +1341,19 @@ Game_Enemy.prototype.angryPrefixEffect = function() {
 };
 
 
-Game_Enemy.prototype.initialPleasurePrefixEffect = function() {
+Game_Enemy.prototype.enemyInitialPleasurePrefixEffect = function() {
 	if(!this.hasNamePrefix()) return 0;
-	var addedMulti = 0;
+	let addedMulti = 0;
 	if(this.hasVirginPrefix()) {
 		if(Karryn.hasPassive(PASSIVE_VIRGINS_TOTAL_TWO_ID))
-			addedMulti += 2;
+			addedMulti += 3;
+		else
+			addedMulti += 1.5;
 	}
+	else if(this.hasHornyPrefix()) addedMulti += 2.5;
 	else if(this.hasSensitivePrefix() || this.hasBigPrefix()) addedMulti += 1;
-	else if(this.hasStarvingPrefix() || this.hasEnduringPrefix()) addedMulti -= 1;
+	else if(this.hasElitePrefix() || this.hasBadPrefix() || this.hasHungryPrefix()) addedMulti -= 1;
+	else if(this.hasStarvingPrefix() || this.hasEnduringPrefix()) addedMulti -= 2;
 	
 	return addedMulti;
 };
@@ -1337,7 +1375,7 @@ Game_Enemy.prototype.setupEnemyPrefixEffect = function() {
 Game_Enemy.prototype.prefixTalkEffect = function(base) {
 	let value = 0;
 	if(this.hasTalkPrefix()) {
-		value += Math.max(3, Math.round(base * 0.75));
+		value += Math.max(2, Math.round(base * 0.75));
 	}
 	else if(this.hasElitePrefix() || this.hasGoodPrefix() || this.hasBigPrefix()) {
 		value += 1;
@@ -1348,7 +1386,7 @@ Game_Enemy.prototype.prefixTalkEffect = function(base) {
 Game_Enemy.prototype.prefixSightEffect = function(base) {
 	let value = 0;
 	if(this.hasSightPrefix()) {
-		value += Math.max(3, Math.round(base * 0.75));
+		value += Math.max(2, Math.round(base * 0.75));
 	}
 	else if(this.hasElitePrefix() || this.hasGoodPrefix() || this.hasBigPrefix()) {
 		value += 1;
@@ -1405,7 +1443,7 @@ Game_Enemy.prototype.prefixEjaculationVolumeEffect = function() {
 };
 
 // Param 
-Game_Enemy.prototype.prefixParamRateEffect = function(paramId) {
+Game_Enemy.prototype.enemyPrefixParamRate = function(paramId) {
 	if(!this.hasNamePrefix()) return 1;
 	let rate = 1;
 	let prefixType = this.getNamePrefixType();
@@ -1464,7 +1502,10 @@ Game_Enemy.prototype.prefixParamRateEffect = function(paramId) {
 		else if(this.hasElitePrefix()) rate += 0.30;
 	}
 	else if(paramId === PARAM_CHARM_ID) { //Charm
-		if(this.hasVirginPrefix() && Karryn.hasPassive(PASSIVE_VIRGINS_TOTAL_ONE_ID)) rate -= 0.5;
+		if(this.hasVirginPrefix()) {
+			if(Karryn.hasPassive(PASSIVE_VIRGINS_TOTAL_ONE_ID)) rate -= 0.33;
+			else rate -= 0.1;
+		}
 		else if(this.hasElitePrefix() || this.hasMetalPrefix()) rate += 0.25;
 		else if(this.hasGoodPrefix()) rate += 0.15;
 	}
@@ -1499,6 +1540,8 @@ Game_Enemy.prototype.addJustJoinedState = function() {
 // Battler Hue
 
 Game_Enemy.prototype.battlerHue = function() {
+	if($gameParty.isInGloryBattle) 
+		return 0;
     if(this.isBossType) 
 		return this.enemy().battlerHue;
 	

@@ -32,6 +32,7 @@ const TROOP_DEFEATED_LV2_ID = 6;
 const TROOP_RECEPTIONIST_ID = 7;
 const TROOP_DEFEATED_GUARD_ID = 8;
 const TROOP_GLORY_ID = 9;
+const TROOP_DEFEATED_LV3_ID = 11;
 
 const TROOP_NORMAL_BATTLE_MAX_SIZE = 6;
 
@@ -176,7 +177,34 @@ Game_Troop.prototype.isThereNonPrisonerTypeEnemyPresent = function() {
 	return found;
 };	
 
-//Lizardman Count
+Game_Troop.prototype.getAverageEnemyExperienceLvl = function() {
+	let totalLvl = 0;
+	let count = 0;
+
+	this.members().forEach(function(enemy) {
+		if(enemy.isAppeared() && !enemy.isOnlooker) {
+			count++;
+			totalLvl += enemy.enemyExperienceLvl();
+		}
+	}, this);
+	
+	return Math.round(totalLvl / count);
+};
+
+Game_Troop.prototype.getAverageEnemyParam = function(paramId) {
+	let totalStat = 0;
+	let count = 0;
+
+	this.members().forEach(function(enemy) {
+		if(enemy.isAppeared() && !enemy.isOnlooker) {
+			count++;
+			totalStat += enemy.param(paramId);
+		}
+	}, this);
+	
+	return Math.round(totalStat / count);
+};
+
 Game_Troop.prototype.getCountOfLizardmanPresent = function(enemyType) {
 	let count = 0;
 	for(let i = 0; i < this.aliveMembers().length; i++) {
@@ -193,15 +221,15 @@ Game_Enemy.prototype.lizardmanParamRate = function(paramId) {
 		let lizardmanCount = $gameTroop.getCountOfLizardmanPresent();
 		
 		if(lizardmanCount >= 6)
-			rate = 1.7;
+			rate = 1.52;
 		else if(lizardmanCount === 5)
-			rate = 1.6;
-		else if(lizardmanCount === 4)
-			rate = 1.55;
-		else if(lizardmanCount === 3)
 			rate = 1.5;
-		else if(lizardmanCount === 2)
+		else if(lizardmanCount === 4)
+			rate = 1.45;
+		else if(lizardmanCount === 3)
 			rate = 1.4;
+		else if(lizardmanCount === 2)
+			rate = 1.3;
 	}
 	
 	return rate;
@@ -211,6 +239,15 @@ Game_Enemy.prototype.displayLizardmanNumStateIcon = function(count) {
 	if(count === 6) return $gameTroop.getCountOfLizardmanPresent() >= 6;
 	else return $gameTroop.getCountOfLizardmanPresent() === count;
 };
+
+Game_Troop.prototype.setAllEnemiesToHide = function() {
+	this.members().forEach(function(enemy) {
+		if(enemy.isAppeared()) {
+			enemy.hide();
+		}
+	}, this);
+};
+
 
 Game_Troop.prototype.makeAllEnemiesHorny = function(chance) {
 	if(chance <= 0) return;
@@ -233,6 +270,25 @@ Game_Troop.prototype.setAllEnemiesToHorny = function() {
 	this.members().forEach(function(enemy) {
 		if(enemy.isAppeared()) {
 			enemy.addHornyState();
+		}
+	}, this);
+};
+Game_Troop.prototype.setAllEnemiesToHorny_chanceBased = function(chance, callLogMessage) {
+	this.members().forEach(function(enemy) {
+		if(enemy.isAppeared() && Math.randomInt(100) < chance) {
+			enemy.addHornyState();
+			if(callLogMessage) SceneManager._scene._logWindow.displayAffectedStatus(enemy);
+		}
+	}, this);
+};
+
+Game_Troop.prototype.setAllOrcEnemiesToAngry = function(collapsingEnemy) {
+	this.members().forEach(function(enemy) {
+		if(enemy.isAppeared() && enemy.isOrcType && !enemy.isTonkin) {
+			if(collapsingEnemy && collapsingEnemy.name() != enemy.name()) {
+				enemy.addAngryState();
+				SceneManager._scene._logWindow.displayAffectedStatus(enemy);
+			}
 		}
 	}, this);
 };
@@ -580,6 +636,59 @@ Game_Troop.prototype.onTurnEndSpecial_defeatedLevelTwoBattle = function() {
 	}
 };
 
+Game_Troop.prototype.setupDefeatedLevelThreeBattle = function(troopId) {
+	let soloCellFactor = $gameActors.actor(ACTOR_KARRYN_ID).getDefeatedLvlThreeFactor();
+	let validEnemyIds = $gameParty.getDefeatedLevelThreeEnemyIds(soloCellFactor);
+	
+	this._maxSoloCellParticipants = Math.max(3, soloCellFactor);
+	this._appearedSoloCellParticipants = 0;
+	
+	let enemyCount = Math.min(4, this._maxSoloCellParticipants);
+	
+	for(let i = 0; i < enemyCount; ++i) {
+		let enemyId = validEnemyIds[Math.randomInt(validEnemyIds.length)];
+		let enemy = this.setupEnemyIdForDefeatedBattle(enemyId);
+		this._appearedSoloCellParticipants++;
+	}
+	this.makeUniqueNames();
+	this.setupEnemyPrefixEffect();
+	this.setAllEnemiesToAroused();
+};
+
+Game_Troop.prototype.onTurnEndSpecial_defeatedLevelThreeBattle = function() {
+	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
+	let emptySpotsAvailable = 0;
+
+	if(actor.hasNoStamina() && actor.hasNoEnergy()) {
+		actor.addState(STATE_DISABLED_ID);
+		return;
+	}
+	else if(actor.isStateAffected(STATE_DISABLED_ID)) {
+		actor.removeState(STATE_DISABLED_ID);
+	}
+	
+	if(actor.canGetOther1InsertedNone()) emptySpotsAvailable++;
+	if(actor.canGetOther2InsertedNone()) emptySpotsAvailable++;
+	if(actor.canGetOther3InsertedNone()) emptySpotsAvailable++;
+	if(actor.canGetOther4InsertedNone()) emptySpotsAvailable++;
+	
+	emptySpotsAvailable = Math.min(emptySpotsAvailable, this._maxSoloCellParticipants - this._appearedSoloCellParticipants);
+	
+	for(let i = 0; i < emptySpotsAvailable; ++i) {
+		let soloCellFactor = $gameActors.actor(ACTOR_KARRYN_ID).getDefeatedLvlThreeFactor();
+		let validEnemyIds = $gameParty.getDefeatedLevelThreeEnemyIds(soloCellFactor);
+		let enemyId = validEnemyIds[Math.randomInt(validEnemyIds.length)];
+		let enemy = this.setupEnemyIdForDefeatedBattle(enemyId);
+		enemy.makeUniqueNames();
+		enemy.setupEnemyPrefixEffect();
+		enemy.onBattleStart();
+		enemy.midBattleSpawn_setupDreamX();
+		enemy.setPleasureToArousalPoint();
+		SceneManager._scene._spriteset.addEnemy(enemy);
+		this._appearedSoloCellParticipants++;
+	}
+};
+
 Game_Troop.prototype.setupDefeatedGuardBattle = function(troopId) {
 	let guardFactor = $gameActors.actor(ACTOR_KARRYN_ID).getDefeatedGuardFactor();
 	let validEnemyIds = $gameParty.getGuardEnemyIds();
@@ -648,19 +757,12 @@ Game_Troop.prototype.reorderImagesOnSelection = function() {
 				this._gloryLeftStall._screenY = y;
 				this._gloryLeftStall.setCustomEnemySpritePosition(x, y);
 			}
-			else if(this._gloryRightStall) {
+			if(this._gloryRightStall) {
 				let x = GLORYHOLE_POS_RIGHT_X;
 				let y = GLORYHOLE_POS_RIGHT_Y;
 				this._gloryRightStall._screenX = x;
 				this._gloryRightStall._screenY = y;
 				this._gloryRightStall.setCustomEnemySpritePosition(x, y);
-			}
-			else {
-				let x = 2000;
-				let y = 2000;
-				this._gloryLeftStall._screenX = x;
-				this._gloryLeftStall._screenY = y;
-				this._gloryLeftStall.setCustomEnemySpritePosition(x, y);
 			}
 		}
 		else {
@@ -1712,7 +1814,6 @@ Game_Party.prototype.setDefeatedLevelOneTroopIds = function() {
 	}
 	
 	$gameVariables.setValue(VARIABLE_TROOPID_ID, firstTroopId);
-	$gameVariables.setValue(VARIABLE_DEFEATED_SPRITES_ID, numOfSprites);
 	
 	if(troopsWavesArray.length > 0) {
 		$gameSystem.setConsBattlesRem(troopsWavesArray);
@@ -1733,6 +1834,7 @@ Game_Party.prototype.setBossTroopIds = function(level) {
 		let key = [13, 30, "D"];
 		let defeatedRoomEnemies = $gameSelfSwitches.value(key);
 		firstTroopId = 66;
+
 		
 		if(defeatedRoomEnemies) {
 			troopsWavesArray.push(24);
@@ -1994,6 +2096,61 @@ Game_Party.prototype.getDefeatedLevelTwoEnemyIds = function(bathroomFactor) {
 	return enemyIdArray;
 };
 
+Game_Party.prototype.getDefeatedLevelThreeEnemyIds = function(soloCellFactor) {
+	let enemyIdArray = [ 211, 191, 53, 181 ];
+	
+	if(Karryn.hasEdict(EDICT_THUGS_STRESS_RELIEF)) {
+		enemyIdArray.push(93);
+	}
+	
+	if(Karryn.hasEdict(EDICT_BAIT_GOBLINS)) {
+		enemyIdArray.push(81);
+	}
+	
+	if(Karryn.hasEdict(EDICT_FIGHT_ROGUE_DISTRACTIONS_WITH_DISTRACTIONS)) {
+		enemyIdArray.push(143);
+	}
+	
+	if(Karryn.hasEdict(EDICT_GIVE_IN_TO_NERD_BLACKMAIL)) {
+		enemyIdArray.push(122);
+		enemyIdArray.push(123);
+	}
+	
+	if(soloCellFactor >= 5) {
+		enemyIdArray.push(82);
+		if(Karryn.hasEdict(EDICT_DEMEAN_GOBLINS)) {
+			enemyIdArray.push(83);
+		}
+		enemyIdArray.push(94);
+	}
+	
+	if(soloCellFactor >= 7) {
+		enemyIdArray.push(142);
+		enemyIdArray.push(182);
+		if(Karryn.hasEdict(EDICT_THREATEN_THE_NERDS)) {
+			enemyIdArray.push(122);
+			enemyIdArray.push(123);
+		}
+	}
+	
+	if(soloCellFactor >= 9) {
+		enemyIdArray.push(212);
+		enemyIdArray.push(192);
+		if(Karryn.hasEdict(EDICT_NO_THUG_LABOR)) {
+			enemyIdArray.push(91);
+		}
+	}
+	
+	if(soloCellFactor >= 12) {
+		enemyIdArray.push(212);
+		enemyIdArray.push(192);
+		enemyIdArray.push(54);
+	}
+	
+	
+	return enemyIdArray;
+};
+
 ///////////
 ////////////
 // Respawn Anarchy
@@ -2062,7 +2219,6 @@ Game_Party.prototype.respawnAnarchyEnemies = function() {
 		$gameSelfSwitches.setValue([MAP_ID_COMMON_AREA_SOUTH_EAST, 3, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_COMMON_AREA_SOUTH_EAST, 4, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_COMMON_AREA_SOUTH_EAST, 5, "D"], false);
-		$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_SOUTH, 33, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_SOUTH, 34, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_SOUTH, 35, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_SOUTH, 36, "D"], false);
@@ -2108,7 +2264,6 @@ Game_Party.prototype.respawnAnarchyEnemies = function() {
 		$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_NORTH_EAST, 26, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_NORTH_EAST, 27, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_NORTH_EAST, 28, "D"], false);
-		$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_NORTH_EAST, 29, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_NORTH_EAST, 20, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_NORTH_EAST, 21, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_NORTH_EAST, 22, "D"], false);

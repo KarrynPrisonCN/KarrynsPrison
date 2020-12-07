@@ -4,7 +4,7 @@ Remtairy.TextManager = Remtairy.TextManager || {};
 var Imported = Imported || {};
 Imported.RemtairyTextManager = true;
 
-const RemVersionText = '6m.2';
+const RemVersionText = '7A.g.2';
 
 //=============================================================================
  /*:
@@ -101,9 +101,11 @@ const CooldownTurnsPluralNameJP = "%1ﾀｰﾝ";
 const CockinessNameEN = "Cockiness";
 const CockinessNameJP = "大胆さ";
 const CockinessIncreasedTextEN = "Cockiness increased to %1%!";
-const CockinessIncreasedTextJP = "大胆さが%1％上昇！";
-const CockinessResetedEN = "Cockiness reseted to zero!";
-const CockinessResetedJP = "大胆さがリセットされた！";
+const CockinessIncreasedTextJP = "大胆さが%1％まで上昇した！";
+const CockinessDecreasedTextEN = "Cockiness has fallen to %1%...";
+const CockinessDecreasedTextJP = "大胆さが%1％に減少した……。";
+const CockinessResetEN = "Cockiness reset to zero...";
+const CockinessResetJP = "大胆さがリセットされた……。";
 const CockinessMaxxedOutEN = "Cockiness is at 100%!";
 const CockinessMaxxedOutJP = "大胆さが100％になった！";
 
@@ -182,62 +184,107 @@ const ElementSexNameJP = "セックス";
 
 //Passive Categories
 const PassiveCategoryNameEN = [
-"All",
-"Mouth Desire",
-"├Mouth",
-"├Kiss",
-"└Blowjob",
-"Boobs Desire",
-"├Boobs",
-"├Nipples",
-"└Titjob",
-"Pussy Desire",
-"├Clit",
-"├Pussy",
-"└Vaginal Sex",
-"Butt Desire",
-"├Butt",
-"├Anal",
-"└Anal Sex",
-"Cock Desire",
-"├Pleasure",
-"├Orgasm",
-"└Semen",
-"Sadism",
-"Masochism",
-"Masturbation",
-"Exhibitionism",
-"Fetishism",
-"Relations"];
+"\\I[56]All",
+"\\I[57]\\C[1]Mouth Desire",
+" ├Mouth",
+" ├Kiss",
+" └Blowjob",
+"\\I[58]\\C[1]Boobs Desire",
+" ├Boobs",
+" ├Nipples",
+" └Titjob",
+"\\I[59]\\C[1]Pussy Desire",
+" ├Clit",
+" ├Pussy",
+" ├Wet",
+" ├Cunninlingus",
+" └Vaginal Sex",
+"\\I[60]\\C[1]Butt Desire",
+" ├Butt",
+" ├Anal",
+" └Anal Sex",
+"\\I[61]\\C[1]Cock Desire",
+" ├Worship",
+" ├Handjob",
+" ├Bukkake",
+" ├Swallow",
+" ├Creampie",
+" └Relations",
+"\\I[44]\\C[1]Sadism",
+" ├Status",
+" ├Skills", 
+" ├Resist",
+" ├Footjob",
+" └Dominance",
+"\\I[45]\\C[1]Masochism",
+" ├Talk",
+" ├Debuffs",
+" ├Rimjob",
+" ├Fetishism",
+" └Submission",
+"\\I[46]\\C[1]Masturbation",
+" ├Urges",
+" ├Sleep",
+" ├Toys",
+" └Orgasm",
+"\\I[47]\\C[1]Exhibitionism",
+" ├Sight",
+" ├Clothes",
+" ├Nudity",
+" └Activities"
+];
 
 const PassiveCategoryNameJP = [
-"全体",
-"【口欲】",
-"├クチ",
-"├キス",
-"└フェラチオ",
-"【胸欲】",
-"├おっぱい",
-"├乳首",
-"└パイズリ",
-"【膣欲】",
-"├クリトリス",
-"├マンコ",
-"└セックス",
-"【尻欲】",
-"├ケツ",
-"├アナル",
-"└アナルSEX",
-"【棒欲】",
-"├快楽度",
-"├絶頂",
-"└ザーメン",
-"サド",
-"マゾ",
-"オナニー",
-"露出",
-"フェチ",
-"肉体関係"];
+"\\I[56]取得パッシブ",
+"\\I[57]\\C[1]口欲",
+" ├クチ",
+" ├キス",
+" └フェラチオ",
+"\\I[58]\\C[1]乳欲",
+" ├おっぱい",
+" ├乳首",
+" └パイズリ",
+"\\I[59]\\C[1]膣欲",
+" ├クリトリス",
+" ├マンコ",
+" ├愛液",
+" ├クンニ",
+" └マンコセックス",
+"\\I[60]\\C[1]尻欲",
+" ├ケツ",
+" ├アナル",
+" └アナルセックス",
+"\\I[61]\\C[1]棒欲",
+" ├チンポ愛",
+" ├手コキ",
+" ├ぶっかけ",
+" ├精飲",
+" ├中出し",
+" └肉体関係",
+"\\I[44]\\C[1]サド",
+" ├ステータス",
+" ├スキル", 
+" ├耐性",
+" ├足コキ",
+" └支配欲",
+"\\I[45]\\C[1]マゾ",
+" ├猥談",
+" ├弱体化",
+" ├ケツ舐め",
+" ├フェチ",
+" └服従心",
+"\\I[46]\\C[1]オナニー",
+" ├性衝動",
+" ├睡眠の質",
+" ├オモチャ",
+" └絶頂",
+"\\I[47]\\C[1]露出",
+" ├視姦",
+" ├着衣",
+" ├全裸",
+" └アルバイト"
+];
+
 
 //Command Strings
 const FightNameEN = "Fight";
@@ -424,22 +471,27 @@ const RCMenuFatigueLevelOneTextEN = "\\C[0]Karryn is starting to feel tired. (\\
 const RCMenuFatigueLevelOneTextJP = "\\C[0]疲労感：少し疲れを感じ始めている。 (\\C[2]全ステータス-10％\\C[0])";
 const RCMenuFatigueLevelTwoTextEN = "\\C[0]Karryn feels tired... (\\C[2]Stats -20%\\C[0])";
 const RCMenuFatigueLevelTwoTextJP = "\\C[0]疲労感：疲れを感じている…。 (\\C[2]全ステータス-20％\\C[0])";
-const RCMenuFatigueLevelThreeTextEN = "\\C[8]Karryn is starting to feel exhausted...... \\C[0](\\C[10]Stats -30%\\C[0])";
+const RCMenuFatigueLevelThreeTextEN = "\\C[8]Karryn is starting to feel exhausted... \\C[0](\\C[10]Stats -30%\\C[0])";
 const RCMenuFatigueLevelThreeTextJP = "\\C[8]疲労感：疲れている……。 \\C[0](\\C[10]全ステータス-30％\\C[0])";
-const RCMenuFatigueLevelFourTextEN = "\\C[7]Karryn is exhausted...... \\C[0](\\C[18]Stats -40%, Can't Escape\\C[0])";
+const RCMenuFatigueLevelFourTextEN = "\\C[7]Karryn is exhausted... \\C[0](\\C[18]Stats -40%, Can't Escape\\C[0])";
 const RCMenuFatigueLevelFourTextJP = "\\C[7]疲労感：強く疲弊している………。 \\C[0](\\C[18]全ステータス-40％ / 撤退不可\\C[0])";
-const RCMenuFatigueLevelFiveTextEN = "\\C[7]Karryn is dead tired......... \\C[0](\\C[18]Stats -50%, Can't Escape\\C[0])";
+const RCMenuFatigueLevelFiveTextEN = "\\C[7]Karryn is dead tired...... \\C[0](\\C[18]Stats -50%, Can't Escape\\C[0])";
 const RCMenuFatigueLevelFiveTextJP = "\\C[7]疲労感：完全に疲労困憊になっている…………。 \\C[0](\\C[18]全ステータス-50％ / 撤退不可\\C[0])";
 
 const RCMenuArousedLevelOneTextEN = "\\C[27]Karryn is currently aroused...\\C[0]";
 const RCMenuArousedLevelOneTextJP = "\\C[27]興奮状態：発情している…。\\C[0]";
-const RCMenuArousedLevelTwoTextEN = "\\C[5]Karryn is currently very aroused......\\C[0]";
+const RCMenuArousedLevelTwoTextEN = "\\C[5]Karryn is currently very aroused...\\C[0]";
 const RCMenuArousedLevelTwoTextJP = "\\C[5]興奮状態：完全に発情している……。\\C[0]";
+
+const RCMenuFrustratedLevelOneTextEN = "\\C[27]Karryn is currently sexually frustrated...\\C[0]";
+const RCMenuFrustratedLevelOneTextJP = "\\C[27]興奮状態：ムラムラしている…。\\C[0]";
+const RCMenuFrustratedLevelTwoTextEN = "\\C[5]Karryn is currently very sexually frustrated...\\C[0]";
+const RCMenuFrustratedLevelTwoTextJP = "\\C[5]興奮状態：かなりムラムラしている……。\\C[0]";
 
 const RCMenuLostPantiesTextEN = "\\C[27]Karryn isn't wearing any panties right now.\\C[0]";
 const RCMenuLostPantiesTextJP = "\\C[27]ノーパンで巡回中。\\C[0]";
 
-const RCMenuDefiledHalberdTextEN = "\\C[7]Karryn's halberd has been defiled...... \\C[0](\\C[18]Unarmed\\C[0])";
+const RCMenuDefiledHalberdTextEN = "\\C[7]Karryn's halberd has been defiled... \\C[0](\\C[18]Unarmed\\C[0])";
 const RCMenuDefiledHalberdTextJP = "\\C[7]ハルバード：汚されている……。\\C[0]";
 
 const RCMenuMetalSingleTextEN = "\\C[0]Karryn subdued a metallic inmate today. (\\C[11]Exp Rate +%1%\\C[0])";
@@ -460,28 +512,28 @@ const RCMenuMealThreeTextEN = "\\C[0]Karryn ate an artisanal meal: (\\C[11]Stami
 const RCMenuMealThreeTextJP = "\\C[0]専属シェフの特別料理を食べた。 (\\C[11]体力+15％ / 絶頂による精力ダメージを軽減\\C[0])";
 const RCMenuMealFourTextEN = "\\C[0]Karryn ate an artisanal meal: (\\C[27]Increased chance of getting horny on every turn\\C[0])";
 const RCMenuMealFourTextJP = "\\C[0]専属シェフの特別料理を食べた。 (\\C[27]興奮状態になる確率が毎ターン上昇\\C[0])";
-const RCMenuMealFiveTextEN = "\\C[0]Karryn ate an artisanal meal: (\\C[27]Boobs Sensitivity, Pussy Sensitivity +50%\\C[0])";
-const RCMenuMealFiveTextJP = "\\C[0]専属シェフの特別料理を食べた。 (\\C[27]おっぱいの感度+50％ / マンコの感度+50％\\C[0])";
+const RCMenuMealFiveTextEN = "\\C[0]Karryn ate an artisanal meal: (\\C[27]Boobs & Pussy Sensitivity +50%\\C[0])";
+const RCMenuMealFiveTextJP = "\\C[0]専属シェフの特別料理を食べた。 (\\C[27]おっぱい感度+50％ / マンコ感度+50％\\C[0])";
 const RCMenuMealSixTextEN = "\\C[0]Karryn ate an artisanal meal: (\\C[11]Strength, Dexterity, Agility +5%\\C[0])";
 const RCMenuMealSixTextJP = "\\C[0]専属シェフの特別料理を食べた。 (\\C[11]腕力+5％ / 器用さ+5％ / 素早さ+5％\\C[0])";
 const RCMenuMealSevenTextEN = "\\C[0]Karryn ate an artisanal meal: (\\C[11]Fatigue Gain -33%\\C[0])";
 const RCMenuMealSevenTextJP = "\\C[0]専属シェフの特別料理を食べた。 (\\C[11]疲労蓄積-33％\\C[0])";
-const RCMenuMealEightTextEN = "\\C[0]Karryn ate an artisanal meal: (\\C[11]Petting Resist, Sex Resist +15%\\C[0])";
+const RCMenuMealEightTextEN = "\\C[0]Karryn ate an artisanal meal: (\\C[11]Petting & Sex Resist +15%\\C[0])";
 const RCMenuMealEightTextJP = "\\C[0]専属シェフの特別料理を食べた。 (\\C[11]愛撫耐性+15％ / セックス耐性+15％\\C[0])";
 const RCMenuMealNineTextEN = "\\C[0]Karryn ate an artisanal meal: (\\C[11]Enemies Attack Chance---\\C[0])";
 const RCMenuMealNineTextJP = "\\C[0]専属シェフの特別料理を食べた。 (\\C[11]敵の攻撃性↓↓↓\\C[0])";
-const RCMenuMealTenTextEN = "\\C[0]Karryn ate an artisanal meal: (\\C[27]Mouth Sensitivity, Anal Sensitivity +50%\\C[0])";
-const RCMenuMealTenTextJP = "\\C[0]専属シェフの特別料理を食べた。 (\\C[27]クチの感度+50％ / アナルの感度+50％\\C[0])";
+const RCMenuMealTenTextEN = "\\C[0]Karryn ate an artisanal meal: (\\C[27]Mouth & Anal Sensitivity +50%\\C[0])";
+const RCMenuMealTenTextJP = "\\C[0]専属シェフの特別料理を食べた。 (\\C[27]クチ感度+50％ / アナル感度+50％\\C[0])";
 
 const RCMenuStoreItemOneTextEN = "\\C[0]Karryn is using store item: (\\C[11]Fatigue Gain -20% \\C[10]Stats -5%\\C[0])";
 const RCMenuStoreItemOneTextJP = "\\C[0]ショップのアイテムを使用。 (\\C[11]疲労蓄積-20％ / \\C[10]能力-5％\\C[0])";
 const RCMenuStoreItemTwoTextEN = "\\C[0]Karryn is using store item: (\\C[11]Halberd Crit Rate +25% \\C[10]Halberd Defense -10%\\C[0])";
 const RCMenuStoreItemTwoTextJP = "\\C[0]ショップのアイテムを使用。 (\\C[11]ハルバードクリティカル率+25％ / \\C[10]ハルバード防御力-10％\\C[0])";
-const RCMenuStoreItemThreeTextEN = "\\C[0]Karryn is using store item: (\\C[11]Slash/Pierce/Blunt Resist +15% \\C[10]Stamina Regen -2%\\C[0])";
+const RCMenuStoreItemThreeTextEN = "\\C[0]Karryn is using store item: (\\C[11]Slash & Pierce & Blunt Resist +15% \\C[10]Stamina Regen -2%\\C[0])";
 const RCMenuStoreItemThreeTextJP = "\\C[0]ショップのアイテムを使用。 (\\C[11]斬撃耐性・突撃耐性・打撃耐性+15％ / \\C[10]体力回復量-2％\\C[0])";
 const RCMenuStoreItemFourTextEN = "\\C[0]Karryn is using store item: (\\C[11]Strip Resist +30% \\C[10]Charm (During Battle) -15%\\C[0])";
 const RCMenuStoreItemFourTextJP = "\\C[0]ショップのアイテムを使用。 (\\C[11]ストリップ耐性+30％ / \\C[10]]魅力-15％(戦闘中)\\C[0])";
-const RCMenuStoreItemFiveTextEN = "\\C[0]Karryn is using store item: (\\C[11]Charm (During Battle) +15% \\C[10]Talk/Strip Resist -15%\\C[0])";
+const RCMenuStoreItemFiveTextEN = "\\C[0]Karryn is using store item: (\\C[11]Charm (During Battle) +15% \\C[10]Talk & Strip Resist -15%\\C[0])";
 const RCMenuStoreItemFiveTextJP = "\\C[0]ショップのアイテムを使用。 (\\C[11]魅力+15％(戦闘中) / \\C[10]]猥談耐性・ストリップ耐性-15％\\C[0])";
 
 const PrisonLevelNameEN = "Level";
@@ -500,7 +552,7 @@ const PrisonMapLevelNameJP = "【LEVEL %1】 ";
 const PrisonMapOutsideNameEN = "Fort Ganon: ";
 const PrisonMapOutsideNameJP = "【要塞ガナン】 ";
 const PrisonMapUnknownNameEN = "Somewhere";
-const PrisonMapUnknownNameJP = "どこか";
+const PrisonMapUnknownNameJP = "要塞内";
 
 //カリンのレベル
 const KissingLevelEN = "Kissing Level";
@@ -518,9 +570,9 @@ const RimjobLevelJP = "ケツ舐めレベル";
 const TittyFuckLevelEN = "Titjob Level";
 const TittyFuckLevelJP = "パイズリレベル";
 const PussyLevelEN = "Vaginal Sex Level";
-const PussyLevelJP = "マンコレベル";
+const PussyLevelJP = "マンコセックスレベル";
 const AnalLevelEN = "Anal Sex Level";
-const AnalLevelJP = "アナルレベル";
+const AnalLevelJP = "アナルセックスレベル";
 const MasturbationLevelEN = "Masturbation Level";
 const MasturbationLevelJP = "オナニーレベル";
 const SadismLevelEN = "Sadism Level";
@@ -529,35 +581,37 @@ const MasochismLevelEN = "Masochism Level";
 const MasochismLevelJP = "マゾレベル";
 
 const MouthSensitivityEN = "Mouth Sensitivity";
-const MouthSensitivityJP = "クチの感度";
-const FingerSensitivityEN = "Fingers Sensitivity";
-const FingerSensitivityJP = "指の感度";
+const MouthSensitivityJP = "クチ感度";
+const FingerSensitivityEN = "Hand Sensitivity";
+const FingerSensitivityJP = "手の感度";
 const BoobsSensitivityEN = "Boobs Sensitivity";
-const BoobsSensitivityJP = "おっぱいの感度";
+const BoobsSensitivityJP = "おっぱい感度";
 const NipplesSensitivityEN = "Nipples Sensitivity";
-const NipplesSensitivityJP = "乳首の感度";
+const NipplesSensitivityJP = "チクビ感度";
 const ClitorisSensitivityEN = "Clitoris Sensitivity";
-const ClitorisSensitivityJP = "クリトリスの感度";
+const ClitorisSensitivityJP = "クリトリス感度";
 const PussySensitivityEN = "Pussy Sensitivity";
-const PussySensitivityJP = "マンコの感度";
+const PussySensitivityJP = "マンコ感度";
 const ButtSensitivityEN = "Butt Sensitivity";
-const ButtSensitivityJP = "ケツの感度";
+const ButtSensitivityJP = "ケツ感度";
 const AnalSensitivityEN = "Anal Sensitivity";
-const AnalSensitivityJP = "アナルの感度";
+const AnalSensitivityJP = "アナル感度";
 const FootSensitivityEN = "Feet Sensitivity";
 const FootSensitivityJP = "足の感度";
 const TalkSensitivityEN = "Talk Sensitivity";
-const TalkSensitivityJP = "猥談の感度";
+const TalkSensitivityJP = "猥談感度";
 const SightSensitivityEN = "Sight Sensitivity";
-const SightSensitivityJP = "視姦の感度";
+const SightSensitivityJP = "視姦感度";
 const SwallowSensitivityEN = "Swallow Sensitivity";
-const SwallowSensitivityJP = "ごっくんの感度";
+const SwallowSensitivityJP = "ごっくん感度";
 const PussyCreampieSensitivityEN = "Pussy Creampie Sensitivity";
-const PussyCreampieSensitivityJP = "マンコ中出しの感度";
+const PussyCreampieSensitivityJP = "マンコ中出し感度";
 const AnalCreampieSensitivityEN = "Anal Creampie Sensitivity";
-const AnalCreampieSensitivityJP = "アナル中出しの感度";
+const AnalCreampieSensitivityJP = "アナル中出し感度";
 const BukkakeSensitivityEN = "Bukkake Sensitivity";
-const BukkakeSensitivityJP = "ぶっかけの感度";
+const BukkakeSensitivityJP = "ぶっかけ感度";
+const ButtSpankingSensitivityEN = "Butt Spanking Sensitivity";
+const ButtSpankingSensitivityJP = "スパンキング感度";
 
 //Status Menu
 const StatusMenuPrimaryEN = "Primary";
@@ -575,10 +629,10 @@ const StatusMenuDesiresJP = "必須性欲";
 const StatusMenuEffectsEN = "Condition";
 const StatusMenuEffectsJP = "状態";
 
-//const StatusMenuParameterEN = "Parameters";
-//const StatusMenuParameterJP = "《 身体能力 》";
-const StatusMenuParameterEN = "《 Stat Levels 》";
-const StatusMenuParameterJP = "《 レベル 》";
+const StatusMenuStatsEN = "Stats";
+const StatusMenuStatsJP = "《 身体能力 》";
+const StatusMenuStatLevelsEN = "《 Stat Levels 》";
+const StatusMenuStatLevelsJP = "《 レベル 》";
 const StatusMenuAttributesEN = "《 Attributes 》";
 const StatusMenuAttributesJP = "《 戦闘能力 》";
 const StatusMenuResistsEN = "《 Resists 》";
@@ -651,18 +705,22 @@ const ProfileRecordFootjobEN = "Footjob";
 const ProfileRecordFootjobJP = "足コキ";
 const ProfileRecordRimjobEN = "Rimjob";
 const ProfileRecordRimjobJP = "ケツ舐め";
-const ProfileRecordSwallowEN = "Swallow";
+const ProfileRecordSwallowEN = "Cum Swallowing";
 const ProfileRecordSwallowJP = "精飲";
 const ProfileRecordPussyCreampieEN = "Pussy Creampie";
 const ProfileRecordPussyCreampieJP = "中出し";
 const ProfileRecordAnalCreampieEN = "Anal Creampie";
 const ProfileRecordAnalCreampieJP = "アナル中出し";
+const ProfileRecordBodyBukkakeEN = "Body Bukkake";
+const ProfileRecordBodyBukkakeJP = "体へのぶっかけ";
+const ProfileRecordFaceBukkakeEN = "Cum Facial";
+const ProfileRecordFaceBukkakeJP = "顔射";
 
 const ProfileRecordCunnilingusEN = "Cunnilingus";
 const ProfileRecordCunnilingusJP = "クンニ";
-const ProfileRecordSuckFingersEN = "Suck Fingers";
-const ProfileRecordSuckFingersJP = "指吸い";
-const ProfileRecordButtSpankEN = "Butt Spank";
+const ProfileRecordSuckFingersEN = "Mouth Petting";
+const ProfileRecordSuckFingersJP = "指しゃぶり";
+const ProfileRecordButtSpankEN = "Butt Spanking";
 const ProfileRecordButtSpankJP = "スパンキング";
 const ProfileRecordBoobsPettingEN = "Boobs Petting";
 const ProfileRecordBoobsPettingJP = "おっぱい愛撫";
@@ -708,7 +766,7 @@ const ProfileRecordFirstAnalJP = "\\C[26]%1日目\\C[0]、%3で\\C[31]%2\\C[0]�
 const ProfileRecordLastAnalEN = "Had anal sex with \\C[31]%2\\C[0] in %3 on \\C[26]Day %1\\C[0].";
 const ProfileRecordLastAnalJP = "\\C[26]%1日目\\C[0]に%3で\\C[31]%2\\C[0]とケツマンコでヤッた。";
 const ProfileRecordFirstHandjobEN = "Jerked off my first dick on \\C[26]Day %1\\C[0] in %3 using \\C[31]%2\\C[0]'s cock.";
-const ProfileRecordFirstHandjobJP = "\\C[26]%1日目\\C[0]、\\C[31]%2で初めて手コキしたのは\\C[0]のチンポだった。";
+const ProfileRecordFirstHandjobJP = "\\C[26]%1日目\\C[0]、%3で初めて手コキしたのは\\C[31]%2\\C[0]のチンポだった。";
 const ProfileRecordLastHandjobEN = "Gave a handjob to \\C[31]%2\\C[0] in %3 on \\C[26]Day %1\\C[0].";
 const ProfileRecordLastHandjobJP = "\\C[26]%1日目\\C[0]に%3で\\C[31]%2\\C[0]の勃起チンポをシコった。";
 const ProfileRecordFirstBlowjobEN = "Sucked my first dick on \\C[26]Day %1\\C[0] in %3 using \\C[31]%2\\C[0]'s cock.";
@@ -728,6 +786,15 @@ const ProfileRecordFirstRimjobEN = "Performed my first anilingus on \\C[26]Day %
 const ProfileRecordFirstRimjobJP = "\\C[26]%1日目\\C[0]、%3で\\C[31]%2\\C[0]に初めてアナルを舐めさせられた。";
 const ProfileRecordLastRimjobEN = "Tossed \\C[31]%2\\C[0]'s salad in %3 on \\C[26]Day %1\\C[0].";
 const ProfileRecordLastRimjobJP = "\\C[26]%1日目\\C[0]に%3で\\C[31]%2\\C[0]のケツ穴を舐め回してあげた。";
+
+const ProfileRecordFirstBukkakeEN = "Got bukkaked for the first time on \\C[26]Day %1\\C[0] from \\C[31]%2\\C[0] in %3.";
+const ProfileRecordFirstBukkakeJP = "\\C[26]%1日目\\C[0]、%3で\\C[31]%2\\C[0]から初めて体にぶっかけられた。";
+const ProfileRecordLastBukkakeEN = "Got a cum shower from \\C[31]%2\\C[0] in %3 on \\C[26]Day %1\\C[0].";
+const ProfileRecordLastBukkakeJP = "\\C[26]%1日目\\C[0]に%3で\\C[31]%2\\C[0]のザーメンを体に浴びた。";
+const ProfileRecordFirstFaceBukkakeEN = "Got my first facial on \\C[26]Day %1\\C[0] from \\C[31]%2\\C[0] in %3.";
+const ProfileRecordFirstFaceBukkakeJP = "\\C[26]%1日目\\C[0]、%3で\\C[31]%2\\C[0]から初めて顔射された。";
+const ProfileRecordLastFaceBukkakeEN = "Welcomed \\C[31]%2\\C[0]'s semen on my face in %3 on \\C[26]Day %1\\C[0].";
+const ProfileRecordLastFaceBukkakeJP = "\\C[26]%1日目\\C[0]に%3で\\C[31]%2\\C[0]のザーメンを顔面で受け入れた。";
 
 const ProfileRecordFirstSwallowEN = "Tasted my first cum on \\C[26]Day %1\\C[0] in %3 from swallowing \\C[31]%2\\C[0]'s cum.";
 const ProfileRecordFirstSwallowJP = "\\C[26]%1日目\\C[0]、%3で初めて飲んだのは\\C[31]%2\\C[0]の精子だった。";
@@ -815,14 +882,26 @@ const StatusRecordPussyCreampieJP = "私のマンコに中出しした男は%2�
 const StatusRecordAnalCreampieEN = "Got creampied in my butt %1 times for a total of %3 ml of cum from %2 different people.";
 const StatusRecordAnalCreampieJP = "私のアナルに中出しした男は%2人。全部で%1回腸内射精されている。合計%3mlのザーメンがお腹を満たした。";
 
+const StatusRecordFingersSuckedEN = "Sucked %2 different people's fingers %1 times.";
+const StatusRecordFingersSuckedJP = "私が指をしゃぶった男は%2人。合計%1回おしゃぶりしている。";
+const StatusRecordBukkakeEN = "Got bukkaked %1 times for a total of %3 ml of cum from %2 different people.";
+const StatusRecordBukkakeJP = "私にぶっかけた男は%2人。全部で%1回ぶっかけられている。その合計ザーメン量は%3ml。";
+const StatusRecordFaceBukkakeEN = "Got facialed %1 times for a total of %3 ml of cum from %2 different people.";
+const StatusRecordFaceBukkakeJP = "私の顔にぶっかけした男は%2人。全部で%1回顔射されている。その合計ザーメン量は%3ml。";
+
+//StatusBattleEffectはステータスメニューの「状態」に書いてる
 const StatusBattleEffectOrgasmEN = "Karryn \\C[5]just orgasmed\\C[0]! She's a mess right now and can not do anything!";
 const StatusBattleEffectOrgasmJP = "【快楽：\\C[5]絶頂中！\\C[0]】今は何も出来ない！";
+const StatusBattleEffectCoolEN = "Karryn is \\C[4]cool and collected\\C[0] from having low desires!\nHer accuracy, evasion, critical rate, critical evasion and regens are slightly increased.";
+const StatusBattleEffectCoolJP = "【感情：\\C[4]冷静沈着①\\C[0]】命中力、回避力、クリティカル率、クリティカル回避率が少しアップ。\n【感情：\\C[4]冷静沈着②\\C[0]】全ての回復量が少しアップ。";
 const StatusBattleEffectIsHornyZeroEN = "Karryn is \\C[18]horny\\C[0]! All her sexual resists are decreased.";
-const StatusBattleEffectIsHornyZeroJP = "【快楽：\\C[18]興奮中！\\C[0]】セクハラ耐性が全て低下。";
+const StatusBattleEffectIsHornyZeroJP = "【快楽：\\C[18]興奮中！\\C[0]】全てのセクハラ耐性がダウン。";
 const StatusBattleEffectIsHornyOneEN = "Karryn is \\C[18]horny\\C[0]! All her sexual resists are decreased, and all her desires will rise a bit every turn.";
-const StatusBattleEffectIsHornyOneJP = "【快楽：\\C[18]興奮中！\\C[0]】全てのセクハラ耐性が低下。全ての性欲が少しだけ上昇【毎ターン】";
-const StatusBattleEffectIsHornyTwoEN = "Karryn is \\C[18]horny\\C[0]! Her evasion, accuracy and all her sexual resists are decreased, and all her desires will rise a bit every turn.";
-const StatusBattleEffectIsHornyTwoJP = "【快楽：\\C[18]興奮中！\\C[0]】回避力、命中力、全てのセクハラ耐性が低下。全ての性欲が少しだけ上昇【毎ターン】";
+const StatusBattleEffectIsHornyOneJP = "【快楽：\\C[18]興奮中！\\C[0]】全てのセクハラ耐性がダウン。全ての性欲が少しづつ上昇中【毎ターン】";
+const StatusBattleEffectIsHornyTwoEN = "Karryn is \\C[18]horny\\C[0]! All her sexual resists are decreased,\nsuppress desire skills cost more and all her desires will rise a bit every turn.";
+const StatusBattleEffectIsHornyTwoJP = "【快楽：\\C[18]興奮中！①\\C[0]】全てのセクハラ耐性がダウン。抑制スキルのコストがアップ【毎ターン】\n【快楽：\\C[18]興奮中！②\\C[0]】全ての性欲が少しづつ上昇中【毎ターン】";
+const StatusBattleEffectIsHornyThreeEN = "Karryn is \\C[18]horny\\C[0]! Her evasion, accuracy and all her sexual resists are decreased,\nsuppress desire skills cost more, and all her desires will rise a bit every turn.";
+const StatusBattleEffectIsHornyThreeJP = "【快楽：\\C[18]興奮中！①\\C[0]】回避力、命中力、全てのセクハラ耐性がダウン。抑制スキルのコストがアップ【毎ターン】\n【快楽：\\C[18]興奮中！②\\C[0]】全ての性欲が少しづつ上昇中【毎ターン】";
 const StatusBattleEffectIsArousedEN = "Karryn is \\C[27]aroused\\C[0]! Her pussy will slowly get \\C[23]wetter\\C[0] every turn.";
 const StatusBattleEffectIsArousedJP = "【快楽：\\C[27]発情中！\\C[0]】マンコがゆっくりと\\C[23]濡れていく\\C[0]【毎ターン】";
 const StatusBattleEffectNotArousedEN = "Karryn is currently not aroused. She must be aroused before her pussy can get any wetter.";
@@ -831,35 +910,330 @@ const StatusBattleEffectIsWetEN = "Karryn is \\C[23]wet\\C[0]! She is now able t
 const StatusBattleEffectIsWetJP = "【マンコ：\\C[23]濡れている！\\C[0]】挿入可能。";
 const StatusBattleEffectNotWetEN = "Karryn is currently not wet. She will not receive any vaginal penetration.";
 const StatusBattleEffectNotWetJP = "【マンコ：濡れていない】挿入不可。";
-const StatusBattleEffectIsWearingPantiesEN = "Karryn is wearing panties. Her clothes need to be heavily damaged before her nether regions are accessible.";
+const StatusBattleEffectIsWearingPantiesEN = "Karryn is wearing panties. Her clothes need to be heavily displaced\nbefore her nether regions are accessible.";
 const StatusBattleEffectIsWearingPantiesJP = "【パンティ：履いている】服を脱がされない限り下半身への接触は守られる。";
-const StatusBattleEffectIsNotWearingPantiesEN = "Karryn is \\C[27]not wearing any panties\\C[0]! Her clothes only need to be moderately damaged before her nether regions are accessible.";
+const StatusBattleEffectIsNotWearingPantiesEN = "Karryn is \\C[27]not wearing any panties\\C[0]! Her clothes only need to be moderately displaced\nbefore her nether regions are accessible.";
 const StatusBattleEffectIsNotWearingPantiesJP = "【パンティ：\\C[27]履いてない！\\C[0]】服を脱がされれば下半身への接触を許してしまう。";
+const StatusBattleEffectIsVirginPublishedEN = "Karryn is a \\C[27]known virgin\\C[0]! Her charm during battle is increased.";
+const StatusBattleEffectIsVirginPublishedJP = "【性体験の情報：\\C[27]処女だと知られてしまっている！\\C[0]】戦闘中は魅力アップ。";
+const StatusBattleEffectIsVirginHighEN = "Karryn is a \\C[27]suspected virgin\\C[0]! Her charm during battle is increased.";
+const StatusBattleEffectIsVirginHighJP = "【性体験の情報：\\C[27]処女の噂が広がっている！\\C[0]】戦闘中は魅力アップ。";
+const StatusBattleEffectIsVirginMedEN = "Karryn is rumored to still be a \\C[27]virgin\\C[0]! Her charm during battle is slightly increased.";
+const StatusBattleEffectIsVirginMedJP = "【性体験の情報：\\C[27]処女疑惑を持たれ始めている！\\C[0]】戦闘中は魅力が少しアップ。";
+const StatusBattleEffectIsVirginLowEN = "Karryn is actually still a \\C[27]virgin\\C[0] but no one thinks she is! Her charm during battle remains unaffected.";
+const StatusBattleEffectIsVirginLowJP = "【性体験の情報：\\C[27]まだ未経験だと誰にも知られていない\\C[0]】魅力に影響なし。";
 
 const StatusBattleEffectIsConfidentZeroEN = "Karryn is feeling \\C[30]confident\\C[0]! All her stats are increased!";
-const StatusBattleEffectIsConfidentZeroJP = "【感情：\\C[30]自信満々！\\C[0]】全ステータスが上昇！";
+const StatusBattleEffectIsConfidentZeroJP = "【感情：\\C[30]自信満々！\\C[0]】全ステータスアップ！";
 const StatusBattleEffectIsConfidentOneEN = "Karryn is feeling \\C[30]confident\\C[0]! All her stats are increased based on her cockiness!";
-const StatusBattleEffectIsConfidentOneJP = "【感情：\\C[30]自信満々！\\C[0]】全ステータスが大胆さによって上昇！";
+const StatusBattleEffectIsConfidentOneJP = "【感情：\\C[30]自信満々！\\C[0]】全ステータスが大胆さによってアップ！";
+
+const StatusBattleEffectIsFrustratedEN = "Karryn is \\C[18]sexually frustrated\\C[0]! Her Attack is increased while her Defense, Agility, Accuracy and Critical Evasion are decreased!";
+const StatusBattleEffectIsFrustratedJP = "【感情：\\C[18]ムラムラしている！\\C[0]】攻撃力アップと引き換えに、防御力・素早さ・命中力・クリティカル回避率ダウン！";
 
 const StatusBattleEffectDisarmedEN = "Karryn is \\C[18]disarmed\\C[0]! She will need to get closer to her halberd to rearm herself.";
 const StatusBattleEffectDisarmedJP = "【武装：\\C[18]なし\\C[0]】ハルバードを拾い上げて再武装が必要。";
 const StatusBattleEffectDefiledHalberdEN = "Karryn's \\C[18]halberd is currently defiled\\C[0]! She can't use her halberd until she rests in her office or a guard station.";
 const StatusBattleEffectDefiledHalberdJP = "【武装：\\C[18]不可\\C[0]】ハルバードが汚されていて武装出来ない。【ベッドで休む必要あり】";
 const StatusBattleEffectOffBalancedEN = "Karryn is \\C[18]off-balanced\\C[0]! Her attack, defense and evasion are decreased.";
-const StatusBattleEffectOffBalancedJP = "【状態：\\C[18]バランスが悪い\\C[0]】攻撃力、防御力、回避力が低下。";
+const StatusBattleEffectOffBalancedJP = "【状態：\\C[18]バランスが悪い！\\C[0]】攻撃力、防御力、回避力ダウン。";
 const StatusBattleEffectWeakenEN = "Karryn is \\C[18]weakened\\C[0]! Her strength and attack are decreased.";
-const StatusBattleEffectWeakenJP = "【状態：\\C[18]脱力\\C[0]】腕力、攻撃力が低下。";
+const StatusBattleEffectWeakenJP = "【状態：\\C[18]脱力\\C[0]】腕力、攻撃力ダウン。";
 const StatusBattleEffectDizzyEN = "Karryn is \\C[18]dizzy\\C[0]! Her accuracy and evasion are decreased.";
-const StatusBattleEffectDizzyJP = "【状態：\\C[18]めまい\\C[0]】命中力、回避力が低下。";
+const StatusBattleEffectDizzyJP = "【状態：\\C[18]めまい\\C[0]】命中力、回避力ダウン。";
 const StatusBattleEffectSlowEN = "Karryn is \\C[18]slowed\\C[0]! Her agility is greatly decreased.";
-const StatusBattleEffectSlowJP = "【状態：\\C[18]鈍い\\C[0]】素早さが大幅に低下！";
+const StatusBattleEffectSlowJP = "【状態：\\C[18]鈍い\\C[0]】素早さが大幅ダウン！";
 const StatusBattleEffectVulnerableEN = "Karryn is currently \\C[18]vulnerable\\C[0]! Her defense is decreased.";
-const StatusBattleEffectVulnerableJP = "【状態：\\C[18]放心\\C[0]】防御力が低下。";
+const StatusBattleEffectVulnerableJP = "【状態：\\C[18]放心\\C[0]】防御力ダウン。";
 const StatusBattleEffectPoisonEN = "Karryn is \\C[18]poisoned\\C[0]! Her stamina decreases every turn instead of regenerating.";
 const StatusBattleEffectPoisonJP = "【状態：\\C[18]毒\\C[0]】体力が減少していく【毎ターン】";
 const StatusBattleEffectExposeWeaknessEN = "Karryn's \\C[18]weaknesses are exposed\\C[0]! Her evasion, critical evasion, and all her resists are decreased.";
-const StatusBattleEffectExposeWeaknessJP = "【状態：\\C[18]弱点バレ\\C[0]】回避力、クリティカル回避力、全ての耐性が低下。";
+const StatusBattleEffectExposeWeaknessJP = "【状態：\\C[18]弱点バレ\\C[0]】回避力、クリティカル回避力、全ての耐性がダウン。";
+const StatusBattleEffectAttackComboEN = "Karryn has attacked \\C[2]%1 consecutive times\\C[0]! The damage, accuracy and cost of her next attack will be increased.";
+const StatusBattleEffectAttackComboJP = "【攻撃コンボ：\\C[2]%1連続目\\C[0]】次の攻撃時にダメージ、命中力、スキルコストがアップ。";
+const StatusBattleEffectAttackComboCockyEN = "Attacking four times or more in a row will increase her \\C[30]cockiness\\C[0].";
+const StatusBattleEffectAttackComboCockyJP = "4回以上のコンボで大胆さアップ。";
+const StatusBattleEffectSexComboOneEN = "Karryn has used her sexual skills \\C[2]%1 consecutive times\\C[0]! The pleasure damage and cost of her next non-petting sexual skill will be increased.";
+const StatusBattleEffectSexComboOneJP = "【SEXコンボ：\\C[2]%1連続目\\C[0]】次の攻撃時に性スキルの快楽ダメージとスキルコストがアップ【愛撫は除く】";
+const StatusBattleEffectSexComboTwoEN = "Consecutively using the same type of non-petting sexual skill on the same person will also greatly increase pleasure damage and cost.";
+const StatusBattleEffectSexComboTwoJP = "更に同じ相手に同じ性スキルを連続使用で、快楽ダメージとスキルコストが大幅アップ【愛撫は除く】";
 
+//Tooltipsは戦闘画面のステートTooltipに表示される
+const StateTooltipsRemainingTurnsSingularEN = "\\c[27](1 Turn Left)\\c[0]";
+const StateTooltipsRemainingTurnsSingularJP = "\\c[27](残り1ターン)\\c[0]";
+const StateTooltipsRemainingTurnsPluralEN = "\\c[27](%1 Turns Left)\\c[0]";
+const StateTooltipsRemainingTurnsPluralJP = "\\c[27](残り%1ターン)\\c[0]";
+
+const StateTooltipsOrgasmEN = "Karryn \\C[5]just orgasmed\\C[0]!\nShe's a mess right now and can not do anything!";
+const StateTooltipsOrgasmJP = "\\C[5]【絶頂中！】\\C[0]\n今は何も出来ない！";
+const StateTooltipsSlashStanceEN = "%1 will take more damage and\nbe easier to hit with a \\C[4]Pierce-type attack.\\C[0]\nBut will also take less damage and\nbe harder to hit with a \\C[2]Blunt-type attack.\\C[0]";
+const StateTooltipsSlashStanceJP = "有効\\I[42]\\C[4]スラスト系\\C[0]\n耐久\\I[42]\\C[2]ストライク系\\C[0]";
+const StateTooltipsPierceStanceEN = "%1 will take more damage and\nbe easier to hit with a \\C[2]Blunt-type attack.\\C[0]\nBut will also take less damage and\nbe harder to hit with a \\C[3]Slash-type attack.\\C[0]";
+const StateTooltipsPierceStanceJP = "有効\\I[42]\\C[2]ストライク系\\C[0]\n耐久\\I[42]\\C[3]スラッシュ系\\C[0]";
+const StateTooltipsBluntStanceEN = "%1 will take more damage and\nbe easier to hit with a \\C[3]Slash-type attack.\\C[0]\nBut will also take less damage and\nbe harder to hit with a \\C[4]Pierce-type attack.\\C[0]";
+const StateTooltipsBluntStanceJP = "有効\\I[42]\\C[3]スラッシュ系\\C[0]\n耐久\\I[42]\\C[4]スラスト系\\C[0]";
+const StateTooltipsHornyZeroEN = "Karryn is \\C[18]horny\\C[0]!\nAll her sexual resists are decreased.";
+const StateTooltipsHornyZeroJP = "\\C[18]【興奮中！】\\C[0]\n\\I[42]全てのセクハラ耐性 ダウン";
+const StateTooltipsHornyOneEN = "Karryn is \\C[18]horny\\C[0]!\nAll her sexual resists are decreased,\nand all her desires will rise a bit every turn.";
+const StateTooltipsHornyOneJP = "\\C[18]【興奮中！】\\C[0]\n\\I[42]全てのセクハラ耐性 ダウン\n\\I[40]全ての性欲 少しづつ上昇中\n（毎ターン）";
+const StateTooltipsHornyTwoEN = "Karryn is \\C[18]horny\\C[0]!\nAll her sexual resists are decreased,\nher suppress desire skills cost more,\nand all her desires will rise a bit every turn.";
+const StateTooltipsHornyTwoJP = "\\C[18]【興奮中！】\\C[0]\n\\I[42]全てのセクハラ耐性 ダウン\n\\I[42]抑制スキルのコスト アップ\n\\I[40]全ての性欲 少しづつ上昇中\n（毎ターン）";
+const StateTooltipsHornyThreeEN = "Karryn is \\C[18]horny\\C[0]!\nHer evasion, accuracy and all her sexual resists are decreased,\nher suppress desire skills cost more,\nand all her desires will rise a bit every turn.";
+const StateTooltipsHornyThreeJP = "\\C[18]【興奮中！】\\C[0]\n\\I[42]回避力 ダウン\n\\I[42]命中力 ダウン\n\\I[42]全てのセクハラ耐性 ダウン\n\\I[42]抑制スキルのコスト アップ\n\\I[40]全ての性欲 少しづつ上昇中\n（毎ターン）";
+
+
+
+const StateTooltipsEnemyHornyEN = "%1 is \\C[18]horny\\C[0]!\nHe has higher act chance, lower attack chance, lower resists\nlower charm requirement, and will ejaculate more.";
+const StateTooltipsEnemyHornyJP = "\\C[18]【興奮中！】\\C[0]\n\\I[42]判断力 アップ\n\\I[42]攻撃性 ダウン\n\\I[42]全ての耐性 ダウン\n\\I[42]魅力の必要値 ダウン\n\\I[40]射精量 アップ";
+
+const StateTooltipsCoolEN = "Karryn is \\C[4]cool and collected\\C[0] from having low desires!\nHer accuracy, evasion, critical rate, critical evasion\nand all her regens are slightly increased.";
+const StateTooltipsCoolJP = "\\C[4]【冷静沈着】\\C[0]\n\\I[42]命中力 少しアップ\n\\I[42]回避力 少しアップ\n\\I[42]クリティカル率 少しアップ\n\\I[42]クリティカル回避率 少しアップ\n\\I[42]全ての回復量 少しアップ";
+
+const StateTooltipsIsWetEN = "Karryn is \\C[23]wet\\C[0]!\nShe is now able to receive vaginal penetration.";
+const StateTooltipsIsWetJP = "\\C[23]【マンコが濡れている！】\n\\I[40]\\C[0]挿入可能";
+const StateTooltipsNotWetEN = "Karryn is currently not wet.\nShe will not allow any vaginal penetration.";
+const StateTooltipsNotWetJP = "【マンコは濡れていない】\n\\I[42]挿入不可";
+const StateTooltipsWearingPantiesEN = "Karryn is wearing panties.\nHer clothes need to be heavily displaced\nbefore her nether regions are accessible.";
+const StateTooltipsWearingPantiesJP = "【パンティを履いている】\n\\I[42]服を脱がされない限り下半身への接触は守られる";
+const StateTooltipsNotWearingPantiesEN = "Karryn is \\C[27]not wearing any panties\\C[0]! \nHer clothes only need to be moderately displaced before her nether regions are accessible.";
+const StateTooltipsNotWearingPantiesJP = "\\C[27]【パンティを履いていない！】\\C[0]\n\\I[40]服を脱がされれば下半身への接触を許してしまう";
+const StateTooltipsVirginPublishedEN = "Karryn is a \\C[27]known virgin\\C[0]!\nHer charm during battle is increased.";
+const StateTooltipsVirginPublishedJP = "\\C[27]【処女の情報が公開されている！】\\C[0]\n\\I[40]魅力 増加中";
+const StateTooltipsVirginHighEN = "Karryn is a \\C[27]suspected virgin\\C[0]!\nHer charm during battle is increased.";
+const StateTooltipsVirginHighJP = "\\C[27]【処女疑惑が広がっている！】\\C[0]\n\\I[40]魅力 増加中";
+const StateTooltipsVirginMedEN = "Karryn is rumored to still be a \\C[27]virgin\\C[0]!\nHer charm during battle is slightly increased.";
+const StateTooltipsVirginMedJP = "\\C[27]【処女かもと噂され始めている……】\\C[0]\n\\I[40]魅力 少し増加中";
+const StateTooltipsVirginLowEN = "Karryn is actually still a \\C[27]virgin\\C[0] but no one thinks she is!\nHer charm during battle remains unaffected.";
+const StateTooltipsVirginLowJP = "\\C[27]【処女バレしていない】\\C[0]\n\\I[42]魅力に影響なし";
+const StateTooltipsConfidentZeroEN = "Karryn is feeling \\C[30]confident\\C[0]!\nAll her stats are increased!";
+const StateTooltipsConfidentZeroJP = "\\C[30]【自信満々！】\\C[0]\n\\I[42]全ステータス アップ";
+const StateTooltipsConfidentOneEN = "Karryn is feeling \\C[30]confident\\C[0]!\nAll her stats are increased based on her cockiness!";
+const StateTooltipsConfidentOneJP = "\\C[30]【自信満々！】\\C[0]\n\\I[42]全ステータス 大胆さによってアップ";
+const StateTooltipsFrustratedEN = "Karryn is \\C[18]sexually frustrated\\C[0]!\nHer Attack is increased but her Defense, Agility,\nAccuracy and Critical Evasion are decreased!";
+const StateTooltipsFrustratedJP = "\\C[18]【ムラムラしている！】\\C[0]\n\\I[42]攻撃力 アップ\n\\I[42]防御力 ダウン\n\\I[42]素早さ ダウン\n\\I[42]命中力 ダウン\n\\I[42]クリティカル回避率 ダウン";
+const StateTooltipsDisarmedEN = "Karryn is \\C[18]disarmed\\C[0]!!\nShe will need to get closer to her halberd to rearm herself.";
+const StateTooltipsDisarmedJP = "\\C[18]【武装なし】\\C[0]\nハルバードを拾って再武装が必要";
+const StateTooltipsOffBalancedEN = "%1 is \\C[18]off-balanced\\C[0]!\nTheir attack, defense and evasion are decreased.";
+const StateTooltipsOffBalancedJP = "\\C[18]【バランスが悪い！】\\C[0]\n\\I[42]攻撃力 ダウン\n\\I[42]防御力 ダウン\n\\I[42]回避力 ダウン";
+const StateTooltipsWeakenEN = "%1 is \\C[18]weakened\\C[0]!\nTheir strength and attack are decreased.";
+const StateTooltipsWeakenJP = "\\C[18]【脱力している！】\\C[0]\n\\I[42]腕力 ダウン\n\\I[42]攻撃力 ダウン";
+const StateTooltipsDizzyEN = "%1 is \\C[18]dizzy\\C[0]!\nTheir accuracy and evasion are decreased.";
+const StateTooltipsDizzyJP = "\\C[18]【フラついている！】\\C[0]\n\\I[42]命中力 ダウン\n\\I[42]回避力 ダウン";
+const StateTooltipsSlowEN = "%1 is \\C[18]slowed\\C[0]!\nTheir agility is greatly decreased.";
+const StateTooltipsSlowJP = "\\C[18]【鈍くなっている！】\\C[0]\n\\I[42]素早さ 大幅ダウン";
+const StateTooltipsVulnerableEN = "%1 is currently \\C[18]vulnerable\\C[0]!\nTheir defense is decreased.";
+const StateTooltipsVulnerableJP = "\\C[18]【放心している！】\\C[0]\n\\I[42]防御力 ダウン";
+const StateTooltipsPoisonEN = "%1 is \\C[18]poisoned\\C[0]!\nTheir stamina decreases every turn instead of regenerating.";
+const StateTooltipsPoisonJP = "\\C[18]【毒に侵されている！】\\C[0]\n\\I[42]体力 ダウン\n　（毎ターン）";
+const StateTooltipsExposeWeaknessEN = "Karryn's \\C[18]weaknesses are exposed\\C[0]!\nHer evasion, critical evasion,\nand all her resists are decreased.";
+const StateTooltipsExposeWeaknessJP = "\\C[18]【弱点バレしている！】\\C[0]\n\\I[42]回避力 ダウン\n\\I[42]クリティカル回避力 ダウン\n\\I[42]全ての耐性 ダウン";
+const StateTooltipsStunnedEN = "%1 is \\C[18]stunned\\C[0]!\nTheir current turn will be skipped.";
+const StateTooltipsStunnedJP = "\\C[18]【スタン状態！】\\C[0]\nこのターンは行動不可";
+const StateTooltipsEnemyPoseMasterEN = "Karryn's current sexual position might reset after %1 ejaculates!";
+const StateTooltipsEnemyPoseMasterJP = "ヤリ主\\I[12]%1\n※射精で体位リセットの可能性あり";
+const StateTooltipsActorAttackComboEN = "Karryn has attacked \\C[2]%1 consecutive times\\C[0]!\nThe damage, accuracy and cost of her next attack will be increased.";
+const StateTooltipsActorAttackComboJP = "\\C[2]【アタックコンボ！%1連続攻撃】\\C[0]\n次の攻撃で：\n\\I[42]ダメージ アップ\n\\I[42]命中力 アップ\n\\I[42]スキルコスト アップ";
+const StateTooltipsActorAttackComboCockyEN = "Karryn has attacked \\C[2]%1 consecutive times\\C[0]!\nThe damage, accuracy and cost of her next attack will be increased.\nAttacking four times or more in a row will increase her \\C[30]cockiness\\C[0].";
+const StateTooltipsActorAttackComboCockyJP = "\\C[2]【アタックコンボ！%1連続攻撃】\\C[0]\n\\I[42]ダメージ アップ\n\\I[42]命中力 アップ\n\\I[42]スキルコスト アップ\n\\I[42]4コンボ目で大胆さ アップ";
+const StateTooltipsActorSexComboEN = "Karryn has used her sexual skills \\C[2]%1 consecutive times\\C[0]!\nThe pleasure damage and cost of her next non-petting sexual skill will be increased.\nConsecutively using the same type of non-petting sexual skill on the same person will also greatly increase pleasure damage and cost.";
+const StateTooltipsActorSexComboJP = "\\C[2]【SEXコンボ！%1連続性行為】\\C[0]\n性スキル(愛撫以外)使用で：\n\\I[42]快楽ダメージ アップ\n\\I[42]スキルコスト アップ\n　\n同じ相手に同じ性スキル(愛撫以外)を連続使用で：\n\\I[42]快楽ダメージ大幅 アップ\n\\I[42]スキルコスト 大幅アップ";
+const StateTooltipsEnemyPosePussySexEN = "%1 is fucking Karryn's pussy!";
+const StateTooltipsEnemyPosePussySexJP = "マンコをファックしている！";
+const StateTooltipsEnemyPoseCunnilingusEN = "%1 is licking Karryn's pussy!";
+const StateTooltipsEnemyPoseCunnilingusJP = "マンコをクンニしている！";
+const StateTooltipsEnemyPoseAnalSexEN = "%1 is fucking Karryn's ass!";
+const StateTooltipsEnemyPoseAnalSexJP = "アナルをファックしている！";
+const StateTooltipsEnemyPosePaizuriEN = "%1 is fucking Karryn's breasts!";
+const StateTooltipsEnemyPosePaizuriJP = "パイズリさせている！";
+const StateTooltipsEnemyPoseHandjobEN = "%1 is getting a handjob from Karryn!";
+const StateTooltipsEnemyPoseHandjobJP = "手コキさせている！";
+const StateTooltipsEnemyPoseBlowjobEN = "%1 is getting a blowjob from Karryn!";
+const StateTooltipsEnemyPoseBlowjobJP = "フェラさせている！";
+const StateTooltipsEnemyPoseFootjobEN = "%1 is getting a footjob from Karryn!";
+const StateTooltipsEnemyPoseFootjobJP = "足コキしてもらっている！";
+const StateTooltipsEnemyPoseRimjobEN = "%1 is getting a rimjob from Karryn!";
+const StateTooltipsEnemyPoseRimjobJP = "ケツ舐めさせている！";
+const StateTooltipsEnemyKissedEN = "%1 got kissed!\nHis attack, accuracy and evasion are decreased.";
+const StateTooltipsEnemyKissedJP = "キスされてデレデレ！\n\\I[42]攻撃力 ダウン\n\\I[42]命中力 ダウン\n\\I[42]回避力 ダウン";
+const StateTooltipsArousedEN = "Karryn is \\C[27]aroused\\C[0]!\nHer pussy will slowly get \\C[23]wetter\\C[0] every turn.";
+const StateTooltipsArousedJP = "\\C[27]【発情中！】\\C[0]\n\\I[40]\\C[23]マンコがゆっくり濡れていく\\C[0]\n（毎ターン）";
+const StateTooltipsCautiousStanceEN = "Karryn's evasion and critical evasion are greatly increased.";
+const StateTooltipsCautiousStanceJP = "【見抜きの構え】\n\\I[42]回避力 大幅アップ\n\\I[42]クリティカル回避率 大幅アップ";
+const StateTooltipsDefensiveStanceEN = "Karryn is protected from various debuffs.\nHer defense, overblow protection, petting resist,\nand strip resist are also greatly increased.";
+const StateTooltipsDefensiveStanceJP = "【守備の構え】\n\\I[42]様々なデバフを保護\n\\I[42]守備力 大幅アップ\n\\I[42]ダメージ軽減量 大幅アップ\n\\I[42]愛撫耐性 大幅アップ\n\\I[42]ストリップ耐性 大幅アップ";
+const StateTooltipsCounterStanceEN = "Karryn's counterattack chance is greatly increased.\nHer maximum number of counterattacks is increased.\nHer overblow protection is slightly increased.";
+const StateTooltipsCounterStanceJP = "【反撃の構え】\n\\I[42]カウンター率 大幅アップ\n\\I[42]カウンター最大数 アップ\n\\I[42]ダメージ軽減量 少しアップ";
+const StateTooltipsSecretaryStanceEN = "Karryn's talk, sight, petting\nand sex resists are greatly increased.\nPleasure damage dealt to enemies are increased.";
+const StateTooltipsSecretaryStanceJP = "【秘書の構え】\n\\I[42]猥談耐性 大幅アップ\n\\I[42]視姦耐性 大幅アップ\n\\I[42]愛撫耐性 大幅アップ\n\\I[42]セックス耐性 大幅アップ\n\\I[42]敵への快楽ダメージ アップ";
+const StateTooltipsLadyStanceEN = "Karryn's petting and sex resists are slightly increased.\nHer charm during battle is increased.";
+const StateTooltipsLadyStanceJP = "【淑女の構え】\n\\I[42]愛撫耐性 少しアップ\n\\I[42]セックス耐性 少しアップ\n\\I[40]魅力 増加中";
+const StateTooltipsPleasureStanceEN = "Karryn is welcoming the pleasure.♥";
+const StateTooltipsPleasureStanceJP = "【快楽の構え】\n\\I[40]快感を受け入れている！";
+const StateTooltipsWillpowerKiOneEN = "Karryn's attack is increased.";
+const StateTooltipsWillpowerKiOneJP = "【チャージ】\n\\I[42]攻撃力 アップ";
+const StateTooltipsWillpowerKiTwoEN = "Karryn's attack and critical damage are increased.";
+const StateTooltipsWillpowerKiTwoJP = "【チャージ】\n\\I[42]攻撃力 アップ\n\\I[42]クリティカルダメージ アップ";
+const StateTooltipsWillpowerFocusOneEN = "Karryn's counterattack chance is increased.";
+const StateTooltipsWillpowerFocusOneJP = "【フォーカス】\n\\I[42]カウンター率 アップ";
+const StateTooltipsWillpowerFocusTwoEN = "Karryn's counterattack chance and overblow protection are increased.";
+const StateTooltipsWillpowerFocusTwoJP = "【フォーカス】\n\\I[42]カウンター率 アップ\n\\I[42]ダメージ軽減率 アップ";
+const StateTooltipsWillpowerEyeOfTheMindOneEN = "Karryn's accuracy, evasion and critical rate are increased.";
+const StateTooltipsWillpowerEyeOfTheMindOneJP = "【マインドアイズ】\n\\I[42]命中力 アップ\n\\I[42]回避力 アップ\n\\I[42]クリティカル率 アップ";
+const StateTooltipsWillpowerEyeOfTheMindTwoEN = "Karryn's accuracy, evasion, critical rate\nand critical damage are increased.";
+const StateTooltipsWillpowerEyeOfTheMindTwoJP = "【マインドアイズ】\n\\I[42]命中力 アップ\n\\I[42]回避力 アップ\n\\I[42]クリティカルダメージ アップ";
+const StateTooltipsWillpowerSeeNoEvilEN = "Karryn's sight resist is increased.";
+const StateTooltipsWillpowerSeeNoEvilJP = "【スコトーマ】\n\\I[42]視姦耐性 アップ";
+const StateTooltipsWillpowerHearNoEvilEN = "Karryn's talk resist is increased.";
+const StateTooltipsWillpowerHearNoEvilJP = "【マスキング】\n\\I[42]猥談耐性 アップ";
+const StateTooltipsWillpowerRealityMarbleEN = "Karryn's charm during battle is increased.";
+const StateTooltipsWillpowerRealityMarbleJP = "【ゲシュタルト】\n\\I[40]魅力 増加中";
+const StateTooltipsWillpowerResistOrgasmEN = "Karryn is trying to resist having an orgasm!\nThe amount of pleasure required to have an orgasm is increased.";
+const StateTooltipsWillpowerResistOrgasmJP = "【絶頂抑制】\nイクのを我慢している！\n\\I[42]絶頂の必須快楽度 アップ";
+const StateTooltipsWillpowerEdgingControlKarrynEN = "Karryn is trying to edge her next target!\nThe amount of pleasure required to have an ejaculation\nfor her next target is increased.";
+const StateTooltipsWillpowerEdgingControlKarrynJP = "【射精管理】\nターゲットの射精を制御する！\n\\I[42]敵が射精に必須の快楽度 アップ";
+const StateTooltipsWillpowerEdgingControlEnemyEN = "%1 is being edged by Karryn!\nThe amount of pleasure required to have an ejaculation is increased.";
+const StateTooltipsWillpowerEdgingControlEnemyJP = "【射精管理】\n%1の射精を抑制中！\n\\I[42]敵が射精に必須の快楽度 アップ";
+const StateTooltipsBonusPierceDamageEN = "%1 will deal extra damage with \\C[4]Pierce-type attacks\\C[0].";
+const StateTooltipsBonusPierceDamageJP = "【ボーナスアタック\\I[42]\\C[4]スラスト系\\C[0]】";
+const StateTooltipsBonusBluntDamageEN = "%1 will deal extra damage with \\C[2]Blunt-type attacks\\C[0].";
+const StateTooltipsBonusBluntDamageJP = "【ボーナスアタック\\I[42]\\C[2]ストライク系\\C[0]】";
+const StateTooltipsBonusSlashDamageEN = "%1 will deal extra damage with \\C[3]Slash-type attacks\\C[0].";
+const StateTooltipsBonusSlashDamageJP = "【ボーナスアタック\\I[42]\\C[3]スラッシュ系\\C[0]】";
+const StateTooltipsEjaculationStunnedEN = "%1 is \\C[18]stunned\\C[0]!\nHis current turn will be skipped.\nHis sexual resists are increased.\nHis evasion and critical evasion are decreased.";
+const StateTooltipsEjaculationStunnedJP = "\\C[18]【スタン状態！】\\C[0]\nこのターンは行動不可\n\\I[42]セクハラ耐性 アップ\n\\I[42]回避力 ダウン\n\\I[42]クリティカル回避率 ダウン";
+const StateTooltipsSlimeRegenNormalEN = "%1 will regenerate 20% of stamina per turn.";
+const StateTooltipsSlimeRegenNormalJP = "【再生能力】\n\\I[42]体力 20％回復\n（毎ターン）";
+const StateTooltipsSlimeRegenFourthEN = "%1 will regenerate 5% of stamina per turn.";
+const StateTooltipsSlimeRegenFourthJP = "【再生能力】\n\\I[42]体力 5％回復\n（毎ターン）";
+const StateTooltipsOrcDefensivePresenceEN = "%1's defense is increased.";
+const StateTooltipsOrcDefensivePresenceJP = "【オークの肉壁】\n\\I[42]防御力 アップ";
+const StateTooltipsLizardmanRacialEN = "%1 is with another lizardman.\nAll his stats are increased.";
+const StateTooltipsLizardmanRacialJP = "【群れるリザードマン】\n\\I[42]全ステータス アップ";
+const StateTooltipsKarrynClitToyEN = "Karryn has a toy attached to her clitoris!";
+const StateTooltipsKarrynClitToyJP = "【オモチャ】\nピンクローター\n\\I[40]クリに装着中！";
+const StateTooltipsKarrynPussyToyEN = "Karryn has a toy inserted in her pussy!";
+const StateTooltipsKarrynPussyToyJP = "【オモチャ】\nディルド\n\\I[40]マンコに挿入中！";
+const StateTooltipsKarrynAnalToyEN = "Karryn has a toy inserted in her anus!";
+const StateTooltipsKarrynAnalToyJP = "【オモチャ】\nアナルビーズ\n\\I[40]ケツ穴に挿入中！";
+const StateTooltipsEnemyClitToyPinkRotorEN = "%1 has a pink rotor!";
+const StateTooltipsEnemyClitToyPinkRotorJP = "ピンクローターを持っている！";
+const StateTooltipsEnemyPussyToyPenisDildoEN = "%1 has a penis dildo!";
+const StateTooltipsEnemyPussyToyPenisDildoJP = "ディルドを持っている！";
+const StateTooltipsEnemyAnalToyAnalBeadsEN = "%1 has anal beads!";
+const StateTooltipsEnemyAnalToyAnalBeadsJP = "アナルビーズを持っている！";
+const StateWaitressNoAlcoholEN = "Karryn is refusing all \\C[2]attempts to get her to drink\\C[0].\nHer willpower regen is halved.\n%1 Willpower will be required to refuse a drink.";
+const StateWaitressNoAlcoholJP = "\\C[2]【飲酒を拒否中】\\C[0]\n客から勧められるアルコールを全て断っている\n\\I[42]意志力回復量 半減\n（飲酒拒否に必要な意志力：%1）";
+const StateWaitressDirtyMugsSingularEN = "%1 has a dirty mug waiting to be collected.";
+const StateWaitressDirtyMugsSingularJP = "【回収待ちのジョッキ】\n1杯";
+const StateWaitressDirtyMugsPluralEN = "%1 has %2 dirty mugs waiting to be collected.";
+const StateWaitressDirtyMugsPluralJP = "【回収待ちのジョッキ】\n%2杯";
+const StateWaitressDirtyGlassesSingularEN = "%1 has a dirty glass waiting to be collected.";
+const StateWaitressDirtyGlassesSingularJP = "【回収待ちのグラス】\n1杯";
+const StateWaitressDirtyGlassesPluralEN = "%1 has %2 dirty glasses waiting to be collected.";
+const StateWaitressDirtyGlassesPluralJP = "【回収待ちのグラス】\n%2杯";
+const StateWaitressAvailableMugsSingularEN = "There is only one clean mug available.";
+const StateWaitressAvailableMugsSingularJP = "【キレイなジョッキ】\n1杯";
+const StateWaitressAvailableMugsPluralEN = "There are %1 clean mugs available.";
+const StateWaitressAvailableMugsPluralJP = "【キレイなジョッキ】\n%1杯";
+const StateWaitressAvailableGlassesSingularEN = "There is only one clean glass available.";
+const StateWaitressAvailableGlassesSingularJP = "【キレイなグラス】\n1杯";
+const StateWaitressAvailableGlassesPluralEN = "There are %1 clean glasses available.";
+const StateWaitressAvailableGlassesPluralJP = "【キレイなグラス】\n%1杯";
+const StateWaitressKarrynLocationEN = "Karryn is at %1.";
+const StateWaitressKarrynLocationJP = "【現在の場所】\n%1";
+const StateWaitressTableALocationEN = "Karryn is at Table A.";
+const StateWaitressTableALocationJP = "【現在のテーブル】\nＡ";
+const StateWaitressTableBLocationEN = "Karryn is at Table B.";
+const StateWaitressTableBLocationJP = "【現在のテーブル】\nＢ";
+const StateWaitressTableCLocationEN = "Karryn is at Table C.";
+const StateWaitressTableCLocationJP = "【現在のテーブル】\nＣ";
+const StateWaitressTableDLocationEN = "Karryn is at Table D.";
+const StateWaitressTableDLocationJP = "【現在のテーブル】\nＤ";
+const StateWaitressSleepingEN = "%1 is drunkenly sleeping!\nKick them out of the bar!";
+const StateWaitressSleepingJP = "【泥酔中！】\n追い払うべき迷惑客";
+const StateWaitressDrinkingDrinkEN = "%1 is drinking a %2.";
+const StateWaitressDrinkingDrinkJP = "%2を飲んでいる";
+const StateReceptionistVisitorUnknownBeforeEN = "%1 has not stated the purpose of their visitation yet.";
+const StateReceptionistVisitorUnknownBeforeJP = "目的はまだ不明";
+const StateReceptionistVisitorUnknownAfterEN = "%1 is waiting for Karryn's response.";
+const StateReceptionistVisitorUnknownAfterJP = "受付嬢の対応待ち";
+const StateReceptionistVisitorWritingBeforeEN = "%1 is holding the papers they need to fill out.";
+const StateReceptionistVisitorWritingBeforeJP = "未記入の申込書を持っている";
+const StateReceptionistVisitorWritingDuringEN = "%1 is filling out the paperwork.";
+const StateReceptionistVisitorWritingDuringJP = "申込書に記入中……";
+const StateReceptionistVisitorWritingAfterEN = "%1 is holding the papers they filled out.";
+const StateReceptionistVisitorWritingAfterJP = "記入済みの申込書を持っている";
+const StateReceptionistVisitorPaperBeforeEN = "%1's %2 pages of paperwork need to be processed.";
+const StateReceptionistVisitorPaperBeforeJP = "%2ページある申込書を持っている";
+const StateReceptionistVisitorPaperAfterEN = "%1's %2 pages of paperwork are being processed.";
+const StateReceptionistVisitorPaperAfterJP = "%2ページの申込書を記入中……";
+const StateReceptionistVisitorTimeEN = "%1's paperwork have been processed.\nThey are allowed %2 minutes for visitation.";
+const StateReceptionistVisitorTimeJP = "申込書の処理が完了\n\\I[42]所有時間：%2分";
+const StateReceptionistVisitorMovingEN = "%1 is currently walking.";
+const StateReceptionistVisitorMovingJP = "受付デスクに向かっている……";
+const StateReceptionistVisitorSittingEN = "%1 is sitting in their seat.";
+const StateReceptionistVisitorSittingJP = "座って待機している";
+const StateReceptionistVisitorLineEN = "%1 is waiting on line in front of the desk.";
+const StateReceptionistVisitorLineJP = "並んで待機中";
+const StateReceptionistVisitorDeskEN = "%1 is standing in front of the desk.";
+const StateReceptionistVisitorDeskJP = "カリンの前に立っている";
+
+const DesireTooltipsMouthIntroEN = "Karryn's Mouth Desire represents her desire\nto have other men's body parts in her mouth\nand to taste their various bodily fluids.";
+const DesireTooltipsMouthIntroJP = "\\C[1]【口欲】\\C[0]\n\\C[27]カリンの性感帯の１つ、クチの欲求。\\C[0]\nその舌は男のカラダのあらゆる部分を感じ、\n分泌される汁を味わい尽くしてしまう。\n何度もしゃぶり、体液を飲まされる事で\n口内から全身に渡って性衝動が溢れていく。";
+const DesireTooltipsBoobsIntroEN = "Karryn's Boobs Desire represents her desire\nto have her perfect breasts be squeezed,\nto have her nipples be squeezed hard,\nand to have hard objects inbetween them.";
+const DesireTooltipsBoobsIntroJP = "\\C[1]【乳欲】\\C[0]\n\\C[27]カリンの性感帯の１つ、おっぱいの欲求。\\C[0]\n完璧に実った乳房は揉みしだかれる事を、\n硬く突起した乳首はイジり倒される事を望んでいる。\n胸への刺激は恋のようなドキドキを生み、\n強い性衝動へと駆られてしまう。";
+const DesireTooltipsPussyIntroEN = "Karryn's Pussy Desire represents her desire\nto have her clitoris be played with and\nto have increasingly bigger objects\ninserted into her pussy.";
+const DesireTooltipsPussyIntroJP = "\\C[1]【膣欲】\\C[0]\n\\C[27]カリンの性感帯の１つ、マンコの欲求。\\C[0]\n誠実な生き方を貫いてきた性器にとって、\nクリと穴への刺激は強烈な興奮材料になる。\nあらゆる手段で濡らしほぐされた膣は、\n腹の奥から性衝動を昂ぶらせていく。";
+const DesireTooltipsButtIntroEN = "Karryn's Butt Desire represents her desire\nto have her big butt be groped by others\nand to foreign objects be put up her ass.";
+const DesireTooltipsButtIntroJP = "\\C[1]【尻欲】\\C[0]\n\\C[27]カリンの性感帯の１つ、ケツの欲求。\\C[0]\n誰もが振り返る自慢の巨尻は\n家畜のようにしつけられ、ホジられる事を望んでいる。\n呼び起こされたマゾヒズムは好奇心から\n性衝動を抑えられなくなってしまう。";
+const DesireTooltipsCockIntroEN = "Karryn's Cock Desire represents her desire\nto know everything there is know about\neveryone's cock through sight, hearing,\nsmell, taste and touch.";
+const DesireTooltipsCockIntroJP = "\\C[1]【棒欲】\\C[0]\n\\C[27]カリンの性感帯の１つ、チンポへの欲求。\\C[0]\n長らく持ち続けた勃起チンポへの興味は強く、\n五感を通してその全てを知りたがっている。\nチンポが持つ想像以上の魅力を知るたびに、\n性衝動のリミッターは完全に崩壊していく。";
+
+const DesireTooltipsBodyDesireRequirementsUnknownEN = "\\I[40] 50    \\I[41]   Soft Petting\n\\I[40] 75    \\I[41]   Heavy Petting\n\\I[40]100   \\I[41]   Sex\n(Default Desire Requirements)";
+const DesireTooltipsBodyDesireRequirementsUnknownJP = "\\I[40]ソフト愛撫\\I[41]50\n\\I[40]ハード愛撫\\I[41]75\n\\I[40]セックス\\I[41]100\n （全てデフォルト値）";
+const DesireTooltipsCockDesireRequirementsUnknownEN = "\\I[40] 50    \\I[41]   Handjob\n\\I[40] 65    \\I[41]   Service\n\\I[40] 85    \\I[41]   Penetration\n(Default Desire Requirements)";
+const DesireTooltipsCockDesireRequirementsUnknownJP = "\\I[40]手コキ\\I[41]50\n\\I[40]挿入なしプレイ\\I[41]65\n\\I[40]挿入セックス\\I[41]85\n （全てデフォルト値）";
+const DesireTooltipsDesireRequirementsKnownEN = "Desire Requirements";
+const DesireTooltipsDesireRequirementsKnownJP = "";
+const DesireTooltipsDesireRequirementsKnownFormatEN = "";
+const DesireTooltipsDesireRequirementsKnownFormatJP = "\\I[40]\\C[27]%1\\I[41]\\C[0]%2";
+
+
+const DesireTooltipsMouthDesireDebuffOneEN = "\\I[56]\\C[2]Karryn's Accuracy will start decreasing\n\\C[0]at 50 Mouth Desire and above from\nunconsciously opening her mouth wider\nto shout out her attacks beforehand.";
+const DesireTooltipsMouthDesireDebuffOneJP = "\\I[56]口欲が50に達すると、\n\\I[0]口寂しさから気が散ってしまい\n\\I[0]\\C[2]攻撃が命中しにくくなる……。\\C[0]";
+const DesireTooltipsMouthDesireDebuffTwoEN = "\\I[56]\\C[2]Karryn's Critical Damage will start decreasing\n\\C[0]at 100 Mouth Desire and above from wasting\ntime on excessively licking her lips to satisfy\nher urges to have something else there.";
+const DesireTooltipsMouthDesireDebuffTwoJP = "\\I[56]口欲が100に達すると、\n\\I[0]“何か”をしゃぶりたい気持ちが邪魔して\n\\I[0]\\c[2]クリティカルダメージが低下してしまう……。\\C[0]";
+
+const DesireTooltipsBoobsDesireDebuffOneEN = "\\I[56]\\C[2]Karryn's Evasion will start decreasing\n\\C[0]at 50 Boobs Desire from being too\ndistracted by her nipples demanding\nsome love and attention.";
+const DesireTooltipsBoobsDesireDebuffOneJP = "\\I[56]乳欲が50に達すると、\n\\I[0]ビンカンになっている乳首が気になって\n\\I[0]\\C[2]攻撃を避けにくくなってしまう……。\\C[0]";
+const DesireTooltipsBoobsDesireDebuffTwoEN = "\\I[56]\\C[2]Karryn's Critical Rate will start decreasing\n\\C[0]at 100 Boobs Desire from the pressure on \nher chest making her feel like they are\ntrying to escape.";
+const DesireTooltipsBoobsDesireDebuffTwoJP = "\\I[56]乳欲が100に達すると、\n\\I[0]爆乳から誘惑フェロモンが漏れて\n\\I[0]\\C[2]クリティカルヒットは出づらくなっていく……。\\C[0]";
+
+const DesireTooltipsPussyDesireDebuffOneEN = "\\I[56]\\C[2]Karryn's Strip Resist will start decreasing\n\\C[0]at 50 Pussy Desire from wanting to free\nher vagina from its pulsing heat.";
+const DesireTooltipsPussyDesireDebuffOneJP = "\\I[56]膣欲が50に達すると、\n\\I[0]股間が火照ってカラダ全体の体温も増すため\n\\I[0]\\C[2]脱がされやすくなってしまう……。\\C[0]";
+const DesireTooltipsPussyDesireDebuffTwoEN = "\\I[56]\\C[2]Karryn's Critical Evasion will start decreasing\n\\C[0]at 100 Pussy Desire from the phantom ache\naround her vulva distracting her. ";
+const DesireTooltipsPussyDesireDebuffTwoJP = "\\I[56]膣欲が100に達すると、\n\\I[0]マン奥の疼きを収めるのに夢中で\n\\I[0]\\C[2]クリティカルを避けづらくなる……。\\C[0]";
+
+const DesireTooltipsButtDesireDebuffOneEN = "\\I[56]\\C[2]Karryn's Defense will start decreasing\n\\C[0]at 50 Butt Desire from unconsciously messing\nup her stance by showing off her ass.";
+const DesireTooltipsButtDesireDebuffOneJP = "\\I[56]尻欲が50に達すると、\n\\I[0]無意識にケツがオスを求め出し\n\\I[0]\\C[2]守備が疎かになってしまう……。\\C[0]";
+const DesireTooltipsButtDesireDebuffTwoEN = "\\I[56]\\C[2]Karryn's Pet Resist will start decreasing\n\\C[0]at 100 Butt Desire from wanting a man\nto vigorously attack her naughty ass.";
+const DesireTooltipsButtDesireDebuffTwoJP = "\\I[56]尻欲が100に達すると、\n\\I[0]飢えたエロ尻で男を誘ってしまい\n\\I[0]\\C[2]愛撫を受け入れやすくなる……。\\C[0]";
+
+const DesireTooltipsCockDesireDebuffOneEN = "\\I[56]\\C[2]Karryn's Attack will start decreasing\n\\C[0]at 50 Cock Desire from unconsciously\nholding back her full power in case\nshe accidently hits them in the groin.";
+const DesireTooltipsCockDesireDebuffOneJP = "\\I[56]棒欲が50に達すると、\n\\I[0]男の股間に意識を持っていかれて\n\\I[0]\\C[2]攻撃するパワーが弱まってしまう……。\\C[0]";
+const DesireTooltipsCockDesireDebuffTwoEN = "\\I[56]\\C[2]Karryn's Sex Resist will start decreasing\n\\C[0]at 100 Cock Desire from the thoughts in\nher head telling her to just submit to cock.";
+const DesireTooltipsCockDesireDebuffTwoJP = "\\I[56]棒欲が100に達すると、\n\\I[0]勃起チンポへの忠誠心が膨らんでしまい\n\\I[0]\\C[2]セックスへの抵抗は薄れていく……。\\C[0]";
+
+const DesireTooltipsMouthDesireTopBuffEN = "\\I[56]When Karryn's Mouth Desire is her top desire,\n\\C[11]her enemies' Defense will be lowered\n\\C[0]because of her seductively inviting mouth\nand lewd tongue movements.";
+const DesireTooltipsMouthDesireTopBuffJP = "\\I[56]性欲の中で口欲が最も高い時、\n\\I[0]卑猥に誘う舌先に魅了された敵は\n\\I[0]\\C[11]カリンからの攻撃に対し守備が甘くなる。\\C[0]";
+const DesireTooltipsBoobsDesireTopBuffEN = "\\I[56]When Karryn's Boobs Desire is her top desire,\n\\C[11]her enemies' Evasion will be lowered\n\\C[0]because they can't keep their eyes off the tits\nshe keeps emphasizing with every move.";
+const DesireTooltipsBoobsDesireTopBuffJP = "\\I[56]性欲の中で乳欲が最も高い時、\n\\I[0]爆乳から視線を逸らせなくなった敵は\n\\I[0]\\C[11]カリンからの攻撃を避けにくくなる。\\C[0]";
+const DesireTooltipsPussyDesireTopBuffEN = "\\I[56]When Karryn's Pussy Desire is her top desire,\n\\C[11]her enemies have an increased chance of\ngetting Horny every turn \\C[0]because of the\npheromones leaking out of her honey trap.";
+const DesireTooltipsPussyDesireTopBuffJP = "\\I[56]性欲の中で膣欲が最も高い時、\n\\I[0]カリンの股間から放たれるフェロモンのせいで\n\\I[0]\\C[27]敵は毎ターン興奮する可能性がある。\\C[0]";
+const DesireTooltipsButtDesireTopBuffEN = "\\I[56]When Karryn's Butt Desire is her top desire,\n\\C[11]her enemies' Accuracy will be lowered\n\\C[0]because they're too focused on chasing \nher swaying meaty hips.";
+const DesireTooltipsButtDesireTopBuffJP = "\\I[56]性欲の中で尻欲が最も高い時、\n\\I[0]揺れるケツを追いかけるのに必死で\n\\I[0]\\C[11]敵はカリンに攻撃を当てにくくなる。\\C[0]";
+const DesireTooltipsCockDesireTopBuffEN = "\\I[56]When Karryn's Cock Desire is her top desire,\n\\C[27]her Cock Desire Gain Rate will be increased\n\\C[0]because she can't stop thinking about cock.";
+const DesireTooltipsCockDesireTopBuffJP = "\\I[56]性欲の中で棒欲が最も高い時、\n\\I[0]頭の中は勃起チンポでいっぱいになり\n\\I[0]\\C[27]棒欲がどんどん上昇してしまう……。\\C[0]";
 
 const VirginityTextEN = "Sex Status";  //currently unused
 const VirginityTextJP = "セックスのステータス"; //currently unused
@@ -904,7 +1278,7 @@ const KarrynTauntMessageJP = "カリンは挑発した！";
 const KarrynFlauntMessageEN = "Karryn starts flaunting!";
 const KarrynFlauntMessageJP = "カリンは自慢のボディで誘惑した！";
 
-const AronCallLizardmanFailEN = "However... no one showed up......";
+const AronCallLizardmanFailEN = "However, no one showed up...!";
 const AronCallLizardmanFailJP = "しかし、誰も現れなかった……！";
 
 const ActorGainPleasureEN = "\\C[27]%1's pleasure increases by %2!";
@@ -963,7 +1337,7 @@ const InvasionNoiseLevelThreeEN = "\\C[2]Inaudible talking can be heard outside.
 const InvasionNoiseLevelThreeJP = "\\C[2]別の場所から話声が聞こえる。";
 const InvasionNoiseLevelFourEN = "\\C[10]Someone is shouting outside.";
 const InvasionNoiseLevelFourJP = "\\C[10]何者かが近くで騒いでいる！";
-const InvasionBattleStartEN = "A bunch of people barges into the room!";
+const InvasionBattleStartEN = "A bunch of people barge into the room!";
 const InvasionBattleStartJP = "侵入者が現れた！！";
 
 const MasturbateBattleTouchClitEN = "Karryn starts rubbing her clitoris!";
@@ -993,6 +1367,13 @@ const SkillDescriptionNotEnoughDesireEN = "Not enough desire to do this.";
 const SkillDescriptionNotEnoughDesireJP = "※性欲が不足しています。";
 const SkillDescriptionCantDoThisEN = "Can't use this skill right now.";
 const SkillDescriptionCantDoThisJP = "※今はまだ使えません。";
+const SkillDescriptionHandsBusyEN = "Need a free hand to do this.";
+const SkillDescriptionHandsBusyJP = "※手の空きが必要です。";
+const SkillDescriptionNotWetEN = "Not wet enough to do this.";
+const SkillDescriptionNotWetJP = "※濡れていないので出来ません。";
+
+const TitleDescriptionFirstTimeTitleEquipEN = "\\C[0](Equip once to get effects for this playthrough)";
+const TitleDescriptionFirstTimeTitleEquipJP = "\\C[0](１度装備すれば効果を取得可能)";
 
 const CharmEquipReqTextEN = "Charm Requirement: ";
 const CharmEquipReqTextJP = "必要な魅力： ";
@@ -1030,7 +1411,50 @@ const RemResultsFatigueIncreaseJP = "疲労を %1％ 蓄積した……。";
 const RemResultsFatigueDecreaseEN = "Fatigue decreased by %1%!";
 const RemResultsFatigueDecreaseJP = "疲労が %1％ 減少した！";
 const RemResultsPassivesTitleEN = "New Passives Unlocked!!";
-const RemResultsPassivesTitleJP = "新たなパッシブが開放！！";
+const RemResultsPassivesTitleJP = "新パッシブ開放！！";
+
+const RemDailyReportDayCountEN = "\\#\\{\\{Day %1: Daily Report\\}\\}";
+const RemDailyReportDayCountJP = "\\#\\{\\{■ 報告書 ～%1日目～ ■\\}\\}";
+const RemDailyReportAnarchyNoLimitEN = "\\I[377]Day %2 of Level %1 being in \\C[7]Anarchy\\C[0].";
+const RemDailyReportAnarchyNoLimitJP = "\\I[377]監獄レベル%1は%2日間\\C[7]無法状態\\C[0]です。";
+const RemDailyReportAnarchyLimitBefore_singularEN = "\\I[377]Day %2 of Level %1 being in \\C[7]Anarchy\\C[0]. Control might be further decreased starting tomorrow from unrest!";
+const RemDailyReportAnarchyLimitBefore_singularJP = "\\I[377]監獄レベル%1は%2日間\\C[7]無法状態\\C[0]です。そのため、明日には統制力が更に減少するおそれがあります！";
+const RemDailyReportAnarchyLimitBefore_pluralEN = "\\I[377]Day %2 of Level %1 being in \\C[7]Anarchy\\C[0]. Control might further decrease in about %3 days from unrest!";
+const RemDailyReportAnarchyLimitBefore_pluralJP = "\\I[377]監獄レベル%1は%2日間\\C[7]無法状態\\C[0]です。そのため、%3日後には統制力が更に減少するかもしれません！";
+const RemDailyReportAnarchyPastLimitEN = "\\I[377]Day %2 of Level %1 being in Anarchy. Control is further decreased by \\C[18]-%3\\C[0] due to unrest!";
+const RemDailyReportAnarchyPastLimitJP = "\\I[377]監獄レベル%1は%2日間\\C[7]無法状態\\C[0]です。そのため統制力が\\C[18]%3\\C[0]減少しました！";
+const RemDailyReportRiot_NewEN = "\\I[407]Level %1 has started \\C[18]RIOTING\\C[0]!!";
+const RemDailyReportRiot_NewJP = "\\I[407]監獄レベル%1で\\C[18]暴動が勃発\\C[0]！！";
+const RemDailyReportRiot_OldEN = "\\I[407]Level %1 has been \\C[18]RIOTING\\C[0] for %2 days! Control is further decreased by \\C[18]-%3\\C[0]!";
+const RemDailyReportRiot_OldJP = "\\I[407]監獄レベル%1の\\C[18]暴動が%2日間継続中\\C[0]！統制力が更に\\C[18]%3\\C[0]減少しました！";
+const RemDailyReportOrderChange_PositiveEN = "\\I[408]Order has risen to %1.";
+const RemDailyReportOrderChange_PositiveJP = "\\I[408]秩序が上昇して%1になりました。";
+const RemDailyReportOrderChange_NegativeEN = "\\I[409]Order has fallen to %1.";
+const RemDailyReportOrderChange_NegativeJP = "\\I[409]秩序が低下して%1になりました。";
+const RemDailyReportOrderChange_NeutralEN = "\\I[408]Order has remained the same at %1.";
+const RemDailyReportOrderChange_NeutralJP = "\\I[408]秩序は前日と変わらず%1を維持しています。";
+const RemDailyReportFundingChange_PositiveEN = "\\I[410]Funds have increased to \\C[11]$%1\\C[0].";
+const RemDailyReportFundingChange_PositiveJP = "\\I[410]資金は\\C[11]%1G\\C[0]まで増えました。";
+const RemDailyReportFundingChange_NegativeEN = "\\I[411]Funds have decreased to \\C[2]$%1\\C[0].";
+const RemDailyReportFundingChange_NegativeJP = "\\I[411]資金は\\C[2]%1G\\C[0]まで減りました。";
+const RemDailyReportBankruptcyEN = "\\I[411]The prison is currently \\C[2]BANKRUPTED\\C[0]!!! Control is further decreased by \\C[18]-%1\\C[0]!";
+const RemDailyReportBankruptcyJP = "\\I[411]\\C[2]監獄は破産しました！！！\\C[0]統制力が更に\\C[18]%1\\C[0]減少！";
+const RemDailyReportEdictPoints_SingularEN = "\\I[364]%1 Edict Point is available today.";
+const RemDailyReportEdictPoints_SingularJP = "\\I[364]本日の使用可能な指令値：%1";
+const RemDailyReportEdictPoints_PluralEN = "\\I[364]%1 Edict Points are available today.";
+const RemDailyReportEdictPoints_PluralJP = "\\I[364]本日の使用可能な指令値：%1";
+const RemDailyReportBarRep_AlmostDecayEN = "\\I[188]Bar Reputation is about to \\C[8]decay\\C[0]. Work as a waitress today to prevent it.";
+const RemDailyReportBarRep_AlmostDecayJP = "\\I[188]酒場の評判が\\C[8]ガタ落ち\\C[0]しています。対策としてウェイトレスのバイトをオススメします。";
+const RemDailyReportBarRep_DecayedEN = "\\I[188]\\C[8]Bar Reputation has decayed by -1.\\C[0]";
+const RemDailyReportBarRep_DecayedJP = "\\I[188]\\C[8]酒場の評判が1レベル低下しました。\\C[0]";
+const RemDailyReportVisitorRep_AlmostDecayEN = "\\I[159]Visitor Center Reputation is about to \\C[8]decay\\C[0]. Work as a receptionist today to prevent it.";
+const RemDailyReportVisitorRep_AlmostDecayJP = "\\I[159]面会人受付所の評判が\\C[8]ガタ落ち\\C[0]しています。対策として受付嬢のバイトをオススメします。";
+const RemDailyReportVisitorRep_DecayedEN = "\\I[159]\\C[8]Visitor Center Reputation has decayed by -1.\\C[0]";
+const RemDailyReportVisitorRep_DecayedJP = "\\I[159]\\C[8]面会人受付所の評判が1レベル低下しました。\\C[0]";
+const RemDailyReportToiletRep_AlmostDecayEN = "\\I[234]Bathroom Reputation is about to \\C[8]decay\\C[0]. Rest at the toilet today to prevent it.";
+const RemDailyReportToiletRep_AlmostDecayJP = "\\I[234]トイレの評判が\\C[8]ガタ落ち\\C[0]しています。対策として真ん中の個室で休憩するのをオススメします。";
+const RemDailyReportToiletRep_DecayedEN = "\\I[234]\\C[8]Bathroom Reputation has decayed by -1.\\C[0]";
+const RemDailyReportToiletRep_DecayedJP = "\\I[234]\\C[8]トイレの評判が1レベル低下しました。\\C[0]";
 
 const RemParamGainedStrengthEN = "Strength increased by %1!"; //unused
 const RemParamGainedStrengthJP = "腕力が %1 上がった！"; //unused
@@ -1054,10 +1478,10 @@ const RemParamLevelGainedSingularJP = "%2レベルが %1 上がった！";
 const RemParamLevelGainedPluralEN = "Gained %1 %2 Levels!!";
 const RemParamLevelGainedPluralJP = "%2レベルが %1 上がった！";
 
-const RemWardenLevelRequireSingularEN = "\\C[8](%1 more stat level until the next Warden Level!)";
-const RemWardenLevelRequireSingularJP = "\\C[8]（次の看守レベルまで、あと%1のステータスレベル！）";
-const RemWardenLevelRequirePluralEN = "\\C[8](%1 more stat levels until the next Warden Level.)";
-const RemWardenLevelRequirePluralJP = "\\C[8]（次の看守レベルまで、あと%1のステータスレベル！）";
+const RemWardenLevelRequireSingularEN = "\\C[8]\\I[42]%1 more stat level until the next Warden Level!";
+const RemWardenLevelRequireSingularJP = "\\C[8]\\I[42]次の看守レベルまで、あと%1のステータスレベル！";
+const RemWardenLevelRequirePluralEN = "\\C[8]\\I[42]%1 more stat levels until the next Warden Level!";
+const RemWardenLevelRequirePluralJP = "\\C[8]\\I[42]次の看守レベルまで、あと%1のステータスレベル！";
 
 const RemWardenLevelUpEN = "\\C[16]LEVEL UP!!! \\C[0]%1 has reached \\C[16]Warden Level %2\\C[0]!!";
 const RemWardenLevelUpJP = "\\C[16]レベルアップ！！\\C[0]%1は看守レベルが \\C[16]%2 \\C[0]になった！！";
@@ -1075,25 +1499,25 @@ const RemExpWillpowerCombatJP = "【意思】熟練度"; //currently unused
 const RemExpEnduranceCombatEN = "Endurance EXP"; //currently unused
 const RemExpEnduranceCombatJP = "【忍耐】熟練度"; //currently unused
 const RemExpTalkSensitivityEN = "Talk Sensitivity EXP"; //currently unused
-const RemExpTalkSensitivityJP = "猥談の感度"; //currently unused
+const RemExpTalkSensitivityJP = "猥談感度"; //currently unused
 const RemExpSightSensitivityEN = "Sight Sensitivity EXP"; //currently unused
-const RemExpSightSensitivityJP = "視姦の感度"; //currently unused
+const RemExpSightSensitivityJP = "視姦感度"; //currently unused
 const RemExpFingerSensitivityEN = "Finger Sensitivity EXP"; //currently unused
 const RemExpFingerSensitivityJP = "指先の感度"; //currently unused
 const RemExpMouthSensitivityEN = "Mouth Sensitivity EXP"; //currently unused
-const RemExpMouthSensitivityJP = "クチの感度"; //currently unused
+const RemExpMouthSensitivityJP = "クチ感度"; //currently unused
 const RemExpBoobsSensitivityEN = "Boobs Sensitivity EXP"; //currently unused
-const RemExpBoobsSensitivityJP = "おっぱいの感度"; //currently unused
+const RemExpBoobsSensitivityJP = "おっぱい感度"; //currently unused
 const RemExpPussySensitivityEN = "Pussy Sensitivity EXP"; //currently unused
-const RemExpPussySensitivityJP = "マンコの感度"; //currently unused
+const RemExpPussySensitivityJP = "マンコ感度"; //currently unused
 const RemExpButtSensitivityEN = "Butt Sensitivity EXP"; //currently unused
-const RemExpButtSensitivityJP = "アナルの感度"; //currently unused
+const RemExpButtSensitivityJP = "アナル感度"; //currently unused
 const RemExpCreampieSensitivityEN = "Creampie Recipient EXP"; //currently unused
-const RemExpCreampieSensitivityJP = "中出しの感度"; //currently unused
+const RemExpCreampieSensitivityJP = "中出し感度"; //currently unused
 const RemExpBukkakeSensitivityEN = "Bukkake EXP"; //currently unused
-const RemExpBukkakeSensitivityJP = "ぶっかけの感度"; //currently unused
+const RemExpBukkakeSensitivityJP = "ぶっかけ感度"; //currently unused
 const RemExpSwallowSensitivityEN = "Swallowing EXP"; //currently unused
-const RemExpSwallowSensitivityJP = "ごっくんの感度"; //currently unused
+const RemExpSwallowSensitivityJP = "ごっくん感度"; //currently unused
 const RemExpKissSkillEN = "Kissing EXP"; //currently unused
 const RemExpKissSkillJP = "キス熟練度"; //currently unused
 const RemExpPettingSkillEN = "Petting EXP"; //currently unused
@@ -1161,6 +1585,10 @@ const RemYanflyOptions_Controls_EN = "\\I[280]Controls";
 const RemYanflyOptions_Controls_JP = "\\I[280]キー";
 const RemYanflyOptions_Controls_Help_EN = "Change the way you can control the game.\nPress a button on your gamepad in order to access the Gamepad Config menu.";
 const RemYanflyOptions_Controls_Help_JP = "ゲームの操作キーを変更出来ます。\nゲームパッドが接続されている場合、ゲームパッドの設定を変更出来ます。";
+const RemYanflyOptions_Cheats_EN = "\\I[250]Cheats";
+const RemYanflyOptions_Cheats_JP = "\\I[250]チート";
+const RemYanflyOptions_Cheats_Help_EN = "Cheats are only activated during Secretary Mode.\nUse these cheats if you like playing in Secretary Mode\nbut prefer certain aspects of the game to be more difficult.";
+const RemYanflyOptions_Cheats_Help_JP = "秘書コース専用の設定です。\n部分的な難易度をお好みにカスタマイズしてプレイ出来ます。";
 const RemYanflyOptions_Exit_EN = "\\I[254]Exit";
 const RemYanflyOptions_Exit_JP = "\\I[254]終了";
 const RemYanflyOptions_Exit_Help_EN = "Exit the Options Menu.";
@@ -1304,7 +1732,7 @@ const RemYanflyOptions_MapEffects_Help_EN = "Animated map effects include fogs a
 const RemYanflyOptions_MapEffects_Help_JP = "マップのミストや雲などの演出表示を変更出来ます。\nON：マップ演出を表示します。\nOFF：マップ演出を非表示にします（処理が遅くなる場合は推奨）。";
 const RemYanflyOptions_DisplayPubicHair_EN = "\\i[276]Toggle Pubic Hair";
 const RemYanflyOptions_DisplayPubicHair_JP = "\\i[276]アンダーヘアの処理";
-const RemYanflyOptions_DisplayPubicHair_Help_EN = "Turn this option ON for Karryn to have pubic hair.";
+const RemYanflyOptions_DisplayPubicHair_Help_EN = "Turn this option ON for Karryn to have pubic hair.\nTurn this option OFF for Karryn's groin to be smooth and hairless.";
 const RemYanflyOptions_DisplayPubicHair_Help_JP = "アンダーヘアの生え方を変更します。\nON：カリンの股間には丁寧に整えられた陰毛があります。\nOFF：カリンがパイパンになります。";
 const RemYanflyOptions_ShowSexualDamagePopup_EN = "\\i[276]Toggle Karryn Sexual Damage Popup";
 const RemYanflyOptions_ShowSexualDamagePopup_JP = "\\i[276]性ダメージのポップアップ";
@@ -1422,6 +1850,74 @@ const RemYanflyKeyboardDownKeyJP = "↓";
 const RemYanflyKeyboardDownTextEN = "Down";
 const RemYanflyKeyboardDownTextJP = "↓方向";
 
+
+//Options Cheats
+const RemYanflyOptions_Cheats_EnemyDoublePhysicalDamage_EN = "\\i[429]\\C[14]WhosYourDaddy";
+const RemYanflyOptions_Cheats_EnemyDoublePhysicalDamage_JP = "\\i[429]\\C[14]体力ダメージ２倍";
+const RemYanflyOptions_Cheats_EnemyDoublePhysicalDamage_Help_EN = "Enemies deal double the amount of stamina damage to Karryn.\nFor people who want to see Karryn be less invincible.";
+const RemYanflyOptions_Cheats_EnemyDoublePhysicalDamage_Help_JP = "敵からの物理ダメージが２倍になります。\n★カリンの無敵っぷりを解除したい人向け。";
+const RemYanflyOptions_Cheats_EnemyTriplePhysicalDamage_EN = "\\i[429]\\C[14]iddqd";
+const RemYanflyOptions_Cheats_EnemyTriplePhysicalDamage_JP = "\\i[429]\\C[14]体力ダメージ３倍";
+const RemYanflyOptions_Cheats_EnemyTriplePhysicalDamage_Help_EN = "Enemies deal triple the amount of stamina damage to Karryn.\nFor people who want to see Karryn fall down from a few hits.";
+const RemYanflyOptions_Cheats_EnemyTriplePhysicalDamage_Help_JP = "敵からの物理ダメージが３倍になります。\n★手っ取り早くカリンに倒れて欲しい人向け。";
+const RemYanflyOptions_Cheats_EnemyDoubleSexualDamage_EN = "\\i[387]\\C[1]BigDaddy";
+const RemYanflyOptions_Cheats_EnemyDoubleSexualDamage_JP = "\\i[387]\\C[1]快楽ダメージ２倍";
+const RemYanflyOptions_Cheats_EnemyDoubleSexualDamage_Help_EN = "Enemies deal double the amount of pleasure damage to Karryn.\nFor people who want to see Karryn succumb to pleasure faster.";
+const RemYanflyOptions_Cheats_EnemyDoubleSexualDamage_Help_JP = "敵からの快楽ダメージが２倍になります。\n★快楽堕ちを早く見たい人向け。";
+const RemYanflyOptions_Cheats_EnemyTripleSexualDamage_EN = "\\i[387]\\C[1]there is no cow level";
+const RemYanflyOptions_Cheats_EnemyTripleSexualDamage_JP = "\\i[387]\\C[1]快楽ダメージ３倍";
+const RemYanflyOptions_Cheats_EnemyTripleSexualDamage_Help_EN = "Enemies deal triple the amount of pleasure damage to Karryn.\nFor people who want to turn Karryn into a puddle.";
+const RemYanflyOptions_Cheats_EnemyTripleSexualDamage_Help_JP = "敵からの快楽ダメージが３倍になります。\n★即イキ濡れ濡れ状態で楽しみたい人向け。";
+const RemYanflyOptions_Cheats_EnemyAlwaysAct_EN = "\\i[385]\\C[2]godmode";
+const RemYanflyOptions_Cheats_EnemyAlwaysAct_JP = "\\i[385]\\C[2]敵が必ず行動";
+const RemYanflyOptions_Cheats_EnemyAlwaysAct_Help_EN = "Enemies will always act every turn.\nFor people who don't want enemies to skip their turn.";
+const RemYanflyOptions_Cheats_EnemyAlwaysAct_Help_JP = "敵が必ず毎ターン行動するようになります。\n★敵のターンをスキップさせたくない人向け。";
+const RemYanflyOptions_Cheats_ActorHalfStaminaRegen_EN = "\\i[473]\\C[29]pepperoni pizza";
+const RemYanflyOptions_Cheats_ActorHalfStaminaRegen_JP = "\\i[473]\\C[29]回復半減";
+const RemYanflyOptions_Cheats_ActorHalfStaminaRegen_Help_EN = "Karryn only regenerates half as much stamina.\nFor people who want to see Karryn get gradually worn down.";
+const RemYanflyOptions_Cheats_ActorHalfStaminaRegen_Help_JP = "カリンの体力回復が半減します。\n★じわじわと追い詰められるのを見たい人向け。";
+const RemYanflyOptions_Cheats_ActorThirdStaminaRegen_EN = "\\i[473]\\C[29]Thereisnospoon";
+const RemYanflyOptions_Cheats_ActorThirdStaminaRegen_JP = "\\i[0473]\\C[29]回復３分の１";
+const RemYanflyOptions_Cheats_ActorThirdStaminaRegen_Help_EN = "Karryn only regenerates one-third as much stamina.\nFor people who want Karryn to regenerate much less.";
+const RemYanflyOptions_Cheats_ActorThirdStaminaRegen_Help_JP = "カリンの体力回復が３分の１になります。\n★回復量を大幅に減らしたい人向け。";
+const RemYanflyOptions_Cheats_ActorNoEvasion_EN = "\\i[427]\\C[30]Jack be nimble";
+const RemYanflyOptions_Cheats_ActorNoEvasion_JP = "\\i[427]\\C[30]フルボッコ\\C[30]";
+const RemYanflyOptions_Cheats_ActorNoEvasion_Help_EN = "Karryn can no longer evade.\nFor people who want Karryn to take every attack head on.";
+const RemYanflyOptions_Cheats_ActorNoEvasion_Help_JP = "カリンは一切回避しなくなります。\n★攻撃を全部受けさせたい人向け。";
+const RemYanflyOptions_Cheats_ActorHalfExpRate_EN = "\\i[361]\\C[30]hoyohoyo";
+const RemYanflyOptions_Cheats_ActorHalfExpRate_JP = "\\i[361]\\C[30]経験値半減";
+const RemYanflyOptions_Cheats_ActorHalfExpRate_Help_EN = "Karryn's experience rate is cut in half.\nFor people who want Karryn to take longer to level up.";
+const RemYanflyOptions_Cheats_ActorHalfExpRate_Help_JP = "カリンの取得経験値が半減します。\n★レベルアップにもっと時間をかけたい人向け。";
+const RemYanflyOptions_Cheats_LessControlFive_EN = "\\i[377]\\C[10]ROSEBUD";
+const RemYanflyOptions_Cheats_LessControlFive_JP = "\\i[377]\\C[10]統制力が-5";
+const RemYanflyOptions_Cheats_LessControlFive_Help_EN = "Lowers the prison's Control by 5.\nFor people who want to see more lower Order stuff.";
+const RemYanflyOptions_Cheats_LessControlFive_Help_JP = "監獄の統制力が５下がります。\n★より低い秩序でプレイしたい人向け。";
+const RemYanflyOptions_Cheats_LessControlTen_EN = "\\i[377]\\C[10]showracemenu";
+const RemYanflyOptions_Cheats_LessControlTen_JP = "\\i[377]\\C[10]統制が-10";
+const RemYanflyOptions_Cheats_LessControlTen_Help_EN = "Lowers the prison's Control by 10.\nFor people who want to quickly drop the prison's Order.";
+const RemYanflyOptions_Cheats_LessControlTen_Help_JP = "監獄の統制力が１０下がります。\n★手っ取り早く秩序を落としたい人向け。";
+const RemYanflyOptions_Cheats_InstantRiotsOne_EN = "\\i[407]\\C[7]Greedisgood";
+const RemYanflyOptions_Cheats_InstantRiotsOne_JP = "\\i[407]\\C[7]レベル１で暴動多発";
+const RemYanflyOptions_Cheats_InstantRiotsOne_Help_EN = "Prison Level One is pretty much going to riot every three days.\nFor people who want to re-experience a certain level's contents.";
+const RemYanflyOptions_Cheats_InstantRiotsOne_Help_JP = "監獄レベル１でほぼ３日に１回暴動が発生するようになります。\n★特定の監獄レベルで再戦したい人向け。";
+const RemYanflyOptions_Cheats_InstantRiotsTwo_EN = "\\i[407]\\C[7]black sheep wall";
+const RemYanflyOptions_Cheats_InstantRiotsTwo_JP = "\\i[407]\\C[7]レベル２で暴動多発";
+const RemYanflyOptions_Cheats_InstantRiotsTwo_Help_EN = "Prison Level Two is pretty much going to riot every three days.\nFor people who want to re-experience a certain level's contents.";
+const RemYanflyOptions_Cheats_InstantRiotsTwo_Help_JP = "監獄レベル２でほぼ３日に１回暴動が発生するようになります。\n★特定の監獄レベルで再戦したい人向け。";
+const RemYanflyOptions_Cheats_InstantRiotsThree_EN = "\\i[407]\\C[7]lumberjack";
+const RemYanflyOptions_Cheats_InstantRiotsThree_JP = "\\i[407]\\C[7]レベル３で暴動多発";
+const RemYanflyOptions_Cheats_InstantRiotsThree_Help_EN = "Prison Level Three is pretty much going to riot every three days.\nFor people who want to re-experience a certain level's contents.";
+const RemYanflyOptions_Cheats_InstantRiotsThree_Help_JP = "監獄レベル３でほぼ３日に１回暴動が発生するようになります。\n★特定の監獄レベルで再戦したい人向け。";
+const RemYanflyOptions_Cheats_InstantRiotsFour_EN = "\\i[407]\\C[7]allyourbasearebelongtous";
+const RemYanflyOptions_Cheats_InstantRiotsFour_JP = "\\i[407]\\C[7]レベル４で暴動多発";
+const RemYanflyOptions_Cheats_InstantRiotsFour_Help_EN = "Prison Level Four is pretty much going to riot every three days.\nFor people who want to re-experience a certain level's contents.";
+const RemYanflyOptions_Cheats_InstantRiotsFour_Help_JP = "監獄レベル４でほぼ３日に１回暴動が発生するようになります。\n★特定の監獄レベルで再戦したい人向け。";
+const RemYanflyOptions_Cheats_NoAutoSave_EN = "\\i[282]The \\C[18]K*n*mi\\C[0] Code";
+const RemYanflyOptions_Cheats_NoAutoSave_JP = "\\i[282]\\C[18]オートセーブ解除";
+const RemYanflyOptions_Cheats_NoAutoSave_Help_EN = "Disables autosave.\nJust make sure to save often!";
+const RemYanflyOptions_Cheats_NoAutoSave_Help_JP = "オートセーブを無効化します。\n※こまめなセーブをお忘れなく！";
+
+//Save
 const RemYanflySaveYesEN = "Yes";
 const RemYanflySaveYesJP = "はい";
 const RemYanflySaveNoEN = "No";
@@ -1493,9 +1989,9 @@ const RemFTKRSkillTreeCostItemJP = "%1 コスト"; // currently unused
 const RemFTKRSkillTreePreReqTextEN = "\\c[16]Requirements:";
 const RemFTKRSkillTreePreReqTextJP = "\\c[16]【取得条件】";
 const RemFTKRSkillTreeReqTypeEdictEN = "Edict: ";
-const RemFTKRSkillTreeReqTypeEdictJP = "指令: ";
+const RemFTKRSkillTreeReqTypeEdictJP = "指令：";
 const RemFTKRSkillTreeReqTypePassiveEN = "Passive: ";
-const RemFTKRSkillTreeReqTypePassiveJP = "パッシブ: ";
+const RemFTKRSkillTreeReqTypePassiveJP = "パッシブ：";
 
 
 // currently unused
@@ -1516,7 +2012,7 @@ const RemGlossaryCatHelpJP = "やぁ、よく来たね！\n僕は物知りボー
 const RemGlossaryHelpEN = "To select a note to read, use the up and down arrow keys! \nIf the note you're reading has more than one page,\nuse the right and left arrow to change pages!";
 const RemGlossaryHelpJP = "jp To select a note to read, use the up and down arrow keys! \nIf the note you're reading has more than one page,\nuse the right and left arrow to change pages!";
 
-const RemErrorMessageEN = "If your error message says 'Array buffer allocation failed' or 'Out of memory', then your game has run out of memory so please close all other programs, ESPECIALLY BROWSER WINDOWS, before running Karryn's Prison. For all other errors, please take a screenshot of this screen and report it to the #kp-bug-reports channel on our Discord! Please also tell us what version of the game you are running, as well as many details of what happened before your error occurred! (v." + RemVersionText + ")";
+const RemErrorMessageEN = "If your error message says 'Array buffer allocation failed' or 'Out of memory', then your game has run out of memory so please close all other programs, ESPECIALLY BROWSER WINDOWS, before running Karryn's Prison. For all other errors, if your game files or save file haven't been modified, please take a screenshot of this screen and report it to the #kp-bug-reports channel on our Discord! Please also tell us what version of the game you are running, as well as many details of what happened before your error occurred! (v." + RemVersionText + ")";
 const RemErrorMessageJP = "申し訳ありません。エラーが発生しました！メッセージ「Array buffer allocation failed」「Out of memory」が表示される場合、PCのメモリが不足しています。ゲームを起動する前に他のソフトウェア、特にブラウザソフトを全て閉じて下さい。その他エラーの場合は現在のバージョン、エラー発生時の状態、そしてこのエラー画面のスクリーンショットをRemtairyのDiscordにある「#バグ報告」チャンネルに添付していただければ、迅速に対応させていただきます。エラー発生前後の具体的な状況もお知らせ頂くと幸いです。お手数おかけして申し訳ございませんが、どうぞよろしくお願い致します！ (v."  + RemVersionText + ")";
 
 const RemEquipTypesEN = ["","Weapon","Accessory","Title"];
@@ -1540,7 +2036,8 @@ const RemSkillTypesEN = ["",
 "Waitress",
 "Bartender",
 "Receptionist",
-"Toilet"
+"Toilet",
+"Masturbate"
 ];
 
 const RemSkillTypesJP = ["",
@@ -1561,7 +2058,8 @@ const RemSkillTypesJP = ["",
 "ウェイトレス",
 "バーテンダー",
 "受付嬢",
-"トイレ"
+"トイレ",
+"オナニー"
 ];
 
 //Enemy Types
@@ -1589,7 +2087,7 @@ const RemReceptionistFanEN = "Fan";
 const RemReceptionistFanJP = "ファン";
 const RemReceptionistLizardmanEN = "Lizardman";
 const RemReceptionistLizardmanJP = "リザードマン";
-const RemReceptionistHomelessEN = "Homeless";
+const RemReceptionistHomelessEN = "Hobo";
 const RemReceptionistHomelessJP = "浮浪者";
 
 //Boss Types
@@ -1707,7 +2205,7 @@ const RemWaitressEnemyRefillsKarrynMugJP = "%1は%2のジョッキへ更にビ�
 const RemWaitressEnemyDumpsKarrynMugEN = "%1 takes %2's mug and dumps all the ale on the floor!";
 const RemWaitressEnemyDumpsKarrynMugJP = "%1がおっぱいジョッキの中身を捨てた！";
 const RemWaitressDrinkSemenMugEN = "\\C[27]%1 gulps down \\C[1]%2 ml of semen!";
-const RemWaitressDrinkSemenMugJP = "\\C[27]%1は精飲した！！ザーメン量\\C[1]%2ml\\C[0]！！";
+const RemWaitressDrinkSemenMugJP = "\\C[27]%1はジョッキに溜まったザーメンを飲み干した！！ザーメン量\\C[1]%2ml\\C[0]！！";
 
 const RemReceptionistVisitingRoomA_EN = "Visiting Room A";
 const RemReceptionistVisitingRoomA_JP = "面会室Ａ";
@@ -1754,35 +2252,35 @@ const RemReceptionistNotHereForVisitationEN = "Seems like %1 is not actually int
 const RemReceptionistNotHereForVisitationJP = "%1はカリンに会いに来ただけだった！";
 
 const RemGloryBattleEndEN = "The door opens...";
-const RemGloryBattleEndJP = "■  ■";
+const RemGloryBattleEndJP = "■ お手洗いタイム 終了 ■";
 const RemGloryLeftStallCockNameEN = "The Cock on the Left";
-const RemGloryLeftStallCockNameJP = "The Cock on the Left";
+const RemGloryLeftStallCockNameJP = "左のチンポ";
 const RemGloryRightStallCockNameEN = "The Cock on the Right";
-const RemGloryRightStallCockNameJP = "The Cock on the Right";
+const RemGloryRightStallCockNameJP = "右のチンポ";
 const RemGloryGuestEnterBathroomEN = "\\C[8]Someone has entered into the bathroom.";
-const RemGloryGuestEnterBathroomJP = "\\C[8]Someone has entered into the bathroom.";
+const RemGloryGuestEnterBathroomJP = "\\C[8]何者かがトイレに入ってきた。";
 const RemGloryGuestLeaveBathroomEN = "\\C[8]Someone has walked out from the bathroom.";
-const RemGloryGuestLeaveBathroomJP = "\\C[8]Someone has walked out from the bathroom.";
+const RemGloryGuestLeaveBathroomJP = "\\C[8]誰か立ち去ったようだ。";
 const RemGloryGuestEnterLeftStallEN = "\\C[7]Someone has entered the left stall.";
-const RemGloryGuestEnterLeftStallJP = "\\C[7]Someone has entered the left stall.";
+const RemGloryGuestEnterLeftStallJP = "\\C[7]左の個室に誰か入って来たようだ。";
 const RemGloryGuestLeaveLeftStallEN = "\\C[7]Someone has vacated the left stall.";
-const RemGloryGuestLeaveLeftStallJP = "\\C[7]Someone has vacated the left stall.";
+const RemGloryGuestLeaveLeftStallJP = "\\C[7]左の個室から人の気配が消えた。";
 const RemGloryGuestEnterRightStallEN = "\\C[7]Someone has entered the right stall.";
-const RemGloryGuestEnterRightStallJP = "\\C[7]Someone has entered the right stall.";
+const RemGloryGuestEnterRightStallJP = "\\C[7]右の個室に誰か入って来たようだ。";
 const RemGloryGuestLeaveRightStallEN = "\\C[7]Someone has vacated the right stall.";
-const RemGloryGuestLeaveRightStallJP = "\\C[7]Someone has vacated the right stall.";
+const RemGloryGuestLeaveRightStallJP = "\\C[7]右の個室から人の気配が消えた。";
 const RemGloryGuestPissingLeftStallEN = "\\C[8]Pissing sounds are coming from the left stall.";
-const RemGloryGuestPissingLeftStallJP = "\\C[8]Pissing sounds are coming from the left stall.";
+const RemGloryGuestPissingLeftStallJP = "\\C[8]左の個室から小便の音がしている。";
 const RemGloryGuestEatingLeftStallEN = "\\C[8]Food chewing sounds are coming from the left stall.";
-const RemGloryGuestEatingLeftStallJP = "\\C[8]Food chewing sounds are coming from the left stall.";
+const RemGloryGuestEatingLeftStallJP = "\\C[8]左の個室から食べる音が聞こえる。";
 const RemGloryGuestPissingRightStallEN = "\\C[8]Pissing sounds are coming from the right stall.";
-const RemGloryGuestPissingRightStallJP = "\\C[8]Pissing sounds are coming from the right stall.";
+const RemGloryGuestPissingRightStallJP = "\\C[8]右の個室から小便の音がしている。";
 const RemGloryGuestEatingRightStallEN = "\\C[8]Food chewing sounds are coming from the right stall.";
-const RemGloryGuestEatingRightStallJP = "\\C[8]Food chewing sounds are coming from the right stall.";
+const RemGloryGuestEatingRightStallJP = "\\C[8]右の個室から食べる音が聞こえる。.";
 const RemGloryGuestShowedThroughLeftHoleEN = "\\C[27]A cock appears from the hole on the left!";
-const RemGloryGuestShowedThroughLeftHoleJP = "\\C[27]A cock appears from the hole on the left!";
+const RemGloryGuestShowedThroughLeftHoleJP = "\\C[27]左の穴からチンポが現れた！";
 const RemGloryGuestShowedThroughRightHoleEN = "\\C[27]A cock appears from the hole on the right!";
-const RemGloryGuestShowedThroughRightHoleJP = "\\C[27]A cock appears from the hole on the right!";
+const RemGloryGuestShowedThroughRightHoleJP = "\\C[27]右の穴からチンポが現れた！";
 
 /////////
 // TextManager
@@ -1925,11 +2423,17 @@ Object.defineProperties(TextManager, {
 			if(this.isJapanese) return CockinessIncreasedTextJP;
 			else if(this.isEnglish) return CockinessIncreasedTextEN;
 		}, configurable: true
+	},
+	cockinessDecrease: {
+		get: function() { 
+			if(this.isJapanese) return CockinessDecreasedTextJP;
+			else if(this.isEnglish) return CockinessDecreasedTextEN;
+		}, configurable: true
 	},	
 	cockinessReset: {
 		get: function() { 
-			if(this.isJapanese) return CockinessResetedJP;
-			else if(this.isEnglish) return CockinessResetedEN;
+			if(this.isJapanese) return CockinessResetJP;
+			else if(this.isEnglish) return CockinessResetEN;
 		}, configurable: true
 	},	
 	cockinessMaxxedOut: {
@@ -2297,6 +2801,27 @@ Object.defineProperties(TextManager, {
 			else if(this.isEnglish) return SkillDescriptionCantDoThisEN;
 		}, configurable: true
 	},
+	SkillDescriptionHandsBusy: { 
+		get: function() { 
+			if(this.isJapanese) return SkillDescriptionHandsBusyJP;
+			else if(this.isEnglish) return SkillDescriptionHandsBusyEN;
+		}, configurable: true
+	},
+	SkillDescriptionNotWet: { 
+		get: function() { 
+			if(this.isJapanese) return SkillDescriptionNotWetJP;
+			else if(this.isEnglish) return SkillDescriptionNotWetEN;
+		}, configurable: true
+	},
+	
+
+	TitleDescriptionFirstTimeTitleEquip: { 
+		get: function() { 
+			if(this.isJapanese) return TitleDescriptionFirstTimeTitleEquipJP;
+			else if(this.isEnglish) return TitleDescriptionFirstTimeTitleEquipEN;
+		}, configurable: true
+	},
+
 	
 	wardenLevel: { 
 		get: function() { 
@@ -2514,6 +3039,18 @@ Object.defineProperties(TextManager, {
 		get: function() { 
 			if(this.isJapanese) return RCMenuArousedLevelTwoTextJP;
 			else if(this.isEnglish) return RCMenuArousedLevelTwoTextEN;
+		}, configurable: true
+	},
+	RCMenuFrustratedLevelOneText: { 
+		get: function() { 
+			if(this.isJapanese) return RCMenuFrustratedLevelOneTextJP;
+			else if(this.isEnglish) return RCMenuFrustratedLevelOneTextEN;
+		}, configurable: true
+	},
+	RCMenuFrustratedLevelTwoText: { 
+		get: function() { 
+			if(this.isJapanese) return RCMenuFrustratedLevelTwoTextJP;
+			else if(this.isEnglish) return RCMenuFrustratedLevelTwoTextEN;
 		}, configurable: true
 	},
 	RCMenuLostPantiesText: { 
@@ -2768,6 +3305,12 @@ Object.defineProperties(TextManager, {
 			else if(this.isEnglish) return BukkakeSensitivityEN;
 		}, configurable: true
 	},	
+	buttSpankingSensitivity: { 
+		get: function() { 
+			if(this.isJapanese) return ButtSpankingSensitivityJP;
+			else if(this.isEnglish) return ButtSpankingSensitivityEN;
+		}, configurable: true
+	},	
 	
 	
 	statusMenuPrimary: { 
@@ -2813,11 +3356,16 @@ Object.defineProperties(TextManager, {
 		}, configurable: true
 	},
 
-
-	statusMenuParameter: { 
+	statusMenuStats: { 
 		get: function() { 
-			if(this.isJapanese) return StatusMenuParameterJP;
-			else if(this.isEnglish) return StatusMenuParameterEN;
+			if(this.isJapanese) return StatusMenuStatsJP;
+			else if(this.isEnglish) return StatusMenuStatsEN;
+		}, configurable: true
+	},
+	statusMenuStatLevels: { 
+		get: function() { 
+			if(this.isJapanese) return StatusMenuStatLevelsJP;
+			else if(this.isEnglish) return StatusMenuStatLevelsEN;
 		}, configurable: true
 	},
 	statusMenuAttributes: { 
@@ -3036,6 +3584,19 @@ Object.defineProperties(TextManager, {
 			else if(this.isEnglish) return ProfileRecordAnalCreampieEN;
 		}, configurable: true
 	},
+	profileRecordBodyBukkake: { 
+		get: function() { 
+			if(this.isJapanese) return ProfileRecordBodyBukkakeJP;
+			else if(this.isEnglish) return ProfileRecordBodyBukkakeEN;
+		}, configurable: true
+	},
+	profileRecordFaceBukkake: { 
+		get: function() { 
+			if(this.isJapanese) return ProfileRecordFaceBukkakeJP;
+			else if(this.isEnglish) return ProfileRecordFaceBukkakeEN;
+		}, configurable: true
+	},
+	
 
 	profileRecordCunnilingus: { 
 		get: function() { 
@@ -3217,6 +3778,30 @@ Object.defineProperties(TextManager, {
 		get: function() { 
 			if(this.isJapanese) return ProfileRecordLastRimjobJP;
 			else if(this.isEnglish) return ProfileRecordLastRimjobEN;
+		}, configurable: true
+	},
+	profileRecordFirstBukkake: { 
+		get: function() { 
+			if(this.isJapanese) return ProfileRecordFirstBukkakeJP;
+			else if(this.isEnglish) return ProfileRecordFirstBukkakeEN;
+		}, configurable: true
+	},
+	profileRecordLastBukkake: { 
+		get: function() { 
+			if(this.isJapanese) return ProfileRecordLastBukkakeJP;
+			else if(this.isEnglish) return ProfileRecordLastBukkakeEN;
+		}, configurable: true
+	},
+	profileRecordFirstFaceBukkake: { 
+		get: function() { 
+			if(this.isJapanese) return ProfileRecordFirstFaceBukkakeJP;
+			else if(this.isEnglish) return ProfileRecordFirstFaceBukkakeEN;
+		}, configurable: true
+	},
+	profileRecordLastFaceBukkake: { 
+		get: function() { 
+			if(this.isJapanese) return ProfileRecordLastFaceBukkakeJP;
+			else if(this.isEnglish) return ProfileRecordLastFaceBukkakeEN;
 		}, configurable: true
 	},
 	profileRecordFirstSwallow: { 
@@ -3469,12 +4054,39 @@ Object.defineProperties(TextManager, {
 		}, configurable: true
 	},
 	
+	statusRecordFingersSucked: { 
+		get: function() { 
+			if(this.isJapanese) return StatusRecordFingersSuckedJP;
+			else if(this.isEnglish) return StatusRecordFingersSuckedEN;
+		}, configurable: true
+	},
+	statusRecordBukkake: { 
+		get: function() { 
+			if(this.isJapanese) return StatusRecordBukkakeJP;
+			else if(this.isEnglish) return StatusRecordBukkakeEN;
+		}, configurable: true
+	},
+	statusRecordFaceBukkake: { 
+		get: function() { 
+			if(this.isJapanese) return StatusRecordFaceBukkakeJP;
+			else if(this.isEnglish) return StatusRecordFaceBukkakeEN;
+		}, configurable: true
+	},
+	
 	statusBattleEffectOrgasm: { 
 		get: function() { 
 			if(this.isJapanese) return StatusBattleEffectOrgasmJP;
 			else if(this.isEnglish) return StatusBattleEffectOrgasmEN;
 		}, configurable: true
 	},
+	StatusBattleEffectCool: { 
+		get: function() { 
+			if(this.isJapanese) return StatusBattleEffectCoolJP;
+			else if(this.isEnglish) return StatusBattleEffectCoolEN;
+		}, configurable: true
+	},
+	
+	
 	statusBattleEffectIsHornyZero: { 
 		get: function() { 
 			if(this.isJapanese) return StatusBattleEffectIsHornyZeroJP;
@@ -3493,6 +4105,13 @@ Object.defineProperties(TextManager, {
 			else if(this.isEnglish) return StatusBattleEffectIsHornyTwoEN;
 		}, configurable: true
 	},
+	StatusBattleEffectIsHornyThree: { 
+		get: function() { 
+			if(this.isJapanese) return StatusBattleEffectIsHornyThreeJP;
+			else if(this.isEnglish) return StatusBattleEffectIsHornyThreeEN;
+		}, configurable: true
+	},
+	
 	
 	statusBattleEffectIsConfidentZero: { 
 		get: function() { 
@@ -3504,6 +4123,13 @@ Object.defineProperties(TextManager, {
 		get: function() { 
 			if(this.isJapanese) return StatusBattleEffectIsConfidentOneJP;
 			else if(this.isEnglish) return StatusBattleEffectIsConfidentOneEN;
+		}, configurable: true
+	},
+	
+	statusBattleEffectIsFrustrated: { 
+		get: function() { 
+			if(this.isJapanese) return StatusBattleEffectIsFrustratedJP;
+			else if(this.isEnglish) return StatusBattleEffectIsFrustratedEN;
 		}, configurable: true
 	},
 	
@@ -3541,6 +4167,30 @@ Object.defineProperties(TextManager, {
 		get: function() { 
 			if(this.isJapanese) return StatusBattleEffectIsNotWearingPantiesJP;
 			else if(this.isEnglish) return StatusBattleEffectIsNotWearingPantiesEN;
+		}, configurable: true
+	},
+	StatusBattleEffectIsVirginHigh: { 
+		get: function() { 
+			if(this.isJapanese) return StatusBattleEffectIsVirginHighJP;
+			else if(this.isEnglish) return StatusBattleEffectIsVirginHighEN;
+		}, configurable: true
+	},
+	StatusBattleEffectIsVirginMed: { 
+		get: function() { 
+			if(this.isJapanese) return StatusBattleEffectIsVirginMedJP;
+			else if(this.isEnglish) return StatusBattleEffectIsVirginMedEN;
+		}, configurable: true
+	},
+	StatusBattleEffectIsVirginLow: { 
+		get: function() { 
+			if(this.isJapanese) return StatusBattleEffectIsVirginLowJP;
+			else if(this.isEnglish) return StatusBattleEffectIsVirginLowEN;
+		}, configurable: true
+	},
+	StatusBattleEffectIsVirginPublished: { 
+		get: function() { 
+			if(this.isJapanese) return StatusBattleEffectIsVirginPublishedJP;
+			else if(this.isEnglish) return StatusBattleEffectIsVirginPublishedEN;
 		}, configurable: true
 	},
 	
@@ -3597,6 +4247,815 @@ Object.defineProperties(TextManager, {
 		get: function() { 
 			if(this.isJapanese) return StatusBattleEffectExposeWeaknessJP;
 			else if(this.isEnglish) return StatusBattleEffectExposeWeaknessEN;
+		}, configurable: true
+	},
+	StatusBattleEffectAttackCombo: { 
+		get: function() { 
+			if(this.isJapanese) return StatusBattleEffectAttackComboJP;
+			else if(this.isEnglish) return StatusBattleEffectAttackComboEN;
+		}, configurable: true
+	},
+	StatusBattleEffectAttackComboCocky: { 
+		get: function() { 
+			if(this.isJapanese) return StatusBattleEffectAttackComboCockyJP;
+			else if(this.isEnglish) return StatusBattleEffectAttackComboCockyEN;
+		}, configurable: true
+	},
+	StatusBattleEffectSexComboOne: { 
+		get: function() { 
+			if(this.isJapanese) return StatusBattleEffectSexComboOneJP;
+			else if(this.isEnglish) return StatusBattleEffectSexComboOneEN;
+		}, configurable: true
+	},
+	StatusBattleEffectSexComboTwo: { 
+		get: function() { 
+			if(this.isJapanese) return StatusBattleEffectSexComboTwoJP;
+			else if(this.isEnglish) return StatusBattleEffectSexComboTwoEN;
+		}, configurable: true
+	},
+	
+	StateTooltipsRemainingTurnsSingular: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsRemainingTurnsSingularJP;
+			else if(this.isEnglish) return StateTooltipsRemainingTurnsSingularEN;
+		}, configurable: true
+	},
+	StateTooltipsRemainingTurnsPlural: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsRemainingTurnsPluralJP;
+			else if(this.isEnglish) return StateTooltipsRemainingTurnsPluralEN;
+		}, configurable: true
+	},
+
+	StateTooltipsDisarmed: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsDisarmedJP;
+			else if(this.isEnglish) return StateTooltipsDisarmedEN;
+		}, configurable: true
+	},
+	StateTooltipsOrgasm: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsOrgasmJP;
+			else if(this.isEnglish) return StateTooltipsOrgasmEN;
+		}, configurable: true
+	},
+	StateTooltipsSlashStance: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsSlashStanceJP;
+			else if(this.isEnglish) return StateTooltipsSlashStanceEN;
+		}, configurable: true
+	},
+	StateTooltipsPierceStance: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsPierceStanceJP;
+			else if(this.isEnglish) return StateTooltipsPierceStanceEN;
+		}, configurable: true
+	},
+	StateTooltipsBluntStance: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsBluntStanceJP;
+			else if(this.isEnglish) return StateTooltipsBluntStanceEN;
+		}, configurable: true
+	},
+	StateTooltipsHornyZero: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsHornyZeroJP;
+			else if(this.isEnglish) return StateTooltipsHornyZeroEN;
+		}, configurable: true
+	},
+	StateTooltipsHornyOne: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsHornyOneJP;
+			else if(this.isEnglish) return StateTooltipsHornyOneEN;
+		}, configurable: true
+	},
+	StateTooltipsHornyTwo: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsHornyTwoJP;
+			else if(this.isEnglish) return StateTooltipsHornyTwoEN;
+		}, configurable: true
+	},
+	StateTooltipsHornyThree: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsHornyThreeJP;
+			else if(this.isEnglish) return StateTooltipsHornyThreeEN;
+		}, configurable: true
+	},
+	
+	StateTooltipsEnemyHorny: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsEnemyHornyJP;
+			else if(this.isEnglish) return StateTooltipsEnemyHornyEN;
+		}, configurable: true
+	},
+	StateTooltipsCool: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsCoolJP;
+			else if(this.isEnglish) return StateTooltipsCoolEN;
+		}, configurable: true
+	},
+	StateTooltipsIsWet: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsIsWetJP;
+			else if(this.isEnglish) return StateTooltipsIsWetEN;
+		}, configurable: true
+	},
+	StateTooltipsNotWet: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsNotWetJP;
+			else if(this.isEnglish) return StateTooltipsNotWetEN;
+		}, configurable: true
+	},
+	StateTooltipsWearingPanties: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsWearingPantiesJP;
+			else if(this.isEnglish) return StateTooltipsWearingPantiesEN;
+		}, configurable: true
+	},
+	StateTooltipsNotWearingPanties: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsNotWearingPantiesJP;
+			else if(this.isEnglish) return StateTooltipsNotWearingPantiesEN;
+		}, configurable: true
+	},
+	StateTooltipsVirginPublished: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsVirginPublishedJP;
+			else if(this.isEnglish) return StateTooltipsVirginPublishedEN;
+		}, configurable: true
+	},
+	StateTooltipsVirginHigh: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsVirginHighJP;
+			else if(this.isEnglish) return StateTooltipsVirginHighEN;
+		}, configurable: true
+	},
+	StateTooltipsVirginMed: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsVirginMedJP;
+			else if(this.isEnglish) return StateTooltipsVirginMedEN;
+		}, configurable: true
+	},
+	StateTooltipsVirginLow: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsVirginLowJP;
+			else if(this.isEnglish) return StateTooltipsVirginLowEN;
+		}, configurable: true
+	},
+	StateTooltipsConfidentZero: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsConfidentZeroJP;
+			else if(this.isEnglish) return StateTooltipsConfidentZeroEN;
+		}, configurable: true
+	},
+	StateTooltipsConfidentOne: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsConfidentOneJP;
+			else if(this.isEnglish) return StateTooltipsConfidentOneEN;
+		}, configurable: true
+	},
+	StateTooltipsFrustrated: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsFrustratedJP;
+			else if(this.isEnglish) return StateTooltipsFrustratedEN;
+		}, configurable: true
+	},
+	StateTooltipsOffBalanced: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsOffBalancedJP;
+			else if(this.isEnglish) return StateTooltipsOffBalancedEN;
+		}, configurable: true
+	},
+	StateTooltipsWeaken: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsWeakenJP;
+			else if(this.isEnglish) return StateTooltipsWeakenEN;
+		}, configurable: true
+	},
+	StateTooltipsDizzy: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsDizzyJP;
+			else if(this.isEnglish) return StateTooltipsDizzyEN;
+		}, configurable: true
+	},
+	StateTooltipsSlow: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsSlowJP;
+			else if(this.isEnglish) return StateTooltipsSlowEN;
+		}, configurable: true
+	},
+	StateTooltipsVulnerable: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsVulnerableJP;
+			else if(this.isEnglish) return StateTooltipsVulnerableEN;
+		}, configurable: true
+	},
+	StateTooltipsPoison: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsPoisonJP;
+			else if(this.isEnglish) return StateTooltipsPoisonEN;
+		}, configurable: true
+	},
+	StateTooltipsExposeWeakness: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsExposeWeaknessJP;
+			else if(this.isEnglish) return StateTooltipsExposeWeaknessEN;
+		}, configurable: true
+	},
+	StateTooltipsStunned: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsStunnedJP;
+			else if(this.isEnglish) return StateTooltipsStunnedEN;
+		}, configurable: true
+	},
+	StateTooltipsEnemyPoseMaster: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsEnemyPoseMasterJP;
+			else if(this.isEnglish) return StateTooltipsEnemyPoseMasterEN;
+		}, configurable: true
+	},
+	StateTooltipsActorAttackCombo: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsActorAttackComboJP;
+			else if(this.isEnglish) return StateTooltipsActorAttackComboEN;
+		}, configurable: true
+	},
+	StateTooltipsActorAttackComboCocky: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsActorAttackComboCockyJP;
+			else if(this.isEnglish) return StateTooltipsActorAttackComboCockyEN;
+		}, configurable: true
+	},
+	StateTooltipsActorSexCombo: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsActorSexComboJP;
+			else if(this.isEnglish) return StateTooltipsActorSexComboEN;
+		}, configurable: true
+	},
+	StateTooltipsEnemyPosePussySex: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsEnemyPosePussySexJP;
+			else if(this.isEnglish) return StateTooltipsEnemyPosePussySexEN;
+		}, configurable: true
+	},
+	StateTooltipsEnemyPoseCunnilingus: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsEnemyPoseCunnilingusJP;
+			else if(this.isEnglish) return StateTooltipsEnemyPoseCunnilingusEN;
+		}, configurable: true
+	},
+	StateTooltipsEnemyPoseAnalSex: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsEnemyPoseAnalSexJP;
+			else if(this.isEnglish) return StateTooltipsEnemyPoseAnalSexEN;
+		}, configurable: true
+	},
+	StateTooltipsEnemyPosePaizuri: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsEnemyPosePaizuriJP;
+			else if(this.isEnglish) return StateTooltipsEnemyPosePaizuriEN;
+		}, configurable: true
+	},
+	StateTooltipsEnemyPoseHandjob: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsEnemyPoseHandjobJP;
+			else if(this.isEnglish) return StateTooltipsEnemyPoseHandjobEN;
+		}, configurable: true
+	},
+	StateTooltipsEnemyPoseBlowjob: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsEnemyPoseBlowjobJP;
+			else if(this.isEnglish) return StateTooltipsEnemyPoseBlowjobEN;
+		}, configurable: true
+	},
+	StateTooltipsEnemyPoseFootjob: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsEnemyPoseFootjobJP;
+			else if(this.isEnglish) return StateTooltipsEnemyPoseFootjobEN;
+		}, configurable: true
+	},
+	StateTooltipsEnemyPoseRimjob: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsEnemyPoseRimjobJP;
+			else if(this.isEnglish) return StateTooltipsEnemyPoseRimjobEN;
+		}, configurable: true
+	},
+	StateTooltipsEnemyKissed: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsEnemyKissedJP;
+			else if(this.isEnglish) return StateTooltipsEnemyKissedEN;
+		}, configurable: true
+	},
+	StateTooltipsAroused: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsArousedJP;
+			else if(this.isEnglish) return StateTooltipsArousedEN;
+		}, configurable: true
+	},
+	StateTooltipsCautiousStance: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsCautiousStanceJP;
+			else if(this.isEnglish) return StateTooltipsCautiousStanceEN;
+		}, configurable: true
+	},
+	StateTooltipsDefensiveStance: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsDefensiveStanceJP;
+			else if(this.isEnglish) return StateTooltipsDefensiveStanceEN;
+		}, configurable: true
+	},
+	StateTooltipsCounterStance: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsCounterStanceJP;
+			else if(this.isEnglish) return StateTooltipsCounterStanceEN;
+		}, configurable: true
+	},
+	StateTooltipsSecretaryStance: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsSecretaryStanceJP;
+			else if(this.isEnglish) return StateTooltipsSecretaryStanceEN;
+		}, configurable: true
+	},
+	StateTooltipsLadyStance: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsLadyStanceJP;
+			else if(this.isEnglish) return StateTooltipsLadyStanceEN;
+		}, configurable: true
+	},
+	StateTooltipsPleasureStance: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsPleasureStanceJP;
+			else if(this.isEnglish) return StateTooltipsPleasureStanceEN;
+		}, configurable: true
+	},
+	StateTooltipsWillpowerKiOne: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsWillpowerKiOneJP;
+			else if(this.isEnglish) return StateTooltipsWillpowerKiOneEN;
+		}, configurable: true
+	},
+	StateTooltipsWillpowerKiTwo: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsWillpowerKiTwoJP;
+			else if(this.isEnglish) return StateTooltipsWillpowerKiTwoEN;
+		}, configurable: true
+	},
+	StateTooltipsWillpowerFocusOne: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsWillpowerFocusOneJP;
+			else if(this.isEnglish) return StateTooltipsWillpowerFocusOneEN;
+		}, configurable: true
+	},
+	StateTooltipsWillpowerFocusTwo: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsWillpowerFocusTwoJP;
+			else if(this.isEnglish) return StateTooltipsWillpowerFocusTwoEN;
+		}, configurable: true
+	},
+	StateTooltipsWillpowerEyeOfTheMindOne: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsWillpowerEyeOfTheMindOneJP;
+			else if(this.isEnglish) return StateTooltipsWillpowerEyeOfTheMindOneEN;
+		}, configurable: true
+	},
+	StateTooltipsWillpowerEyeOfTheMindTwo: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsWillpowerEyeOfTheMindTwoJP;
+			else if(this.isEnglish) return StateTooltipsWillpowerEyeOfTheMindTwoEN;
+		}, configurable: true
+	},
+	StateTooltipsWillpowerSeeNoEvil: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsWillpowerSeeNoEvilJP;
+			else if(this.isEnglish) return StateTooltipsWillpowerSeeNoEvilEN;
+		}, configurable: true
+	},
+	StateTooltipsWillpowerHearNoEvil: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsWillpowerHearNoEvilJP;
+			else if(this.isEnglish) return StateTooltipsWillpowerHearNoEvilEN;
+		}, configurable: true
+	},
+	StateTooltipsWillpowerRealityMarble: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsWillpowerRealityMarbleJP;
+			else if(this.isEnglish) return StateTooltipsWillpowerRealityMarbleEN;
+		}, configurable: true
+	},
+	StateTooltipsWillpowerResistOrgasm: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsWillpowerResistOrgasmJP;
+			else if(this.isEnglish) return StateTooltipsWillpowerResistOrgasmEN;
+		}, configurable: true
+	},
+	StateTooltipsWillpowerEdgingControlKarryn: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsWillpowerEdgingControlKarrynJP;
+			else if(this.isEnglish) return StateTooltipsWillpowerEdgingControlKarrynEN;
+		}, configurable: true
+	},
+	StateTooltipsWillpowerEdgingControlEnemy: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsWillpowerEdgingControlEnemyJP;
+			else if(this.isEnglish) return StateTooltipsWillpowerEdgingControlEnemyEN;
+		}, configurable: true
+	},
+	StateTooltipsBonusPierceDamage: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsBonusPierceDamageJP;
+			else if(this.isEnglish) return StateTooltipsBonusPierceDamageEN;
+		}, configurable: true
+	},
+	StateTooltipsBonusSlashDamage: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsBonusSlashDamageJP;
+			else if(this.isEnglish) return StateTooltipsBonusSlashDamageEN;
+		}, configurable: true
+	},
+	StateTooltipsBonusBluntDamage: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsBonusBluntDamageJP;
+			else if(this.isEnglish) return StateTooltipsBonusBluntDamageEN;
+		}, configurable: true
+	},
+	StateTooltipsEjaculationStunned: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsEjaculationStunnedJP;
+			else if(this.isEnglish) return StateTooltipsEjaculationStunnedEN;
+		}, configurable: true
+	},
+	StateTooltipsSlimeRegenNormal: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsSlimeRegenNormalJP;
+			else if(this.isEnglish) return StateTooltipsSlimeRegenNormalEN;
+		}, configurable: true
+	},
+	StateTooltipsSlimeRegenFourth: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsSlimeRegenFourthJP;
+			else if(this.isEnglish) return StateTooltipsSlimeRegenFourthEN;
+		}, configurable: true
+	},
+	StateTooltipsOrcDefensivePresence: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsOrcDefensivePresenceJP;
+			else if(this.isEnglish) return StateTooltipsOrcDefensivePresenceEN;
+		}, configurable: true
+	},
+	StateTooltipsLizardmanRacial: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsLizardmanRacialJP;
+			else if(this.isEnglish) return StateTooltipsLizardmanRacialEN;
+		}, configurable: true
+	},
+	StateTooltipsKarrynClitToy: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsKarrynClitToyJP;
+			else if(this.isEnglish) return StateTooltipsKarrynClitToyEN;
+		}, configurable: true
+	},
+	StateTooltipsKarrynPussyToy: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsKarrynPussyToyJP;
+			else if(this.isEnglish) return StateTooltipsKarrynPussyToyEN;
+		}, configurable: true
+	},
+	StateTooltipsKarrynAnalToy: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsKarrynAnalToyJP;
+			else if(this.isEnglish) return StateTooltipsKarrynAnalToyEN;
+		}, configurable: true
+	},
+	StateTooltipsEnemyClitToyPinkRotor: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsEnemyClitToyPinkRotorJP;
+			else if(this.isEnglish) return StateTooltipsEnemyClitToyPinkRotorEN;
+		}, configurable: true
+	},
+	StateTooltipsEnemyPussyToyPenisDildo: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsEnemyPussyToyPenisDildoJP;
+			else if(this.isEnglish) return StateTooltipsEnemyPussyToyPenisDildoEN;
+		}, configurable: true
+	},
+	StateTooltipsEnemyAnalToyAnalBeads: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsEnemyAnalToyAnalBeadsJP;
+			else if(this.isEnglish) return StateTooltipsEnemyAnalToyAnalBeadsEN;
+		}, configurable: true
+	},
+	StateWaitressNoAlcohol: { 
+		get: function() { 
+			if(this.isJapanese) return StateWaitressNoAlcoholJP;
+			else if(this.isEnglish) return StateWaitressNoAlcoholEN;
+		}, configurable: true
+	},
+	StateWaitressDirtyMugsSingular: { 
+		get: function() { 
+			if(this.isJapanese) return StateWaitressDirtyMugsSingularJP;
+			else if(this.isEnglish) return StateWaitressDirtyMugsSingularEN;
+		}, configurable: true
+	},
+	StateWaitressDirtyMugsPlural: { 
+		get: function() { 
+			if(this.isJapanese) return StateWaitressDirtyMugsPluralJP;
+			else if(this.isEnglish) return StateWaitressDirtyMugsPluralEN;
+		}, configurable: true
+	},
+	StateWaitressDirtyGlassesSingular: { 
+		get: function() { 
+			if(this.isJapanese) return StateWaitressDirtyGlassesSingularJP;
+			else if(this.isEnglish) return StateWaitressDirtyGlassesSingularEN;
+		}, configurable: true
+	},
+	StateWaitressDirtyGlassesPlural: { 
+		get: function() { 
+			if(this.isJapanese) return StateWaitressDirtyGlassesPluralJP;
+			else if(this.isEnglish) return StateWaitressDirtyGlassesPluralEN;
+		}, configurable: true
+	},
+	StateWaitressAvailableMugsSingular: { 
+		get: function() { 
+			if(this.isJapanese) return StateWaitressAvailableMugsSingularJP;
+			else if(this.isEnglish) return StateWaitressAvailableMugsSingularEN;
+		}, configurable: true
+	},
+	StateWaitressAvailableMugsPlural: { 
+		get: function() { 
+			if(this.isJapanese) return StateWaitressAvailableMugsPluralJP;
+			else if(this.isEnglish) return StateWaitressAvailableMugsPluralEN;
+		}, configurable: true
+	},
+	StateWaitressAvailableGlassesSingular: { 
+		get: function() { 
+			if(this.isJapanese) return StateWaitressAvailableGlassesSingularJP;
+			else if(this.isEnglish) return StateWaitressAvailableGlassesSingularEN;
+		}, configurable: true
+	},
+	StateWaitressAvailableGlassesPlural: { 
+		get: function() { 
+			if(this.isJapanese) return StateWaitressAvailableGlassesPluralJP;
+			else if(this.isEnglish) return StateWaitressAvailableGlassesPluralEN;
+		}, configurable: true
+	},
+	StateWaitressKarrynLocation: { 
+		get: function() { 
+			if(this.isJapanese) return StateWaitressKarrynLocationJP;
+			else if(this.isEnglish) return StateWaitressKarrynLocationEN;
+		}, configurable: true
+	},
+	StateWaitressTableALocation: { 
+		get: function() { 
+			if(this.isJapanese) return StateWaitressTableALocationJP;
+			else if(this.isEnglish) return StateWaitressTableALocationEN;
+		}, configurable: true
+	},
+	StateWaitressTableBLocation: { 
+		get: function() { 
+			if(this.isJapanese) return StateWaitressTableBLocationJP;
+			else if(this.isEnglish) return StateWaitressTableBLocationEN;
+		}, configurable: true
+	},
+	StateWaitressTableCLocation: { 
+		get: function() { 
+			if(this.isJapanese) return StateWaitressTableCLocationJP;
+			else if(this.isEnglish) return StateWaitressTableCLocationEN;
+		}, configurable: true
+	},
+	StateWaitressTableDLocation: { 
+		get: function() { 
+			if(this.isJapanese) return StateWaitressTableDLocationJP;
+			else if(this.isEnglish) return StateWaitressTableDLocationEN;
+		}, configurable: true
+	},
+	StateWaitressSleeping: { 
+		get: function() { 
+			if(this.isJapanese) return StateWaitressSleepingJP;
+			else if(this.isEnglish) return StateWaitressSleepingEN;
+		}, configurable: true
+	},
+	StateWaitressDrinkingDrink: { 
+		get: function() { 
+			if(this.isJapanese) return StateWaitressDrinkingDrinkJP;
+			else if(this.isEnglish) return StateWaitressDrinkingDrinkEN;
+		}, configurable: true
+	},
+	StateReceptionistVisitorUnknownBefore: { 
+		get: function() { 
+			if(this.isJapanese) return StateReceptionistVisitorUnknownBeforeJP;
+			else if(this.isEnglish) return StateReceptionistVisitorUnknownBeforeEN;
+		}, configurable: true
+	},
+	StateReceptionistVisitorUnknownAfter: { 
+		get: function() { 
+			if(this.isJapanese) return StateReceptionistVisitorUnknownAfterJP;
+			else if(this.isEnglish) return StateReceptionistVisitorUnknownAfterEN;
+		}, configurable: true
+	},
+	StateReceptionistVisitorWritingBefore: { 
+		get: function() { 
+			if(this.isJapanese) return StateReceptionistVisitorWritingBeforeJP;
+			else if(this.isEnglish) return StateReceptionistVisitorWritingBeforeEN;
+		}, configurable: true
+	},
+	StateReceptionistVisitorWritingDuring: { 
+		get: function() { 
+			if(this.isJapanese) return StateReceptionistVisitorWritingDuringJP;
+			else if(this.isEnglish) return StateReceptionistVisitorWritingDuringEN;
+		}, configurable: true
+	},
+	StateReceptionistVisitorWritingAfter: { 
+		get: function() { 
+			if(this.isJapanese) return StateReceptionistVisitorWritingAfterJP;
+			else if(this.isEnglish) return StateReceptionistVisitorWritingAfterEN;
+		}, configurable: true
+	},
+	StateReceptionistVisitorPaperBefore: { 
+		get: function() { 
+			if(this.isJapanese) return StateReceptionistVisitorPaperBeforeJP;
+			else if(this.isEnglish) return StateReceptionistVisitorPaperBeforeEN;
+		}, configurable: true
+	},
+	StateReceptionistVisitorPaperAfter: { 
+		get: function() { 
+			if(this.isJapanese) return StateReceptionistVisitorPaperAfterJP;
+			else if(this.isEnglish) return StateReceptionistVisitorPaperAfterEN;
+		}, configurable: true
+	},
+	StateReceptionistVisitorTime: { 
+		get: function() { 
+			if(this.isJapanese) return StateReceptionistVisitorTimeJP;
+			else if(this.isEnglish) return StateReceptionistVisitorTimeEN;
+		}, configurable: true
+	},
+	StateReceptionistVisitorMoving: { 
+		get: function() { 
+			if(this.isJapanese) return StateReceptionistVisitorMovingJP;
+			else if(this.isEnglish) return StateReceptionistVisitorMovingEN;
+		}, configurable: true
+	},
+	StateReceptionistVisitorSitting: { 
+		get: function() { 
+			if(this.isJapanese) return StateReceptionistVisitorSittingJP;
+			else if(this.isEnglish) return StateReceptionistVisitorSittingEN;
+		}, configurable: true
+	},
+	StateReceptionistVisitorLine: { 
+		get: function() { 
+			if(this.isJapanese) return StateReceptionistVisitorLineJP;
+			else if(this.isEnglish) return StateReceptionistVisitorLineEN;
+		}, configurable: true
+	},
+	StateReceptionistVisitorDesk: { 
+		get: function() { 
+			if(this.isJapanese) return StateReceptionistVisitorDeskJP;
+			else if(this.isEnglish) return StateReceptionistVisitorDeskEN;
+		}, configurable: true
+	},
+	
+	DesireTooltipsMouthIntro: { 
+		get: function() { 
+			if(this.isJapanese) return DesireTooltipsMouthIntroJP;
+			else if(this.isEnglish) return DesireTooltipsMouthIntroEN;
+		}, configurable: true
+	},
+	DesireTooltipsBoobsIntro: { 
+		get: function() { 
+			if(this.isJapanese) return DesireTooltipsBoobsIntroJP;
+			else if(this.isEnglish) return DesireTooltipsBoobsIntroEN;
+		}, configurable: true
+	},
+	DesireTooltipsPussyIntro: { 
+		get: function() { 
+			if(this.isJapanese) return DesireTooltipsPussyIntroJP;
+			else if(this.isEnglish) return DesireTooltipsPussyIntroEN;
+		}, configurable: true
+	},
+	DesireTooltipsButtIntro: { 
+		get: function() { 
+			if(this.isJapanese) return DesireTooltipsButtIntroJP;
+			else if(this.isEnglish) return DesireTooltipsButtIntroEN;
+		}, configurable: true
+	},
+	DesireTooltipsCockIntro: { 
+		get: function() { 
+			if(this.isJapanese) return DesireTooltipsCockIntroJP;
+			else if(this.isEnglish) return DesireTooltipsCockIntroEN;
+		}, configurable: true
+	},
+	DesireTooltipsBodyDesireRequirementsUnknown: { 
+		get: function() { 
+			if(this.isJapanese) return DesireTooltipsBodyDesireRequirementsUnknownJP;
+			else if(this.isEnglish) return DesireTooltipsBodyDesireRequirementsUnknownEN;
+		}, configurable: true
+	},
+	DesireTooltipsCockDesireRequirementsUnknown: { 
+		get: function() { 
+			if(this.isJapanese) return DesireTooltipsCockDesireRequirementsUnknownJP;
+			else if(this.isEnglish) return DesireTooltipsCockDesireRequirementsUnknownEN;
+		}, configurable: true
+	},
+	DesireTooltipsDesireRequirementsKnown: { 
+		get: function() { 
+			if(this.isJapanese) return DesireTooltipsDesireRequirementsKnownJP;
+			else if(this.isEnglish) return DesireTooltipsDesireRequirementsKnownEN;
+		}, configurable: true
+	},
+	DesireTooltipsDesireRequirementsKnownFormat: { 
+		get: function() { 
+			if(this.isJapanese) return DesireTooltipsDesireRequirementsKnownFormatJP;
+			else if(this.isEnglish) return DesireTooltipsDesireRequirementsKnownFormatEN;
+		}, configurable: true
+	},
+	
+	DesireTooltipsMouthDesireDebuffOne: { 
+		get: function() { 
+			if(this.isJapanese) return DesireTooltipsMouthDesireDebuffOneJP;
+			else if(this.isEnglish) return DesireTooltipsMouthDesireDebuffOneEN;
+		}, configurable: true
+	},
+	DesireTooltipsMouthDesireDebuffTwo: { 
+		get: function() { 
+			if(this.isJapanese) return DesireTooltipsMouthDesireDebuffTwoJP;
+			else if(this.isEnglish) return DesireTooltipsMouthDesireDebuffTwoEN;
+		}, configurable: true
+	},
+	DesireTooltipsBoobsDesireDebuffOne: { 
+		get: function() { 
+			if(this.isJapanese) return DesireTooltipsBoobsDesireDebuffOneJP;
+			else if(this.isEnglish) return DesireTooltipsBoobsDesireDebuffOneEN;
+		}, configurable: true
+	},
+	DesireTooltipsBoobsDesireDebuffTwo: { 
+		get: function() { 
+			if(this.isJapanese) return DesireTooltipsBoobsDesireDebuffTwoJP;
+			else if(this.isEnglish) return DesireTooltipsBoobsDesireDebuffTwoEN;
+		}, configurable: true
+	},
+	DesireTooltipsPussyDesireDebuffOne: { 
+		get: function() { 
+			if(this.isJapanese) return DesireTooltipsPussyDesireDebuffOneJP;
+			else if(this.isEnglish) return DesireTooltipsPussyDesireDebuffOneEN;
+		}, configurable: true
+	},
+	DesireTooltipsPussyDesireDebuffTwo: { 
+		get: function() { 
+			if(this.isJapanese) return DesireTooltipsPussyDesireDebuffTwoJP;
+			else if(this.isEnglish) return DesireTooltipsPussyDesireDebuffTwoEN;
+		}, configurable: true
+	},
+	DesireTooltipsButtDesireDebuffOne: { 
+		get: function() { 
+			if(this.isJapanese) return DesireTooltipsButtDesireDebuffOneJP;
+			else if(this.isEnglish) return DesireTooltipsButtDesireDebuffOneEN;
+		}, configurable: true
+	},
+	DesireTooltipsButtDesireDebuffTwo: { 
+		get: function() { 
+			if(this.isJapanese) return DesireTooltipsButtDesireDebuffTwoJP;
+			else if(this.isEnglish) return DesireTooltipsButtDesireDebuffTwoEN;
+		}, configurable: true
+	},
+	DesireTooltipsCockDesireDebuffOne: { 
+		get: function() { 
+			if(this.isJapanese) return DesireTooltipsCockDesireDebuffOneJP;
+			else if(this.isEnglish) return DesireTooltipsCockDesireDebuffOneEN;
+		}, configurable: true
+	},
+	DesireTooltipsCockDesireDebuffTwo: { 
+		get: function() { 
+			if(this.isJapanese) return DesireTooltipsCockDesireDebuffTwoJP;
+			else if(this.isEnglish) return DesireTooltipsCockDesireDebuffTwoEN;
+		}, configurable: true
+	},
+	DesireTooltipsMouthDesireTopBuff: { 
+		get: function() { 
+			if(this.isJapanese) return DesireTooltipsMouthDesireTopBuffJP;
+			else if(this.isEnglish) return DesireTooltipsMouthDesireTopBuffEN;
+		}, configurable: true
+	},
+	DesireTooltipsBoobsDesireTopBuff: { 
+		get: function() { 
+			if(this.isJapanese) return DesireTooltipsBoobsDesireTopBuffJP;
+			else if(this.isEnglish) return DesireTooltipsBoobsDesireTopBuffEN;
+		}, configurable: true
+	},
+	DesireTooltipsPussyDesireTopBuff: { 
+		get: function() { 
+			if(this.isJapanese) return DesireTooltipsPussyDesireTopBuffJP;
+			else if(this.isEnglish) return DesireTooltipsPussyDesireTopBuffEN;
+		}, configurable: true
+	},
+	DesireTooltipsButtDesireTopBuff: { 
+		get: function() { 
+			if(this.isJapanese) return DesireTooltipsButtDesireTopBuffJP;
+			else if(this.isEnglish) return DesireTooltipsButtDesireTopBuffEN;
+		}, configurable: true
+	},
+	DesireTooltipsCockDesireTopBuff: { 
+		get: function() { 
+			if(this.isJapanese) return DesireTooltipsCockDesireTopBuffJP;
+			else if(this.isEnglish) return DesireTooltipsCockDesireTopBuffEN;
 		}, configurable: true
 	},
 	
@@ -3756,6 +5215,134 @@ Object.defineProperties(TextManager, {
 			else if(this.isEnglish) return RemResultsPassivesTitleEN;
 		}, configurable: true
 	},	
+	
+	RemDailyReportDayCount: { 
+		get: function() { 
+			if(this.isJapanese) return RemDailyReportDayCountJP;
+			else if(this.isEnglish) return RemDailyReportDayCountEN;
+		}, configurable: true
+	},		
+	RemDailyReportAnarchyNoLimit: { 
+		get: function() { 
+			if(this.isJapanese) return RemDailyReportAnarchyNoLimitJP;
+			else if(this.isEnglish) return RemDailyReportAnarchyNoLimitEN;
+		}, configurable: true
+	},	
+	RemDailyReportAnarchyLimitBefore_singular: { 
+		get: function() { 
+			if(this.isJapanese) return RemDailyReportAnarchyLimitBefore_singularJP;
+			else if(this.isEnglish) return RemDailyReportAnarchyLimitBefore_singularEN;
+		}, configurable: true
+	},	
+	RemDailyReportAnarchyLimitBefore_plural: { 
+		get: function() { 
+			if(this.isJapanese) return RemDailyReportAnarchyLimitBefore_pluralJP;
+			else if(this.isEnglish) return RemDailyReportAnarchyLimitBefore_pluralEN;
+		}, configurable: true
+	},
+	RemDailyReportAnarchyPastLimit: { 
+		get: function() { 
+			if(this.isJapanese) return RemDailyReportAnarchyPastLimitJP;
+			else if(this.isEnglish) return RemDailyReportAnarchyPastLimitEN;
+		}, configurable: true
+	},
+	RemDailyReportRiot_New: { 
+		get: function() { 
+			if(this.isJapanese) return RemDailyReportRiot_NewJP;
+			else if(this.isEnglish) return RemDailyReportRiot_NewEN;
+		}, configurable: true
+	},	
+	RemDailyReportRiot_Old: { 
+		get: function() { 
+			if(this.isJapanese) return RemDailyReportRiot_OldJP;
+			else if(this.isEnglish) return RemDailyReportRiot_OldEN;
+		}, configurable: true
+	},
+	RemDailyReportOrderChange_Positive: { 
+		get: function() { 
+			if(this.isJapanese) return RemDailyReportOrderChange_PositiveJP;
+			else if(this.isEnglish) return RemDailyReportOrderChange_PositiveEN;
+		}, configurable: true
+	},
+	RemDailyReportOrderChange_Negative: { 
+		get: function() { 
+			if(this.isJapanese) return RemDailyReportOrderChange_NegativeJP;
+			else if(this.isEnglish) return RemDailyReportOrderChange_NegativeEN;
+		}, configurable: true
+	},
+	RemDailyReportOrderChange_Neutral: { 
+		get: function() { 
+			if(this.isJapanese) return RemDailyReportOrderChange_NeutralJP;
+			else if(this.isEnglish) return RemDailyReportOrderChange_NeutralEN;
+		}, configurable: true
+	},
+	RemDailyReportFundingChange_Positive: { 
+		get: function() { 
+			if(this.isJapanese) return RemDailyReportFundingChange_PositiveJP;
+			else if(this.isEnglish) return RemDailyReportFundingChange_PositiveEN;
+		}, configurable: true
+	},
+	RemDailyReportFundingChange_Negative: { 
+		get: function() { 
+			if(this.isJapanese) return RemDailyReportFundingChange_NegativeJP;
+			else if(this.isEnglish) return RemDailyReportFundingChange_NegativeEN;
+		}, configurable: true
+	},
+	RemDailyReportBankruptcy: { 
+		get: function() { 
+			if(this.isJapanese) return RemDailyReportBankruptcyJP;
+			else if(this.isEnglish) return RemDailyReportBankruptcyEN;
+		}, configurable: true
+	},
+	RemDailyReportEdictPoints_Singular: { 
+		get: function() { 
+			if(this.isJapanese) return RemDailyReportEdictPoints_SingularJP;
+			else if(this.isEnglish) return RemDailyReportEdictPoints_SingularEN;
+		}, configurable: true
+	},
+	RemDailyReportEdictPoints_Plural: { 
+		get: function() { 
+			if(this.isJapanese) return RemDailyReportEdictPoints_PluralJP;
+			else if(this.isEnglish) return RemDailyReportEdictPoints_PluralEN;
+		}, configurable: true
+	},
+	RemDailyReportBarRep_AlmostDecay: { 
+		get: function() { 
+			if(this.isJapanese) return RemDailyReportBarRep_AlmostDecayJP;
+			else if(this.isEnglish) return RemDailyReportBarRep_AlmostDecayEN;
+		}, configurable: true
+	},
+	RemDailyReportBarRep_Decayed: { 
+		get: function() { 
+			if(this.isJapanese) return RemDailyReportBarRep_DecayedJP;
+			else if(this.isEnglish) return RemDailyReportBarRep_DecayedEN;
+		}, configurable: true
+	},
+	RemDailyReportVisitorRep_AlmostDecay: { 
+		get: function() { 
+			if(this.isJapanese) return RemDailyReportVisitorRep_AlmostDecayJP;
+			else if(this.isEnglish) return RemDailyReportVisitorRep_AlmostDecayEN;
+		}, configurable: true
+	},
+	RemDailyReportVisitorRep_Decayed: { 
+		get: function() { 
+			if(this.isJapanese) return RemDailyReportVisitorRep_DecayedJP;
+			else if(this.isEnglish) return RemDailyReportVisitorRep_DecayedEN;
+		}, configurable: true
+	},
+	RemDailyReportToiletRep_AlmostDecay: { 
+		get: function() { 
+			if(this.isJapanese) return RemDailyReportToiletRep_AlmostDecayJP;
+			else if(this.isEnglish) return RemDailyReportToiletRep_AlmostDecayEN;
+		}, configurable: true
+	},
+	RemDailyReportToiletRep_Decayed: { 
+		get: function() { 
+			if(this.isJapanese) return RemDailyReportToiletRep_DecayedJP;
+			else if(this.isEnglish) return RemDailyReportToiletRep_DecayedEN;
+		}, configurable: true
+	},
+
 	
 	paramGainedStrength: { 
 		get: function() { 
@@ -4122,6 +5709,19 @@ Object.defineProperties(TextManager, {
 			else if(this.isEnglish) return RemYanflyOptions_Controls_Help_EN;
 		}, configurable: true
 	},
+	yanflyOptionsCheats: { 
+		get: function() { 
+			if(this.isJapanese) return RemYanflyOptions_Cheats_JP;
+			else if(this.isEnglish) return RemYanflyOptions_Cheats_EN;
+		}, configurable: true
+	},
+	yanflyOptionsCheatsHelp: { 
+		get: function() { 
+			if(this.isJapanese) return RemYanflyOptions_Cheats_Help_JP;
+			else if(this.isEnglish) return RemYanflyOptions_Cheats_Help_EN;
+		}, configurable: true
+	},
+
 	yanflyOptionsExit: { 
 		get: function() { 
 			if(this.isJapanese) return RemYanflyOptions_Exit_JP;
@@ -4812,6 +6412,199 @@ Object.defineProperties(TextManager, {
 		get: function() { 
 			if(this.isJapanese) return RemYanflyKeyboardDownTextJP;
 			else if(this.isEnglish) return RemYanflyKeyboardDownTextEN;
+		}, configurable: true
+	},
+	
+	RemYanflyOptions_Cheats_EnemyDoublePhysicalDamage: { 
+		get: function() { 
+			if(this.isJapanese) return RemYanflyOptions_Cheats_EnemyDoublePhysicalDamage_JP;
+			else if(this.isEnglish) return RemYanflyOptions_Cheats_EnemyDoublePhysicalDamage_EN;
+		}, configurable: true
+	},
+	RemYanflyOptions_Cheats_EnemyDoublePhysicalDamage_Help: { 
+		get: function() { 
+			if(this.isJapanese) return RemYanflyOptions_Cheats_EnemyDoublePhysicalDamage_Help_JP;
+			else if(this.isEnglish) return RemYanflyOptions_Cheats_EnemyDoublePhysicalDamage_Help_EN;
+		}, configurable: true
+	},
+	RemYanflyOptions_Cheats_EnemyTriplePhysicalDamage: { 
+		get: function() { 
+			if(this.isJapanese) return RemYanflyOptions_Cheats_EnemyTriplePhysicalDamage_JP;
+			else if(this.isEnglish) return RemYanflyOptions_Cheats_EnemyTriplePhysicalDamage_EN;
+		}, configurable: true
+	},
+	RemYanflyOptions_Cheats_EnemyTriplePhysicalDamage_Help: { 
+		get: function() { 
+			if(this.isJapanese) return RemYanflyOptions_Cheats_EnemyTriplePhysicalDamage_Help_JP;
+			else if(this.isEnglish) return RemYanflyOptions_Cheats_EnemyTriplePhysicalDamage_Help_EN;
+		}, configurable: true
+	},
+	RemYanflyOptions_Cheats_EnemyDoubleSexualDamage: { 
+		get: function() { 
+			if(this.isJapanese) return RemYanflyOptions_Cheats_EnemyDoubleSexualDamage_JP;
+			else if(this.isEnglish) return RemYanflyOptions_Cheats_EnemyDoubleSexualDamage_EN;
+		}, configurable: true
+	},
+	RemYanflyOptions_Cheats_EnemyDoubleSexualDamage_Help: { 
+		get: function() { 
+			if(this.isJapanese) return RemYanflyOptions_Cheats_EnemyDoubleSexualDamage_Help_JP;
+			else if(this.isEnglish) return RemYanflyOptions_Cheats_EnemyDoubleSexualDamage_Help_EN;
+		}, configurable: true
+	},
+	RemYanflyOptions_Cheats_EnemyTripleSexualDamage: { 
+		get: function() { 
+			if(this.isJapanese) return RemYanflyOptions_Cheats_EnemyTripleSexualDamage_JP;
+			else if(this.isEnglish) return RemYanflyOptions_Cheats_EnemyTripleSexualDamage_EN;
+		}, configurable: true
+	},
+	RemYanflyOptions_Cheats_EnemyTripleSexualDamage_Help: { 
+		get: function() { 
+			if(this.isJapanese) return RemYanflyOptions_Cheats_EnemyTripleSexualDamage_Help_JP;
+			else if(this.isEnglish) return RemYanflyOptions_Cheats_EnemyTripleSexualDamage_Help_EN;
+		}, configurable: true
+	},
+	RemYanflyOptions_Cheats_EnemyAlwaysAct: { 
+		get: function() { 
+			if(this.isJapanese) return RemYanflyOptions_Cheats_EnemyAlwaysAct_JP;
+			else if(this.isEnglish) return RemYanflyOptions_Cheats_EnemyAlwaysAct_EN;
+		}, configurable: true
+	},
+	RemYanflyOptions_Cheats_EnemyAlwaysAct_Help: { 
+		get: function() { 
+			if(this.isJapanese) return RemYanflyOptions_Cheats_EnemyAlwaysAct_Help_JP;
+			else if(this.isEnglish) return RemYanflyOptions_Cheats_EnemyAlwaysAct_Help_EN;
+		}, configurable: true
+	},
+	RemYanflyOptions_Cheats_ActorHalfStaminaRegen: { 
+		get: function() { 
+			if(this.isJapanese) return RemYanflyOptions_Cheats_ActorHalfStaminaRegen_JP;
+			else if(this.isEnglish) return RemYanflyOptions_Cheats_ActorHalfStaminaRegen_EN;
+		}, configurable: true
+	},
+	RemYanflyOptions_Cheats_ActorHalfStaminaRegen_Help: { 
+		get: function() { 
+			if(this.isJapanese) return RemYanflyOptions_Cheats_ActorHalfStaminaRegen_Help_JP;
+			else if(this.isEnglish) return RemYanflyOptions_Cheats_ActorHalfStaminaRegen_Help_EN;
+		}, configurable: true
+	},
+	RemYanflyOptions_Cheats_ActorThirdStaminaRegen: { 
+		get: function() { 
+			if(this.isJapanese) return RemYanflyOptions_Cheats_ActorThirdStaminaRegen_JP;
+			else if(this.isEnglish) return RemYanflyOptions_Cheats_ActorThirdStaminaRegen_EN;
+		}, configurable: true
+	},
+	RemYanflyOptions_Cheats_ActorThirdStaminaRegen_Help: { 
+		get: function() { 
+			if(this.isJapanese) return RemYanflyOptions_Cheats_ActorThirdStaminaRegen_Help_JP;
+			else if(this.isEnglish) return RemYanflyOptions_Cheats_ActorThirdStaminaRegen_Help_EN;
+		}, configurable: true
+	},
+	RemYanflyOptions_Cheats_ActorNoEvasion: { 
+		get: function() { 
+			if(this.isJapanese) return RemYanflyOptions_Cheats_ActorNoEvasion_JP;
+			else if(this.isEnglish) return RemYanflyOptions_Cheats_ActorNoEvasion_EN;
+		}, configurable: true
+	},
+	RemYanflyOptions_Cheats_ActorNoEvasion_Help: { 
+		get: function() { 
+			if(this.isJapanese) return RemYanflyOptions_Cheats_ActorNoEvasion_Help_JP;
+			else if(this.isEnglish) return RemYanflyOptions_Cheats_ActorNoEvasion_Help_EN;
+		}, configurable: true
+	},
+	RemYanflyOptions_Cheats_ActorHalfExpRate: { 
+		get: function() { 
+			if(this.isJapanese) return RemYanflyOptions_Cheats_ActorHalfExpRate_JP;
+			else if(this.isEnglish) return RemYanflyOptions_Cheats_ActorHalfExpRate_EN;
+		}, configurable: true
+	},
+	RemYanflyOptions_Cheats_ActorHalfExpRate_Help: { 
+		get: function() { 
+			if(this.isJapanese) return RemYanflyOptions_Cheats_ActorHalfExpRate_Help_JP;
+			else if(this.isEnglish) return RemYanflyOptions_Cheats_ActorHalfExpRate_Help_EN;
+		}, configurable: true
+	},
+	RemYanflyOptions_Cheats_LessControlFive: { 
+		get: function() { 
+			if(this.isJapanese) return RemYanflyOptions_Cheats_LessControlFive_JP;
+			else if(this.isEnglish) return RemYanflyOptions_Cheats_LessControlFive_EN;
+		}, configurable: true
+	},
+	RemYanflyOptions_Cheats_LessControlFive_Help: { 
+		get: function() { 
+			if(this.isJapanese) return RemYanflyOptions_Cheats_LessControlFive_Help_JP;
+			else if(this.isEnglish) return RemYanflyOptions_Cheats_LessControlFive_Help_EN;
+		}, configurable: true
+	},
+	RemYanflyOptions_Cheats_LessControlTen: { 
+		get: function() { 
+			if(this.isJapanese) return RemYanflyOptions_Cheats_LessControlTen_JP;
+			else if(this.isEnglish) return RemYanflyOptions_Cheats_LessControlTen_EN;
+		}, configurable: true
+	},
+	RemYanflyOptions_Cheats_LessControlTen_Help: { 
+		get: function() { 
+			if(this.isJapanese) return RemYanflyOptions_Cheats_LessControlTen_Help_JP;
+			else if(this.isEnglish) return RemYanflyOptions_Cheats_LessControlTen_Help_EN;
+		}, configurable: true
+	},
+	RemYanflyOptions_Cheats_InstantRiotsOne: { 
+		get: function() { 
+			if(this.isJapanese) return RemYanflyOptions_Cheats_InstantRiotsOne_JP;
+			else if(this.isEnglish) return RemYanflyOptions_Cheats_InstantRiotsOne_EN;
+		}, configurable: true
+	},
+	RemYanflyOptions_Cheats_InstantRiotsOne_Help: { 
+		get: function() { 
+			if(this.isJapanese) return RemYanflyOptions_Cheats_InstantRiotsOne_Help_JP;
+			else if(this.isEnglish) return RemYanflyOptions_Cheats_InstantRiotsOne_Help_EN;
+		}, configurable: true
+	},
+	RemYanflyOptions_Cheats_InstantRiotsTwo: { 
+		get: function() { 
+			if(this.isJapanese) return RemYanflyOptions_Cheats_InstantRiotsTwo_JP;
+			else if(this.isEnglish) return RemYanflyOptions_Cheats_InstantRiotsTwo_EN;
+		}, configurable: true
+	},
+	RemYanflyOptions_Cheats_InstantRiotsTwo_Help: { 
+		get: function() { 
+			if(this.isJapanese) return RemYanflyOptions_Cheats_InstantRiotsTwo_Help_JP;
+			else if(this.isEnglish) return RemYanflyOptions_Cheats_InstantRiotsTwo_Help_EN;
+		}, configurable: true
+	},
+	RemYanflyOptions_Cheats_InstantRiotsThree: { 
+		get: function() { 
+			if(this.isJapanese) return RemYanflyOptions_Cheats_InstantRiotsThree_JP;
+			else if(this.isEnglish) return RemYanflyOptions_Cheats_InstantRiotsThree_EN;
+		}, configurable: true
+	},
+	RemYanflyOptions_Cheats_InstantRiotsThree_Help: { 
+		get: function() { 
+			if(this.isJapanese) return RemYanflyOptions_Cheats_InstantRiotsThree_Help_JP;
+			else if(this.isEnglish) return RemYanflyOptions_Cheats_InstantRiotsThree_Help_EN;
+		}, configurable: true
+	},
+	RemYanflyOptions_Cheats_InstantRiotsFour: { 
+		get: function() { 
+			if(this.isJapanese) return RemYanflyOptions_Cheats_InstantRiotsFour_JP;
+			else if(this.isEnglish) return RemYanflyOptions_Cheats_InstantRiotsFour_EN;
+		}, configurable: true
+	},
+	RemYanflyOptions_Cheats_InstantRiotsFour_Help: { 
+		get: function() { 
+			if(this.isJapanese) return RemYanflyOptions_Cheats_InstantRiotsFour_Help_JP;
+			else if(this.isEnglish) return RemYanflyOptions_Cheats_InstantRiotsFour_Help_EN;
+		}, configurable: true
+	},
+	RemYanflyOptions_Cheats_NoAutoSave: { 
+		get: function() { 
+			if(this.isJapanese) return RemYanflyOptions_Cheats_NoAutoSave_JP;
+			else if(this.isEnglish) return RemYanflyOptions_Cheats_NoAutoSave_EN;
+		}, configurable: true
+	},
+	RemYanflyOptions_Cheats_NoAutoSave_Help: { 
+		get: function() { 
+			if(this.isJapanese) return RemYanflyOptions_Cheats_NoAutoSave_Help_JP;
+			else if(this.isEnglish) return RemYanflyOptions_Cheats_NoAutoSave_Help_EN;
 		}, configurable: true
 	},
 	
@@ -6315,6 +8108,24 @@ TextManager.skillName = function(skillId) {
 	return text;
 };
 
+TextManager.skillDesc = function(skillId) {
+	var skill = $dataSkills[skillId];
+	var text = skill.description;
+	
+	if(TextManager.isJapanese && skill.hasRemDescJP) 
+		text = skill.remDescJP;
+	else if(TextManager.isEnglish && skill.hasRemDescEN) 
+		text = skill.remDescEN;
+	else if(TextManager.isTChinese && skill.hasRemDescTCH) 
+		text = skill.remDescTCH;
+	else if(TextManager.isSChinese && skill.hasRemDescSCH) 
+		text = skill.remDescSCH;
+	else if(TextManager.isKorean && skill.hasRemDescKR) 
+		text = skill.remDescKR;
+
+	return text;
+};
+
 TextManager.alcoholName = function(alcoholType) {
 	let text = false;
 	if(alcoholType === ALCOHOL_TYPE_NOTHING) return '';
@@ -7009,6 +8820,7 @@ ImageManager.loadSystemRem = function(filename, hue) {
 
 //State message3
 Game_BattlerBase.prototype.mostImportantStateText = function() {
+	if(this.dontDisplayStateLogMessages()) return '';
     let states = this.states();
     for (let i = 0; i < states.length; i++) {
 		if(TextManager.isEnglish && states[i].hasRemMessageEN[2]) {
@@ -7040,6 +8852,7 @@ Game_BattlerBase.prototype.mostImportantStateText = function() {
 
 //State message 1 and 2
 Window_BattleLog.prototype.displayAddedStates = function(target) {
+	if(target.dontDisplayStateLogMessages()) return;
     target.result().addedStateObjects().forEach(function(state) {
         let stateMsg = target.isActor() ? state.message1 : state.message2;
 		
@@ -7092,6 +8905,8 @@ Window_BattleLog.prototype.displayAddedStates = function(target) {
 
 //state message4
 Window_BattleLog.prototype.displayRemovedStates = function(target) {
+	if(target.dontDisplayStateLogMessages()) return;
+	
     target.result().removedStateObjects().forEach(function(state) {
 		if(TextManager.isEnglish) {
 			if(state.hasRemMessageEN[3]) {

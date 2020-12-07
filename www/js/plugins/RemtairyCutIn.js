@@ -147,6 +147,10 @@ Game_Actor.prototype.cutInFrame = function() {
 	return this._cutInFrame;
 };
 
+Game_Actor.prototype.hasTachieCutInOnScreen = function() {
+	return this.tachieCutIn != REM_TACHIE_NULL;
+};
+
 Game_Actor.prototype.setTachieCutIn = function (n) {
 	if (this._tachieCutIn === n) {
 		return;

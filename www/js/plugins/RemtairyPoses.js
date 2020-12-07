@@ -36,7 +36,8 @@ const POSE_WAITRESS_SEX = 'waitress_table';
 const POSE_RECEPTIONIST = 'receptionist';
 
 //Masturbate
-const POSE_MASTURBATE1 = 'mas_1';
+const POSE_MASTURBATE_COUCH = 'mas_couch';
+const POSE_MASTURBATE_INBATTLE = 'mas_inbattle';
 
 //Glory
 const POSE_TOILET_SITTING = 'toilet_sitting';
@@ -48,6 +49,7 @@ const POSE_TOILET_STAND_RIGHT = 'toilet_stand_right';
 //Defeated poses
 const POSE_DEFEATED_LEVEL1 = 'defeated_level1';
 const POSE_DEFEATED_LEVEL2 = 'defeated_level2';
+const POSE_DEFEATED_LEVEL3 = 'defeated_level3';
 const POSE_DEFEATED_GUARD = 'defeated_guard';
 
 //Map poses
@@ -81,17 +83,20 @@ Object.defineProperty(Game_Actor.prototype, "poseName", {
 	get: function () { return this._poseName; }, configurable: true
 });
 // Set Pose
-Game_Actor.prototype.setPose = function (name, dontReset) {
+Game_Actor.prototype.setPose = function (name, dontResetPose) {
 	name = name.toLowerCase();
 	//maybe only use this code for non map poses, don't know the dangers of commenting this out yet...
 	//if (this._poseName == name) return;
 	this._poseName = name;
-	if(dontReset) return;
+	if(dontResetPose) return;
 	this.completeResetTachieFace();
 	this.completeResetBodyParts();
 	this.completeResetMaxTachieSemenId();
 	this.resetCockTargets();
 	this.setSpankablePose(false);
+	this.setClitToyInsertablePose(true);
+	this.setPussyToyInsertablePose(true);
+	this.setAnalToyInsertablePose(true);
 	//this.setCacheChanged();
 };
 
@@ -138,10 +143,12 @@ Game_Actor.prototype.completeResetBodyParts = function () {
 	this.setTachieLeftArmInFrontOfBoobs(true);
 	this.setTachieRightArmInFrontOfLeftArm(true);
 	this.setTachieBoobsInFrontOfBody(true);
-	this.setTachieSemenBellyAndBoobsInFrontOfBoobs(false);
+	this.setTachieSemenBoobsInFrontOfBoobs(true);
+	this.setTachieSemenBellyInFrontOfBoobs(true);
 	this.setTachieHeadInFrontOfBody(true);
 	this.setTachieHatInFrontOfBody(true);
 	this.setTachieFrontInFrontOfFace(false);
+	this.setTachieSemenLeftArmInFrontOfFront(false);
 	this.setTachiePantiesInFrontOfBoobs(false);
 	this.setTachieCockBoobsInFrontOfBoobs(true);
 	this.setTachieCockMouthInFrontOfFace(true);
@@ -151,6 +158,7 @@ Game_Actor.prototype.completeResetBodyParts = function () {
 	this.setTachieWeaponBehindEverything(false);
 	this.setTachieHasBoobsHard(true);
 	
+	this.setTachieClitToyBehindCocks(false);
 	this.setTachiePussyToyInFrontOfAnalToy(true);
 	this.setTachieClitToyInFrontOfMainToys(true);
 	this.setTachieHolesCocksToysInFrontOfBody(true);
@@ -216,6 +224,8 @@ Game_Actor.prototype.completeResetMaxTachieSemenId = function () {
 	this.setMaxTachieSemenCockAnalId(0);
 	this.setMaxTachieSemenCockFeetId(0);
 	this.setMaxTachieSemenCockNormalId(0);
+	this.setMaxTachieSemenHoleLeftId(0);
+	this.setMaxTachieSemenHoleRightId(0);
 	this.setMaxTachieSemenFrontAId(0);
 	this.setMaxTachieSemenFrontBId(0);
 	this.setMaxTachieSemenFrontCId(0);
@@ -233,6 +243,8 @@ Game_Actor.prototype.completeResetMaxTachieSemenId = function () {
 	this.resetTachieSemenLeftBoobExtension();
 	this.resetTachieSemenRightArmExtension();
 	this.resetTachieSemenRightBoobExtension(); 
+	this.resetTachieSemenRightLegExtension();
+	this.resetTachieSemenLeftLegExtension();
 	this.resetTachieSemenWetExtension();
 	this.resetTachieSemenCockLeftArmExtension();
 	this.resetTachieSemenCockRightArmExtension();
@@ -240,6 +252,8 @@ Game_Actor.prototype.completeResetMaxTachieSemenId = function () {
 	this.resetTachieSemenCockPussyExtension();
 	this.resetTachieSemenCockNormalExtension();
 	this.resetTachieSemenCockAnalExtension();
+	this.resetTachieSemenHoleRightExtension();
+	this.resetTachieSemenHoleLeftExtension();
 	this.resetTachieSemenFrontAExtension();
 	this.resetTachieSemenFrontBExtension();
 	this.resetTachieSemenFrontCExtension();
@@ -256,6 +270,16 @@ Game_Actor.prototype.isPoseSpankable = function () {
 	return this._spankablePose;
 };
 
+// Toy Insert Pose
+Game_Actor.prototype.setClitToyInsertablePose = function (status) {
+	this._clitToyInsertablePose = status;
+};
+Game_Actor.prototype.setPussyToyInsertablePose = function (status) {
+	this._pussyToyInsertablePose = status;
+};
+Game_Actor.prototype.setAnalToyInsertablePose = function (status) {
+	this._analToyInsertablePose = status;
+};
 
 // Post Sex Pose
 Game_Actor.prototype.setPostSexPose = function () {
@@ -359,6 +383,13 @@ Game_Actor.prototype.tachieFrontInFrontOfFace = function () {
 	return this._tachieFrontInFrontOfFace;
 };
 
+Game_Actor.prototype.setTachieSemenLeftArmInFrontOfFront = function (status) {
+	this._tachieSemenLeftArmInFrontOfFront = status;
+};
+Game_Actor.prototype.tachieSemenLeftArmInFrontOfFront = function () {
+	return this._tachieSemenLeftArmInFrontOfFront;
+};
+
 Game_Actor.prototype.setTachieWeaponInFrontOfBody = function (status) {
 	this._tachieWeaponInFrontOfBody = status;
 };
@@ -435,11 +466,18 @@ Game_Actor.prototype.tachieBoobsInFrontOfBody = function () {
 	return this._tachieBoobsInFrontOfBody;
 };
 
-Game_Actor.prototype.setTachieSemenBellyAndBoobsInFrontOfBoobs = function (status) {
-	this._tachieSemenBellyAndBoobsInFrontOfBoobs = status;
+Game_Actor.prototype.setTachieSemenBoobsInFrontOfBoobs = function (status) {
+	this._tachieSemenBoobsInFrontOfBoobs = status;
 };
-Game_Actor.prototype.tachieSemenBellyAndBoobsInFrontOfBoobs = function () {
-	return this._tachieSemenBellyAndBoobsInFrontOfBoobs;
+Game_Actor.prototype.tachieSemenBoobsInFrontOfBoobs = function () {
+	return this._tachieSemenBoobsInFrontOfBoobs;
+};
+
+Game_Actor.prototype.setTachieSemenBellyInFrontOfBoobs = function (status) {
+	this._tachieSemenBellyInFrontOfBoobs = status;
+};
+Game_Actor.prototype.tachieSemenBellyInFrontOfBoobs = function () {
+	return this._tachieSemenBellyInFrontOfBoobs;
 };
 
 Game_Actor.prototype.setTachieCockBoobsInFrontOfBoobs = function (status) {
@@ -461,6 +499,13 @@ Game_Actor.prototype.setTachiePantiesInFrontOfBoobs = function (status) {
 };
 Game_Actor.prototype.tachiePantiesInFrontOfBoobs = function () {
 	return this._tachiePantiesInFrontOfBoobs;
+};
+
+Game_Actor.prototype.setTachieClitToyBehindCocks = function (status) {
+	this._tachieClitToyBehindCocks = status;
+};
+Game_Actor.prototype.tachieClitToyBehindCocks = function () {
+	return this._tachieClitToyBehindCocks;
 };
 
 Game_Actor.prototype.setTachieClitToyInFrontOfMainToys = function (status) {
@@ -547,7 +592,7 @@ Game_Actor.prototype.allowTachieUpdate = function () {
 
 Game_Actor.prototype.isInMapPose = function() {
 	let pose = this.poseName;
-	return ( pose == POSE_MAP );
+	return !$gameParty.isInWaitressBattle && ( pose == POSE_MAP );
 };
 
 Game_Actor.prototype.setWardenMapPose = function() {
@@ -562,10 +607,8 @@ Game_Actor.prototype.setWardenMapPose = function() {
 	this.setTachieBody(1);
 	this.setTachieRightArm(1);
 	this.setTachieLeftArm(1);
-	//this.setTachieRightArmInFrontOfBody(false);
 	this.setTachieRightArmInFrontOfBody(true);
 	this.setTachieRightArmInFrontOfBoobs(false);
-	this.setTachieSemenBellyAndBoobsInFrontOfBoobs(true);
 	this.setHasTachiePubic(true);
 	this.setPosePanties();
 	
@@ -636,10 +679,16 @@ Game_Actor.prototype.setWardenMapPoseExtensions = function() {
 		this.resetTachieHat();
 	}
 	
+	this.setPosePanties();
+	
 	if(this.didLastGetHitBySkillType(JUST_SKILLTYPE_WAITRESS_FLASH) && this.isInWaitressServingPose() && DEBUG_MODE) {
 		
 	}
-	else if(this._hasNoClothesOn && DEBUG_MODE) {
+	else if(this.isInWaitressServingPose()){
+		$gameSwitches.setValue(SWITCH_IS_NAKED_NO_CLOTHES_ID, false);
+		this.setPoseClothing();
+	}
+	else if((this._hasNoClothesOn || !this.isWearingGlovesAndHat()) && DEBUG_MODE) {
 		$gameSwitches.setValue(SWITCH_IS_NAKED_NO_CLOTHES_ID, true);
 		let fileId = 'naked';
 		if(this._tachieBoobsType == 'hold') fileId += '_hold';
@@ -659,12 +708,14 @@ Game_Actor.prototype.setWardenMapPoseExtensions = function() {
 		this.setTachieSemenBoobsExtension('hold_1_');
 		this.setTachieSemenLeftArmExtension('boobs_hold_');
 		this.setTachieSemenRightArmExtension('boobs_hold_');
+		this.setTachieSemenBellyInFrontOfBoobs(false);
 		this.resetTachieRightArm();
 		this.resetTachieLeftArm();
 		this.resetTachieFrontA();
 	}
 	else {
 		this.resetTachieSemenBoobsExtension();
+		this.setTachieSemenBellyInFrontOfBoobs(true);
 		
 		if(this.isWearingGlovesAndHat()) {
 			if(this.tachieLeftArm == 'naked1')
@@ -676,15 +727,15 @@ Game_Actor.prototype.setWardenMapPoseExtensions = function() {
 			else if(this.tachieLeftArm == 'naked4')
 				this.setTachieLeftArm(4);
 			
-			if(this.tachieRightArm === 'naked1')
+			if(this.tachieRightArm == 'naked1')
 				this.setTachieRightArm(1);
-			else if(this.tachieRightArm === 'naked2')
+			else if(this.tachieRightArm == 'naked2')
 				this.setTachieRightArm(2);
-			else if(this.tachieRightArm === 'naked3')
+			else if(this.tachieRightArm == 'naked3')
 				this.setTachieRightArm(3);
-			else if(this.tachieRightArm === 'naked4')
+			else if(this.tachieRightArm == 'naked4')
 				this.setTachieRightArm(4);
-			else if(this.tachieRightArm === 'naked5')
+			else if(this.tachieRightArm == 'naked5')
 				this.setTachieRightArm(5);
 		}
 		else {
@@ -697,40 +748,40 @@ Game_Actor.prototype.setWardenMapPoseExtensions = function() {
 			else if(this.tachieLeftArm == 4)
 				this.setTachieLeftArm('naked4');
 			
-			if(this.tachieRightArm === 1)
+			if(this.tachieRightArm == 1)
 				this.setTachieRightArm('naked1');
-			else if(this.tachieRightArm === 2)
+			else if(this.tachieRightArm == 2)
 				this.setTachieRightArm('naked2');
-			else if(this.tachieRightArm === 3)
+			else if(this.tachieRightArm == 3)
 				this.setTachieRightArm('naked3');
-			else if(this.tachieRightArm === 4)
+			else if(this.tachieRightArm == 4)
 				this.setTachieRightArm('naked4');
-			else if(this.tachieRightArm === 5)
+			else if(this.tachieRightArm == 5)
 				this.setTachieRightArm('naked5');
 		}
 		
-		if(this.tachieLeftArm === 1 || this.tachieLeftArm == 'naked1')
+		if(this.tachieLeftArm == 1 || this.tachieLeftArm == 'naked1')
 			this.setTachieSemenLeftArmExtension('1_');
-		else if(this.tachieLeftArm === 2 || this.tachieLeftArm == 'naked2')
+		else if(this.tachieLeftArm == 2 || this.tachieLeftArm == 'naked2')
 			this.setTachieSemenLeftArmExtension('2_');
-		else if(this.tachieLeftArm === 3 || this.tachieLeftArm == 'naked3')
+		else if(this.tachieLeftArm == 3 || this.tachieLeftArm == 'naked3')
 			this.setTachieSemenLeftArmExtension('3_');
-		else if(this.tachieLeftArm === 4 || this.tachieLeftArm == 'naked4')
+		else if(this.tachieLeftArm == 4 || this.tachieLeftArm == 'naked4')
 			this.setMaxTachieSemenLeftArmId(0);
 		else {
 			this.resetTachieSemenLeftArmExtension();
 			this.setMaxTachieSemenLeftArmId(0);
 		}
 		
-		if(this.tachieRightArm === 1 || this.tachieRightArm == 'naked1')
+		if(this.tachieRightArm == 1 || this.tachieRightArm == 'naked1')
 			this.setTachieSemenRightArmExtension('1_');
-		else if(this.tachieRightArm === 2 || this.tachieRightArm == 'naked2')
+		else if(this.tachieRightArm == 2 || this.tachieRightArm == 'naked2')
 			this.setTachieSemenRightArmExtension('2_');
-		else if(this.tachieRightArm === 3 || this.tachieRightArm == 'naked3')
+		else if(this.tachieRightArm == 3 || this.tachieRightArm == 'naked3')
 			this.setTachieSemenRightArmExtension('3_');
-		else if(this.tachieRightArm === 4 || this.tachieRightArm == 'naked4')
+		else if(this.tachieRightArm == 4 || this.tachieRightArm == 'naked4')
 			this.setTachieSemenRightArmExtension('4_');
-		else if(this.tachieRightArm === 5 || this.tachieRightArm == 'naked5') {
+		else if(this.tachieRightArm == 5 || this.tachieRightArm == 'naked5') {
 			this.setTachieSemenRightArmExtension('5_');
 			this.setMaxTachieSemenRightArmId(1);
 		}
@@ -739,17 +790,20 @@ Game_Actor.prototype.setWardenMapPoseExtensions = function() {
 			this.setMaxTachieSemenRightArmId(0);
 		}
 		
-		if(this.tachieLeftArm === 2) {
+		if(this.tachieLeftArm == 2) {
 			this.setTachieFrontA('leftarm_2');
 			this.setTachieLeftArmInFrontOfBoobs(false);
+			this.setTachieSemenLeftArmInFrontOfFront(true);
 		}
 		else if(this.tachieLeftArm == 'naked2') {
 			this.setTachieFrontA('leftarm_naked2');
 			this.setTachieLeftArmInFrontOfBoobs(false);
+			this.setTachieSemenLeftArmInFrontOfFront(true);
 		}
 		else {
 			this.resetTachieFrontA();
 			this.setTachieLeftArmInFrontOfBoobs(true);
+			this.setTachieSemenLeftArmInFrontOfFront(false);
 		}
 		
 		if(this.tachieRightArm == 'zipper_1') {
@@ -1104,6 +1158,9 @@ Game_Actor.prototype.setDownStaminaPose = function(skipRemLine) {
 		this.setPose(POSE_DOWN_STAMINA);
 		this.removeStatesBeforeSex();
 		this.addToActorDebuffDownStaminaRecord();
+		this.resetAttackSkillConsUsage();
+		this.resetEndurePleasureStanceCost();
+		this.resetSexSkillConsUsage(false);
 	}
 	
 	this.setPosePanties();
@@ -1141,8 +1198,12 @@ Game_Actor.prototype.setDownOrgasmPose = function() {
 	let pose = this.poseName;
 	let notAlreadyInSamePose = pose != POSE_DOWN_ORGASM;
 	
-	if(notAlreadyInSamePose)
+	if(notAlreadyInSamePose) {
 		this.setPose(POSE_DOWN_ORGASM);
+		this.resetAttackSkillConsUsage();
+		this.resetEndurePleasureStanceCost();
+		this.resetSexSkillConsUsage(false);
+	}
 	
 	this.removeStatesBeforeSex();
 
@@ -1193,6 +1254,9 @@ Game_Actor.prototype.setDownFallDownPose = function() {
 	if(notAlreadyInSamePose) {
 		this.setPose(POSE_DOWN_FALLDOWN);
 		this.removeStatesBeforeSexExceptFallen();
+		this.resetAttackSkillConsUsage();
+		this.resetEndurePleasureStanceCost();
+		this.resetSexSkillConsUsage(false);
 	}
 	
 	this.setPosePanties();
@@ -1266,13 +1330,25 @@ Game_Actor.prototype.isInReadyPose = function() {
 };
 
 Game_Actor.prototype.isInSexPose = function() {
-	return !this.isInCombatPose() && !this.isInDownPose() && 
-	!this.isInWaitressServingPose();
+	return !this.isInCombatPose() && !this.isInDownPose() && !this.isInMasturbationPose() && 
+	!this.isInWaitressServingPose() && !this.isInMapPose();
 };
 
 Game_Actor.prototype.isInFuckedFromBehindSexPose = function() {
 	if(!this.pussySexPoseSkillsIsEnabled() && !this.analSexPoseSkillsIsEnabled()) return false;
-	return this.isInDefeatedLevel2Pose() || this.isInGoblinCunnilingusSexPose() || this.isInLayingTittyfuckSexPose() || this.isInRimjobSexPose() || this.isInWaitressSexPose();
+	return this.isInDefeatedLevel2Pose() || this.isInGoblinCunnilingusSexPose() || this.isInLayingTittyfuckSexPose() || this.isInRimjobSexPose() || this.isInWaitressSexPose() || this.isInToiletStandLeftPose() || this.isInToiletStandRightPose();
+};
+
+Game_Actor.prototype.isInCowgirlSexPose = function() {
+	if(!this.pussySexPoseSkillsIsEnabled() && !this.analSexPoseSkillsIsEnabled()) return false;
+	return this.isInReverseCowgirlPose() || this.isInLizardmanCowgirlPose() || this.isInKarrynCowgirlPose();
+};
+
+Game_Actor.prototype.isInRestrainedPose = function() {
+	return this.isInDefeatedLevel3Pose() || this.isInThugGangbangPose() || this.isInSlimeAnalPiledriverSexPose() || this.isInKickCounterSexPose();
+};
+Game_Actor.prototype.isNotInRestrainedPose = function() {
+	return !this.isInRestrainedPose();
 };
 
 ///////////
@@ -1284,18 +1360,24 @@ Game_Actor.prototype.isInThugGangbangPose = function() {
 };
 Game_Actor.prototype.setThugGangbangSexPose = function() {
 	this.setAllowTachieUpdate(false);
-	let dontReset = this._dontResetSexPose;
-	this.setPose(POSE_THUGGANGBANG, dontReset);
+	let dontResetPose = this._dontResetSexPose;
+	let dontResetBodySlots = this.isInSexPose();
+	this.setPose(POSE_THUGGANGBANG, dontResetPose);
 	this.setSpriteBattlerPosData(POSE_THUGGANGBANG);
-	if(dontReset) {
+	if(dontResetPose) {
 		this.setAllowTachieUpdate(true);
 		this.emoteMasterManager();
 		this._dontResetSexPose = false;
 		return;
 	}
 	this.removeStatesBeforeSex();
-	this.removeAllPettedInsertExceptToy();
-	this.setAllBodySlotsFreeExceptToy();
+	if(!dontResetBodySlots) {
+		this.removeAllPettedInsertExceptToy();
+		this.setAllBodySlotsFreeExceptToy();
+	}
+	else {
+		this.setAllBodySlotsFreeExceptPettedInsert();
+	}
 	this.removePussyToy();
 	this.setTachieLeftArmInFrontOfBody(false);
 	this.setHasTachiePubic(true);
@@ -1319,6 +1401,10 @@ Game_Actor.prototype.setThugGangbangSexPose = function() {
 	
 	BattleManager.playSpecialBgm_EnemySex();
 	
+	if(dontResetBodySlots) {
+		BattleManager.upgradingPoseReinsertBody(this);
+	}
+	
 	this.emoteThugGangbangPose();
 	this.setAllowTachieUpdate(true);
 };
@@ -1328,18 +1414,24 @@ Game_Actor.prototype.isInGuardGangbangPose = function() {
 };
 Game_Actor.prototype.setGuardGangbangSexPose = function() {
 	this.setAllowTachieUpdate(false);
-	let dontReset = this._dontResetSexPose;
-	this.setPose(POSE_GUARDGANGBANG, dontReset);
+	let dontResetPose = this._dontResetSexPose;
+	let dontResetBodySlots = this.isInSexPose();
+	this.setPose(POSE_GUARDGANGBANG, dontResetPose);
 	this.setSpriteBattlerPosData(POSE_GUARDGANGBANG);
-	if(dontReset) {
+	if(dontResetPose) {
 		this.setAllowTachieUpdate(true);
 		this.emoteMasterManager();
 		this._dontResetSexPose = false;
 		return;
 	}
 	this.removeStatesBeforeSex();
-	this.removeAllPettedInsertExceptToy();
-	this.setAllBodySlotsFreeExceptToy();
+	if(!dontResetBodySlots) {
+		this.removeAllPettedInsertExceptToy();
+		this.setAllBodySlotsFreeExceptToy();
+	}
+	else {
+		this.setAllBodySlotsFreeExceptPettedInsert();
+	}
 	this.removePussyToy();
 	this.setSpankablePose(true);
 	this.setHasTachiePubic(false);
@@ -1369,7 +1461,7 @@ Game_Actor.prototype.setGuardGangbangSexPose = function() {
 	this.setMaxTachieWetId(1);
 	this.setMaxTachieSemenCockPussyId(1);
 
-	this.setBodyPartFree_PettingOnly_NoToys(CLIT_ID);
+	this.setBodyPartFree_PettingOnly(CLIT_ID);
 	this.setBodyPartFree_PettingOnly(BOOBS_ID);
 	this.setBodyPartFree_PettingOnly(NIPPLES_ID);
 	this.setBodyPartFree_PettingOnly(THIGHS_ID);
@@ -1378,6 +1470,10 @@ Game_Actor.prototype.setGuardGangbangSexPose = function() {
 	this.setBodyPartUnavailable(FEET_ID);
 	
 	BattleManager.playSpecialBgm_EnemySex();
+	
+	if(dontResetBodySlots) {
+		BattleManager.upgradingPoseReinsertBody(this);
+	}
 	
 	this.emoteGuardGangbangPose();
 	this.setAllowTachieUpdate(true);
@@ -1388,24 +1484,30 @@ Game_Actor.prototype.isInReverseCowgirlPose = function() {
 };
 Game_Actor.prototype.setReverseCowgirlSexPose = function(karrynSkill) {
 	this.setAllowTachieUpdate(false);
-	let dontReset = this._dontResetSexPose;
-	this.setPose(POSE_REVERSE_COWGIRL, dontReset);
+	let dontResetPose = this._dontResetSexPose;
+	let dontResetBodySlots = this.isInSexPose();
+	this.setPose(POSE_REVERSE_COWGIRL, dontResetPose);
 	this.setSpriteBattlerPosData(POSE_REVERSE_COWGIRL);
-	if(dontReset) {
+	if(dontResetPose) {
+		this.emoteReverseCowgirlPose();
 		this.setAllowTachieUpdate(true);
-		this.emoteMasterManager();
 		this._dontResetSexPose = false;
 		return;
 	}
 	this.removeStatesBeforeSex();
-	this.removeAllPettedInsertExceptToy();
-	this.setAllBodySlotsFreeExceptToy();
+	if(!dontResetBodySlots) {
+		this.removeAllPettedInsertExceptToy();
+		this.setAllBodySlotsFreeExceptToy();
+	}
+	else {
+		this.setAllBodySlotsFreeExceptPettedInsert();
+	}
 	this.removeAnalToy();
 	this.setSpankablePose(true);
 	this.setHasTachiePubic(false);
 	
 	if(this.isWearingGlovesAndHat()) {
-		this.setTachieHat('close_1'); //temp
+		this.setTachieHat('close_1');
 	}
 	else {
 		this.resetTachieHat();
@@ -1421,7 +1523,7 @@ Game_Actor.prototype.setReverseCowgirlSexPose = function(karrynSkill) {
 	this.setMaxTachieSemenFaceId(1);
 	this.setMaxTachieSemenLeftArmId(1);
 	this.setMaxTachieSemenRightArmId(0);
-	this.setMaxTachieSemenCockAnalId(1);
+	this.setMaxTachieSemenCockAnalId(0);
 
 	this.setBodyPartFree_PettingOnly(CLIT_ID);
 	this.setBodyPartFree_PettingOnly(BOOBS_ID);
@@ -1435,6 +1537,10 @@ Game_Actor.prototype.setReverseCowgirlSexPose = function(karrynSkill) {
 	else
 		BattleManager.playSpecialBgm_EnemySex();
 	
+	if(dontResetBodySlots) {
+		BattleManager.upgradingPoseReinsertBody(this);
+	}
+	
 	this.emoteReverseCowgirlPose();
 	this.setAllowTachieUpdate(true);
 };
@@ -1444,18 +1550,24 @@ Game_Actor.prototype.isInLizardmanCowgirlPose = function() {
 };
 Game_Actor.prototype.setLizardmanCowgirlSexPose = function() {
 	this.setAllowTachieUpdate(false);
-	let dontReset = this._dontResetSexPose;
-	this.setPose(POSE_LIZARDMAN_COWGIRL, dontReset);
+	let dontResetPose = this._dontResetSexPose;
+	let dontResetBodySlots = this.isInSexPose();
+	this.setPose(POSE_LIZARDMAN_COWGIRL, dontResetPose);
 	this.setSpriteBattlerPosData(POSE_LIZARDMAN_COWGIRL);
-	if(dontReset) {
+	if(dontResetPose) {
 		this.setAllowTachieUpdate(true);
 		this.emoteMasterManager();
 		this._dontResetSexPose = false;
 		return;
 	}
 	this.removeStatesBeforeSex();
-	this.removeAllPettedInsertExceptToy();
-	this.setAllBodySlotsFreeExceptToy();
+	if(!dontResetBodySlots) {
+		this.removeAllPettedInsertExceptToy();
+		this.setAllBodySlotsFreeExceptToy();
+	}
+	else {
+		this.setAllBodySlotsFreeExceptPettedInsert();
+	}
 	this.removePussyToy();
 	this.setHasTachiePubic(false);
 	this.setSpankablePose(true);
@@ -1474,18 +1586,22 @@ Game_Actor.prototype.setLizardmanCowgirlSexPose = function() {
 	this.setMaxTachieSemenCrotchId(1);
 	this.setMaxTachieSemenFaceId(1);
 	this.setMaxTachieSemenRightArmId(1);
-	this.setMaxTachieSemenCockPussyId(1);
+	this.setMaxTachieSemenCockPussyId(0);
 	this.setMaxTachieSemenMouthId(0);
 	this.setMaxTachieWetId(1);
 
 	this.setBodyPartFree_PettingOnly(BOOBS_ID);
 	this.setBodyPartFree_PettingOnly(NIPPLES_ID);
-	this.setBodyPartFree_PettingOnly_NoToys(CLIT_ID);
+	this.setBodyPartFree_PettingOnly(CLIT_ID);
 	this.setBodyPartFree_PettingOnly(THIGHS_ID);
 	this.setBodyPartUnavailable(FEET_ID);
 	this.setBodyPartUnavailable(LEFT_HAND_ID);
 	
 	BattleManager.playSpecialBgm_EnemySex();
+	
+	if(dontResetBodySlots) {
+		BattleManager.upgradingPoseReinsertBody(this);
+	}
 	
 	this.emoteLizardmanCowgirlPose();
 	this.setAllowTachieUpdate(true);
@@ -1496,18 +1612,24 @@ Game_Actor.prototype.isInKarrynCowgirlPose = function() {
 };
 Game_Actor.prototype.setKarrynCowgirlSexPose = function() {
 	this.setAllowTachieUpdate(false);
-	let dontReset = this._dontResetSexPose;
-	this.setPose(POSE_KARRYN_COWGIRL, dontReset);
+	let dontResetPose = this._dontResetSexPose;
+	let dontResetBodySlots = this.isInSexPose();
+	this.setPose(POSE_KARRYN_COWGIRL, dontResetPose);
 	this.setSpriteBattlerPosData(POSE_KARRYN_COWGIRL);
-	if(dontReset) {
+	if(dontResetPose) {
 		this.setAllowTachieUpdate(true);
 		this.emoteMasterManager();
 		this._dontResetSexPose = false;
 		return;
 	}
 	this.removeStatesBeforeSex();
-	this.removeAllPettedInsertExceptToy();
-	this.setAllBodySlotsFreeExceptToy();
+	if(!dontResetBodySlots) {
+		this.removeAllPettedInsertExceptToy();
+		this.setAllBodySlotsFreeExceptToy();
+	}
+	else {
+		this.setAllBodySlotsFreeExceptPettedInsert();
+	}
 	this.removePussyToy();
 	this.setSpankablePose(false);
 	
@@ -1527,10 +1649,14 @@ Game_Actor.prototype.setKarrynCowgirlSexPose = function() {
 	this.setBodyPartUnavailable(RIGHT_HAND_ID);
 	this.setBodyPartUnavailable(LEFT_HAND_ID);
 	
+	BattleManager.playSpecialBgm_KarrynSex();
+	
+	if(dontResetBodySlots) {
+		BattleManager.upgradingPoseReinsertBody(this);
+	}
+	
 	this.emoteKarrynCowgirlPose();
 	this.setAllowTachieUpdate(true);
-	
-	BattleManager.playSpecialBgm_KarrynSex();
 };
 
 Game_Actor.prototype.isInGoblinCunnilingusSexPose = function() {
@@ -1538,20 +1664,26 @@ Game_Actor.prototype.isInGoblinCunnilingusSexPose = function() {
 };
 Game_Actor.prototype.setGoblinCunnilingusSexPose = function() {
 	this.setAllowTachieUpdate(false);
-	let dontReset = this._dontResetSexPose;
-	this.setPose(POSE_GOBLINCUNNILINGUS, dontReset);
+	let dontResetPose = this._dontResetSexPose;
+	let dontResetBodySlots = this.isInSexPose();
+	this.setPose(POSE_GOBLINCUNNILINGUS, dontResetPose);
 	this.setSpriteBattlerPosData(POSE_GOBLINCUNNILINGUS);
-	if(dontReset) {
+	if(dontResetPose) {
 		this.setAllowTachieUpdate(true);
 		this.emoteMasterManager();
 		this._dontResetSexPose = false;
 		return;
 	}
 	this.removeStatesBeforeSex();
-	this.removeAllPettedInsertExceptToy();
-	this.setAllBodySlotsFreeExceptToy();
-	this.removeClitToy();
-	this.removePussyToy();
+	if(!dontResetBodySlots) {
+		this.removeAllPettedInsertExceptToy();
+		this.setAllBodySlotsFreeExceptToy();
+	}
+	else {
+		this.setAllBodySlotsFreeExceptPettedInsert();
+	}
+	this.setClitToyInsertablePose(false);
+	this.setPussyToyInsertablePose(false);
 	this.setSpankablePose(true);
 	this.setHasTachiePubic(true);
 	
@@ -1569,7 +1701,7 @@ Game_Actor.prototype.setGoblinCunnilingusSexPose = function() {
 	this.setMaxTachieSemenRightArmId(1);
 	this.setMaxTachieWetId(1);
 
-	this.setBodyPartFree_PettingOnly_NoToys(CLIT_ID);
+	this.setBodyPartFree_PettingOnly(CLIT_ID);
 	this.setBodyPartFree_PettingOnly(THIGHS_ID);
 	this.setBodyPartFree_PettingOnly(BUTT_ID);
 	this.setBodyPartFree_PettingOnly(ANAL_ID);
@@ -1580,6 +1712,10 @@ Game_Actor.prototype.setGoblinCunnilingusSexPose = function() {
 	
 	BattleManager.playSpecialBgm_EnemySex();
 	
+	if(dontResetBodySlots) {
+		BattleManager.upgradingPoseReinsertBody(this);
+	}
+	
 	this.emoteGoblinCunnilingusPose();
 	this.setAllowTachieUpdate(true);
 };
@@ -1589,18 +1725,24 @@ Game_Actor.prototype.isInOrcPaizuriSexPose = function() {
 };
 Game_Actor.prototype.setOrcPaizuriSexPose = function() {
 	this.setAllowTachieUpdate(false);
-	let dontReset = this._dontResetSexPose;
-	this.setPose(POSE_ORC_PAIZURI, dontReset);
+	let dontResetPose = this._dontResetSexPose;
+	let dontResetBodySlots = this.isInSexPose();
+	this.setPose(POSE_ORC_PAIZURI, dontResetPose);
 	this.setSpriteBattlerPosData(POSE_ORC_PAIZURI);
-	if(dontReset) {
+	if(dontResetPose) {
 		this.setAllowTachieUpdate(true);
 		this.emoteMasterManager();
 		this._dontResetSexPose = false;
 		return;
 	}
 	this.removeStatesBeforeSex();
-	this.removeAllPettedInsertExceptToy();
-	this.setAllBodySlotsFreeExceptToy();
+	if(!dontResetBodySlots) {
+		this.removeAllPettedInsertExceptToy();
+		this.setAllBodySlotsFreeExceptToy();
+	}
+	else {
+		this.setAllBodySlotsFreeExceptPettedInsert();
+	}
 	this.setSpankablePose(false);
 	this.setHasTachiePubic(false);
 
@@ -1626,6 +1768,10 @@ Game_Actor.prototype.setOrcPaizuriSexPose = function() {
 	
 	BattleManager.playSpecialBgm_EnemySex();
 	
+	if(dontResetBodySlots) {
+		BattleManager.upgradingPoseReinsertBody(this);
+	}
+	
 	this.emoteOrcPaizuriPose();
 	this.setAllowTachieUpdate(true);
 };
@@ -1635,19 +1781,27 @@ Game_Actor.prototype.isInKickCounterSexPose = function() {
 };
 Game_Actor.prototype.setKickCounterSexPose = function() {
 	this.setAllowTachieUpdate(false);
-	let dontReset = this._dontResetSexPose;
-	this.setPose(POSE_KICKCOUNTER, dontReset);
+	let dontResetPose = this._dontResetSexPose;
+	let dontResetBodySlots = this.isInSexPose();
+	this.setPose(POSE_KICKCOUNTER, dontResetPose);
 	this.setSpriteBattlerPosData(POSE_KICKCOUNTER);
-	if(dontReset) {
+	if(dontResetPose) {
 		this.setAllowTachieUpdate(true);
 		this.emoteMasterManager();
 		this._dontResetSexPose = false;
 		return;
 	}
 	this.removeStatesBeforeSex();
-	this.removeAllPettedInsertExceptToy();
-	this.setAllBodySlotsFreeExceptToy();
+	if(!dontResetBodySlots) {
+		this.removeAllPettedInsertExceptToy();
+		this.setAllBodySlotsFreeExceptToy();
+	}
+	else {
+		this.setAllBodySlotsFreeExceptPettedInsert();
+	}
 	this.removePussyToy();
+	this.setClitToyInsertablePose(false);
+	this.setPussyToyInsertablePose(false);
 	this.setSpankablePose(true);
 	this.setHasTachiePubic(true);
 	
@@ -1677,16 +1831,20 @@ Game_Actor.prototype.setKickCounterSexPose = function() {
 	this.setBodyPartFree_PettingOnly(MOUTH_ID);
 	this.setBodyPartFree_PettingOnly(BOOBS_ID);
 	this.setBodyPartFree_PettingOnly(NIPPLES_ID);
-	this.setBodyPartFree_PettingOnly_NoToys(CLIT_ID);
+	this.setBodyPartFree_PettingOnly(CLIT_ID);
 	this.setBodyPartUnavailable(RIGHT_HAND_ID);
 	this.setBodyPartUnavailable(LEFT_HAND_ID);
 	this.setBodyPartUnavailable(STOMACH_ID);
 	this.setBodyPartUnavailable(FEET_ID);
 	
+	BattleManager.playSpecialBgm_EnemySex();
+	
+	if(dontResetBodySlots) {
+		BattleManager.upgradingPoseReinsertBody(this);
+	}
+	
 	this.emoteKickCounterPose(false, true);
 	this.setAllowTachieUpdate(true);
-	
-	BattleManager.playSpecialBgm_EnemySex();
 };
 
 Game_Actor.prototype.isInRimjobSexPose = function() {
@@ -1694,18 +1852,24 @@ Game_Actor.prototype.isInRimjobSexPose = function() {
 };
 Game_Actor.prototype.setRimjobSexPose = function(karrynSkill) {
 	this.setAllowTachieUpdate(false);
-	let dontReset = this._dontResetSexPose;
-	this.setPose(POSE_RIMJOB, dontReset);
+	let dontResetPose = this._dontResetSexPose;
+	let dontResetBodySlots = this.isInSexPose();
+	this.setPose(POSE_RIMJOB, dontResetPose);
 	this.setSpriteBattlerPosData(POSE_RIMJOB);
-	if(dontReset) {
+	if(dontResetPose) {
 		this.setAllowTachieUpdate(true);
 		this.emoteMasterManager();
 		this._dontResetSexPose = false;
 		return;
 	}
 	this.removeStatesBeforeSex();
-	this.removeAllPettedInsertExceptToy();
-	this.setAllBodySlotsFreeExceptToy();
+	if(!dontResetBodySlots) {
+		this.removeAllPettedInsertExceptToy();
+		this.setAllBodySlotsFreeExceptToy();
+	}
+	else {
+		this.setAllBodySlotsFreeExceptPettedInsert();
+	}
 	this.setSpankablePose(true);
 	this.setHasTachiePubic(true);
 	
@@ -1743,14 +1907,17 @@ Game_Actor.prototype.setRimjobSexPose = function(karrynSkill) {
 	this.setBodyPartUnavailable(LEFT_HAND_ID);
 	this.setBodyPartUnavailable(FEET_ID);
 	
-	this.emoteRimjobPose();
-	this.setAllowTachieUpdate(true);
-	
 	if(karrynSkill)
 		BattleManager.playSpecialBgm_KarrynSex();
 	else
 		BattleManager.playSpecialBgm_EnemySex();
 	
+	if(dontResetBodySlots) {
+		BattleManager.upgradingPoseReinsertBody(this);
+	}
+	
+	this.emoteRimjobPose();
+	this.setAllowTachieUpdate(true);
 };
 
 Game_Actor.prototype.isInFootjobSexPose = function() {
@@ -1758,18 +1925,24 @@ Game_Actor.prototype.isInFootjobSexPose = function() {
 };
 Game_Actor.prototype.setFootjobSexPose = function(karrynSkill) {
 	this.setAllowTachieUpdate(false);
-	let dontReset = this._dontResetSexPose;
-	this.setPose(POSE_FOOTJOB, dontReset);
+	let dontResetPose = this._dontResetSexPose;
+	let dontResetBodySlots = this.isInSexPose();
+	this.setPose(POSE_FOOTJOB, dontResetPose);
 	this.setSpriteBattlerPosData(POSE_FOOTJOB);
-	if(dontReset) {
+	if(dontResetPose) {
 		this.setAllowTachieUpdate(true);
 		this.emoteMasterManager();
 		this._dontResetSexPose = false;
 		return;
 	}
 	this.removeStatesBeforeSex();
-	this.removeAllPettedInsertExceptToy();
-	this.setAllBodySlotsFreeExceptToy();
+	if(!dontResetBodySlots) {
+		this.removeAllPettedInsertExceptToy();
+		this.setAllBodySlotsFreeExceptToy();
+	}
+	else {
+		this.setAllBodySlotsFreeExceptPettedInsert();
+	}
 	this.setSpankablePose(false);
 	this.setHasTachiePubic(false);
 	
@@ -1793,13 +1966,17 @@ Game_Actor.prototype.setFootjobSexPose = function(karrynSkill) {
 	this.setBodyPartUnavailable(ANAL_ID);
 	this.setBodyPartUnavailable(RIGHT_HAND_ID);
 	
-	this.emoteFootjobPose();
-	this.setAllowTachieUpdate(true);
-	
 	if(karrynSkill)
 		BattleManager.playSpecialBgm_KarrynSex();
 	else
 		BattleManager.playSpecialBgm_EnemySex();
+	
+	if(dontResetBodySlots) {
+		BattleManager.upgradingPoseReinsertBody(this);
+	}
+	
+	this.emoteFootjobPose();
+	this.setAllowTachieUpdate(true);
 };
 
 Game_Actor.prototype.isInStandingHJSexPose = function() {
@@ -1807,18 +1984,24 @@ Game_Actor.prototype.isInStandingHJSexPose = function() {
 };
 Game_Actor.prototype.setStandingHJSexPose = function(karrynSkill) {
 	this.setAllowTachieUpdate(false);
-	let dontReset = this._dontResetSexPose;
-	this.setPose(POSE_HJ_STANDING, dontReset);
+	let dontResetPose = this._dontResetSexPose;
+	let dontResetBodySlots = this.isInSexPose();
+	this.setPose(POSE_HJ_STANDING, dontResetPose);
 	this.setSpriteBattlerPosData(POSE_HJ_STANDING);
-	if(dontReset) {
+	if(dontResetPose) {
 		this.setAllowTachieUpdate(true);
 		this.emoteMasterManager();
 		this._dontResetSexPose = false;
 		return;
 	}
 	this.removeStatesBeforeSex();
-	this.removeAllPettedInsertExceptToy();
-	this.setAllBodySlotsFreeExceptToy();
+	if(!dontResetBodySlots) {
+		this.removeAllPettedInsertExceptToy();
+		this.setAllBodySlotsFreeExceptToy();
+	}
+	else {
+		this.setAllBodySlotsFreeExceptPettedInsert();
+	}
 	this.setSpankablePose(true);
 	this.setHasTachiePubic(true);
 	this.setTachieLeftArmInFrontOfBody(true);
@@ -1858,13 +2041,17 @@ Game_Actor.prototype.setStandingHJSexPose = function(karrynSkill) {
 	this.setBodyPartUnavailable(STOMACH_ID);
 	this.setBodyPartUnavailable(FEET_ID);
 	
-	this.emoteStandingHandjobPose();
-	this.setAllowTachieUpdate(true);
-	
 	if(karrynSkill)
 		BattleManager.playSpecialBgm_KarrynSex();
 	else
 		BattleManager.playSpecialBgm_EnemySex();
+	
+	if(dontResetBodySlots) {
+		BattleManager.upgradingPoseReinsertBody(this);
+	}
+	
+	this.emoteStandingHandjobPose();
+	this.setAllowTachieUpdate(true);
 };
 
 Game_Actor.prototype.isInKneelingBJSexPose = function() {
@@ -1872,18 +2059,24 @@ Game_Actor.prototype.isInKneelingBJSexPose = function() {
 };
 Game_Actor.prototype.setKneelingBJSexPose = function(karrynSkill) {
 	this.setAllowTachieUpdate(false);
-	let dontReset = this._dontResetSexPose;
-	this.setPose(POSE_BJ_KNEELING, dontReset);
+	let dontResetPose = this._dontResetSexPose;
+	let dontResetBodySlots = this.isInSexPose();
+	this.setPose(POSE_BJ_KNEELING, dontResetPose);
 	this.setSpriteBattlerPosData(POSE_BJ_KNEELING);
-	if(dontReset) {
+	if(dontResetPose) {
 		this.setAllowTachieUpdate(true);
 		this.emoteMasterManager();
 		this._dontResetSexPose = false;
 		return;
 	}
 	this.removeStatesBeforeSex();
-	this.removeAllPettedInsertExceptToy();
-	this.setAllBodySlotsFreeExceptToy();
+	if(!dontResetBodySlots) {
+		this.removeAllPettedInsertExceptToy();
+		this.setAllBodySlotsFreeExceptToy();
+	}
+	else {
+		this.setAllBodySlotsFreeExceptPettedInsert();
+	}
 
 	if(!this.isWearingGlovesAndHat()) {
 		this.setTachieBody('naked_1');
@@ -1919,13 +2112,17 @@ Game_Actor.prototype.setKneelingBJSexPose = function(karrynSkill) {
 	this.setBodyPartUnavailable(STOMACH_ID);
 	this.setBodyPartUnavailable(FEET_ID);
 	
-	this.emoteMasterManager();
-	this.setAllowTachieUpdate(true);
-	
 	if(karrynSkill)
 		BattleManager.playSpecialBgm_KarrynSex();
 	else
 		BattleManager.playSpecialBgm_EnemySex();
+	
+	if(dontResetBodySlots) {
+		BattleManager.upgradingPoseReinsertBody(this);
+	}
+	
+	this.emoteMasterManager();
+	this.setAllowTachieUpdate(true);
 };
 
 Game_Actor.prototype.isInLayingTittyfuckSexPose = function() {
@@ -1933,18 +2130,24 @@ Game_Actor.prototype.isInLayingTittyfuckSexPose = function() {
 };
 Game_Actor.prototype.setLayingTittyfuckSexPose = function(karrynSkill) {
 	this.setAllowTachieUpdate(false);
-	let dontReset = this._dontResetSexPose;
-	this.setPose(POSE_PAIZURI_LAYING, dontReset);
+	let dontResetPose = this._dontResetSexPose;
+	let dontResetBodySlots = this.isInSexPose();
+	this.setPose(POSE_PAIZURI_LAYING, dontResetPose);
 	this.setSpriteBattlerPosData(POSE_PAIZURI_LAYING);
-	if(dontReset) {
+	if(dontResetPose) {
 		this.setAllowTachieUpdate(true);
 		this.emoteMasterManager();
 		this._dontResetSexPose = false;
 		return;
 	}
 	this.removeStatesBeforeSex();
-	this.removeAllPettedInsertExceptToy();
-	this.setAllBodySlotsFreeExceptToy();
+	if(!dontResetBodySlots) {
+		this.removeAllPettedInsertExceptToy();
+		this.setAllBodySlotsFreeExceptToy();
+	}
+	else {
+		this.setAllBodySlotsFreeExceptPettedInsert();
+	}
 
 	if(this.isWearingGlovesAndHat()) {
 		this.setTachieBody(1);
@@ -1976,13 +2179,17 @@ Game_Actor.prototype.setLayingTittyfuckSexPose = function(karrynSkill) {
 	this.setBodyPartUnavailable(STOMACH_ID);
 	this.setBodyPartUnavailable(FEET_ID);
 	
-	this.emoteMasterManager();
-	this.setAllowTachieUpdate(true);
-	
 	if(karrynSkill)
 		BattleManager.playSpecialBgm_KarrynSex();
 	else
 		BattleManager.playSpecialBgm_EnemySex();
+	
+	if(dontResetBodySlots) {
+		BattleManager.upgradingPoseReinsertBody(this);
+	}
+	
+	this.emoteMasterManager();
+	this.setAllowTachieUpdate(true);
 };
 
 Game_Actor.prototype.isInSlimeAnalPiledriverSexPose = function() {
@@ -1990,14 +2197,21 @@ Game_Actor.prototype.isInSlimeAnalPiledriverSexPose = function() {
 };
 Game_Actor.prototype.setSlimeAnalPiledriverPose = function() {
 	this.setAllowTachieUpdate(false);
+	let dontResetBodySlots = this.isInSexPose();
 	this.setPose(POSE_SLIME_PILEDRIVER_ANAL);
 	this.setSpriteBattlerPosData(POSE_SLIME_PILEDRIVER_ANAL);
 	this.removeStatesBeforeSex();
-	this.removeAllPettedInsertExceptToy();
-	this.setAllBodySlotsFreeExceptToy();
+	if(!dontResetBodySlots) {
+		this.removeAllPettedInsertExceptToy();
+		this.setAllBodySlotsFreeExceptToy();
+	}
+	else {
+		this.setAllBodySlotsFreeExceptPettedInsert();
+	}
 	this.removeAnalToy();
 
 	this.setTachieClitToyInFrontOfMainToys(false);
+	this.setTachieClitToyBehindCocks(true);
 
 	this.setTachieEyes(1);
 	this.setTachieHat(1);
@@ -2032,6 +2246,10 @@ Game_Actor.prototype.setSlimeAnalPiledriverPose = function() {
 	
 	BattleManager.playSpecialBgm_EnemySex();
 	
+	if(dontResetBodySlots) {
+		BattleManager.upgradingPoseReinsertBody(this);
+	}
+	
 	this.emoteSlimePiledriver();
 	this.setAllowTachieUpdate(true);
 };
@@ -2039,19 +2257,19 @@ Game_Actor.prototype.setSlimeAnalPiledriverPose = function() {
 
 
 ////////////
-// Masturbation Pose
+// Masturbation Couch Pose
 /////////////////////
 
 Game_Actor.prototype.isInMasturbationPose = function() {
-	return (this.isInMasturbationLevel1Pose());
-};
-Game_Actor.prototype.isInMasturbationLevel1Pose = function() {
-	return this.poseName == POSE_MASTURBATE1;
+	return this.isInMasturbationCouchPose() || this.isInMasturbationInBattlePose();
 };
 
-Game_Actor.prototype.setMasturbationLevel1Pose = function() {
-	this.setPose(POSE_MASTURBATE1);
-	this.setSpriteBattlerPosData(POSE_MASTURBATE1);
+Game_Actor.prototype.isInMasturbationCouchPose = function() {
+	return this.poseName == POSE_MASTURBATE_COUCH;
+};
+Game_Actor.prototype.setMasturbationCouchPose = function() {
+	this.setPose(POSE_MASTURBATE_COUCH);
+	this.setSpriteBattlerPosData(POSE_MASTURBATE_COUCH);
 	this.takeOffPanties();
 	this.removeClothing();
 	this.removeAllPettedToyInsert();
@@ -2076,19 +2294,70 @@ Game_Actor.prototype.setMasturbationLevel1Pose = function() {
 	}
 };
 
+//////////////
+// Masturbation In Battle Pose
+// Onani In Battle Pose
+/////////////////
+
+Game_Actor.prototype.isInMasturbationInBattlePose = function() {
+	return this.poseName == POSE_MASTURBATE_INBATTLE;
+};
+Game_Actor.prototype.setMasturbationInBattlePose = function() {
+	let alreadyInPose = this.isInMasturbationInBattlePose();
+	this.setPose(POSE_MASTURBATE_INBATTLE);
+	this.setSpriteBattlerPosData(POSE_MASTURBATE_INBATTLE);
+	this.setAllBodySlotsFree();
+	this.setHasTachiePubic(true);
+	this.setTachieHasBoobsHard(false);
+	this.takeOffPanties();
+	
+	if(!alreadyInPose) {
+		this.masInBattle_resetLeftArmToNormal();
+		this.masInBattle_resetRightArmToNormal();
+	}
+	
+	if(!this.isWearingGlovesAndHat()) {
+		this.setTachieBody('naked_1');
+		this.resetTachieBoobs();
+		this.resetTachieHat();
+		this.resetTachieTie();
+	}
+	else {
+		this.setTachieHat(1);
+		this.setTachieTie(1);
+		if(this._clothingStage < 4) this.changeClothingToStage(4);
+		this.setPoseClothing();
+	}
+	
+	this.setMaxTachieSemenBoobsId(0);
+	/* mas_inbattle remove once art is finished
+	this.setMaxTachieSemenRightBoobId(1);
+	this.setMaxTachieSemenLeftBoobId(1);
+	this.setMaxTachieSemenBellyId(1);
+	this.setMaxTachieSemenCrotchId(1);
+	this.setMaxTachieSemenFaceId(1);
+	this.setMaxTachieSemenLeftArmId(1);
+	this.setMaxTachieSemenRightArmId(1);
+	this.setMaxTachieWetId(1);
+	*/
+	
+	BattleManager.playSpecialBgm_KarrynSex();
+};
+
 ///////////
 // Waitress Pose
 
 Game_Actor.prototype.isInWaitressServingPose = function() {
-	return $gameParty.isInWaitressBattle && this.isInMapPose();
+	let pose = this.poseName;
+	return $gameParty.isInWaitressBattle && ( pose == POSE_MAP );
 };
 Game_Actor.prototype.setWaitressServingPose = function() {
 	this.removeAllPettedToyInsert();
 	this.setAllBodySlotsFree();
 	this.setSpriteBattlerPosData(POSE_MAP);
-	this.setBodyPartFree_PettingOnly_NoToys(CLIT_ID);
-	this.setBodyPartFree_PettingOnly_NoToys(PUSSY_ID);
-	this.setBodyPartFree_PettingOnly_NoToys(ANAL_ID);
+	this.setClitToyInsertablePose(false);
+	this.setPussyToyInsertablePose(false);
+	this.setAnalToyInsertablePose(false);
 	
 	this.setPose(POSE_MAP);
 	this.setTachieBody(2);
@@ -2100,7 +2369,6 @@ Game_Actor.prototype.setWaitressServingPose = function() {
 	this.setPosePanties();
 	this.setTachieRightArmInFrontOfBody(true);
 	this.setTachieRightArmInFrontOfBoobs(false);
-	this.setTachieSemenBellyAndBoobsInFrontOfBoobs(true);
 	this.setSpankablePose(true);
 	this.setHasTachiePubic(true);
 
@@ -2119,7 +2387,6 @@ Game_Actor.prototype.setWaitressServingPose = function() {
 Game_Actor.prototype.isInWaitressSexPose = function() {
 	let pose = this.poseName;
 	return ( pose == POSE_WAITRESS_SEX );
-	return $gameParty.isInWaitressBattle && !this.isInMapPose();
 };
 Game_Actor.prototype.setWaitressSexPose = function() {
 	this.setAllowTachieUpdate(false);
@@ -2201,6 +2468,15 @@ Game_Actor.prototype.isInToiletSittingPose = function() {
 	return this.poseName == POSE_TOILET_SITTING;
 };
 Game_Actor.prototype.setToiletSittingPose = function() {
+	let leftArmIsKuri = this.tachieLeftArm.includes('kuri');
+	let leftArmIsChikubi = this.tachieLeftArm.includes('chikubi');
+	let leftArmIsManko = this.tachieLeftArm.includes('manko');
+	let leftArmIsAnaru = this.tachieLeftArm.includes('anaru');
+	let rightArmIsKuri = this.tachieRightArm.includes('kuri');
+	let rightArmIsChikubi = this.tachieRightArm.includes('chikubi');
+	let rightArmIsManko = this.tachieRightArm.includes('manko');
+	let rightArmIsAnaru = this.tachieRightArm.includes('anaru');
+	
 	this.setAllowTachieUpdate(false);
 	this.setPose(POSE_TOILET_SITTING, false);
 	this.setSpriteBattlerPosData(POSE_TOILET_SITTING);
@@ -2214,15 +2490,55 @@ Game_Actor.prototype.setToiletSittingPose = function() {
 	this.setTachieEyes('far_sita1');
 	this.setTachieMouth('far_mu1');
 	
-	this.setTachieLeftBoob('normal');
-	this.setTachieRightBoob('normal');
-	this.setTachieLeftArm('normal_1');
-	this.setTachieRightArm('normal_1');
+	if(leftArmIsChikubi) {
+		this.setTachieLeftBoob('touch_chikubi');
+		this.setTachieLeftArm('chikubi_1');
+	}
+	else {
+		this.setTachieLeftBoob('normal');
+		
+		if(leftArmIsKuri) {
+			this.setTachieLeftArm('kuri_1');
+		}
+		else if(leftArmIsManko) {
+			this.setTachieLeftArm('manko_1');
+		}
+		else if(leftArmIsAnaru) {
+			this.setTachieLeftArm('anaru_1');
+		}
+		else {
+			this.toiletBattle_resetLeftArmToNormal();
+		}
+	}
+	
+	if(rightArmIsChikubi) {
+		this.setTachieRightBoob('touch_chikubi');
+		this.setTachieRightArm('chikubi_1');
+	}
+	else {
+		this.setTachieRightBoob('normal');
+		
+		if(rightArmIsKuri) {
+			this.setTachieRightArm('kuri_1');
+		}
+		else if(rightArmIsManko) {
+			this.setTachieRightArm('manko_1');
+		}
+		else if(rightArmIsAnaru) {
+			this.setTachieRightArm('anaru_1');
+		}
+		else {
+			this.toiletBattle_resetRightArmToNormal();
+		}
+	}
+
 	this.setTachieTie('1');
 	
-	this.setAllowTachieUpdate(true);
+	this.setMaxTachieSemenBellyId(1);
 	
 	this.emoteGloryToiletSittingPose();
+	
+	this.setAllowTachieUpdate(true);
 };
 
 ///////////
@@ -2232,24 +2548,36 @@ Game_Actor.prototype.isInToiletSitLeftPose = function() {
 	return this.poseName == POSE_TOILET_SIT_LEFT;
 };
 Game_Actor.prototype.setToiletSitLeftPose = function() {
+	let leftArmIsKuri = this.tachieLeftArm.includes('kuri');
+	let leftArmIsChikubi = this.tachieLeftArm.includes('chikubi');
+	let leftArmIsManko = this.tachieLeftArm.includes('manko');
+	
 	this.setAllowTachieUpdate(false);
 	this.setPose(POSE_TOILET_SIT_LEFT, false);
 	this.setSpriteBattlerPosData(POSE_TOILET_SIT_LEFT);
 	this.removeStatesBeforeSex();
 	this.removeAllPettedInsertExceptToy();
 	this.setAllBodySlotsFreeExceptToy();
-	this.removePussyToy();
-	this.removeAnalToy();
 	this.setSpankablePose(false);
 	
 	this.setTachieHead('1');
 	
-	this.setTachieEyebrows('koma1');
-	this.setTachieEyes('mae1');
+	this.setTachieEyebrows('koma1'); //temp
+	this.setTachieEyes('mae1'); //temp
 	
-	this.setAllowTachieUpdate(true);
+	if(leftArmIsChikubi) 
+		this.setTachieLeftArm('chikubi');
+	else if(leftArmIsKuri)
+		this.setTachieLeftArm('kuri');
+	else if(leftArmIsManko)
+		this.setTachieLeftArm('manko');
+	
+	this.setMaxTachieSemenFaceId(1);
+	this.setMaxTachieSemenBellyId(1);
 	
 	this.emoteGloryToiletSitLeftPose();
+	
+	this.setAllowTachieUpdate(true);
 };
 
 ///////////
@@ -2259,20 +2587,29 @@ Game_Actor.prototype.isInToiletSitRightPose = function() {
 	return this.poseName == POSE_TOILET_SIT_RIGHT;
 };
 Game_Actor.prototype.setToiletSitRightPose = function() {
+	let rightArmIsKuri = this.tachieRightArm.includes('kuri');
+	let rightArmIsChikubi = this.tachieRightArm.includes('chikubi');
+	let rightArmIsManko = this.tachieRightArm.includes('manko');
+	
 	this.setAllowTachieUpdate(false);
 	this.setPose(POSE_TOILET_SIT_RIGHT, false);
 	this.setSpriteBattlerPosData(POSE_TOILET_SIT_RIGHT);
 	this.removeStatesBeforeSex();
 	this.removeAllPettedInsertExceptToy();
 	this.setAllBodySlotsFreeExceptToy();
-	this.removePussyToy();
-	this.removeAnalToy();
 	this.setSpankablePose(false);
 	
 	this.setTachieHead('1');
 	
-	this.setTachieEyebrows('koma1');
-	this.setTachieEyes('mae1');
+	this.setTachieEyebrows('koma1'); //temp
+	this.setTachieEyes('mae1'); //temp
+	
+	if(rightArmIsChikubi) 
+		this.setTachieRightArm('chikubi');
+	else if(rightArmIsKuri)
+		this.setTachieRightArm('kuri');
+	else if(rightArmIsManko)
+		this.setTachieRightArm('manko');
 	
 	this.setAllowTachieUpdate(true);
 	
@@ -2286,6 +2623,8 @@ Game_Actor.prototype.isInToiletStandLeftPose = function() {
 	return this.poseName == POSE_TOILET_STAND_LEFT;
 };
 Game_Actor.prototype.setToiletStandLeftPose = function() {
+	let leftArmIsChikubi = this.tachieLeftArm.includes('chikubi');
+	
 	this.setAllowTachieUpdate(false);
 	this.setPose(POSE_TOILET_STAND_LEFT, false);
 	this.setSpriteBattlerPosData(POSE_TOILET_STAND_LEFT);
@@ -2294,13 +2633,20 @@ Game_Actor.prototype.setToiletStandLeftPose = function() {
 	this.setAllBodySlotsFreeExceptToy();
 	this.setSpankablePose(false);
 	
-	this.setTachieHead('far');
-	this.setTachieBoobs('normal_1');
-	this.setTachieLeftArm('normal');
+	this.setTachieHead('1');
 	
-	this.setTachieEyebrows('far_koma1');
-	this.setTachieEyes('far_sita1');
-	this.setTachieMouth('far_ahe1');
+	if(leftArmIsChikubi) {
+		this.setTachieBoobs('chikubi');
+		this.setTachieLeftArm('chikubi');
+	}
+	else {
+		this.setTachieBoobs('normal');
+		this.setTachieLeftArm('normal');
+	}
+	
+	this.setTachieEyebrows('koma1'); //temp
+	this.setTachieEyes('mae1'); //temp
+	this.setTachieMouth('ah1'); //temp
 	
 	this.setAllowTachieUpdate(true);
 	
@@ -2314,6 +2660,8 @@ Game_Actor.prototype.isInToiletStandRightPose = function() {
 	return this.poseName == POSE_TOILET_STAND_RIGHT;
 };
 Game_Actor.prototype.setToiletStandRightPose = function() {
+	let rightArmIsChikubi = this.tachieRightArm.includes('chikubi');
+	
 	this.setAllowTachieUpdate(false);
 	this.setPose(POSE_TOILET_STAND_RIGHT, false);
 	this.setSpriteBattlerPosData(POSE_TOILET_STAND_RIGHT);
@@ -2322,13 +2670,21 @@ Game_Actor.prototype.setToiletStandRightPose = function() {
 	this.setAllBodySlotsFreeExceptToy();
 	this.setSpankablePose(false);
 	
-	this.setTachieHead('far');
-	this.setTachieBoobs('normal_1');
-	this.setTachieLeftArm('normal');
+	this.setTachieHead('1');
 	
-	this.setTachieEyebrows('far_koma1');
-	this.setTachieEyes('far_sita1');
-	this.setTachieMouth('far_ahe1');
+	if(rightArmIsChikubi) {
+		this.setTachieBoobs('chikubi');
+		this.setTachieRightArm('chikubi');
+
+	}
+	else {
+		this.setTachieBoobs('normal');
+		this.setTachieRightArm('normal');
+	}
+	
+	this.setTachieEyebrows('koma1'); //temp
+	this.setTachieEyes('mae1'); //temp
+	this.setTachieMouth('ah1'); //temp
 	
 	this.setAllowTachieUpdate(true);
 	
@@ -2342,7 +2698,7 @@ Game_Actor.prototype.setToiletStandRightPose = function() {
 Game_Actor.prototype.isInNoStaminaIsDefeatPose = function() {
 	if(!DEBUG_MODE) return true;
 	
-	return this.isInMasturbationPose();
+	return this.isInMasturbationCouchPose();
 };
 
 
@@ -2374,14 +2730,14 @@ Game_Actor.prototype.isInNoEjaculationStockStillContinuesPose = function() {
 // Draw Enemies Above Tachie Pose
 
 Game_Actor.prototype.isDrawEnemiesAboveBattleTachiePose = function() {
-	return this.isInMasturbationLevel1Pose() || this.isInDefeatedPose() || this.isInReceptionistPose() || $gameParty.isInGloryBattle;
+	return this.isInMasturbationCouchPose() || this.isInDefeatedPose() || this.isInReceptionistPose() || $gameParty.isInGloryBattle;
 };
 
 /////////////
 // Don't Gain Fatigue Per Turn Pose
 
 Game_Actor.prototype.isDontGainFatiguePerTurnPose = function() {
-	return this.isInMasturbationLevel1Pose() || this.isInDefeatedPose() || this.isInJobPose();
+	return this.isInMasturbationCouchPose() || this.isInDefeatedPose() || this.isInJobPose();
 };
 
 
@@ -2395,7 +2751,7 @@ Game_Actor.prototype.isInDontShowEnemyNameEverPose = function() {
 	return $gameParty.isInGloryBattle;
 };
 Game_Actor.prototype.isInShowEnemyImageOnlyDuringValidSelectionPose = function() {
-	return this.isInMasturbationLevel1Pose() || this.isInDefeatedPose() || this.isInWaitressSexPose() || $gameParty.isInGloryBattle;
+	return this.isInMasturbationCouchPose() || this.isInDefeatedPose() || this.isInWaitressSexPose() || $gameParty.isInGloryBattle;
 };
 Game_Actor.prototype.isInShowEnemyGaugeOnlyDuringValidSelectionPose = function() {
 	return this.isInDefeatedPose() || this.isInWaitressSexPose();
@@ -2427,7 +2783,7 @@ Game_Actor.prototype.isInEnemiesJoinArousedAndStayArousedPose = function() {
 ////////////////
 
 Game_Actor.prototype.isInDefeatedPose = function() {
-	return this.isInDefeatedLevel1Pose() || this.isInDefeatedLevel2Pose() || this.isInDefeatedGuardPose();
+	return this.isInDefeatedLevel1Pose() || this.isInDefeatedLevel2Pose() || this.isInDefeatedLevel3Pose() || this.isInDefeatedGuardPose();
 };
 
 Game_Actor.prototype.isInDefeatedLevel1Pose = function() {
@@ -2464,7 +2820,7 @@ Game_Actor.prototype.setDefeatedLevel1Pose = function() {
 	this.setBodyPartUnavailable(FEET_ID);
 	this.setBodyPartUnavailable(THIGHS_ID);
 	
-	this.emoteMasterManager();
+	this.emoteDefeatedLevelOnePose();
 };
 
 Game_Actor.prototype.isInDefeatedLevel2Pose = function() {
@@ -2513,7 +2869,47 @@ Game_Actor.prototype.setDefeatedLevel2Pose = function() {
 	this.setBodyPartUnavailable(FEET_ID);
 	this.setBodyPartUnavailable(THIGHS_ID);
 	
-	this.emoteMasterManager();
+	this.emoteDefeatedLevelTwoPose();
+};
+
+Game_Actor.prototype.isInDefeatedLevel3Pose = function() {
+	return this.poseName == POSE_DEFEATED_LEVEL3;
+};
+Game_Actor.prototype.setDefeatedLevel3Pose = function() {
+	this.setPose(POSE_DEFEATED_LEVEL3);
+	this.setSpriteBattlerPosData(POSE_DEFEATED_LEVEL3);
+	this.takeOffPanties();
+	this.removeClothing();
+	this.removeAllPettedInsertExceptToy();
+	this.setAllBodySlotsFreeExceptToy();
+	this.setSpankablePose(true);
+	this.setHasTachiePubic(true);
+	
+	this.setTachieBoobs('normal');
+	if(this.isWearingGlovesAndHat())
+		this.setTachieTie('normal');
+	
+	
+	this.setMaxTachieSemenAnalId(1);
+	this.setMaxTachieSemenBellyId(1);
+	this.setMaxTachieSemenBoobsId(1);
+	this.setMaxTachieSemenButtId(1);
+	this.setMaxTachieSemenCrotchId(1);
+	this.setMaxTachieSemenFaceId(1);
+	this.setMaxTachieSemenLeftArmId(1);
+	this.setMaxTachieSemenRightArmId(1);
+	this.setMaxTachieSemenLeftLegId(1);
+	this.setMaxTachieSemenRightLegId(1);
+	this.setMaxTachieWetId(1);
+	
+	
+	this.setBodyPartUnavailable(STOMACH_ID);
+	this.setBodyPartUnavailable(RIGHT_HAND_ID);
+	this.setBodyPartUnavailable(LEFT_HAND_ID);
+	this.setBodyPartUnavailable(FEET_ID);
+	this.setBodyPartUnavailable(THIGHS_ID);
+	
+	this.emoteDefeatedLevelThreePose();
 };
 
 Game_Actor.prototype.isInDefeatedGuardPose = function() {
@@ -2605,11 +3001,12 @@ Game_Actor.prototype.performDamage = function() {
 		else {
 			//Stamina damage
 			if((result.staminaDamage > 0 || result.hpDamage > 0) && !this.hasNoStamina()) {
-				this.gainStrengthExp(30, $gameTroop.getAverageEnemyExperienceLvl());
 				this.gainStaminaExp(25, $gameTroop.getAverageEnemyExperienceLvl());
 				this.gainEnduranceExp(15, $gameTroop.getAverageEnemyExperienceLvl());
-				if(!result.skillTypeEnemyPetting && !result.skillTypeEnemySex && !result.skillTypeEnemyBukkake) {
+				if(!result.skillTypeEnemyPetting && !result.skillTypeEnemySex && !result.skillTypeEnemyBukkake && !result.skillTypeActorOnani) {
+					this.gainStrengthExp(30, $gameTroop.getAverageEnemyExperienceLvl());
 					this.setDefendPose();
+					this._playthroughRecordFullHitTakenCount++;
 				}
 			}
 		}
@@ -2641,8 +3038,10 @@ Game_Actor.prototype.performEvasion = function() {
 		this.gainAgilityExp(30, $gameTroop.getAverageEnemyExperienceLvl());
 		this.gainStaminaExp(15, $gameTroop.getAverageEnemyExperienceLvl());
 		this.setEvadePose();
+		this.damageClothing(this.agi * this.elementRate(ELEMENT_STRIP_ID) * 0.15, true);
 		this.passiveEvadePoseEffect();
-		this.setHp(this.hp - Math.round(this.agi * 1.35));
+		this.setHp(this.hp - Math.round((this.agi * 1.35 + this.realMaxStamina * 0.01) * this.evasionCostMultipler()));
+		this._playthroughRecordAttackEvadedCount++;
 	}
 };
 
@@ -2652,10 +3051,10 @@ Remtairy.Poses.Game_Actor_performAction = Game_Actor.prototype.performAction;
 Game_Actor.prototype.performAction = function(action) {
 	Remtairy.Poses.Game_Actor_performAction.call(this, action);
 	
-	if ((action.isActorAttackSkill() || action.isKickSkill()) && this.isInCombatPose()) {
+	if ((action.isActorAttackSkill() || action.isActorKickSkill()) && this.isInCombatPose()) {
 		this.changeStanceBySkill(action.item());
 		
-		if(action.isKickSkill()) {
+		if(action.isActorKickSkill()) {
 			this.setKickPose();
 		}
 		else if(this.isUsingHalberd()) {
@@ -2679,7 +3078,7 @@ Game_Actor.prototype.refreshPose = function() {
 		return;
 	}
 	
-	if(this.isInMasturbationPose()) {
+	if(this.isInMasturbationCouchPose()) {
 		return;
 	}
 	
@@ -2751,36 +3150,34 @@ DKTools.PreloadManager.preloadKarrynPoses = function() {
 		DKTools.PreloadManager.preloadImage({ path: 'img/karryn/standby/', hue: 0, caching: true });
 		DKTools.PreloadManager.preloadImage({ path: 'img/karryn/unarmed/', hue: 0, caching: true });
 		
-		/*
-		DKTools.PreloadManager.preloadImage({ path: 'img/system/MapBorders_Bg.png', hue: 0, caching: true });
-		DKTools.PreloadManager.preloadImage({ path: 'img/system/MapBorders_Bg_Bar.png', hue: 0, caching: true });
-		DKTools.PreloadManager.preloadImage({ path: 'img/system/MapBorders_Bg_Eb.png', hue: 0, caching: true });
-		DKTools.PreloadManager.preloadImage({ path: 'img/system/MapBorders_Bg_Outside.png', hue: 0, caching: true });
-		*/
-		
 		if(DEBUG_MODE) {
 			DKTools.PreloadManager.preloadImage({ path: 'img/karryn/bj_kneeling/', hue: 0, caching: true });
-			//DKTools.PreloadManager.preloadImage({ path: 'img/karryn/cowgirl_karryn/', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/karryn/cowgirl_karryn/', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/karryn/cowgirl_reverse/', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/karryn/cowgirl_lizardman/', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/karryn/defeated_guard/', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/karryn/defeated_level1/', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/karryn/defeated_level2/', hue: 0, caching: true });
-			//DKTools.PreloadManager.preloadImage({ path: 'img/karryn/defeated_level3/', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/karryn/defeated_level3/', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/karryn/down_org/', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/karryn/footj/', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/karryn/goblin_cl/', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/karryn/guard_gb/', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/karryn/hj_standing/', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/karryn/kick_counter/', hue: 0, caching: true });
-			DKTools.PreloadManager.preloadImage({ path: 'img/karryn/mas_1/', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/karryn/mas_couch/', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/karryn/mas_inbattle/', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/karryn/orc_paizuri/', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/karryn/paizuri_laying/', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/karryn/rimming/', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/karryn/slime_piledriver/', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/karryn/thug_gb/', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/karryn/waitress_table/', hue: 0, caching: true });
-			
+			//DKTools.PreloadManager.preloadImage({ path: 'img/karryn/toilet_sit_left/', hue: 0, caching: true });
+			//DKTools.PreloadManager.preloadImage({ path: 'img/karryn/toilet_sit_right/', hue: 0, caching: true });
+			//DKTools.PreloadManager.preloadImage({ path: 'img/karryn/toilet_sitting/', hue: 0, caching: true });
+			//DKTools.PreloadManager.preloadImage({ path: 'img/karryn/toilet_stand_left/', hue: 0, caching: true });
+			//DKTools.PreloadManager.preloadImage({ path: 'img/karryn/toilet_stand_right/', hue: 0, caching: true });
 			
 		}
 	

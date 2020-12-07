@@ -210,12 +210,15 @@ Window_StatusInfo.prototype.drawPrimary = function() {
 	let secondColumnX = firstColumnX + lineWidth + this.standardPadding();
 	let secondTextPaddingX = secondColumnX + this.textPadding();
 	let paddingY = 0;
-	let lineHeight = this.lineHeight() * 0.9;
+	let lineHeight = this.lineHeight() * 0.85;
 	let lineCount = 0;
 	let screenWidth = this.width - this.standardPadding() * 2;
 	
 	this.changeTextColor(this.systemColor());
-	this.drawText(TextManager.statusMenuParameter, firstColumnX, paddingY + lineCount * lineHeight, screenWidth, 'center');
+	if(actor.isInMapPose())
+		this.drawText(TextManager.statusMenuStatLevels, firstColumnX, paddingY + lineCount * lineHeight, screenWidth, 'center');
+	else
+		this.drawText(TextManager.statusMenuStats, firstColumnX, paddingY + lineCount * lineHeight, screenWidth, 'center');
 	lineCount += 1;
 	
 	for (let i = 0; i < 10; ++i) {
@@ -240,52 +243,91 @@ Window_StatusInfo.prototype.drawPrimary = function() {
 			valueNum = actor.getWardenLevelLimit();
 		}
 		else if(i === 2) {
-			valueName = TextManager.statLevel.format(TextManager.basic(2));
-			//valueNum = actor.realMaxStamina;
-			valueNum = actor._paramLvl[PARAM_MAXSTAMINA_ID];
+			if(actor.isInMapPose()) {
+				valueName = TextManager.statLevel.format(TextManager.basic(2));
+				valueNum = actor._paramLvl[PARAM_MAXSTAMINA_ID];
+			}
+			else {
+				valueName = TextManager.param(PARAM_MAXSTAMINA_ID);
+				valueNum = actor.maxstamina;
+			}
 		}
 		else if(i === 3) {
-			valueName = TextManager.statLevel.format(TextManager.basic(4));
-			//valueNum = actor.realMaxEnergy;
-			valueNum = actor._paramLvl[PARAM_MAXENERGY_ID];
+			if(actor.isInMapPose()) {
+				valueName = TextManager.statLevel.format(TextManager.basic(4));
+				valueNum = actor._paramLvl[PARAM_MAXENERGY_ID];
+			}
+			else {
+				valueName = TextManager.param(PARAM_MAXENERGY_ID);
+				valueNum = actor.maxenergy;
+			}
 		}
-
 		else if(i === 4) {
-			valueName = TextManager.statLevel.format(TextManager.param(PARAM_STRENGTH_ID));
-			//valueNum = actor.param(PARAM_STRENGTH_ID);
-			valueNum = actor._paramLvl[PARAM_STRENGTH_ID];
+			if(actor.isInMapPose()) {
+				valueName = TextManager.statLevel.format(TextManager.param(PARAM_STRENGTH_ID));
+				valueNum = actor._paramLvl[PARAM_STRENGTH_ID];
+			}
+			else {
+				valueName = TextManager.param(PARAM_STRENGTH_ID);
+				valueNum = actor.param(PARAM_STRENGTH_ID);
+			}
 		}
 		else if(i === 5) {
-			valueName = TextManager.statLevel.format(TextManager.param(PARAM_DEXTERITY_ID));
-			//valueNum = actor.param(PARAM_DEXTERITY_ID);
-			valueNum = actor._paramLvl[PARAM_DEXTERITY_ID];
+			if(actor.isInMapPose()) {
+				valueName = TextManager.statLevel.format(TextManager.param(PARAM_DEXTERITY_ID));
+				valueNum = actor._paramLvl[PARAM_DEXTERITY_ID];
+			}
+			else {
+				valueName = TextManager.param(PARAM_DEXTERITY_ID);
+				valueNum = actor.param(PARAM_DEXTERITY_ID);
+			}
 		}
 		else if(i === 6) {
-			valueName = TextManager.statLevel.format(TextManager.param(PARAM_AGILITY_ID));
-			//valueNum = actor.param(PARAM_AGILITY_ID);
-			valueNum = actor._paramLvl[PARAM_AGILITY_ID];
+			if(actor.isInMapPose()) {
+				valueName = TextManager.statLevel.format(TextManager.param(PARAM_AGILITY_ID));
+				valueNum = actor._paramLvl[PARAM_AGILITY_ID];
+			}
+			else {
+				valueName = TextManager.param(PARAM_AGILITY_ID);
+				valueNum = actor.param(PARAM_AGILITY_ID);
+			}
 		}
 		else if(i === 7) {
-			valueName = TextManager.statLevel.format(TextManager.param(PARAM_ENDURANCE_ID));
-			//valueNum = actor.param(PARAM_ENDURANCE_ID);
-			valueNum = actor._paramLvl[PARAM_ENDURANCE_ID];
+			if(actor.isInMapPose()) {
+				valueName = TextManager.statLevel.format(TextManager.param(PARAM_ENDURANCE_ID));
+				valueNum = actor._paramLvl[PARAM_ENDURANCE_ID];
+			}
+			else {
+				valueName = TextManager.param(PARAM_ENDURANCE_ID);
+				valueNum = actor.param(PARAM_ENDURANCE_ID);
+			}
 		}
 		else if(i === 8) {
-			valueName = TextManager.statLevel.format(TextManager.param(PARAM_MIND_ID));
-			//valueNum = actor.param(PARAM_MIND_ID);
-			valueNum = actor._paramLvl[PARAM_MIND_ID];
+			if(actor.isInMapPose()) {
+				valueName = TextManager.statLevel.format(TextManager.param(PARAM_MIND_ID));
+				valueNum = actor._paramLvl[PARAM_MIND_ID];
+			}
+			else {
+				valueName = TextManager.param(PARAM_MIND_ID);
+				valueNum = actor.param(PARAM_MIND_ID);
+			}
 		}
 		else if(i === 9) {
-			valueName = TextManager.statLevel.format(TextManager.param(PARAM_CHARM_ID));
-			//valueNum = actor.param(PARAM_CHARM_ID);
-			valueNum = actor._paramLvl[PARAM_CHARM_ID];
+			if(actor.isInMapPose()) {
+				valueName = TextManager.statLevel.format(TextManager.param(PARAM_CHARM_ID));
+				valueNum = actor._paramLvl[PARAM_CHARM_ID];
+			}
+			else {
+				valueName = TextManager.param(PARAM_CHARM_ID);
+				valueNum = actor.inBattleCharm;
+			}
 		}
 		
 		this.drawDarkRect(rectX, y, lineWidth, lineHeight);
 		this.changeTextColor(this.systemColor());
 		this.drawText(valueName, textX, y, lineWidth, 'left');
 		this.changeTextColor(this.normalColor());
-		this.drawText(valueNum, rectX, y, lineWidth - this.textPadding(), 'right');
+		this.drawText(valueNum.toLocaleString(), rectX, y, lineWidth - this.textPadding(), 'right');
     }
 	
 	this.changeTextColor(this.systemColor());
@@ -396,7 +438,7 @@ Window_StatusInfo.prototype.drawSecondary = function() {
 	let secondColumnX = firstColumnX + lineWidth + this.standardPadding();
 	let secondTextPaddingX = secondColumnX + this.textPadding();
 	let paddingY = 0;
-	let lineHeight = this.lineHeight() * 0.9;
+	let lineHeight = this.lineHeight() * 0.85;
 	let lineCount = 0;
 	let screenWidth = this.width - this.standardPadding() * 2;
 	
@@ -558,7 +600,7 @@ Window_StatusInfo.prototype.drawTertiary = function() {
 	let secondColumnX = firstColumnX + lineWidth + this.standardPadding();
 	let secondTextPaddingX = secondColumnX + this.textPadding();
 	let paddingY = 0;
-	let lineHeight = this.lineHeight() * 0.9;
+	let lineHeight = this.lineHeight() * 0.85;
 	let lineCount = 0;
 	let screenWidth = this.width - this.standardPadding() * 2;
 	
@@ -576,7 +618,7 @@ Window_StatusInfo.prototype.drawTertiary = function() {
 		this.drawText(TextManager.statusMenuLevels, firstColumnX, paddingY + lineCount * lineHeight, screenWidth, 'center');
 		lineCount += 1;
 		
-		for (let i = 0; i < 13; ++i) {
+		for (let i = 0; i < 15; ++i) {
 			let y = paddingY + lineCount * lineHeight;
 			let textX = firstMiniTextPaddingX;
 			let rectX = firstMiniColumnX;
@@ -597,51 +639,51 @@ Window_StatusInfo.prototype.drawTertiary = function() {
 				valueName = TextManager.slutLevel;
 				valueNum = actor.slutLvl;
 			}
-			else if(i === 1) {
+			else if(i === 3) {
 				valueName = TextManager.kissingLevel;
 				valueNum = actor.kissLvl();
 			}
-			else if(i === 2) {
+			else if(i === 4) {
 				valueName = TextManager.pettingLevel;
 				valueNum = actor.pettingLvl();
 			}
-			else if(i === 3) {
+			else if(i === 5) {
 				valueName = TextManager.handjobLevel;
 				valueNum = actor.handjobLvl();
 			}
-			else if(i === 4) {
+			else if(i === 6) {
 				valueName = TextManager.blowjobLevel;
 				valueNum = actor.blowjobLvl();
 			}
-			else if(i === 5) {
+			else if(i === 7) {
 				valueName = TextManager.tittyFuckLevel;
 				valueNum = actor.tittyFuckLvl();
 			}
-			else if(i === 6) {
+			else if(i === 8) {
 				valueName = TextManager.footjobLevel;
 				valueNum = actor.footjobLvl();
 			}
-			else if(i === 7) {
+			else if(i === 9) {
 				valueName = TextManager.rimjobLevel;
 				valueNum = actor.rimjobLvl();
 			}
-			else if(i === 8) {
+			else if(i === 10) {
 				valueName = TextManager.pussySexLevel;
 				valueNum = actor.pussySexLvl();
 			}
-			else if(i === 9) {
+			else if(i === 11) {
 				valueName = TextManager.analSexLevel;
 				valueNum = actor.analSexLvl();
 			}
-			else if(i === 10) {
+			else if(i === 12) {
 				valueName = TextManager.masturbationLevel;
 				valueNum = actor.masturbateLvl();
 			}
-			else if(i === 11) {
+			else if(i === 13) {
 				valueName = TextManager.sadismLevel;
 				valueNum = actor.sadismLvl();
 			}
-			else if(i === 12) {
+			else if(i === 14) {
 				valueName = TextManager.masochismLevel;
 				valueNum = actor.masochismLvl();
 			}
@@ -662,7 +704,7 @@ Window_StatusInfo.prototype.drawTertiary = function() {
 		this.drawText(TextManager.statusMenuSensitivities, firstColumnX, paddingY + lineCount * lineHeight, screenWidth, 'center');
 		lineCount += 1;
 		
-		for (let i = 0; i < 15; ++i) {
+		for (let i = 0; i < 16; ++i) {
 			let y = paddingY + lineCount * lineHeight;
 			let textX = firstTextPaddingX;
 			let rectX = firstColumnX;
@@ -677,78 +719,85 @@ Window_StatusInfo.prototype.drawTertiary = function() {
 			let valueNumText = '';
 			
 			if(i === 0) {
-				valueName = TextManager.mouthSensitivity;
-				valueNum = this._actor.mouthSensitivity();
-				valueNumText = (Yanfly.Util.toGroup(valueNum)*100).toFixed(0) + '%'
-			}
-			else if(i === 1) {
-				valueName = TextManager.fingerSensitivity;
-				valueNum = this._actor.fingerSensitivity();
-				valueNumText = (Yanfly.Util.toGroup(valueNum)*100).toFixed(0) + '%'
-			}
-			else if(i === 2) {
-				valueName = TextManager.boobsSensitivity;
-				valueNum = this._actor.boobsSensitivity();
-				valueNumText = (Yanfly.Util.toGroup(valueNum)*100).toFixed(0) + '%'
-			}
-			else if(i === 3) {
-				valueName = TextManager.nipplesSensitivity;
-				valueNum = this._actor.nipplesSensitivity();
-				valueNumText = (Yanfly.Util.toGroup(valueNum)*100).toFixed(0) + '%'
-			}
-			else if(i === 4) {
-				valueName = TextManager.clitorisSensitivity;
-				valueNum = this._actor.clitSensitivity();
-				valueNumText = (Yanfly.Util.toGroup(valueNum)*100).toFixed(0) + '%'
-			}
-			else if(i === 5) {
-				valueName = TextManager.pussySensitivity;
-				valueNum = this._actor.pussySensitivity();
-				valueNumText = (Yanfly.Util.toGroup(valueNum)*100).toFixed(0) + '%'
-			}
-			else if(i === 6) {
-				valueName = TextManager.buttSensitivity;
-				valueNum = this._actor.buttSensitivity();
-				valueNumText = (Yanfly.Util.toGroup(valueNum)*100).toFixed(0) + '%'
-			}
-			else if(i === 7) {
-				valueName = TextManager.analSensitivity;
-				valueNum = this._actor.analSensitivity();
-				valueNumText = (Yanfly.Util.toGroup(valueNum)*100).toFixed(0) + '%'
-			}
-			else if(i === 8) {
-				valueName = TextManager.footSensitivity;
-				valueNum = this._actor.footSensitivity();
-				valueNumText = (Yanfly.Util.toGroup(valueNum)*100).toFixed(0) + '%'
-			}
-			else if(i === 9) {
 				valueName = TextManager.talkSensitivity;
 				valueNum = this._actor.talkSensitivity();
 				valueNumText = (Yanfly.Util.toGroup(valueNum)*100).toFixed(0) + '%'
 			}
-			else if(i === 10) {
+			else if(i === 1) {
 				valueName = TextManager.sightSensitivity;
 				valueNum = this._actor.sightSensitivity();
 				valueNumText = (Yanfly.Util.toGroup(valueNum)*100).toFixed(0) + '%'
 			}
+			else if(i === 2) {
+				valueName = TextManager.mouthSensitivity;
+				valueNum = this._actor.mouthSensitivity();
+				valueNumText = (Yanfly.Util.toGroup(valueNum)*100).toFixed(0) + '%'
+			}
+			else if(i === 3) {
+				valueName = TextManager.fingerSensitivity;
+				valueNum = this._actor.fingerSensitivity();
+				valueNumText = (Yanfly.Util.toGroup(valueNum)*100).toFixed(0) + '%'
+			}
+			else if(i === 4) {
+				valueName = TextManager.boobsSensitivity;
+				valueNum = this._actor.boobsSensitivity();
+				valueNumText = (Yanfly.Util.toGroup(valueNum)*100).toFixed(0) + '%'
+			}
+			else if(i === 5) {
+				valueName = TextManager.nipplesSensitivity;
+				valueNum = this._actor.nipplesSensitivity();
+				valueNumText = (Yanfly.Util.toGroup(valueNum)*100).toFixed(0) + '%'
+			}
+			else if(i === 6) {
+				valueName = TextManager.clitorisSensitivity;
+				valueNum = this._actor.clitSensitivity();
+				valueNumText = (Yanfly.Util.toGroup(valueNum)*100).toFixed(0) + '%'
+			}
+			else if(i === 7) {
+				valueName = TextManager.pussySensitivity;
+				valueNum = this._actor.pussySensitivity();
+				valueNumText = (Yanfly.Util.toGroup(valueNum)*100).toFixed(0) + '%'
+			}
+			else if(i === 8) {
+				valueName = TextManager.buttSensitivity;
+				valueNum = this._actor.buttSensitivity();
+				valueNumText = (Yanfly.Util.toGroup(valueNum)*100).toFixed(0) + '%'
+			}
+			else if(i === 9) {
+				valueName = TextManager.analSensitivity;
+				valueNum = this._actor.analSensitivity();
+				valueNumText = (Yanfly.Util.toGroup(valueNum)*100).toFixed(0) + '%'
+			}
+			else if(i === 10) {
+				valueName = TextManager.buttSpankingSensitivity;
+				valueNum = this._actor.passiveSpankingPleasureRate();
+				valueNumText = (Yanfly.Util.toGroup(valueNum)*100).toFixed(0) + '%'
+			}
+			
+
 			else if(i === 11) {
+				valueName = TextManager.footSensitivity;
+				valueNum = this._actor.footSensitivity();
+				valueNumText = (Yanfly.Util.toGroup(valueNum)*100).toFixed(0) + '%'
+			}
+			else if(i === 12) {
+				valueName = TextManager.bukkakeSensitivity;
+				valueNum = this._actor.bukkakeSensitivity();
+				valueNumText = (Yanfly.Util.toGroup(valueNum)*100).toFixed(0) + '%'
+			}
+			else if(i === 13) {
 				valueName = TextManager.swallowSensitivity;
 				valueNum = this._actor.swallowSensitivity();
 				valueNumText = (Yanfly.Util.toGroup(valueNum)*100).toFixed(0) + '%'
 			}
-			else if(i === 12) {
+			else if(i === 14) {
 				valueName = TextManager.pussyCreampieSensitivity;
 				valueNum = this._actor.pussyCreampieSensitivity();
 				valueNumText = (Yanfly.Util.toGroup(valueNum)*100).toFixed(0) + '%'
 			}
-			else if(i === 13) {
+			else if(i === 15) {
 				valueName = TextManager.analCreampieSensitivity;
 				valueNum = this._actor.analCreampieSensitivity();
-				valueNumText = (Yanfly.Util.toGroup(valueNum)*100).toFixed(0) + '%'
-			}
-			else if(i === 14) {
-				valueName = TextManager.bukkakeSensitivity;
-				valueNum = this._actor.bukkakeSensitivity();
 				valueNumText = (Yanfly.Util.toGroup(valueNum)*100).toFixed(0) + '%'
 			}
 			
@@ -765,7 +814,7 @@ Window_StatusInfo.prototype.drawDesires = function() {
 	if(!this._actor) return;
 	let actor = this._actor;
 	let lineCount = 0;
-	let lineHeight = this.lineHeight() * 0.9;
+	let lineHeight = this.lineHeight() * 0.84;
 	let firstColumnX = WINDOW_STATUS_FIRST_X;
 	let paddingY = 0;
 	let screenWidth = this.width - this.standardPadding() * 2;
@@ -786,7 +835,7 @@ Window_StatusInfo.prototype.drawDesires = function() {
 		this.drawText(TextManager.statusMenuMouthDesireReq, firstColumnX, paddingY + lineCount * lineHeight, screenWidth, 'center');
 		lineCount += 1;
 		
-		for (let i = 0; i < 3; ++i) {
+		for (let i = 0; i < 4; ++i) {
 			let y = paddingY + lineCount * lineHeight;
 			let textX = firstMiniTextPaddingX;
 			let rectX = firstMiniColumnX;
@@ -804,14 +853,18 @@ Window_StatusInfo.prototype.drawDesires = function() {
 			let valueNum = '';
 			
 			if(i === 0) {
+				valueName = TextManager.profileRecordSuckFingers;
+				valueNum = actor.suckFingersMouthDesireRequirement();
+			}
+			else if(i === 1) {
 				valueName = TextManager.profileRecordKiss;
 				valueNum = actor.kissingMouthDesireRequirement();
 			}
-			else if(i === 1) {
+			else if(i === 2) {
 				valueName = TextManager.profileRecordBlowjob;
 				valueNum = actor.blowjobMouthDesireRequirement();
 			}
-			else if(i === 2) {
+			else if(i === 3 && Karryn.showLevelOneSubjugatedEdicts() && !ConfigManager.disableRimjobs) {
 				valueName = TextManager.profileRecordRimjob;
 				valueNum = actor.rimjobMouthDesireRequirement();
 			}
@@ -819,11 +872,14 @@ Window_StatusInfo.prototype.drawDesires = function() {
 			valueNum = Math.max(Math.round(valueNum), 0);
 			
 			this.drawDarkRect(rectX, y, miniLineWidth, lineHeight);
-			this.changeTextColor(this.systemColor());
-			this.drawText(valueName, textX, y, miniLineTextWidth, 'left');
-			this.changeTextColor(this.normalColor());
-			this.drawText(valueNum, rectX, y, miniLineWidth - this.textPadding(), 'right');
+			if(valueName) {
+				this.changeTextColor(this.systemColor());
+				this.drawText(valueName, textX, y, miniLineTextWidth, 'left');
+				this.changeTextColor(this.normalColor());
+				this.drawText(valueNum, rectX, y, miniLineWidth - this.textPadding(), 'right');
+			}
 		}
+		lineCount += 1;
 		
 		//Boobs Desire
 		this.changeTextColor(this.systemColor());
@@ -863,10 +919,12 @@ Window_StatusInfo.prototype.drawDesires = function() {
 			valueNum = Math.max(Math.round(valueNum), 0);
 			
 			this.drawDarkRect(rectX, y, miniLineWidth, lineHeight);
-			this.changeTextColor(this.systemColor());
-			this.drawText(valueName, textX, y, miniLineTextWidth, 'left');
-			this.changeTextColor(this.normalColor());
-			this.drawText(valueNum, rectX, y, miniLineWidth - this.textPadding(), 'right');
+			if(valueName) {
+				this.changeTextColor(this.systemColor());
+				this.drawText(valueName, textX, y, miniLineTextWidth, 'left');
+				this.changeTextColor(this.normalColor());
+				this.drawText(valueNum, rectX, y, miniLineWidth - this.textPadding(), 'right');
+			}
 		}
 		
 		//Pussy Desire
@@ -895,34 +953,36 @@ Window_StatusInfo.prototype.drawDesires = function() {
 				valueName = TextManager.profileRecordClitPetting;
 				valueNum = actor.clitPettingPussyDesireRequirement();
 			}
-			else if(i === 1) {
-				valueName = TextManager.profileRecordPussyPetting;
-				valueNum = actor.pussyPettingPussyDesireRequirement();
+			else if(i === 1 && Karryn.showLevelOneSubjugatedEdicts()) {
+				valueName = TextManager.profileRecordClitToy;
+				valueNum = actor.clitToyPussyDesireRequirement();
 			}
 			else if(i === 2) {
 				valueName = TextManager.profileRecordCunnilingus;
 				valueNum = actor.cunnilingusPussyDesireRequirement();
 			}
 			else if(i === 3) {
-				valueName = TextManager.profileRecordPussySex;
-				valueNum = actor.pussySexPussyDesireRequirement();
+				valueName = TextManager.profileRecordPussyPetting;
+				valueNum = actor.pussyPettingPussyDesireRequirement();
 			}
-			else if(i === 4) {
-				valueName = TextManager.profileRecordClitToy;
-				valueNum = actor.clitToyPussyDesireRequirement();
-			}
-			else if(i === 5) {
+			else if(i === 4 && Karryn.showLevelOneSubjugatedEdicts()) {
 				valueName = TextManager.profileRecordPussyToy;
 				valueNum = actor.pussyToyPussyDesireRequirement();
+			}
+			else if(i === 5) {
+				valueName = TextManager.profileRecordPussySex;
+				valueNum = actor.pussySexPussyDesireRequirement();
 			}
 			
 			valueNum = Math.max(Math.round(valueNum), 0);
 			
 			this.drawDarkRect(rectX, y, miniLineWidth, lineHeight);
-			this.changeTextColor(this.systemColor());
-			this.drawText(valueName, textX, y, miniLineTextWidth, 'left');
-			this.changeTextColor(this.normalColor());
-			this.drawText(valueNum, rectX, y, miniLineWidth - this.textPadding(), 'right');
+			if(valueName) {
+				this.changeTextColor(this.systemColor());
+				this.drawText(valueName, textX, y, miniLineTextWidth, 'left');
+				this.changeTextColor(this.normalColor());
+				this.drawText(valueNum, rectX, y, miniLineWidth - this.textPadding(), 'right');
+			}
 		}
 		
 		//Butt Desire
@@ -952,29 +1012,31 @@ Window_StatusInfo.prototype.drawDesires = function() {
 				valueNum = actor.buttPettingButtDesireRequirement();
 			}
 			else if(i === 1) {
-				valueName = TextManager.profileRecordAnalPetting;
-				valueNum = actor.analPettingButtDesireRequirement();
-			}
-			else if(i === 2) {
-				valueName = TextManager.profileRecordAnalSex;
-				valueNum = actor.analSexButtDesireRequirement();
-			}
-			else if(i === 3) {
 				valueName = TextManager.profileRecordButtSpank;
 				valueNum = actor.spankingButtDesireRequirement();
 			}
-			else if(i === 4) {
+			else if(i === 2) {
+				valueName = TextManager.profileRecordAnalPetting;
+				valueNum = actor.analPettingButtDesireRequirement();
+			}
+			else if(i === 3 && Karryn.showLevelOneSubjugatedEdicts()) {
 				valueName = TextManager.profileRecordAnalToy;
 				valueNum = actor.analToyButtDesireRequirement();
+			}
+			else if(i === 4) {
+				valueName = TextManager.profileRecordAnalSex;
+				valueNum = actor.analSexButtDesireRequirement();
 			}
 			
 			valueNum = Math.max(Math.round(valueNum), 0);
 			
 			this.drawDarkRect(rectX, y, miniLineWidth, lineHeight);
-			this.changeTextColor(this.systemColor());
-			this.drawText(valueName, textX, y, miniLineTextWidth, 'left');
-			this.changeTextColor(this.normalColor());
-			this.drawText(valueNum, rectX, y, miniLineWidth - this.textPadding(), 'right');
+			if(valueName) {
+				this.changeTextColor(this.systemColor());
+				this.drawText(valueName, textX, y, miniLineTextWidth, 'left');
+				this.changeTextColor(this.normalColor());
+				this.drawText(valueNum, rectX, y, miniLineWidth - this.textPadding(), 'right');
+			}
 		}
 		lineCount += 1;
 		
@@ -983,7 +1045,7 @@ Window_StatusInfo.prototype.drawDesires = function() {
 		this.drawText(TextManager.statusMenuCockDesireReq, firstColumnX, paddingY + lineCount * lineHeight, screenWidth, 'center');
 		lineCount += 1;
 		
-		for (let i = 0; i < 9; ++i) {
+		for (let i = 0; i < 11; ++i) {
 			let y = paddingY + lineCount * lineHeight;
 			let textX = firstMiniTextPaddingX;
 			let rectX = firstMiniColumnX;
@@ -1000,39 +1062,49 @@ Window_StatusInfo.prototype.drawDesires = function() {
 			let valueName = '';
 			let valueNum = '';
 			
+			
+			
 			if(i === 0) {
+				valueName = TextManager.profileRecordBodyBukkake;
+				valueNum = actor.bodyBukkakeCockDesireRequirement();
+			}
+			else if(i === 1) {
 				valueName = TextManager.profileRecordHandjob;
 				valueNum = actor.handjobCockDesireRequirement();
 			}
-			else if(i === 1) {
+			else if(i === 2) {
 				valueName = TextManager.profileRecordBlowjob;
 				valueNum = actor.blowjobCockDesireRequirement();
 			}
-			else if(i === 2) {
+			else if(i === 3) {
 				valueName = TextManager.profileRecordTittyFuck;
 				valueNum = actor.tittyFuckCockDesireRequirement();
 			}
-			else if(i === 3) {
+			else if(i === 4 && Karryn.showLevelOneSubjugatedEdicts()) {
 				valueName = TextManager.profileRecordFootjob;
 				valueNum = actor.footjobCockDesireRequirement();
 			}
-			else if(i === 4) {
+			else if(i === 5) {
 				valueName = TextManager.profileRecordPussySex;
 				valueNum = actor.pussySexCockDesireRequirement();
 			}
-			else if(i === 5) {
+			else if(i === 6) {
 				valueName = TextManager.profileRecordAnalSex;
 				valueNum = actor.analSexCockDesireRequirement();
 			}
-			else if(i === 6) {
+			else if(i === 7) {
+				valueName = TextManager.profileRecordFaceBukkake;
+				valueNum = actor.faceBukkakeCockDesireRequirement();
+			}
+			else if(i === 8 && Karryn.hasPassive(PASSIVE_BJ_COUNT_ONE_ID)) {
 				valueName = TextManager.profileRecordSwallow;
 				valueNum = actor.mouthSwallowCockDesireRequirement();
 			}
-			else if(i === 7) {
+			else if(i === 9 && Karryn.hasPassive(PASSIVE_FIRST_SEX_ID)) {
 				valueName = TextManager.profileRecordPussyCreampie;
 				valueNum = actor.pussyCreampieCockDesireRequirement();
 			}
-			else if(i === 8) {
+			else if(i === 10 && Karryn.hasPassive(PASSIVE_FIRST_ANAL_SEX_ID)) {
 				valueName = TextManager.profileRecordAnalCreampie;
 				valueNum = actor.analCreampieCockDesireRequirement();
 			}
@@ -1040,10 +1112,12 @@ Window_StatusInfo.prototype.drawDesires = function() {
 			valueNum = Math.max(Math.round(valueNum), 0);
 			
 			this.drawDarkRect(rectX, y, miniLineWidth, lineHeight);
-			this.changeTextColor(this.systemColor());
-			this.drawText(valueName, textX, y, miniLineTextWidth, 'left');
-			this.changeTextColor(this.normalColor());
-			this.drawText(valueNum, rectX, y, miniLineWidth - this.textPadding(), 'right');
+			if(valueName) {
+				this.changeTextColor(this.systemColor());
+				this.drawText(valueName, textX, y, miniLineTextWidth, 'left');
+				this.changeTextColor(this.normalColor());
+				this.drawText(valueNum, rectX, y, miniLineWidth - this.textPadding(), 'right');
+			}
 		}
 		
 		
@@ -1067,45 +1141,58 @@ Window_StatusInfo.prototype.drawEffects = function() {
 	for (let i = 0; i < 25; ++i) {
 		let y = paddingY + lineCount * lineHeight;
 		let effectText = false;
-		
+		let lineSize = 0;
+		let lineIncrease = 0;
 		
 		if(i === 1 && DEBUG_MODE) {
+			lineSize = 1;
 			if(actor.justOrgasmed()) 
 				effectText = TextManager.statusBattleEffectOrgasm;
 		}
 		else if(i === 2 && DEBUG_MODE) {
+			lineSize = 1;
 			if(actor.isHorny) {
-				if(actor.hasPassive(PASSIVE_HORNY_COUNT_TWO_ID))
+				if(actor.hasPassive(PASSIVE_HORNY_COUNT_THREE_ID)) {
+					lineSize = 1.8;
+					effectText = TextManager.StatusBattleEffectIsHornyThree;
+				}
+				else if(actor.hasPassive(PASSIVE_HORNY_COUNT_TWO_ID)) {
+					lineSize = 1.8;
 					effectText = TextManager.statusBattleEffectIsHornyTwo;
+				}
 				else if(actor.hasPassive(PASSIVE_HORNY_COUNT_ONE_ID))
 					effectText = TextManager.statusBattleEffectIsHornyOne;
 				else
 					effectText = TextManager.statusBattleEffectIsHornyZero;
 			}
+			else if(actor.isCoolAndCollected()) {
+				lineSize = 1.8;
+				effectText = TextManager.StatusBattleEffectCool;
+			}
 		}
 		else if(i === 3 && DEBUG_MODE) {
+			lineSize = 1;
 			if(actor.isAroused())
 				effectText = TextManager.statusBattleEffectIsAroused;
 			else
 				effectText = TextManager.statusBattleEffectNotAroused;
 		}
 		else if(i === 4 && DEBUG_MODE) {
+			lineSize = 1;
 			if(actor.isWet)
 				effectText = TextManager.statusBattleEffectIsWet;
 			else
 				effectText = TextManager.statusBattleEffectNotWet;
 		}
 		else if(i === 5 && DEBUG_MODE) {
+			lineSize = 1;
 			if(actor.isWearingPanties())
 				effectText = TextManager.statusBattleEffectIsWearingPanties;
 			else
 				effectText = TextManager.statusBattleEffectIsNotWearingPanties;
 		}
 		else if(i === 6) {
-			if(actor._halberdIsDefiled)
-				effectText = TextManager.statusBattleEffectDefiledHalberd;
-		}
-		else if(i === 7) {
+			lineSize = 1;
 			if(actor.isConfident){
 				if(actor.hasPassive(PASSIVE_SUBDUED_COUNT_TWO_ID))
 					effectText = TextManager.statusBattleEffectIsConfidentOne;
@@ -1113,45 +1200,97 @@ Window_StatusInfo.prototype.drawEffects = function() {
 					effectText = TextManager.statusBattleEffectIsConfidentZero;
 			}
 		}
+		else if(i === 7 && DEBUG_MODE) {
+			lineSize = 1;
+			if(actor.isVirgin()) {
+				if(Karryn.hasEdict(EDICT_PUBLISH_VIRGIN_STATUS)) {
+					effectText = TextManager.StatusBattleEffectIsVirginPublished;
+				}
+				else {
+					if(actor.hasPassive(PASSIVE_SEXUAL_PARTNERS_TOTAL_THREE_ID))
+						effectText = TextManager.StatusBattleEffectIsVirginLow;
+					else if(actor.hasPassive(PASSIVE_SEXUAL_PARTNERS_TOTAL_TWO_ID))
+						effectText = TextManager.StatusBattleEffectIsVirginMed;
+					else
+						effectText = TextManager.StatusBattleEffectIsVirginHigh;
+				}
+			}
+		}
 		else if(i === 8) {
+			lineSize = 1;
+			if(actor._halberdIsDefiled)
+				effectText = TextManager.statusBattleEffectDefiledHalberd;
+		}
+		else if(i === 9) {
+			lineSize = 1;
 			if(actor.isStateAffected(STATE_DISARMED_ID))
 				effectText = TextManager.statusBattleEffectDisarmed;
 		}
-		
-		else if(i === 9) {
+		else if(i === 10 && DEBUG_MODE) {
+			lineSize = 1;
+			if(actor.isOnaniFrustrated())
+				effectText = TextManager.statusBattleEffectIsFrustrated;
+		}
+		else if(i === 11) {
+			lineSize = 1;
+			if(actor._tempAttackSkillConsUsage >= 2)
+				effectText = TextManager.StatusBattleEffectAttackCombo.format(actor._tempAttackSkillConsUsage);
+			if(actor._tempAttackSkillConsUsage >= 4 && Karryn.hasPassive(PASSIVE_SUBDUED_COUNT_TWO_ID)) {
+				lineSize = 1.8;
+				effectText += '\n' + TextManager.StatusBattleEffectAttackComboCocky;
+			}
+			
+		}
+
+		else if(i === 13) {
+			lineSize = 1.8;
+			if(actor._tempSexSkillConsUsage >= 2) {
+				effectText = TextManager.StatusBattleEffectSexComboOne.format(actor._tempSexSkillConsUsage);
+				effectText += '\n' + TextManager.StatusBattleEffectSexComboTwo;
+			}
+		}
+
+		else if(i === 17) {
+			lineSize = 1;
 			if(actor.isStateAffected(STATE_OFFBALANCE_ID))
 				effectText = TextManager.statusBattleEffectOffBalanced;
 		}
-		else if(i === 10) {
+		else if(i === 18) {
+			lineSize = 1;
 			if(actor.isStateAffected(STATE_WEAKEN_ID))
 				effectText = TextManager.statusBattleEffectWeaken;
 		}
-		else if(i === 11) {
+		else if(i === 19) {
+			lineSize = 1;
 			if(actor.isStateAffected(STATE_DIZZY_ID))
 				effectText = TextManager.statusBattleEffectDizzy;
 		}
-		else if(i === 12) {
+		else if(i === 20) {
+			lineSize = 1;
 			if(actor.isStateAffected(STATE_SLOW_ID))
 				effectText = TextManager.statusBattleEffectSlow;
 		}
-		else if(i === 13) {
+		else if(i === 21) {
+			lineSize = 1;
 			if(actor.isStateAffected(STATE_VULNERABLE_ID))
 				effectText = TextManager.statusBattleEffectVulnerable;
 		}
-		else if(i === 14) {
+		else if(i === 22) {
+			lineSize = 1;
 			if(actor.isStateAffected(STATE_POISON_ID))
 				effectText = TextManager.statusBattleEffectPoison;
 		}
-		else if(i === 15) {
+		else if(i === 23) {
+			lineSize = 1;
 			if(actor.hasWeaknessExposed())
 				effectText = TextManager.statusBattleEffectExposeWeakness;
 		}
 	
 
 		if(effectText) {
-			this.drawDarkRect(firstColumnX, y, lineWidth, lineHeight);
+			this.drawDarkRect(firstColumnX, y, lineWidth, lineSize * lineHeight);
 			this.drawTextEx(effectText, firstTextPaddingX, y, true);
-			lineCount += 1;
+			lineCount += lineSize;
 		}
 	}
 };
@@ -1167,7 +1306,7 @@ Window_StatusInfo.prototype.drawProfile = function() {
 	let secondTextPaddingX = secondColumnX + this.textPadding();
 	
 	let paddingY = 0;
-	let lineHeight = this.lineHeight() * 0.9;
+	let lineHeight = this.lineHeight() * 0.84;
 	let lineCount = 0;
 	
 	let normalFontSize = 28;
@@ -1213,12 +1352,12 @@ Window_StatusInfo.prototype.drawProfile = function() {
 		lineCount += 0.4;
 	}
 	
-	lineCount += 0.6;
+	lineCount += 0.4;
 	this.contents.fontSize = normalFontSize;
 	
-	for (let i = 0; i < 11; ++i) {	
+	for (let i = 0; i < 13; ++i) {	
 		if(!actor.hasEdict(EDICT_PUBLISH_VIRGIN_STATUS)) continue;
-		if(!actor.hasEdict(EDICT_PUBLISH_OTHER_FIRST_TIMES) && i > 0) continue;
+		if(!actor.hasEdict(EDICT_PUBLISH_OTHER_FIRST_TIMES) && i !== 1) continue;
 		let rectX = firstColumnX;
 		let textX = firstTextPaddingX;
 		let firstColumnWidth = 140;
@@ -1226,7 +1365,7 @@ Window_StatusInfo.prototype.drawProfile = function() {
 		let recordSecondTextX = 230;
 		if(TextManager.isJapanese) recordSecondTextX = 248;
 		let recordFirstLineY = -5;
-		let recordSecondLineY = 18;
+		let recordSecondLineY = 12;
 		
 		let recordName = '';
 		let firstLine = '';
@@ -1240,7 +1379,9 @@ Window_StatusInfo.prototype.drawProfile = function() {
 		let lastDate = false;
 		let lastLocationName = false;
 		
-		if(i === 1) {
+		if(i === 7 && ConfigManager.disableRimjobs) continue;
+		
+		if(i === 0) {
 			recordName = TextManager.profileRecordKiss;
 			firstDate = actor._firstKissDate;
 			lastDate = actor._lastKissDate;
@@ -1259,7 +1400,7 @@ Window_StatusInfo.prototype.drawProfile = function() {
 				}
 			}
 		}
-		else if(i === 0) {
+		else if(i === 1) {
 			recordName = TextManager.profileRecordSex;
 			firstDate = actor._firstPussySexDate;
 			lastDate = actor._lastPussySexDate;
@@ -1348,7 +1489,7 @@ Window_StatusInfo.prototype.drawProfile = function() {
 				lastName = actor._lastFootjobName;
 			}
 		}
-		else if(i === 7) {
+		else if(i === 7 && !ConfigManager.disableRimjobs) {
 			recordName = TextManager.profileRecordRimjob;
 			firstDate = actor._firstRimjobDate;
 			lastDate = actor._lastRimjobDate;
@@ -1362,6 +1503,32 @@ Window_StatusInfo.prototype.drawProfile = function() {
 			}
 		}
 		else if(i === 8) {
+			recordName = TextManager.profileRecordBodyBukkake;
+			firstDate = actor._firstBukkakeDate;
+			lastDate = actor._lastBukkakeDate;
+			firstTextLine = TextManager.profileRecordFirstBukkake;
+			lastTextLine = TextManager.profileRecordLastBukkake;
+			firstLocationName = $gameParty.getMapName(actor._firstBukkakeMapID);
+			lastLocationName = $gameParty.getMapName(actor._lastBukkakeMapID);
+			if(firstDate) {
+				firstName = actor._firstBukkakeName;
+				lastName = actor._lastBukkakeName;
+			}
+		}
+		else if(i === 9) {
+			recordName = TextManager.profileRecordFaceBukkake;
+			firstDate = actor._firstFaceBukkakeDate;
+			lastDate = actor._lastFaceBukkakeDate;
+			firstTextLine = TextManager.profileRecordFirstFaceBukkake;
+			lastTextLine = TextManager.profileRecordLastFaceBukkake;
+			firstLocationName = $gameParty.getMapName(actor._firstFaceBukkakeMapID);
+			lastLocationName = $gameParty.getMapName(actor._lastFaceBukkakeMapID);
+			if(firstDate) {
+				firstName = actor._firstFaceBukkakeName;
+				lastName = actor._lastFaceBukkakeName;
+			}
+		}
+		else if(i === 10) {
 			recordName = TextManager.profileRecordSwallow;
 			firstDate = actor._firstSwallowDate;
 			lastDate = actor._lastSwallowDate;
@@ -1374,7 +1541,7 @@ Window_StatusInfo.prototype.drawProfile = function() {
 				lastName = actor._lastSwallowName;
 			}
 		}
-		else if(i === 9) {
+		else if(i === 11) {
 			recordName = TextManager.profileRecordPussyCreampie;
 			firstDate = actor._firstPussyCreampieDate;
 			lastDate = actor._lastPussyCreampieDate;
@@ -1387,7 +1554,7 @@ Window_StatusInfo.prototype.drawProfile = function() {
 				lastName = actor._lastPussyCreampieName;
 			}
 		}
-		else if(i === 10) {
+		else if(i === 12) {
 			recordName = TextManager.profileRecordAnalCreampie;
 			firstDate = actor._firstAnalCreampieDate;
 			lastDate = actor._lastAnalCreampieDate;
@@ -1448,19 +1615,19 @@ Window_StatusInfo.prototype.drawRecords = function() {
 	let firstColumnX = WINDOW_STATUS_FIRST_X;
 	let firstTextPaddingX = firstColumnX + this.textPadding();
 	let textPaddingY = -6;
-	let lineHeight = this.lineHeight() * 0.5;
+	let lineHeight = this.lineHeight() * 0.45;
 	let lineCount = 0;
 	let screenWidth = this.width - this.standardPadding() * 2;
-	let fontSize = 18;
+	let fontSize = 17;
 	
 	this.contents.fontSize = fontSize;
 	
 	let recordText = false;
 	let drawRecordsUpTo = 1;
 	
-	if(actor.hasEdict(EDICT_PUBLISH_RECORDS_THREE)) drawRecordsUpTo = 26;
-	else if(actor.hasEdict(EDICT_PUBLISH_RECORDS_TWO)) drawRecordsUpTo = 20;
-	else if(actor.hasEdict(EDICT_PUBLISH_RECORDS_ONE)) drawRecordsUpTo = 9;
+	if(actor.hasEdict(EDICT_PUBLISH_RECORDS_THREE)) drawRecordsUpTo = 28;
+	else if(actor.hasEdict(EDICT_PUBLISH_RECORDS_TWO)) drawRecordsUpTo = 21;
+	else if(actor.hasEdict(EDICT_PUBLISH_RECORDS_ONE)) drawRecordsUpTo = 10;
 	
 	for(let i = 0; i <= drawRecordsUpTo; ++i) {
 		let rectY = lineCount * lineHeight;
@@ -1470,7 +1637,7 @@ Window_StatusInfo.prototype.drawRecords = function() {
 		if(i === 0) {
 			let fmt = TextManager.statusRecordDate;
 			let value1 = Prison.date;
-			recordText = fmt.format(value1);
+			recordText = fmt.format(Yanfly.Util.toGroup(value1));
 		}
 		else if(i === 1) {
 			let fmt = TextManager.statusRecordFight;
@@ -1479,181 +1646,204 @@ Window_StatusInfo.prototype.drawRecords = function() {
 			if(value1 === 0) { }
 			else if(value2 === 0 || !actor.hasEdict(EDICT_PUBLISH_RECORDS_ONE)) {
 				fmt = TextManager.statusRecordFightSubduedOnly;
-				recordText = fmt.format(value1);
+				recordText = fmt.format(Yanfly.Util.toGroup(value1));
 			}
 			else
-				recordText = fmt.format(value1, value2);
+				recordText = fmt.format(Yanfly.Util.toGroup(value1), Yanfly.Util.toGroup(value2));
 		}
 		else if(i === 2) {
 			let fmt = TextManager.statusRecordStrip;
 			let value1 = actor._recordClothesStrippedCount;
 			let value2 = actor._recordPantiesStrippedCount;
 			if(value1 && value2)
-				recordText = fmt.format(value1, value2);
+				recordText = fmt.format(Yanfly.Util.toGroup(value1), Yanfly.Util.toGroup(value2));
 		}
 		else if(i === 3) {
 			let fmt = TextManager.statusRecordKiss;
 			let value1 = actor._recordKissedCount;
 			let value2 = actor._recordKissedPeople;
 			if(value1)
-				recordText = fmt.format(value1, value2);
+				recordText = fmt.format(Yanfly.Util.toGroup(value1), Yanfly.Util.toGroup(value2));
 		}
 		else if(i === 4) {
+			let fmt = TextManager.statusRecordFingersSucked;
+			let value1 = actor._recordFingersSuckedCount;
+			let value2 = actor._recordFingersSuckedPeople;
+			if(value1 && value2 && value2 > 1)
+				recordText = fmt.format(Yanfly.Util.toGroup(value1), Yanfly.Util.toGroup(value2));
+		}
+		else if(i === 5) {
 			let fmt = TextManager.statusRecordBoobsPetted;
 			let value1 = actor._recordBoobsPettedCount;
 			let value2 = actor._recordBoobsPettedPeople;
-			if(value1)
-				recordText = fmt.format(value1, value2);
+			if(value1 && value2 && value2 > 1)
+				recordText = fmt.format(Yanfly.Util.toGroup(value1), Yanfly.Util.toGroup(value2));
 		}
-		else if(i === 5) {
+		else if(i === 6) {
 			let fmt = TextManager.statusRecordNipplesPetted;
 			let value1 = actor._recordNipplesPettedCount;
 			let value2 = actor._recordNipplesPettedPeople;
-			if(value1)
-				recordText = fmt.format(value1, value2);
+			if(value1 && value2 && value2 > 1)
+				recordText = fmt.format(Yanfly.Util.toGroup(value1), Yanfly.Util.toGroup(value2));
 		}
-		else if(i === 6) {
+		else if(i === 7) {
 			let fmt = TextManager.statusRecordClitPetted;
 			let value1 = actor._recordClitPettedCount;
 			let value2 = actor._recordClitPettedPeople;
-			if(value1)
-				recordText = fmt.format(value1, value2);
+			if(value1 && value2 && value2 > 1)
+				recordText = fmt.format(Yanfly.Util.toGroup(value1), Yanfly.Util.toGroup(value2));
 		}
-		else if(i === 7) {
+		else if(i === 8) {
 			let fmt = TextManager.statusRecordPussyPetted;
 			let value1 = actor._recordPussyPettedCount;
 			let value2 = actor._recordPussyPettedPeople;
-			if(value1)
-				recordText = fmt.format(value1, value2);
+			if(value1 && value2 && value2 > 1)
+				recordText = fmt.format(Yanfly.Util.toGroup(value1), Yanfly.Util.toGroup(value2));
 		}
-		else if(i === 8) {
+		else if(i === 9) {
 			let fmt = TextManager.statusRecordButtPetted;
 			let value1 = actor._recordButtPettedCount;
 			let value2 = actor._recordButtPettedPeople;
-			if(value1)
-				recordText = fmt.format(value1, value2);
+			if(value1 && value2 && value2 > 1)
+				recordText = fmt.format(Yanfly.Util.toGroup(value1), Yanfly.Util.toGroup(value2));
 		}
-		else if(i === 9) {
+		else if(i === 10) {
 			let fmt = TextManager.statusRecordAnalPetted;
 			let value1 = actor._recordAnalPettedCount;
 			let value2 = actor._recordAnalPettedPeople;
-			if(value1)
-				recordText = fmt.format(value1, value2);
+			if(value1 && value2 && value2 > 1)
+				recordText = fmt.format(Yanfly.Util.toGroup(value1), Yanfly.Util.toGroup(value2));
 		}
-		else if(i === 10) {
+		else if(i === 11) {
 			let fmt = TextManager.statusRecordMasturbate;
 			let value1 = actor._recordMasturbatedTotalCount;
 			let value2 = actor._recordSeeJerkOffCount;
 			if(value1 && value2)
-				recordText = fmt.format(value1, value2);
+				recordText = fmt.format(Yanfly.Util.toGroup(value1), Yanfly.Util.toGroup(value2));
 		}
-		else if(i === 11) {
+		else if(i === 12) {
 			let fmt = TextManager.statusRecordSexPartners;
 			let value1 = actor._recordSexualPartnersTotal;
 			if(value1)
-				recordText = fmt.format(value1);
+				recordText = fmt.format(Yanfly.Util.toGroup(value1));
 		}
-		else if(i === 12) {
+		else if(i === 13) {
 			let fmt = TextManager.statusRecordHandjob;
 			let value1 = actor._recordHandjobCount;
 			let value2 = actor._recordHandjobPeople;
 			if(value1)
-				recordText = fmt.format(value1, value2);
+				recordText = fmt.format(Yanfly.Util.toGroup(value1), Yanfly.Util.toGroup(value2));
 		}
-		else if(i === 13) {
+		else if(i === 14) {
 			let fmt = TextManager.statusRecordBlowjob;
 			let value1 = actor._recordBlowjobCount;
 			let value2 = actor._recordBlowjobPeople;
 			if(value1)
-				recordText = fmt.format(value1, value2);
+				recordText = fmt.format(Yanfly.Util.toGroup(value1), Yanfly.Util.toGroup(value2));
 		}
-		else if(i === 14) {
+		else if(i === 15) {
 			let fmt = TextManager.statusRecordTittyFuck;
 			let value1 = actor._recordTittyFuckCount;
 			let value2 = actor._recordTittyFuckPeople;
 			if(value1)
-				recordText = fmt.format(value1, value2);
+				recordText = fmt.format(Yanfly.Util.toGroup(value1), Yanfly.Util.toGroup(value2));
 		}
-		else if(i === 15) {
+		else if(i === 16) {
 			let fmt = TextManager.statusRecordFootjob;
 			let value1 = actor._recordFootjobCount;
 			let value2 = actor._recordFootjobPeople;
 			if(value1)
-				recordText = fmt.format(value1, value2);
+				recordText = fmt.format(Yanfly.Util.toGroup(value1), Yanfly.Util.toGroup(value2));
 		}
-		else if(i === 16) {
+		else if(i === 17) {
 			let fmt = TextManager.statusRecordRimjob;
 			let value1 = actor._recordRimjobCount;
 			let value2 = actor._recordRimjobPeople;
 			if(value1)
-				recordText = fmt.format(value1, value2);
+				recordText = fmt.format(Yanfly.Util.toGroup(value1), Yanfly.Util.toGroup(value2));
 		}
-		else if(i === 17) {
+		else if(i === 18) {
 			let fmt = TextManager.statusRecordCunni;
 			let value1 = actor._recordCunnilingusCount;
 			let value2 = actor._recordCunnilingusPeople;
 			if(value1)
-				recordText = fmt.format(value1, value2);
+				recordText = fmt.format(Yanfly.Util.toGroup(value1), Yanfly.Util.toGroup(value2));
 		}
-		else if(i === 18) {
+		else if(i === 19) {
 			let fmt = TextManager.statusRecordSpanked;
 			let value1 = actor._recordButtSpankedCount;
 			let value2 = actor._recordButtSpankedPeople;
 			if(value1)
-				recordText = fmt.format(value1, value2);
+				recordText = fmt.format(Yanfly.Util.toGroup(value1), Yanfly.Util.toGroup(value2));
 		}
-		else if(i === 19) {
+		else if(i === 20) {
 			let fmt = TextManager.statusRecordPussySex;
 			let value1 = actor._recordPussyFuckedCount;
 			let value2 = actor._recordPussyFuckedPeople;
 			if(value1)
-				recordText = fmt.format(value1, value2);
+				recordText = fmt.format(Yanfly.Util.toGroup(value1), Yanfly.Util.toGroup(value2));
 		}
-		else if(i === 20) {
+		else if(i === 21) {
 			let fmt = TextManager.statusRecordAnalSex;
 			let value1 = actor._recordAnalFuckedCount;
 			let value2 = actor._recordAnalFuckedPeople;
 			if(value1)
-				recordText = fmt.format(value1, value2);
+				recordText = fmt.format(Yanfly.Util.toGroup(value1), Yanfly.Util.toGroup(value2));
 		}
-		else if(i === 21) {
+		else if(i === 22) {
 			let fmt = TextManager.statusRecordGangbang;
 			let value1 = actor._recordDoublePenetrationCount;
 			let value2 = actor._recordTriplePenetrationCount;
 			if(value1 && value2)
-				recordText = fmt.format(value1, value2);
+				recordText = fmt.format(Yanfly.Util.toGroup(value1), Yanfly.Util.toGroup(value2));
 		}
-		else if(i === 22) {
+		else if(i === 23) {
 			let fmt = TextManager.statusRecordOrgasm;
 			let value1 = actor._recordOrgasmCount;
 			let value2 = actor._recordOrgasmPresencePeople;
 			let value3 = actor._recordOrgasmML;
 			if(value1)
-				recordText = fmt.format(value1, value2, value3.toFixed(1));
+				recordText = fmt.format(Yanfly.Util.toGroup(value1), Yanfly.Util.toGroup(value2), Yanfly.Util.toGroup(value3.toFixed(1)));
 		}
-		else if(i === 23) {
+		else if(i === 24) {
+			let fmt = TextManager.statusRecordBukkake;
+			let value1 = actor._recordBukkakeTotalCount;
+			let value2 = actor._recordBukkakePeople;
+			let value3 = actor._recordBukkakeTotalML;
+			if(value1)
+				recordText = fmt.format(Yanfly.Util.toGroup(value1), Yanfly.Util.toGroup(value2), Yanfly.Util.toGroup(value3));
+		}
+		else if(i === 25) {
+			let fmt = TextManager.statusRecordFaceBukkake;
+			let value1 = actor._recordBukkakeFaceCount;
+			let value2 = actor._recordFaceBukkakePeople;
+			let value3 = actor._recordBukkakeFaceML;
+			if(value1)
+				recordText = fmt.format(Yanfly.Util.toGroup(value1), Yanfly.Util.toGroup(value2), Yanfly.Util.toGroup(value3));
+		}
+		else if(i === 26) {
 			let fmt = TextManager.statusRecordSwallow;
 			let value1 = actor._recordSwallowCount;
 			let value2 = actor._recordSwallowPeople;
 			let value3 = actor._recordSwallowML;
 			if(value1)
-				recordText = fmt.format(value1, value2, value3);
+				recordText = fmt.format(Yanfly.Util.toGroup(value1), Yanfly.Util.toGroup(value2), Yanfly.Util.toGroup(value3));
 		}
-		else if(i === 24) {
+		else if(i === 27) {
 			let fmt = TextManager.statusRecordPussyCreampie;
 			let value1 = actor._recordPussyCreampieCount;
 			let value2 = actor._recordPussyCreampiePeople;
 			let value3 = actor._recordPussyCreampieML;
 			if(value1)
-				recordText = fmt.format(value1, value2, value3);
+				recordText = fmt.format(Yanfly.Util.toGroup(value1), Yanfly.Util.toGroup(value2), Yanfly.Util.toGroup(value3));
 		}
-		else if(i === 25) {
+		else if(i === 28) {
 			let fmt = TextManager.statusRecordAnalCreampie;
 			let value1 = actor._recordAnalCreampieCount;
 			let value2 = actor._recordAnalCreampiePeople;
 			let value3 = actor._recordAnalCreampieML;
 			if(value1)
-				recordText = fmt.format(value1, value2, value3);
+				recordText = fmt.format(Yanfly.Util.toGroup(value1), Yanfly.Util.toGroup(value2), Yanfly.Util.toGroup(value3));
 		}
 	
 		if(recordText) {
@@ -1967,6 +2157,279 @@ Window_Base.prototype.drawMapName = function(x, y, width) {
     this.drawText(value, x, y, width, 'left');
 };
 
+//////
+// Daily Reports
+
+Window_Base.prototype.remDailyReportText = function(id) {
+	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
+	let text = '';
+
+	if(id === 1) { //Header
+	   text = TextManager.RemDailyReportDayCount.format($gameParty.date);
+	}
+	else if(id === 2) { 
+		if(!$gameSwitches.value(SWITCH_BOSS_CLEAR_BONUS_ID)) {
+			//Anarchy
+			let currentAnarchyLevel = 0;
+			let decreasedAnarchyControl = 0;
+			let anarchyDays = 0;
+			let estimatedDaysBeforeLimit = 0;
+			let anarchyGracePeriod = $gameParty.anarchyGracePeriod();
+			let anarchyDecreaseDivider = $gameParty.anarchyDecreaseDivider();
+			let showAnarchyNoLimitText = false;
+			let showAnarchyBeforeLimitText = false;
+			let showAnarchyPastLimitText = false;
+		
+			if($gameParty.prisonLevelOneIsAnarchy()) {
+				currentAnarchyLevel = 1;
+				anarchyDays = $gameParty._prisonLevelOne_anarchyDays;
+				anarchyDecreaseDivider *= PRISON_ANARCHY_DEC_LEVEL_ONE_DIVIDER;
+				let levelAnarchyGracePeriod =  anarchyGracePeriod * PRISON_ANARCHY_GRACE_LEVEL_ONE_MULTIPLER;
+				
+				if(Prison.easyMode()) {
+					showAnarchyNoLimitText = true;
+				}
+				else if(anarchyDays + $gameParty._levelOneBonusGracePeriod > levelAnarchyGracePeriod) {
+					showAnarchyPastLimitText = true;
+					decreasedAnarchyControl = Math.ceil((anarchyDays + $gameParty._levelOneBonusGracePeriod - levelAnarchyGracePeriod)/anarchyDecreaseDivider);
+				}
+				else {
+					showAnarchyBeforeLimitText = true;
+					estimatedDaysBeforeLimit = levelAnarchyGracePeriod - anarchyDays + $gameParty._levelOneBonusGracePeriod;
+				}
+				
+			}
+			else if($gameParty.prisonLevelTwoIsAnarchy()) {
+				currentAnarchyLevel = 2;
+				anarchyDays = $gameParty._prisonLevelTwo_anarchyDays;
+				anarchyDecreaseDivider *= PRISON_ANARCHY_DEC_LEVEL_TWO_DIVIDER;
+				let levelAnarchyGracePeriod = anarchyGracePeriod * PRISON_ANARCHY_GRACE_LEVEL_TWO_MULTIPLER;
+				
+				if(Prison.easyMode()) {
+					showAnarchyNoLimitText = true;
+				}
+				else if(anarchyDays + $gameParty._levelTwoBonusGracePeriod > levelAnarchyGracePeriod) {
+					showAnarchyPastLimitText = true;
+					decreasedAnarchyControl = Math.ceil((anarchyDays + $gameParty._levelTwoBonusGracePeriod - levelAnarchyGracePeriod)/anarchyDecreaseDivider);
+				}
+				else {
+					showAnarchyBeforeLimitText = true;
+					estimatedDaysBeforeLimit = levelAnarchyGracePeriod - anarchyDays + $gameParty._levelTwoBonusGracePeriod;
+				}
+			}
+			else if($gameParty.prisonLevelThreeIsAnarchy()) {
+				currentAnarchyLevel = 3;
+				anarchyDays = $gameParty._prisonLevelThree_anarchyDays;
+				
+				if(Prison.easyMode()) {
+					showAnarchyNoLimitText = true;
+				}
+				else {
+					showAnarchyNoLimitText = true;
+				}
+			}
+			
+			anarchyDays++;
+			if(showAnarchyNoLimitText) {
+				text += TextManager.RemDailyReportAnarchyNoLimit.format(currentAnarchyLevel,anarchyDays);
+				text += '\n';
+			}
+			else if(showAnarchyPastLimitText) {
+				text += TextManager.RemDailyReportAnarchyPastLimit.format(currentAnarchyLevel,anarchyDays,decreasedAnarchyControl);
+				text += '\n';
+			}
+			else if(showAnarchyBeforeLimitText) {
+				estimatedDaysBeforeLimit += 1;
+				if(estimatedDaysBeforeLimit === 1) {
+					text += TextManager.RemDailyReportAnarchyLimitBefore_singular.format(currentAnarchyLevel,anarchyDays);
+				}
+				else {
+					text += TextManager.RemDailyReportAnarchyLimitBefore_plural.format(currentAnarchyLevel,anarchyDays,estimatedDaysBeforeLimit);
+				}
+				text += '\n';
+			}
+		}
+		
+		//Rioting
+		let riotLevel = 0;
+		let riotDayCount = 0;
+		let decreasedRiotControl = 0;
+		
+		//Level 1 Rioting
+		riotLevel = 1;
+		riotDayCount = 0;
+		decreasedRiotControl = 0;
+		
+		if($gameParty.prisonLevelOneIsRioting()) {
+			riotDayCount = $gameParty._prisonLevelOne_riotingDays;
+			decreasedRiotControl = $gameParty.riotingOrderChange(riotLevel);
+		}
+	
+		if(riotDayCount === 1) {
+			text += TextManager.RemDailyReportRiot_New.format(riotLevel);
+			text += '\n';
+		}
+		else if(riotDayCount > 1) {
+			text += TextManager.RemDailyReportRiot_Old.format(riotLevel,riotDayCount,decreasedRiotControl);
+			text += '\n';
+		}
+		
+		//Level 2 Rioting
+		riotLevel = 2;
+		riotDayCount = 0;
+		decreasedRiotControl = 0;
+	
+		if($gameParty.prisonLevelTwoIsRioting()) {
+			riotDayCount = $gameParty._prisonLevelTwo_riotingDays;
+			decreasedRiotControl = $gameParty.riotingOrderChange(riotLevel);
+		}
+	
+		if(riotDayCount === 1) {
+			text += TextManager.RemDailyReportRiot_New.format(riotLevel);
+			text += '\n';
+		}
+		else if(riotDayCount > 1) {
+			text += TextManager.RemDailyReportRiot_Old.format(riotLevel,riotDayCount,decreasedRiotControl);
+			text += '\n';
+		}
+		
+		//Level 3 Rioting
+		riotLevel = 3;
+		riotDayCount = 0;
+		decreasedRiotControl = 0;
+	
+		if($gameParty.prisonLevelThreeIsRioting()) {
+			riotDayCount = $gameParty._prisonLevelThree_riotingDays;
+			decreasedRiotControl = $gameParty.riotingOrderChange(riotLevel);
+		}
+	
+		if(riotDayCount === 1) {
+			text += TextManager.RemDailyReportRiot_New.format(riotLevel);
+			text += '\n';
+		}
+		else if(riotDayCount > 1) {
+			text += TextManager.RemDailyReportRiot_Old.format(riotLevel,riotDayCount,decreasedRiotControl);
+			text += '\n';
+		}
+		
+		//Level 4 Rioting
+		riotLevel = 4;
+		riotDayCount = 0;
+		decreasedRiotControl = 0;
+	
+		if($gameParty.prisonLevelFourIsRioting()) {
+			riotDayCount = $gameParty._prisonLevelFour_riotingDays;
+			decreasedRiotControl = $gameParty.riotingOrderChange(riotLevel);
+		}
+	
+		if(riotDayCount === 1) {
+			text += TextManager.RemDailyReportRiot_New.format(riotLevel);
+			text += '\n';
+		}
+		else if(riotDayCount > 1) {
+			text += TextManager.RemDailyReportRiot_Old.format(riotLevel,riotDayCount,decreasedRiotControl);
+			text += '\n';
+		}
+		
+		//Order Change
+		let orderText = '';
+		
+		if(Prison.HighOrder()) {
+			
+		}
+		else if(Prison.MedOrder()) {
+			orderText += '\\C[17]';
+		}
+		else if(Prison.LowOrder()) {
+			orderText += '\\C[2]';
+		}
+		else if(Prison.VeryLowOrder()) {
+			orderText += '\\C[10]';
+		}
+		else if(Prison.NearNoOrder()) {
+			orderText += '\\C[30]';
+		}
+		orderText += Prison.order + '\\C[0]';
+		
+		if(Prison.orderChange > 0) {
+			text += TextManager.RemDailyReportOrderChange_Positive.format(orderText);
+		}
+		else if(Prison.orderChange < 0) {
+			text += TextManager.RemDailyReportOrderChange_Negative.format(orderText);
+		}
+		else {
+			text += TextManager.RemDailyReportOrderChange_Neutral.format(orderText);
+		}
+		text += '\n';
+		
+		//Funding
+		let balance = $gameParty.calculateBalance(true);
+		if(Prison.funding === 0) {
+			text += TextManager.RemDailyReportBankruptcy.format($gameParty.titlesBankruptcyOrder(true));
+			text += '\n';
+		}
+		else if(balance > 0) {
+			text += TextManager.RemDailyReportFundingChange_Positive.format(Prison.funding);
+			text += '\n';
+		}
+		else if(balance < 0) {
+			text += TextManager.RemDailyReportFundingChange_Negative.format(Prison.funding);
+			text += '\n';
+		}
+		
+		//Edict Points
+		let edictPoints = Math.max(actor.getStoredEdictPoints(), actor.stsSp());
+		if(edictPoints === 1) {
+			text += TextManager.RemDailyReportEdictPoints_Singular.format(edictPoints);
+			text += '\n';
+		}
+		else if(edictPoints > 1) {
+			text += TextManager.RemDailyReportEdictPoints_Plural.format(edictPoints);
+			text += '\n';
+		}
+		
+		//Bar Rep
+		if(Karryn.hasEdict(EDICT_BAR_WAITRESS_OUTFIT_I) && $gameParty._barReputation > $gameParty.getMinimumBarReputation()) {
+			if($gameParty._daysWithoutDoingWaitressBar === WAITRESS_REP_DECAY_DAYS - 1) {
+				text += TextManager.RemDailyReportBarRep_AlmostDecay;
+				text += '\n';
+			}
+			else if($gameParty._todayBarRepDecayed) {
+				text += TextManager.RemDailyReportBarRep_Decayed;
+				text += '\n';
+			}
+		}
+		
+		//Visitor Center Rep
+		if(Karryn.hasEdict(EDICT_RECEPTIONIST_OUTFIT_I) && $gameParty._receptionistSatisfaction > $gameParty.getMinimumReceptionistSatisfaction()) {
+			if($gameParty._daysWithoutDoingVisitorReceptionist === RECEPTIONIST_REP_DECAY_DAYS - 1) {
+				text += TextManager.RemDailyReportVisitorRep_AlmostDecay;
+				text += '\n';
+			}
+			else if($gameParty._todayVisitorRepDecayed) {
+				text += TextManager.RemDailyReportVisitorRep_Decayed;
+				text += '\n';
+			}
+		}
+		
+		//Glory Hole Rep
+		if(Karryn.hasEdict(EDICT_REFIT_MIDDLE_STALL) && $gameParty._gloryReputation > $gameParty.getMinimumGloryHoleReputation()) {
+			if($gameParty._daysWithoutDoingGloryHole === GLORY_HOLE_REP_DECAY_DAYS - 1) {
+				text += TextManager.RemDailyReportToiletRep_AlmostDecay;
+				text += '\n';
+			}
+			else if($gameParty._todayGloryHoleRepDecayed) {
+				text += TextManager.RemDailyReportToiletRep_Decayed;
+				text += '\n';
+			}
+		}
+		
+		
+	}
+	
+	return text;
+};
+
 /////////
 // Window Command
 ////////////////
@@ -2262,7 +2725,7 @@ Window_MenuStatus.prototype.drawKarrynStatus = function() {
 		
 		this.contents.fontSize = statsFontSize;
 		this.drawText(valueName, valueX, line * lh, lineWidth, 'left');
-		this.drawText(valueNum, valueX, line * lh, lineWidth, 'right');
+		this.drawText(valueNum.toLocaleString(), valueX, line * lh, lineWidth, 'right');
 
 		if(i % 2 === 1) line += 0.6;
 	}
@@ -2282,6 +2745,16 @@ Window_MenuStatus.prototype.drawKarrynStatus = function() {
 		this.drawTextEx(arousedText, x, line * lh, width, 'left', true);
 		line += statusLineChange;
 	}
+	
+	//Sexually Frustrated
+	if(actor.isOnaniFrustrated()) {
+		let frustratedText = '';
+		if(actor._onaniFrustration >= 4) frustratedText = TextManager.RCMenuFrustratedLevelTwoText;
+		else frustratedText = TextManager.RCMenuFrustratedLevelOneText;
+		this.drawTextEx(frustratedText, x, line * lh, width, 'left', true);
+		line += statusLineChange;
+	}
+	
 	
 	//Panties
 	if(!actor.isWearingPanties()) {

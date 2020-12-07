@@ -26,8 +26,8 @@ Game_Troop.prototype.setup = function(troopId) {
 
 	//console.log('setup gametroop ' + troopId);
 
-	if(Karryn.isInMasturbationPose()) {
-		this.setup_masturbationPose(troopId);
+	if(Karryn.isInMasturbationCouchPose()) {
+		this.setup_masturbationBattle(troopId);
 		return;
 	}
 	
@@ -57,6 +57,10 @@ Game_Troop.prototype.setup = function(troopId) {
 	}
 	if(troopId === TROOP_DEFEATED_LV2_ID) {
 		this.setupDefeatedLevelTwoBattle(troopId);
+		return;
+	}
+	if(troopId === TROOP_DEFEATED_LV3_ID) {
+		this.setupDefeatedLevelThreeBattle(troopId);
 		return;
 	}
 	if(troopId === TROOP_DEFEATED_GUARD_ID) {
@@ -163,8 +167,7 @@ Game_Action.prototype.apply = function(target) {
 			target.resetEvadeReductionStage();
 			
 			let value = this.makeDamageValue(target, result.critical);
-			//if(this.item().damage.type === 1) 
-			//	value = Math.round(value * this.subject().stanceDmgAdv(target, this.item().damage.elementId));
+
 			this.executeDamage(target, Math.round(value));
         }
         this.item().effects.forEach(function(effect) {
@@ -184,7 +187,7 @@ Game_Action.prototype.apply = function(target) {
         }, this);
         this.applyItemUserEffect(target);
 	}
-	else if(result.evaded && this.subject().isActor() && target.isEnemy() && this.isActorAttackSkill()) {
+	else if(result.evaded && this.subject().isActor() && target.isEnemy() && (this.isActorAttackSkill() || this.isActorKickSkill())) {
 		target.increaseEvadeReductionStage();
 		
 	}
@@ -194,14 +197,14 @@ Game_Action.prototype.apply = function(target) {
 
 Game_Action.prototype.executeDamage = function(target, value) {
     let result = target.result();
-    if (value === 0 && result.pleasureDamage === 0 && result.staminaDamage === 0) {
+    if(value === 0 && result.pleasureDamage === 0 && result.staminaDamage === 0) {
         result.critical = false;
     }
-    if (this.isHpEffect()) {
+    if(this.isHpEffect()) {
         this.executeHpDamage(target, value);
 		this.subject().addWantedPoints(value * WANTED_POINTS_STAMINA_DMG_MULTIPLER);
     }
-    if (this.isMpEffect()) {
+    if(this.isMpEffect()) {
         this.executeMpDamage(target, value);
     }
 };

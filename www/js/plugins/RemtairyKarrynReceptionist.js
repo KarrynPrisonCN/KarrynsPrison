@@ -27,8 +27,10 @@ const BATTLEBACK1_VISITOR_RECEPTIONIST_NAME = 'Reception1';
  */
 //=============================================================================
 
-const RECEPTIONIST_SKILL_START = 1579;
+const RECEPTIONIST_SKILL_START = 1578;
 const RECEPTIONIST_SKILL_END = 1599;
+
+const RECEPTIONIST_REP_DECAY_DAYS = 4;
 
 const VISITOR_MIN_PAGES = 1;
 const VISITOR_MAX_PAGES = 5;
@@ -95,7 +97,7 @@ const VAR_MIN_RECEPTIONIST_SATISFACTION = 5;
 const VAR_MIN_RECEPTIONIST_FAME = 3;
 const VAR_MIN_RECEPTIONIST_NOTORIETY = 0;
 
-const WANTED_DAYS_ADDED_TO_DEFEATED_AFTER_REJECT = 4;
+const WANTED_DAYS_ADDED_TO_DEFEATED_AFTER_REJECT = 1;
 
 //////////
 // Game Party
@@ -121,10 +123,7 @@ Game_Party.prototype.getVisitorNumberOrderForNewVisitor = function() {
 };
 
 Game_Party.prototype.setReceptionistSatisfaction = function(value) {
-	let minSat = VAR_MIN_RECEPTIONIST_SATISFACTION;
-	
-	if(Karryn.hasEdict(EDICT_REPAIR_VISITING_ROOM_D)) minSat += 4;
-	else if(Karryn.hasEdict(EDICT_REPAIR_VISITING_ROOM_C)) minSat += 2;
+	let minSat = this.getMinimumReceptionistSatisfaction();
 	
 	this._receptionistSatisfaction = Math.max(minSat, value);
 	$gameVariables.setValue(VARIABLE_RECEPTIONIST_SATISFACTION_ID, this._receptionistSatisfaction);
@@ -132,12 +131,18 @@ Game_Party.prototype.setReceptionistSatisfaction = function(value) {
 Game_Party.prototype.increaseReceptionistSatisfaction = function(value) {
 	this.setReceptionistSatisfaction(this._receptionistSatisfaction + value);
 };
+Game_Party.prototype.getMinimumReceptionistSatisfaction = function() {
+	let minSat = 0;
+	if(Karryn.hasEdict(EDICT_REPAIR_VISITING_ROOM_D)) minSat += 4;
+	else if(Karryn.hasEdict(EDICT_REPAIR_VISITING_ROOM_C)) minSat += 2;
+	return minSat;
+};
 
 Game_Party.prototype.setReceptionistFame = function(value) {
 	let minFame = VAR_MIN_RECEPTIONIST_FAME;
-	if(Karryn.hasThisTitle(TITLE_ID_RECEPTIONIST_HANDSHAKE)) minFame += 3; 
-	if(Karryn.hasThisTitle(TITLE_ID_VISITOR_FIRST_KISS)) minFame += 2; 
-	if(Karryn.hasThisTitle(TITLE_ID_SCANDELOUS_IDOL)) minFame += 1; 
+	//if(Karryn.hasThisTitle(TITLE_ID_RECEPTIONIST_HANDSHAKE)) minFame += 3; 
+	//if(Karryn.hasThisTitle(TITLE_ID_VISITOR_FIRST_KISS)) minFame += 2; 
+	//if(Karryn.hasThisTitle(TITLE_ID_SCANDELOUS_IDOL)) minFame += 1; 
 	
 	this._receptionistFame = Math.max(minFame, value);
 	$gameVariables.setValue(VARIABLE_RECEPTIONIST_FAME_ID, this._receptionistFame);
@@ -148,9 +153,9 @@ Game_Party.prototype.increaseReceptionistFame = function(value) {
 
 Game_Party.prototype.setReceptionistNotoriety = function(value) {
 	let minNotoriety = VAR_MIN_RECEPTIONIST_NOTORIETY;
-	if(Karryn.hasThisTitle(TITLE_ID_VISITOR_FIRST_KISS)) minNotoriety += 3; 
-	if(Karryn.hasThisTitle(TITLE_ID_VISITOR_SWALLOWER)) minNotoriety += 4; 
-	if(Karryn.hasThisTitle(TITLE_ID_SCANDELOUS_IDOL)) minNotoriety += 3; 
+	//if(Karryn.hasThisTitle(TITLE_ID_VISITOR_FIRST_KISS)) minNotoriety += 3; 
+	//if(Karryn.hasThisTitle(TITLE_ID_VISITOR_SWALLOWER)) minNotoriety += 4; 
+	//if(Karryn.hasThisTitle(TITLE_ID_SCANDELOUS_IDOL)) minNotoriety += 3; 
 	
 	this._receptionistNotoriety = Math.max(minNotoriety, value);
 	if(!DEBUG_MODE) this._receptionistNotoriety = 0;
@@ -346,8 +351,6 @@ Game_Party.prototype.postReceptionistBattleCleanup  = function() {
 	if(!$gameSwitches.value(SWITCH_DEFEATED_IN_LEVEL_ONE_ID)) {
 		actor._playthroughRecordReceptionistBattleTotalShiftsCount++;
 	}
-	
-	//this.postBattleCleanup();
 };
 
 Game_Party.prototype.receptionistBattle_dissatisfactionFromEdictsMultipler = function() {
@@ -617,7 +620,10 @@ Game_Actor.prototype.postDamage_basicKissing_receptionistBattle = function(targe
 };
 
 Game_Actor.prototype.postDamage_basicTalk_receptionistBattle = function(target, area, jerkingOff) {
-	this.receptionistBattle_makeSexualNoise(0.5, false);
+	if(jerkingOff)
+		this.receptionistBattle_makeSexualNoise(0.85, false);
+	else
+		this.receptionistBattle_makeSexualNoise(0.5, false);
 };
 
 Game_Actor.prototype.postDamage_basicPetting_receptionistBattle = function(target, area) {
@@ -1119,6 +1125,8 @@ Game_Actor.prototype.afterEval_receptionistBattle_callUnknownVisitor = function(
 		target.setVisitorLocationToMoving();
 		target.setVisitorFinishWalkingToDeskTime(VISITOR_DESK_DISTANCE);
 	}
+	
+	this.resetSexSkillConsUsage(false);
 };
 
 // Greet Visitor
@@ -1143,6 +1151,8 @@ Game_Actor.prototype.afterEval_receptionistBattle_greetVisitor = function(target
 	}
 	this.gainCharmExp(6, this.level);
 	this._receptionist_greetVisitor_waitingForResponse = true;
+	
+	this.resetSexSkillConsUsage(false);
 };
 Game_Actor.prototype.receptionistBattle_greetVisitor_response = function() {
 	this._receptionist_greetVisitor_gotResponse = true;
@@ -1241,6 +1251,7 @@ Game_Actor.prototype.afterEval_receptionistBattle_getVisitorPapers = function(ta
 	target.setVisitorFinishWalkingToSeatTime(VISITOR_DESK_DISTANCE);
 	target.receptionistBattle_leaveDeskQueue();
 	
+	this.resetSexSkillConsUsage(false);
 };
 
 // Processing Papers
@@ -1268,6 +1279,7 @@ Game_Actor.prototype.afterEval_receptionistBattle_beginProcessingPapers = functi
 	this._receptionist_currentlyProcessingPapers = true;
 	this._receptionist_currentlyProcessingPapersOfVisitor = target._visitorSeatId;
 	this._receptionist_remainingProcessingPaperTime = this.calculateReceptionistPaperworkProcessingTime(target._visitor_pages); 
+	this.resetSexSkillConsUsage(false);
 	this.emoteReceptionistPose();
 };
 
@@ -1294,9 +1306,9 @@ Game_Actor.prototype.customReq_receptionistBattle_continueProcessingPapers = fun
 	return !this.receptionistBattle_isLayingOnDesk();
 };
 Game_Actor.prototype.continueProcessingPapersWillCost = function() {
-	let willCost = 10;
+	let willCost = 6;
 	if(this.isUsingThisTitle(TITLE_ID_RECEPTIONIST_PAPERWORK_PROCESSOR))
-		willCost += 2;
+		willCost += 1;
 	return Math.round(willCost * this.wsc);
 };
 Game_Actor.prototype.afterEval_receptionistBattle_continueProcessingPapers = function(calledFromonTurnEnd) {
@@ -1335,6 +1347,7 @@ Game_Actor.prototype.afterEval_receptionistBattle_continueProcessingPapers = fun
 		this.emoteReceptionistPose();
 	}
 	
+	this.resetSexSkillConsUsage(false);
 };
 
 Game_Actor.prototype.receptionistBattle_remainingProcessingPapersTime = function() {
@@ -1393,6 +1406,7 @@ Game_Actor.prototype.afterEval_receptionistBattle_assignToVisitingRoom = functio
 	target.setVisitorLocationToMoving();
 	target.setVisitorFinishWalkingToVisitingRoomTime(VISITOR_ROOM_DISTANCE);
 	
+	this.resetSexSkillConsUsage(false);
 };
 
 // Check Visiting Room Status
@@ -1416,6 +1430,7 @@ Game_Actor.prototype.afterEval_receptionistBattle_checkVisitingRoomStatus = func
 	
 	this._receptionist_checkingVisitingRoom_startingPhoneCall = true;
 	this._receptionist_checkingVisitingRoomId = roomId;
+	this.resetSexSkillConsUsage(false);
 	this.emoteReceptionistPose();
 };
 
@@ -1465,6 +1480,8 @@ Game_Actor.prototype.afterEval_receptionistBattle_apologize = function(target) {
 	target.setVisitorLocationToSitting();
 	target.setVisitorFinishWalkingToSeatTime(VISITOR_DESK_DISTANCE);
 	target.receptionistBattle_leaveDeskQueue();
+	
+	this.resetSexSkillConsUsage(false);
 };
 
 //Reject Request
@@ -1522,14 +1539,16 @@ Game_Actor.prototype.afterEval_receptionistBattle_rejectRequest = function(targe
 			target.receptionistBattle_action_fanLeaves();
 		}
 	}
+	this.resetSexSkillConsUsage(false);
 };
 
 //Accept Request
 Game_Actor.prototype.showEval_receptionistBattle_acceptRequest = function() {
+	if(!this.customReq_receptionistBattle_acceptRequest()) return false;
 	return $gameTroop.receptionistBattle_fanWaitingForResponse() || $gameTroop.receptionistBattle_pervWaitingForResponse();
 };
 Game_Actor.prototype.customReq_receptionistBattle_acceptRequest = function() {
-	if(!this.showEval_receptionistBattle_acceptRequest()) return false;
+	if(!$gameTroop.receptionistBattle_fanWaitingForResponse() && !$gameTroop.receptionistBattle_pervWaitingForResponse()) return false;
 	
 	let meetConditions = false;
 	let visitor = $gameTroop.receptionistBattle_visitorAtDesk();
@@ -1619,8 +1638,21 @@ Game_Actor.prototype.afterEval_receptionistBattle_acceptRequest = function(targe
 		target._fan_waitingForRequestResponse = false;
 	}
 	
+	this.resetSexSkillConsUsage(false);
 	this.emoteReceptionistPose();
 	//this.updateReceptionistBattleVisitorQueueTachie();
+};
+
+Game_Actor.prototype.showEval_receptionistBattle_acceptRequest_cant = function() {
+	if(this.customReq_receptionistBattle_acceptRequest()) return false;
+	return $gameTroop.receptionistBattle_fanWaitingForResponse() || $gameTroop.receptionistBattle_pervWaitingForResponse();
+};
+Game_Actor.prototype.skillDescription_cant_receptionistBattle_acceptRequest = function() {
+	let text = '';
+
+	text += TextManager.SkillDescriptionNotEnoughDesire + '\n';
+	
+	return text;
 };
 
 // Breather
@@ -1636,6 +1668,7 @@ Game_Actor.prototype.dmgFormula_receptionistBattle_Breather = function() {
 	return Math.round(dmg);
 };
 Game_Actor.prototype.afterEval_receptionistBattle_Breather = function() {
+	this.resetSexSkillConsUsage(false);
 	this.emoteReceptionistPose();
 };
 
@@ -1661,6 +1694,7 @@ Game_Actor.prototype.customReq_receptionistBattle_fixClothes = function() {
 Game_Actor.prototype.afterEval_receptionistBattle_fixClothes = function() {
 	this.restoreClothingDurability();
 	this.addToFixClothesUsageCountRecord();
+	this.resetSexSkillConsUsage(false);
 	this.emoteReceptionistPose();
 };
 
@@ -1692,6 +1726,8 @@ Game_Actor.prototype.afterEval_receptionistBattle_shooAway = function(target) {
 	for(let i = 0; i < goblins.length; ++i) {
 		goblins[i].addState(STATE_RECEPTIONIST_SHOOED_ID);
 	}
+	
+	this.resetSexSkillConsUsage(false);
 };
 
 // Kick Away
@@ -1714,6 +1750,7 @@ Game_Actor.prototype.afterEval_receptionistBattle_kickAway = function(target) {
 	
 	target.addState(STATE_RECEPTIONIST_KICKED_ID);
 	this._playthroughRecordKickAttackUsage++;
+	this.resetSexSkillConsUsage(false);
 	
 	let prekickDistanceSlot = target._goblinDistanceSlot;
 	
@@ -2148,6 +2185,7 @@ Game_Troop.prototype.receptionistBattle_spawnGoblin = function(forceSpawn) {
 			let enemyId = this.receptionistBattle_validGoblinId();
 			let enemy = this.setup_receptionistBattle_goblin(enemyId);
 			enemy.makeUniqueNames();
+			enemy.setupEnemyPrefixEffect();
 			enemy.onBattleStart();
 			enemy.midBattleSpawn_setupDreamX();
 			SceneManager._scene._spriteset.addEnemy(enemy);
@@ -2304,7 +2342,15 @@ Game_Troop.prototype.onTurnEndSpecial_receptionistBattle = function(forceSpawn) 
 			}
 			
 			if(skillArray.length > 0) {
-				actor.useAISkill(skillArray[Math.randomInt(skillArray.length)], deskVisitor);
+				let skillId = skillArray[Math.randomInt(skillArray.length)];
+				if(skillId === SKILL_KARRYN_BLOWJOB_POSESKILL_ID && actor.meetsSkillConditionsEval($dataSkills[SKILL_KARRYN_BLOWJOB_POSESKILL_ID], deskVisitor)) {
+					actor.resetSexSkillConsUsage(SEXACT_BLOWJOB);
+					actor.useAISkill(skillId, deskVisitor);
+				}
+				else if(skillId === SKILL_KARRYN_HANDJOB_POSESKILL_ID && actor.meetsSkillConditionsEval($dataSkills[SKILL_KARRYN_HANDJOB_POSESKILL_ID], deskVisitor)) {
+					actor.resetSexSkillConsUsage(SEXACT_HANDJOB);
+					actor.useAISkill(skillId, deskVisitor);
+				}
 				actor._receptionist_visitorSexSkillCooldown = RECEPTIONIST_SEX_SKILL_COOLDOWN;
 				actor.addState(STATE_DISABLED_ID);
 			}
@@ -2657,7 +2703,7 @@ Game_Enemy.prototype.bonusPpt_receptionistBattle = function() {
 	return rate;
 };
 
-Game_Enemy.prototype.receptionistParamRateEffect = function(paramId) {
+Game_Enemy.prototype.receptionistEnemyParamRate = function(paramId) {
 	let rate = 1;
 	
 	if(Karryn.isInReceptionistPose()) {
@@ -3073,7 +3119,7 @@ Game_Enemy.prototype.enemyBattleAIReceptionist_visitor = function(target) {
 							skillArray.push(SKILL_ENEMY_POSESKILL_LEFTHAND_ID);
 						}
 						if(this._perv_kissing) {
-							skillArray.push(SKILL_ENEMY_PETTING_SELECTOR_KISS_ID);
+							skillArray.push(SKILL_ENEMY_PETTING_SELECTOR_MOUTH_ID);
 						}
 						if(this._perv_touchingBoobs) {
 							skillArray.push(SKILL_ENEMY_PETTING_SELECTOR_BOOBS_AREA_ID);
@@ -3395,11 +3441,12 @@ Game_Enemy.prototype.receptionistBattle_action_fanLeaves = function() {
 		BattleManager._logWindow.push('addText', TextManager.receptionistFanLeavesDejected.format(this.displayName()));
 		AudioManager.playSe({name:'+Footstep1', pan:0, pitch:100, volume:70});
 		$gameParty.increaseReceptionistVisitorSatisfaction_Fan(RECEPTIONIST_FAN_SATISFACTION_LOST_FROM_REQUEST_REJECTED * this._visitor_dissatisfactionMultipler * dissatisfactionFromEdicts);
+		
+		if(this.isWanted) {
+			$gameParty.getWantedEnemyById(this.getWantedId())._lastDefeated = Prison.date + WANTED_DAYS_ADDED_TO_DEFEATED_AFTER_REJECT;
+		}
 	}
 	
-	if(this.isWanted) {
-		$gameParty.getWantedEnemyById(this.getWantedId())._lastDefeated = Prison.date + WANTED_DAYS_ADDED_TO_DEFEATED_AFTER_REJECT;
-	}
 	
 	this.receptionistBattle_leaveDeskQueue();
 	
@@ -3426,11 +3473,12 @@ Game_Enemy.prototype.receptionistBattle_action_pervLeaves = function() {
 		BattleManager._logWindow.push('addText', TextManager.receptionistPervLeavesAngry.format(this.displayName()));
 		AudioManager.playSe({name:'+Footstep1', pan:0, pitch:100, volume:70});
 		$gameParty.increaseReceptionistVisitorSatisfaction_Pervert(RECEPTIONIST_PERV_SATISFACTION_LOST_FROM_REQUEST_REJECTED * this._visitor_dissatisfactionMultipler * dissatisfactionFromEdicts);
+		
+		if(this.isWanted) {
+			$gameParty.getWantedEnemyById(this.getWantedId())._lastDefeated = Prison.date + WANTED_DAYS_ADDED_TO_DEFEATED_AFTER_REJECT;
+		}
 	}
 
-	if(this.isWanted) {
-		$gameParty.getWantedEnemyById(this.getWantedId())._lastDefeated = Prison.date + WANTED_DAYS_ADDED_TO_DEFEATED_AFTER_REJECT;
-	}
 
 	this.receptionistBattle_leaveDeskQueue();
 

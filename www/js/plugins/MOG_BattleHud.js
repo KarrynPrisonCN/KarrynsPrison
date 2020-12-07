@@ -2167,7 +2167,7 @@ Scene_Battle.prototype.updateLayoutWindow = function() {
 				this._skill_layout_stamina.visible = true;
 				this._skill_layout_stamina.opacity = this._skillWindow.contentsOpacity;
 			}
-			else if(stypeId === SKILLTYPE_SEXUAL_ID || stypeId === SKILLTYPE_MASTURBATE_ID || stypeId === SKILLTYPE_TOILET_ID) {
+			else if(stypeId === SKILLTYPE_SEXUAL_ID || stypeId === SKILLTYPE_MASTURBATE_COUCH_ID || stypeId === SKILLTYPE_MASTURBATE_INBATTLE_ID || stypeId === SKILLTYPE_TOILET_ID) {
 				this._skill_layout_sexual.visible = true;
 				this._skill_layout_sexual.opacity = this._skillWindow.contentsOpacity;
 			}
@@ -2678,23 +2678,23 @@ Battle_Hud.prototype.need_refresh_parameter = function(parameter) {
          break;		
 	case 4:	
          if (this._cock_desire_old[0] != this._battler.cockDesire) {return true};
-		 if (this._cock_desire_old[1] != this._battler.maxCockDesire()) {return true};
+		 if (this._cock_desire_old[1] != this._battler.maxCockDesire) {return true};
          break;	
 	case 5:	
          if (this._mouth_desire_old[0] != this._battler.mouthDesire) {return true};
-		 if (this._mouth_desire_old[1] != this._battler.maxMouthDesire()) {return true};
+		 if (this._mouth_desire_old[1] != this._battler.maxMouthDesire) {return true};
          break;	
 	case 6:	
          if (this._boobs_desire_old[0] != this._battler.boobsDesire) {return true};
-		 if (this._boobs_desire_old[1] != this._battler.maxBoobsDesire()) {return true};
+		 if (this._boobs_desire_old[1] != this._battler.maxBoobsDesire) {return true};
          break;	
 	case 7:	
          if (this._pussy_desire_old[0] != this._battler.pussyDesire) {return true};
-		 if (this._pussy_desire_old[1] != this._battler.maxPussyDesire()) {return true};
+		 if (this._pussy_desire_old[1] != this._battler.maxPussyDesire) {return true};
          break;	
 	case 8:	
          if (this._butt_desire_old[0] != this._battler.buttDesire) {return true};
-		 if (this._butt_desire_old[1] != this._battler.maxButtDesire()) {return true};
+		 if (this._butt_desire_old[1] != this._battler.maxButtDesire) {return true};
          break;			 
   };
   return false;
@@ -3372,12 +3372,12 @@ Battle_Hud.prototype.create_desire_number = function() {
 Battle_Hud.prototype.update_desire = function() {
 	if (this._cock_meter_blue) {
 		if (this.need_refresh_parameter(4)) {
-			this.refresh_meter(this._cock_meter_blue,this._battler.cockDesire,this._battler.maxCockDesire(),0);
-			this._cock_desire_old = [this._battler.cockDesire,this._battler.maxCockDesire()];
+			this.refresh_meter(this._cock_meter_blue,this._battler.cockDesire,this._battler.maxCockDesire,0);
+			this._cock_desire_old = [this._battler.cockDesire,this._battler.maxCockDesire];
 		};
 		var dif_meter = this.update_dif(this._cock_desire_old_ani[0],this._battler.cockDesire,160);
 		if (this._cock_desire_old_ani[0] != dif_meter) {this._cock_desire_old_ani[0] = dif_meter;
-		this.refresh_meter(this._cock_meter_red,this._cock_desire_old_ani[0],this._battler.maxCockDesire(),1);};
+		this.refresh_meter(this._cock_meter_red,this._cock_desire_old_ani[0],this._battler.maxCockDesire,1);};
     };
 	
 	if (this._cock_number) {
@@ -3388,12 +3388,12 @@ Battle_Hud.prototype.update_desire = function() {
 	
 	if (this._mouth_meter_blue) {
 		if (this.need_refresh_parameter(5)) {
-			this.refresh_meter(this._mouth_meter_blue,this._battler.mouthDesire,this._battler.maxMouthDesire(),0);
-			this._mouth_desire_old = [this._battler.mouthDesire,this._battler.maxMouthDesire()];
+			this.refresh_meter(this._mouth_meter_blue,this._battler.mouthDesire,this._battler.maxMouthDesire,0);
+			this._mouth_desire_old = [this._battler.mouthDesire,this._battler.maxMouthDesire];
 		};
 		var dif_meter = this.update_dif(this._mouth_desire_old_ani[0],this._battler.mouthDesire,160);
 		if (this._mouth_desire_old_ani[0] != dif_meter) {this._mouth_desire_old_ani[0] = dif_meter;
-		this.refresh_meter(this._mouth_meter_red,this._mouth_desire_old_ani[0],this._battler.maxMouthDesire(),1);};
+		this.refresh_meter(this._mouth_meter_red,this._mouth_desire_old_ani[0],this._battler.maxMouthDesire,1);};
     };
 	
 	if (this._mouth_number) {
@@ -3404,12 +3404,12 @@ Battle_Hud.prototype.update_desire = function() {
 	
 	if (this._boobs_meter_blue) {
 		if (this.need_refresh_parameter(6)) {
-			this.refresh_meter(this._boobs_meter_blue,this._battler.boobsDesire,this._battler.maxBoobsDesire(),0);
-			this._boobs_desire_old = [this._battler.boobsDesire,this._battler.maxBoobsDesire()];
+			this.refresh_meter(this._boobs_meter_blue,this._battler.boobsDesire,this._battler.maxBoobsDesire,0);
+			this._boobs_desire_old = [this._battler.boobsDesire,this._battler.maxBoobsDesire];
 		};
 		var dif_meter = this.update_dif(this._boobs_desire_old_ani[0],this._battler.boobsDesire,160);
 		if (this._boobs_desire_old_ani[0] != dif_meter) {this._boobs_desire_old_ani[0] = dif_meter;
-		this.refresh_meter(this._boobs_meter_red,this._boobs_desire_old_ani[0],this._battler.maxBoobsDesire(),1);};
+		this.refresh_meter(this._boobs_meter_red,this._boobs_desire_old_ani[0],this._battler.maxBoobsDesire,1);};
     };
 	
 	if (this._boobs_number) {
@@ -3420,12 +3420,12 @@ Battle_Hud.prototype.update_desire = function() {
 	
 	if (this._pussy_meter_blue) {
 		if (this.need_refresh_parameter(7)) {
-			this.refresh_meter(this._pussy_meter_blue,this._battler.pussyDesire,this._battler.maxPussyDesire(),0);
-			this._pussy_desire_old = [this._battler.pussyDesire,this._battler.maxPussyDesire()];
+			this.refresh_meter(this._pussy_meter_blue,this._battler.pussyDesire,this._battler.maxPussyDesire,0);
+			this._pussy_desire_old = [this._battler.pussyDesire,this._battler.maxPussyDesire];
 		};
 		var dif_meter = this.update_dif(this._pussy_desire_old_ani[0],this._battler.pussyDesire,160);
 		if (this._pussy_desire_old_ani[0] != dif_meter) {this._pussy_desire_old_ani[0] = dif_meter;
-		this.refresh_meter(this._pussy_meter_red,this._pussy_desire_old_ani[0],this._battler.maxPussyDesire(),1);};
+		this.refresh_meter(this._pussy_meter_red,this._pussy_desire_old_ani[0],this._battler.maxPussyDesire,1);};
     };
 	
 	if (this._pussy_number) {
@@ -3436,12 +3436,12 @@ Battle_Hud.prototype.update_desire = function() {
 	
 	if (this._butt_meter_blue) {
 		if (this.need_refresh_parameter(8)) {
-			this.refresh_meter(this._butt_meter_blue,this._battler.buttDesire,this._battler.maxButtDesire(),0);
-			this._butt_desire_old = [this._battler.buttDesire,this._battler.maxButtDesire()];
+			this.refresh_meter(this._butt_meter_blue,this._battler.buttDesire,this._battler.maxButtDesire,0);
+			this._butt_desire_old = [this._battler.buttDesire,this._battler.maxButtDesire];
 		};
 		var dif_meter = this.update_dif(this._butt_desire_old_ani[0],this._battler.buttDesire,160);
 		if (this._butt_desire_old_ani[0] != dif_meter) {this._butt_desire_old_ani[0] = dif_meter;
-		this.refresh_meter(this._butt_meter_red,this._butt_desire_old_ani[0],this._battler.maxButtDesire(),1);};
+		this.refresh_meter(this._butt_meter_red,this._butt_desire_old_ani[0],this._battler.maxButtDesire,1);};
     };
 	
 	if (this._butt_number) {
@@ -3843,6 +3843,7 @@ Battle_Hud.prototype.refresh_states2 = function() {
 	var align = Moghunter.bhud_statesAlign;
 	for (i = 0; i < m; i++){
 		var state = states[i];
+		//console.log(state.id)
 		if (state.iconIndex <= 0) continue;
 		var iconId = state.iconIndex;
 		if(state.hasLanguageIcon) {
@@ -3936,6 +3937,76 @@ Battle_Hud.prototype.drawStateCounter = function(actor, state, wx, wy) {
 //==============================
 Battle_Hud.prototype.update_states2 = function() {
 	if (this.need_refresh_states2()) {this.refresh_states2();};
+	//REM
+	if (!!this.tooltipWindow() && this.isMouseOverStatesOrDesires()) {
+        this.updateStateIconTooltipWindow();
+    }
+};
+
+Battle_Hud.prototype.updateStateIconTooltipWindow = function() {
+    this.tooltipWindow().setTargetHost(this, true);
+};
+
+Battle_Hud.prototype.tooltipWindow = function() {
+    return SceneManager._scene._stateIconTooltipWindow;
+};
+
+Battle_Hud.prototype.isMouseOverStatesOrDesires = function() {
+	if(!this.isFullyVisible() || x < 0 || y < 0) return false;
+	if(!!SceneManager._scene._victoryTitleWindow || !!SceneManager._scene._logWindow.isOpenAndActive() || !!SceneManager._scene._statusInfoWindow.isOpenAndActive()) return false;
+    var x = this.canvasToLocalX(TouchInput._mouseOverX);
+    var y = this.canvasToLocalY(TouchInput._mouseOverY);
+    x += this.anchor.x * this.width;
+    y += this.anchor.y * this.height;
+
+	let mouseIsOverStates = x >= this._pos_x + REM_BHD_STATES_X 
+		&& x <= this._pos_x + REM_BHD_STATES_X + this._stateIcons.length * (Window_Base._iconWidth + 4)
+		&& y >= this._pos_y + REM_BHD_STATES_Y;
+		
+	let mouseIsOverDesires = x >= this._pos_x + REM_BHD_COCK_METER_X - 20 
+		&& x <= this._pos_x + REM_BHD_BUTT_METER_X + 80
+		&& y >= this._pos_y + REM_BHD_COCK_METER_Y - 70
+		&& y <= this._pos_y + REM_BHD_TP_METER_Y;
+	
+	if(mouseIsOverStates) 
+		this.tooltipWindow().setXYPos_states(x - this._pos_x - REM_BHD_STATES_X, y - this._pos_y - REM_BHD_STATES_Y);
+	else if(mouseIsOverDesires) 
+		this.tooltipWindow().setXYPos_desires(x - this._pos_x, y - this._pos_y);
+	
+    return mouseIsOverStates || mouseIsOverDesires;
+};
+
+Battle_Hud.prototype.canvasToLocalX = function(x) {
+    var node = this;
+    while (node) {
+        x -= node.x;
+        node = node.parent;
+    }
+    return x;
+};
+
+Battle_Hud.prototype.canvasToLocalY = function(y) {
+    var node = this;
+    while (node) {
+        y -= node.y;
+        node = node.parent;
+    }
+    return y;
+};
+
+Battle_Hud.prototype.isFullyVisible = function() {
+	if(Karryn.hasTachieCutInOnScreen()) return false;
+    var node = this;
+    while (node) {
+        if (!this.visible) {
+            return false;
+        } else if (this.opacity <= 0) {
+            return false;
+        } else {
+            node = node.parent;
+        }
+    }
+    return true;
 };
 
 //==============================
