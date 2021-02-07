@@ -218,7 +218,7 @@ Game_Actor.prototype.meetDesireReqOfPoseName = function(poseName) {
 				else continue;
 			}
 			else {
-				if((this.pussyDesire < this.pussySexPussyDesireRequirement() || this.cockDesire < this.pussySexCockDesireRequirement()) && this.isWet) {
+				if(this.pussyDesire < this.pussySexPussyDesireRequirement() || this.cockDesire < this.pussySexCockDesireRequirement() || !this.isWet) {
 					meetAllReqs = false;
 					break;
 				}
@@ -264,7 +264,7 @@ Game_Actor.prototype.canCurrentPoseSlotsFitPoseName = function(poseName) {
 	if(this.isBodySlotAnus(MOUTH_ID) && POSESMAP.get(poseName)[MOUTH_ID] != SLOT_ANUS) return false;
 	if(this.isBodySlotPenis(BOOBS_ID) && POSESMAP.get(poseName)[BOOBS_ID] != SLOT_PENIS) return false;
 	if(this.isBodySlotPenis(PUSSY_ID) && POSESMAP.get(poseName)[PUSSY_ID] != SLOT_PENIS) return false;
-	if(this.setBodyPartTongue(PUSSY_ID) && POSESMAP.get(poseName)[PUSSY_ID] != SLOT_TONGUE) return false;
+	if(this.isBodySlotTongue(PUSSY_ID) && POSESMAP.get(poseName)[PUSSY_ID] != SLOT_TONGUE) return false;
 	if(this.isBodySlotPenis(ANAL_ID) && POSESMAP.get(poseName)[ANAL_ID] != SLOT_PENIS) return false;
 	if(this.isBodySlotPenis(FEET_ID) && POSESMAP.get(poseName)[FEET_ID] != SLOT_PENIS) return false;
 	

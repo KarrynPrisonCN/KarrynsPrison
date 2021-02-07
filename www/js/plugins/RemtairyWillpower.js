@@ -224,6 +224,7 @@ Game_Actor.prototype.onStartOfConBat = function() {
 	this.checkForOrgasm();
 	this.resetTauntAndConfidentOnNewWave();
 	this.removeStatesOnNewWave();
+	this.commitUncommittedCharmExp();
 	this.addState(STATE_KARRYN_FIRST_TURN_ID);
 	this.enterMentalPhase();
 };

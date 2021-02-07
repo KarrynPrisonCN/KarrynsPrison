@@ -29,8 +29,11 @@ const REM_CUT_IN_WAITRESS_SEX_Y_OFFSET = 0;
 const REM_CUT_IN_RECEPTIONIST_X_OFFSET = 900; //受付嬢
 const REM_CUT_IN_RECEPTIONIST_Y_OFFSET = 0;
 
-const REM_CUT_IN_GLORY_X_OFFSET = 0; //GH
+const REM_CUT_IN_GLORY_X_OFFSET = 0; //Glory
 const REM_CUT_IN_GLORY_Y_OFFSET = 0;
+
+const REM_CUT_IN_GLORY_SITLEFT_STANDRIGHT_X_OFFSET = 860; //グローリーホール Sit left, stand right
+const REM_CUT_IN_GLORY_SITLEFT_STANDRIGHT_Y_OFFSET = 0;
 
 const REM_CUT_IN_DOWN_ORG_X_OFFSET = -20; //Down_orgasm
 const REM_CUT_IN_DOWN_ORG_Y_OFFSET = 0;
@@ -136,12 +139,27 @@ const CUTIN_EJACULATE_MOUTH_NAME = 600;
 const CUTIN_EJACULATE_BUKKAKE_NAME = 610;
 const CUTIN_EJACULATE_BUKKAKE_GREEN_NAME = 611;
 const CUTIN_EJACULATE_BUKKAKE_SLIME_NAME = 612;
-const CUTIN_EJACULATE_PUSSYCREAMPIE_NAME = 620;
-const CUTIN_EJACULATE_PUSSYCREAMPIE_GREEN_NAME = 621;
-const CUTIN_EJACULATE_PUSSYCREAMPIE_SLIME_NAME = 622;
-const CUTIN_EJACULATE_ANALCREAMPIE_NAME = 630;
-const CUTIN_EJACULATE_ANALCREAMPIE_GREEN_NAME = 631;
-const CUTIN_EJACULATE_ANALCREAMPIE_SLIME_NAME = 632;
+const CUTIN_EJACULATE_BUKKAKE_RED_NAME = 613;
+const CUTIN_EJACULATE_BUKKAKE_MIRROR_NAME = 620;
+const CUTIN_EJACULATE_BUKKAKE_MIRROR_GREEN_NAME = 621;
+const CUTIN_EJACULATE_BUKKAKE_MIRROR_SLIME_NAME = 622;
+const CUTIN_EJACULATE_BUKKAKE_MIRROR_RED_NAME = 623;
+const CUTIN_EJACULATE_PUSSYCREAMPIE_NAME = 630;
+const CUTIN_EJACULATE_PUSSYCREAMPIE_GREEN_NAME = 631;
+const CUTIN_EJACULATE_PUSSYCREAMPIE_SLIME_NAME = 632;
+const CUTIN_EJACULATE_PUSSYCREAMPIE_RED_NAME = 633;
+const CUTIN_EJACULATE_PUSSYCREAMPIE_MIRROR_NAME = 640;
+const CUTIN_EJACULATE_PUSSYCREAMPIE_MIRROR_GREEN_NAME = 641;
+const CUTIN_EJACULATE_PUSSYCREAMPIE_MIRROR_SLIME_NAME = 642;
+const CUTIN_EJACULATE_PUSSYCREAMPIE_MIRROR_RED_NAME = 643;
+const CUTIN_EJACULATE_ANALCREAMPIE_NAME = 650;
+const CUTIN_EJACULATE_ANALCREAMPIE_GREEN_NAME = 651;
+const CUTIN_EJACULATE_ANALCREAMPIE_SLIME_NAME = 652;
+const CUTIN_EJACULATE_ANALCREAMPIE_RED_NAME = 653;
+const CUTIN_EJACULATE_ANALCREAMPIE_MIRROR_NAME = 660;
+const CUTIN_EJACULATE_ANALCREAMPIE_MIRROR_GREEN_NAME = 661;
+const CUTIN_EJACULATE_ANALCREAMPIE_MIRROR_SLIME_NAME = 662;
+const CUTIN_EJACULATE_ANALCREAMPIE_MIRROR_RED_NAME = 663;
 
 Game_Actor.prototype.cutInFrame = function() {
 	return this._cutInFrame;
@@ -262,7 +280,7 @@ Game_Actor.prototype.setCutInWaitAndDirection = function(cutInName) {
 		directionX = -1 * REM_CUT_IN_SPEED_X; 		//directionX = CutInのX方向
 		directionY = 0; 		//directionY = CutInのY方向
 	}
-	else if(cutInName === CUTIN_EJACULATE_BUKKAKE_NAME || cutInName === CUTIN_EJACULATE_BUKKAKE_GREEN_NAME || cutInName === CUTIN_EJACULATE_BUKKAKE_SLIME_NAME) {
+	else if(cutInName === CUTIN_EJACULATE_BUKKAKE_NAME || cutInName === CUTIN_EJACULATE_BUKKAKE_GREEN_NAME || cutInName === CUTIN_EJACULATE_BUKKAKE_RED_NAME || cutInName === CUTIN_EJACULATE_BUKKAKE_SLIME_NAME) {
 		wait = CUTIN_DEFAULT_DURATION; 		//wait = CutInの時間
 		startingX = REM_CUT_IN_LEFT_X; 		//startingX = CutInが始まる時のX位置
 		goalX = REM_CUT_IN_RIGHT_X; 		//goalX = CutInが終わる時のX位置
@@ -271,7 +289,16 @@ Game_Actor.prototype.setCutInWaitAndDirection = function(cutInName) {
 		directionX = REM_CUT_IN_SPEED_X; 		//directionX = CutInのX方向
 		directionY = 0; 		//directionY = CutInのY方向
 	}
-	else if(cutInName === CUTIN_EJACULATE_PUSSYCREAMPIE_NAME || cutInName === CUTIN_EJACULATE_PUSSYCREAMPIE_GREEN_NAME || cutInName === CUTIN_EJACULATE_PUSSYCREAMPIE_SLIME_NAME) {
+	else if(cutInName === CUTIN_EJACULATE_BUKKAKE_MIRROR_NAME || cutInName === CUTIN_EJACULATE_BUKKAKE_MIRROR_GREEN_NAME || cutInName === CUTIN_EJACULATE_BUKKAKE_MIRROR_RED_NAME || cutInName === CUTIN_EJACULATE_BUKKAKE_MIRROR_SLIME_NAME) {
+		wait = CUTIN_DEFAULT_DURATION; 		//wait = CutInの時間
+		startingX = REM_CUT_IN_RIGHT_X; 		//startingX = CutInが始まる時のX位置
+		goalX = REM_CUT_IN_LEFT_X; 		//goalX = CutInが終わる時のX位置
+		startingY = REM_CUT_IN_TOP_Y; 		//startingY = CutInが始まる時のY位置
+		goalY = REM_CUT_IN_TOP_Y; 		//goalY = CutInが終わる時のY位置
+		directionX = REM_CUT_IN_SPEED_X; 		//directionX = CutInのX方向
+		directionY = 0; 		//directionY = CutInのY方向
+	}
+	else if(cutInName === CUTIN_EJACULATE_PUSSYCREAMPIE_NAME || cutInName === CUTIN_EJACULATE_PUSSYCREAMPIE_GREEN_NAME || cutInName === CUTIN_EJACULATE_PUSSYCREAMPIE_SLIME_NAME || cutInName === CUTIN_EJACULATE_PUSSYCREAMPIE_RED_NAME) {
 		wait = 121; 		//wait = CutInの時間
 		startingX = 0; 		//startingX = CutInが始まる時のX位置
 		goalX = 0; 		//goalX = CutInが終わる時のX位置
@@ -280,7 +307,25 @@ Game_Actor.prototype.setCutInWaitAndDirection = function(cutInName) {
 		directionX = 0; 		//directionX = CutInのX方向
 		directionY = 0; 		//directionY = CutInのY方向
 	}
-	else if(cutInName === CUTIN_EJACULATE_ANALCREAMPIE_NAME || cutInName === CUTIN_EJACULATE_ANALCREAMPIE_GREEN_NAME || cutInName === CUTIN_EJACULATE_ANALCREAMPIE_SLIME_NAME) {
+	else if(cutInName === CUTIN_EJACULATE_PUSSYCREAMPIE_MIRROR_NAME || cutInName === CUTIN_EJACULATE_PUSSYCREAMPIE_MIRROR_GREEN_NAME || cutInName === CUTIN_EJACULATE_PUSSYCREAMPIE_MIRROR_SLIME_NAME || cutInName === CUTIN_EJACULATE_PUSSYCREAMPIE_MIRROR_RED_NAME) {
+		wait = 121; 		//wait = CutInの時間
+		startingX = 0; 		//startingX = CutInが始まる時のX位置
+		goalX = 0; 		//goalX = CutInが終わる時のX位置
+		startingY = 0; 		//startingY = CutInが始まる時のY位置
+		goalY = 0; 		//goalY = CutInが終わる時のY位置
+		directionX = 0; 		//directionX = CutInのX方向
+		directionY = 0; 		//directionY = CutInのY方向
+	}
+	else if(cutInName === CUTIN_EJACULATE_ANALCREAMPIE_NAME || cutInName === CUTIN_EJACULATE_ANALCREAMPIE_GREEN_NAME || cutInName === CUTIN_EJACULATE_ANALCREAMPIE_SLIME_NAME || cutInName === CUTIN_EJACULATE_ANALCREAMPIE_RED_NAME) {
+		wait = 121; 		//wait = CutInの時間
+		startingX = 0; 		//startingX = CutInが始まる時のX位置
+		goalX = 0; 		//goalX = CutInが終わる時のX位置
+		startingY = 0; 		//startingY = CutInが始まる時のY位置
+		goalY = 0; 		//goalY = CutInが終わる時のY位置
+		directionX = 0; 		//directionX = CutInのX方向
+		directionY = 0; 		//directionY = CutInのY方向
+	}
+	else if(cutInName === CUTIN_EJACULATE_ANALCREAMPIE_MIRROR_NAME || cutInName === CUTIN_EJACULATE_ANALCREAMPIE_MIRROR_GREEN_NAME || cutInName === CUTIN_EJACULATE_ANALCREAMPIE_MIRROR_SLIME_NAME || cutInName === CUTIN_EJACULATE_ANALCREAMPIE_MIRROR_RED_NAME) {
 		wait = 121; 		//wait = CutInの時間
 		startingX = 0; 		//startingX = CutInが始まる時のX位置
 		goalX = 0; 		//goalX = CutInが終わる時のX位置
@@ -506,10 +551,18 @@ Game_Actor.prototype.setCutInWaitAndDirection = function(cutInName) {
 			goalY += REM_CUT_IN_RECEPTIONIST_Y_OFFSET;
 		}
 		else if($gameParty.isInGloryBattle) {
-			startingX += REM_CUT_IN_GLORY_X_OFFSET;
-			goalX += REM_CUT_IN_GLORY_X_OFFSET;
-			startingY += REM_CUT_IN_GLORY_Y_OFFSET;
-			goalY += REM_CUT_IN_GLORY_Y_OFFSET;
+			if(this.isInToiletSitLeftPose() || this.isInToiletStandRightPose()) {
+				startingX += REM_CUT_IN_GLORY_SITLEFT_STANDRIGHT_X_OFFSET;
+				goalX += REM_CUT_IN_GLORY_SITLEFT_STANDRIGHT_X_OFFSET;
+				startingY += REM_CUT_IN_GLORY_SITLEFT_STANDRIGHT_Y_OFFSET;
+				goalY += REM_CUT_IN_GLORY_SITLEFT_STANDRIGHT_Y_OFFSET;
+			}
+			else {
+				startingX += REM_CUT_IN_GLORY_X_OFFSET;
+				goalX += REM_CUT_IN_GLORY_X_OFFSET;
+				startingY += REM_CUT_IN_GLORY_Y_OFFSET;
+				goalY += REM_CUT_IN_GLORY_Y_OFFSET;
+			}
 		}
 	}
 	else {
@@ -610,24 +663,60 @@ Game_Actor.prototype.getCutInArray = function() {
 		return this.cutInArray_SpankingThree();
 	else if(cutInName === CUTIN_EJACULATE_MOUTH_NAME)
 		return this.cutInArray_EjaculateMouth();
+		
 	else if(cutInName === CUTIN_EJACULATE_BUKKAKE_NAME)
 		return this.cutInArray_EjaculateBukkake();
 	else if(cutInName === CUTIN_EJACULATE_BUKKAKE_GREEN_NAME)
 		return this.cutInArray_EjaculateBukkake(CUTIN_EJACULATE_BUKKAKE_GREEN_NAME);
 	else if(cutInName === CUTIN_EJACULATE_BUKKAKE_SLIME_NAME)
 		return this.cutInArray_EjaculateBukkake(CUTIN_EJACULATE_BUKKAKE_SLIME_NAME);
+	else if(cutInName === CUTIN_EJACULATE_BUKKAKE_RED_NAME)
+		return this.cutInArray_EjaculateBukkake(CUTIN_EJACULATE_BUKKAKE_RED_NAME);
+		
+	else if(cutInName === CUTIN_EJACULATE_BUKKAKE_MIRROR_NAME)
+		return this.cutInArray_EjaculateBukkake(CUTIN_EJACULATE_BUKKAKE_MIRROR_NAME);
+	else if(cutInName === CUTIN_EJACULATE_BUKKAKE_MIRROR_GREEN_NAME)
+		return this.cutInArray_EjaculateBukkake(CUTIN_EJACULATE_BUKKAKE_MIRROR_GREEN_NAME);
+	else if(cutInName === CUTIN_EJACULATE_BUKKAKE_MIRROR_SLIME_NAME)
+		return this.cutInArray_EjaculateBukkake(CUTIN_EJACULATE_BUKKAKE_MIRROR_SLIME_NAME);
+	else if(cutInName === CUTIN_EJACULATE_BUKKAKE_MIRROR_RED_NAME)
+		return this.cutInArray_EjaculateBukkake(CUTIN_EJACULATE_BUKKAKE_MIRROR_RED_NAME);
+		
 	else if(cutInName === CUTIN_EJACULATE_PUSSYCREAMPIE_NAME)
 		return this.cutInArray_EjaculatePussyCreampie();
 	else if(cutInName === CUTIN_EJACULATE_PUSSYCREAMPIE_GREEN_NAME)
 		return this.cutInArray_EjaculatePussyCreampie(CUTIN_EJACULATE_PUSSYCREAMPIE_GREEN_NAME);
 	else if(cutInName === CUTIN_EJACULATE_PUSSYCREAMPIE_SLIME_NAME)
 		return this.cutInArray_EjaculatePussyCreampie(CUTIN_EJACULATE_PUSSYCREAMPIE_SLIME_NAME);
+	else if(cutInName === CUTIN_EJACULATE_PUSSYCREAMPIE_RED_NAME)
+		return this.cutInArray_EjaculatePussyCreampie(CUTIN_EJACULATE_PUSSYCREAMPIE_RED_NAME);
+		
+	else if(cutInName === CUTIN_EJACULATE_PUSSYCREAMPIE_MIRROR_NAME)
+		return this.cutInArray_EjaculatePussyCreampie(CUTIN_EJACULATE_PUSSYCREAMPIE_MIRROR_NAME);
+	else if(cutInName === CUTIN_EJACULATE_PUSSYCREAMPIE_MIRROR_GREEN_NAME)
+		return this.cutInArray_EjaculatePussyCreampie(CUTIN_EJACULATE_PUSSYCREAMPIE_MIRROR_GREEN_NAME);
+	else if(cutInName === CUTIN_EJACULATE_PUSSYCREAMPIE_MIRROR_SLIME_NAME)
+		return this.cutInArray_EjaculatePussyCreampie(CUTIN_EJACULATE_PUSSYCREAMPIE_MIRROR_SLIME_NAME);
+	else if(cutInName === CUTIN_EJACULATE_PUSSYCREAMPIE_MIRROR_RED_NAME)
+		return this.cutInArray_EjaculatePussyCreampie(CUTIN_EJACULATE_PUSSYCREAMPIE_MIRROR_RED_NAME);
+		
 	else if(cutInName === CUTIN_EJACULATE_ANALCREAMPIE_NAME)
 		return this.cutInArray_EjaculateAnalCreampie();
 	else if(cutInName === CUTIN_EJACULATE_ANALCREAMPIE_GREEN_NAME)
 		return this.cutInArray_EjaculateAnalCreampie(CUTIN_EJACULATE_ANALCREAMPIE_GREEN_NAME);
 	else if(cutInName === CUTIN_EJACULATE_ANALCREAMPIE_SLIME_NAME)
 		return this.cutInArray_EjaculateAnalCreampie(CUTIN_EJACULATE_ANALCREAMPIE_SLIME_NAME);
+	else if(cutInName === CUTIN_EJACULATE_ANALCREAMPIE_RED_NAME)
+		return this.cutInArray_EjaculateAnalCreampie(CUTIN_EJACULATE_ANALCREAMPIE_RED_NAME);
+		
+		else if(cutInName === CUTIN_EJACULATE_ANALCREAMPIE_MIRROR_NAME)
+		return this.cutInArray_EjaculateAnalCreampie(CUTIN_EJACULATE_ANALCREAMPIE_MIRROR_NAME);
+	else if(cutInName === CUTIN_EJACULATE_ANALCREAMPIE_MIRROR_GREEN_NAME)
+		return this.cutInArray_EjaculateAnalCreampie(CUTIN_EJACULATE_ANALCREAMPIE_MIRROR_GREEN_NAME);
+	else if(cutInName === CUTIN_EJACULATE_ANALCREAMPIE_MIRROR_SLIME_NAME)
+		return this.cutInArray_EjaculateAnalCreampie(CUTIN_EJACULATE_ANALCREAMPIE_MIRROR_SLIME_NAME);
+	else if(cutInName === CUTIN_EJACULATE_ANALCREAMPIE_MIRROR_RED_NAME)
+		return this.cutInArray_EjaculateAnalCreampie(CUTIN_EJACULATE_ANALCREAMPIE_MIRROR_RED_NAME);
 
 	else if(cutInName === CUTIN_KARRYN_KISS_ONE_NAME)
 		return this.cutInArray_KarrynKissOne();
@@ -1478,75 +1567,136 @@ Game_Actor.prototype.cutInArray_EjaculateMouth = function() {
 Game_Actor.prototype.cutInArray_EjaculateBukkake = function(subtypeCutin) {
 	let cutInArray = [ false, 0, 0, false, 0, 0, [] ];
 	let cutInFrame = this.cutInFrame();
-	let backImageName = false;
+	let backImageName = '';
 	let back_x_offset = 0;
 	let back_y_offset = 0;
-	let frontImageName = false;
+	let frontImageName = '';
 	let front_x_offset = 0;
 	let front_y_offset = 0;
 	let fasterCutIns = ConfigManager.remCutinsFast;
+	
+	let usingMirrorCutin = false;
+	if(subtypeCutin === CUTIN_EJACULATE_BUKKAKE_MIRROR_NAME || subtypeCutin === CUTIN_EJACULATE_BUKKAKE_MIRROR_GREEN_NAME || subtypeCutin === CUTIN_EJACULATE_BUKKAKE_MIRROR_SLIME_NAME || subtypeCutin === CUTIN_EJACULATE_BUKKAKE_MIRROR_RED_NAME) {
+		backImageName += 'mirror_';
+		usingMirrorCutin = true;
+	}
+	
 	//ここから
 
 	if(fasterCutIns) {
-		backImageName = 'ej_bk';
+		backImageName += 'ej_bk';
 		back_x_offset = 0;
 		back_y_offset = 91;
 	}
 	else {
-		backImageName = 'ej_bk_back';
+		backImageName += 'ej_bk_back';
 		back_x_offset = 0;
 		back_y_offset = 91;
 		
+		if(usingMirrorCutin)
+			frontImageName += 'mirror_';
+		
 		if(Karryn.isCensored()) {
-			if(subtypeCutin === CUTIN_EJACULATE_BUKKAKE_GREEN_NAME) {
-				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_bk_back_green_cen');
-			}
-			else if(subtypeCutin === CUTIN_EJACULATE_BUKKAKE_SLIME_NAME) {
-				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_bk_back_slime_cen');
+			if(usingMirrorCutin) {
+				if(subtypeCutin === CUTIN_EJACULATE_BUKKAKE_MIRROR_GREEN_NAME) {
+					cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_bk_back_green_cen');
+				}
+				else if(subtypeCutin === CUTIN_EJACULATE_BUKKAKE_MIRROR_SLIME_NAME) {
+					cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_bk_back_slime_cen');
+				}
+				else if(subtypeCutin === CUTIN_EJACULATE_BUKKAKE_MIRROR_RED_NAME) {
+					cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_bk_back_red_cen');
+				}
+				else {
+					cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_bk_back_cen');
+				}
+
 			}
 			else {
-				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_bk_back_cen');
+				if(subtypeCutin === CUTIN_EJACULATE_BUKKAKE_GREEN_NAME) {
+					cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_bk_back_green_cen');
+				}
+				else if(subtypeCutin === CUTIN_EJACULATE_BUKKAKE_SLIME_NAME) {
+					cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_bk_back_slime_cen');
+				}
+				else if(subtypeCutin === CUTIN_EJACULATE_BUKKAKE_RED_NAME) {
+					cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_bk_back_red_cen');
+				}
+				else {
+					cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_bk_back_cen');
+				}
 			}
 
 		}
 		else {
-			if(subtypeCutin === CUTIN_EJACULATE_BUKKAKE_GREEN_NAME) {
-				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_bk_back_green');
-			}
-			else if(subtypeCutin === CUTIN_EJACULATE_BUKKAKE_SLIME_NAME) {
-				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_bk_back_slime');
+			if(usingMirrorCutin) {
+				if(subtypeCutin === CUTIN_EJACULATE_BUKKAKE_GREEN_NAME) {
+					cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_bk_back_green');
+				}
+				else if(subtypeCutin === CUTIN_EJACULATE_BUKKAKE_SLIME_NAME) {
+					cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_bk_back_slime');
+				}
+				else if(subtypeCutin === CUTIN_EJACULATE_BUKKAKE_RED_NAME) {
+					cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_bk_back_red');
+				}
+				else {
+					cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_bk_back');
+				}
 			}
 			else {
-				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_bk_back');
+				if(subtypeCutin === CUTIN_EJACULATE_BUKKAKE_GREEN_NAME) {
+					cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_bk_back_green');
+				}
+				else if(subtypeCutin === CUTIN_EJACULATE_BUKKAKE_SLIME_NAME) {
+					cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_bk_back_slime');
+				}
+				else if(subtypeCutin === CUTIN_EJACULATE_BUKKAKE_RED_NAME) {
+					cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_bk_back_red');
+				}
+				else {
+					cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_bk_back');
+				}
 			}
 		}
 		
-		cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_bk_01');
-		cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_bk_02');
-		cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_bk_03');
-		cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_bk_04');
+		if(usingMirrorCutin) {
+			cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_bk_01');
+			cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_bk_02');
+			cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_bk_03');
+			cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_bk_04');
+		}
+		else {
+			cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_bk_01');
+			cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_bk_02');
+			cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_bk_03');
+			cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_bk_04');
+		}
+		
 		
 		if( (cutInFrame >= 0 && cutInFrame <= 2) ) {
-			frontImageName = 'ej_bk_01';
+			frontImageName += 'ej_bk_01';
 		}
 		else if( (cutInFrame >= 3 && cutInFrame <= 7) ) {
-			frontImageName = 'ej_bk_02';
+			frontImageName += 'ej_bk_02';
 		}
 		else if( (cutInFrame >= 8 && cutInFrame <= 12) ) {
-			frontImageName = 'ej_bk_03';
+			frontImageName += 'ej_bk_03';
 		}
 		else if(cutInFrame >= 13) {
-			frontImageName = 'ej_bk_04';
+			frontImageName += 'ej_bk_04';
 		}
 	}
 	
 	//ここまで
 	
-	if(subtypeCutin === CUTIN_EJACULATE_BUKKAKE_GREEN_NAME) {
+	if(subtypeCutin === CUTIN_EJACULATE_BUKKAKE_GREEN_NAME || subtypeCutin === CUTIN_EJACULATE_BUKKAKE_MIRROR_GREEN_NAME) {
 		backImageName += '_green';
 	}
-	else if(subtypeCutin === CUTIN_EJACULATE_BUKKAKE_SLIME_NAME) {
+	else if(subtypeCutin === CUTIN_EJACULATE_BUKKAKE_SLIME_NAME || subtypeCutin === CUTIN_EJACULATE_BUKKAKE_MIRROR_SLIME_NAME) {
 		backImageName += '_slime';
+	}
+	else if(subtypeCutin === CUTIN_EJACULATE_BUKKAKE_RED_NAME || subtypeCutin === CUTIN_EJACULATE_BUKKAKE_MIRROR_RED_NAME) {
+		backImageName += '_red';
 	}
 	
 	if(Karryn.isCensored()) backImageName += '_cen';
@@ -1563,25 +1713,36 @@ Game_Actor.prototype.cutInArray_EjaculateBukkake = function(subtypeCutin) {
 Game_Actor.prototype.cutInArray_EjaculatePussyCreampie = function(subtypeCutin) {
 	let cutInArray = [ false, 0, 0, false, 0, 0, [] ];
 	let cutInFrame = this.cutInFrame();
-	let backImageName = false;
+	let backImageName = '';
 	let back_x_offset = 0;
 	let back_y_offset = 0;
-	let frontImageName = false;
+	let frontImageName = '';
 	let front_x_offset = 0;
 	let front_y_offset = 0;
 	let fasterCutIns = ConfigManager.remCutinsFast;
+	
+	let usingMirrorCutin = false;
+	if(subtypeCutin === CUTIN_EJACULATE_PUSSYCREAMPIE_MIRROR_NAME || subtypeCutin === CUTIN_EJACULATE_PUSSYCREAMPIE_MIRROR_GREEN_NAME || subtypeCutin === CUTIN_EJACULATE_PUSSYCREAMPIE_MIRROR_SLIME_NAME || subtypeCutin === CUTIN_EJACULATE_PUSSYCREAMPIE_MIRROR_RED_NAME) {
+		backImageName += 'mirror_';
+		usingMirrorCutin = true;
+	}
+	
 	//ここから
 
 	if(fasterCutIns) {
-		backImageName = 'ej_ps';
+		backImageName += 'ej_ps';
 		back_x_offset = 0;
 		back_y_offset = 263;
 	}
 	else {
-		backImageName = 'ej_ps_back';
+		backImageName += 'ej_ps_back';
 		back_x_offset = 0;
 		back_y_offset = 263;
-		cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_ps_back');
+		cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push(backImageName);
+		
+		if(usingMirrorCutin)
+			frontImageName += 'mirror_';
+		
 		if(Karryn.isCensored()) {
 			if(subtypeCutin === CUTIN_EJACULATE_PUSSYCREAMPIE_GREEN_NAME) {
 				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_ps_01_green_cen');
@@ -1595,6 +1756,18 @@ Game_Actor.prototype.cutInArray_EjaculatePussyCreampie = function(subtypeCutin) 
 				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_ps_09_green_cen');
 				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_ps_10_green_cen');	
 			}
+			else if(subtypeCutin === CUTIN_EJACULATE_PUSSYCREAMPIE_MIRROR_GREEN_NAME) {
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_01_green_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_02_green_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_03_green_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_04_green_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_05_green_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_06_green_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_07_green_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_08_green_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_09_green_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_10_green_cen');	
+			}
 			else if(subtypeCutin === CUTIN_EJACULATE_PUSSYCREAMPIE_SLIME_NAME) {
 				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_ps_01_slime_cen');
 				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_ps_02_slime_cen');
@@ -1606,6 +1779,54 @@ Game_Actor.prototype.cutInArray_EjaculatePussyCreampie = function(subtypeCutin) 
 				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_ps_08_slime_cen');
 				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_ps_09_slime_cen');
 				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_ps_10_slime_cen');	
+			}
+			else if(subtypeCutin === CUTIN_EJACULATE_PUSSYCREAMPIE_MIRROR_SLIME_NAME) {
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_01_slime_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_02_slime_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_03_slime_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_04_slime_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_05_slime_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_06_slime_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_07_slime_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_08_slime_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_09_slime_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_10_slime_cen');	
+			}
+			else if(subtypeCutin === CUTIN_EJACULATE_PUSSYCREAMPIE_RED_NAME) {
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_ps_01_red_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_ps_02_red_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_ps_03_red_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_ps_04_red_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_ps_05_red_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_ps_06_red_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_ps_07_red_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_ps_08_red_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_ps_09_red_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_ps_10_red_cen');	
+			}
+			else if(subtypeCutin === CUTIN_EJACULATE_PUSSYCREAMPIE_MIRROR_RED_NAME) {
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_01_red_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_02_red_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_03_red_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_04_red_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_05_red_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_06_red_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_07_red_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_08_red_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_09_red_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_10_red_cen');	
+			}
+			else if(subtypeCutin === CUTIN_EJACULATE_PUSSYCREAMPIE_MIRROR_NAME) {
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_01_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_02_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_03_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_04_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_05_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_06_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_07_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_08_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_09_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_10_cen');
 			}
 			else {
 				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_ps_01_cen');
@@ -1633,6 +1854,18 @@ Game_Actor.prototype.cutInArray_EjaculatePussyCreampie = function(subtypeCutin) 
 				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_ps_09_green');
 				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_ps_10_green');	
 			}
+			else if(subtypeCutin === CUTIN_EJACULATE_PUSSYCREAMPIE_MIRROR_GREEN_NAME) {
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_01_green');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_02_green');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_03_green');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_04_green');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_05_green');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_06_green');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_07_green');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_08_green');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_09_green');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_10_green');	
+			}
 			else if(subtypeCutin === CUTIN_EJACULATE_PUSSYCREAMPIE_SLIME_NAME) {
 				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_ps_01_slime');
 				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_ps_02_slime');
@@ -1644,6 +1877,54 @@ Game_Actor.prototype.cutInArray_EjaculatePussyCreampie = function(subtypeCutin) 
 				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_ps_08_slime');
 				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_ps_09_slime');
 				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_ps_10_slime');	
+			}
+			else if(subtypeCutin === CUTIN_EJACULATE_PUSSYCREAMPIE_MIRROR_SLIME_NAME) {
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_01_slime');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_02_slime');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_03_slime');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_04_slime');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_05_slime');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_06_slime');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_07_slime');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_08_slime');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_09_slime');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_10_slime');	
+			}
+			else if(subtypeCutin === CUTIN_EJACULATE_PUSSYCREAMPIE_RED_NAME) {
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_ps_01_red');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_ps_02_red');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_ps_03_red');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_ps_04_red');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_ps_05_red');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_ps_06_red');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_ps_07_red');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_ps_08_red');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_ps_09_red');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_ps_10_red');	
+			}
+			else if(subtypeCutin === CUTIN_EJACULATE_PUSSYCREAMPIE_MIRROR_RED_NAME) {
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_01_red');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_02_red');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_03_red');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_04_red');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_05_red');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_06_red');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_07_red');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_08_red');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_09_red');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_10_red');	
+			}
+			else if(subtypeCutin === CUTIN_EJACULATE_PUSSYCREAMPIE_MIRROR_NAME) {
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_01');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_02');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_03');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_04');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_05');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_06');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_07');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_08');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_09');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_ps_10');
 			}
 			else {
 				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_ps_01');
@@ -1661,58 +1942,64 @@ Game_Actor.prototype.cutInArray_EjaculatePussyCreampie = function(subtypeCutin) 
 		
 		if( (cutInFrame >= 0 && cutInFrame <= 2) || (cutInFrame >= 30 && cutInFrame <= 32) || (cutInFrame >= 60 && cutInFrame <= 62)
 		 || (cutInFrame >= 90 && cutInFrame <= 92) ) {
-			frontImageName = 'ej_ps_01';
+			frontImageName += 'ej_ps_01';
 		}
 		else if( (cutInFrame >= 3 && cutInFrame <= 5) || (cutInFrame >= 27 && cutInFrame <= 29) || (cutInFrame >= 33 && cutInFrame <= 35)
 		 || (cutInFrame >= 57 && cutInFrame <= 59) || (cutInFrame >= 63 && cutInFrame <= 65) || (cutInFrame >= 87 && cutInFrame <= 89)
 		 || (cutInFrame >= 93 && cutInFrame <= 95) ) {
-			frontImageName = 'ej_ps_02';
+			frontImageName += 'ej_ps_02';
 		}
 		else if( (cutInFrame >= 6 && cutInFrame <= 8) || (cutInFrame >= 24 && cutInFrame <= 26) || (cutInFrame >= 36 && cutInFrame <= 38)
 		 || (cutInFrame >= 54 && cutInFrame <= 56) || (cutInFrame >= 66 && cutInFrame <= 68) || (cutInFrame >= 84 && cutInFrame <= 86)
 		 || (cutInFrame >= 96 && cutInFrame <= 98) ) {
-			frontImageName = 'ej_ps_03';
+			frontImageName += 'ej_ps_03';
 		}
 		else if( (cutInFrame >= 9 && cutInFrame <= 11) || (cutInFrame >= 21 && cutInFrame <= 23) || (cutInFrame >= 39 && cutInFrame <= 41)
 		 || (cutInFrame >= 51 && cutInFrame <= 53) || (cutInFrame >= 69 && cutInFrame <= 71) || (cutInFrame >= 81 && cutInFrame <= 83)
 		 || (cutInFrame >= 99 && cutInFrame <= 101) ) {
-			frontImageName = 'ej_ps_04';
+			frontImageName += 'ej_ps_04';
 		}
 		else if( (cutInFrame >= 12 && cutInFrame <= 14) || (cutInFrame >= 18 && cutInFrame <= 20) || (cutInFrame >= 42 && cutInFrame <= 44)
 		 || (cutInFrame >= 48 && cutInFrame <= 50) || (cutInFrame >= 72 && cutInFrame <= 74) || (cutInFrame >= 78 && cutInFrame <= 80)
 		 || (cutInFrame >= 102 && cutInFrame <= 104) ) {
-			frontImageName = 'ej_ps_05';
+			frontImageName += 'ej_ps_05';
 		}
 		else if( (cutInFrame >= 15 && cutInFrame <= 17) || (cutInFrame >= 45 && cutInFrame <= 47) || (cutInFrame >= 75 && cutInFrame <= 77) ) {
-		   frontImageName = 'ej_ps_06';
+		   frontImageName += 'ej_ps_06';
 		}
 		else if( (cutInFrame >= 105 && cutInFrame <= 110) ) {
-			frontImageName = 'ej_ps_07';
+			frontImageName += 'ej_ps_07';
 		}
 		else if( (cutInFrame >= 111 && cutInFrame <= 115) ) {
-			frontImageName = 'ej_ps_08';
+			frontImageName += 'ej_ps_08';
 		}
 		else if( (cutInFrame >= 116 && cutInFrame <= 119) ) {
-			frontImageName = 'ej_ps_09';
+			frontImageName += 'ej_ps_09';
 		}
 		else if(cutInFrame >= 120) {
-			frontImageName = 'ej_ps_10';
+			frontImageName += 'ej_ps_10';
 		}
 	}
 	
 	//ここまで
 	
-	if(subtypeCutin === CUTIN_EJACULATE_PUSSYCREAMPIE_GREEN_NAME) {
+	if(subtypeCutin === CUTIN_EJACULATE_PUSSYCREAMPIE_GREEN_NAME || subtypeCutin === CUTIN_EJACULATE_PUSSYCREAMPIE_MIRROR_GREEN_NAME) {
 		if(fasterCutIns)
 			backImageName += '_green';
 		else
 			frontImageName += '_green';
 	}
-	else if(subtypeCutin === CUTIN_EJACULATE_PUSSYCREAMPIE_SLIME_NAME) {
+	else if(subtypeCutin === CUTIN_EJACULATE_PUSSYCREAMPIE_SLIME_NAME || subtypeCutin === CUTIN_EJACULATE_PUSSYCREAMPIE_MIRROR_SLIME_NAME) {
 		if(fasterCutIns)
 			backImageName += '_slime';
 		else
 			frontImageName += '_slime';
+	}
+	else if(subtypeCutin === CUTIN_EJACULATE_PUSSYCREAMPIE_RED_NAME || subtypeCutin === CUTIN_EJACULATE_PUSSYCREAMPIE_MIRROR_RED_NAME) {
+		if(fasterCutIns)
+			backImageName += '_red';
+		else
+			frontImageName += '_red';
 	}
 	
 	if(Karryn.isCensored()) {
@@ -1734,25 +2021,35 @@ Game_Actor.prototype.cutInArray_EjaculatePussyCreampie = function(subtypeCutin) 
 Game_Actor.prototype.cutInArray_EjaculateAnalCreampie = function(subtypeCutin) {
 	let cutInArray = [ false, 0, 0, false, 0, 0, [] ];
 	let cutInFrame = this.cutInFrame();
-	let backImageName = false;
+	let backImageName = '';
 	let back_x_offset = 0;
 	let back_y_offset = 0;
-	let frontImageName = false;
+	let frontImageName = '';
 	let front_x_offset = 0;
 	let front_y_offset = 0;
 	let fasterCutIns = ConfigManager.remCutinsFast;
+
+	let usingMirrorCutin = false;
+	if(subtypeCutin === CUTIN_EJACULATE_ANALCREAMPIE_MIRROR_NAME || subtypeCutin === CUTIN_EJACULATE_ANALCREAMPIE_MIRROR_GREEN_NAME || subtypeCutin === CUTIN_EJACULATE_ANALCREAMPIE_MIRROR_SLIME_NAME || subtypeCutin === CUTIN_EJACULATE_ANALCREAMPIE_MIRROR_RED_NAME) {
+		backImageName += 'mirror_';
+		usingMirrorCutin = true;
+	}
+	
 	//ここから
 
 	if(fasterCutIns) {
-		backImageName = 'ej_an';
+		backImageName += 'ej_an';
 		back_x_offset = 0;
 		back_y_offset = 326;
 	}
 	else {
-		backImageName = 'ej_an_back';
+		backImageName += 'ej_an_back';
 		back_x_offset = 0;
 		back_y_offset = 326;
-		cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_an_back');
+		cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push(backImageName);
+		
+		if(usingMirrorCutin)
+			frontImageName += 'mirror_';
 		
 		if(Karryn.isCensored()) {
 			if(subtypeCutin === CUTIN_EJACULATE_ANALCREAMPIE_GREEN_NAME) {
@@ -1767,6 +2064,18 @@ Game_Actor.prototype.cutInArray_EjaculateAnalCreampie = function(subtypeCutin) {
 				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_an_09_green_cen');
 				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_an_10_green_cen');
 			}
+			else if(subtypeCutin === CUTIN_EJACULATE_ANALCREAMPIE_MIRROR_GREEN_NAME) {
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_01_green_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_02_green_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_03_green_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_04_green_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_05_green_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_06_green_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_07_green_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_08_green_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_09_green_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_10_green_cen');
+			}
 			else if(subtypeCutin === CUTIN_EJACULATE_ANALCREAMPIE_SLIME_NAME) {
 				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_an_01_slime_cen');
 				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_an_02_slime_cen');
@@ -1778,6 +2087,54 @@ Game_Actor.prototype.cutInArray_EjaculateAnalCreampie = function(subtypeCutin) {
 				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_an_08_slime_cen');
 				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_an_09_slime_cen');
 				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_an_10_slime_cen');
+			}
+			else if(subtypeCutin === CUTIN_EJACULATE_ANALCREAMPIE_MIRROR_SLIME_NAME) {
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_01_slime_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_02_slime_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_03_slime_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_04_slime_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_05_slime_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_06_slime_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_07_slime_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_08_slime_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_09_slime_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_10_slime_cen');
+			}
+			else if(subtypeCutin === CUTIN_EJACULATE_ANALCREAMPIE_RED_NAME) {
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_an_01_red_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_an_02_red_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_an_03_red_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_an_04_red_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_an_05_red_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_an_06_red_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_an_07_red_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_an_08_red_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_an_09_red_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_an_10_red_cen');
+			}
+			else if(subtypeCutin === CUTIN_EJACULATE_ANALCREAMPIE_MIRROR_RED_NAME) {
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_01_red_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_02_red_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_03_red_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_04_red_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_05_red_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_06_red_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_07_red_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_08_red_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_09_red_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_10_red_cen');
+			}
+			else if(subtypeCutin === CUTIN_EJACULATE_ANALCREAMPIE_MIRROR_NAME) {
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_01_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_02_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_03_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_04_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_05_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_06_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_07_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_08_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_09_cen');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_10_cen');
 			}
 			else {
 				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_an_01_cen');
@@ -1805,6 +2162,18 @@ Game_Actor.prototype.cutInArray_EjaculateAnalCreampie = function(subtypeCutin) {
 				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_an_09_green');
 				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_an_10_green');
 			}
+			else if(subtypeCutin === CUTIN_EJACULATE_ANALCREAMPIE_MIRROR_GREEN_NAME) {
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_01_green');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_02_green');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_03_green');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_04_green');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_05_green');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_06_green');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_07_green');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_08_green');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_09_green');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_10_green');
+			}
 			else if(subtypeCutin === CUTIN_EJACULATE_ANALCREAMPIE_SLIME_NAME) {
 				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_an_01_slime');
 				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_an_02_slime');
@@ -1816,6 +2185,54 @@ Game_Actor.prototype.cutInArray_EjaculateAnalCreampie = function(subtypeCutin) {
 				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_an_08_slime');
 				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_an_09_slime');
 				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_an_10_slime');
+			}
+			else if(subtypeCutin === CUTIN_EJACULATE_ANALCREAMPIE_MIRROR_SLIME_NAME) {
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_01_slime');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_02_slime');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_03_slime');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_04_slime');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_05_slime');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_06_slime');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_07_slime');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_08_slime');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_09_slime');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_10_slime');
+			}
+			else if(subtypeCutin === CUTIN_EJACULATE_ANALCREAMPIE_RED_NAME) {
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_an_01_red');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_an_02_red');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_an_03_red');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_an_04_red');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_an_05_red');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_an_06_red');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_an_07_red');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_an_08_red');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_an_09_red');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_an_10_red');
+			}
+			else if(subtypeCutin === CUTIN_EJACULATE_ANALCREAMPIE_MIRROR_RED_NAME) {
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_01_red');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_02_red');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_03_red');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_04_red');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_05_red');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_06_red');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_07_red');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_08_red');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_09_red');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_10_red');
+			}
+			else if(subtypeCutin === CUTIN_EJACULATE_ANALCREAMPIE_MIRROR_NAME) {
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_01');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_02');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_03');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_04');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_05');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_06');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_07');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_08');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_09');
+				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('mirror_ej_an_10');
 			}
 			else {
 				cutInArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].push('ej_an_01');
@@ -1833,58 +2250,64 @@ Game_Actor.prototype.cutInArray_EjaculateAnalCreampie = function(subtypeCutin) {
 		
 		if( (cutInFrame >= 0 && cutInFrame <= 2) || (cutInFrame >= 30 && cutInFrame <= 32) || (cutInFrame >= 60 && cutInFrame <= 62)
 		 || (cutInFrame >= 90 && cutInFrame <= 92) ) {
-			frontImageName = 'ej_an_01';
+			frontImageName += 'ej_an_01';
 		}
 		else if( (cutInFrame >= 3 && cutInFrame <= 5) || (cutInFrame >= 27 && cutInFrame <= 29) || (cutInFrame >= 33 && cutInFrame <= 35)
 		 || (cutInFrame >= 57 && cutInFrame <= 59) || (cutInFrame >= 63 && cutInFrame <= 65) || (cutInFrame >= 87 && cutInFrame <= 89)
 		 || (cutInFrame >= 93 && cutInFrame <= 95) ) {
-			frontImageName = 'ej_an_02';
+			frontImageName += 'ej_an_02';
 		}
 		else if( (cutInFrame >= 6 && cutInFrame <= 8) || (cutInFrame >= 24 && cutInFrame <= 26) || (cutInFrame >= 36 && cutInFrame <= 38)
 		 || (cutInFrame >= 54 && cutInFrame <= 56) || (cutInFrame >= 66 && cutInFrame <= 68) || (cutInFrame >= 84 && cutInFrame <= 86)
 		 || (cutInFrame >= 96 && cutInFrame <= 98) ) {
-			frontImageName = 'ej_an_03';
+			frontImageName += 'ej_an_03';
 		}
 		else if( (cutInFrame >= 9 && cutInFrame <= 11) || (cutInFrame >= 21 && cutInFrame <= 23) || (cutInFrame >= 39 && cutInFrame <= 41)
 		 || (cutInFrame >= 51 && cutInFrame <= 53) || (cutInFrame >= 69 && cutInFrame <= 71) || (cutInFrame >= 81 && cutInFrame <= 83)
 		 || (cutInFrame >= 99 && cutInFrame <= 101) ) {
-			frontImageName = 'ej_an_04';
+			frontImageName += 'ej_an_04';
 		}
 		else if( (cutInFrame >= 12 && cutInFrame <= 14) || (cutInFrame >= 18 && cutInFrame <= 20) || (cutInFrame >= 42 && cutInFrame <= 44)
 		 || (cutInFrame >= 48 && cutInFrame <= 50) || (cutInFrame >= 72 && cutInFrame <= 74) || (cutInFrame >= 78 && cutInFrame <= 80)
 		 || (cutInFrame >= 102 && cutInFrame <= 104) ) {
-			frontImageName = 'ej_an_05';
+			frontImageName += 'ej_an_05';
 		}
 		else if( (cutInFrame >= 15 && cutInFrame <= 17) || (cutInFrame >= 45 && cutInFrame <= 47) || (cutInFrame >= 75 && cutInFrame <= 77) ) {
-		   frontImageName = 'ej_an_06';
+		   frontImageName += 'ej_an_06';
 		}
 		else if( (cutInFrame >= 105 && cutInFrame <= 110) ) {
-			frontImageName = 'ej_an_07';
+			frontImageName += 'ej_an_07';
 		}
 		else if( (cutInFrame >= 111 && cutInFrame <= 115) ) {
-			frontImageName = 'ej_an_08';
+			frontImageName += 'ej_an_08';
 		}
 		else if( (cutInFrame >= 116 && cutInFrame <= 119) ) {
-			frontImageName = 'ej_an_09';
+			frontImageName += 'ej_an_09';
 		}
 		else if(cutInFrame >= 120) {
-			frontImageName = 'ej_an_10';
+			frontImageName += 'ej_an_10';
 		}
 	}
 	
 	//ここまで
 	
-	if(subtypeCutin === CUTIN_EJACULATE_ANALCREAMPIE_GREEN_NAME) {
+	if(subtypeCutin === CUTIN_EJACULATE_ANALCREAMPIE_GREEN_NAME || subtypeCutin === CUTIN_EJACULATE_ANALCREAMPIE_MIRROR_GREEN_NAME) {
 		if(fasterCutIns)
 			backImageName += '_green';
 		else
 			frontImageName += '_green';
 	}
-	else if(subtypeCutin === CUTIN_EJACULATE_ANALCREAMPIE_SLIME_NAME) {
+	else if(subtypeCutin === CUTIN_EJACULATE_ANALCREAMPIE_SLIME_NAME || subtypeCutin === CUTIN_EJACULATE_ANALCREAMPIE_MIRROR_SLIME_NAME) {
 		if(fasterCutIns)
 			backImageName += '_slime';
 		else
 			frontImageName += '_slime';
+	}
+	else if(subtypeCutin === CUTIN_EJACULATE_ANALCREAMPIE_RED_NAME || subtypeCutin === CUTIN_EJACULATE_ANALCREAMPIE_MIRROR_RED_NAME) {
+		if(fasterCutIns)
+			backImageName += '_red';
+		else
+			frontImageName += '_red';
 	}
 	
 	if(Karryn.isCensored()) {

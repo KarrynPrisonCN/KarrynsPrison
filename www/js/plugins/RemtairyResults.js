@@ -55,6 +55,7 @@ Game_Actor.prototype.setupParamExp = function() {
 	this._totalParamExpGained = 0;
 	this._totalParamLvlsGained = 0;
 	this._totalMainLvlsGained = 0;
+	this._uncommittedCharmExp = 0;
 };
 
 //Called prebattle and postbattle
@@ -64,6 +65,7 @@ Game_Actor.prototype.clearParamExp = function() {
 	this._totalParamExpGained = 0;
 	this._totalParamLvlsGained = 0;
 	this._totalMainLvlsGained = 0;
+	this._uncommittedCharmExp = 0;
 	//Passives
 	this._newPassivesUnlocked = [];
 };
@@ -285,6 +287,7 @@ Game_Actor.prototype.getCharmGrowthRate = function(useExpRate) {
 // Param Exp and Lvl
 //////////////
 
+//Warden Level Level Cap Level Limit
 Game_Actor.prototype.getWardenLevelLimit = function() {
 	let limit = 12;
 	
@@ -400,6 +403,19 @@ Game_Actor.prototype.gainCharmExp = function(exp, enemyLvl) {
 	let ratedExp = Math.max(0, Math.round(expRate * exp * growthRate));
 	this._paramExp[PARAM_CHARM_ID] += ratedExp;
 	this._totalParamExpGained += ratedExp;
+	this.seeIfParamLvlGained(PARAM_CHARM_ID);
+};
+Game_Actor.prototype.gainUncommittedCharmExp = function(exp, enemyLvl) {
+	if(exp <= 0) return;
+	let expRate = this.calculateParamExpRate(enemyLvl);
+	let growthRate = this.getCharmGrowthRate(true);
+	let ratedExp = Math.max(0, Math.round(expRate * exp * growthRate));
+	this._uncommittedCharmExp += ratedExp;
+};
+Game_Actor.prototype.commitUncommittedCharmExp = function() {
+	this._paramExp[PARAM_CHARM_ID] += this._uncommittedCharmExp;
+	this._totalParamExpGained += this._uncommittedCharmExp;
+	this._uncommittedCharmExp = 0;
 	this.seeIfParamLvlGained(PARAM_CHARM_ID);
 };
 
@@ -759,42 +775,11 @@ Window_VictoryExp.prototype.drawActorName = function(actor, x, y, width) {
 };
 
 Window_VictoryExp.prototype.drawPrisonResults = function() {
+	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
 	let y = -this._scrollY + this.lineHeight() * this._resultsLine;
 	let x = this._scrollX + this.standardPadding() * 2 + Window_Base._faceWidth;
 	let width = Graphics.boxWidth;
 	this.changeTextColor(this.normalColor());
-	
-	//cockiness
-	if(Karryn.hasPassive(PASSIVE_SUBDUED_COUNT_TWO_ID)) {
-		let actor = $gameActors.actor(ACTOR_KARRYN_ID);
-		if(actor._tempRecordCockinessPreBattle < actor.cockiness) {
-			if(actor.cockiness === 100) {
-				this._resultsLine++;
-				var text = TextManager.cockinessMaxxedOut;
-				text = text.format(actor.cockiness);
-				this.drawText(text, x, y, width, 'left');	
-			}
-			else {
-				this._resultsLine++;
-				var text = TextManager.cockinessIncrease;
-				text = text.format(actor.cockiness);
-				this.drawText(text, x, y, width, 'left');	
-			}
-		}
-		else if(actor._tempRecordCockinessPreBattle > actor.cockiness) {
-			if(actor.cockiness === 0) {
-				this._resultsLine++;
-				var text = TextManager.cockinessReset;
-				this.drawText(text, x, y, width, 'left');	
-			}
-			else {
-				this._resultsLine++;
-				var text = TextManager.cockinessDecrease;
-				text = text.format(actor.cockiness);
-				this.drawText(text, x, y, width, 'left');	
-			}
-		}
-	}
 	
 	//order
 	if($gameParty.hasOrderResults()) {
@@ -808,7 +793,7 @@ Window_VictoryExp.prototype.drawPrisonResults = function() {
 			text = TextManager.resultsOrderDecrease;
 		
 		text = text.format(orderResults);
-		this.drawText(text, x, y, width, 'left');		
+		this.drawTextEx(text, x, y, width, 'left');		
 	}
 
 	//funding
@@ -824,7 +809,48 @@ Window_VictoryExp.prototype.drawPrisonResults = function() {
 			text = TextManager.resultsFundingDecrease;
 		
 		text = text.format(funding);
-		this.drawText(text, x, y, width, 'left');			
+		this.drawTextEx(text, x, y, width, 'left');			
+	}
+	
+	//cockiness
+	if(Karryn.hasPassive(PASSIVE_SUBDUED_COUNT_TWO_ID)) {
+		let text = '';
+		
+		if(actor._tempRecordCockinessPreBattle < actor.cockiness) {
+			if(actor.cockiness === 100) {
+				y = -this._scrollY + this.lineHeight() * this._resultsLine;
+				this._resultsLine++;
+				
+				text = TextManager.cockinessMaxxedOut;
+				text = text.format(actor.cockiness);
+				this.drawTextEx(text, x, y, width, 'left');	
+			}
+			else {
+				y = -this._scrollY + this.lineHeight() * this._resultsLine;
+				this._resultsLine++;
+				
+				text = TextManager.cockinessIncrease;
+				text = text.format(actor.cockiness);
+				this.drawTextEx(text, x, y, width, 'left');	
+			}
+		}
+		else if(actor._tempRecordCockinessPreBattle > actor.cockiness) {
+			if(actor.cockiness === 0) {
+				y = -this._scrollY + this.lineHeight() * this._resultsLine;
+				this._resultsLine++;
+				
+				text = TextManager.cockinessReset;
+				this.drawTextEx(text, x, y, width, 'left');	
+			}
+			else {
+				y = -this._scrollY + this.lineHeight() * this._resultsLine;
+				this._resultsLine++;
+				
+				text = TextManager.cockinessDecrease;
+				text = text.format(actor.cockiness);
+				this.drawTextEx(text, x, y, width, 'left');	
+			}
+		}
 	}
 	
 	//fatigue
@@ -842,7 +868,141 @@ Window_VictoryExp.prototype.drawPrisonResults = function() {
 		}
 		
 		text = text.format(Math.abs(fatigue));
-		this.drawText(text, x, y, width, 'left');			
+		this.drawTextEx(text, x, y, width, 'left');			
+	}
+	
+	//Battle
+	this._resultsLine += 0.5;
+	
+	//Subdued
+	let subduedWithAttackValue = actor._tempRecordSubduedEnemiesWithAttack;
+	let subduedSexuallyValue = actor._tempRecordSubduedEnemiesSexually;
+	let displaySubduedWithAttackValue = subduedWithAttackValue > 0;
+	let displaySubduedSexuallyValue = subduedSexuallyValue > 0 && !Karryn.isInJobPose();
+	
+	if(displaySubduedWithAttackValue || displaySubduedSexuallyValue) {
+		let text = '';
+		y = -this._scrollY + this.lineHeight() * this._resultsLine;
+		this._resultsLine++;
+		
+		if(displaySubduedWithAttackValue && displaySubduedSexuallyValue) {
+			text = TextManager.resultsSubduedWithAttackAndSexually;
+			text = text.format(subduedWithAttackValue, TextManager.pluralText_JustPeople(subduedWithAttackValue), subduedSexuallyValue, TextManager.pluralText_JustPeople(subduedSexuallyValue));
+		}
+		else if(displaySubduedWithAttackValue) {
+			text = TextManager.resultsSubduedWithAttack;
+			text = text.format(subduedWithAttackValue, TextManager.pluralText_JustPeople(subduedWithAttackValue));
+		}
+		else {
+			text = TextManager.resultsSubduedSexually;
+			text = text.format(subduedSexuallyValue, TextManager.pluralText_JustPeople(subduedSexuallyValue));
+		}
+		
+		this.drawTextEx(text, x, y, width, 'left');	
+	}
+	
+	//Orgasm
+	if(actor._tempRecordOrgasmCount > 0) {
+		let value = actor._tempRecordOrgasmCount;
+		let text = '';
+		y = -this._scrollY + this.lineHeight() * this._resultsLine;
+		this._resultsLine++;
+		
+		if(value === 1) {
+			text = TextManager.resultsKarrynOrgasmSingular;
+		}
+		else {
+			text = TextManager.resultsKarrynOrgasmPlural;
+			text = text.format(value);
+		}
+		
+		this.drawTextEx(text, x, y, width, 'left');	
+	}
+	
+	//Masturbate
+	if(actor._tempRecordMasturbatedInBattleCount > 0) {
+		let value = actor._tempRecordOrgasmCount;
+		let text = '';
+		y = -this._scrollY + this.lineHeight() * this._resultsLine;
+		this._resultsLine++;
+		
+		if(value === 1) {
+			text = TextManager.resultsKarrynMasturbatedInBattleSingular;
+		}
+		else {
+			text = TextManager.resultsKarrynMasturbatedInBattlePlural;
+			text = text.format(value);
+		}
+		
+		this.drawTextEx(text, x, y, width, 'left');	
+	}
+	
+	//Sex
+	if(actor._tempRecordKissedPeople > 0) {
+		y = -this._scrollY + this.lineHeight() * this._resultsLine;
+		this._resultsLine++;
+		
+		let value = actor._tempRecordKissedPeople;
+		let text = TextManager.resultsKarrynKiss;
+		
+		text = text.format(value, TextManager.pluralText_JustPeople(value));
+	
+		this.drawTextEx(text, x, y, width, 'left');	
+	}
+	if(actor._tempRecordHandjobPeople > 0) {
+		y = -this._scrollY + this.lineHeight() * this._resultsLine;
+		this._resultsLine++;
+		
+		let value = actor._tempRecordHandjobPeople;
+		let text = TextManager.resultsKarrynHandjob;
+		
+		text = text.format(value, TextManager.pluralText_JustPeople(value));
+	
+		this.drawTextEx(text, x, y, width, 'left');	
+	}
+	if(actor._tempRecordBlowjobPeople > 0) {
+		y = -this._scrollY + this.lineHeight() * this._resultsLine;
+		this._resultsLine++;
+		
+		let value = actor._tempRecordBlowjobPeople;
+		let text = TextManager.resultsKarrynBlowjob;
+		
+		text = text.format(value, TextManager.pluralText_JustPeople(value));
+	
+		this.drawTextEx(text, x, y, width, 'left');	
+	}
+	if(actor._tempRecordTittyFuckedPeople > 0) {
+		y = -this._scrollY + this.lineHeight() * this._resultsLine;
+		this._resultsLine++;
+		
+		let value = actor._tempRecordTittyFuckedPeople;
+		let text = TextManager.resultsKarrynTitjob;
+		
+		text = text.format(value, TextManager.pluralText_JustPeople(value));
+	
+		this.drawTextEx(text, x, y, width, 'left');	
+	}
+	if(actor._tempRecordPussyFuckedPeople > 0) {
+		y = -this._scrollY + this.lineHeight() * this._resultsLine;
+		this._resultsLine++;
+		
+		let value = actor._tempRecordPussyFuckedPeople;
+		let text = TextManager.resultsKarrynVaginalSex;
+		
+		text = text.format(value, TextManager.pluralText_JustPeople(value));
+	
+		this.drawTextEx(text, x, y, width, 'left');	
+	}
+	if(actor._tempRecordAnalFuckedPeople > 0) {
+		y = -this._scrollY + this.lineHeight() * this._resultsLine;
+		this._resultsLine++;
+		
+		let value = actor._tempRecordAnalFuckedPeople;
+		let text = TextManager.resultsKarrynAnalSex;
+		
+		text = text.format(value, TextManager.pluralText_JustPeople(value));
+	
+		this.drawTextEx(text, x, y, width, 'left');	
 	}
 	
 	
@@ -876,20 +1036,45 @@ Window_VictoryExp.prototype.drawActorGauge = function(actor, index) {
 Window_VictoryExp.prototype.drawExpBreakdown = function(actor, rect) {
 	let x = this._scrollX + this.standardPadding() * 2 + Window_Base._faceWidth;
 	let expLines = 0;
+	expLines += 0.5;
 	//this.makeFontSmaller();
 	
 	//Param Gained
 	for(let i = 0; i < 8; i++) {
 		let value = actor._paramLvlGained[i];
 		let valueName = '';
+		let iconName = '';
 		if(value > 0) {
 			if(i === PARAM_MAXSTAMINA_ID) {
 				valueName = TextManager.basic(2);
+				iconName = '\\I[380]';
 			}
 			else if(i === PARAM_MAXENERGY_ID) {
 				valueName = TextManager.basic(4);
+				iconName = '\\I[382]';
 			}
-			else valueName = TextManager.param(i);
+			else {
+				valueName = TextManager.param(i);
+				
+				if(i === PARAM_STRENGTH_ID) {
+					iconName = '\\I[394]';
+				}
+				else if(i === PARAM_ENDURANCE_ID) {
+					iconName = '\\I[366]';
+				}
+				else if(i === PARAM_DEXTERITY_ID) {
+					iconName = '\\I[372]';
+				}
+				else if(i === PARAM_MIND_ID) {
+					iconName = '\\I[398]';
+				}
+				else if(i === PARAM_AGILITY_ID) {
+					iconName = '\\I[374]';
+				}
+				else if(i === PARAM_CHARM_ID) {
+					iconName = '\\I[378]';
+				}
+			}
 			
 			let wy = -this._scrollY + this.lineHeight() * this._resultsLine + this.lineHeight() * expLines * RESULTS_EXP_LINE_HEIGHT;
 			expLines++;
@@ -904,10 +1089,10 @@ Window_VictoryExp.prototype.drawExpBreakdown = function(actor, rect) {
 			let text = TextManager.paramLevelGainedSingular;
 			if(value > 1) text = TextManager.paramLevelGainedPlural;
 			
-			text = text.format(value, valueName);
+			text = text.format(value, valueName, iconName);
 
 			//this.drawText(text, x, wy, (rect.width - 4)/2, 'left');
-			this.drawText(text, x, wy, rect.width, 'left');
+			this.drawTextEx(text, x, wy, rect.width, 'left');
 
 			//this.changeTextColor(this.systemColor());
 
@@ -923,6 +1108,11 @@ Window_VictoryExp.prototype.drawExpBreakdown = function(actor, rect) {
 	if(wardenLvlGained > 0) {
 		let text = TextManager.wardenLevelUp;
 		text = text.format(actor.name(), actor.level);
+		this.drawTextEx(text, x, wy, rect.width, 'left');
+	}
+	else if(actor.level === actor.getWardenLevelLimit()) {
+		let text = TextManager.wardenLevelLimitReached;
+		text = text.format(actor.name());
 		this.drawTextEx(text, x, wy, rect.width, 'left');
 	}
 	else {
@@ -985,7 +1175,6 @@ Window_VictoryPassives.prototype.drawItem = function(index) {
     var actor = $gameParty.battleMembers()[index];
     if (!actor) return;
     this.drawActorNewPassives(actor, index);
-	//todo: draw text for new slut level here
 };
 
 Window_VictoryPassives.prototype.drawActorNewPassives = function(actor, index) {

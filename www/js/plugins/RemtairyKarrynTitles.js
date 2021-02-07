@@ -209,7 +209,7 @@ Game_Actor.prototype.registerFirstTimeTitleEquip = function() {
 				if(Prison.order != 0) $gameParty.increaseOrder(-10);
 			}
 			else if(id === TITLE_ID_DISAPPOINTMENT) {
-				if(Prison.order != 0) $gameParty.increaseOrder(-20);
+				if(Prison.order != 0) $gameParty.increaseOrder(-10);
 			}
 			//Funding
 			else if(id === TITLE_ID_FULL_ORDER_THREE) {
@@ -934,7 +934,7 @@ Game_Actor.prototype.titlesEdictCostRate = function() {
 Game_Actor.prototype.titlesFlatIncome = function() {
 	let value = 0;
 	
-	if(this.hasThisTitle(TITLE_ID_CC_AMBITIOUS_EXPERIMENTER)) value += 400;
+	if(this.hasThisTitle(TITLE_ID_CC_AMBITIOUS_EXPERIMENTER)) value += 300;
 	
 	return value;
 };
@@ -981,7 +981,7 @@ Game_Actor.prototype.titlesOrderChange = function() {
 	
 	//Character Creator titles
 	if(this.hasThisTitle(TITLE_ID_CC_AMBITIOUS_EXPERIMENTER)) value -= 1;
-	else if(this.hasThisTitle(TITLE_ID_CC_HARDLINE_DEBATER)) value += 2;
+	else if(this.hasThisTitle(TITLE_ID_CC_HARDLINE_DEBATER)) value += 3;
 	else if(this.hasThisTitle(TITLE_ID_CC_HARDWORKING_TUTOR)) value += 1;
 	
 	//Redeemed titles
@@ -1068,22 +1068,35 @@ Game_Actor.prototype.titleEnemyEjaculationVolume = function(enemy) {
 	return multipler;
 };
 
-///////
-// Game Party
-
-Game_Party.prototype.titlesSubsidies = function() {
-	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
+Game_Actor.prototype.titlesSubsidies_Flat = function() {
 	let value = 0;
 	
-	if(actor.hasThisTitle(TITLE_ID_FULL_ORDER_TWO)) value += 25;
+	if(this.hasThisTitle(TITLE_ID_FULL_ORDER_TWO)) value += 25;
 	
-	if(actor.hasThisTitle(TITLE_ID_REDEEMED_TWO)) value += 25;
+	if(this.hasThisTitle(TITLE_ID_REDEEMED_TWO)) value += 25;
 	
-	if(actor.hasThisTitle(TITLE_ID_PUSSY_PETTER)) value += 10;
+	if(this.hasThisTitle(TITLE_ID_PUSSY_PETTER)) value += 10;
+	
+	if(this.hasThisTitle(TITLE_ID_CC_SKILLED_MANAGER)) value += 50;
+	else if(this.hasThisTitle(TITLE_ID_CC_MANAGEMENT_CONSULTANT)) value += 200;
 	
 	
 	return value;
 };
+
+Game_Actor.prototype.titlesSubsidies_Rate = function() {
+	let rate = 1;
+	
+	if(this.hasThisTitle(TITLE_ID_CC_AMBITIOUS_EXPERIMENTER)) rate -= 0.12;
+	else if(this.hasThisTitle(TITLE_ID_CC_COST_SAVING_SUPERVISOR)) rate += 0.08;
+
+	
+	return rate;
+};
+
+///////
+// Game Party
+
 
 Game_Party.prototype.titlesGlobalRiotChance = function() {
 	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
@@ -1092,6 +1105,8 @@ Game_Party.prototype.titlesGlobalRiotChance = function() {
 	if(actor.isUsingThisTitle(TITLE_ID_FULL_ORDER_ONE)) value -= 2;
 	else if(actor.isUsingThisTitle(TITLE_ID_HELL_WARDEN_ONE)) value -= 3;
 	else if(actor.isUsingThisTitle(TITLE_ID_HELL_WARDEN_TWO)) value -= 4;
+	
+	if(actor.hasThisTitle(TITLE_ID_CC_HARDLINE_DEBATER)) value += 2;
 	
 	return value;
 }
@@ -1162,6 +1177,11 @@ Game_Actor.prototype.titlesFatigueGainRate = function() {
 	return rate;
 };
 
+Game_Actor.prototype.titlesfatigueRecoveryRate = function() {
+	if(this.hasThisTitle(TITLE_ID_CC_HARDWORKING_TUTOR)) return 0.88;
+	else return 1;
+};
+
 Game_Actor.prototype.titleStunningWarden_stunChance = function() {
 	let chance = 0;
 	if(this.hasThisTitle(TITLE_ID_STUNNING_WARDEN)) {
@@ -1176,13 +1196,5 @@ Game_Actor.prototype.titleEfficientAdminstrator_carryoverUnusedEdictPoint = func
 	else return 0;
 };
 
-Game_Actor.prototype.titleCorporalPunisher_riotChance = function() {
-	if(this.hasThisTitle(TITLE_ID_CC_HARDLINE_DEBATER)) return 2;
-	else return 0;
-};
 
-Game_Actor.prototype.titleWorkaholic_fatigueRecoveryRate = function() {
-	if(this.hasThisTitle(TITLE_ID_CC_HARDWORKING_TUTOR)) return 0.88;
-	else return 1;
-};
 

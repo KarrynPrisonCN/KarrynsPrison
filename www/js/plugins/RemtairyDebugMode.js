@@ -23,8 +23,8 @@ const TESTING_ENEMY_ALL_CRIT = false;
 const TESTING_COCK_DESIRE = 125;
 const TESTING_BOOBS_DESIRE = 125;
 const TESTING_MOUTH_DESIRE = 125;
-const TESTING_PUSSY_DESIRE = 125;
-const TESTING_BUTT_DESIRE = 125;
+const TESTING_PUSSY_DESIRE = 100;
+const TESTING_BUTT_DESIRE = 90;
 const TESTING_LIQUID_ALL = true;
 const TESTING_LIQUID_VAR = 115;
 const TESTING_ALWAYS_FIRST = false;
@@ -40,6 +40,7 @@ SceneManager.debugCommand = function() {
 		$gameSwitches.setValue(SWITCH_TEST_MODE_ID, true);
 		$gameSystem.setAutosave(false);
 		
+	
 		//actor.setHalberdAsDefiled(true);
 		
 		//console.log($gameTroop.aliveMembers());
@@ -97,8 +98,8 @@ SceneManager.debugCommand = function() {
 		
 		$gameParty.setOrder(50);
 		//$gameParty._currentWantedChance = 1;
-		actor._mp = 30;
-		//actor._hp = 0;
+		actor._mp = actor.maxenergy;
+		actor._hp = actor.maxstamina;
 		actor._liquidPussyJuice = LIQUID_PUSSY_WET_REQ + 10;
 		//actor.setFatigue(0);
 		
@@ -263,6 +264,9 @@ Game_Actor.prototype.debugMaxAllLiquids = function() {
 		this._liquidDroolMouth = num;
 		this._liquidDroolFingers = num;
 		this._liquidDroolNipples = num;
+		this._liquidCumOnToiletSeat = num;
+		this._liquidJuiceOnToiletSeat = num;
+		
 		
 		if(this._cockMouthTarget) 
 			this._cockMouthTarget._enemyTempRecordTotalEjaculationCount = num;
@@ -286,6 +290,8 @@ Game_Actor.prototype.debugToggleGlovesAndHat = function() {
 		this.takeOffGlovesAndHat();
 	else
 		this.putOnGlovesAndHat();
+		
+	//this.putOnGlovesAndHat();
 	this.setCacheChanged();
 }; 
 
@@ -364,6 +370,17 @@ Game_Actor.prototype.afterEval_debugDefeatAll = function(target) {
 Game_Actor.prototype.showEval_debugSkills = function() {
 	return $gameTemp.isPlaytest();
 	return $gameTemp.isPlaytest() && $gameSwitches.value(SWITCH_TEST_MODE_ID);
+};
+
+DataManager.debugMissingRemLinesLocalization = function() {
+	console.log('debugMissingRemLinesLocalization');
+	for(const [key, value] of Object.entries($remLines)) {
+		if(!$remLinesCH[key]) console.log(key)
+	}
+	
+	//$remLines
+	//$remLinesCH
+	
 };
 
 Karryn.isCensored = function() {

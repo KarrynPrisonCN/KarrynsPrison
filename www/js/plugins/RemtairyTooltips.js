@@ -352,7 +352,16 @@ TextManager.stateTooltipText = function(battler, stateId) {
 		return TextManager.StateReceptionistVisitorLine.format(battlerName);
 	}
 	
-	
+	else if(stateId === STATE_GLORY_PINK_ROTOR_ID) {
+		return TextManager.StateTooltipsToiletPinkRotor;
+	}
+	else if(stateId === STATE_GLORY_PENIS_DILDO_ID) {
+		return TextManager.StateTooltipsToiletPenisDildo;
+	}
+	else if(stateId === STATE_GLORY_ANAL_BEADS_ID) {
+		return TextManager.StateTooltipsToiletAnalBeads;
+	}
+
 	
 	//bar drinking icon
 	

@@ -280,6 +280,10 @@ Game_BattlerBase.prototype.param = function(paramId) {
 	return this._baseParamCache[paramId];
 };
 
+Game_BattlerBase.prototype.paramMin = function(paramId) {
+    return 1;
+};
+
 /////
 // Stamina
 //////////
@@ -341,7 +345,7 @@ Game_BattlerBase.prototype.recoverFatigue = function(value) {
 
 //Used for max stamina and max energy formulas
 Game_BattlerBase.prototype.fatigueMultipler = function() {
-    var value = (100 - this.fatigue) / 100;
+    let value = (100 - this.fatigue) / 100;
 	
 	return Math.max(value,0.01);
 };
@@ -867,7 +871,6 @@ Game_Battler.prototype.checkForOrgasm = function() {
 	if(this.reachedOrgasmPoint() && !this.orgasmLocked()) {
 		this.orgasm();
 	}
-	//this.resetGotHitBySkillType();
 };
 
 Game_Battler.prototype.orgasmLocked = function() {

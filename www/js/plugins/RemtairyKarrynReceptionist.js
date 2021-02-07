@@ -27,7 +27,7 @@ const BATTLEBACK1_VISITOR_RECEPTIONIST_NAME = 'Reception1';
  */
 //=============================================================================
 
-const RECEPTIONIST_SKILL_START = 1578;
+const RECEPTIONIST_SKILL_START = 1577;
 const RECEPTIONIST_SKILL_END = 1599;
 
 const RECEPTIONIST_REP_DECAY_DAYS = 4;
@@ -252,7 +252,7 @@ Object.defineProperty(Game_Party.prototype, "receptionistBattleTimeChoice", {
 			choice = 2;
 		else if(value >= 20)
 			choice = 1;
-		
+
 		return choice;
 		
 	}, configurable: true
@@ -555,10 +555,23 @@ Game_Actor.prototype.receptionistXParamRate = function(id) {
 			passiveRate = 0.75;
 		}
 		else if(id === XPARAM_STA_REGEN_ID) {
-			if(this.isUsingThisTitle(TITLE_ID_RECEPTIONIST_THIRTY_SHIFTS))
-				passiveRate = 0.25;
-			else
-				passiveRate = 0.15;
+			if(this.isUsingThisTitle(TITLE_ID_RECEPTIONIST_THIRTY_SHIFTS)) {
+				if(this.isStateAffected(STATE_RECEPTIONIST_REST_ID)) {
+					passiveRate = 2;
+				}
+				else {
+					passiveRate = 0.25;
+				}
+			}
+			else {
+				if(this.isStateAffected(STATE_RECEPTIONIST_REST_ID)) {
+					passiveRate = 1.2;
+				}
+				else {
+					passiveRate = 0.15;
+				}
+				
+			}
 		}
 		
 		
@@ -704,7 +717,8 @@ Game_Actor.prototype.updateReceptionistBattleVisitorQueueTachie = function() {
 		let enemyCock = visitorA.enemyCock();
 		
 		if(visitorA.isVisitorMaleType) {
-			if(visitorA._visitor_isPervert && visitorA._visitor_isIdentified) {
+			if(visitorA._visitor_isPervert && visitorA._visitor_isIdentified && 
+			(!visitorA._visitor_isVisiting || visitorA._perv_waitingForRequestResponse || visitorA._perv_currentlyGettingRequestFulfilled)) {
 				visitorATachie += 'ero_';
 				
 				if(visitorA._perv_gettingBJ)
@@ -1672,6 +1686,13 @@ Game_Actor.prototype.afterEval_receptionistBattle_Breather = function() {
 	this.emoteReceptionistPose();
 };
 
+Game_Actor.prototype.showEval_receptionistBattle_Rest = function() {
+	return !this.showEval_receptionistBattle_acceptRequest();
+};
+Game_Actor.prototype.customReq_receptionistBattle_Rest = function() {
+	return true;
+};
+
 // End Shift
 Game_Actor.prototype.showEval_receptionistBattle_endShift = function() {
 	return $gameParty._receptionistBattle_additionalPotentialVisitors === 0 && $gameTroop.receptionistBattle_visitors().length === 0;
@@ -2273,6 +2294,10 @@ Game_Troop.prototype.onTurnEndSpecial_receptionistBattle = function(forceSpawn) 
 	}
 	*/
 	
+	if(actor.isStateAffected(STATE_RECEPTIONIST_REST_ID)) {
+		skipTurn = true;
+	}
+	
 	//Greeting Visitor
 	if(actor._receptionist_greetVisitor_gotResponse) {
 		actor._receptionist_greetVisitor_waitingForResponse = false;
@@ -2698,18 +2723,6 @@ Game_Enemy.prototype.bonusPpt_receptionistBattle = function() {
 			}
 		}
 		else rate = 0;
-	}
-	
-	return rate;
-};
-
-Game_Enemy.prototype.receptionistEnemyParamRate = function(paramId) {
-	let rate = 1;
-	
-	if(Karryn.isInReceptionistPose()) {
-		if(paramId === PARAM_AGILITY_ID && this.isVisitorMaleType) {
-			rate *= 0.001;
-		}
 	}
 	
 	return rate;

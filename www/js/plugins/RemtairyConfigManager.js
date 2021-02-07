@@ -31,6 +31,7 @@ ConfigManager.remSmootherCGLoading = false;
 ConfigManager.remShowSexualDamagePopup = true;
 ConfigManager.disableRimjobs = false;
 ConfigManager.remBattlelogDuration = 2;
+ConfigManager.remBattlelogFontSize = 2;
 ConfigManager.remMaleDialogueAppear = 3;
 ConfigManager.sortPassivesAscending = false;
 ConfigManager.cancelSkipMentalPhase = false;
@@ -78,6 +79,7 @@ ConfigManager.applyData = function(config) {
 	
 	this.disableRimjobs = this.readRemConfig(config, 'disableRimjobs');
 	this.remBattlelogDuration = this.readRemConfig(config, 'remBattlelogDuration');
+	this.remBattlelogFontSize = this.readRemConfig(config, 'remBattlelogFontSize');
 	this.remMaleDialogueAppear = this.readRemConfig(config, 'remMaleDialogueAppear');
 	this.displayPleasureAsPercent = this.readRemConfig(config, 'displayPleasureAsPercent');
 	
@@ -110,6 +112,7 @@ Remtairy.CM.ConfigManager_makeData = ConfigManager.makeData;
 ConfigManager.makeData = function() {
 	let config = Remtairy.CM.ConfigManager_makeData.call(this);
 	config.remBattlelogDuration = this.remBattlelogDuration;
+	config.remBattlelogFontSize = this.remBattlelogFontSize;
 	config.remMaleDialogueAppear = this.remMaleDialogueAppear;
 	
 	return config;
@@ -122,7 +125,9 @@ ConfigManager.readRemConfig = function(config, name) {
 	} else {
 		if(name == 'remBattlelogDuration')
 			return 2;
-		if(name == 'remMaleDialogueAppear')
+		else if(name == 'remBattlelogFontSize')
+			return 2;
+		else if(name == 'remMaleDialogueAppear')
 			return 3;
 		else if(name == 'pixelMovement')
 			return true;
@@ -220,6 +225,8 @@ Window_Options.prototype.addRemOptions = function() {
 	
 	
 	this.addCommand(TextManager.yanflyOptionsBattlelogDuration, 'remBattlelogDuration');
+	this.addCommand(TextManager.yanflyOptionsBattlelogFontsize, 'remBattlelogFontSize');
+	
 	this.addCommand(TextManager.yanflyOptionsMaleDialogueAppear, 'remMaleDialogueAppear');
 	
 	this.addCommand(TextManager.yanflyOptionsSortPassivesAscending, 'sortPassivesAscending');
@@ -248,6 +255,10 @@ Window_Options.prototype.statusText = function(index) {
 	else if (symbol === 'remBattlelogDuration') {
 		return TextManager.battlelogDurationOption(value);
 	} 
+	else if (symbol === 'remBattlelogFontSize') {
+		return TextManager.battlelogFontSizeOption(value);
+	} 
+	
 	else if (symbol === 'remMaleDialogueAppear') {
 		return TextManager.maleDialogueAppearOption(value);
 	} 

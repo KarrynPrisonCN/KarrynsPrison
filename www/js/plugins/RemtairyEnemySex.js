@@ -204,7 +204,7 @@ Game_Enemy.prototype.counterCondition_kickCounter = function(target, action) {
 		else if(Karryn.hasPassive(PASSIVE_KICK_COUNTER_SEX_COUNT_ONE_ID)) counterChance += 0.1;
 
 	}
-	else if(this.isOrcType) {
+	else if(this.isOrcType && !this.isTonkin) {
 		counterChance += 0.1;
 		
 		if(this.isHorny) counterChance += 0.15;
@@ -735,7 +735,9 @@ Game_Enemy.prototype.beforeEval_poseswitch_goblin_cl_pussy = function(target) {
 	target.enablePussySexPoseSkills(this);
 	this.addJustJoinedState();
 	this.addSexPoseState_Pussy();
+	this.setBodySlotWithPenis(PUSSY_ID);
 	this.removeState(STATE_CUNNI_ENEMYPOSE_ID);
+	this.setBodySlotFree(CLIT_ID);
 	this.setValidTargetForPussySex();
 	this.setPoseSkillTarget(target);
 	this.setPoseSkills([SKILL_ENEMY_POSESKILL_PUSSY_ID]);
@@ -1743,7 +1745,7 @@ Game_Enemy.prototype.dmgFormula_basicTalk = function(target, area, jerkingOff) {
 	this.addToEnemyTalkedCountRecord(target);
 	if(targetPleasureGain > 0) target.addToActorTalkPleasureRecord(targetPleasureGain);
 	
-	target.emoteMasterManager();
+	//target.emoteMasterManager();
 	
 	return 0;
 };
@@ -2520,6 +2522,15 @@ Game_Enemy.prototype.dmgFormula_creampie = function(target, area) {
 	else
 		$gameTroop._lastEnemySlotToCum = -1;
 	
+	if($gameParty.isInGloryBattle) {
+		if(this._guest_atStall === GLORY_LEFT_STALL_ID)
+			$gameTroop._gloryLastHoleToEjaculate = GLORY_LEFT_STALL_ID;
+		else if(this._guest_atStall === GLORY_RIGHT_STALL_ID)
+			$gameTroop._gloryLastHoleToEjaculate = GLORY_RIGHT_STALL_ID;
+		else
+			$gameTroop._gloryLastHoleToEjaculate = -1;
+	}
+	
 	let result = target.result();
 	result.pleasureDamage = targetPleasureGain;
 	result.desireAreaDamage = targetDesireGain * .3;
@@ -2528,18 +2539,37 @@ Game_Enemy.prototype.dmgFormula_creampie = function(target, area) {
 	result.staminaDamage = staminaDmg;
 	result.ejaculateDamage = ejaculateVolume;
 	
+	let useMirrorCutin = false;
+	if($gameParty.isInGloryBattle && this._guest_atStall === GLORY_RIGHT_STALL_ID)
+		useMirrorCutin = true;
+	
 	if(area == CUM_CREAMPIE_PUSSY) {
 		result.ejaculatePussy = ejaculateVolume;
 		if(targetPleasureGain > 0) target.addToActorPussyCreampiePleasureRecord(targetPleasureGain);
 		this.addToEnemyPussyCreampieCountRecord(target);
 		if(enemyCock == 'green') {
-			target.setTachieCutIn(CUTIN_EJACULATE_PUSSYCREAMPIE_GREEN_NAME);
+			if(useMirrorCutin)
+				target.setTachieCutIn(CUTIN_EJACULATE_PUSSYCREAMPIE_MIRROR_GREEN_NAME);
+			else
+				target.setTachieCutIn(CUTIN_EJACULATE_PUSSYCREAMPIE_GREEN_NAME);
+		}
+		else if(enemyCock == 'red') {
+			if(useMirrorCutin)
+				target.setTachieCutIn(CUTIN_EJACULATE_PUSSYCREAMPIE_MIRROR_RED_NAME);
+			else
+				target.setTachieCutIn(CUTIN_EJACULATE_PUSSYCREAMPIE_RED_NAME);
 		}
 		else if(enemyCock == 'slime') {
-			target.setTachieCutIn(CUTIN_EJACULATE_PUSSYCREAMPIE_SLIME_NAME);
+			if(useMirrorCutin)
+				target.setTachieCutIn(CUTIN_EJACULATE_PUSSYCREAMPIE_MIRROR_SLIME_NAME);
+			else
+				target.setTachieCutIn(CUTIN_EJACULATE_PUSSYCREAMPIE_SLIME_NAME);
 		}
 		else {
-			target.setTachieCutIn(CUTIN_EJACULATE_PUSSYCREAMPIE_NAME);
+			if(useMirrorCutin)
+				target.setTachieCutIn(CUTIN_EJACULATE_PUSSYCREAMPIE_MIRROR_NAME);
+			else
+				target.setTachieCutIn(CUTIN_EJACULATE_PUSSYCREAMPIE_NAME);
 		}
 		target.justGotHitBySkillType(JUST_SKILLTYPE_ENEMY_PUSSY_CREAMPIE);
 	}
@@ -2548,13 +2578,28 @@ Game_Enemy.prototype.dmgFormula_creampie = function(target, area) {
 		if(targetPleasureGain > 0) target.addToActorAnalCreampiePleasureRecord(targetPleasureGain);
 		this.addToEnemyAnalCreampieCountRecord(target);
 		if(enemyCock == 'green') {
-			target.setTachieCutIn(CUTIN_EJACULATE_ANALCREAMPIE_GREEN_NAME);
+			if(useMirrorCutin)
+				target.setTachieCutIn(CUTIN_EJACULATE_ANALCREAMPIE_MIRROR_GREEN_NAME);
+			else
+				target.setTachieCutIn(CUTIN_EJACULATE_ANALCREAMPIE_GREEN_NAME);
+		}
+		else if(enemyCock == 'red') {
+			if(useMirrorCutin)
+				target.setTachieCutIn(CUTIN_EJACULATE_ANALCREAMPIE_MIRROR_RED_NAME);
+			else
+				target.setTachieCutIn(CUTIN_EJACULATE_ANALCREAMPIE_RED_NAME);
 		}
 		else if(enemyCock == 'slime') {
-			target.setTachieCutIn(CUTIN_EJACULATE_ANALCREAMPIE_SLIME_NAME);
+			if(useMirrorCutin)
+				target.setTachieCutIn(CUTIN_EJACULATE_ANALCREAMPIE_MIRROR_SLIME_NAME);
+			else
+				target.setTachieCutIn(CUTIN_EJACULATE_ANALCREAMPIE_SLIME_NAME);
 		}
 		else {
-			target.setTachieCutIn(CUTIN_EJACULATE_ANALCREAMPIE_NAME);
+			if(useMirrorCutin)
+				target.setTachieCutIn(CUTIN_EJACULATE_ANALCREAMPIE_MIRROR_NAME);
+			else
+				target.setTachieCutIn(CUTIN_EJACULATE_ANALCREAMPIE_NAME);
 		}
 		target.justGotHitBySkillType(JUST_SKILLTYPE_ENEMY_ANAL_CREAMPIE);
 	}
@@ -2627,6 +2672,15 @@ Game_Enemy.prototype.dmgFormula_swallow = function(target, area) {
 	else
 		$gameTroop._lastEnemySlotToCum = -1;
 	
+	if($gameParty.isInGloryBattle) {
+		if(this._guest_atStall === GLORY_LEFT_STALL_ID)
+			$gameTroop._gloryLastHoleToEjaculate = GLORY_LEFT_STALL_ID;
+		else if(this._guest_atStall === GLORY_RIGHT_STALL_ID)
+			$gameTroop._gloryLastHoleToEjaculate = GLORY_RIGHT_STALL_ID;
+		else
+			$gameTroop._gloryLastHoleToEjaculate = -1;
+	}
+	
 	let result = target.result();
 	result.pleasureDamage = targetPleasureGain;
 	result.desireAreaDamage = targetDesireGain * .3;
@@ -2639,7 +2693,10 @@ Game_Enemy.prototype.dmgFormula_swallow = function(target, area) {
 	if(targetPleasureGain > 0) target.addToActorSwallowPleasureRecord(targetPleasureGain);
 	this.addToEnemySwallowCountRecord(target);
 
-	target.setTachieCutIn(CUTIN_EJACULATE_MOUTH_NAME);
+	if($gameParty.isInGloryBattle) { }
+	else {
+		target.setTachieCutIn(CUTIN_EJACULATE_MOUTH_NAME);
+	}
 	target.justGotHitBySkillType(JUST_SKILLTYPE_ENEMY_CUM_SWALLOW);
 	
 	target.gainCharmExp(12, this.enemyExperienceLvl());
@@ -2706,6 +2763,15 @@ Game_Enemy.prototype.dmgFormula_bukkake = function(target, area) {
 	else
 		$gameTroop._lastEnemySlotToCum = -1;
 	
+	if($gameParty.isInGloryBattle) {
+		if(this._guest_atStall === GLORY_LEFT_STALL_ID)
+			$gameTroop._gloryLastHoleToEjaculate = GLORY_LEFT_STALL_ID;
+		else if(this._guest_atStall === GLORY_RIGHT_STALL_ID)
+			$gameTroop._gloryLastHoleToEjaculate = GLORY_RIGHT_STALL_ID;
+		else
+			$gameTroop._gloryLastHoleToEjaculate = -1;
+	}
+	
 	let result = target.result();
 	result.pleasureDamage = targetPleasureGain;
 	result.desireAreaDamage = targetDesireGain * .3;
@@ -2759,14 +2825,33 @@ Game_Enemy.prototype.dmgFormula_bukkake = function(target, area) {
 	if(targetPleasureGain > 0) 
 		target.addToActorBukkakePleasureRecord(targetPleasureGain);
 	
+	let useMirrorCutin = false;
+	if($gameParty.isInGloryBattle && this._guest_atStall === GLORY_RIGHT_STALL_ID)
+		useMirrorCutin = true;
+	
 	if(enemyCock == 'green') {
-		target.setTachieCutIn(CUTIN_EJACULATE_BUKKAKE_GREEN_NAME);
+		if(useMirrorCutin)
+			target.setTachieCutIn(CUTIN_EJACULATE_BUKKAKE_MIRROR_GREEN_NAME);
+		else
+			target.setTachieCutIn(CUTIN_EJACULATE_BUKKAKE_GREEN_NAME);
 	}
 	else if(enemyCock == 'slime') {
-		target.setTachieCutIn(CUTIN_EJACULATE_BUKKAKE_SLIME_NAME);
+		if(useMirrorCutin)
+			target.setTachieCutIn(CUTIN_EJACULATE_BUKKAKE_MIRROR_SLIME_NAME);
+		else
+			target.setTachieCutIn(CUTIN_EJACULATE_BUKKAKE_SLIME_NAME);
+	}
+	else if(enemyCock == 'red') {
+		if(useMirrorCutin)
+			target.setTachieCutIn(CUTIN_EJACULATE_BUKKAKE_MIRROR_RED_NAME);
+		else
+			target.setTachieCutIn(CUTIN_EJACULATE_BUKKAKE_RED_NAME);
 	}
 	else {
-		target.setTachieCutIn(CUTIN_EJACULATE_BUKKAKE_NAME);
+		if(useMirrorCutin)
+			target.setTachieCutIn(CUTIN_EJACULATE_BUKKAKE_MIRROR_NAME);
+		else
+			target.setTachieCutIn(CUTIN_EJACULATE_BUKKAKE_NAME);
 	}
 	
 	if(area != CUM_INTO_MUG && area != CUM_ONTO_DESK && area != CUM_ONTO_FLOOR) {
@@ -2942,7 +3027,17 @@ Game_Enemy.prototype.postDamage_bukkake = function(target, area) {
 	//target.emoteMasterManager();
 	
 	if($gameParty.isInGloryBattle) {
-		
+		if(this.isUsingBodySlotPenis(PUSSY_ID) || this.isUsingBodySlotPenis(ANAL_ID)) {
+			BattleManager.pullOutEnemy(this);
+		}
+		if(this.isUsingBodySlotPenis(MOUTH_ID) && Karryn.getReactionScore() < VAR_DEF_RS_LV3_REQ) {
+			BattleManager.pullOutEnemy(this);
+		}
+		if(this.isUsingBodySlotPenis(RIGHT_HAND_ID) || this.isUsingBodySlotPenis(LEFT_HAND_ID)) {
+			if(Karryn.getReactionScore() < VAR_DEF_RS_LV2_REQ) { 
+				BattleManager.pullOutEnemy(this);
+			}
+		}
 	}
 	else if(this.isSlimeType && Karryn.isInSlimeAnalPiledriverSexPose()) {
 		
@@ -2983,7 +3078,13 @@ Game_Enemy.prototype.postDamage_swallow = function(target, area) {
 	if(target.energy > 0 && conversion > 0) target.gainMp(conversion);
 	
 	if($gameParty.isInGloryBattle) {
-		
+		if(Karryn.getReactionScore() >= VAR_DEF_RS_LV3_REQ) { }
+		else if(Karryn.getReactionScore() >= VAR_DEF_RS_LV2_REQ) { 
+			this.checkIfStillErectedWhileInPose();
+		}
+		else {
+			BattleManager.pullOutEnemy(this);
+		}
 	}
 	else {
 		this.checkIfStillErectedWhileInPose();
@@ -3033,7 +3134,7 @@ Game_Enemy.prototype.postDamage_creampie = function(target, area) {
 	//target.emoteMasterManager();
 	
 	if($gameParty.isInGloryBattle) {
-		
+		this.checkIfStillErectedWhileInPose();
 	}
 	else {
 		this.checkIfStillErectedWhileInPose();

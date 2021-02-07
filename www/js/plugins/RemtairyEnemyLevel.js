@@ -35,7 +35,7 @@ const ENEMY_LVL_PRISON_LEVEL_FIVE_NORMAL = 35;
 const ENEMY_LVL_PRISON_LEVEL_FIVE_HARD = 35;
 
 //Number of days until enemy lvl increases
-const ENEMY_LVL_INCREASE_DAY_EASY = 13; 
+const ENEMY_LVL_INCREASE_DAY_EASY = 14; 
 const ENEMY_LVL_INCREASE_DAY_NORMAL = 7;
 const ENEMY_LVL_INCREASE_DAY_HARD = 5;
 
@@ -416,13 +416,13 @@ Game_Enemy.prototype.enemyLvl_specialCases = function() {
 	}
 	else if($gameParty.isInGloryBattle) {
 		if(!Prison.prisonLevelFourIsUnknown && !Prison.prisonLevelFourIsAnarchy) {
-			lvl += ENEMY_LVL_PRISON_LEVEL_FOUR_NORMAL;
-		}
-		else if(!Prison.prisonLevelThreeIsUnknown && !Prison.prisonLevelThreeIsAnarchy) {
 			lvl += ENEMY_LVL_PRISON_LEVEL_THREE_NORMAL;
 		}
-		else {
+		else if(!Prison.prisonLevelThreeIsUnknown && !Prison.prisonLevelThreeIsAnarchy) {
 			lvl += ENEMY_LVL_PRISON_LEVEL_TWO_NORMAL;
+		}
+		else {
+			lvl += ENEMY_LVL_PRISON_LEVEL_ONE_NORMAL;
 		}
 	}
 	

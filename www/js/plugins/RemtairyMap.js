@@ -333,7 +333,11 @@ Scene_Map.prototype.changeBGMOnTransfer = function() {
 	let mapId = $gameMap._mapId;
 	
 	if(Prison.currentlyOutsidePrison()) {
-		if(mapId === MAP_ID_OUTSIDE || mapId === MAP_ID_EB_HALLWAY) {
+		if(mapId === MAP_ID_EB_HALLWAY) {
+			bgmName = MAP_EB_BGM_NAME;
+			bgmVolume = MAP_EB_BGM_VOLUME;
+		}
+		else if(mapId === MAP_ID_OUTSIDE && $gameSwitches.value(SWITCH_PROLOGUE_ENDED)) {
 			bgmName = MAP_EB_BGM_NAME;
 			bgmVolume = MAP_EB_BGM_VOLUME;
 		}

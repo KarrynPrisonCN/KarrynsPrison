@@ -2182,8 +2182,6 @@ var Saba;
 				this.doPreloadTachie(this.tachieSemenCockAnalFile());
 				this.doPreloadTachie(this.tachieSemenCockFeetFile());
 				this.doPreloadTachie(this.tachieSemenCockNormalFile());
-				this.doPreloadTachie(this.tachieSemenHoleLeftFile());
-				this.doPreloadTachie(this.tachieSemenHoleRightFile());
 				this.doPreloadTachie(this.tachieSemenFrontAFile());
 				this.doPreloadTachie(this.tachieSemenFrontBFile());
 				this.doPreloadTachie(this.tachieSemenFrontCFile());
@@ -2199,6 +2197,26 @@ var Saba;
 				this.doPreloadTachie(this.tachieDroolMouthFile());
 				this.doPreloadTachie(this.tachieDroolFingersFile());
 				this.doPreloadTachie(this.tachieDroolNipplesFile());
+				
+				if($gameParty.isInGloryBattle) {
+					this.doPreloadTachie(this.tachieSemenHoleLeftFile());
+					this.doPreloadTachie(this.tachieSemenHoleRightFile());
+					this.doPreloadTachie(this.tachieSemenToiletSeatFile());
+					this.doPreloadTachie(this.tachieWetToiletSeatFile());
+					
+					for(let i = 0; i < this._liquidGloryCumOnLeftWall.length; ++i)
+						this.doPreloadTachie(this.tachieSemenGloryLeftWallFile(i));
+					for(let i = 0; i < this._liquidGloryCumOnRightWall.length; ++i)
+						this.doPreloadTachie(this.tachieSemenGloryRightWallFile(i));
+					for(let i = 0; i < this._liquidGloryCumOnLeftHole.length; ++i)
+						this.doPreloadTachie(this.tachieSemenGloryLeftHoleFile(i));
+					for(let i = 0; i < this._liquidGloryCumOnRightHole.length; ++i)
+						this.doPreloadTachie(this.tachieSemenGloryRightHoleFile(i));
+					for(let i = 0; i < this._liquidGloryCumOnLeftToilet.length; ++i)
+						this.doPreloadTachie(this.tachieSemenGloryLeftToiletFile(i));
+					for(let i = 0; i < this._liquidGloryCumOnRightToilet.length; ++i)
+						this.doPreloadTachie(this.tachieSemenGloryRightToiletFile(i));
+				}
             };
 			
             _Game_Actor.prototype.preloadFaces = function (tachieFaces) {
@@ -2605,7 +2623,81 @@ var Saba;
 				if(!id) return null;
                 return this.tachieBaseId + 'zaa_hole_right_' + id;
             };
+			_Game_Actor.prototype.tachieSemenToiletSeatFile = function () {
+				let id = this.getTachieSemenToiletSeatId();
+				if(!id) return null;
+                return this.tachieBaseId + 'zaa_toiletseat_crotch_' + id;
+            };
+			_Game_Actor.prototype.tachieWetToiletSeatFile = function () {
+				let id = this.getTachieWetToiletSeatId();
+				if(!id) return null;
+                return this.tachieBaseId + 'zaa_toiletseat_wet_' + id;
+            };
 			
+			_Game_Actor.prototype.tachieSemenGloryLeftWallFile = function (index) {
+				let id = this.getTachieGlorySemenLeftWallId(index);
+				if(!id) return null;
+				let indexLetter = 'a';
+				if(index === 0) indexLetter = 'a';
+				else if(index === 1) indexLetter = 'b';
+				else if(index === 2) indexLetter = 'c';
+				else if(index === 3) indexLetter = 'd';
+				else if(index === 4) indexLetter = 'e';
+				else if(index === 5) indexLetter = 'f';
+				else if(index === 6) indexLetter = 'g';
+				else if(index === 7) indexLetter = 'h';
+				else if(index === 8) indexLetter = 'i';
+                return this.tachieBaseId + 'zaa_glory_leftwall_' + indexLetter + '_' + id;
+            };
+			_Game_Actor.prototype.tachieSemenGloryRightWallFile = function (index) {
+				let id = this.getTachieGlorySemenRightWallId(index);
+				if(!id) return null;
+				let indexLetter = 'a';
+				if(index === 0) indexLetter = 'a';
+				else if(index === 1) indexLetter = 'b';
+				else if(index === 2) indexLetter = 'c';
+				else if(index === 3) indexLetter = 'd';
+				else if(index === 4) indexLetter = 'e';
+				else if(index === 5) indexLetter = 'f';
+				else if(index === 6) indexLetter = 'g';
+				else if(index === 7) indexLetter = 'h';
+				else if(index === 8) indexLetter = 'i';
+                return this.tachieBaseId + 'zaa_glory_rightwall_' + indexLetter + '_' + id;
+            };
+			_Game_Actor.prototype.tachieSemenGloryLeftHoleFile = function (index) {
+				let id = this.getTachieGlorySemenLeftHoleId(index);
+				if(!id) return null;
+				let indexLetter = 'a';
+				if(index === 0) indexLetter = 'a';
+				else if(index === 1) indexLetter = 'b';
+                return this.tachieBaseId + 'zaa_glory_lefthole_' + indexLetter + '_' + id;
+            };
+			_Game_Actor.prototype.tachieSemenGloryRightHoleFile = function (index) {
+				let id = this.getTachieGlorySemenRightHoleId(index);
+				if(!id) return null;
+				let indexLetter = 'a';
+				if(index === 0) indexLetter = 'a';
+				else if(index === 1) indexLetter = 'b';
+                return this.tachieBaseId + 'zaa_glory_righthole_' + indexLetter + '_' + id;
+            };
+			_Game_Actor.prototype.tachieSemenGloryLeftToiletFile = function (index) {
+				let id = this.getTachieGlorySemenLeftToiletId(index);
+				if(!id) return null;
+				if(index === 0) indexLetter = 'a';
+				else if(index === 1) indexLetter = 'b';
+				else if(index === 2) indexLetter = 'c';
+				else if(index === 3) indexLetter = 'd';
+                return this.tachieBaseId + 'zaa_glory_lefttoilet_' + indexLetter + '_' + id;
+            };
+			_Game_Actor.prototype.tachieSemenGloryRightToiletFile = function (index) {
+				let id = this.getTachieGlorySemenRightToiletId(index);
+				if(!id) return null;
+				if(index === 0) indexLetter = 'a';
+				else if(index === 1) indexLetter = 'b';
+				else if(index === 2) indexLetter = 'c';
+				else if(index === 3) indexLetter = 'd';
+                return this.tachieBaseId + 'zaa_glory_righttoilet_' + indexLetter + '_' + id;
+            };
 			
 			
 			_Game_Actor.prototype.tachieSemenFrontAFile = function () {
@@ -3071,8 +3163,22 @@ var Saba;
 								this.drawTachieSemenHoleLeft(actor, cache);
 							else if(layerType === LAYER_TYPE_SEMEN_HOLE_RIGHT)
 								this.drawTachieSemenHoleRight(actor, cache);
-							
-							
+							else if(layerType === LAYER_TYPE_SEMEN_TOILET_SEAT)
+								this.drawTachieSemenToiletSeat(actor, cache);
+							else if(layerType === LAYER_TYPE_WET_TOILET_SEAT)
+								this.drawTachieWetToiletSeat(actor, cache);
+							else if(layerType === LAYER_TYPE_GLORY_SEMEN_WALL_LEFT)
+								this.drawTachieGlorySemenLeftWall(actor, cache);
+							else if(layerType === LAYER_TYPE_GLORY_SEMEN_WALL_RIGHT)
+								this.drawTachieGlorySemenRightWall(actor, cache);
+							else if(layerType === LAYER_TYPE_GLORY_SEMEN_HOLE_LEFT)
+								this.drawTachieGlorySemenLeftHole(actor, cache);
+							else if(layerType === LAYER_TYPE_GLORY_SEMEN_HOLE_RIGHT)
+								this.drawTachieGlorySemenRightHole(actor, cache);
+							else if(layerType === LAYER_TYPE_GLORY_SEMEN_TOILET_LEFT)
+								this.drawTachieGlorySemenLeftToilet(actor, cache);
+							else if(layerType === LAYER_TYPE_GLORY_SEMEN_TOILET_RIGHT)
+								this.drawTachieGlorySemenRightToilet(actor, cache);
 							
 						}
 					}
@@ -3934,6 +4040,36 @@ var Saba;
 			this.drawTachieSemenHoleRight = function (actor, bitmap) {
                 this.drawTachieFile(actor.tachieSemenHoleRightFile(), bitmap, actor);
             };
+			this.drawTachieSemenToiletSeat = function (actor, bitmap) {
+                this.drawTachieFile(actor.tachieSemenToiletSeatFile(), bitmap, actor);
+            };
+			this.drawTachieWetToiletSeat = function (actor, bitmap) {
+                this.drawTachieFile(actor.tachieWetToiletSeatFile(), bitmap, actor);
+            };
+			this.drawTachieGlorySemenLeftWall = function (actor, bitmap) {
+                for(let i = 0; i < actor._liquidGloryCumOnLeftWall.length; ++i)
+					this.drawTachieFile(actor.tachieSemenGloryLeftWallFile(i), bitmap, actor);
+            };
+			this.drawTachieGlorySemenRightWall = function (actor, bitmap) {
+                for(let i = 0; i < actor._liquidGloryCumOnRightWall.length; ++i)
+					this.drawTachieFile(actor.tachieSemenGloryRightWallFile(i), bitmap, actor);
+            };
+			this.drawTachieGlorySemenLeftHole = function (actor, bitmap) {
+				for(let i = 0; i < actor._liquidGloryCumOnLeftHole.length; ++i)
+					this.drawTachieFile(actor.tachieSemenGloryLeftHoleFile(i), bitmap, actor);
+            };
+			this.drawTachieGlorySemenRightHole = function (actor, bitmap) {
+				for(let i = 0; i < actor._liquidGloryCumOnRightHole.length; ++i)
+					this.drawTachieFile(actor.tachieSemenGloryRightHoleFile(i), bitmap, actor);
+            };
+			this.drawTachieGlorySemenLeftToilet = function (actor, bitmap) {
+				for(let i = 0; i < actor._liquidGloryCumOnLeftToilet.length; ++i)
+					this.drawTachieFile(actor.tachieSemenGloryLeftToiletFile(i), bitmap, actor);
+            };
+			this.drawTachieGlorySemenRightToilet = function (actor, bitmap) {
+				for(let i = 0; i < actor._liquidGloryCumOnRightToilet.length; ++i)
+					this.drawTachieFile(actor.tachieSemenGloryRightToiletFile(i), bitmap, actor);
+            };
 			
 			this.drawTachieDroolMouth = function (actor, bitmap) {
                 this.drawTachieFile(actor.tachieDroolMouthFile(), bitmap, actor);
@@ -4436,9 +4572,9 @@ var Saba;
                 if ($gameTemp.isAutoMode) {
                     this._autoModeCurrentWait++;
                 }
-                if (Input.isTriggered(Tachie.AUTO_MODE_KEY)) {
-                    $gameTemp.isAutoMode = !$gameTemp.isAutoMode;
-                }
+                //if (Input.isTriggered(Tachie.AUTO_MODE_KEY)) {
+                //    $gameTemp.isAutoMode = !$gameTemp.isAutoMode;
+                //}
             };
             Window_TachieMessage.prototype.updatePlacement = function () {
                 if (this._galMode) {

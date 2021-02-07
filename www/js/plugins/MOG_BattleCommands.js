@@ -93,8 +93,20 @@ const REM_BHD_BC_LIZARDMAN_COWGIRL_Y = -250;
 const REM_BHD_BC_KICK_COUNTER_X = -90;
 const REM_BHD_BC_KICK_COUNTER_Y = -145;
 
-const REM_BHD_BC_GLORY_BATTLE_X = 550;
-const REM_BHD_BC_GLORY_BATTLE_Y = -30;
+const REM_BHD_BC_GLORY_BATTLE_SITTING_X = -520;
+const REM_BHD_BC_GLORY_BATTLE_SITTING_Y = 50;
+
+const REM_BHD_BC_GLORY_BATTLE_SIT_LEFT_X = -540;
+const REM_BHD_BC_GLORY_BATTLE_SIT_LEFT_Y = 50;
+
+const REM_BHD_BC_GLORY_BATTLE_SIT_RIGHT_X = -540;
+const REM_BHD_BC_GLORY_BATTLE_SIT_RIGHT_Y = 50;
+
+const REM_BHD_BC_GLORY_BATTLE_STAND_LEFT_X = -540;
+const REM_BHD_BC_GLORY_BATTLE_STAND_LEFT_Y = 50;
+
+const REM_BHD_BC_GLORY_BATTLE_STAND_RIGHT_X = -540;
+const REM_BHD_BC_GLORY_BATTLE_STAND_RIGHT_Y = 50;
 
 //=============================================================================
 // MOG_BattleCommands.js
@@ -608,11 +620,26 @@ Window_ActorCommand.prototype.create_layout = function() {
 		this._layout.x += REM_BHD_BC_KICK_COUNTER_X;
 		this._layout.y += REM_BHD_BC_KICK_COUNTER_Y;
 	}
-	else if($gameParty.isInGloryBattle) {
-		this._layout.x += REM_BHD_BC_GLORY_BATTLE_X;
-		this._layout.y += REM_BHD_BC_GLORY_BATTLE_Y;
+	else if(Karryn.isInToiletSittingPose()) {
+		this._layout.x += REM_BHD_BC_GLORY_BATTLE_SITTING_X;
+		this._layout.y += REM_BHD_BC_GLORY_BATTLE_SITTING_Y;
 	}
-	
+	else if(Karryn.isInToiletSitLeftPose()) {
+		this._layout.x += REM_BHD_BC_GLORY_BATTLE_SIT_LEFT_X;
+		this._layout.y += REM_BHD_BC_GLORY_BATTLE_SIT_LEFT_Y;
+	}
+	else if(Karryn.isInToiletSitRightPose()) {
+		this._layout.x += REM_BHD_BC_GLORY_BATTLE_SIT_RIGHT_X;
+		this._layout.y += REM_BHD_BC_GLORY_BATTLE_SIT_RIGHT_Y;
+	}
+	else if(Karryn.isInToiletStandLeftPose()) {
+		this._layout.x += REM_BHD_BC_GLORY_BATTLE_STAND_LEFT_X;
+		this._layout.y += REM_BHD_BC_GLORY_BATTLE_STAND_LEFT_Y;
+	}
+	else if(Karryn.isInToiletStandRightPose()) {
+		this._layout.x += REM_BHD_BC_GLORY_BATTLE_STAND_RIGHT_X;
+		this._layout.y += REM_BHD_BC_GLORY_BATTLE_STAND_RIGHT_Y;
+	}
 	
 	this.addChild(this._layout);
 };
@@ -818,9 +845,25 @@ Window_ActorCommand.prototype.create_com_name = function() {
 		this._com_name.x += REM_BHD_BC_KICK_COUNTER_X;
 		this._com_name.y += REM_BHD_BC_KICK_COUNTER_Y; 
 	}
-	else if($gameParty.isInGloryBattle) {
-		this._com_name.x += REM_BHD_BC_GLORY_BATTLE_X;
-		this._com_name.y += REM_BHD_BC_GLORY_BATTLE_Y; 
+	else if(Karryn.isInToiletSittingPose()) {
+		this._com_name.x += REM_BHD_BC_GLORY_BATTLE_SITTING_X;
+		this._com_name.y += REM_BHD_BC_GLORY_BATTLE_SITTING_Y; 
+	}
+	else if(Karryn.isInToiletSitLeftPose()) {
+		this._com_name.x += REM_BHD_BC_GLORY_BATTLE_SIT_LEFT_X;
+		this._com_name.y += REM_BHD_BC_GLORY_BATTLE_SIT_LEFT_Y; 
+	}
+	else if(Karryn.isInToiletSitRightPose()) {
+		this._com_name.x += REM_BHD_BC_GLORY_BATTLE_SIT_RIGHT_X;
+		this._com_name.y += REM_BHD_BC_GLORY_BATTLE_SIT_RIGHT_Y; 
+	}
+	else if(Karryn.isInToiletStandLeftPose()) {
+		this._com_name.x += REM_BHD_BC_GLORY_BATTLE_STAND_LEFT_X;
+		this._com_name.y += REM_BHD_BC_GLORY_BATTLE_STAND_LEFT_Y; 
+	}
+	else if(Karryn.isInToiletStandRightPose()) {
+		this._com_name.x += REM_BHD_BC_GLORY_BATTLE_STAND_RIGHT_X;
+		this._com_name.y += REM_BHD_BC_GLORY_BATTLE_STAND_RIGHT_Y; 
 	}
 
 
@@ -983,9 +1026,25 @@ Window_ActorCommand.prototype.refresh_bitmap_com = function() {
 			this._com_sprites[i].x += REM_BHD_BC_KICK_COUNTER_X;
 			this._com_sprites[i].y += REM_BHD_BC_KICK_COUNTER_Y;
 		}
-		else if($gameParty.isInGloryBattle) {
-			this._com_sprites[i].x += REM_BHD_BC_GLORY_BATTLE_X;
-			this._com_sprites[i].y += REM_BHD_BC_GLORY_BATTLE_Y;
+		else if(Karryn.isInToiletSittingPose()) {
+			this._com_sprites[i].x += REM_BHD_BC_GLORY_BATTLE_SITTING_X;
+			this._com_sprites[i].y += REM_BHD_BC_GLORY_BATTLE_SITTING_Y;
+		}
+		else if(Karryn.isInToiletSitLeftPose()) {
+			this._com_sprites[i].x += REM_BHD_BC_GLORY_BATTLE_SIT_LEFT_X;
+			this._com_sprites[i].y += REM_BHD_BC_GLORY_BATTLE_SIT_LEFT_Y;
+		}
+		else if(Karryn.isInToiletSitRightPose()) {
+			this._com_sprites[i].x += REM_BHD_BC_GLORY_BATTLE_SIT_RIGHT_X;
+			this._com_sprites[i].y += REM_BHD_BC_GLORY_BATTLE_SIT_RIGHT_Y;
+		}
+		else if(Karryn.isInToiletStandLeftPose()) {
+			this._com_sprites[i].x += REM_BHD_BC_GLORY_BATTLE_STAND_LEFT_X;
+			this._com_sprites[i].y += REM_BHD_BC_GLORY_BATTLE_STAND_LEFT_Y;
+		}
+		else if(Karryn.isInToiletStandRightPose()) {
+			this._com_sprites[i].x += REM_BHD_BC_GLORY_BATTLE_STAND_RIGHT_X;
+			this._com_sprites[i].y += REM_BHD_BC_GLORY_BATTLE_STAND_RIGHT_Y;
 		}
 		
 	};
@@ -1408,9 +1467,25 @@ Window_ActorCommand.prototype.refresh_ring_command = function() {
 			this._com_sprites[i].x += REM_BHD_BC_KICK_COUNTER_X;
 			this._com_sprites[i].y += REM_BHD_BC_KICK_COUNTER_Y;
 		}
-		else if($gameParty.isInGloryBattle) {
-			this._com_sprites[i].x += REM_BHD_BC_GLORY_BATTLE_X;
-			this._com_sprites[i].y += REM_BHD_BC_GLORY_BATTLE_Y;
+		else if(Karryn.isInToiletSittingPose()) {
+			this._com_sprites[i].x += REM_BHD_BC_GLORY_BATTLE_SITTING_X;
+			this._com_sprites[i].y += REM_BHD_BC_GLORY_BATTLE_SITTING_Y;
+		}
+		else if(Karryn.isInToiletSitLeftPose()) {
+			this._com_sprites[i].x += REM_BHD_BC_GLORY_BATTLE_SIT_LEFT_X;
+			this._com_sprites[i].y += REM_BHD_BC_GLORY_BATTLE_SIT_LEFT_Y;
+		}
+		else if(Karryn.isInToiletSitRightPose()) {
+			this._com_sprites[i].x += REM_BHD_BC_GLORY_BATTLE_SIT_RIGHT_X;
+			this._com_sprites[i].y += REM_BHD_BC_GLORY_BATTLE_SIT_RIGHT_Y;
+		}
+		else if(Karryn.isInToiletStandLeftPose()) {
+			this._com_sprites[i].x += REM_BHD_BC_GLORY_BATTLE_STAND_LEFT_X;
+			this._com_sprites[i].y += REM_BHD_BC_GLORY_BATTLE_STAND_LEFT_Y;
+		}
+		else if(Karryn.isInToiletStandRightPose()) {
+			this._com_sprites[i].x += REM_BHD_BC_GLORY_BATTLE_STAND_RIGHT_X;
+			this._com_sprites[i].y += REM_BHD_BC_GLORY_BATTLE_STAND_RIGHT_Y;
 		}
 		
 		this._com_sprites[i].visible = true;
@@ -1533,9 +1608,25 @@ Window_ActorCommand.prototype.update_position = function(i) {
 			this._np[0] += REM_BHD_BC_KICK_COUNTER_X;
 			this._np[1] += REM_BHD_BC_KICK_COUNTER_Y;	
 		}
-		else if($gameParty.isInGloryBattle) {
-			this._np[0] += REM_BHD_BC_GLORY_BATTLE_X;
-			this._np[1] += REM_BHD_BC_GLORY_BATTLE_Y;	
+		else if(Karryn.isInToiletSittingPose()) {
+			this._np[0] += REM_BHD_BC_GLORY_BATTLE_SITTING_X;
+			this._np[1] += REM_BHD_BC_GLORY_BATTLE_SITTING_Y;	
+		}
+		else if(Karryn.isInToiletSitLeftPose()) {
+			this._np[0] += REM_BHD_BC_GLORY_BATTLE_SIT_LEFT_X;
+			this._np[1] += REM_BHD_BC_GLORY_BATTLE_SIT_LEFT_Y;	
+		}
+		else if(Karryn.isInToiletSitRightPose()) {
+			this._np[0] += REM_BHD_BC_GLORY_BATTLE_SIT_RIGHT_X;
+			this._np[1] += REM_BHD_BC_GLORY_BATTLE_SIT_RIGHT_Y;	
+		}
+		else if(Karryn.isInToiletStandLeftPose()) {
+			this._np[0] += REM_BHD_BC_GLORY_BATTLE_STAND_LEFT_X;
+			this._np[1] += REM_BHD_BC_GLORY_BATTLE_STAND_LEFT_Y;	
+		}
+		else if(Karryn.isInToiletStandRightPose()) {
+			this._np[0] += REM_BHD_BC_GLORY_BATTLE_STAND_RIGHT_X;
+			this._np[1] += REM_BHD_BC_GLORY_BATTLE_STAND_RIGHT_Y;	
 		}
 		
 	} else {
@@ -1650,9 +1741,25 @@ Window_ActorCommand.prototype.update_position = function(i) {
 			this._np[0] += REM_BHD_BC_KICK_COUNTER_X;
 			this._np[1] += REM_BHD_BC_KICK_COUNTER_Y;	
 		}
-		else if($gameParty.isInGloryBattle) {
-			this._np[0] += REM_BHD_BC_GLORY_BATTLE_X;
-			this._np[1] += REM_BHD_BC_GLORY_BATTLE_Y;	
+		else if(Karryn.isInToiletSittingPose()) {
+			this._np[0] += REM_BHD_BC_GLORY_BATTLE_SITTING_X;
+			this._np[1] += REM_BHD_BC_GLORY_BATTLE_SITTING_Y;	
+		}
+		else if(Karryn.isInToiletSitLeftPose()) {
+			this._np[0] += REM_BHD_BC_GLORY_BATTLE_SIT_LEFT_X;
+			this._np[1] += REM_BHD_BC_GLORY_BATTLE_SIT_LEFT_Y;	
+		}
+		else if(Karryn.isInToiletSitRightPose()) {
+			this._np[0] += REM_BHD_BC_GLORY_BATTLE_SIT_RIGHT_X;
+			this._np[1] += REM_BHD_BC_GLORY_BATTLE_SIT_RIGHT_Y;	
+		}
+		else if(Karryn.isInToiletStandLeftPose()) {
+			this._np[0] += REM_BHD_BC_GLORY_BATTLE_STAND_LEFT_X;
+			this._np[1] += REM_BHD_BC_GLORY_BATTLE_STAND_LEFT_Y;	
+		}
+		else if(Karryn.isInToiletStandRightPose()) {
+			this._np[0] += REM_BHD_BC_GLORY_BATTLE_STAND_RIGHT_X;
+			this._np[1] += REM_BHD_BC_GLORY_BATTLE_STAND_RIGHT_Y;	
 		}
 	};
 	this._com_sprites[i].x = this.sprite_move_to(this._com_sprites[i].x,this._np[0],this.com_move_speed());

@@ -1323,7 +1323,7 @@ Window_StatusInfo.prototype.drawProfile = function() {
 	this.drawDarkRect(firstColumnX, paddingY, screenWidth, (1.7 + profileBio.length * 0.4) * lineHeight);
 	let firstLineText = TextManager.profileNameText + ' ' + TextManager.profileName + '      ' + TextManager.profileAgeText + ' ';
 	if(actor.hasEdict(EDICT_PUBLISH_PROFILE)) 
-		firstLineText += TextManager.profileAge;
+		firstLineText += actor.getActorAge(); 
 	else
 		firstLineText += TextManager.profileRecordSecret;
 	
@@ -1349,10 +1349,10 @@ Window_StatusInfo.prototype.drawProfile = function() {
 	
 	for(let i = 0; i < profileBio.length; ++i) {
 		this.drawTextEx(profileBio[i], firstTextPaddingX, lineCount * lineHeight, screenWidth, 'left', true);
-		lineCount += 0.4;
+		lineCount += 0.38;
 	}
 	
-	lineCount += 0.4;
+	lineCount += 0.35;
 	this.contents.fontSize = normalFontSize;
 	
 	for (let i = 0; i < 13; ++i) {	
@@ -1667,49 +1667,49 @@ Window_StatusInfo.prototype.drawRecords = function() {
 		}
 		else if(i === 4) {
 			let fmt = TextManager.statusRecordFingersSucked;
-			let value1 = actor._recordFingersSuckedCount;
+			let value1 = actor._recordFingersSuckedCount - actor._recordFingersSuckedOnaniCount;
 			let value2 = actor._recordFingersSuckedPeople;
 			if(value1 && value2 && value2 > 1)
 				recordText = fmt.format(Yanfly.Util.toGroup(value1), Yanfly.Util.toGroup(value2));
 		}
 		else if(i === 5) {
 			let fmt = TextManager.statusRecordBoobsPetted;
-			let value1 = actor._recordBoobsPettedCount;
+			let value1 = actor._recordBoobsPettedCount - actor._recordBoobsPettedOnaniCount;
 			let value2 = actor._recordBoobsPettedPeople;
 			if(value1 && value2 && value2 > 1)
 				recordText = fmt.format(Yanfly.Util.toGroup(value1), Yanfly.Util.toGroup(value2));
 		}
 		else if(i === 6) {
 			let fmt = TextManager.statusRecordNipplesPetted;
-			let value1 = actor._recordNipplesPettedCount;
+			let value1 = actor._recordNipplesPettedCount - actor._recordNipplesPettedOnaniCount;
 			let value2 = actor._recordNipplesPettedPeople;
 			if(value1 && value2 && value2 > 1)
 				recordText = fmt.format(Yanfly.Util.toGroup(value1), Yanfly.Util.toGroup(value2));
 		}
 		else if(i === 7) {
 			let fmt = TextManager.statusRecordClitPetted;
-			let value1 = actor._recordClitPettedCount;
+			let value1 = actor._recordClitPettedCount - actor._recordClitPettedOnaniCount;
 			let value2 = actor._recordClitPettedPeople;
 			if(value1 && value2 && value2 > 1)
 				recordText = fmt.format(Yanfly.Util.toGroup(value1), Yanfly.Util.toGroup(value2));
 		}
 		else if(i === 8) {
 			let fmt = TextManager.statusRecordPussyPetted;
-			let value1 = actor._recordPussyPettedCount;
+			let value1 = actor._recordPussyPettedCount - actor._recordPussyPettedOnaniCount;
 			let value2 = actor._recordPussyPettedPeople;
 			if(value1 && value2 && value2 > 1)
 				recordText = fmt.format(Yanfly.Util.toGroup(value1), Yanfly.Util.toGroup(value2));
 		}
 		else if(i === 9) {
 			let fmt = TextManager.statusRecordButtPetted;
-			let value1 = actor._recordButtPettedCount;
+			let value1 = actor._recordButtPettedCount - actor._recordButtPettedOnaniCount;
 			let value2 = actor._recordButtPettedPeople;
 			if(value1 && value2 && value2 > 1)
 				recordText = fmt.format(Yanfly.Util.toGroup(value1), Yanfly.Util.toGroup(value2));
 		}
 		else if(i === 10) {
 			let fmt = TextManager.statusRecordAnalPetted;
-			let value1 = actor._recordAnalPettedCount;
+			let value1 = actor._recordAnalPettedCount - actor._recordAnalPettedOnaniCount;
 			let value2 = actor._recordAnalPettedPeople;
 			if(value1 && value2 && value2 > 1)
 				recordText = fmt.format(Yanfly.Util.toGroup(value1), Yanfly.Util.toGroup(value2));

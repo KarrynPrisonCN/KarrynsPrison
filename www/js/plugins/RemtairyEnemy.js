@@ -106,8 +106,6 @@ Game_Enemy.prototype.setup = function(enemyId, x, y, wanted, originalEnemyId) {
 	this.setupUsingBodySlot();
 	this.setupOrderAndFatigueGain();
 	this.setupSexSkillLevels();
-	this.setupStench();
-	this.setupSmegma();
 	this.setupEjaculation();
 	this.setupAnger();
 	//this.setupSexToys();
@@ -207,7 +205,7 @@ Game_Enemy.prototype.setupEnemyInitialPleasure = function() {
 		let initialPleasure = Math.max(1, (charmDiff) * initialMulti);
 		
 		if(initialPleasure > this.arousalPoint())
-			this.gainPleasure(this.arousalPoint() + Math.min(this.orgasmPoint() * 0.1, (this.arousalPoint() - initialPleasure) * 0.15));
+			this.gainPleasure(this.arousalPoint() + Math.min(this.orgasmPoint() * 0.1, (initialPleasure - this.arousalPoint()) * 0.15));
 		else 
 			this.gainPleasure(initialPleasure)
 	}
@@ -232,6 +230,7 @@ Game_Enemy.prototype.setupSexSkillLevels = function() {
 	this._baseSadismLvl = Math.round(this.enemy().dataSadismLevel * 10) / 10;
 };
 
+//unused
 Game_Enemy.prototype.setupStench = function() {
 	var min = this.enemy().dataStench;
 	var range = this.enemy().dataStenchRange;
@@ -240,7 +239,7 @@ Game_Enemy.prototype.setupStench = function() {
 
 	this.setStench(Math.max(Math.randomInt(range) + min, 0));
 };
-
+//unused
 Game_Enemy.prototype.setupSmegma = function() {
 	var min = this.enemy().dataSmegma;
 	var range = this.enemy().dataSmegmaRange;
@@ -783,7 +782,7 @@ Game_Enemy.prototype.setPleasure = function(value) {
 	this.setTp(value); 
 	if(this.isAroused() && !this._firstTimeAroused) {
 		this._firstTimeAroused = true;
-		Karryn.gainCharmExp(16, this.enemyExperienceLvl());
+		Karryn.gainUncommittedCharmExp(16, this.enemyExperienceLvl());
 	}
 };
 
@@ -879,7 +878,7 @@ Game_Enemy.prototype.setUsedSkillThisTurn = function(value) {
 //////////
 // Stench
 /////////
-
+//unused
 Game_Enemy.prototype.stenchLvl = function() { 
 	var value = this.stench;
 	value += this._smegma * 3;
@@ -993,8 +992,6 @@ Game_Enemy.prototype.paramRate = function(paramId) {
 	rate *= this.enemyPrefixParamRate(paramId);
 	rate *= this.enemyPassiveParamRate(paramId);
 	rate *= this.enemyBossParamRate(paramId);
-	rate *= this.receptionistEnemyParamRate(paramId);
-	rate *= this.gloryEnemyParamRate(paramId);
 	
     return rate;
 };
@@ -1161,6 +1158,23 @@ Game_Enemy.prototype.enemyErectElementRate = function(elementId) {
 	}
 	
 	return rate;
+};
+
+// Action Speed
+
+Game_Enemy.prototype.bonusActionSpeed = function(item) {
+	let bonusSpeed = 0;
+	let itemId = item.id;
+	
+	if($gameParty.isInGloryBattle) {
+		if(item.id >= SKILL_ENEMY_EJACULATE_FACE_ID && item.id <= SKILL_ENEMY_EJACULATE_ONTO_FLOOR_ID)
+			bonusSpeed += 9999;
+		else
+			bonusSpeed += 9999;
+	}
+	else if(Karryn.isInReceptionistPose() && this.isVisitorMaleType) bonusSpeed -= 9999;
+	
+    return bonusSpeed;
 };
 
 ////////
@@ -1567,9 +1581,6 @@ Game_Enemy.prototype.checkForOrgasm = function() {
 	if(canOrgasm) this.orgasm();
 	
 	if(this._ignoreNextOrgasmCheck) this._ignoreNextOrgasmCheck = false;
-	
-	//if(this._hp > 0 && this._ejaculationStock > 0)
-	//	this.resetGotHitBySkillType();
 };
 
 Game_Enemy.prototype.orgasm = function() { 
@@ -1768,7 +1779,7 @@ Game_Enemy.prototype.canInsertBoobs_ignoreClothes = function(target) {
 	return target.canGetBoobsInserted(true) && this.isErect;
 };
 Game_Enemy.prototype.canInsertPussy = function(target, actorSkill) { 
-	if(this.isPrisonerType && !target._firstPussySexDate) return false; 
+	if(this.isPrisonerType && target.isVirgin()) return false; 
 	return target.canGetPussyInserted(actorSkill) && this.isErect;
 };
 Game_Enemy.prototype.canInsertAnal = function(target, actorSkill) { 
@@ -2242,7 +2253,7 @@ Game_Enemy.prototype.performCollapse = function() {
 		$gameTroop.removeOrcDefensivePresenceFromAllEnemies(this);
 	}
 	if(this.didLastGetHitBySkillType(JUST_SKILLTYPE_KARRYN_ATTACK) && $gameTroop.thereAreOnlyOrcEnemysLeft(this)) {
-		$gameTroop.setAllOrcEnemiesToAngry(this);
+		$gameTroop.setAllOrcEnemiesToAngryOnce(this);
 	}
 	
 	$gameTroop._enemySpots[this._enemySpotsId] = false;

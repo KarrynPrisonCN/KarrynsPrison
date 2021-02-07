@@ -41,13 +41,15 @@ const ENEMY_NAMES_GENERIC_JP = [
 	"ゼイン", "リアム", "ナイル", "ホーラン", "メタラー", "ザクトン", "ナスィン", "ブリンク", "ワン", "エイト", "トゥー", "ソニー", "ノラ", "チンミ",
 	"パープス", "リムル", "ジオ", "セシール", "セガール", "アンソニー", "パイディ", "モミマン", "パーン", "ロードス", "オッチョ", "セーキ", "アリ", "バーグ",
 	"ココシ", "カカシ", "ナルティ", "バギ", "ゴメス", "ボリバン", "アール", "ベギモン", "カーチュギ", "ユインプ", "イギシ", "カメン", "ナナシ", "マーク",
-	"カーンベ", "コリニュ", "オボエテ", "ワスレテ", "アナッギ", "ケン", "ネック", "ジョウ", "カーネギー", "アンドリュー", "デール", "ジョン", "ベゾス", "ジェフ"
+	"カーンベ", "コリニュ", "オボエテ", "ワスレテ", "アナッギ", "ケン", "ネック", "ジョウ", "カーネギー", "アンドリュー", "デール", "ジョン", "ベゾス", "ジェフ",
+
+	"赔钱" //January Ci-ens
 ];
 
 const ENEMY_NAMES_THUG_EN = [
 	"Rumble", "Crane", "Tommy", "Juan", "JR", "Diogo", "Johnson", "Carl", "Larry", "Johnny", "Khalid", "Kenji", "Tank", "Dick", 
-	"Mouse", "Horse", "Lin", "Wood", "Niko", "Marco", "Santa", "Junior", "Dam", "Violet", "West", "Chicken", "Nico", "Pierce",
-	"Trevor", "Lopez", "Joey",
+	"Mouse", "Horse", "Lin", "Wood", "Niko", "Marco", "Michael", "Junior", "Dam", "Violet", "West", "Chicken", "Nico", "Pierce",
+	"Trevor", "Lopez", "Joey", "Franklin", "Frankie", "Toast", "Santa",
 
 	"Marcos", "Kavika", "Heksar", "Biggs", "Aidan", "Wedge", "Anton", "Adriel Diaz", "Meepsta Bone" //April Patreons
 ];
@@ -77,12 +79,14 @@ const ENEMY_NAMES_GOBLIN_JP = [
 	"ゴブポン", "ゴブブゴ", "ゴブラ", "ゴブメン", "ゴブシ", "ゴブシチ", "ゴブドット", "ゴブ美", "ゴブちゃん", "ゴブさん", "ゴブくん", "ゴブちん",
 	"ゴブエイ", "ゴブビー", "ゴブスィ", "ゴブ平", "ゴブォ", "ゴブキャノン", "ゴブデス", "ゴブダヨ", "ゴブナンダ", "ゴブデシタ", "ゴブター", "ゴブチュー",
 	"ゴブース", "ゴブミドリ", "ゴブ旦那", "ゴブイク", "ゴブンブル", "ゴブピー", "ゴブッス", "ゴブワズ", "ゴブナウ", "ゴブーカー", "ゴブイキ",
-	"ゴブナマ", "ゴブレム"
+	"ゴブナマ", "ゴブレム",
+
+	"御米" //January Ci-ens
 ];
 
 const ENEMY_NAMES_NERD_EN = [
 	"Carl", "Glasses", "Kielk", "Timmy", "Jimmy", "Karl", "Nigel", "Ray", "Donk", "Verbal", "Kanye",
-	"Sheldon", "Grandius", "Christ", "Senn", "Cronk", "Hifumi", "Genchi", "Hikafu", "Azkhal", "Wendel", 
+	"Sheldon", "Grandius", "Senn", "Cronk", "Hifumi", "Genchi", "Hikafu", "Azkhal", "Wendel", 
 	"Alexander", "Rhinon", "Tyler", "Noir", "Kebler", "Folk", "Dweeb", "Melvin", "Wehraboo", "Ryuke", 
 	"Rein", //August Patreons
 	
@@ -199,7 +203,14 @@ const ENEMY_NAMES_VISITOR_MALE_EN = [
 	"Gaben", "Roland", "Jadon", "Felix", "Clock", "Max", "Yang", "Austin",
 	"Johnny", "Gunnar", "Angus", "Seth",
 	
-	"Gregorio", "Foep", "Leakim", "Fellahen", "Knot Evil", "Hobo Sen" //January Patrons
+	"Gregorio", "Foep", "Leakim", "Fellahen", "Knot Evil", "Hobo Sen", //January 2020 Patrons
+	
+	
+	"Doff", "Mickey", "Arnoldo", "Khorda", "Philsend", "Shmuel", "Ardian", "Davedick",
+	"Hardy", "Matyas", "Harry", "Casuga", "Yellow", "Scott", "Taisacan", "Dino",
+	"Tyler", "Joel", "Dazo", "Songkran", "Zyphr", "Orrin", 
+	
+	"Sodyser", "Maximus", "Chad Girth", "David Lazie", "Hamzah", "Lebedev", "Jay" //January 2021 Patrons
 ];
 
 const ENEMY_NAMES_VISITOR_MALE_JP = [
@@ -214,9 +225,14 @@ const ENEMY_NAMES_VISITOR_MALE_JP = [
 const ENEMY_NAMES_VISITOR_FEMALE_EN = [
 	"Kelly", "Lilly", "Rita", "Corina", "Nolana", "Beatrice", "Daphne", "Soria", 
 	"Airi", "Fran", "Selina", "Mei", "Loka", "Lisana", "Kira", "Jenna", 
-	"Zefiris", "Lilith", "Vespa", 
+	"Zefiris", "Lilith", "Vespa", "Aoi", "Maya", "Miku", "Misha", "Reimu",
 
-	"Sally Shwartz", "Sanaria Arendae", "Ai Mao", "Saskias" //January Patrons
+	"Sally Shwartz", "Sanaria Arendae", "Ai Mao", "Saskias", //January 2020 Patrons
+	
+	
+	"Lola", "Shanna", "Ebiora", "Tee", "Bayo",
+	
+	"Iyume Ryva", "Serin El", "May Green" //January 2021 Patrons
 ];
 
 const ENEMY_NAMES_VISITOR_FEMALE_JP = [
@@ -226,14 +242,15 @@ const ENEMY_NAMES_VISITOR_FEMALE_JP = [
 ];
 
 const ENEMY_NAMES_VISITOR_UNISEX_EN = [
-	"Quinn", "Dethuink", "Hina", "Quinn", "Bort", 
+	"Quinn", "Dethuink", "Hina", "Quinn", "Bort", "Rin", "Ray", "Shino", "Luka",
 
-	"Gwenn Weiss" //January Patrons
+	"Gwenn Weiss", //January 2020 Patrons
+	
+	"Bang" //January 2021 Patrons
 ];
 
 const ENEMY_NAMES_VISITOR_UNISEX_JP = [
 	"シノブ", "リン", "ルカ", "ヒカル", "キュル", "ラミ", "ラーイ", "ジョピ", "コイン", "ネイセ", "ポー", "ローロ", "ルー"
-
 ];
 
 const ENEMY_NAME_Y_VARIABLE = -25;
@@ -1119,7 +1136,7 @@ Game_Enemy.prototype.getRandomName = function() {
     var name = '';
 	var nameArray = [];
 	
-	if(TextManager.isEnglish) {
+	if(TextManager.isEnglish || !TextManager.isJapanese) {
 		nameArray = ENEMY_NAMES_GENERIC_EN.slice(0);
 		if(this.isVisitorType) {
 			nameArray = ENEMY_NAMES_VISITOR_UNISEX_EN.slice(0);

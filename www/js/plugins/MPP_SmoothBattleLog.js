@@ -309,13 +309,41 @@ Window_BattleLog.prototype.windowWidth = function() {
 };
 
 //
+//Rem
 Window_BattleLog.prototype.lineHeight = function() {
-    return MPPlugin.LineHeight;
+	switch (ConfigManager.remBattlelogFontSize) {
+		case 0:
+			return 24;
+		case 1:
+			return 26;
+		case 2:
+			return 28;
+		case 3:
+			return 30;
+		case 4:
+			return 32;
+	}
+	
+	return MPPlugin.LineHeight; //30 default
 };
 
 //
+//Rem
 Window_BattleLog.prototype.standardFontSize = function() {
-    return MPPlugin.FontSize;
+	switch (ConfigManager.remBattlelogFontSize) {
+		case 0:
+			return 18;
+		case 1:
+			return 20;
+		case 2:
+			return 22;
+		case 3:
+			return 24;
+		case 4:
+			return 26;
+	}
+	
+	return MPPlugin.FontSize; //24 default
 };
 
 //
@@ -324,8 +352,21 @@ Window_BattleLog.prototype.maxItems = function() {
 };
 
 //42
+//Rem
 Window_BattleLog.prototype.maxLines = function() {
-    return MPPlugin.MaxLines;
+    switch (ConfigManager.remBattlelogFontSize) {
+		case 0:
+			return 5;
+		case 1:
+			return 5;
+		case 2:
+			return 4;
+		case 3:
+			return 4;
+		case 4:
+			return 4;
+	}
+	return MPPlugin.MaxLines; //4 default
 };
 
 //46

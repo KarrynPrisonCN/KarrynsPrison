@@ -4241,6 +4241,14 @@ function Scene_STS() {
         this.contents.clear();
         this.drawAllPreskill();
     };
+	
+	Window_StsPreskill.prototype.lineHeight = function() {
+		return 30;
+	};
+	
+	Window_StsPreskill.prototype.standardFontSize = function() {
+		return 26;
+	};
 
 	//mod
     Window_StsPreskill.prototype.drawAllPreskill = function(index) {
@@ -4253,7 +4261,7 @@ function Scene_STS() {
 			var title = TextManager.FTKRSkillTreePreReqText;
             if (title) {
                 len = 1;
-                this.drawStsDescTitle(title, 0, 0, width, skill);
+                this.drawStsDescTitle(title, 0, -10, width, skill);
             }
             this.drawPreSkills(0, lh * len, width);
         }
@@ -4293,7 +4301,7 @@ function Scene_STS() {
 						else if($dataSkills[preskill.id].stypeId === SKILLTYPE_PASSIVES_ID) {
 							name = TextManager.FTKRSkillTreeReqTypePassive + name;
 						}
-						
+
 						this.drawFormatTextEx(FTKR.STS.preskill.itemFormat, x, y + lh * i, [name], width);
 						this.changePaintOpacity(1);
 					}
@@ -4349,8 +4357,9 @@ function Scene_STS() {
 			
 			let wh = 0;
 			if(i>0) {
-				i++;
-				wh = this.fittingHeight(i);
+				i += 2;
+				//wh = this.fittingHeight(i);
+				wh = i * this.lineHeight() + 20;
 			}
 			this.height = wh;
         }

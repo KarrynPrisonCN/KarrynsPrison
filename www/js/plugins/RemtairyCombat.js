@@ -246,6 +246,10 @@ const STATE_ENEMY_HAS_PENIS_DILDO_ID = 166;
 const STATE_ENEMY_HAS_ANAL_BEADS_ID = 167;
 const STATE_COOL_AND_COLLECTED_ID = 168;
 const STATE_DEBUG_CHEAT_STATS_ID = 170;
+const STATE_GLORY_PINK_ROTOR_ID = 174;
+const STATE_GLORY_PENIS_DILDO_ID = 175;
+const STATE_GLORY_ANAL_BEADS_ID = 176;
+const STATE_RECEPTIONIST_REST_ID = 177;
 
 const RING_MIDI_ID = 25;
 const RING_DOUBLE_ID = 26;
@@ -332,6 +336,13 @@ const JUST_SKILLTYPE_WAITRESS_DRINK = 61;
 const JUST_SKILLTYPE_WAITRESS_FLASH = 62;
 const JUST_SKILLTYPE_GLORY_LEFT_HOLE_SHOWED = 63;
 const JUST_SKILLTYPE_GLORY_RIGHT_HOLE_SHOWED = 64;
+
+const JUST_SKILLTYPE_KARRYN_TOY_INSERT_CLIT = 70;
+const JUST_SKILLTYPE_KARRYN_TOY_INSERT_PUSSY = 71;
+const JUST_SKILLTYPE_KARRYN_TOY_INSERT_ANAL = 72;
+const JUST_SKILLTYPE_KARRYN_TOY_PLAY_CLIT = 73;
+const JUST_SKILLTYPE_KARRYN_TOY_PLAY_PUSSY = 74;
+const JUST_SKILLTYPE_KARRYN_TOY_PLAY_ANAL = 75;
 
 //Skill IDs
 
@@ -708,7 +719,7 @@ Game_Battler.prototype.dmgFormula_attackDmg = function(target, elementId, userSt
 	}
 	
 	let dmgValue = (this.str * userStrMulti + this.dex * userDexMulti + this.agi * userAgiMulti) * this.moddedWeaponAttack(); 
-	dmgValue *= Math.max(0, (dmgValue / ((target.str * targetStrMulti) * target.moddedWeaponDefense())) - 0.5); 
+	dmgValue *= Math.min(10, Math.max(0, (dmgValue / ((target.str * targetStrMulti) * target.moddedWeaponDefense())) - 0.5)); 
 	dmgValue *= actorConsAttackMultipler; 
 	dmgValue += this.str * userStrExtra; 
 	dmgValue *= targetElementRate * stanceDmgAdv * stanceBonusRate; 
@@ -720,7 +731,11 @@ Game_Battler.prototype.dmgFormula_attackDmg = function(target, elementId, userSt
 		let clothingDmg = this.str * userStrMulti + this.dex * userDexMulti + this.agi * userAgiMulti;
 		if(this.isEnemy() && target.isActor() && stripSkill && !target.hasNoStamina()) {
 			clothingDmg -= Math.min(clothingDmg * 0.8, target.str * userStrMulti);
-			dmgValue *= 2;
+			
+			if(Karryn.isInReceptionistPose())
+				dmgValue *= 0.1;
+			else
+				dmgValue *= 2;
 		}
 		clothingDmg *= targetStripRate * stripMulti * enemyStripLvlMultipler * this.moddedWeaponAttack();
 		
@@ -853,8 +868,8 @@ Game_Battler.prototype.dmgFormula_karrynSlash = function(target) {
 	
 	let strMulti = 1;
 	
-	let dexMulti = 0.7;
-	if(this.hasEdict(EDICT_SLASH_TRAINING_THREE)) dexMulti += 0.2;
+	let dexMulti = 0.8;
+	if(this.hasEdict(EDICT_SLASH_TRAINING_THREE)) dexMulti += 0.25;
 	
 	let agiMulti = 0;
 	
@@ -972,8 +987,8 @@ Game_Battler.prototype.dmgFormula_karrynArmSlash = function(target) {
 	
 	let strMulti = 0.8;
 	
-	let dexMulti = 0.8;
-	if(this.hasEdict(EDICT_SLASH_TRAINING_THREE)) dexMulti += 0.2;
+	let dexMulti = 0.9;
+	if(this.hasEdict(EDICT_SLASH_TRAINING_THREE)) dexMulti += 0.25;
 	
 	let agiMulti = 0;
 	
@@ -1062,7 +1077,7 @@ Game_Battler.prototype.dmgFormula_karrynCleave = function(target) {
 		
 	let strMulti = 0.7;
 	
-	let dexMulti = 1.2;
+	let dexMulti = 1.3;
 	if(this.hasEdict(EDICT_CLEAVE_TRAINING_TWO)) dexMulti += 0.4;
 	
 	let agiMulti = 0;
@@ -1409,9 +1424,14 @@ Game_Actor.prototype.afterEval_karrynCockKick = function(target) {
 	if(target.masochismLvl() <= 1) {
 		target.addAngryState();
 	}
+	if(this.hasPassive(PASSIVE_COCKKICK_COUNT_TWO_ID)) {
+		let chance = this._tempRecordCockKickUsageCount * 25;
+		$gameTroop.setAllEnemiesToAngry_chanceBased(chance ,true);
+	}
 	if(this.hasPassive(PASSIVE_COCKKICK_COUNT_THREE_ID)) {
 		this.gainCockDesire(this.sadismLvl(), false);
-		if(Math.randomInt(10) < this.sadismLvl()) this.addHornyState();
+		let chance = this._todayCockKickUsageCount * 12;
+		if(Math.randomInt(100) < chance) this.addHornyState();
 	}
 	
 	this.passivePostAttack_addOffBalanceEffect(1);
@@ -1787,9 +1807,16 @@ Game_Battler.prototype.dmgFormula_thugRush = function(target) {
 	return this.dmgFormula_attackDmg(target, elementType, 1.2, 1.2, 0.1, 0.1, DEFAULT_DEF_STR_MULTI, 0.15);
 };
 
+Game_Battler.prototype.setupAction_thugRush = function(target) {
+	target._fullyEvadedThugRush = true;
+};
+Game_Battler.prototype.afterEval_thugRush = function(target) {
+	if(!target.result().evaded) target._fullyEvadedThugRush = false;
+};
+
 Game_Battler.prototype.finishAction_thugRush = function(target) {
 	if(!target) target = $gameActors.actor(ACTOR_KARRYN_ID);
-	if(!target.isGuarding) {
+	if(!target.isGuarding && !target._fullyEvadedThugRush) {
 		target.addOffBalanceState_changableToFallen(0, false);
 		SceneManager._scene._logWindow.displayAffectedStatus(target);
 	}

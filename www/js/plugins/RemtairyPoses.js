@@ -226,6 +226,15 @@ Game_Actor.prototype.completeResetMaxTachieSemenId = function () {
 	this.setMaxTachieSemenCockNormalId(0);
 	this.setMaxTachieSemenHoleLeftId(0);
 	this.setMaxTachieSemenHoleRightId(0);
+	this.setMaxTachieSemenToiletSeatId(0);
+	this.setMaxTachieWetToiletSeatId(0);
+	this.setMaxTachieGlorySemenLeftWallId(0);
+	this.setMaxTachieGlorySemenRightWallId(0);
+	this.setMaxTachieGlorySemenLeftHoleId(0);
+	this.setMaxTachieGlorySemenRightHoleId(0);
+	this.setMaxTachieGlorySemenLeftToiletId(0);
+	this.setMaxTachieGlorySemenRightToiletId(0);
+	
 	this.setMaxTachieSemenFrontAId(0);
 	this.setMaxTachieSemenFrontBId(0);
 	this.setMaxTachieSemenFrontCId(0);
@@ -254,6 +263,8 @@ Game_Actor.prototype.completeResetMaxTachieSemenId = function () {
 	this.resetTachieSemenCockAnalExtension();
 	this.resetTachieSemenHoleRightExtension();
 	this.resetTachieSemenHoleLeftExtension();
+	this.resetTachieSemenToiletSeatExtension();
+	this.resetTachieWetToiletSeatExtension();
 	this.resetTachieSemenFrontAExtension();
 	this.resetTachieSemenFrontBExtension();
 	this.resetTachieSemenFrontCExtension();
@@ -285,8 +296,7 @@ Game_Actor.prototype.setAnalToyInsertablePose = function (status) {
 Game_Actor.prototype.setPostSexPose = function () {
 	let pose = this.poseName;
 	
-	//Todo: Conditions here for special poses; if(pose === POSE_SPECIAL) etc
-	//If not a special pose, set to standby, unarmed, or down
+	if($gameParty.isInGloryBattle) return false;
 	
 	if(this.justOrgasmed()) {
 		this.setDownOrgasmPose();
@@ -1257,6 +1267,7 @@ Game_Actor.prototype.setDownFallDownPose = function() {
 		this.resetAttackSkillConsUsage();
 		this.resetEndurePleasureStanceCost();
 		this.resetSexSkillConsUsage(false);
+		this._cooldownTurns[SKILL_FALLEN_REST_ID] = 0;
 	}
 	
 	this.setPosePanties();
@@ -2330,16 +2341,15 @@ Game_Actor.prototype.setMasturbationInBattlePose = function() {
 	}
 	
 	this.setMaxTachieSemenBoobsId(0);
-	/* mas_inbattle remove once art is finished
-	this.setMaxTachieSemenRightBoobId(1);
-	this.setMaxTachieSemenLeftBoobId(1);
-	this.setMaxTachieSemenBellyId(1);
-	this.setMaxTachieSemenCrotchId(1);
-	this.setMaxTachieSemenFaceId(1);
-	this.setMaxTachieSemenLeftArmId(1);
-	this.setMaxTachieSemenRightArmId(1);
-	this.setMaxTachieWetId(1);
-	*/
+	this.setMaxTachieSemenRightBoobId(3);
+	this.setMaxTachieSemenLeftBoobId(3);
+	this.setMaxTachieSemenBellyId(3);
+	this.setMaxTachieSemenCrotchId(3);
+	this.setMaxTachieSemenFaceId(3);
+	this.setMaxTachieSemenLeftArmId(3);
+	this.setMaxTachieSemenRightArmId(3);
+	this.setMaxTachieWetId(3);
+	
 	
 	BattleManager.playSpecialBgm_KarrynSex();
 };
@@ -2476,19 +2486,22 @@ Game_Actor.prototype.setToiletSittingPose = function() {
 	let rightArmIsChikubi = this.tachieRightArm.includes('chikubi');
 	let rightArmIsManko = this.tachieRightArm.includes('manko');
 	let rightArmIsAnaru = this.tachieRightArm.includes('anaru');
+	let currentlyInToiletStandLeftPose = this.isInToiletStandLeftPose();
+	let currentlyInToiletStandRightPose = this.isInToiletStandRightPose();
+
 	
 	this.setAllowTachieUpdate(false);
+	
+	this.setTachieClitToyExtension_gloryBattle('');
+	this.setTachiePussyToyExtension_gloryBattle('left_1_');
+	this.setTachieAnalToyExtension_gloryBattle('right_');
+	
 	this.setPose(POSE_TOILET_SITTING, false);
 	this.setSpriteBattlerPosData(POSE_TOILET_SITTING);
 	this.removeStatesBeforeSex();
 	this.removeAllPettedInsertExceptToy();
 	this.setAllBodySlotsFreeExceptToy();
 	this.setSpankablePose(false);
-	
-	this.setTachieHead('far');
-	this.setTachieEyebrows('far_hu1');
-	this.setTachieEyes('far_sita1');
-	this.setTachieMouth('far_mu1');
 	
 	if(leftArmIsChikubi) {
 		this.setTachieLeftBoob('touch_chikubi');
@@ -2536,6 +2549,17 @@ Game_Actor.prototype.setToiletSittingPose = function() {
 	
 	this.setMaxTachieSemenBellyId(1);
 	
+	this.setMaxTachieGlorySemenLeftWallId(1);
+	this.setMaxTachieGlorySemenRightWallId(1);
+	this.setMaxTachieGlorySemenLeftHoleId(1);
+	this.setMaxTachieGlorySemenRightHoleId(1);
+	this.setMaxTachieGlorySemenLeftToiletId(1);
+	this.setMaxTachieGlorySemenRightToiletId(1);
+	
+	if((currentlyInToiletStandLeftPose || currentlyInToiletStandRightPose) && this._liquidCreampiePussy > 0) {
+		this.increaseLiquidCumOnToiletSeat(Math.round((Math.random() * 0.5 + 0.15) * this._liquidCreampiePussy));
+	}
+	
 	this.emoteGloryToiletSittingPose();
 	
 	this.setAllowTachieUpdate(true);
@@ -2553,6 +2577,11 @@ Game_Actor.prototype.setToiletSitLeftPose = function() {
 	let leftArmIsManko = this.tachieLeftArm.includes('manko');
 	
 	this.setAllowTachieUpdate(false);
+	
+	this.setTachieClitToyExtension_gloryBattle('');
+	this.setTachiePussyToyExtension_gloryBattle('');
+	this.setTachieAnalToyExtension_gloryBattle('');
+	
 	this.setPose(POSE_TOILET_SIT_LEFT, false);
 	this.setSpriteBattlerPosData(POSE_TOILET_SIT_LEFT);
 	this.removeStatesBeforeSex();
@@ -2561,9 +2590,6 @@ Game_Actor.prototype.setToiletSitLeftPose = function() {
 	this.setSpankablePose(false);
 	
 	this.setTachieHead('1');
-	
-	this.setTachieEyebrows('koma1'); //temp
-	this.setTachieEyes('mae1'); //temp
 	
 	if(leftArmIsChikubi) 
 		this.setTachieLeftArm('chikubi');
@@ -2574,6 +2600,18 @@ Game_Actor.prototype.setToiletSitLeftPose = function() {
 	
 	this.setMaxTachieSemenFaceId(1);
 	this.setMaxTachieSemenBellyId(1);
+	
+	this.setTachieSemenToiletSeatExtension('spread_');
+	this.setTachieWetToiletSeatExtension('spread_');
+	this.setMaxTachieSemenToiletSeatId(1);
+	this.setMaxTachieWetToiletSeatId(1);
+	
+	this.setMaxTachieGlorySemenLeftWallId(1);
+	this.setMaxTachieGlorySemenRightWallId(1);
+	this.setMaxTachieGlorySemenLeftHoleId(1);
+	this.setMaxTachieGlorySemenRightHoleId(1);
+	this.setMaxTachieGlorySemenLeftToiletId(1);
+	this.setMaxTachieGlorySemenRightToiletId(1);
 	
 	this.emoteGloryToiletSitLeftPose();
 	
@@ -2592,6 +2630,11 @@ Game_Actor.prototype.setToiletSitRightPose = function() {
 	let rightArmIsManko = this.tachieRightArm.includes('manko');
 	
 	this.setAllowTachieUpdate(false);
+	
+	this.setTachieClitToyExtension_gloryBattle('');
+	this.setTachiePussyToyExtension_gloryBattle('');
+	this.setTachieAnalToyExtension_gloryBattle('');
+	
 	this.setPose(POSE_TOILET_SIT_RIGHT, false);
 	this.setSpriteBattlerPosData(POSE_TOILET_SIT_RIGHT);
 	this.removeStatesBeforeSex();
@@ -2601,9 +2644,6 @@ Game_Actor.prototype.setToiletSitRightPose = function() {
 	
 	this.setTachieHead('1');
 	
-	this.setTachieEyebrows('koma1'); //temp
-	this.setTachieEyes('mae1'); //temp
-	
 	if(rightArmIsChikubi) 
 		this.setTachieRightArm('chikubi');
 	else if(rightArmIsKuri)
@@ -2611,9 +2651,24 @@ Game_Actor.prototype.setToiletSitRightPose = function() {
 	else if(rightArmIsManko)
 		this.setTachieRightArm('manko');
 	
-	this.setAllowTachieUpdate(true);
+	this.setMaxTachieSemenFaceId(1);
+	this.setMaxTachieSemenBellyId(1);
+	
+	this.setTachieSemenToiletSeatExtension('spread_');
+	this.setTachieWetToiletSeatExtension('spread_');
+	this.setMaxTachieSemenToiletSeatId(1);
+	this.setMaxTachieWetToiletSeatId(1);
+	
+	this.setMaxTachieGlorySemenLeftWallId(1);
+	this.setMaxTachieGlorySemenRightWallId(1);
+	this.setMaxTachieGlorySemenLeftHoleId(1);
+	this.setMaxTachieGlorySemenRightHoleId(1);
+	this.setMaxTachieGlorySemenLeftToiletId(1);
+	this.setMaxTachieGlorySemenRightToiletId(1);
 	
 	this.emoteGloryToiletSitRightPose();
+	
+	this.setAllowTachieUpdate(true);
 };
 
 ///////////
@@ -2626,6 +2681,9 @@ Game_Actor.prototype.setToiletStandLeftPose = function() {
 	let leftArmIsChikubi = this.tachieLeftArm.includes('chikubi');
 	
 	this.setAllowTachieUpdate(false);
+	this.setTachieClitToyExtension_gloryBattle('high_');
+	this.setTachiePussyToyExtension_gloryBattle('high_');
+	this.setTachieAnalToyExtension_gloryBattle('high_');
 	this.setPose(POSE_TOILET_STAND_LEFT, false);
 	this.setSpriteBattlerPosData(POSE_TOILET_STAND_LEFT);
 	this.removeStatesBeforeSex();
@@ -2635,26 +2693,30 @@ Game_Actor.prototype.setToiletStandLeftPose = function() {
 	
 	this.setTachieHead('1');
 	
-	if(leftArmIsChikubi) {
-		this.setTachieBoobs('chikubi');
-		this.setTachieLeftArm('chikubi');
-	}
-	else {
-		this.setTachieBoobs('normal');
-		this.setTachieLeftArm('normal');
-	}
+	this.setTachieSemenRightArmExtension('normal_');
 	
-	this.setTachieEyebrows('koma1'); //temp
-	this.setTachieEyes('mae1'); //temp
-	this.setTachieMouth('ah1'); //temp
+	this.setMaxTachieSemenFaceId(1);
+	this.setMaxTachieSemenRightArmId(1);
 	
-	this.setAllowTachieUpdate(true);
+	this.setTachieSemenToiletSeatExtension('spread_');
+	this.setTachieWetToiletSeatExtension('spread_');
+	this.setMaxTachieSemenToiletSeatId(1);
+	this.setMaxTachieWetToiletSeatId(1);
+	
+	this.setMaxTachieGlorySemenLeftWallId(1);
+	this.setMaxTachieGlorySemenRightWallId(1);
+	this.setMaxTachieGlorySemenLeftHoleId(1);
+	this.setMaxTachieGlorySemenRightHoleId(1);
+	this.setMaxTachieGlorySemenLeftToiletId(1);
+	this.setMaxTachieGlorySemenRightToiletId(1);
 	
 	this.emoteGloryToiletStandLeftPose();
+	
+	this.setAllowTachieUpdate(true);
 };
 
 ///////////
-// Toilet Sit Right Pose
+// Toilet Stand Right Pose
 
 Game_Actor.prototype.isInToiletStandRightPose = function() {
 	return this.poseName == POSE_TOILET_STAND_RIGHT;
@@ -2663,6 +2725,9 @@ Game_Actor.prototype.setToiletStandRightPose = function() {
 	let rightArmIsChikubi = this.tachieRightArm.includes('chikubi');
 	
 	this.setAllowTachieUpdate(false);
+	this.setTachieClitToyExtension_gloryBattle('high_');
+	this.setTachiePussyToyExtension_gloryBattle('high_');
+	this.setTachieAnalToyExtension_gloryBattle('high_');
 	this.setPose(POSE_TOILET_STAND_RIGHT, false);
 	this.setSpriteBattlerPosData(POSE_TOILET_STAND_RIGHT);
 	this.removeStatesBeforeSex();
@@ -2672,23 +2737,29 @@ Game_Actor.prototype.setToiletStandRightPose = function() {
 	
 	this.setTachieHead('1');
 	
-	if(rightArmIsChikubi) {
-		this.setTachieBoobs('chikubi');
-		this.setTachieRightArm('chikubi');
-
-	}
-	else {
-		this.setTachieBoobs('normal');
-		this.setTachieRightArm('normal');
-	}
+	if(!this.tachieBody.includes('low') && !this.tachieBody.includes('high'))
+		this.setTachieBody('high');
 	
-	this.setTachieEyebrows('koma1'); //temp
-	this.setTachieEyes('mae1'); //temp
-	this.setTachieMouth('ah1'); //temp
+	this.setTachieSemenLeftArmExtension('normal_');
 	
-	this.setAllowTachieUpdate(true);
+	this.setMaxTachieSemenFaceId(1);
+	this.setMaxTachieSemenLeftArmId(1);
+	
+	this.setTachieSemenToiletSeatExtension('spread_');
+	this.setTachieWetToiletSeatExtension('spread_');
+	this.setMaxTachieSemenToiletSeatId(1);
+	this.setMaxTachieWetToiletSeatId(1);
+	
+	this.setMaxTachieGlorySemenLeftWallId(1);
+	this.setMaxTachieGlorySemenRightWallId(1);
+	this.setMaxTachieGlorySemenLeftHoleId(1);
+	this.setMaxTachieGlorySemenRightHoleId(1);
+	this.setMaxTachieGlorySemenLeftToiletId(1);
+	this.setMaxTachieGlorySemenRightToiletId(1);
 	
 	this.emoteGloryToiletStandRightPose();
+	
+	this.setAllowTachieUpdate(true);
 };
 
 //////
@@ -3038,7 +3109,8 @@ Game_Actor.prototype.performEvasion = function() {
 		this.gainAgilityExp(30, $gameTroop.getAverageEnemyExperienceLvl());
 		this.gainStaminaExp(15, $gameTroop.getAverageEnemyExperienceLvl());
 		this.setEvadePose();
-		this.damageClothing(this.agi * this.elementRate(ELEMENT_STRIP_ID) * 0.15, true);
+		let clothingDmg = Math.min(Math.max(this.agi * 0.25, this.getClothingMaxDurability() * 0.01), this.getClothingMaxDurability() * 0.08)
+		this.damageClothing(clothingDmg, true);
 		this.passiveEvadePoseEffect();
 		this.setHp(this.hp - Math.round((this.agi * 1.35 + this.realMaxStamina * 0.01) * this.evasionCostMultipler()));
 		this._playthroughRecordAttackEvadedCount++;
@@ -3173,11 +3245,11 @@ DKTools.PreloadManager.preloadKarrynPoses = function() {
 			DKTools.PreloadManager.preloadImage({ path: 'img/karryn/slime_piledriver/', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/karryn/thug_gb/', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/karryn/waitress_table/', hue: 0, caching: true });
-			//DKTools.PreloadManager.preloadImage({ path: 'img/karryn/toilet_sit_left/', hue: 0, caching: true });
-			//DKTools.PreloadManager.preloadImage({ path: 'img/karryn/toilet_sit_right/', hue: 0, caching: true });
-			//DKTools.PreloadManager.preloadImage({ path: 'img/karryn/toilet_sitting/', hue: 0, caching: true });
-			//DKTools.PreloadManager.preloadImage({ path: 'img/karryn/toilet_stand_left/', hue: 0, caching: true });
-			//DKTools.PreloadManager.preloadImage({ path: 'img/karryn/toilet_stand_right/', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/karryn/toilet_sit_left/', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/karryn/toilet_sit_right/', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/karryn/toilet_sitting/', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/karryn/toilet_stand_left/', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/karryn/toilet_stand_right/', hue: 0, caching: true });
 			
 		}
 	

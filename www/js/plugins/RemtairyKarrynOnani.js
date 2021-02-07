@@ -181,6 +181,7 @@ Game_Actor.prototype.onaniFrustrationSParamRate = function(paramId) {
 	if(paramId === SPARAM_WPDEF_ID && this.isOnaniFrustrated()) {
 		let multi = 0.05;
 		rate -= this._onaniFrustration * multi;
+		rate = Math.max(0.15, rate);
 	}
 	else if(paramId === SPARAM_WPATK_ID && this.isOnaniFrustrated()) {
 		let multi = 0.04;
@@ -267,48 +268,50 @@ Game_Actor.prototype.checkOnaniInBattleDesire = function() {
 		let topDesireMultipler = 1;
 		
 		if(this.mouthDesire >= 200)
-			topDesireMultipler = 1.4;
+			topDesireMultipler = Math.max(1.4, topDesireMultipler);
 		else if(this.mouthDesire >= 150)
-			topDesireMultipler = 1.3;
+			topDesireMultipler = Math.max(1.3, topDesireMultipler);
 		else if(this.mouthDesire >= 100)
-			topDesireMultipler = 1.25;
+			topDesireMultipler = Math.max(1.25, topDesireMultipler);
 		else if(this.mouthDesire >= 75)
-			topDesireMultipler = 1.2;
+			topDesireMultipler = Math.max(1.2, topDesireMultipler);
 		else if(this.mouthDesire >= 50)
-			topDesireMultipler = 1.1;
+			topDesireMultipler = Math.max(1.1, topDesireMultipler);
 			
 		if(this.boobsDesire >= 200)
-			buildupValue *= 1.4;
+			topDesireMultipler = Math.max(1.4, topDesireMultipler);
 		else if(this.boobsDesire >= 150)
-			buildupValue *= 1.3;
+			topDesireMultipler = Math.max(1.3, topDesireMultipler);
 		else if(this.boobsDesire >= 100)
-			buildupValue *= 1.25;
+			topDesireMultipler = Math.max(1.25, topDesireMultipler);
 		else if(this.boobsDesire >= 75)
-			buildupValue *= 1.2;
+			topDesireMultipler = Math.max(1.2, topDesireMultipler);
 		else if(this.boobsDesire >= 50)
-			buildupValue *= 1.1;
+			topDesireMultipler = Math.max(1.1, topDesireMultipler);
 		
 		if(this.pussyDesire >= 200)
-			buildupValue *= 1.4;
+			topDesireMultipler = Math.max(1.4, topDesireMultipler);
 		else if(this.pussyDesire >= 150)
-			buildupValue *= 1.3;
+			topDesireMultipler = Math.max(1.3, topDesireMultipler);
 		else if(this.pussyDesire >= 100)
-			buildupValue *= 1.25;
+			topDesireMultipler = Math.max(1.25, topDesireMultipler);
 		else if(this.pussyDesire >= 75)
-			buildupValue *= 1.2;
+			topDesireMultipler = Math.max(1.2, topDesireMultipler);
 		else if(this.pussyDesire >= 50)
-			buildupValue *= 1.1;
+			topDesireMultipler = Math.max(1.1, topDesireMultipler);
 		
 		if(this.buttDesire >= 200)
-			buildupValue *= 1.4;
+			topDesireMultipler = Math.max(1.4, topDesireMultipler);
 		else if(this.buttDesire >= 150)
-			buildupValue *= 1.3;
+			topDesireMultipler = Math.max(1.3, topDesireMultipler);
 		else if(this.buttDesire >= 100)
-			buildupValue *= 1.25;
+			topDesireMultipler = Math.max(1.25, topDesireMultipler);
 		else if(this.buttDesire >= 75)
-			buildupValue *= 1.2;
+			topDesireMultipler = Math.max(1.2, topDesireMultipler);
 		else if(this.buttDesire >= 50)
-			buildupValue *= 1.1;
+			topDesireMultipler = Math.max(1.1, topDesireMultipler);
+			
+		buildupValue *= topDesireMultipler;
 
 		buildupValue = Math.min(buildupValue, 50);
 		
@@ -469,6 +472,7 @@ Game_Actor.prototype.dmgFormula_masInBattleSkill = function(area, useRightHand, 
 	let usingPussyToy = target.isWearingPussyToy();
 	let usingAnalToy = target.isWearingAnalToy();
 	let lickingHalberd = false;
+	let hitBySkillTypeSet = false;
 	
 	let enemySkillLvl = this.masturbateLvl();
 	let enemySkillRating = this.masturbateSkillRating();
@@ -490,7 +494,7 @@ Game_Actor.prototype.dmgFormula_masInBattleSkill = function(area, useRightHand, 
 			baseDmg = BASEDMG_SEXACT_TITTYFUCK;
 			targetDesire = target.boobsDesire;
 			targetSensitivity = target.boobsSensitivity();
-			this.addToActorTittyFuckRecord(false, false);
+			//this.addToActorTittyFuckRecord(false, false);
 			this.addToActorMasturbatedUsingHalberdRecord();
 			BattleManager.actionRemLines(LINE_KARRYN_MAS_TITTYFUCK_HALBERD);
 		}
@@ -498,7 +502,7 @@ Game_Actor.prototype.dmgFormula_masInBattleSkill = function(area, useRightHand, 
 			baseDmg = BASEDMG_PETTING_BOOBS;
 			targetDesire = target.boobsDesire;
 			targetSensitivity = target.boobsSensitivity();
-			this.addToActorBoobsPettedRecord(false);
+			this.addToActorBoobsPettedRecord(false, false, true);
 			BattleManager.actionRemLines(LINE_KARRYN_MAS_TOUCH_BOOBS);
 		}
 	}
@@ -506,7 +510,7 @@ Game_Actor.prototype.dmgFormula_masInBattleSkill = function(area, useRightHand, 
 		baseDmg = BASEDMG_PETTING_NIPPLES;
 		targetDesire = target.boobsDesire;
 		targetSensitivity = target.nipplesSensitivity();
-		this.addToActorNipplesPettedRecord(false);
+		this.addToActorNipplesPettedRecord(false, false, true);
 		BattleManager.actionRemLines(LINE_KARRYN_MAS_TOUCH_NIPPLES);
 	}
 	else if(area == AREA_CLIT) {
@@ -514,7 +518,7 @@ Game_Actor.prototype.dmgFormula_masInBattleSkill = function(area, useRightHand, 
 			baseDmg = BASEDMG_SEXACT_CUNNILINGUS;
 			targetDesire = target.pussyDesire;
 			targetSensitivity = target.clitSensitivity();
-			this.addToActorClitPettedRecord(false);
+			//this.addToActorClitPettedRecord(false, false, true);
 			this.addToActorMasturbatedUsingHalberdRecord();
 			BattleManager.actionRemLines(LINE_KARRYN_MAS_CLIT_RUB_HALBERD);
 		}
@@ -524,12 +528,14 @@ Game_Actor.prototype.dmgFormula_masInBattleSkill = function(area, useRightHand, 
 			targetSensitivity = target.clitSensitivity();
 			this.addToClitToyUsedByEnemyRecord(false);
 			BattleManager.actionRemLines(KARRYN_LINE_KARRYN_PETTING_PINK_ROTOR);
+			hitBySkillTypeSet = true;
+			target.justGotHitBySkillType(JUST_SKILLTYPE_KARRYN_TOY_PLAY_CLIT);
 		}
 		else {
 			baseDmg = BASEDMG_PETTING_CLIT;
 			targetDesire = target.pussyDesire;
 			targetSensitivity = target.clitSensitivity();
-			this.addToActorClitPettedRecord(false);
+			this.addToActorClitPettedRecord(false, false, true);
 			BattleManager.actionRemLines(LINE_KARRYN_MAS_TOUCH_CLIT);
 		}
 	}
@@ -538,7 +544,7 @@ Game_Actor.prototype.dmgFormula_masInBattleSkill = function(area, useRightHand, 
 			baseDmg = BASEDMG_SEXACT_PUSSYSEX;
 			targetDesire = target.pussyDesire;
 			targetSensitivity = target.pussySensitivity();
-			this.addToActorPussyPettedRecord(false);
+			//this.addToActorPussyPettedRecord(false, false, true);
 			this.addToActorMasturbatedUsingHalberdRecord();
 			BattleManager.actionRemLines(LINE_KARRYN_MAS_PUSSY_RUB_HALBERD);
 		}
@@ -548,12 +554,14 @@ Game_Actor.prototype.dmgFormula_masInBattleSkill = function(area, useRightHand, 
 			targetSensitivity = target.pussySensitivity();
 			this.addToPussyToyUsedByEnemyRecord(false);
 			BattleManager.actionRemLines(KARRYN_LINE_KARRYN_PETTING_PENIS_DILDO);
+			hitBySkillTypeSet = true;
+			target.justGotHitBySkillType(JUST_SKILLTYPE_KARRYN_TOY_PLAY_PUSSY);
 		}
 		else if(!usingPussyToy) {
 			baseDmg = BASEDMG_PETTING_PUSSY;
 			targetDesire = target.pussyDesire;
 			targetSensitivity = target.pussySensitivity();
-			this.addToActorPussyPettedRecord(false);
+			this.addToActorPussyPettedRecord(false, false, true);
 			BattleManager.actionRemLines(LINE_KARRYN_MAS_FINGER_PUSSY);
 		}
 	}
@@ -570,22 +578,24 @@ Game_Actor.prototype.dmgFormula_masInBattleSkill = function(area, useRightHand, 
 			baseDmg = BASEDMG_PETTING_ANAL;
 			targetDesire = target.buttDesire;
 			targetSensitivity = target.analSensitivity();
-			this.addToActorAnalPettedRecord(false);
+			this.addToActorAnalPettedRecord(false, false, true);
 			BattleManager.actionRemLines(LINE_KARRYN_MAS_FINGER_ANUS);
+			hitBySkillTypeSet = true;
+			target.justGotHitBySkillType(JUST_SKILLTYPE_KARRYN_TOY_PLAY_ANAL);
 		}
 	}
 	else if(area == AREA_FINGERS) {
 		baseDmg = BASEDMG_SUCKING_FINGERS;
 		targetDesire = target.mouthDesire;
 		targetSensitivity = target.mouthSensitivity();
-		this.addToActorFingersSuckedRecord(false);
+		this.addToActorFingersSuckedRecord(false, false, true);
 		BattleManager.actionRemLines(LINE_KARRYN_MAS_SUCK_FINGERS);
 	}
 	else if(area == AREA_MOUTH) {
 		baseDmg = BASEDMG_SEXACT_BLOWJOB;
 		targetDesire = target.mouthDesire;
 		targetSensitivity = target.mouthSensitivity();
-		this.addToActorBlowjobRecord(false, false);
+		//this.addToActorBlowjobRecord(false, false);
 		this.addToActorMasturbatedUsingHalberdRecord();
 		BattleManager.actionRemLines(LINE_KARRYN_MAS_LICK_HALBERD);
 		lickingHalberd = true;
@@ -640,7 +650,7 @@ Game_Actor.prototype.dmgFormula_masInBattleSkill = function(area, useRightHand, 
 	
 	//Tachie
 	if(useHalberd) {
-		//this.setMaxTachieSemenBoobsId(1); mas_inbattle remove once art is finished
+		this.setMaxTachieSemenBoobsId(3);
 		this.setMaxTachieSemenRightBoobId(0);
 		this.setMaxTachieSemenLeftBoobId(0);
 		
@@ -657,12 +667,14 @@ Game_Actor.prototype.dmgFormula_masInBattleSkill = function(area, useRightHand, 
 		}
 		this.resetTachieRightArm();
 		this.resetTachieLeftArm();
+		this.resetTachieRightBoob();
+		this.resetTachieLeftBoob();
 	}
 	else {
 		this.resetTachieFrontB();
 		this.setMaxTachieSemenBoobsId(0);
-		//this.setMaxTachieSemenRightBoobId(1); mas_inbattle remove once art is finished
-		//this.setMaxTachieSemenLeftBoobId(1); mas_inbattle remove once art is finished
+		this.setMaxTachieSemenRightBoobId(3);
+		this.setMaxTachieSemenLeftBoobId(3);
 		this.resetTachieSemenWetExtension();
 		
 		if(useRightHand) {
@@ -678,6 +690,8 @@ Game_Actor.prototype.dmgFormula_masInBattleSkill = function(area, useRightHand, 
 					this.setTachieRightArm('touch_oppai_naked');
 				}
 				
+				this.resetTachieRightBoob();
+				
 				this.setTachieSemenRightArmExtension('touch_oppai_');
 				this.setTachieSemenRightBoobExtension('touch_oppai_');
 			}
@@ -688,6 +702,8 @@ Game_Actor.prototype.dmgFormula_masInBattleSkill = function(area, useRightHand, 
 				else {
 					this.setTachieRightArm('touch_chikubi_naked');
 				}
+				
+				this.resetTachieRightBoob();
 				
 				this.setTachieSemenRightArmExtension('touch_chikubi_');
 				this.setTachieSemenRightBoobExtension('touch_chikubi_');
@@ -705,6 +721,8 @@ Game_Actor.prototype.dmgFormula_masInBattleSkill = function(area, useRightHand, 
 					this.setTachieSemenRightArmExtension('play_toyP_');
 					this.setTachieSemenRightBoobExtension('play_toyP_');
 					
+					this.setTachieRightBoob('play_toyP');
+					
 					if(this.tachieLeftArm.includes('play_toyP')) this.masInBattle_resetLeftArmToNormal();
 				}
 				else {
@@ -715,10 +733,10 @@ Game_Actor.prototype.dmgFormula_masInBattleSkill = function(area, useRightHand, 
 						this.setTachieRightArm('finger_omanko_naked');
 					}
 					
+					this.setTachieRightBoob('finger_omanko');
+					
 					this.setTachieSemenRightArmExtension('finger_omanko_');
 					this.setTachieSemenRightBoobExtension('finger_omanko_');
-					
-					if(this.tachieLeftArm.includes('finger_omanko')) this.masInBattle_resetLeftArmToNormal();
 				}
 			}
 			else if(area == AREA_CLIT) {
@@ -728,11 +746,11 @@ Game_Actor.prototype.dmgFormula_masInBattleSkill = function(area, useRightHand, 
 				else {
 					this.setTachieRightArm('touch_kuri_naked');
 				}
+				
+				this.setTachieRightBoob('touch_kuri');
 
 				this.setTachieSemenRightArmExtension('touch_kuri_');
 				this.setTachieSemenRightBoobExtension('touch_kuri_');
-				
-				//if(this.tachieLeftArm.includes('touch_kuri')) this.masInBattle_resetLeftArmToNormal();
 			}
 			else if(area == AREA_ANAL) {
 				if(this.isWearingGlovesAndHat()) {
@@ -741,11 +759,11 @@ Game_Actor.prototype.dmgFormula_masInBattleSkill = function(area, useRightHand, 
 				else {
 					this.setTachieRightArm('finger_anaru_naked');
 				}
+				
+				this.setTachieRightBoob('finger_anaru');
 
 				this.setTachieSemenRightArmExtension('finger_anaru_');
 				this.setTachieSemenRightBoobExtension('finger_anaru_');
-					
-				if(this.tachieLeftArm.includes('finger_anaru')) this.masInBattle_resetLeftArmToNormal();
 			}
 			else if(area == AREA_FINGERS) {
 				if(this.isWearingGlovesAndHat()) {
@@ -759,8 +777,10 @@ Game_Actor.prototype.dmgFormula_masInBattleSkill = function(area, useRightHand, 
 				this.setTachieSemenRightBoobExtension('suck_fingers_');
 				
 				this.resetTachieMouth();
+				this.resetTachieRightBoob();
 				
-				if(this.tachieLeftArm.includes('suck_fingers')) this.masInBattle_resetLeftArmToNormal();
+				if(this.tachieLeftArm.includes('suck_fingers')) 
+					this.masInBattle_resetLeftArmToNormal();
 			}
 		}
 		//Left Hand
@@ -777,6 +797,8 @@ Game_Actor.prototype.dmgFormula_masInBattleSkill = function(area, useRightHand, 
 					this.setTachieLeftArm('touch_oppai_naked');
 				}
 				
+				this.resetTachieLeftBoob();
+				
 				this.setTachieSemenLeftArmExtension('touch_oppai_');
 				this.setTachieSemenLeftBoobExtension('touch_oppai_');
 			}
@@ -787,6 +809,8 @@ Game_Actor.prototype.dmgFormula_masInBattleSkill = function(area, useRightHand, 
 				else {
 					this.setTachieLeftArm('touch_chikubi_naked');
 				}
+				
+				this.resetTachieLeftBoob();
 				
 				this.setTachieSemenLeftArmExtension('touch_chikubi_');
 				this.setTachieSemenLeftBoobExtension('touch_chikubi_');
@@ -803,6 +827,8 @@ Game_Actor.prototype.dmgFormula_masInBattleSkill = function(area, useRightHand, 
 					this.setTachieSemenLeftArmExtension('play_toyP_');
 					this.setTachieSemenLeftBoobExtension('play_toyP_');
 					
+					this.setTachieLeftBoob('play_toyP');
+					
 					if(this.tachieRightArm.includes('play_toyP')) this.masInBattle_resetRightArmToNormal();
 				}
 				else {
@@ -813,10 +839,10 @@ Game_Actor.prototype.dmgFormula_masInBattleSkill = function(area, useRightHand, 
 						this.setTachieLeftArm('finger_omanko_naked');
 					}
 					
+					this.setTachieLeftBoob('finger_omanko');
+					
 					this.setTachieSemenLeftArmExtension('finger_omanko_');
 					this.setTachieSemenLeftBoobExtension('finger_omanko_');
-					
-					if(this.tachieRightArm.includes('finger_omanko')) this.masInBattle_resetRightArmToNormal();
 				}
 			}
 			else if(area == AREA_CLIT) {
@@ -827,10 +853,10 @@ Game_Actor.prototype.dmgFormula_masInBattleSkill = function(area, useRightHand, 
 					this.setTachieLeftArm('touch_kuri_naked');
 				}
 				
+				this.setTachieLeftBoob('touch_kuri');
+				
 				this.setTachieSemenLeftArmExtension('touch_kuri_');
 				this.setTachieSemenLeftBoobExtension('touch_kuri_');
-				
-				//if(this.tachieRightArm.includes('touch_kuri')) this.masInBattle_resetRightArmToNormal();
 			}
 			else if(area == AREA_ANAL) {
 				if(this.isWearingGlovesAndHat()) {
@@ -840,10 +866,10 @@ Game_Actor.prototype.dmgFormula_masInBattleSkill = function(area, useRightHand, 
 					this.setTachieLeftArm('finger_anaru_naked');
 				}
 				
+				this.setTachieLeftBoob('finger_anaru');
+				
 				this.setTachieSemenLeftArmExtension('finger_anaru_');
 				this.setTachieSemenLeftBoobExtension('finger_anaru_');
-				
-				if(this.tachieRightArm.includes('finger_anaru')) this.masInBattle_resetRightArmToNormal();
 			}
 			else if(area == AREA_FINGERS) {
 				if(this.isWearingGlovesAndHat()) {
@@ -857,13 +883,16 @@ Game_Actor.prototype.dmgFormula_masInBattleSkill = function(area, useRightHand, 
 				this.setTachieSemenLeftBoobExtension('suck_fingers_');
 				
 				this.resetTachieMouth();
+				this.resetTachieLeftBoob();
 				
-				if(this.tachieRightArm.includes('suck_fingers')) this.masInBattle_resetRightArmToNormal();
+				if(this.tachieRightArm.includes('suck_fingers')) 
+					this.masInBattle_resetRightArmToNormal();
 			}
 		}
 	}
 	
-	target.justGotHitBySkillType(JUST_SKILLTYPE_KARRYN_MASTURBATE);
+	if(!hitBySkillTypeSet)
+		target.justGotHitBySkillType(JUST_SKILLTYPE_KARRYN_MASTURBATE);
 	
 	this.emoteMasturbationInBattlePose(lickingHalberd);
 	this.setAllowTachieUpdate(true);
@@ -944,6 +973,8 @@ Game_Actor.prototype.masInBattle_resetLeftArmToNormal = function() {
 		this.setTachieLeftArm('normal_naked');
 	}
 	
+	this.setTachieLeftBoob('normal');
+	
 	this.setTachieSemenLeftArmExtension('normal_');
 	this.setTachieSemenLeftBoobExtension('normal_');
 };
@@ -954,6 +985,8 @@ Game_Actor.prototype.masInBattle_resetRightArmToNormal = function() {
 	else {
 		this.setTachieRightArm('normal_naked');
 	}
+	
+	this.setTachieRightBoob('normal');
 
 	this.setTachieSemenRightArmExtension('normal_');
 	this.setTachieSemenRightBoobExtension('normal_');
@@ -1593,7 +1626,7 @@ Game_Actor.prototype.dmgFormula_masturbateBattle = function(target) {
 				this.addToActorNipplesPleasureRecord(possiblePleasure);
 			}
 			
-			this.addToActorNipplesPettedRecord(false);
+			this.addToActorNipplesPettedRecord(false, false, true);
 		}
 		else if(this.masturbateBattle_rightHandIsOn(SLOT_M_CLIT)) {
 			let baseDmg = BASEDMG_PETTING_CLIT;
@@ -1612,7 +1645,7 @@ Game_Actor.prototype.dmgFormula_masturbateBattle = function(target) {
 				this.addToActorClitPleasureRecord(possiblePleasure);
 			}
 			
-			this.addToActorClitPettedRecord(false);
+			this.addToActorClitPettedRecord(false, false, true);
 		}
 		else if(this.masturbateBattle_rightHandIsOn(SLOT_M_PUSSY)) {
 			let baseDmg = BASEDMG_PETTING_PUSSY;
@@ -1631,7 +1664,7 @@ Game_Actor.prototype.dmgFormula_masturbateBattle = function(target) {
 				this.addToActorPussyPleasureRecord(possiblePleasure);
 			}
 			
-			this.addToActorPussyPettedRecord(false);
+			this.addToActorPussyPettedRecord(false, false, true);
 		}
 	}//End right hand
 	
@@ -1656,7 +1689,7 @@ Game_Actor.prototype.dmgFormula_masturbateBattle = function(target) {
 				this.addToActorBoobsPleasureRecord(possiblePleasure);
 			}
 			
-			this.addToActorBoobsPettedRecord(false);
+			this.addToActorBoobsPettedRecord(false, false, true);
 		}
 		else if(this.masturbateBattle_leftHandIsOn(SLOT_M_NIPPLES)) {
 			let baseDmg = BASEDMG_PETTING_NIPPLES;
@@ -1675,8 +1708,8 @@ Game_Actor.prototype.dmgFormula_masturbateBattle = function(target) {
 				this.addToActorNipplesPleasureRecord(possiblePleasure);
 			}
 			
-			if(!this.masturbateBattle_rightHandIsOn(SLOT_M_NIPPLES)) 
-				this.addToActorNipplesPettedRecord(false);
+			//if(!this.masturbateBattle_rightHandIsOn(SLOT_M_NIPPLES)) 
+				this.addToActorNipplesPettedRecord(false, false, true);
 		}
 		else if(this.masturbateBattle_leftHandIsOn(SLOT_M_CLIT)) {
 			let baseDmg = BASEDMG_PETTING_CLIT;
@@ -1695,7 +1728,7 @@ Game_Actor.prototype.dmgFormula_masturbateBattle = function(target) {
 				this.addToActorClitPleasureRecord(possiblePleasure);
 			}
 			
-			this.addToActorClitPettedRecord(false);
+			this.addToActorClitPettedRecord(false, false, true);
 		}
 		else if(this.masturbateBattle_leftHandIsOn(SLOT_M_PUSSY)) {
 			let baseDmg = BASEDMG_PETTING_PUSSY + 2;
@@ -1714,7 +1747,7 @@ Game_Actor.prototype.dmgFormula_masturbateBattle = function(target) {
 				this.addToActorPussyPleasureRecord(possiblePleasure);
 			}
 			
-			this.addToActorPussyPettedRecord(false);
+			this.addToActorPussyPettedRecord(false, false, true);
 		}
 		else if(this.masturbateBattle_leftHandIsOn(SLOT_M_ANAL)) {
 			let baseDmg = BASEDMG_PETTING_ANAL;
@@ -1733,7 +1766,7 @@ Game_Actor.prototype.dmgFormula_masturbateBattle = function(target) {
 				this.addToActorAnalPleasureRecord(possiblePleasure);
 			}
 			
-			this.addToActorAnalPettedRecord(false);
+			this.addToActorAnalPettedRecord(false, false, true);
 		}
 	} //End left hand
 	
@@ -1759,7 +1792,7 @@ Game_Actor.prototype.dmgFormula_masturbateBattle = function(target) {
 			}
 			
 			this.increaseLiquidDroolNipples(1);
-			this.addToActorNipplesPettedRecord(false);
+			this.addToActorNipplesPettedRecord(false, false, true);
 		}
 		else if(this.masturbateBattle_MouthIsOn(SLOT_M_FINGERS)) {
 			let baseDmg = BASEDMG_SUCKING_FINGERS;
@@ -1779,7 +1812,7 @@ Game_Actor.prototype.dmgFormula_masturbateBattle = function(target) {
 			}
 			
 			this.increaseLiquidDroolFingers(1);
-			this.addToActorFingersSuckedRecord(false);
+			this.addToActorFingersSuckedRecord(false, false, true);
 		}
 	}//End mouth
 	

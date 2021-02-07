@@ -161,7 +161,7 @@ Game_Enemy.prototype.enemyBattleAIGeneric = function() {
 		if(!this.isHorny && target.isInMasturbationPose()) lowerLimit = 0;
 		ranChanceFactor = Math.min(ranChanceFactor, lowerLimit);
 		
-		let wantSex = (Math.randomInt(ranChanceFactor)) > (this.anger() - this.currentPercentOfOrgasm(true));
+		let wantSex = (Math.randomInt(ranChanceFactor)) > Math.max(0, (this.anger() - this.currentPercentOfOrgasm(true)));
 		
 		if(this.isHorny && !this.isAngry) 
 			wantSex = true;

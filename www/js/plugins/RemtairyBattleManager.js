@@ -20,11 +20,11 @@ const BM_PLVL4_NORMAL_BGM_VOLUME = 67;
 
 //Prison level boss battle bgm
 //Yasu Tutorial Battle
-const BM_TUTORIAL_BGM_NAME = "S_Prologue2";
-const BM_TUTORIAL_BGM_VOLUME = 80;
+const BM_TUTORIAL_BGM_NAME = "Battle3";
+const BM_TUTORIAL_BGM_VOLUME = 85;
 //Tonkin Battle 
-const BM_PLVL1_BOSS_BGM_NAME = "S_Prologue2";
-const BM_PLVL1_BOSS_BGM_VOLUME = 80;
+const BM_PLVL1_BOSS_BGM_NAME = "Battle3";
+const BM_PLVL1_BOSS_BGM_VOLUME = 85;
 //Dr. Cargill Battle 
 const BM_PLVL2_BOSS_BGM_NAME = "Battle3"; 
 const BM_PLVL2_BOSS_BGM_VOLUME = 85;
@@ -50,35 +50,40 @@ const BM_KARRYN_SEX_BGM_VOLUME = 80;
 const BM_WAITRESS_JOB_BGM_NAME = "Job1";
 const BM_WAITRESS_JOB_BGM_PAN = 0;
 const BM_WAITRESS_JOB_BGM_PITCH = 100;
-const BM_WAITRESS_JOB_BGM_VOLUME = 90;
+const BM_WAITRESS_JOB_BGM_VOLUME = 95;
 
 //waitress sex
 const BM_WAITRESS_SEX_BGM_NAME = "H_Job1";
 const BM_WAITRESS_SEX_BGM_PAN = 0;
 const BM_WAITRESS_SEX_BGM_PITCH = 100;
-const BM_WAITRESS_SEX_BGM_VOLUME = 80;
+const BM_WAITRESS_SEX_BGM_VOLUME = 91;
 
 //receptionist job
 const BM_RECEPTIONIST_JOB_BGM_NAME = "Job1";
 const BM_RECEPTIONIST_JOB_BGM_PAN = 0;
 const BM_RECEPTIONIST_JOB_BGM_PITCH = 100;
-const BM_RECEPTIONIST_JOB_BGM_VOLUME = 90;
+const BM_RECEPTIONIST_JOB_BGM_VOLUME = 63;
 
 const BM_RECEPTIONIST_SEX_BGM_NAME = "H_Job1";
 const BM_RECEPTIONIST_SEX_BGM_PAN = 0;
 const BM_RECEPTIONIST_SEX_BGM_PITCH = 100;
-const BM_RECEPTIONIST_SEX_BGM_VOLUME = 80;
+const BM_RECEPTIONIST_SEX_BGM_VOLUME = 91;
 
 //glory hole
-const BM_GLORY_START_BGM_NAME = "M_Sofa1";
-const BM_GLORY_START_BGM_PAN = 0;
-const BM_GLORY_START_BGM_PITCH = 100;
-const BM_GLORY_START_BGM_VOLUME = 80;
+const BM_GLORY_START_NORMAL_BGM_NAME = "M_Sofa1";
+const BM_GLORY_START_NORMAL_BGM_PAN = 0;
+const BM_GLORY_START_NORMAL_BGM_PITCH = 100;
+const BM_GLORY_START_NORMAL_BGM_VOLUME = 80;
 
-const BM_GLORY_SEX_BGM_NAME = "H_Slut1";
+const BM_GLORY_START_SLUTTY_BGM_NAME = "H_Slut2";
+const BM_GLORY_START_SLUTTY_BGM_PAN = 0;
+const BM_GLORY_START_SLUTTY_BGM_PITCH = 100;
+const BM_GLORY_START_SLUTTY_BGM_VOLUME = 80;
+
+const BM_GLORY_SEX_BGM_NAME = "H_Job1";
 const BM_GLORY_SEX_BGM_PAN = 0;
 const BM_GLORY_SEX_BGM_PITCH = 100;
-const BM_GLORY_SEX_BGM_VOLUME = 80;
+const BM_GLORY_SEX_BGM_VOLUME = 91;
 
 //down pose - stamina
 const BM_DOWN_STAMINA_BGM_NAME = "Down1";
@@ -313,12 +318,19 @@ BattleManager.playBattleBgm = function() {
 		bgmVolume = BM_RECEPTIONIST_JOB_BGM_VOLUME;
 	}
 	else if($gameParty.isInGloryBattle) {
-		bgmName = BM_GLORY_START_BGM_NAME;
-		bgmPitch = BM_GLORY_START_BGM_PITCH;
-		bgmPan = BM_GLORY_START_BGM_PAN;
-		bgmVolume = BM_GLORY_START_BGM_VOLUME;
+		if(Karryn.getReactionScore() >= VAR_DEF_RS_LV3_REQ) {
+			bgmName = BM_GLORY_START_SLUTTY_BGM_NAME;
+			bgmPitch = BM_GLORY_START_SLUTTY_BGM_PITCH;
+			bgmPan = BM_GLORY_START_SLUTTY_BGM_PAN;
+			bgmVolume = BM_GLORY_START_SLUTTY_BGM_VOLUME;
+		}
+		else {
+			bgmName = BM_GLORY_START_NORMAL_BGM_NAME;
+			bgmPitch = BM_GLORY_START_NORMAL_BGM_PITCH;
+			bgmPan = BM_GLORY_START_NORMAL_BGM_PAN;
+			bgmVolume = BM_GLORY_START_NORMAL_BGM_VOLUME;
+		}
 	}
-
 	else {
 		if(mapId === MAP_ID_KARRYN_OFFICE && $gameVariables.value(VARIABLE_PROLOGUE_PROGRESS_ID) === 5 && !$gameSwitches.value(SWITCH_PROLOGUE_ENDED)) {
 			bgmName = BM_TUTORIAL_BGM_NAME;
@@ -792,8 +804,11 @@ BattleManager.invokeAction = function(subject, target) {
 		target.checkForOrgasm();
 	}
 	else {
-		target.checkForOrgasm();
-		subject.checkForOrgasm();
+		if($gameParty.isInGloryBattle) { }
+		else {
+			target.checkForOrgasm();
+			subject.checkForOrgasm();
+		}
 	}
 };
 
@@ -1074,6 +1089,7 @@ BattleManager.processVictory = function() {
 		if(!$gameSystem.skipVictoryMusic() && !Karryn.isInJobPose()) 
 			this.playVictoryMe();
 		//$gameParty.gainOrderFromVictory();
+		Karryn.commitUncommittedCharmExp();
 		this.processNormalVictory();
     }
 };
@@ -1254,11 +1270,15 @@ BattleManager.processDefeat = function() {
 		//$gameParty._halfGoldRewardsFlag = true;
 		this.playDefeatMe();
 	}
+	else if($gameParty.isInGloryBattle) {
+		$gameParty.setDefeatedSwitchesOn();
+	}
 	this._phase = 'rem defeat';
 	this._victoryPhase = true;
 	this._victoryType = 2;
     if(!$gameSystem.skipVictoryAftermath()) {
 		//$gameParty.gainOrderFromDefeat();
+		Karryn.commitUncommittedCharmExp();
 		this.processNormalVictory();
     }
 };

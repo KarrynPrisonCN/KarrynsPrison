@@ -908,7 +908,7 @@ Game_Actor.prototype.waitressBattle_waitressDrink = function(drink, amount) {
 	}
 	
 	if(this.isInWaitressServingPose())
-		this.emoteWaitressServingPose();	
+		this.emoteWaitressServingPose();
 };
 
 Game_Actor.prototype.showEval_waitressSex_drinkMug = function() {
@@ -988,6 +988,8 @@ Game_Actor.prototype.afterEval_waitressSex_drinkMug = function() {
 	
 	this.updateTachieStraw();
 	this.emoteWaitressSexPose();
+	
+	this.resetSexSkillConsUsage(false);
 	
 	//this.resetTachieMouth();
 	//this.setCacheChanged();

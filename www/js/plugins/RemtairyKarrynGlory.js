@@ -2,12 +2,20 @@
 Remtairy.KarrynGlory = Remtairy.KarrynGlory || {};
 
 //敵の位置
-const GLORYHOLE_POS_LEFT_X = 275;
-const GLORYHOLE_POS_LEFT_Y = 402;
-const GLORYHOLE_POS_RIGHT_X = 1135;
-const GLORYHOLE_POS_RIGHT_Y = 402;
+const GLORYHOLE_POS_LEFT_SOFT_X = 250;
+const GLORYHOLE_POS_LEFT_SOFT_Y = 415;
+const GLORYHOLE_POS_LEFT_HARD_X = 250;
+const GLORYHOLE_POS_LEFT_HARD_Y = 420;
+const GLORYHOLE_POS_RIGHT_SOFT_X = 1190;
+const GLORYHOLE_POS_RIGHT_SOFT_Y = 415;
+const GLORYHOLE_POS_RIGHT_HARD_X = 1190;
+const GLORYHOLE_POS_RIGHT_HARD_Y = 420;
 
-const BATTLEBACK1_GLORYHOLE_NAME = 'Toilet1';
+const BATTLEBACK1_GLORYHOLE_1_NAME = 'Toilet1';
+const BATTLEBACK1_GLORYHOLE_2_NAME = 'Toilet2';
+const BATTLEBACK1_GLORYHOLE_3_NAME = 'Toilet3';
+const BATTLEBACK1_GLORYHOLE_4_NAME = 'Toilet4';
+const BATTLEBACK1_GLORYHOLE_5_NAME = 'Toilet5';
 
 //=============================================================================
  /*:
@@ -55,7 +63,7 @@ const GLORY_REST_TURNS = 5;
 const GLORY_MENTAL_PHASE_COOLDOWN = 3;
 
 const GLORY_GUEST_ACTION_COOLDOWN = 2;
-const GLORY_GUEST_BASE_PATIENCE = 8;
+const GLORY_GUEST_BASE_PATIENCE = 7;
 const GLORY_GUEST_SATISFACTION_GAIN_FROM_EMPTY_STOCK = 3;
 const GLORY_GUEST_SATISFACTION_GAIN_FROM_FAVORED_SEX = 1;
 const GLORY_GUEST_SATISFACTION_LOST_FROM_UNFAVORED_SEX = -1;
@@ -78,7 +86,21 @@ Game_Party.prototype.setIsInGloryBattleFlag = function(status) {
 Game_Party.prototype.preGloryBattleSetup = function() {
 	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
 	this.preBattleSetup();
-	$gameMap.changeBattleback(BATTLEBACK1_GLORYHOLE_NAME, null);
+	
+	let gloryRep = $gameParty._gloryReputation;
+	if(gloryRep >= 20)
+		$gameMap.changeBattleback(BATTLEBACK1_GLORYHOLE_5_NAME, null);
+	else if(gloryRep >= 13)
+		$gameMap.changeBattleback(BATTLEBACK1_GLORYHOLE_4_NAME, null);
+	else if(gloryRep >= 7)
+		$gameMap.changeBattleback(BATTLEBACK1_GLORYHOLE_3_NAME, null);
+	else if(gloryRep >= 3)
+		$gameMap.changeBattleback(BATTLEBACK1_GLORYHOLE_2_NAME, null);
+	else
+		$gameMap.changeBattleback(BATTLEBACK1_GLORYHOLE_1_NAME, null);
+	
+	actor._gloryBattle_safeExit = false;
+	actor._gloryBattle_badExit = false;
 	this.setIsInGloryBattleFlag(true);
 	
 	this.increaseFatigueGain(GLORY_FATIGUE_RECOVER_BASE * -1 * actor.fatigueRecoveryRate(), true)
@@ -164,8 +186,6 @@ Game_Actor.prototype.preGloryBattleSetup = function() {
 	if(this.hasPassive(PASSIVE_MASTURBATED_GLORYHOLE_COUNT_THREE_ID))
 		this.setWantsToOnaniInBattle(true);
 	
-	this.setTachiePussyToyExtension_gloryBattle('left_1_');
-	this.setTachieAnalToyExtension_gloryBattle('right_');
 	this.setToiletSittingPose();
 	this.setTachieLegs('close');
 	
@@ -173,16 +193,80 @@ Game_Actor.prototype.preGloryBattleSetup = function() {
 	this._gloryBattle_restingTilTurn = -1;
 	this._gloryBattle_turnsTillMentalPhase = 0;
 	this._gloryBattle_cocksAppeared = 0;
-	this._gloryBattle_safeExit = false;
-	this._gloryBattle_badExit = false;
 	this._gloryBattle_masturbated = false;
 	this._gloryBattle_restUsedInRowCount = 0;
+	this._gloryBattle_restUsedTotalCount = 0;
 	this._gloryBattle_breatherUsedInRowCount = 0;
+	
+	this.setupGloryBattleToys();
 	
 	this._dirty = true;
 };
 
+Game_Actor.prototype.setupGloryBattleToys = function() {
+	let factorBase = $gameParty._gloryReputation;
+	
+	if(this.hasPassive(PASSIVE_SEXUAL_PARTNERS_NERD_THREE_ID)) factorBase += 30;
+	else if(this.hasPassive(PASSIVE_SEXUAL_PARTNERS_NERD_TWO_ID)) factorBase += 20;
+	else if(this.hasPassive(PASSIVE_SEXUAL_PARTNERS_NERD_ONE_ID)) factorBase += 10;
+	
+	if(this.hasEdict(EDICT_REPAIR_STORE)) {
+		if(this.hasEdict(EDICT_INMATES_ALLOWED_TO_USE_STORE) && this.hasEdict(EDICT_PAY_NERD_BLACKMAIL)) 
+			factorBase += 20;
+		else if(this.hasEdict(EDICT_INMATES_ALLOWED_TO_USE_STORE) || this.hasEdict(EDICT_PAY_NERD_BLACKMAIL))
+			factorBase += 10;
+		else factorBase += 5;
+	}
+	
+	if(this.hasEdict(EDICT_THREATEN_THE_NERDS)) factorBase -= 15;
+	else if(this.hasEdict(EDICT_GIVE_IN_TO_NERD_BLACKMAIL)) factorBase += 15;
+	
+	let factorMultipler = 1;
+	
+	if($gameParty._gloryReputation < 1) factorMultipler *= 0.33;
+	else if($gameParty._gloryReputation < 3) factorMultipler *= 0.66;
+	else if(this.hasPassive(PASSIVE_MASTURBATED_GLORYHOLE_COUNT_THREE_ID)) factorMultipler *= 1.3;
+	else if(this.hasPassive(PASSIVE_MASTURBATED_GLORYHOLE_COUNT_TWO_ID)) factorMultipler *= 1.25;
+	else if(this.hasPassive(PASSIVE_MASTURBATED_GLORYHOLE_COUNT_ONE_ID)) factorMultipler *= 1.2;
+	
+	if(this.hasPassive(PASSIVE_TOILET_BATTLE_COUNT_THREE_ID)) factorMultipler *= 1.2;
+	else if(this.hasPassive(PASSIVE_TOILET_BATTLE_COUNT_TWO_ID)) factorMultipler *= 1.1;
+	
+	if(this.hasPassive(PASSIVE_GLORY_HOLE_SEX_PEOPLE_THREE_ID)) factorMultipler *= 1.4;
+	else if(this.hasPassive(PASSIVE_GLORY_HOLE_SEX_PEOPLE_TWO_ID)) factorMultipler *= 1.3;
+	else if(this.hasPassive(PASSIVE_GLORY_HOLE_SEX_PEOPLE_ONE_ID)) factorMultipler *= 1.2;
+	
+	let toyFactor = factorBase * factorMultipler;
+	let spawningToysArray = [];
+	let possibleToysArray = [ CLIT_ID, ANAL_ID ];
+	if(!this.isVirgin()) possibleToysArray.push(PUSSY_ID);
+
+	if(toyFactor < 30) {
+		if(Math.randomInt(30) + 5 < toyFactor)
+			spawningToysArray.push(possibleToysArray.splice(Math.randomInt(possibleToysArray.length), 1)[0]);
+	}
+	else {
+		spawningToysArray.push(possibleToysArray.splice(Math.randomInt(possibleToysArray.length), 1)[0]);
+		
+		if(Math.randomInt(69) + 15 < toyFactor && possibleToysArray.length > 0) {
+			spawningToysArray.push(possibleToysArray.splice(Math.randomInt(possibleToysArray.length), 1)[0]);
+		
+			if(Math.randomInt(100) + 42 < toyFactor && possibleToysArray.length > 0)
+				spawningToysArray.push(possibleToysArray.splice(Math.randomInt(possibleToysArray.length), 1)[0]);
+		}
+		
+	}
+
+	if(spawningToysArray.contains(CLIT_ID)) this.addState(STATE_GLORY_PINK_ROTOR_ID);
+	if(spawningToysArray.contains(PUSSY_ID)) this.addState(STATE_GLORY_PENIS_DILDO_ID);
+	if(spawningToysArray.contains(ANAL_ID)) this.addState(STATE_GLORY_ANAL_BEADS_ID);
+};
+
+
 // Tachie
+Game_Actor.prototype.setTachieClitToyExtension_gloryBattle = function(name) {
+	this._gloryBattle_tachieClitToyExtension = name;
+};
 Game_Actor.prototype.setTachiePussyToyExtension_gloryBattle = function(name) {
 	this._gloryBattle_tachiePussyToyExtension = name;
 };
@@ -190,11 +274,14 @@ Game_Actor.prototype.setTachieAnalToyExtension_gloryBattle = function(name) {
 	this._gloryBattle_tachieAnalToyExtension = name;
 };
 
+Game_Actor.prototype.getTachieClitToyExtension_gloryBattle = function() {
+	return this._gloryBattle_tachieClitToyExtension || '';
+};
 Game_Actor.prototype.getTachiePussyToyExtension_gloryBattle = function() {
-	return this._gloryBattle_tachiePussyToyExtension;
+	return this._gloryBattle_tachiePussyToyExtension || '';
 };
 Game_Actor.prototype.getTachieAnalToyExtension_gloryBattle = function() {
-	return this._gloryBattle_tachieAnalToyExtension;
+	return this._gloryBattle_tachieAnalToyExtension || '';
 };
 
 Game_Actor.prototype.gloryBattle_makeSexualNoise = function(value) {
@@ -326,10 +413,15 @@ Game_Actor.prototype.gloryXParamRate = function(id) {
 	let passiveRate = 1;
 	if($gameParty.isInGloryBattle) {
 		if(id === XPARAM_STA_REGEN_ID) {
-			passiveRate = 0.25;
+			passiveRate = 0.33;
 			
 			if($gameTroop.getCurrentTurn_gloryBattle() < this._gloryBattle_restingTilTurn) {
-				passiveRate *= 5;
+				if(this.isBodySlotInserted(MOUTH_ID) && (this.isBodySlotInserted(PUSSY_ID) || this.isBodySlotInserted(ANAL_ID))) 
+					passiveRate *= 2.4;
+				else if(this.isBodySlotInserted(MOUTH_ID) || this.isBodySlotInserted(PUSSY_ID) || this.isBodySlotInserted(ANAL_ID))
+					passiveRate *= 3.2;
+				else
+					passiveRate *= 4;
 			}
 		}
 		
@@ -352,6 +444,9 @@ Game_Actor.prototype.glorySParamRate = function(id) {
 Game_Actor.prototype.gloryBattle_reactToNewCock = function() {
 	if(this._gloryBattle_cocksAppeared === 0) {
 		BattleManager.actionRemLines(KARRYN_LINE_GLORY_HOLE_APPEAR_FIRST);
+		if(Karryn.getReactionScore() < VAR_DEF_RS_LV3_REQ) {
+			BattleManager.playSpecialBgm_GlorySex();
+		}
 	}
 	else if(!this.justOrgasmed()){
 		let numOfCocks = 0;
@@ -418,19 +513,143 @@ Game_Actor.prototype.postDamage_basicSex_gloryBattle = function(target, sexAct) 
 };
 
 Game_Actor.prototype.postDamage_ejaculation_gloryBattle = function(target, area, semen) {
+	let ejaculatedFromLeftHole = target._guest_atStall === GLORY_LEFT_STALL_ID;
+	let ejaculatedFromRightHole = target._guest_atStall === GLORY_RIGHT_STALL_ID;
+	
 	if(area == CUM_CREAMPIE_PUSSY || area == CUM_CREAMPIE_ANAL) {
 		this.gloryBattle_makeSexualNoise(4);
 		this._playthroughRecordGloryCreampieML += semen;
+		let spillChance = semen * 3 + $gameParty._gloryBattle_guestSatisfaction * 2;
+		if(target._ejaculationCount > 1 && spillChance > 0) spillChance *= 1.4;
+		if(area == CUM_CREAMPIE_PUSSY) spillChance += this._liquidCreampiePussy * 0.5;
+		else if(area == CUM_CREAMPIE_ANAL) spillChance += this._liquidCreampieAnal * 0.5;
+		if(Math.randomInt(100) < spillChance) {
+			if(ejaculatedFromLeftHole) {
+				if(Math.random() < 0.6)
+					this.increaseGloryCumOnLeftHole(Math.randomInt(semen) * 0.5, 0);
+				else
+					this.increaseGloryCumOnLeftHole(Math.randomInt(semen) * 0.5, 1);
+			}
+			else if(ejaculatedFromRightHole) {
+				if(Math.random() < 0.6)
+					this.increaseGloryCumOnRightHole(Math.randomInt(semen) * 0.5, 1);
+				else
+					this.increaseGloryCumOnRightHole(Math.randomInt(semen) * 0.5, 0);
+			}
+		}
 	}
 	else if(area == CUM_SWALLOW_MOUTH) {
 		this.gloryBattle_makeSexualNoise(4);
 		this._playthroughRecordGlorySwallowML += semen;
+		let spillChance = semen * 2 + $gameParty._gloryBattle_guestSatisfaction * 2;
+		spillChance += this._liquidSwallow * 0.33;
+		
+		if(Math.randomInt(100) < spillChance) {
+			if(ejaculatedFromLeftHole) {
+				this.increaseGloryCumOnLeftHole(Math.randomInt(semen) * 0.5);
+			}
+			else if(ejaculatedFromRightHole) {
+				this.increaseGloryCumOnRightHole(Math.randomInt(semen) * 0.5);
+			}
+		}
 	}
 	else if(area == CUM_ONTO_FLOOR) {
 		this.gloryBattle_makeSexualNoise(2);
+		let spillChance = semen * 5 + $gameParty._gloryBattle_guestSatisfaction * 2;
+		
+		if(Math.randomInt(100) < spillChance) {
+			if(ejaculatedFromLeftHole) {
+				if(Math.random() < 0.6) {
+					let gloryAreaArray = [ 6, 7, 8, 3 ];
+					this.increaseGloryCumOnLeftWall(Math.randomInt(semen), gloryAreaArray[Math.randomInt(gloryAreaArray.length)]);
+				}
+				else {
+					let gloryAreaArray = [ 3 ];
+					this.increaseGloryCumOnLeftToilet(Math.randomInt(semen), gloryAreaArray[Math.randomInt(gloryAreaArray.length)]);
+				}
+			}
+			else if(ejaculatedFromRightHole) {
+				if(Math.random() < 0.6) {
+					let gloryAreaArray = [ 8, 5 ];
+					this.increaseGloryCumOnRightWall(Math.randomInt(semen), gloryAreaArray[Math.randomInt(gloryAreaArray.length)]);
+				}
+				else {
+					let gloryAreaArray = [ 2, 3 ];
+					this.increaseGloryCumOnRightToilet(Math.randomInt(semen), gloryAreaArray[Math.randomInt(gloryAreaArray.length)]);
+				}
+			}
+		}
 	}
 	else {
 		this.gloryBattle_makeSexualNoise(3);
+		let spillChance = (semen - 3) * 4.5;
+		
+		if(Math.randomInt(100) < spillChance) {
+			if(ejaculatedFromLeftHole) {
+				if(area == CUM_BUKKAKE_FACE) {
+					if(Math.random() < 0.4) {
+						let gloryAreaArray = [ 8, 5, 4 ];
+						this.increaseGloryCumOnRightWall(Math.randomInt(semen) * 0.66, gloryAreaArray[Math.randomInt(gloryAreaArray.length)]);
+					}
+					else {
+						let gloryAreaArray = [ 1, 1, 2, 3 ];
+						this.increaseGloryCumOnRightToilet(Math.randomInt(semen) * 0.66, gloryAreaArray[Math.randomInt(gloryAreaArray.length)]);
+					}
+				}
+				else if(area == CUM_BUKKAKE_BOOBS || CUM_BUKKAKE_LEFTARM || CUM_BUKKAKE_RIGHTARM) {
+					if(Math.random() < 0.7) {
+						let gloryAreaArray = [ 0, 1, 2, 6, 7 ];
+						this.increaseGloryCumOnRightWall(Math.randomInt(semen) * 0.66, gloryAreaArray[Math.randomInt(gloryAreaArray.length)]);
+					}
+					else {
+						let gloryAreaArray = [ 0, 1, 2 ];
+						this.increaseGloryCumOnLeftToilet(Math.randomInt(semen) * 0.66, gloryAreaArray[Math.randomInt(gloryAreaArray.length)]);
+					}
+				}
+				else if(area == CUM_BUKKAKE_BUTT || CUM_BUKKAKE_LEFTLEG || CUM_BUKKAKE_RIGHTLEG) {
+					if(Math.random() < 0.7) {
+						let gloryAreaArray = [ 8, 5, 4, 2, 3 ];
+						this.increaseGloryCumOnRightWall(Math.randomInt(semen) * 0.66, gloryAreaArray[Math.randomInt(gloryAreaArray.length)]);
+					}
+					else {
+						let gloryAreaArray = [ 2, 3 ];
+						this.increaseGloryCumOnLeftToilet(Math.randomInt(semen) * 0.66, gloryAreaArray[Math.randomInt(gloryAreaArray.length)]);
+					}
+				}
+			}
+			else if(ejaculatedFromRightHole) {
+				if(area == CUM_BUKKAKE_FACE) {
+					if(Math.random() < 0.7) {
+						let gloryAreaArray = [ 3, 4, 8 ];
+						this.increaseGloryCumOnLeftWall(Math.randomInt(semen) * 0.66, gloryAreaArray[Math.randomInt(gloryAreaArray.length)]);
+					}
+					else {
+						let gloryAreaArray = [ 3 ];
+						this.increaseGloryCumOnLeftToilet(Math.randomInt(semen) * 0.66, gloryAreaArray[Math.randomInt(gloryAreaArray.length)]);
+					}
+				}
+				else if(area == CUM_BUKKAKE_BOOBS || CUM_BUKKAKE_LEFTARM || CUM_BUKKAKE_RIGHTARM) {
+					if(Math.random() < 0.7) {
+						let gloryAreaArray = [ 0, 1, 2, 5, 6, 7 ];
+						this.increaseGloryCumOnLeftWall(Math.randomInt(semen) * 0.66, gloryAreaArray[Math.randomInt(gloryAreaArray.length)]);
+					}
+					else {
+						let gloryAreaArray = [ 0, 1, 2 ];
+						this.increaseGloryCumOnRightToilet(Math.randomInt(semen) * 0.66, gloryAreaArray[Math.randomInt(gloryAreaArray.length)]);
+					}
+				}
+				else if(area == CUM_BUKKAKE_BUTT || CUM_BUKKAKE_LEFTLEG || CUM_BUKKAKE_RIGHTLEG) {
+					if(Math.random() < 0.7) {
+						let gloryAreaArray = [ 2, 3, 4, 8, 6, 7 ];
+						this.increaseGloryCumOnLeftWall(Math.randomInt(semen) * 0.66, gloryAreaArray[Math.randomInt(gloryAreaArray.length)]);
+					}
+					else {
+						let gloryAreaArray = [ 1, 2, 3 ];
+						this.increaseGloryCumOnRightToilet(Math.randomInt(semen) * 0.66, gloryAreaArray[Math.randomInt(gloryAreaArray.length)]);
+					}
+				}
+			}
+		}
 	}
 	
 	if(target._enemyTempRecordBeingServedInGloryHoleCount > 0) {
@@ -456,14 +675,46 @@ Game_Actor.prototype.showEval_gloryBreather = function() {
 	return true;
 };
 Game_Actor.prototype.customReq_gloryBreather = function() {
-	return !this.isBodySlotPenis(MOUTH_ID) || this.justOrgasmed();
+	if(this.justOrgasmed()) return true;
+	if(this.hasNoStamina()) return false;
+	return true;
 };
 Game_Actor.prototype.skillCost_gloryBreather = function() {
-	let cost = 0 + this._gloryBattle_breatherUsedInRowCount;
+	let cost = 0 + this._gloryBattle_breatherUsedInRowCount * 0.5;
 	
 	return Math.round(cost * this.esc);
 };
 Game_Actor.prototype.afterEval_gloryBreather = function() {
+	let currentlyInToiletStandLeftPose = this.isInToiletStandLeftPose();
+	let currentlyInToiletStandRightPose = this.isInToiletStandRightPose();
+	let currentlyInToiletSitLeftPose = this.isInToiletSitLeftPose();
+	let currentlyInToiletSitRightPose = this.isInToiletSitRightPose();
+	
+	if(this.isBodySlotInserted(MOUTH_ID)) {
+		if(Karryn.getReactionScore() < VAR_DEF_RS_LV3_REQ) {
+			if((currentlyInToiletStandLeftPose || currentlyInToiletSitRightPose) && !$gameTroop.gloryBattle_rightHoleIsEmpty()) {
+				this.disableBlowjobPoseSkills();
+				this.setMouthInserted(false);
+				let target = $gameTroop._gloryRightStall;
+				target.setBodySlotFree(MOUTH_ID);
+				target._targetForBlowjob = false;
+				if(!target.isUsingBodySlotPenis(LEFT_HAND_ID)) {
+					target.resetPoseStatus();
+				}
+			}
+			else if((currentlyInToiletStandRightPose || currentlyInToiletSitLeftPose) && !$gameTroop.gloryBattle_leftHoleIsEmpty()) {
+				this.disableBlowjobPoseSkills();
+				this.setMouthInserted(false);
+				let target = $gameTroop._gloryLeftStall;
+				target.setBodySlotFree(MOUTH_ID);
+				target._targetForBlowjob = false;
+				if(!target.isUsingBodySlotPenis(RIGHT_HAND_ID)) {
+					target.resetPoseStatus();
+				}
+			}
+		}
+	}
+	
 	this._gloryBattle_breatherUsedInRowCount++;
 	this.resetSexSkillConsUsage(false);
 	this.emoteMasterManager_GloryBattle();
@@ -473,30 +724,185 @@ Game_Actor.prototype.customReq_gloryRest = function() {
 	return !this.justOrgasmed() || !this.customReq_gloryBreather();
 };
 Game_Actor.prototype.skillCost_gloryRest = function() {
-	let cost = 2 + this._gloryBattle_restUsedInRowCount + this.realMaxEnergy * 0.1;
+	let cost = 2 + this._gloryBattle_restUsedInRowCount + Math.max(this._gloryBattle_restUsedTotalCount, this._gloryBattle_restUsedTotalCount * this.realMaxEnergy * 0.05) + this.realMaxEnergy * 0.1;
 	
 	return Math.round(cost * this.esc);
 };
 Game_Actor.prototype.afterEval_gloryRest = function() {
-	BattleManager.pullOutAllEnemies();
-	
 	let currentlyInToiletStandLeftPose = this.isInToiletStandLeftPose();
 	let currentlyInToiletStandRightPose = this.isInToiletStandRightPose();
+	let currentlyInToiletSitLeftPose = this.isInToiletSitLeftPose();
+	let currentlyInToiletSitRightPose = this.isInToiletSitRightPose();
 	let currentlyLegsAreSpread = this.tachieLegs.includes('spread');
 	
-	this.setToiletSittingPose();
+	let slutLv3 = Karryn.getReactionScore() >= VAR_DEF_RS_LV3_REQ;
+	let slutLv2 = Karryn.getReactionScore() >= VAR_DEF_RS_LV2_REQ && !slutLv3;
+	let resetToSittingPose = true;
 	
-	if(this.justOrgasmed() || currentlyInToiletStandLeftPose || currentlyInToiletStandRightPose || currentlyLegsAreSpread) {
-		this.setTachieLegs('spread');
+	if(currentlyInToiletStandLeftPose || currentlyInToiletStandRightPose) {
+		if(slutLv3 || slutLv2) {
+			if(!$gameTroop.gloryBattle_rightHoleIsEmpty() || !$gameTroop.gloryBattle_leftHoleIsEmpty())
+				resetToSittingPose = false;
+				
+			if(!this.isBodySlotInserted(LEFT_HAND_ID) && !this.isBodySlotInserted(RIGHT_HAND_ID) && !this.isBodySlotInserted(MOUTH_ID) && !this.isBodySlotInserted(PUSSY_ID) && !this.isBodySlotInserted(ANAL_ID))
+				resetToSittingPose = true;
+			
+			if(this.isBodySlotInserted(LEFT_HAND_ID) && !$gameTroop.gloryBattle_rightHoleIsEmpty()) {
+				this.disableLeftHandjobPoseSkills();
+				this.setLeftHandInserted(false);
+				let target = $gameTroop._gloryRightStall;
+				target.setBodySlotFree(LEFT_HAND_ID);
+				target._targetForHandjob = false;
+				if(!target.isUsingBodySlotPenis(MOUTH_ID)) {
+					target.resetPoseStatus();
+				}
+			}
+			if(this.isBodySlotInserted(RIGHT_HAND_ID) && !$gameTroop.gloryBattle_leftHoleIsEmpty()) {
+				this.disableRightHandjobPoseSkills();
+				this.setRightHandInserted(false);
+				let target = $gameTroop._gloryLeftStall;
+				target.setBodySlotFree(RIGHT_HAND_ID);
+				target._targetForHandjob = false;
+				if(!target.isUsingBodySlotPenis(MOUTH_ID)) {
+					target.resetPoseStatus();
+				}
+			}
+			
+			if(!slutLv3) {
+				if(this.isBodySlotInserted(PUSSY_ID)) {
+					if(currentlyInToiletStandLeftPose && !$gameTroop.gloryBattle_leftHoleIsEmpty()) {
+						this.disablePussySexPoseSkills();
+						this.setPussyInserted(false);
+						let target = $gameTroop._gloryLeftStall;
+						target.setBodySlotFree(PUSSY_ID);
+						target._targetForPussySex = false;
+						target.resetPoseStatus();
+					}
+					else if(currentlyInToiletStandRightPose && !$gameTroop.gloryBattle_rightHoleIsEmpty()) {
+						this.disablePussySexPoseSkills();
+						this.setPussyInserted(false);
+						let target = $gameTroop._gloryRightStall;
+						target.setBodySlotFree(PUSSY_ID);
+						target._targetForPussySex = false;
+						target.resetPoseStatus();
+					}
+				}
+				
+				if(this.isBodySlotInserted(ANAL_ID)) {
+					if(currentlyInToiletStandLeftPose && !$gameTroop.gloryBattle_leftHoleIsEmpty()) {
+						this.disableAnalSexPoseSkills();
+						this.setAnalInserted(false);
+						let target = $gameTroop._gloryLeftStall;
+						target.setBodySlotFree(ANAL_ID);
+						target._targetForAnalSex = false;
+						target.resetPoseStatus();
+					}
+					else if(currentlyInToiletStandRightPose && !$gameTroop.gloryBattle_rightHoleIsEmpty()) {
+						this.disableAnalSexPoseSkills();
+						this.setAnalInserted(false);
+						let target = $gameTroop._gloryRightStall;
+						target.setBodySlotFree(ANAL_ID);
+						target._targetForAnalSex = false;
+						target.resetPoseStatus();
+					}
+				}
+				
+				if(this.isBodySlotInserted(MOUTH_ID)) {
+					if(currentlyInToiletStandLeftPose && !$gameTroop.gloryBattle_rightHoleIsEmpty()) {
+						this.disableBlowjobPoseSkills();
+						this.setMouthInserted(false);
+						let target = $gameTroop._gloryRightStall;
+						target.setBodySlotFree(MOUTH_ID);
+						target._targetForBlowjob = false;
+						target.resetPoseStatus();
+					}
+					else if(currentlyInToiletStandRightPose && !$gameTroop.gloryBattle_leftHoleIsEmpty()) {
+						this.disableBlowjobPoseSkills();
+						this.setMouthInserted(false);
+						let target = $gameTroop._gloryLeftStall;
+						target.setBodySlotFree(MOUTH_ID);
+						target._targetForBlowjob = false;
+						target.resetPoseStatus();
+					}
+				}
+			}
+		}
 	}
-	else {
-		this.setTachieLegs('close');
+	else if(currentlyInToiletSitLeftPose || currentlyInToiletSitRightPose) {
+		if(slutLv3 || slutLv2) {
+			if(!$gameTroop.gloryBattle_rightHoleIsEmpty() || !$gameTroop.gloryBattle_leftHoleIsEmpty())
+				resetToSittingPose = false;
+				
+			if(!this.isBodySlotInserted(LEFT_HAND_ID) && !this.isBodySlotInserted(RIGHT_HAND_ID) && !this.isBodySlotInserted(MOUTH_ID))
+				resetToSittingPose = true;
+			
+			if(this.isBodySlotInserted(LEFT_HAND_ID) && !$gameTroop.gloryBattle_rightHoleIsEmpty()) {
+				this.disableLeftHandjobPoseSkills();
+				this.setLeftHandInserted(false);
+				let target = $gameTroop._gloryRightStall;
+				target.setBodySlotFree(LEFT_HAND_ID);
+				target._targetForHandjob = false;
+				if(!target.isUsingBodySlotPenis(MOUTH_ID)) {
+					target.resetPoseStatus();
+				}
+			}
+			if(this.isBodySlotInserted(RIGHT_HAND_ID) && !$gameTroop.gloryBattle_leftHoleIsEmpty()) {
+				this.disableRightHandjobPoseSkills();
+				this.setRightHandInserted(false);
+				let target = $gameTroop._gloryLeftStall;
+				target.setBodySlotFree(RIGHT_HAND_ID);
+				target._targetForHandjob = false;
+				if(!target.isUsingBodySlotPenis(MOUTH_ID)) {
+					target.resetPoseStatus();
+				}
+			}
+			
+			if(!slutLv3) {
+				if(this.isBodySlotInserted(MOUTH_ID)) {
+					if(currentlyInToiletSitRightPose && !$gameTroop.gloryBattle_rightHoleIsEmpty()) {
+						this.disableBlowjobPoseSkills();
+						this.setMouthInserted(false);
+						let target = $gameTroop._gloryRightStall;
+						target.setBodySlotFree(MOUTH_ID);
+						target._targetForBlowjob = false;
+						target.resetPoseStatus();
+					}
+					else if(currentlyInToiletSitLeftPose && !$gameTroop.gloryBattle_leftHoleIsEmpty()) {
+						this.disableBlowjobPoseSkills();
+						this.setMouthInserted(false);
+						let target = $gameTroop._gloryLeftStall;
+						target.setBodySlotFree(MOUTH_ID);
+						target._targetForBlowjob = false;
+						target.resetPoseStatus();
+					}
+				}
+				
+				
+			}
+		}
+	}
+	
+	if(resetToSittingPose) {
+		BattleManager.pullOutAllEnemies();
+		
+		this.setToiletSittingPose();
+		
+		if(this.justOrgasmed() || currentlyLegsAreSpread) {
+			this.setTachieLegs('spread');
+		}
+		else {
+			this.setTachieLegs('close');
+		}
+		
 	}
 	
 	this.toiletBattle_resetLeftArmToNormal();
 	this.toiletBattle_resetRightArmToNormal();
 	
+	this.resetSexSkillConsUsage(false);
+	
 	this._gloryBattle_restUsedInRowCount++;
+	this._gloryBattle_restUsedTotalCount++;
 	this._gloryBattle_restingTilTurn = $gameTroop.getCurrentTurn_gloryBattle() + GLORY_REST_TURNS;
 	this.emoteMasterManager_GloryBattle();
 };
@@ -508,6 +914,9 @@ Game_Actor.prototype.gloryRestTurnEffect = function() {
 		else if(this.hasPassive(PASSIVE_TOILET_BATTLE_COUNT_ONE_ID)) fatigueRecovery += 0.15;
 		
 		if(this.isUsingThisTitle(TITLE_ID_TOILET_RESTER)) fatigueRecovery += 0.15;
+		
+		if(this.isBodySlotInserted(MOUTH_ID)) fatigueRecovery *= 0.6;
+		if(this.isBodySlotInserted(PUSSY_ID) || this.isBodySlotInserted(ANAL_ID)) fatigueRecovery *= 0.6;
 		
 		$gameParty.increaseFatigueGain(fatigueRecovery * -1 * this.fatigueRecoveryRate(), true);
 		
@@ -527,11 +936,7 @@ Game_Actor.prototype.gloryRestTurnEffect = function() {
 };
 
 Game_Actor.prototype.afterEval_glorySkillExit = function() {
-	if($gameTroop._gloryWashingQueue.length > 2 || $gameTroop._gloryStallQueue.length > 0 || $gameTroop._gloryUrinalQueue.length > 0)
-		this._gloryBattle_badExit = true;
-	else if(this.gloryBattle_bodySlotsWithPenis() > 0)
-		this._gloryBattle_badExit = true;
-	else if((this.isHorny || this.justOrgasmed()) && 
+	if((this.isHorny || this.justOrgasmed()) && 
 	($gameTroop._gloryUrinalA || $gameTroop._gloryUrinalB || $gameTroop._gloryUrinalC || $gameTroop._gloryUrinalD))
 		this._gloryBattle_badExit = true;
 	else
@@ -594,7 +999,7 @@ Game_Actor.prototype.showEval_gloryMbTouchAnal = function(isLeftHand, isRightHan
 };
 
 Game_Actor.prototype.showEval_gloryMbClitToy = function(isLeftHand, isRightHand) {
-	let hasClitToy = true;
+	let hasClitToy = this.isStateAffected(STATE_GLORY_PINK_ROTOR_ID) || this.isWearingClitToy();
 	if(!hasClitToy || this.pussyDesire < this.clitToyPussyDesireRequirement())
 		return false;
 	if(this.justOrgasmed())
@@ -602,8 +1007,8 @@ Game_Actor.prototype.showEval_gloryMbClitToy = function(isLeftHand, isRightHand)
 	return this.isInToiletSittingPose() || (isLeftHand && this.isInToiletSitLeftPose()) || (isRightHand && this.isInToiletSitRightPose());
 };
 Game_Actor.prototype.showEval_gloryMbPussyToy = function(isLeftHand, isRightHand) {
-	let hasPussyToy = true;
-	if(!this._firstPussySexDate && !$gameTemp.isPlaytest())
+	let hasPussyToy = this.isStateAffected(STATE_GLORY_PENIS_DILDO_ID) || this.isWearingPussyToy();
+	if(this.isVirgin())
 		return false;
 	if(!hasPussyToy || this.pussyDesire < this.pussyToyPussyDesireRequirement())
 		return false;
@@ -612,7 +1017,7 @@ Game_Actor.prototype.showEval_gloryMbPussyToy = function(isLeftHand, isRightHand
 	return this.isInToiletSittingPose();
 };
 Game_Actor.prototype.showEval_gloryMbAnalToy = function(isLeftHand, isRightHand) {
-	let hasAnalToy = true;
+	let hasAnalToy = this.isStateAffected(STATE_GLORY_ANAL_BEADS_ID) || this.isWearingAnalToy();
 	if(!hasAnalToy || this.buttDesire < this.analPettingButtDesireRequirement())
 		return false;
 	if(this.justOrgasmed())
@@ -625,6 +1030,7 @@ Game_Actor.prototype.dmgFormula_gloryMasturbateSkill = function(area, useLeftHan
 	let usingClitToy = target.isWearingClitToy();
 	let usingPussyToy = target.isWearingPussyToy();
 	let usingAnalToy = target.isWearingAnalToy();
+	let hitBySkillTypeSet = false;
 	
 	let currentlyInToiletSittingPose = this.isInToiletSittingPose();
 	let currentlyInToiletSitLeftPose = this.isInToiletSitLeftPose();
@@ -646,7 +1052,7 @@ Game_Actor.prototype.dmgFormula_gloryMasturbateSkill = function(area, useLeftHan
 		baseDmg = BASEDMG_PETTING_NIPPLES;
 		targetDesire = target.boobsDesire;
 		targetSensitivity = target.nipplesSensitivity();
-		this.addToActorNipplesPettedRecord(false);
+		this.addToActorNipplesPettedRecord(false, false, true);
 		BattleManager.actionRemLines(LINE_KARRYN_MAS_TOUCH_NIPPLES);
 	}
 	else if(area == AREA_CLIT) {
@@ -655,13 +1061,12 @@ Game_Actor.prototype.dmgFormula_gloryMasturbateSkill = function(area, useLeftHan
 			targetDesire = target.pussyDesire;
 			targetSensitivity = target.clitSensitivity();
 			this.addToClitToyUsedByEnemyRecord(false);
-			BattleManager.actionRemLines(KARRYN_LINE_KARRYN_PETTING_PINK_ROTOR);
 		}
 		else {
 			baseDmg = BASEDMG_PETTING_CLIT;
 			targetDesire = target.pussyDesire;
 			targetSensitivity = target.clitSensitivity();
-			this.addToActorClitPettedRecord(false);
+			this.addToActorClitPettedRecord(false, false, true);
 			BattleManager.actionRemLines(LINE_KARRYN_MAS_TOUCH_CLIT);
 		}
 	}
@@ -671,13 +1076,12 @@ Game_Actor.prototype.dmgFormula_gloryMasturbateSkill = function(area, useLeftHan
 			targetDesire = target.pussyDesire;
 			targetSensitivity = target.pussySensitivity();
 			this.addToPussyToyUsedByEnemyRecord(false);
-			BattleManager.actionRemLines(KARRYN_LINE_KARRYN_PETTING_PENIS_DILDO);
 		}
 		else {
 			baseDmg = BASEDMG_PETTING_PUSSY;
 			targetDesire = target.pussyDesire;
 			targetSensitivity = target.pussySensitivity();
-			this.addToActorPussyPettedRecord(false);
+			this.addToActorPussyPettedRecord(false, false, true);
 			BattleManager.actionRemLines(LINE_KARRYN_MAS_FINGER_PUSSY);
 		}
 	}
@@ -687,14 +1091,12 @@ Game_Actor.prototype.dmgFormula_gloryMasturbateSkill = function(area, useLeftHan
 			targetDesire = target.buttDesire;
 			targetSensitivity = target.analSensitivity();
 			this.addToAnalToyUsedByEnemyRecord(false);
-			BattleManager.actionRemLines(KARRYN_LINE_KARRYN_PETTING_ANAL_BEADS);
-
 		}
 		else {
 			baseDmg = BASEDMG_PETTING_ANAL;
 			targetDesire = target.buttDesire;
 			targetSensitivity = target.analSensitivity();
-			this.addToActorAnalPettedRecord(false);
+			this.addToActorAnalPettedRecord(false, false, true);
 			BattleManager.actionRemLines(LINE_KARRYN_MAS_FINGER_ANUS);
 		}
 	}
@@ -702,7 +1104,7 @@ Game_Actor.prototype.dmgFormula_gloryMasturbateSkill = function(area, useLeftHan
 		baseDmg = BASEDMG_SUCKING_FINGERS;
 		targetDesire = target.mouthDesire;
 		targetSensitivity = target.mouthSensitivity();
-		this.addToActorFingersSuckedRecord(false);
+		this.addToActorFingersSuckedRecord(false, false, true);
 		BattleManager.actionRemLines(LINE_KARRYN_MAS_SUCK_FINGERS);
 	}
 	
@@ -720,7 +1122,9 @@ Game_Actor.prototype.dmgFormula_gloryMasturbateSkill = function(area, useLeftHan
 	
 	
 	let staminaDmg = target.skillCost_karrynOnaniInBattleSkills();
-
+	
+	//Glory
+	staminaDmg *= 0.67;
 	
 	let result = target.result();
 	result.pleasureDamage = targetPleasureGain;
@@ -728,7 +1132,6 @@ Game_Actor.prototype.dmgFormula_gloryMasturbateSkill = function(area, useLeftHan
 	result.desireRandomDamage = targetDesireGain * .4;
 	result.desireCockWeight = 3;
 	result.desireTarget = area;
-	//result.staminaDamage = staminaDmg;
 
 	if(area == AREA_NIPPLES) {
 		target.addToActorNipplesPleasureRecord(targetPleasureGain);
@@ -768,8 +1171,17 @@ Game_Actor.prototype.dmgFormula_gloryMasturbateSkill = function(area, useLeftHan
 		}
 		else if(area == AREA_PUSSY) {
 			if(toyPlay) {
+				hitBySkillTypeSet = true;
+				
 				if(!usingPussyToy) {
 					this.setPussyToy_PenisDildo(false);
+					this.removeState(STATE_GLORY_PENIS_DILDO_ID);
+					target.justGotHitBySkillType(JUST_SKILLTYPE_KARRYN_TOY_INSERT_PUSSY);
+					BattleManager.actionRemLines(KARRYN_LINE_KARRYN_INSERT_PENIS_DILDO);
+				}
+				else {
+					target.justGotHitBySkillType(JUST_SKILLTYPE_KARRYN_TOY_PLAY_PUSSY);
+					BattleManager.actionRemLines(KARRYN_LINE_KARRYN_PETTING_PENIS_DILDO);
 				}
 				
 				if(currentlyInToiletSittingPose) {
@@ -802,8 +1214,17 @@ Game_Actor.prototype.dmgFormula_gloryMasturbateSkill = function(area, useLeftHan
 		}
 		else if(area == AREA_CLIT) {
 			if(toyPlay) {
+				hitBySkillTypeSet = true;
+				
 				if(!usingClitToy) {
 					this.setClitToy_PinkRotor(false);
+					this.removeState(STATE_GLORY_PINK_ROTOR_ID);
+					target.justGotHitBySkillType(JUST_SKILLTYPE_KARRYN_TOY_INSERT_CLIT);
+					BattleManager.actionRemLines(KARRYN_LINE_KARRYN_INSERT_PINK_ROTOR);
+				}
+				else {
+					target.justGotHitBySkillType(JUST_SKILLTYPE_KARRYN_TOY_PLAY_CLIT);
+					BattleManager.actionRemLines(KARRYN_LINE_KARRYN_PETTING_PINK_ROTOR);
 				}
 				
 				if(currentlyInToiletSittingPose) {
@@ -843,8 +1264,17 @@ Game_Actor.prototype.dmgFormula_gloryMasturbateSkill = function(area, useLeftHan
 		}
 		else if(area == AREA_ANAL) {
 			if(toyPlay) {
+				hitBySkillTypeSet = true;
+				
 				if(!usingAnalToy) {
 					this.setAnalToy_AnalBeads(false);
+					this.removeState(STATE_GLORY_ANAL_BEADS_ID);
+					target.justGotHitBySkillType(JUST_SKILLTYPE_KARRYN_TOY_INSERT_ANAL);
+					BattleManager.actionRemLines(KARRYN_LINE_KARRYN_INSERT_ANAL_BEADS);
+				}
+				else {
+					target.justGotHitBySkillType(JUST_SKILLTYPE_KARRYN_TOY_PLAY_ANAL);
+					BattleManager.actionRemLines(KARRYN_LINE_KARRYN_PETTING_ANAL_BEADS);
 				}
 				
 				if(currentlyInToiletSittingPose) {
@@ -1035,10 +1465,13 @@ Game_Actor.prototype.dmgFormula_gloryMasturbateSkill = function(area, useLeftHan
 		}
 	}
 	
-	target.justGotHitBySkillType(JUST_SKILLTYPE_KARRYN_MASTURBATE);
+	if(!hitBySkillTypeSet)
+		target.justGotHitBySkillType(JUST_SKILLTYPE_KARRYN_MASTURBATE);
 	
 	this.emoteMasterManager_GloryBattle();
 	this.setAllowTachieUpdate(true);
+	
+	this.resetSexSkillConsUsage(false);
 	
 	return staminaDmg;
 };
@@ -1079,7 +1512,6 @@ Game_Actor.prototype.afterEval_gloryMasturbateSkill = function(area, toyPlay) {
 	this.gainStaminaExp(15, this.level);
 	this.gainEnduranceExp(25, this.level);
 };
-
 
 ///////
 // Posejoin
@@ -1212,6 +1644,27 @@ Game_Actor.prototype.gloryBattle_beforePoseJoin = function(target, sexAct, isRig
 		}
 	}
 	else if(sexAct === SEXACT_PUSSYSEX || sexAct === SEXACT_ANALSEX) {
+		if(sexAct === SEXACT_PUSSYSEX && this.isWearingPussyToy()) {
+			this.addState(STATE_GLORY_PENIS_DILDO_ID);
+			this.removePussyToy();
+			if(targetIsLeftHole && currentlyInToiletStandLeftPose && this.tachieLeftArm.includes('chikubi')) {
+				this.toiletBattle_resetLeftArmToNormal();
+			}
+			else if(targetIsRightHole && currentlyInToiletStandRightPose && this.tachieRightArm.includes('chikubi')) {
+				this.toiletBattle_resetRightArmToNormal();
+			}
+		}
+		else if(sexAct === SEXACT_ANALSEX && this.isWearingAnalToy()) {
+			this.addState(STATE_GLORY_ANAL_BEADS_ID);
+			this.removeAnalToy();
+			if(targetIsLeftHole && currentlyInToiletStandLeftPose && this.tachieLeftArm.includes('chikubi')) {
+				this.toiletBattle_resetLeftArmToNormal();
+			}
+			else if(targetIsRightHole && currentlyInToiletStandRightPose && this.tachieRightArm.includes('chikubi')) {
+				this.toiletBattle_resetRightArmToNormal();
+			}
+		}
+		
 		if(targetIsLeftHole) {
 			BattleManager.pullOutEnemy($gameTroop._gloryLeftStall);
 			
@@ -1274,6 +1727,7 @@ Game_Actor.prototype.gloryBattle_postEnemyPullout = function() {
 	let currentlyInToiletStandLeftPose = this.isInToiletStandLeftPose();
 	let currentlyInToiletStandRightPose = this.isInToiletStandRightPose();
 	
+	let currentlyLegsAreSpread = this.tachieLegs.includes('spread');
 	let currentlyGivingLeftHoleHJ = this.isBodySlotPenis(RIGHT_HAND_ID);
 	let currentlyGivingRightHoleHJ = this.isBodySlotPenis(LEFT_HAND_ID);
 	let currentlyGivingBJ = this.isBodySlotPenis(MOUTH_ID);
@@ -1286,7 +1740,7 @@ Game_Actor.prototype.gloryBattle_postEnemyPullout = function() {
 	if(currentlyInToiletSitLeftPose || currentlyInToiletSitRightPose) {
 		if(!currentlyGivingBJ) {
 			this.setToiletSittingPose();
-			if(this.justOrgasmed())
+			if(this.justOrgasmed() || currentlyLegsAreSpread)
 				this.setTachieLegs('spread');
 			else
 				this.setTachieLegs('close');
@@ -1303,7 +1757,7 @@ Game_Actor.prototype.gloryBattle_postEnemyPullout = function() {
 	if(currentlyHavingPussySex || currentlyHavingAnalSex) {
 		if(!currentlyGivingBJ && !currentlyHavingPussySex && !currentlyHavingAnalSex) {
 			this.setToiletSittingPose();
-			if(this.justOrgasmed())
+			if(this.justOrgasmed() || currentlyLegsAreSpread)
 				this.setTachieLegs('spread');
 			else
 				this.setTachieLegs('close');
@@ -1383,6 +1837,10 @@ Game_Troop.prototype.setupGloryBattle = function(troopId) {
 
 	this._gloryGuestsSpawnedCount = 0;
 	this._gloryGuestLastSpawnedTurn = 0;
+	this._gloryLastHoleToEjaculate = -1;
+	
+	this._gloryGuestLastLeaveLeftStallOnTurn = -1;
+	this._gloryGuestLastLeaveRightStallOnTurn = -1;
 	
 	this.calculateGloryGuestsSpawnLimit();
 	
@@ -1425,93 +1883,95 @@ Game_Troop.prototype.setupGloryBattle = function(troopId) {
 };
 
 Game_Troop.prototype.calculateGloryGuestsSpawnLimit = function() {
-	this._gloryGuestsSpawnLimit = 3;
+	let spawnLimit = 3;
 	
 	//Food & Drugs Edicts
 	if(!Karryn.hasEdict(EDICT_REPAIR_KITCHEN_AND_MESS_HALL)) {
-		this._gloryGuestsSpawnLimit -= 3;
+		spawnLimit -= 3;
 	}
 	else {
 		if(Karryn.hasEdict(EDICT_EXPAND_INMATE_MENU)) {
-			this._gloryGuestsSpawnLimit += 1;
+			spawnLimit += 1;
 		}
 		if(Karryn.hasEdict(EDICT_APHRODISIACS_IN_INMATE_FOOD)) {
-			this._gloryGuestsSpawnLimit += 1;
+			spawnLimit += 1;
 		}
 		if(Karryn.hasEdict(EDICT_APHRODISIACS_DRUGS_FOR_INMATES)) {
-			this._gloryGuestsSpawnLimit += 1;
+			spawnLimit += 1;
 		}
 		if(Karryn.hasEdict(EDICT_PAY_FOR_BETTER_FOOD)) {
-			this._gloryGuestsSpawnLimit -= 1;
+			spawnLimit -= 1;
 		}
 	}
 	
 	//Level 2 Edicts
 	if(Karryn.hasEdict(EDICT_GIVE_IN_TO_NERD_BLACKMAIL)) {
-		this._gloryGuestsSpawnLimit += 1;
+		spawnLimit += 1;
 	}
 	
 	if(Karryn.hasEdict(EDICT_FIGHT_ROGUE_DISTRACTIONS_WITH_DISTRACTIONS)) {
-		this._gloryGuestsSpawnLimit += 1;
+		spawnLimit += 1;
 	}
 	else if(Karryn.hasEdict(EDICT_FORCE_ROGUES_INTO_LABOR)) {
-		this._gloryGuestsSpawnLimit -= 1;
+		spawnLimit -= 1;
 	}
 	
 	if(Karryn.hasEdict(EDICT_STOCK_WITH_ADULT_BOOKS) && Karryn.hasEdict(EDICT_REPAIR_CLASSROOM)) {
-		this._gloryGuestsSpawnLimit += 1;
+		spawnLimit += 1;
 	}
 	if(Karryn.hasEdict(EDICT_ANATOMY_CLASSES) && Karryn.hasEdict(EDICT_REPAIR_READING_ROOM)) {
-		this._gloryGuestsSpawnLimit += 1;
+		spawnLimit += 1;
 	}
 	if(Karryn.hasEdict(EDICT_REPAIR_STAFF_LOUNGE)) {
-		this._gloryGuestsSpawnLimit += 1;
+		spawnLimit += 1;
 	}
 	if(Karryn.hasPassive(PASSIVE_SEXUAL_PARTNERS_GUARD_TWO_ID)) {
-		this._gloryGuestsSpawnLimit += 1;
+		spawnLimit += 1;
 	}
 	
 	if(Karryn.hasEdict(EDICT_INMATE_JANITORS)) {
-		this._gloryGuestsSpawnLimit += 1;
+		spawnLimit += 1;
 	}
 	if(Karryn.hasEdict(EDICT_INMATE_ASSISTANT_ACCOUNTANT)) {
-		this._gloryGuestsSpawnLimit += 1;
+		spawnLimit += 1;
 	}
 	
 	//Passives
 	if(Karryn.hasPassive(PASSIVE_URINAL_COUNT_THREE_ID)) {
-		this._gloryGuestsSpawnLimit += 3;
+		spawnLimit += 3;
 	}
 	else if(Karryn.hasPassive(PASSIVE_URINAL_COUNT_TWO_ID)) {
-		this._gloryGuestsSpawnLimit += 2;
+		spawnLimit += 2;
 	}
 	else if(Karryn.hasPassive(PASSIVE_URINAL_COUNT_ONE_ID)) {
-		this._gloryGuestsSpawnLimit += 1;
+		spawnLimit += 1;
 	}
 	
 	//Levels Status
 	if(Prison.prisonLevelOneIsRioting()) {
-		this._gloryGuestsSpawnLimit -= 2;
+		spawnLimit -= 2;
 	}
 	else if(Karryn.hasEdict(EDICT_THUGS_STRESS_RELIEF)) {
-		this._gloryGuestsSpawnLimit += 1;
+		spawnLimit += 1;
 	}
 	if(Prison.prisonLevelTwoIsRioting()) {
-		this._gloryGuestsSpawnLimit -= 2;
+		spawnLimit -= 2;
 	}
 	if(!Prison.prisonLevelThreeIsRioting() && Karryn.hasEdict(EDICT_LEVEL_THREE_SUBJUGATED)) {
-		this._gloryGuestsSpawnLimit += 1;
+		spawnLimit += 1;
 	}
 	if(!Prison.prisonLevelFourIsRioting() && Karryn.hasEdict(EDICT_LEVEL_FOUR_SUBJUGATED)) {
-		this._gloryGuestsSpawnLimit += 1;
+		spawnLimit += 1;
 	}
 	
 	if($gameParty._gloryReputation >= 10) {
-		this._gloryGuestsSpawnLimit += 5 + Math.round(($gameParty._gloryReputation - 10) * 0.2);
+		spawnLimit += 5 + Math.round(($gameParty._gloryReputation - 10) * 0.2);
 	}
 	else {
-		this._gloryGuestsSpawnLimit += Math.round($gameParty._gloryReputation * 0.5);
+		spawnLimit += Math.round($gameParty._gloryReputation * 0.5);
 	}
+	
+	this._gloryGuestsSpawnLimit = Math.max(2, spawnLimit);
 };
 
 Game_Troop.prototype.getCurrentTurn_gloryBattle = function() {
@@ -1520,11 +1980,12 @@ Game_Troop.prototype.getCurrentTurn_gloryBattle = function() {
 
 Game_Troop.prototype.gloryBattle_leftHoleIsEmpty = function() {
 	return !this._gloryLeftStall || 
-	(this._gloryLeftStall && !this._gloryLeftStall._guest_showedThroughHole);
+	(this._gloryLeftStall && (!this._gloryLeftStall._guest_atStall || !this._gloryLeftStall._guest_showedThroughHole));
 };
 Game_Troop.prototype.gloryBattle_rightHoleIsEmpty = function() {
 	return !this._gloryRightStall || 
-	(this._gloryRightStall && !this._gloryRightStall._guest_showedThroughHole);
+	(this._gloryRightStall && (!this._gloryRightStall._guest_atStall || 
+ !this._gloryRightStall._guest_showedThroughHole));
 };
 Game_Troop.prototype.gloryBattle_bothHolesAreEmpty = function() {
 	return this.gloryBattle_leftHoleIsEmpty() && this.gloryBattle_rightHoleIsEmpty();
@@ -1560,7 +2021,7 @@ Game_Troop.prototype.gloryBattle_calculateChanceForSpawnedGuestIsHereForHole = f
 	
 	if(enemy._guest_isRioter) return 100;
 	
-	chance += enemy._enemyRecordGloryBattleEjaculationCount * 10;
+	chance += enemy._enemyRecordGloryBattleEjaculationCount * 25;
 	chance += $gameParty._gloryReputation * 2;
 	chance += $gameParty._gloryBattle_guestSatisfaction * 5;
 	
@@ -1575,7 +2036,7 @@ Game_Troop.prototype.gloryBattle_calculateChanceForSpawnedGuestIsHereForHole = f
 	}
 	if(Karryn.hasEdict(EDICT_ANATOMY_CLASSES) && Karryn.hasEdict(EDICT_REPAIR_READING_ROOM)) {
 		if(Karryn.hasEdict(EDICT_SUPPLY_MODEL_OF_KARRYNS_BODY))
-			chance += 10;
+			chance += 10 + $gameParty._gloryReputation * 0.5;
 		else
 			chance += 5;
 	}
@@ -1588,11 +2049,9 @@ Game_Troop.prototype.gloryBattle_calculateChanceForSpawnedGuestIsHereForHole = f
 		chance += 10;
 	
 	if(Karryn.hasPassive(PASSIVE_SEXUAL_PARTNERS_TOTAL_FIVE_ID))
-		chance += 10;
+		chance += 20;
 	else if(Karryn.hasPassive(PASSIVE_SEXUAL_PARTNERS_TOTAL_THREE_ID))
-		chance += 5;
-	
-	chance += 100; //todo: remove
+		chance += 10;
 	
 	return chance;
 };
@@ -1629,22 +2088,22 @@ Game_Troop.prototype.gloryBattle_gloryBattle_checkRiotingEventStart = function()
 	
 	if(this._gloryRiotingEvent || this._gloryGuestsSpawnedCount >= this._gloryGuestsSpawnLimit || (!levelOneIsRioting && !levelTwoIsRioting)) return false;
 	
-	if(this.getCurrentTurn_gloryBattle() % 4 === 0) {
+	if(this.getCurrentTurn_gloryBattle() % 4 === 0 || this.getCurrentTurn_gloryBattle() % 10 === 0) {
 		if($gameParty._gloryBattle_guestSatisfaction >= 0 && $gameParty._gloryReputation >= 5 && $gameParty._gloryBattle_guestSatisfaction >= 15 - $gameParty._gloryReputation * 0.5) {
 			if(levelTwoIsRioting)
 				chanceToStart += 8;
 			if(levelOneIsRioting) 
 				chanceToStart += 3;
 			
-			if(this.getCurrentTurn_gloryBattle() <= 12) 
-				chanceToStart *= 0.2;
-			else if(this.getCurrentTurn_gloryBattle() >= 42 && this._gloryRiotingEventHappenedCount === 0 && $gameParty._gloryReputation >= 15)
-				chanceToStart *= 1.42;
+			if(this.getCurrentTurn_gloryBattle() < 10) 
+				chanceToStart *= 0.33;
+			else if(this.getCurrentTurn_gloryBattle() >= 30 && this._gloryRiotingEventHappenedCount === 0 && $gameParty._gloryReputation >= 15)
+				chanceToStart *= 2.5;
 			
 			chanceToStart -= this._gloryRiotingEventHappenedCount * 5;
 		}
 	}
-	chanceToStart = 100; //todo remove
+
 	if(Math.randomInt(100) < chanceToStart) {
 		let riotingMapIdArray = [];
 			
@@ -1670,8 +2129,6 @@ Game_Troop.prototype.gloryBattle_gloryBattle_checkRiotingEventStart = function()
 			let riotersCount = Math.randomInt(3) + 2;
 			this._gloryRiotersLeftToSpawn = riotersCount;
 			this._gloryRiotersLeftToSatisfy = riotersCount;
-			
-			console.log('rioting event start ' + this._gloryRiotingMapID);
 		}
 	}
 	
@@ -1680,7 +2137,6 @@ Game_Troop.prototype.gloryBattle_gloryBattle_checkRiotingEventStart = function()
 
 Game_Troop.prototype.gloryBattle_checkRiotingEventEnd = function() {
 	if(this._gloryRiotingEvent && this._gloryRiotersLeftToSpawn <= 0 && this._gloryRiotersLeftToSatisfy <= 0) {
-		console.log('rioting event over ' + this._gloryRiotingMapID)
 		if(this._gloryRiotingMapID === MAP_ID_LAUNDRY) {
 			$gameSelfSwitches.setValue([MAP_ID_LAUNDRY, 4, "D"], true);
 			$gameSelfSwitches.setValue([MAP_ID_LAUNDRY, 5, "D"], true);
@@ -1709,6 +2165,7 @@ Game_Troop.prototype.gloryBattle_checkRiotingEventEnd = function() {
 			$gameSelfSwitches.setValue([MAP_ID_RESEARCH, 4, "D"], true);
 			$gameSelfSwitches.setValue([MAP_ID_RESEARCH, 5, "D"], true);
 			$gameSelfSwitches.setValue([MAP_ID_RESEARCH, 6, "D"], true);
+			$gameSelfSwitches.setValue([MAP_ID_RESEARCH, 7, "D"], true);
 		}
 		else if(this._gloryRiotingMapID === MAP_ID_STAFF_LOUNGE) {
 			$gameSelfSwitches.setValue([MAP_ID_STAFF_LOUNGE, 6, "D"], true);
@@ -1807,13 +2264,18 @@ Game_Troop.prototype.onTurnEndSpecial_gloryBattle = function() {
 		
 		actor._playthroughRecordGloryLongestStallQueue = Math.max(actor._playthroughRecordGloryLongestStallQueue, this._gloryStallQueue.length);
 		
-		if(!this._gloryLeftStall) availableStallsArray.push(GLORY_LEFT_STALL_ID);
-		if(!this._gloryRightStall) availableStallsArray.push(GLORY_RIGHT_STALL_ID);
+		if(!this._gloryLeftStall && $gameTroop._gloryGuestLastLeaveLeftStallOnTurn + 1 < $gameTroop.getCurrentTurn_gloryBattle())
+			availableStallsArray.push(GLORY_LEFT_STALL_ID);
+		if(!this._gloryRightStall && $gameTroop._gloryGuestLastLeaveRightStallOnTurn + 1 < $gameTroop.getCurrentTurn_gloryBattle()) 
+			availableStallsArray.push(GLORY_RIGHT_STALL_ID);
 		
 		while(this._gloryStallQueue.length > 0 && availableStallsArray.length > 0) {
 			let arrayPos = Math.randomInt(availableStallsArray.length);
 			let assignedStallId = availableStallsArray[arrayPos];
 			let frontStallGuest = this._gloryStallQueue[0];
+			
+			if(frontStallGuest._guest_enteredBathroomOnTurn + 1 >= $gameTroop.getCurrentTurn_gloryBattle())
+				break;
 			
 			if(assignedStallId === GLORY_LEFT_STALL_ID) {
 				this._gloryStallQueue[0].gloryBattle_enterLeftStall();
@@ -1903,6 +2365,10 @@ Game_Troop.prototype.onTurnEndSpecial_gloryBattle = function() {
 	
 	//Left Stall
 	if(this._gloryLeftStall) {
+		if(this._gloryLeftStall._guest_showedThroughHole) {
+			this._gloryLeftStall.checkForOrgasm();
+		}
+		
 		if(!this._gloryLeftStall._guest_currentlyPissing && !this._gloryLeftStall._guest_finishedPissing && !this._gloryLeftStall._guest_intentIsForHole && !this._gloryLeftStall._guest_intentIsForEating) {
 			this._gloryLeftStall._guest_currentlyPissing = true;
 			this._gloryLeftStall._guest_finishPissingOnTurn = this.getCurrentTurn_gloryBattle() + this._gloryLeftStall._guest_takeToPeeTurns;
@@ -1941,6 +2407,10 @@ Game_Troop.prototype.onTurnEndSpecial_gloryBattle = function() {
 	
 	//Right Stall
 	if(this._gloryRightStall) {
+		if(this._gloryRightStall._guest_showedThroughHole) {
+			this._gloryRightStall.checkForOrgasm();
+		}
+		
 		if(this._gloryRightStall._guest_isStartingNerd && this._gloryRightStall._guest_startingNerdLeavesOnTurn <= this.getCurrentTurn_gloryBattle() && !this._gloryRightStall._guest_intentIsForHole) {
 			this._gloryRightStall.gloryBattle_joinWashingQueue();
 			this._gloryRightStall.gloryBattle_leaveRightStall();
@@ -2295,7 +2765,6 @@ Game_Troop.prototype.gloryBattle_validGuestId = function() {
 		}
 	}
 	
-
 	return validEnemyTypes[Math.randomInt(validEnemyTypes.length)];
 };
 
@@ -2327,17 +2796,6 @@ Game_Enemy.prototype.battlerName_gloryHoleBattle = function() {
 	return 'glory_target';
 };
 
-Game_Enemy.prototype.gloryEnemyParamRate = function(paramId) {
-	let rate = 1;
-	
-	if($gameParty.isInGloryBattle) {
-		if(paramId === PARAM_AGILITY_ID) {
-			rate *= 0.001;
-		}
-	}
-	
-	return rate;
-};
 
 //enemy setup
 Game_Enemy.prototype.setupForGloryBattle_Guest = function(wanted, startingSpawn) {
@@ -2399,12 +2857,14 @@ Game_Enemy.prototype.setupForGloryBattle_Guest = function(wanted, startingSpawn)
 	this._guest_isStartingNerd = false;
 	
 	this._guest_actionCooldown = 0;
+	this._guest_enteredBathroomOnTurn = -1;
 	this._guest_finishEatingOnTurn = -1;
 	this._guest_finishPissingOnTurn = -1;
 	this._guest_startingNerdLeavesOnTurn = -1;
 	this._guest_holePatienceTurnLimit = -1;
 	
 	if(!startingSpawn) {
+		this._guest_enteredBathroomOnTurn = $gameTroop.getCurrentTurn_gloryBattle();
 		BattleManager._logWindow.push('addText', TextManager.gloryGuestEnterBathroom);
 		AudioManager.playSe({name:'Open4', pan:0, pitch:90, volume:70});
 	}
@@ -2480,7 +2940,7 @@ Game_Enemy.prototype.setGloryHoleOrgasmSkills = function() {
 
 Game_Enemy.prototype.gloryBattle_leaveBathroom = function() {
 	BattleManager._logWindow.push('addText', TextManager.gloryGuestLeaveBathroom);
-	AudioManager.playSe({name:'+Footstep1', pan:0, pitch:80, volume:60});
+	AudioManager.playSe({name:'+Footstep1', pan:0, pitch:70, volume:35});
 	
 	this.gloryBattle_pollSatisfaction(false);
 	
@@ -2566,20 +3026,23 @@ Game_Enemy.prototype.gloryBattle_enterLeftStall = function() {
 	this.setGloryHoleOrgasmSkills();
 	$gameTroop._gloryLeftStall = this;
 	BattleManager._logWindow.push('addText', TextManager.gloryGuestEnterLeftStall);
-	AudioManager.playSe({name:'Open4', pan:-50, pitch:90, volume:70});
+	AudioManager.playSe({name:'Open4', pan:-65, pitch:80, volume:50});
 };
 Game_Enemy.prototype.gloryBattle_enterRightStall = function() {
 	this._guest_atStall = GLORY_RIGHT_STALL_ID;
 	this.setGloryHoleOrgasmSkills();
 	$gameTroop._gloryRightStall = this;
 	BattleManager._logWindow.push('addText', TextManager.gloryGuestEnterRightStall);
-	AudioManager.playSe({name:'Open4', pan:50, pitch:90, volume:70});
+	AudioManager.playSe({name:'Open4', pan:65, pitch:80, volume:50});
 };
 Game_Enemy.prototype.gloryBattle_leaveLeftStall = function() {
+	BattleManager.pullOutEnemy(this);
+	
 	this._guest_atStall = false;
 	$gameTroop._gloryLeftStall = false;
+	$gameTroop._gloryGuestLastLeaveLeftStallOnTurn = $gameTroop.getCurrentTurn_gloryBattle();
 	BattleManager._logWindow.push('addText', TextManager.gloryGuestLeaveLeftStall);
-	AudioManager.playSe({name:'+Footstep1', pan:-50, pitch:80, volume:60});
+	AudioManager.playSe({name:'+Footstep1', pan:-60, pitch:70, volume:35});
 	
 	if(this._guest_showedThroughHole) {
 		let actor = $gameActors.actor(ACTOR_KARRYN_ID);
@@ -2587,10 +3050,13 @@ Game_Enemy.prototype.gloryBattle_leaveLeftStall = function() {
 	}
 };
 Game_Enemy.prototype.gloryBattle_leaveRightStall = function() {
+	BattleManager.pullOutEnemy(this);
+	
 	this._guest_atStall = false;
 	$gameTroop._gloryRightStall = false;
+	$gameTroop._gloryGuestLastLeaveRightStallOnTurn = $gameTroop.getCurrentTurn_gloryBattle();
 	BattleManager._logWindow.push('addText', TextManager.gloryGuestLeaveRightStall);
-	AudioManager.playSe({name:'+Footstep1', pan:50, pitch:80, volume:60});
+	AudioManager.playSe({name:'+Footstep1', pan:60, pitch:70, volume:35});
 	
 	if(this._guest_showedThroughHole) {
 		let actor = $gameActors.actor(ACTOR_KARRYN_ID);
@@ -2605,15 +3071,16 @@ Game_Enemy.prototype.gloryBattle_showThroughHole = function() {
 	
 	if(this._guest_atStall === GLORY_LEFT_STALL_ID) {
 		BattleManager._logWindow.push('addText', TextManager.gloryGuestShowedThroughLeftHole);
-		AudioManager.playSe({name:'+Men1', pan:-50, pitch:100, volume:60});
-		this.didLastGetHitBySkillType(JUST_SKILLTYPE_GLORY_LEFT_HOLE_SHOWED);
+		AudioManager.playSe({name:'+Men3', pan:-65, pitch:90, volume:100});
+		actor.justGotHitBySkillType(JUST_SKILLTYPE_GLORY_LEFT_HOLE_SHOWED);
 	}
 	else if(this._guest_atStall === GLORY_RIGHT_STALL_ID) {
 		BattleManager._logWindow.push('addText', TextManager.gloryGuestShowedThroughRightHole);
-		AudioManager.playSe({name:'+Men1', pan:50, pitch:100, volume:60});
-		this.didLastGetHitBySkillType(JUST_SKILLTYPE_GLORY_RIGHT_HOLE_SHOWED);
+		AudioManager.playSe({name:'+Men3', pan:65, pitch:90, volume:100});
+		actor.justGotHitBySkillType(JUST_SKILLTYPE_GLORY_RIGHT_HOLE_SHOWED);
 	}
 	
+	/*
 	let enemyLineArray = [];
 	
 	if(this.weaknessToHandjob() > 1) enemyLineArray.push(ENEMY_LINE_ENEMY_JOIN_HJ);
@@ -2624,6 +3091,7 @@ Game_Enemy.prototype.gloryBattle_showThroughHole = function() {
 	if($gameParty._gloryReputation >= 5 && enemyLineArray.length > 0) {
 		BattleManager.actionRemLines(enemyLineArray[Math.randomInt(enemyLineArray.length)]);
 	}
+	*/
 	
 	actor.gloryBattle_reactToNewCock();
 	actor.emoteMasterManager_GloryBattle();
@@ -2647,14 +3115,21 @@ Game_Enemy.prototype.gloryBattle_calculatePatience = function() {
 Game_Enemy.prototype.bonusPpt_gloryBattle = function() {
 	//hp degen
 	if(this._guest_atStall && this._guest_showedThroughHole) {
+		let minStamina = 1;
 		let degenAmt = Math.ceil(this.mhp / this.gloryBattle_calculatePatience());
-		if(this.isHorny) degenAmt *= 0.8;
-		this._hp = Math.max(1, this._hp - degenAmt);
+		
+		if(this.isUsingBodySlotPenis(PUSSY_ID) || this.isUsingBodySlotPenis(ANAL_ID) || this.isUsingBodySlotPenis(MOUTH_ID) || this.isUsingBodySlotPenis(RIGHT_HAND_ID) || this.isUsingBodySlotPenis(LEFT_HAND_ID)) {
+			minStamina = degenAmt * 1.2;
+			degenAmt *= 0.5;
+		}
+		else if(this.isHorny) degenAmt *= 0.7;
+		
+		
+		this._hp = Math.max(minStamina, this._hp - degenAmt);
 	}
 	
 	//pleasure
 	let value = 0;
-	//todo: ?
 	return value;
 };
 
@@ -2714,16 +3189,16 @@ Game_Enemy.prototype.isValidTargetForCockStare_gloryBattle = function(actor) {
 		return true;
 	}
 	else if(actor.isInToiletSitLeftPose()) {
-		return true;
+		return this._guest_atStall === GLORY_LEFT_STALL_ID;
 	}
 	else if(actor.isInToiletSitRightPose()) {
-		return true;
+		return this._guest_atStall === GLORY_RIGHT_STALL_ID;
 	}
 	else if(actor.isInToiletStandLeftPose()) {
-		return false;
+		return this._guest_atStall === GLORY_RIGHT_STALL_ID;
 	}
 	else if(actor.isInToiletStandRightPose()) {
-		return false;
+		return this._guest_atStall === GLORY_LEFT_STALL_ID;
 	}
 	else return false;
 };
@@ -2783,30 +3258,30 @@ Game_Enemy.prototype.enemyBattleAIGloryHole = function(target) {
 	
 	this._guest_actionCooldown = Math.max(this._guest_actionCooldown - 1, 0);
 	
-	if(this._guest_currentlyPissing) {
+	if(this._guest_currentlyPissing && !this._guest_finishedPissing) {
 		if(this._guest_actionCooldown === 0) {
 			if(this._guest_atStall === GLORY_LEFT_STALL_ID) {
 				BattleManager._logWindow.push('addText', TextManager.gloryGuestPissingLeftStall);
-				AudioManager.playSe({name:'Liquid1', pan:-50, pitch:100, volume:60});
+				AudioManager.playSe({name:'Liquid', pan:-50, pitch:100, volume:60});
 			}
 			else if(this._guest_atStall === GLORY_RIGHT_STALL_ID) {
 				BattleManager._logWindow.push('addText', TextManager.gloryGuestPissingRightStall);
-				AudioManager.playSe({name:'Liquid1', pan:50, pitch:100, volume:60});
+				AudioManager.playSe({name:'Liquid', pan:50, pitch:100, volume:60});
 			}
 			
 			this._guest_actionCooldown = GLORY_GUEST_ACTION_COOLDOWN;
 		}
 	}
 	
-	if(this._guest_currentlyEating) {
+	if(this._guest_currentlyEating && !this._guest_finishedEating) {
 		if(this._guest_actionCooldown === 0) {
 			if(this._guest_atStall === GLORY_LEFT_STALL_ID) {
 				BattleManager._logWindow.push('addText', TextManager.gloryGuestEatingLeftStall);
-				AudioManager.playSe({name:'+Eating', pan:-50, pitch:90, volume:80});
+				AudioManager.playSe({name:'+Eating1', pan:-50, pitch:90, volume:80});
 			}
 			else if(this._guest_atStall === GLORY_RIGHT_STALL_ID) {
 				BattleManager._logWindow.push('addText', TextManager.gloryGuestEatingRightStall);
-				AudioManager.playSe({name:'+Eating', pan:50, pitch:90, volume:80});
+				AudioManager.playSe({name:'+Eating1', pan:50, pitch:90, volume:80});
 			}
 			
 			
@@ -2817,10 +3292,12 @@ Game_Enemy.prototype.enemyBattleAIGloryHole = function(target) {
 	if(this._ejaculationStock < 1 || this.energy < 1) {
 		BattleManager.pullOutEnemy(this);
 		target.gloryBattle_postEnemyPullout();
-		if(this._guest_atStall === GLORY_LEFT_STALL_ID)
+		if(this._guest_atStall === GLORY_LEFT_STALL_ID) {
 			this.gloryBattle_leaveLeftStall();
-		else if(this._guest_atStall === GLORY_RIGHT_STALL_ID)
+		}
+		else if(this._guest_atStall === GLORY_RIGHT_STALL_ID) {
 			this.gloryBattle_leaveRightStall();
+		}
 		
 		this.gloryBattle_joinWashingQueue();
 		target.emoteMasterManager_GloryBattle();
@@ -2828,6 +3305,10 @@ Game_Enemy.prototype.enemyBattleAIGloryHole = function(target) {
 	}
 	else {
 		if(this._guest_intentIsForHole && !this._guest_showedThroughHole) {
+			this._guest_currentlyPissing = false;
+			this._guest_finishedPissing = true;
+			this._guest_currentlyWashing = false;
+			this._guest_finishedEating = true;
 			this.gloryBattle_showThroughHole();
 			return;
 		}
@@ -2837,10 +3318,12 @@ Game_Enemy.prototype.enemyBattleAIGloryHole = function(target) {
 					this._guest_actionCooldown = GLORY_GUEST_ACTION_COOLDOWN;
 			}
 			else if(!this.isInAPose() && this.stamina === 1) {
-				if(this._guest_atStall === GLORY_LEFT_STALL_ID)
+				if(this._guest_atStall === GLORY_LEFT_STALL_ID) {
 					this.gloryBattle_leaveLeftStall();
-				else if(this._guest_atStall === GLORY_RIGHT_STALL_ID)
+				}
+				else if(this._guest_atStall === GLORY_RIGHT_STALL_ID) {
 					this.gloryBattle_leaveRightStall();
+				}
 				
 				this.gloryBattle_joinWashingQueue();
 			}

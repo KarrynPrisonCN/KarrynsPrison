@@ -1436,7 +1436,7 @@ Window_StatCompare.prototype.drawStateRem = function(stateId, x, y) {
 
 Window_StatCompare.prototype.drawElementRem = function(elementId, x, y) {
 	this.changeTextColor(this.systemColor());
-	//todo - todo what???
+
 	var text = TextManager.element(elementId) + TextManager.resistName;
 	this.drawText(text, x, y, this._paramNameWidth);
 	
@@ -2787,6 +2787,7 @@ Sprite_AoeRect.prototype.updateAoEImage = function() {
 	let scene = SceneManager._scene;
 	if (scene._enemyWindow && scene._enemyWindow.active) {
 		let target = scene._enemyWindow.enemy();
+		if(!target) return;
 		let rowHeight = $dataEnemies[target._enemyId].dataRowHeight;
 		let skill = this._skill;
 		let skillId = skill.id;

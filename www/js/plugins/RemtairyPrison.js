@@ -200,6 +200,7 @@ const SWITCH_EDICT_OFFICE_LUXUXY_BED = 73;
 const SWITCH_HIDE_STATE_ICONS_ID = 102;
 const SWITCH_HALF_FATIGUE_RECOVERY_ID = 103;
 
+const SWITCH_PROLOGUE_STARTED = 107;
 const SWITCH_PROLOGUE_ENDED = 108;
 const SWITCH_POST_DEFEATED = 109;
 
@@ -1019,7 +1020,8 @@ Game_Party.prototype.setupMapNames = function() {
 
 Game_Party.prototype.getMapName = function(id) {
 	if(id === -1) return TextManager.prisonMapUnknownName;
-	if(!this._mapNames[id]) return '';
+	if(id === MAP_ID_EB_INFIRMARY || id === 19) return '';
+	if(!this._mapNames[id]) return TextManager.prisonMapUndiscoveredName;
 	if(TextManager.isEnglish) return this._mapNames[id][RemLanguageEN];
 	else if(TextManager.isJapanese) return this._mapNames[id][RemLanguageJP];
 	else if(TextManager.isTChinese) return this._mapNames[id][RemLanguageTCH];
@@ -1175,8 +1177,6 @@ Game_Party.prototype.advanceNextDay = function() {
 	}
 	
 	this.checkForNewTitle();
-	
-	//todo: check for this.hasNoOrder() then game over 
 	
 	actor.getNewDayEdictPoints();
 	actor.putOnPanties();
@@ -1573,7 +1573,7 @@ Game_Party.prototype.calculateSubsidies = function(estimated) {
 	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
 	let subsidies = 1300;
 	
-	subsidies += this.titlesSubsidies();
+	subsidies += actor.titlesSubsidies_Flat();
 	subsidies += actor.edictsSubsidies_Flat();
 	
 	let order = this.order;
@@ -1589,6 +1589,7 @@ Game_Party.prototype.calculateSubsidies = function(estimated) {
 	else subsidies *= 0.25;
 	
 	subsidies *= actor.edictsSubsidies_Rate();
+	subsidies *= actor.titlesSubsidies_Rate();
 	
 	return Math.round(subsidies);
 };
@@ -2211,7 +2212,6 @@ Game_Party.prototype.postDefeat_preRest = function() {
 	
 	$gameVariables.setValue(VARIABLE_DEFEATED_SPRITES_ID, 0);
 	$gameSwitches.setValue(SWITCH_TODAY_GOBLIN_BAR_STORAGE_ID, false);
-	$gameSwitches.setValue(SWITCH_TODAY_GLORYHOLE_DEFEAT_ID, false);
 	//in common events, rest gets called after this
 };
 
@@ -2892,6 +2892,7 @@ Game_Party.prototype.riotOutbreakPrisonLevelTwo = function() {
 	$gameSelfSwitches.setValue([MAP_ID_RESEARCH, 4, "D"], false);
 	$gameSelfSwitches.setValue([MAP_ID_RESEARCH, 5, "D"], false);
 	$gameSelfSwitches.setValue([MAP_ID_RESEARCH, 6, "D"], false);
+	$gameSelfSwitches.setValue([MAP_ID_RESEARCH, 7, "D"], false);
 	$gameSelfSwitches.setValue([MAP_ID_MEETING_ROOM, 4, "D"], false);
 	$gameSelfSwitches.setValue([MAP_ID_MEETING_ROOM, 6, "D"], false);
 	$gameSelfSwitches.setValue([MAP_ID_MEETING_ROOM, 7, "D"], false);
@@ -3100,8 +3101,6 @@ Game_Party.prototype.prisonGlobalRiotChance = function(useOnlyTodaysGoldForBankr
 	if(Karryn.hasEdict(EDICT_RESEARCH_LAUNDRY_PRODUCT_CONTRACT)) chance -= 1;
 	
 	chance += this.prisonDifficultyRiotChance();
-	
-	chance += $gameActors.actor(ACTOR_KARRYN_ID).titleCorporalPunisher_riotChance();
 	
 
 	return chance;

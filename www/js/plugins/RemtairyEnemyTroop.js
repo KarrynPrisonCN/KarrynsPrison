@@ -249,19 +249,26 @@ Game_Troop.prototype.setAllEnemiesToHide = function() {
 };
 
 
-Game_Troop.prototype.makeAllEnemiesHorny = function(chance) {
-	if(chance <= 0) return;
-    this.aliveMembers().forEach(function(member) {
-        if (Math.random() < chance) {
-            member.addHornyState(); 
-        }
-    });
-};
-
 Game_Troop.prototype.setAllEnemiesToAroused = function() {
 	this.members().forEach(function(enemy) {
 		if(enemy.isAppeared()) {
 			enemy.setPleasureToArousalPoint();
+		}
+	}, this);
+};
+
+Game_Troop.prototype.setAllEnemiesToAngry = function() {
+	this.members().forEach(function(enemy) {
+		if(enemy.isAppeared()) {
+			enemy.addAngryState();
+		}
+	}, this);
+};
+Game_Troop.prototype.setAllEnemiesToAngry_chanceBased = function(chance, callLogMessage) {
+	this.members().forEach(function(enemy) {
+		if(enemy.isAppeared() && Math.randomInt(100) < chance) {
+			enemy.addAngryState();
+			if(callLogMessage) SceneManager._scene._logWindow.displayAffectedStatus(enemy);
 		}
 	}, this);
 };
@@ -282,10 +289,11 @@ Game_Troop.prototype.setAllEnemiesToHorny_chanceBased = function(chance, callLog
 	}, this);
 };
 
-Game_Troop.prototype.setAllOrcEnemiesToAngry = function(collapsingEnemy) {
+Game_Troop.prototype.setAllOrcEnemiesToAngryOnce = function(collapsingEnemy) {
 	this.members().forEach(function(enemy) {
-		if(enemy.isAppeared() && enemy.isOrcType && !enemy.isTonkin) {
+		if(enemy.isAppeared() && enemy.stamina > 0 && enemy.isOrcType && !enemy.isTonkin && !enemy._angryOrcCalled) {
 			if(collapsingEnemy && collapsingEnemy.name() != enemy.name()) {
+				enemy._angryOrcCalled = true;
 				enemy.addAngryState();
 				SceneManager._scene._logWindow.displayAffectedStatus(enemy);
 			}
@@ -751,15 +759,31 @@ Game_Troop.prototype.reorderImagesOnSelection = function() {
 		
 		if($gameParty.isInGloryBattle) {
 			if(this._gloryLeftStall) {
-				let x = GLORYHOLE_POS_LEFT_X;
-				let y = GLORYHOLE_POS_LEFT_Y;
+				let x = 0;
+				let y = 0;
+				if(this._gloryLeftStall.isAroused()) {
+					x = GLORYHOLE_POS_LEFT_HARD_X;
+					y = GLORYHOLE_POS_LEFT_HARD_Y;
+				}
+				else {
+					x = GLORYHOLE_POS_LEFT_SOFT_X;
+					y = GLORYHOLE_POS_LEFT_SOFT_Y;
+				}
 				this._gloryLeftStall._screenX = x;
 				this._gloryLeftStall._screenY = y;
 				this._gloryLeftStall.setCustomEnemySpritePosition(x, y);
 			}
 			if(this._gloryRightStall) {
-				let x = GLORYHOLE_POS_RIGHT_X;
-				let y = GLORYHOLE_POS_RIGHT_Y;
+				let x = 0;
+				let y = 0;
+				if(this._gloryRightStall.isAroused()) {
+					x = GLORYHOLE_POS_RIGHT_HARD_X;
+					y = GLORYHOLE_POS_RIGHT_HARD_Y;
+				}
+				else {
+					x = GLORYHOLE_POS_RIGHT_SOFT_X;
+					y = GLORYHOLE_POS_RIGHT_SOFT_Y;
+				}
 				this._gloryRightStall._screenX = x;
 				this._gloryRightStall._screenY = y;
 				this._gloryRightStall.setCustomEnemySpritePosition(x, y);

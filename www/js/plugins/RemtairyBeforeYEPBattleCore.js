@@ -366,7 +366,9 @@ Window_BattleLog.prototype.displayTpDamage = function(target) {
 
         }
 		else if(target.result().pleasureDamage > 0 && target.getPercentOfOrgasmFromValue(target.result().pleasureDamage) > 0) {
-			this.push('addText', this.makeTpDamageText(target));
+			let text = this.makeTpDamageText(target);
+			if(text)
+				this.push('addText', text);
 		}
     }
 };
@@ -399,6 +401,10 @@ Window_BattleLog.prototype.makeTpDamageText = function(target) {
 			pleasureValueText += -damage;
 			fmt = isActor ? TextManager.actorGainPleasure : TextManager.enemyGainPleasureValue;
 		}
+		
+		if(!isActor && (target._ejaculationStock < 1 || target.energy < 1)) {
+			return '';
+		}
 
         return fmt.format(target.displayName(), pleasureValueText);
     } else {
@@ -418,6 +424,10 @@ Window_BattleLog.prototype.makePleasureFeedbackText = function(subject, target) 
 		pleasureValueText += damage;
 			
 	if(isActor) {
+		if(subject._ejaculationStock < 1 || subject.energy < 1) {
+			return '';
+		}
+		
 		if(ConfigManager.displayPleasureAsPercent)
 			fmt = TextManager.enemyGainPleasurePercent;
 		else

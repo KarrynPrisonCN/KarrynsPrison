@@ -4,7 +4,7 @@ Remtairy.TextManager = Remtairy.TextManager || {};
 var Imported = Imported || {};
 Imported.RemtairyTextManager = true;
 
-const RemVersionText = '7A.g.2';
+const RemVersionText = '7B.j';
 
 //=============================================================================
  /*:
@@ -100,14 +100,7 @@ const CooldownTurnsPluralNameEN = "%1 Turns";
 const CooldownTurnsPluralNameJP = "%1ﾀｰﾝ";
 const CockinessNameEN = "Cockiness";
 const CockinessNameJP = "大胆さ";
-const CockinessIncreasedTextEN = "Cockiness increased to %1%!";
-const CockinessIncreasedTextJP = "大胆さが%1％まで上昇した！";
-const CockinessDecreasedTextEN = "Cockiness has fallen to %1%...";
-const CockinessDecreasedTextJP = "大胆さが%1％に減少した……。";
-const CockinessResetEN = "Cockiness reset to zero...";
-const CockinessResetJP = "大胆さがリセットされた……。";
-const CockinessMaxxedOutEN = "Cockiness is at 100%!";
-const CockinessMaxxedOutJP = "大胆さが100％になった！";
+
 
 const XParamNameEN = [
 "Accuracy",
@@ -342,7 +335,7 @@ const SellNameJP = "売却";
 const ActionFailureEN = "There is no effect on %1!";
 const ActionFailureJP = "%1には効果なし！";
 const ActorDamageEN = "\\C[16]%1 takes %2 points of stamina damage!";
-const ActorDamageJP = "\\C[16]%1は%2のダメージを受けた！！";
+const ActorDamageJP = "\\C[16]%1の体力が%2ダウン！！";
 const ActorDrainEN = "%1's %2 are drained by %3 points!"; //currently unused
 const ActorDrainJP = "%1's %2 are drained by %3 points!"; //currently unused
 const ActorGainEN = "\\C[11]%1 gains %3 %2!";
@@ -495,9 +488,9 @@ const RCMenuDefiledHalberdTextEN = "\\C[7]Karryn's halberd has been defiled... \
 const RCMenuDefiledHalberdTextJP = "\\C[7]ハルバード：汚されている……。\\C[0]";
 
 const RCMenuMetalSingleTextEN = "\\C[0]Karryn subdued a metallic inmate today. (\\C[11]Exp Rate +%1%\\C[0])";
-const RCMenuMetalSingleTextJP = "\\C[0]メタル囚人を捕り押さえた。 (\\C[11]経験値+%1％\\C[0])";
+const RCMenuMetalSingleTextJP = "\\C[0]メタル囚人を撃退した。 (\\C[11]経験値+%1％\\C[0])";
 const RCMenuMetalPluralTextEN = "\\C[0]Karryn subdued %2 metallic inmates today. (\\C[11]Exp Rate +%1%\\C[0])";
-const RCMenuMetalPluralTextJP = "\\C[0]メタル囚人を%2人捕り押さえた。 (\\C[11]経験値+%1％\\C[0])";
+const RCMenuMetalPluralTextJP = "\\C[0]メタル囚人を%2人撃退した。 (\\C[11]経験値+%1％\\C[0])";
 
 const RCMenuGiftsSingleTextEN = "\\C[0]Karryn received a gift: \\C[0]";
 const RCMenuGiftsSingleTextJP = "\\C[0]受け取った贈呈品： \\C[0]";
@@ -553,6 +546,9 @@ const PrisonMapOutsideNameEN = "Fort Ganon: ";
 const PrisonMapOutsideNameJP = "【要塞ガナン】 ";
 const PrisonMapUnknownNameEN = "Somewhere";
 const PrisonMapUnknownNameJP = "要塞内";
+const PrisonMapUndiscoveredNameEN = "???";
+const PrisonMapUndiscoveredNameJP = "???";
+
 
 //カリンのレベル
 const KissingLevelEN = "Kissing Level";
@@ -664,8 +660,6 @@ const ProfileBioTextJP = "経歴";
 
 const ProfileNameEN = "Karryn";
 const ProfileNameJP = "カリン";
-const ProfileAgeEN = "26";
-const ProfileAgeJP = "26";
 const ProfileThreeSizesEN = "110(K Cup)-59-100cm (43-23-39 inches)";
 const ProfileThreeSizesJP = "110cm (Ｋカップ) / 59cm / 100cm";
 const ProfileBio_One_EN = [
@@ -1121,6 +1115,12 @@ const StateTooltipsEnemyPussyToyPenisDildoEN = "%1 has a penis dildo!";
 const StateTooltipsEnemyPussyToyPenisDildoJP = "ディルドを持っている！";
 const StateTooltipsEnemyAnalToyAnalBeadsEN = "%1 has anal beads!";
 const StateTooltipsEnemyAnalToyAnalBeadsJP = "アナルビーズを持っている！";
+const StateTooltipsToiletPinkRotorEN = "Someone left a pink rotor in the stall...";
+const StateTooltipsToiletPinkRotorJP = "ピンクローターが放置されている……";
+const StateTooltipsToiletPenisDildoEN = "Someone left a penis dildo in the stall...";
+const StateTooltipsToiletPenisDildoJP = "ディルドが放置されている……";
+const StateTooltipsToiletAnalBeadsEN = "Someone left anal beads in the stall...";
+const StateTooltipsToiletAnalBeadsJP = "アナルビーズが放置されている……";
 const StateWaitressNoAlcoholEN = "Karryn is refusing all \\C[2]attempts to get her to drink\\C[0].\nHer willpower regen is halved.\n%1 Willpower will be required to refuse a drink.";
 const StateWaitressNoAlcoholJP = "\\C[2]【飲酒を拒否中】\\C[0]\n客から勧められるアルコールを全て断っている\n\\I[42]意志力回復量 半減\n（飲酒拒否に必要な意志力：%1）";
 const StateWaitressDirtyMugsSingularEN = "%1 has a dirty mug waiting to be collected.";
@@ -1336,7 +1336,7 @@ const InvasionNoiseLevelTwoJP = "\\C[7]外からわずかに騒音が聞こえ�
 const InvasionNoiseLevelThreeEN = "\\C[2]Inaudible talking can be heard outside.";
 const InvasionNoiseLevelThreeJP = "\\C[2]別の場所から話声が聞こえる。";
 const InvasionNoiseLevelFourEN = "\\C[10]Someone is shouting outside.";
-const InvasionNoiseLevelFourJP = "\\C[10]何者かが近くで騒いでいる！";
+const InvasionNoiseLevelFourJP = "\\C[10]近くで騒ぎ声が聞こえる！";
 const InvasionBattleStartEN = "A bunch of people barge into the room!";
 const InvasionBattleStartJP = "侵入者が現れた！！";
 
@@ -1391,25 +1391,77 @@ const RemResultsMasturbateBattleNoneJP = "カリンは疲れてしまった…�
 const RemResultsMasturbateBattleSingleEN = "Karryn came!";
 const RemResultsMasturbateBattleSingleJP = "カリンは満足した！！";
 const RemResultsMasturbateBattlePluralEN = "Karryn came %1 times!";
-const RemResultsMasturbateBattlePluralJP = "カリンは%1回絶頂した！！!";
+const RemResultsMasturbateBattlePluralJP = "カリンは%1回絶頂した！！！";
 const RemResultsJobBattleEndEN = "Karryn's shift has ended.";
 const RemResultsJobBattleEndJP = "■ アルバイトタイム 終了 ■";
 const RemResultsGainedExpEN = "EXP Gained";
 const RemResultsGainedExpJP = "獲得経験値";
 const RemResultsLevelUpEN = "LEVEL UP!";
 const RemResultsLevelUpJP = "レベルアップ！";
-const RemResultsOrderIncreaseEN = "Restored %1 Prison Order!";
-const RemResultsOrderIncreaseJP = "秩序が %1 上昇した！";
-const RemResultsOrderDecreaseEN = "Lost %1 Prison Order.";
-const RemResultsOrderDecreaseJP = "秩序が %1 低下した……。";
-const RemResultsFundingIncreaseEN = "Gained %1 G!";
-const RemResultsFundingIncreaseJP = "資金が %1Ｇ 増えた！";
-const RemResultsFundingDecreaseEN = "Lost %1 G.";
-const RemResultsFundingDecreaseJP = "資金が %1Ｇ 減った……。";
-const RemResultsFatigueIncreaseEN = "Fatigue increased by %1%.";
-const RemResultsFatigueIncreaseJP = "疲労を %1％ 蓄積した……。";
-const RemResultsFatigueDecreaseEN = "Fatigue decreased by %1%!";
-const RemResultsFatigueDecreaseJP = "疲労が %1％ 減少した！";
+const RemResultsOrderIncreaseEN = "\\I[408]\\C[11]Restored %1 Prison Order!";
+const RemResultsOrderIncreaseJP = "\\I[408]\\C[11]秩序が%1上昇した！";
+const RemResultsOrderDecreaseEN = "\\I[409]\\C[10]Lost %1 Prison Order...";
+const RemResultsOrderDecreaseJP = "\\I[409]\\C[10]秩序が%1低下した……。";
+const RemResultsFundingIncreaseEN = "\\I[400]\\C[11]Gained %1 G!";
+const RemResultsFundingIncreaseJP = "\\I[400]\\C[11]資金が%1Ｇ増えた！";
+const RemResultsFundingDecreaseEN = "\\I[401]\\C[10]Lost %1 G...";
+const RemResultsFundingDecreaseJP = "\\I[401]\\C[10]資金が%1Ｇ減った……。";
+const RemResultsFatigueIncreaseEN = "\\I[389]\\C[10]Fatigue increased by %1%...";
+const RemResultsFatigueIncreaseJP = "\\I[389]\\C[10]疲労を%1％蓄積した……。";
+const RemResultsFatigueDecreaseEN = "\\I[388]\\C[11]Fatigue decreased by %1%!";
+const RemResultsFatigueDecreaseJP = "\\I[388]\\C[11]疲労が%1％減少した！";
+
+const CockinessIncreasedTextEN = "\\I[354]\\C[11]Cockiness increased to %1%!";
+const CockinessIncreasedTextJP = "\\I[354]\\C[11]大胆さが%1％まで上昇した！";
+const CockinessDecreasedTextEN = "\\I[489]\\C[10]Cockiness has fallen to %1%...";
+const CockinessDecreasedTextJP = "\\I[489]\\C[10]大胆さが%1％に減少した……。";
+const CockinessResetEN = "\\I[489]\\C[10]Cockiness reset to zero...";
+const CockinessResetJP = "\\I[489]\\C[10]大胆さがリセットされた……。";
+const CockinessMaxxedOutEN = "\\I[354]\\C[11]Cockiness is at 100%!";
+const CockinessMaxxedOutJP = "\\I[354]\\C[11]大胆さが100％になった！";
+
+const RemResultsSubduedWithAttackEN = "\\I[74]\\C[11]Subdued %1 %2 physically!";
+const RemResultsSubduedWithAttackJP = "\\I[74]\\C[11]%1人を撃退した！";
+const RemResultsSubduedSexuallyEN = "\\I[43]\\C[27]Subdued %1 %2 sexually!";
+const RemResultsSubduedSexuallyJP = "\\I[43]\\C[27]%1人を性的に屈服させた！";
+const RemResultsSubduedWithAttackAndSexuallyEN = "\\I[291]\\C[11]Subdued %1 %2 physically and \\C[27]%3 %4 sexually\\C[11]!";
+const RemResultsSubduedWithAttackAndSexuallyJP = "\\I[291]\\C[11]%1人を撃退し、%3人は性的に屈服させた！";
+const RemResultsKarrynOrgasmSingularEN = "\\I[99]\\C[27]Orgasmed once!";
+const RemResultsKarrynOrgasmSingularJP = "\\I[99]\\C[27]1回だけ絶頂した！";
+const RemResultsKarrynOrgasmPluralEN = "\\I[99]\\C[27]Orgasmed %1 times!";
+const RemResultsKarrynOrgasmPluralJP = "\\I[99]\\C[27]%1回絶頂した！";
+const RemResultsKarrynMasturbatedInBattleSingularEN = "\\I[46]\\C[27]Masturbated during battle once!";
+const RemResultsKarrynMasturbatedInBattleSingularJP = "\\I[46]\\C[27]人前で1回だけオナニーした！";
+const RemResultsKarrynMasturbatedInBattlePluralEN = "\\I[46]\\C[27]Masturbated during battle %1 times!";
+const RemResultsKarrynMasturbatedInBattlePluralJP = "\\I[46]\\C[27]人前で%1回オナニーした！";
+const RemResultsKarrynKissEN = "\\I[288]\\C[27]Kissed %1 %2!";
+const RemResultsKarrynKissJP = "\\I[288]\\C[27]%1人とキスした！";
+const RemResultsKarrynHandjobEN = "\\I[289]\\C[27]Gave handjobs to %1 %2!";
+const RemResultsKarrynHandjobJP = "\\I[289]\\C[27]%1人に手コキした！";
+const RemResultsKarrynBlowjobEN = "\\I[294]\\C[27]Gave blowjobs to %1 %2!";
+const RemResultsKarrynBlowjobJP = "\\I[294]\\C[27]%1人にフェラした！";
+const RemResultsKarrynTitjobEN = "\\I[221]\\C[27]Gave titjobs to %1 %2!";
+const RemResultsKarrynTitjobJP = "\\I[221]\\C[27]%1人にパイズリした！";
+const RemResultsKarrynVaginalSexEN = "\\I[295]\\C[27]Had vaginal sex with %1 %2!";
+const RemResultsKarrynVaginalSexJP = "\\I[295]\\C[27]%1人とマンコでセックスした！";
+const RemResultsKarrynAnalSexEN = "\\I[296]\\C[27]Had anal sex with %1 %2!";
+const RemResultsKarrynAnalSexJP = "\\I[296]\\C[27]%1人とアナルでセックスした！";
+
+
+const RemParamLevelGainedSingularEN = "\\C[16]%3Gained %1 %2 Level!";
+const RemParamLevelGainedSingularJP = "\\C[16]%3%2レベルが %1 上がった！";
+const RemParamLevelGainedPluralEN = "\\C[16]%3Gained %1 %2 Levels!!";
+const RemParamLevelGainedPluralJP = "\\C[16]%3%2レベルが %1 上がった！";
+
+const RemWardenLevelRequireSingularEN = "\\C[8]\\I[42]%1 more stat level until the next Warden Level!";
+const RemWardenLevelRequireSingularJP = "\\C[8]\\I[42]次の看守レベルまで、あと%1のステータスレベル！";
+const RemWardenLevelRequirePluralEN = "\\C[8]\\I[42]%1 more stat levels until the next Warden Level!";
+const RemWardenLevelRequirePluralJP = "\\C[8]\\I[42]次の看守レベルまで、あと%1のステータスレベル！";
+const RemWardenLevelUpEN = "\\I[352]\\C[11]LEVEL UP!!! \\C[16]%1 has reached Warden Level %2!!";
+const RemWardenLevelUpJP = "\\I[352]\\C[11]レベルアップ！！\\C[16]%1は看守レベルが %2 になった！！";
+const RemWardenLevelLimitReachedEN = "\\I[353]\\C[8]%1 has reached the Warden Level Limit and will not gain any more stat levels.";
+const RemWardenLevelLimitReachedJP = "\\I[353]\\C[8]看守レベルが上限に達しているためこれ以上ステータスレベルを上げられません。";
+
 const RemResultsPassivesTitleEN = "New Passives Unlocked!!";
 const RemResultsPassivesTitleJP = "新パッシブ開放！！";
 
@@ -1472,19 +1524,6 @@ const RemParamGainedMindEN = "Mind increased by %1!"; //unused
 const RemParamGainedMindJP = "マインドが %1 上がった！"; //unused
 const RemParamGainedCharmEN = "Charm increased by %1!"; //unused
 const RemParamGainedCharmJP = "魅力が %1 上がった！"; //unused
-
-const RemParamLevelGainedSingularEN = "Gained %1 %2 Level!";
-const RemParamLevelGainedSingularJP = "%2レベルが %1 上がった！";
-const RemParamLevelGainedPluralEN = "Gained %1 %2 Levels!!";
-const RemParamLevelGainedPluralJP = "%2レベルが %1 上がった！";
-
-const RemWardenLevelRequireSingularEN = "\\C[8]\\I[42]%1 more stat level until the next Warden Level!";
-const RemWardenLevelRequireSingularJP = "\\C[8]\\I[42]次の看守レベルまで、あと%1のステータスレベル！";
-const RemWardenLevelRequirePluralEN = "\\C[8]\\I[42]%1 more stat levels until the next Warden Level!";
-const RemWardenLevelRequirePluralJP = "\\C[8]\\I[42]次の看守レベルまで、あと%1のステータスレベル！";
-
-const RemWardenLevelUpEN = "\\C[16]LEVEL UP!!! \\C[0]%1 has reached \\C[16]Warden Level %2\\C[0]!!";
-const RemWardenLevelUpJP = "\\C[16]レベルアップ！！\\C[0]%1は看守レベルが \\C[16]%2 \\C[0]になった！！";
 
 const RemExpEnemiesDefeatedEN = "Enemies Defeated EXP"; //currently unused
 const RemExpEnemiesDefeatedJP = "【戦闘】熟練度"; //currently unused
@@ -1604,9 +1643,9 @@ const RemYanflyOptions_AlwaysDash_JP = "\\i[273]常時ダッシュ";
 const RemYanflyOptions_AlwaysDash_Help_EN = "Player walks when OFF. Player dashes when ON.\nHolding SHIFT switches between walking and dashing.";
 const RemYanflyOptions_AlwaysDash_Help_JP = "ON：常にダッシュのスピード\nOFF：歩行スピード\n※OFFの場合は、SHIFTキーを押し続けることでダッシュします。";
 const RemYanflyOptions_MessageSpeed_EN = "\\i[273]Message Speed";
-const RemYanflyOptions_MessageSpeed_JP = "\\i[273]メッセージ速度";
+const RemYanflyOptions_MessageSpeed_JP = "\\i[273]メッセージ表示速度";
 const RemYanflyOptions_MessageSpeed_Help_EN = "Changes the speed text is displayed during messages.";
-const RemYanflyOptions_MessageSpeed_Help_JP = "通常テキストの表示スピードを変更出来ます。";
+const RemYanflyOptions_MessageSpeed_Help_JP = "通常テキストの表示速度を変更出来ます。";
 const RemYanflyOptions_MessageSpeed_NoWait_EN = "No Wait";
 const RemYanflyOptions_MessageSpeed_NoWait_JP = "ノーウェイト";
 const RemYanflyOptions_CommandRemember_EN = "\\i[273]Command Remember";
@@ -1615,11 +1654,11 @@ const RemYanflyOptions_CommandRemember_Help_EN = "The game remembers the last Me
 const RemYanflyOptions_CommandRemember_Help_JP = "メンタルフェーズとアクションフェーズの最後に使ったスキルを記憶します。";
 
 const RemYanflyOptions_Battlelog_Duration_EN = "\\i[273]Battlelog Duration";
-const RemYanflyOptions_Battlelog_Duration_JP = "\\i[273]戦闘メッセージ表示速度";
+const RemYanflyOptions_Battlelog_Duration_JP = "\\i[273]バトルメッセージ表示速度";
 const RemYanflyOptions_Battlelog_Duration_Help_EN = "Changes how long battlelog messages stay on the screen.";
-const RemYanflyOptions_Battlelog_Duration_Help_JP = "戦闘画面のテキスト表示時間を変更出来ます。";
+const RemYanflyOptions_Battlelog_Duration_Help_JP = "戦闘で表示されるテキストの速度を変更出来ます。";
 const RemYanflyOptions_Battlelog_Duration_Zero_EN = "Very Short";
-const RemYanflyOptions_Battlelog_Duration_Zero_JP = "最短 ★★★★★";
+const RemYanflyOptions_Battlelog_Duration_Zero_JP = "最速 ★★★★★";
 const RemYanflyOptions_Battlelog_Duration_One_EN = "Short";
 const RemYanflyOptions_Battlelog_Duration_One_JP = "早い ★★★★";
 const RemYanflyOptions_Battlelog_Duration_Two_EN = "Default";
@@ -1629,8 +1668,23 @@ const RemYanflyOptions_Battlelog_Duration_Three_JP = "遅い ★★";
 const RemYanflyOptions_Battlelog_Duration_Four_EN = "Very Long";
 const RemYanflyOptions_Battlelog_Duration_Four_JP = "最遅 ★";
 
+const RemYanflyOptions_Battlelog_Fontsize_EN = "\\i[273]Battlelog Font Size";
+const RemYanflyOptions_Battlelog_Fontsize_JP = "\\i[273]バトルメッセージのフォントサイズ";
+const RemYanflyOptions_Battlelog_Fontsize_Help_EN = "Changes the font size for battlelog messages.";
+const RemYanflyOptions_Battlelog_Fontsize_Help_JP = "戦闘で表示されるテキストのサイズを変更出来ます。";
+const RemYanflyOptions_Battlelog_Fontsize_Zero_EN = "Smallest";
+const RemYanflyOptions_Battlelog_Fontsize_Zero_JP = "最小";
+const RemYanflyOptions_Battlelog_Fontsize_One_EN = "Smaller";
+const RemYanflyOptions_Battlelog_Fontsize_One_JP = "小さい";
+const RemYanflyOptions_Battlelog_Fontsize_Two_EN = "Default";
+const RemYanflyOptions_Battlelog_Fontsize_Two_JP = "普通";
+const RemYanflyOptions_Battlelog_Fontsize_Three_EN = "Bigger";
+const RemYanflyOptions_Battlelog_Fontsize_Three_JP = "大きい";
+const RemYanflyOptions_Battlelog_Fontsize_Four_EN = "Biggest";
+const RemYanflyOptions_Battlelog_Fontsize_Four_JP = "最大";
+
 const RemYanflyOptions_MaleDialogueAppear_EN = "\\i[273]Enemy Battle Dialogue";
-const RemYanflyOptions_MaleDialogueAppear_JP = "\\i[273]敵のセリフの表示頻度";
+const RemYanflyOptions_MaleDialogueAppear_JP = "\\i[273]敵のセリフ表示頻度";
 const RemYanflyOptions_MaleDialogueAppear_Help_EN = "Changes how likely enemies will make a comment while using a sexual skill.\nNote there are some exceptions where enemies will always talk regardless of this setting.";
 const RemYanflyOptions_MaleDialogueAppear_Help_JP = "セクハラ/セックス時に表示される敵のセリフ頻度を設定出来ます。\n※敵によっては例外があります。";
 const RemYanflyOptions_MaleDialogueAppear_Zero_EN = "Silence";
@@ -2258,17 +2312,17 @@ const RemGloryLeftStallCockNameJP = "左のチンポ";
 const RemGloryRightStallCockNameEN = "The Cock on the Right";
 const RemGloryRightStallCockNameJP = "右のチンポ";
 const RemGloryGuestEnterBathroomEN = "\\C[8]Someone has entered into the bathroom.";
-const RemGloryGuestEnterBathroomJP = "\\C[8]何者かがトイレに入ってきた。";
+const RemGloryGuestEnterBathroomJP = "\\C[8]トイレに人が来た気配がする……。";
 const RemGloryGuestLeaveBathroomEN = "\\C[8]Someone has walked out from the bathroom.";
-const RemGloryGuestLeaveBathroomJP = "\\C[8]誰か立ち去ったようだ。";
+const RemGloryGuestLeaveBathroomJP = "\\C[8]誰かがトイレから立ち去った。";
 const RemGloryGuestEnterLeftStallEN = "\\C[7]Someone has entered the left stall.";
-const RemGloryGuestEnterLeftStallJP = "\\C[7]左の個室に誰か入って来たようだ。";
+const RemGloryGuestEnterLeftStallJP = "\\C[7]誰かが左の個室に入った。";
 const RemGloryGuestLeaveLeftStallEN = "\\C[7]Someone has vacated the left stall.";
-const RemGloryGuestLeaveLeftStallJP = "\\C[7]左の個室から人の気配が消えた。";
+const RemGloryGuestLeaveLeftStallJP = "\\C[7]左の個室から人が出たようだ。";
 const RemGloryGuestEnterRightStallEN = "\\C[7]Someone has entered the right stall.";
-const RemGloryGuestEnterRightStallJP = "\\C[7]右の個室に誰か入って来たようだ。";
+const RemGloryGuestEnterRightStallJP = "\\C[7]誰かが右の個室に入った。";
 const RemGloryGuestLeaveRightStallEN = "\\C[7]Someone has vacated the right stall.";
-const RemGloryGuestLeaveRightStallJP = "\\C[7]右の個室から人の気配が消えた。";
+const RemGloryGuestLeaveRightStallJP = "\\C[7]右の個室から人が出たようだ";
 const RemGloryGuestPissingLeftStallEN = "\\C[8]Pissing sounds are coming from the left stall.";
 const RemGloryGuestPissingLeftStallJP = "\\C[8]左の個室から小便の音がしている。";
 const RemGloryGuestEatingLeftStallEN = "\\C[8]Food chewing sounds are coming from the left stall.";
@@ -2276,7 +2330,7 @@ const RemGloryGuestEatingLeftStallJP = "\\C[8]左の個室から食べる音が�
 const RemGloryGuestPissingRightStallEN = "\\C[8]Pissing sounds are coming from the right stall.";
 const RemGloryGuestPissingRightStallJP = "\\C[8]右の個室から小便の音がしている。";
 const RemGloryGuestEatingRightStallEN = "\\C[8]Food chewing sounds are coming from the right stall.";
-const RemGloryGuestEatingRightStallJP = "\\C[8]右の個室から食べる音が聞こえる。.";
+const RemGloryGuestEatingRightStallJP = "\\C[8]右の個室から食べる音が聞こえる。";
 const RemGloryGuestShowedThroughLeftHoleEN = "\\C[27]A cock appears from the hole on the left!";
 const RemGloryGuestShowedThroughLeftHoleJP = "\\C[27]左の穴からチンポが現れた！";
 const RemGloryGuestShowedThroughRightHoleEN = "\\C[27]A cock appears from the hole on the right!";
@@ -3140,6 +3194,12 @@ Object.defineProperties(TextManager, {
 			else if(this.isEnglish) return PrisonMapUnknownNameEN;
 		}, configurable: true
 	},
+	prisonMapUndiscoveredName: { 
+		get: function() { 
+			if(this.isJapanese) return PrisonMapUndiscoveredNameJP;
+			else if(this.isEnglish) return PrisonMapUndiscoveredNameEN;
+		}, configurable: true
+	},
 	
 	
 	kissingLevel: { 
@@ -3452,12 +3512,6 @@ Object.defineProperties(TextManager, {
 		get: function() { 
 			if(this.isJapanese) return ProfileNameJP;
 			else if(this.isEnglish) return ProfileNameEN;
-		}, configurable: true
-	},
-	profileAge: { 
-		get: function() { 
-			if(this.isJapanese) return ProfileAgeJP;
-			else if(this.isEnglish) return ProfileAgeEN;
 		}, configurable: true
 	},
 	profileThreeSizes: { 
@@ -4744,6 +4798,25 @@ Object.defineProperties(TextManager, {
 			else if(this.isEnglish) return StateTooltipsEnemyAnalToyAnalBeadsEN;
 		}, configurable: true
 	},
+	StateTooltipsToiletPinkRotor: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsToiletPinkRotorJP;
+			else if(this.isEnglish) return StateTooltipsToiletPinkRotorEN;
+		}, configurable: true
+	},
+	StateTooltipsToiletPenisDildo: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsToiletPenisDildoJP;
+			else if(this.isEnglish) return StateTooltipsToiletPenisDildoEN;
+		}, configurable: true
+	},
+	StateTooltipsToiletAnalBeads: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsToiletAnalBeadsJP;
+			else if(this.isEnglish) return StateTooltipsToiletAnalBeadsEN;
+		}, configurable: true
+	},
+	
 	StateWaitressNoAlcohol: { 
 		get: function() { 
 			if(this.isJapanese) return StateWaitressNoAlcoholJP;
@@ -5208,6 +5281,86 @@ Object.defineProperties(TextManager, {
 			else if(this.isEnglish) return RemResultsFatigueDecreaseEN;
 		}, configurable: true
 	},	
+	
+	resultsSubduedWithAttack: { 
+		get: function() { 
+			if(this.isJapanese) return RemResultsSubduedWithAttackJP;
+			else if(this.isEnglish) return RemResultsSubduedWithAttackEN;
+		}, configurable: true
+	},	
+	resultsSubduedSexually: { 
+		get: function() { 
+			if(this.isJapanese) return RemResultsSubduedSexuallyJP;
+			else if(this.isEnglish) return RemResultsSubduedSexuallyEN;
+		}, configurable: true
+	},	
+	resultsSubduedWithAttackAndSexually: { 
+		get: function() { 
+			if(this.isJapanese) return RemResultsSubduedWithAttackAndSexuallyJP;
+			else if(this.isEnglish) return RemResultsSubduedWithAttackAndSexuallyEN;
+		}, configurable: true
+	},	
+	resultsKarrynOrgasmSingular: { 
+		get: function() { 
+			if(this.isJapanese) return RemResultsKarrynOrgasmSingularJP;
+			else if(this.isEnglish) return RemResultsKarrynOrgasmSingularEN;
+		}, configurable: true
+	},	
+	resultsKarrynOrgasmPlural: { 
+		get: function() { 
+			if(this.isJapanese) return RemResultsKarrynOrgasmPluralJP;
+			else if(this.isEnglish) return RemResultsKarrynOrgasmPluralEN;
+		}, configurable: true
+	},
+	resultsKarrynMasturbatedInBattleSingular: { 
+		get: function() { 
+			if(this.isJapanese) return RemResultsKarrynMasturbatedInBattleSingularJP;
+			else if(this.isEnglish) return RemResultsKarrynMasturbatedInBattleSingularEN;
+		}, configurable: true
+	},
+	resultsKarrynMasturbatedInBattlePlural: { 
+		get: function() { 
+			if(this.isJapanese) return RemResultsKarrynMasturbatedInBattlePluralJP;
+			else if(this.isEnglish) return RemResultsKarrynMasturbatedInBattlePluralEN;
+		}, configurable: true
+	},
+	resultsKarrynKiss: { 
+		get: function() { 
+			if(this.isJapanese) return RemResultsKarrynKissJP;
+			else if(this.isEnglish) return RemResultsKarrynKissEN;
+		}, configurable: true
+	},
+	resultsKarrynHandjob: { 
+		get: function() { 
+			if(this.isJapanese) return RemResultsKarrynHandjobJP;
+			else if(this.isEnglish) return RemResultsKarrynHandjobEN;
+		}, configurable: true
+	},
+	resultsKarrynBlowjob: { 
+		get: function() { 
+			if(this.isJapanese) return RemResultsKarrynBlowjobJP;
+			else if(this.isEnglish) return RemResultsKarrynBlowjobEN;
+		}, configurable: true
+	},
+	resultsKarrynTitjob: { 
+		get: function() { 
+			if(this.isJapanese) return RemResultsKarrynTitjobJP;
+			else if(this.isEnglish) return RemResultsKarrynTitjobEN;
+		}, configurable: true
+	},
+	resultsKarrynVaginalSex: { 
+		get: function() { 
+			if(this.isJapanese) return RemResultsKarrynVaginalSexJP;
+			else if(this.isEnglish) return RemResultsKarrynVaginalSexEN;
+		}, configurable: true
+	},
+	resultsKarrynAnalSex: { 
+		get: function() { 
+			if(this.isJapanese) return RemResultsKarrynAnalSexJP;
+			else if(this.isEnglish) return RemResultsKarrynAnalSexEN;
+		}, configurable: true
+	},
+
 
 	resultsPassivesTitle: { 
 		get: function() { 
@@ -5423,6 +5576,13 @@ Object.defineProperties(TextManager, {
 			else if(this.isEnglish) return RemWardenLevelUpEN;
 		}, configurable: true
 	},
+	wardenLevelLimitReached: { 
+		get: function() { 
+			if(this.isJapanese) return RemWardenLevelLimitReachedJP;
+			else if(this.isEnglish) return RemWardenLevelLimitReachedEN;
+		}, configurable: true
+	},
+	
 	
 	expEnemiesDefeated: { 
 		get: function() { 
@@ -5891,6 +6051,19 @@ Object.defineProperties(TextManager, {
 		get: function() { 
 			if(this.isJapanese) return RemYanflyOptions_Battlelog_Duration_Help_JP;
 			else if(this.isEnglish) return RemYanflyOptions_Battlelog_Duration_Help_EN;
+		}, configurable: true
+	},
+	
+	yanflyOptionsBattlelogFontsize: { 
+		get: function() { 
+			if(this.isJapanese) return RemYanflyOptions_Battlelog_Fontsize_JP;
+			else if(this.isEnglish) return RemYanflyOptions_Battlelog_Fontsize_EN;
+		}, configurable: true
+	},
+	yanflyOptionsBattlelogFontsizeHelp: { 
+		get: function() { 
+			if(this.isJapanese) return RemYanflyOptions_Battlelog_Fontsize_Help_JP;
+			else if(this.isEnglish) return RemYanflyOptions_Battlelog_Fontsize_Help_EN;
 		}, configurable: true
 	},
 	
@@ -8303,6 +8476,15 @@ TextManager.edictsDesc = function(skillId) {
 	return '';
 };
 
+TextManager.pluralText_JustPeople = function(value) {
+	if(value === 1) {
+		return TextManager.statusRecordJustPeopleSingular;
+	}
+	else {
+		return TextManager.statusRecordJustPeoplePlural;
+	}
+};
+
 TextManager.battlelogDurationOption = function(value) {
 	switch (value) {
 	case 0:
@@ -8334,6 +8516,44 @@ TextManager.battlelogDurationOption = function(value) {
 			return RemYanflyOptions_Battlelog_Duration_Four_JP;
 		else if(this.isEnglish)
 			return RemYanflyOptions_Battlelog_Duration_Four_EN;
+		break;
+	
+	}
+	
+	return '';
+};
+
+TextManager.battlelogFontSizeOption = function(value) {
+	switch (value) {
+	case 0:
+		if(this.isJapanese)
+			return RemYanflyOptions_Battlelog_Fontsize_Zero_JP;
+		else if(this.isEnglish)
+			return RemYanflyOptions_Battlelog_Fontsize_Zero_EN;
+		break;
+	case 1:
+		if(this.isJapanese)
+			return RemYanflyOptions_Battlelog_Fontsize_One_JP;
+		else if(this.isEnglish)
+			return RemYanflyOptions_Battlelog_Fontsize_One_EN;
+		break;
+	case 2:
+		if(this.isJapanese)
+			return RemYanflyOptions_Battlelog_Fontsize_Two_JP;
+		else if(this.isEnglish)
+			return RemYanflyOptions_Battlelog_Fontsize_Two_EN;
+		break;
+	case 3:
+		if(this.isJapanese)
+			return RemYanflyOptions_Battlelog_Fontsize_Three_JP;
+		else if(this.isEnglish)
+			return RemYanflyOptions_Battlelog_Fontsize_Three_EN;
+		break;
+	case 4:
+		if(this.isJapanese)
+			return RemYanflyOptions_Battlelog_Fontsize_Four_JP;
+		else if(this.isEnglish)
+			return RemYanflyOptions_Battlelog_Fontsize_Four_EN;
 		break;
 	
 	}
@@ -8855,6 +9075,7 @@ Window_BattleLog.prototype.displayAddedStates = function(target) {
 	if(target.dontDisplayStateLogMessages()) return;
     target.result().addedStateObjects().forEach(function(state) {
         let stateMsg = target.isActor() ? state.message1 : state.message2;
+		let displayStateMsg = true;
 		
 		if(target.isActor()) {
 			if(TextManager.isEnglish && state.hasRemMessageEN[0]) {
@@ -8873,7 +9094,7 @@ Window_BattleLog.prototype.displayAddedStates = function(target) {
 				stateMsg = state.remMessageKR[0];
 			}				
 		}
-		else {
+		else { //target is enemy
 			if(TextManager.isEnglish && state.hasRemMessageEN[1]) {
 				stateMsg = state.remMessageEN[1];
 			}	
@@ -8889,23 +9110,29 @@ Window_BattleLog.prototype.displayAddedStates = function(target) {
 			else if(TextManager.isKorean && state.hasRemMessageKR[1]) {
 				stateMsg = state.remMessageKR[1];
 			}	
+			
+			if($gameParty.isInGloryBattle) displayStateMsg = false;
 		}
 
-        if (state.id === target.deathStateId()) {
-            this.push('performCollapse', target);
-        }
-        if (stateMsg) {
-            this.push('popBaseLine');
-            this.push('pushBaseLine');
-            this.push('addText', target.displayName() + stateMsg);
-            this.push('waitForEffect');
-        }
+		if(displayStateMsg) {
+			if(state.id === target.deathStateId()) {
+				this.push('performCollapse', target);
+			}
+			if(stateMsg) {
+				this.push('popBaseLine');
+				this.push('pushBaseLine');
+				this.push('addText', target.displayName() + stateMsg);
+				this.push('waitForEffect');
+			}
+		}
     }, this);
 };
 
 //state message4
 Window_BattleLog.prototype.displayRemovedStates = function(target) {
 	if(target.dontDisplayStateLogMessages()) return;
+	
+	if($gameParty.isInGloryBattle && target.isEnemy()) return;
 	
     target.result().removedStateObjects().forEach(function(state) {
 		if(TextManager.isEnglish) {

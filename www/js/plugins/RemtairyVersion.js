@@ -14,7 +14,7 @@ Remtairy.Version = Remtairy.Version || {};
  */
 //=============================================================================
 
-const KARRYN_PRISON_GAME_VERSION = 53;
+const KARRYN_PRISON_GAME_VERSION = 58;
 
 ///////////
 // Game Party
@@ -967,6 +967,93 @@ Game_Party.prototype.updateGameVersion = function() {
 	if(this._karrynPrisonVersion < 53) {
 		actor.forgetPassive(PASSIVE_SADISM_ORGASM_TWO_ID);
 		actor.forgetPassive(PASSIVE_MASOCHISM_ORGASM_TWO_ID);
+	}
+	
+	if(this._karrynPrisonVersion < 54) {
+		actor._uncommittedCharmExp = 0;
+	}
+	
+	if(this._karrynPrisonVersion < 55) {
+		actor._recordBoobsPettedOnaniCount = 0;
+		actor._recordNipplesPettedOnaniCount = 0;
+		actor._recordButtPettedOnaniCount = 0;
+		actor._recordAnalPettedOnaniCount = 0;
+		actor._recordClitPettedOnaniCount = 0;
+		actor._recordPussyPettedOnaniCount = 0;
+		actor._recordFingersSuckedOnaniCount = 0;
+	}
+	
+	if(this._karrynPrisonVersion < 56) {
+		actor.setupPassiveReqBaseArray();
+		actor.setupPassiveReqExtraArray();
+		actor.setupPassiveReqMultiArray();
+		actor.setupSkillsLearnedArray();
+		actor._liquidCumOnToiletSeat = 0;
+		actor._liquidJuiceOnToiletSeat = 0;
+		actor._liquidGloryCumOnLeftWall = [0, 0, 0, 0, 0 , 0, 0, 0, 0];
+		actor._liquidGloryCumOnLeftHole = [0, 0];
+		actor._liquidGloryCumOnLeftToilet = [0, 0];
+		actor._liquidGloryCumOnRightWall = [0, 0, 0, 0, 0 , 0, 0, 0, 0];
+		actor._liquidGloryCumOnRightHole = [0, 0];
+		actor._liquidGloryCumOnRightToilet = [0, 0, 0, 0];
+		actor.setMaxTachieSemenToiletSeatId(0);
+		actor.setMaxTachieWetToiletSeatId(0);
+		actor.setMaxTachieGlorySemenLeftWallId(0);
+		actor.setMaxTachieGlorySemenRightWallId(0);
+		actor.setMaxTachieGlorySemenLeftHoleId(0);
+		actor.setMaxTachieGlorySemenRightHoleId(0);
+		actor.setMaxTachieGlorySemenLeftToiletId(0);
+		actor.setMaxTachieGlorySemenRightToiletId(0);
+		
+		actor._recordSubduedEnemiesSexually = 0;
+		actor._tempRecordSubduedEnemiesSexually = 0;
+		actor._todaySubduedEnemiesSexually = 0;
+		actor._tempRecordMasturbatedInBattleCount = 0;
+		
+		actor._playthroughRecordDefeatedTotal = actor._recordDefeatedTotal;
+		actor._playthroughRecordDefeatedLevelOneCount = 0;
+		actor._playthroughRecordDefeatedLevelTwoCount = 0;
+		actor._playthroughRecordDefeatedLevelThreeCount = 0;
+		actor._playthroughRecordDefeatedLevelFourCount = 0;
+		actor._playthroughRecordDefeatedLevelFiveCount = 0;
+		
+		actor.learnSkill(1577);
+		
+		if(!this._prisonLevelOne_anarchyDays) this._prisonLevelOne_anarchyDays = 0;
+		if(!this._prisonLevelTwo_anarchyDays) this._prisonLevelTwo_anarchyDays = 0;
+		if(!this._prisonLevelThree_anarchyDays) this._prisonLevelThree_anarchyDays = 0;
+		if(!this._prisonLevelFour_anarchyDays) this._prisonLevelFour_anarchyDays = 0;
+		if(!this._prisonLevelFive_anarchyDays) this._prisonLevelFive_anarchyDays = 0;
+
+	
+	}
+	
+	if(this._karrynPrisonVersion < 57) {
+		if(typeof actor.tachieBody === "number")
+			actor._tachieBody = '' + actor.tachieBody;
+		if(typeof actor.tachieMouth === "number")
+			actor._tachieMouth = '' + actor.tachieMouth;
+		if(typeof actor.tachieRightArm === "number")
+			actor._tachieRightArm = '' + actor.tachieRightArm;
+		if(typeof actor.tachieLeftArm === "number")
+			actor._tachieLeftArm = '' + actor.tachieLeftArm;
+		if(typeof actor.tachieRightBoob === "number")
+			actor._tachieRightBoob = '' + actor.tachieRightBoob;
+		if(typeof actor.tachieLeftBoob === "number")
+			actor._tachieLeftBoob = '' + actor.tachieLeftBoob;
+		if(typeof actor.tachieHead === "number")
+			actor._tachieHead = '' + actor.tachieHead;
+		if(typeof actor.tachieLegs === "number")
+			actor._tachieLegs = '' + actor.tachieLegs;
+	}
+	
+	if(this._karrynPrisonVersion < 58) {
+		if(actor._tachieRightBoob === '0')
+			actor._tachieRightBoob = '';
+		if(actor._tachieLeftBoob === '0')
+			actor._tachieLeftBoob = '';
+		if(actor.tachieLegs === '0')
+			actor._tachieLegs = '';
 	}
 	
 	

@@ -395,6 +395,8 @@ Game_Enemy.prototype.setupEnemyTempRecords = function() {
 	this._enemyTempRecordLevelTwoDefeatSexualPartner = false;
 	this._enemyTempRecordCockJustShrankFromCockStare = false;
 	
+	this._enemyTempRecordSubduedCounted = false;
+	
 };	
 
 Game_Enemy.prototype.setAsActorSexualPartner = function(actor) {
@@ -808,7 +810,7 @@ Game_Enemy.prototype.addToEnemyBoobsPettedCountRecord = function(actor) {
     if(this._enemyTempRecordBoobsPettedCount == 1) {
 		firstCountTemp = true;
 	}
-	actor.addToActorBoobsPettedRecord(firstCount, firstCountTemp);
+	actor.addToActorBoobsPettedRecord(firstCount, firstCountTemp, false);
 };
 Game_Enemy.prototype.addToEnemyNipplesPettedCountRecord = function(actor) {
 	this._enemyRecordNipplesPettedCount++;
@@ -825,7 +827,7 @@ Game_Enemy.prototype.addToEnemyNipplesPettedCountRecord = function(actor) {
     if(this._enemyTempRecordNipplesPettedCount == 1) {
 		firstCountTemp = true;
 	}
-	actor.addToActorNipplesPettedRecord(firstCount, firstCountTemp);
+	actor.addToActorNipplesPettedRecord(firstCount, firstCountTemp, false);
 };
 Game_Enemy.prototype.addToEnemyButtPettedCountRecord = function(actor) {
 	this._enemyRecordButtPettedCount++;
@@ -842,7 +844,7 @@ Game_Enemy.prototype.addToEnemyButtPettedCountRecord = function(actor) {
     if(this._enemyTempRecordButtPettedCount == 1) {
 		firstCountTemp = true;
 	}
-	actor.addToActorButtPettedRecord(firstCount, firstCountTemp);
+	actor.addToActorButtPettedRecord(firstCount, firstCountTemp, false);
 };
 Game_Enemy.prototype.addToEnemyAnalPettedCountRecord = function(actor) {
 	this._enemyRecordAnalPettedCount++;
@@ -859,7 +861,7 @@ Game_Enemy.prototype.addToEnemyAnalPettedCountRecord = function(actor) {
     if(this._enemyTempRecordAnalPettedCount == 1) {
 		firstCountTemp = true;
 	}
-	actor.addToActorAnalPettedRecord(firstCount, firstCountTemp);
+	actor.addToActorAnalPettedRecord(firstCount, firstCountTemp, false);
 };
 Game_Enemy.prototype.addToEnemyClitPettedCountRecord = function(actor) {
 	this._enemyRecordClitPettedCount++;
@@ -876,7 +878,7 @@ Game_Enemy.prototype.addToEnemyClitPettedCountRecord = function(actor) {
     if(this._enemyTempRecordClitPettedCount == 1) {
 		firstCountTemp = true;
 	}
-	actor.addToActorClitPettedRecord(firstCount, firstCountTemp);
+	actor.addToActorClitPettedRecord(firstCount, firstCountTemp, false);
 };
 Game_Enemy.prototype.addToEnemyPussyPettedCountRecord = function(actor) {
 	this._enemyRecordPussyPettedCount++;
@@ -893,7 +895,7 @@ Game_Enemy.prototype.addToEnemyPussyPettedCountRecord = function(actor) {
     if(this._enemyTempRecordPussyPettedCount == 1) {
 		firstCountTemp = true;
 	}
-	actor.addToActorPussyPettedRecord(firstCount, firstCountTemp);
+	actor.addToActorPussyPettedRecord(firstCount, firstCountTemp, false);
 };
 
 Game_Enemy.prototype.addToEnemyCockPettedCountRecord = function(actor) {
@@ -929,7 +931,7 @@ Game_Enemy.prototype.addToEnemyFingerSuckedCountRecord = function(actor) {
     if(this._enemyTempRecordFingerSuckedCount == 1) {
 		firstCountTemp = true;
 	}
-	actor.addToActorFingersSuckedRecord(firstCount, firstCountTemp);
+	actor.addToActorFingersSuckedRecord(firstCount, firstCountTemp, false);
 };
 
 Game_Enemy.prototype.addToEnemyTalkedCountRecord = function(actor) {

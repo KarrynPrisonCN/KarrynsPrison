@@ -85,9 +85,20 @@ Game_Actor.prototype.getReactionScore = function() {
 	}
 	else if(this.isInMasturbationPose()) {
 		score += this.reactionScore_masturbationPassive();
-		score += this.reactionScore_masturbateLevel(4);
-		score += this.reactionScore_slutLevel(0.2);
-		score += this.reactionScore_masochismLevel(4);
+		score += this.reactionScore_masturbateLevel();
+		score += this.reactionScore_slutLevel();
+		score += this.reactionScore_masochismLevel(5);
+	}
+	else if($gameParty.isInGloryBattle) {
+		let sexScore = this.getReactionDuringSexScore(0.6, 0.33);
+		score += sexScore
+		if(sexScore > 0)
+			score += this.reactionScore_gloryHolePassive() * 0.8;
+		else
+			score += this.reactionScore_gloryHolePassive() * 1.2;
+		score += this.reactionScore_slutLevel(0.25);
+		score += this.reactionScore_masochismLevel(5);
+		score += this.reactionScore_sadismLevel(2);
 	}
 	else if(this.isInSlimeAnalPiledriverSexPose()) {
 		score += this.getReactionDuringSexScore(0.5, 3);
@@ -399,6 +410,81 @@ Game_Actor.prototype.reactionScore_masturbateLevel = function(multipler) {
 	return this.masturbateLvl * multipler;
 };
 
+//Exhibition passive
+//Max 160
+Game_Actor.prototype.reactionScore_exhibitionPassive = function() {
+	let score = 0;
+	
+	if(this.hasPassive(PASSIVE_SIGHT_PEOPLE_ONE_ID)) score += 10;
+	
+	if(this.hasPassive(PASSIVE_ORGASM_PEOPLE_FOUR_ID)) score += 40;
+	else if(this.hasPassive(PASSIVE_ORGASM_PEOPLE_THREE_ID)) score += 30;
+	else if(this.hasPassive(PASSIVE_ORGASM_PEOPLE_TWO_ID)) score += 20;
+	else if(this.hasPassive(PASSIVE_ORGASM_PEOPLE_ONE_ID)) score += 10;
+	
+	if(this.hasPassive(PASSIVE_SIGHT_PLEASURE_TWO_ID)) score += 20;
+	else if(this.hasPassive(PASSIVE_SIGHT_PLEASURE_ONE_ID)) score += 10;
+	
+	if(this.hasPassive(PASSIVE_SIGHT_ORGASM_TWO_ID)) score += 20;
+	else if(this.hasPassive(PASSIVE_SIGHT_ORGASM_ONE_ID)) score += 10;
+	
+	if(this.hasPassive(PASSIVE_CLOTHES_STRIPPED_THREE_ID)) score += 20;
+	else if(this.hasPassive(PASSIVE_CLOTHES_STRIPPED_TWO_ID)) score += 10;
+	
+	if(this.hasPassive(PASSIVE_CLOTHES_STRIPPED_FOUR_ID)) score += 30;
+	else if(this.hasPassive(PASSIVE_PANTIES_STRIPPED_THREE_ID)) score += 20;
+	else if(this.hasPassive(PASSIVE_PANTIES_STRIPPED_TWO_ID)) score += 10;
+	
+	if(this.hasPassive(PASSIVE_WAITRESS_FLASH_COUNT_TWO_ID)) score += 20;
+	else if(this.hasPassive(PASSIVE_WAITRESS_FLASH_COUNT_ONE_ID)) score += 10;
+	
+	return score;
+};
+
+//Max 30
+Game_Actor.prototype.reactionScore_sightMouthPassive = function() {
+	let score = 0;
+
+	if(this.hasPassive(PASSIVE_SIGHT_MOUTH_THREE_ID)) score += 30;
+	else if(this.hasPassive(PASSIVE_SIGHT_MOUTH_TWO_ID)) score += 20;
+	else if(this.hasPassive(PASSIVE_SIGHT_MOUTH_ONE_ID)) score += 10;
+
+	return score;
+};
+
+//Max 30
+Game_Actor.prototype.reactionScore_sightBoobsPassive = function() {
+	let score = 0;
+
+	if(this.hasPassive(PASSIVE_SIGHT_BOOBS_THREE_ID)) score += 30;
+	else if(this.hasPassive(PASSIVE_SIGHT_BOOBS_TWO_ID)) score += 20;
+	else if(this.hasPassive(PASSIVE_SIGHT_BOOBS_ONE_ID)) score += 10;
+
+	return score;
+};
+
+//Max 30
+Game_Actor.prototype.reactionScore_sightPussyPassive = function() {
+	let score = 0;
+
+	if(this.hasPassive(PASSIVE_SIGHT_PUSSY_THREE_ID)) score += 30;
+	else if(this.hasPassive(PASSIVE_SIGHT_PUSSY_TWO_ID)) score += 20;
+	else if(this.hasPassive(PASSIVE_SIGHT_PUSSY_ONE_ID)) score += 10;
+
+	return score;
+};
+
+//Max 30
+Game_Actor.prototype.reactionScore_sightButtPassive = function() {
+	let score = 0;
+
+	if(this.hasPassive(PASSIVE_SIGHT_BUTT_THREE_ID)) score += 30;
+	else if(this.hasPassive(PASSIVE_SIGHT_BUTT_TWO_ID)) score += 20;
+	else if(this.hasPassive(PASSIVE_SIGHT_BUTT_ONE_ID)) score += 10;
+
+	return score;
+};
+
 //Kissing passive
 //Max 130
 Game_Actor.prototype.reactionScore_kissPassive = function() {
@@ -571,7 +657,7 @@ Game_Actor.prototype.reactionScore_buttPettingPassive = function() {
 	else if(this.hasPassive(PASSIVE_BUTT_PETTED_PEOPLE_TWO_ID)) score += 20;
 	else if(this.hasPassive(PASSIVE_BUTT_PETTED_PEOPLE_ONE_ID)) score += 10;
 	
-	if(this.hasPassive(PASSIVE_BUTT_SPANKED_PEOPLE_TWO_ID)) score += 20;
+	if(this.hasPassive(PASSIVE_BUTT_SPANKED_PEOPLE_THREE_ID)) score += 20;
 	else if(this.hasPassive(PASSIVE_FIRST_BUTT_SPANKED_ID)) score += 10;
 	
 	if(this.hasPassive(PASSIVE_ANAL_PLEASURE_TWO_ID)) score += 20;
@@ -820,12 +906,12 @@ Game_Actor.prototype.reactionScore_cunniPassive = function() {
 Game_Actor.prototype.reactionScore_buttSpankingPassive = function() {
 	let score = 0;
 	
-	if(this.hasPassive(PASSIVE_BUTT_SPANKED_COUNT_TWO_ID)) score += 20;
+	if(this.hasPassive(PASSIVE_BUTT_SPANKED_PEOPLE_TWO_ID)) score += 20;
 	else if(this.hasPassive(PASSIVE_FIRST_BUTT_SPANKED_ID)) score += 10;
 	
-	if(this.hasPassive(PASSIVE_BUTT_SPANKED_PEOPLE_THREE_ID)) score += 30;
-	else if(this.hasPassive(PASSIVE_BUTT_SPANKED_PEOPLE_TWO_ID)) score += 20;
-	else if(this.hasPassive(PASSIVE_BUTT_SPANKED_PEOPLE_ONE_ID)) score += 10;
+	if(this.hasPassive(PASSIVE_BUTT_SPANKED_PEOPLE_FOUR_ID)) score += 30;
+	else if(this.hasPassive(PASSIVE_BUTT_SPANKED_PEOPLE_THREE_ID)) score += 20;
+	else if(this.hasPassive(PASSIVE_BUTT_SPANKED_PEOPLE_TWO_ID)) score += 10;
 	
 	if(this.hasPassive(PASSIVE_MASOCHISM_PLEASURE_TWO_ID)) score += 20;
 	else if(this.hasPassive(PASSIVE_MASOCHISM_PLEASURE_ONE_ID)) score += 10;
@@ -1112,6 +1198,24 @@ Game_Actor.prototype.reactionScore_defeatedSoloCellPassive = function() {
 	if(this.hasPassive(PASSIVE_TIED_SEX_COUNT_THREE_ID)) score += 30;
 	else if(this.hasPassive(PASSIVE_TIED_SEX_COUNT_TWO_ID)) score += 20;
 	else if(this.hasPassive(PASSIVE_TIED_SEX_COUNT_ONE_ID)) score += 10;
+	return score;
+};
+
+//Glory Hole
+//Max 110
+Game_Actor.prototype.reactionScore_gloryHolePassive = function() {
+	let score = 0;
+	if(this.hasPassive(PASSIVE_TOILET_BATTLE_COUNT_THREE_ID)) score += 30;
+	else if(this.hasPassive(PASSIVE_TOILET_BATTLE_COUNT_TWO_ID)) score += 20;
+	else if(this.hasPassive(PASSIVE_TOILET_BATTLE_COUNT_ONE_ID)) score += 10;
+	if(this.hasPassive(PASSIVE_TOILET_COCK_APPEARED_COUNT_TWO_ID)) score += 20;
+	else if(this.hasPassive(PASSIVE_TOILET_COCK_APPEARED_COUNT_ONE_ID)) score += 10;
+	if(this.hasPassive(PASSIVE_GLORY_HOLE_SEX_PEOPLE_THREE_ID)) score += 30;
+	else if(this.hasPassive(PASSIVE_GLORY_HOLE_SEX_PEOPLE_TWO_ID)) score += 20;
+	else if(this.hasPassive(PASSIVE_GLORY_HOLE_SEX_PEOPLE_ONE_ID)) score += 10;
+	if(this.hasPassive(PASSIVE_MASTURBATED_GLORYHOLE_COUNT_THREE_ID)) score += 30;
+	else if(this.hasPassive(PASSIVE_MASTURBATED_GLORYHOLE_COUNT_TWO_ID)) score += 20;
+	else if(this.hasPassive(PASSIVE_MASTURBATED_GLORYHOLE_COUNT_ONE_ID)) score += 10;
 	return score;
 };
 

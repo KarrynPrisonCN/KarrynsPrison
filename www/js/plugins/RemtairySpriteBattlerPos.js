@@ -149,9 +149,24 @@ Game_Actor.prototype.setSpriteBattlerPosData = function(poseName) {
 	} else if(poseName == POSE_MASTURBATE_COUCH) {
 		this._sbp_current_x = 880;
 		this._sbp_current_y = -110;
-	} else if(poseName == POSE_MASTURBATE_COUCH) {
-		this._sbp_current_x = 1040;
+	} else if(poseName == POSE_MASTURBATE_INBATTLE) {
+		this._sbp_current_x = 1055;
 		this._sbp_current_y = -110;
+	} else if(poseName == POSE_TOILET_SITTING) {
+		this._sbp_current_x = 820;
+		this._sbp_current_y = -180;
+	} else if(poseName == POSE_TOILET_SIT_LEFT) {
+		this._sbp_current_x = 575;
+		this._sbp_current_y = 5;
+	} else if(poseName == POSE_TOILET_SIT_RIGHT) {
+		this._sbp_current_x = 1080;
+		this._sbp_current_y = 5;
+	} else if(poseName == POSE_TOILET_STAND_LEFT) {
+		this._sbp_current_x = 1010;
+		this._sbp_current_y = -10;
+	} else if(poseName == POSE_TOILET_STAND_RIGHT) {
+		this._sbp_current_x = 620;
+		this._sbp_current_y = -10;
 		
 	//Use pose standby values when none of the above
 	} else {
@@ -267,6 +282,10 @@ Sprite_Actor.prototype.damageOffsetY = function() {
 	else if(poseName == POSE_KICKCOUNTER) {
 		offset = 80; 
 	}
+	else if(poseName == POSE_TOILET_SITTING) {
+		offset = 20; 
+	}
+
 	if(this._battler && this._battler._sbp_special_type) {
 		offset -= this._battler.remSpriteBattlerSpecialPosY();
 		offset += this._battler._sbp_current_y;
