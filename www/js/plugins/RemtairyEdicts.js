@@ -109,8 +109,8 @@ const EDICT_HIRE_CURRENT_INMATES = 377;
 const EDICT_NO_HIRING_STANDARDS = 378;
 const EDICT_BASIC_GUARD_TRAINING = 379;
 const EDICT_ADVANCED_GUARD_TRAINING = 380;
-const EDICT_STANDARD_EQUIPMENT = 381;
-const EDICT_REINFORCED_EQUIPMENT = 382;
+const EDICT_STANDARD_GUARD_EQUIPMENT = 381;
+const EDICT_REINFORCED_GUARD_EQUIPMENT = 382;
 const EDICT_SELF_PAID_EQUIPMENT = 383;
 const EDICT_SELF_MAINENANCE = 384;
 const EDICT_YOU_BREAK_YOU_PAY = 385;
@@ -144,15 +144,7 @@ const EDICT_PERFORMANCE_ENHANCEMENT_DRUGS_FOR_GUARDS = 414;
 const EDICT_RECREATIONAL_DRUGS_FOR_INMATES = 415;
 const EDICT_SEX_ENDURANCE_DRUGS_FOR_INMATES = 416;
 const EDICT_APHRODISIACS_DRUGS_FOR_INMATES = 417;
-const EDICT_EXPERIMENTAL_STRENGTH_BOOSTER = 418;
-const EDICT_EXPERIMENTAL_DEXTERITY_BOOSTER = 419;
-const EDICT_EXPERIMENTAL_ENDURANCE_BOOSTER = 420;
-const EDICT_EXPERIMENTAL_AGILITY_BOOSTER = 421;
-const EDICT_BLACK_MARKET = 422;
-const EDICT_BAN_BLACK_MARKET = 423;
-const EDICT_CLOSE_BLACK_MARKET = 424;
-const EDICT_TURN_BLIND_EYE_TO_BLACK_MARKET = 425;
-const EDICT_TAKE_A_CUT_OF_THE_BLACK_MARKET = 426;
+
 const EDICT_KI = 427;
 const EDICT_FOCUS = 428;
 
@@ -318,6 +310,35 @@ const EDICT_RECEPTION_POLICY_WEAK_ONLY = 598;
 const EDICT_RECEPTION_POLICY_FAVOR_STRONG = 599;
 const EDICT_RECEPTION_POLICY_STRONG_ONLY = 600;
 
+const EDICT_EXPERT_GUARD_TRAINING = 601;
+const EDICT_MILITARY_GUARD_EQUIPMENT = 602;
+const EDICT_GUARD_PERFORMANCE_REQUIREMENTS = 603;
+const EDICT_WHAT_TO_DO_ABOUT_RIOTS = 604;
+const EDICT_RIOT_SUPPRESSING_TRAINING_FOR_GUARDS = 605;
+const EDICT_HARSHER_PUNISHMENTS_FOR_RIOTERS = 606;
+const EDICT_NEGOTIATE_WITH_SUBJUGATED_INMATES = 607;
+
+const EDICT_THE_LIZARDMAN_PROBLEM = 611;
+const EDICT_LIZARDMEN_FREE_DRINKS = 612;
+const EDICT_SCIENCE_VERSUS_LIZARDMEN = 613;
+const EDICT_APPEASE_THE_LIZARDMEN = 614;
+const EDICT_THE_ORC_PROBLEM = 615;
+const EDICT_ACCESSIBILITY_FOR_ORCS = 616;
+const EDICT_REJECT_THE_ORCS = 617;
+const EDICT_REACH_UNDERSTANDING_WITH_ORCS = 618;
+const EDICT_GYM_AND_SHOWERS = 619;
+const EDICT_REFURBISH_GYM = 620;
+const EDICT_PAID_GYM_MEMBERSHIP = 621;
+const EDICT_GYM_POLICY_STANDARD = 622;
+const EDICT_GYM_POLICY_EXTENDED = 623;
+const EDICT_GYM_POLICY_SHORTEN = 624;
+const EDICT_COLD_SHOWERS = 625;
+
+const EDICT_UNARMED_ATTACK_TRAINING_III = 626;
+const EDICT_UNARMED_DEFENSE_TRAINING_III = 627;
+
+const EDICT_BUILD_STRIP_CLUB = 628; //temp
+
 const EDICT_INSURANCE_EXPLANATION_1 = 1868;
 const EDICT_INSURANCE_EXPLANATION_2 = 1869;
 const EDICT_INSURANCE_LAUNDRY = 1870;
@@ -357,7 +378,16 @@ const EDICT_RESEARCH_APHRODISIAC_CONTRACT = 1915;
 const EDICT_RESEARCH_LAUNDRY_PRODUCT_CONTRACT = 1916;
 const EDICT_RESEARCH_WEAPON_AND_TOOL_CONTRACT = 1917;
 
-const EDICT_RESEARCH_SLIME_REGEN = 1999;
+const EDICT_RESEARCH_THUG_STUDY = 1919;
+const EDICT_RESEARCH_GOBLIN_STUDY = 1920;
+const EDICT_RESEARCH_NERD_STUDY = 1921;
+const EDICT_RESEARCH_ROGUE_STUDY = 1922;
+const EDICT_RESEARCH_LIZARDMAN_STUDY = 1923;
+const EDICT_RESEARCH_ORC_STUDY = 1924;
+const EDICT_RESEARCH_HOMELESS_STUDY = 1925;
+const EDICT_RESEARCH_SLIME_STUDY = 1926;
+const EDICT_RESEARCH_WEREWOLF_STUDY = 1927;
+const EDICT_RESEARCH_YETI_STUDY = 1928;
 
 const EDICT_SPECIALIZATION_EXPLANATION = 2000;
 const EDICT_STRENGTH_SPECIALIZATION = 2001;
@@ -430,19 +460,6 @@ Game_Actor.prototype.setupStartingEdicts = function() {
 	this.learnSkill(EDICT_INSURANCE_EXPLANATION_2);
 	this.learnSkill(EDICT_NO_CLASSES);
 	this.learnSkill(EDICT_RECEPTION_POLICY_NEUTRAL);
-	
-	
-	//Title based unlocks
-	if(this.hasThisTitle(TITLE_ID_COUNTERATTACK_THREE)) this.learnSkill(EDICT_COUNTER_STANCE);
-	if(this.hasThisTitle(TITLE_ID_SLASH_THREE)) this.learnSkill(EDICT_SLASH_TRAINING_TWO);
-	if(this.hasThisTitle(TITLE_ID_PIERCE_THREE)) this.learnSkill(EDICT_THRUST_TRAINING_TWO);
-	if(this.hasThisTitle(TITLE_ID_BLUNT_THREE)) this.learnSkill(EDICT_STRIKE_TRAINING_TWO);
-	if(this.hasThisTitle(TITLE_ID_STRENGTH_THREE)) this.learnSkill(EDICT_SLAM_TRAINING_ONE);
-	if(this.hasThisTitle(TITLE_ID_DEXTERITY_THREE)) this.learnSkill(EDICT_CLEAVE_TRAINING_ONE);
-	if(this.hasThisTitle(TITLE_ID_AGILITY_THREE)) this.learnSkill(EDICT_SKEWER_TRAINING_ONE);
-	if(this.hasThisTitle(TITLE_ID_ENDURANCE_THREE)) this.learnSkill(EDICT_DEFENSIVE_STANCE);
-	if(this.hasThisTitle(TITLE_ID_MIND_THREE)) this.learnSkill(EDICT_HEALING_THOUGHTS_ONE);
-	if(this.hasThisTitle(TITLE_ID_EVASION_THREE)) this.learnSkill(EDICT_CAUTIOUS_STANCE);
 };
 
 Remtairy.Edicts.Game_Actor_learnSkill = Game_Actor.prototype.learnSkill;
@@ -473,6 +490,13 @@ Game_Actor.prototype.learnSkill = function(skillId) {
 	//Specific Edicts
 	if(skillId === EDICT_REPAIR_RESEARCH) {
 		$gameParty._enableResearchEdicts = true;
+	}
+	
+	if(skillId === EDICT_OFFICE_BED_UPGRADE_ONE || skillId === EDICT_OFFICE_BED_UPGRADE_TWO || skillId === EDICT_OFFICE_BED_UPGRADE_THREE) {
+		let mapId = $gameMap._mapId;
+		if(mapId === MAP_ID_KARRYN_OFFICE) {
+			$gameSwitches.setValue(SWITCH_OFFICE_EDICT_FAILSAFE_ID, true);
+		}
 	}
 	
 	//Remove Edict
@@ -595,11 +619,10 @@ Game_Actor.prototype.modifiedEdictGoldCost = function(originalCost, skillId) {
 Game_Actor.prototype.getEdictGoldRate = function(skillId) {
 	let rate = 1;
 	
-	if(this.hasEdict(EDICT_REPAIR_RESEARCH)) {
-		rate -= 0.05;
-	}
+	if(this.hasEdict(EDICT_REPAIR_RESEARCH)) rate *= 0.95;
 	
-	rate *= this.titlesEdictCostRate();
+	rate *= this.titlesEdictCostRate(skillId);
+	
 	if(this.isEquippingThisAccessory(NECKLACE_JADE_ID)) rate *= 1.2;
 	
 	if(skillId) {
@@ -622,7 +645,7 @@ Game_Actor.prototype.getResearchEdictGoldRate = function() {
 	let rate = 1;
 	
 	if(this.hasEdict(EDICT_APPLY_FOR_RESEARCH_GRANTS)) {
-		rate -= 0.1;
+		rate *= 0.9;
 	}
 	
 	return rate;
@@ -651,7 +674,7 @@ Game_Actor.prototype.getAccessoryEdictGoldRate = function() {
 	let rate = 1;
 	
 	if(this.hasEdict(EDICT_RESEARCH_ACCESSORY_DEAL)) {
-		rate -= 0.15;
+		rate *= 0.85;
 	}
 	
 	return rate;
@@ -661,10 +684,10 @@ Game_Actor.prototype.getStatTrainingEdictGoldRate = function() {
 	let rate = 1;
 	
 	if(this.hasEdict(EDICT_RESEARCH_EXPERT_TRAINING_TECH)) {
-		rate -= 0.6;
+		rate *= 0.4;
 	}
 	else if(this.hasEdict(EDICT_RESEARCH_ADVANCED_TRAINING_TECH)) {
-		rate -= 0.3;
+		rate *= 0.7;
 	}
 
 	return rate;
@@ -785,6 +808,10 @@ Game_Actor.prototype.edictsSleepQuality = function() {
 	else if(mapId === MAP_ID_LVL3_DEFEAT_SOLITARY_CELL) {
 		if(this.hasPassive(PASSIVE_TIED_SEX_COUNT_THREE_ID)) sleepLvl += 1;
 	}
+	else if(mapId === MAP_ID_LVL4_ABANDONED_AREA) {
+		if(this.hasPassive(PASSIVE_PILLORY_SEX_COUNT_THREE_ID)) sleepLvl += 1;
+	}
+	
 	
 	let rand = Math.randomInt(6);
 	if(rand === 2) sleepLvl--;
@@ -817,6 +844,263 @@ Game_Actor.prototype.edictsBonusClothingMaxDurability = function(skillId) {
 	return bonus;
 };
 
+//////////
+// Riot Chance Edicts
+////////////
+
+Game_Actor.prototype.edictsGlobalRiotChance = function() {
+	let chance = 0;
+	let edictsRate = 1;
+	if(Karryn.hasEdict(EDICT_NEGOTIATE_WITH_SUBJUGATED_INMATES)) edictsRate += 1;
+	
+	//Hiring Edict
+	if(Karryn.hasEdict(EDICT_NO_HIRING_STANDARDS)) chance += 3 * edictsRate;
+	else if(Karryn.hasEdict(EDICT_HIRE_CURRENT_INMATES)) chance += 1.5 * edictsRate;	
+	else if(Karryn.hasEdict(EDICT_LAXER_HIRING_STANDARDS)) chance += 0.5;	
+	
+	//Kitchen Edicts
+	//Inmate Cooks
+	if(Karryn.hasEdict(EDICT_COOKING_TRAINING_PROGRAM)) chance += 2 * edictsRate;
+	else if(Karryn.hasEdict(EDICT_USE_INMATE_COOKS)) chance += 1 * edictsRate;
+	
+	//Monetize Good Food
+	if(Karryn.hasEdict(EDICT_PAY_FOR_BETTER_FOOD)) chance += 2 * edictsRate;
+	
+	//Infirmary Edicts
+	if(Karryn.hasEdict(EDICT_PAID_THERAPY_SESSIONS)) chance += 1 * edictsRate;
+	if(Karryn.hasEdict(EDICT_CONDUCT_TESTS_ON_INJURED_INMATES)) chance += 2 * edictsRate;
+	
+	//Laundry Edict
+	if(Karryn.hasEdict(EDICT_REPAIR_LAUNDRY)) {
+		chance -= 1 * edictsRate;
+		if(Karryn.hasEdict(EDICT_NO_FREE_LAUNDRY))
+			chance += 1 * edictsRate;
+	}
+	
+	//Visitor Center Edict
+	if(Karryn.hasEdict(EDICT_CHARGE_INMATES_FOR_VISITATION)) chance += 7 * edictsRate;
+	else if(Karryn.hasEdict(EDICT_CHARGE_VISITORS_FOR_EXPRESS)) chance += 2 * edictsRate;
+	else if(Karryn.hasEdict(EDICT_CHARGE_VISITORS_FOR_VISITATION)) chance -= 1 * edictsRate;
+	if(Karryn.hasEdict(EDICT_REPAIR_VISITOR_CENTER)) chance -= 2 * edictsRate;
+	
+	//Reception Edict
+	if(Karryn.hasEdict(EDICT_RECEPTION_POLICY_WEAK_ONLY)) chance -= 2 * edictsRate;
+	else if(Karryn.hasEdict(EDICT_RECEPTION_POLICY_FAVOR_WEAK)) chance -= 1 * edictsRate;	
+	
+	//Rogue Edict
+	if(Karryn.hasEdict(EDICT_FORCE_ROGUES_INTO_LABOR)) chance += 3 * edictsRate;
+	
+	//Toilet
+	if(Karryn.hasEdict(EDICT_REPAIR_TOILET)) chance -= 1 * edictsRate; 
+	
+	//Classroom Edict
+	if(Karryn.hasEdict(EDICT_MANDATORY_CLASSES)) chance += 1 * edictsRate; 
+	
+	if(Karryn.hasEdict(EDICT_REFORM_CLASSES)) {
+		chance += 2 * edictsRate; 
+		if(Karryn.hasEdict(EDICT_MANDATORY_CLASSES)) chance += 2; 
+	}
+	
+	if(Karryn.hasEdict(EDICT_ANATOMY_CLASSES)) { 
+		chance -= 1 * edictsRate; 
+		if(Karryn.hasEdict(EDICT_MANDATORY_CLASSES)) chance -= 1;
+	}
+	
+	//Reading Room Edict
+	if(Karryn.hasEdict(EDICT_STOCK_WITH_IMPERIAL_BOOKS)) chance += 1 * edictsRate;
+	else if(Karryn.hasEdict(EDICT_STOCK_WITH_ADULT_BOOKS)) {
+		if(Karryn.hasEdict(EDICT_ALLOW_BORROWING_ADULT_BOOKS)) chance -= 2 * edictsRate;
+		else chance -= 1 * edictsRate;
+	}
+	
+	//Gym
+	if(Karryn.hasEdict(EDICT_PAID_GYM_MEMBERSHIP)) chance += 1 * edictsRate;
+	//Shower
+	if(Karryn.hasEdict(EDICT_COLD_SHOWERS)) chance += 1 * edictsRate;
+	
+	//Rioting Issue
+	if(Karryn.hasEdict(EDICT_NEGOTIATE_WITH_SUBJUGATED_INMATES)) chance -= 1 * edictsRate;
+
+	//Lizardman
+	if(Karryn.hasEdict(EDICT_LIZARDMEN_FREE_DRINKS)) chance -= 1 * edictsRate;
+	else if(Karryn.hasEdict(EDICT_APPEASE_THE_LIZARDMEN)) chance -= 1 * edictsRate;
+	
+	if(Karryn.hasEdict(EDICT_THE_LIZARDMAN_PROBLEM)) {
+		chance += 1;
+		if(Karryn.hasEdict(EDICT_ACCESSIBILITY_FOR_ORCS) && Karryn.hasEdict(EDICT_LIZARDMEN_FREE_DRINKS)) {}
+		else if(Karryn.hasEdict(EDICT_REJECT_THE_ORCS) && Karryn.hasEdict(EDICT_SCIENCE_VERSUS_LIZARDMEN)) {}
+		else if(Karryn.hasEdict(EDICT_REACH_UNDERSTANDING_WITH_ORCS) && Karryn.hasEdict(EDICT_APPEASE_THE_LIZARDMEN)) {}
+		else chance += 1;
+	}
+	
+	//Subjugation
+	if(Karryn.hasEdict(EDICT_LEVEL_FOUR_SUBJUGATED)) chance += 4;
+	
+	//Research Edict
+	if(Karryn.hasEdict(EDICT_RESEARCH_NEW_LOCKS)) chance -= 1 * edictsRate;
+	if(Karryn.hasEdict(EDICT_RESEARCH_ISSUE_CURFEW_PASS)) chance -= 1 * edictsRate;
+	if(Karryn.hasEdict(EDICT_RESEARCH_LAUNDRY_PRODUCT_CONTRACT)) chance -= 1 * edictsRate;
+	if(Karryn.hasEdict(EDICT_RESEARCH_REACH_COMMON_GROUND_WITH_INMATES)) chance -= 1 * edictsRate;
+	
+	
+	
+	return chance;
+};
+
+Game_Actor.prototype.edictsLevelOneRiotChance = function() {
+	let chance = 0;
+	let edictsRate = 1;
+	if(Karryn.hasEdict(EDICT_NEGOTIATE_WITH_SUBJUGATED_INMATES)) edictsRate += 1;
+	
+	//Bar Edicts
+	if(Karryn.hasEdict(EDICT_REPAIR_BAR)) chance -= 1.5 * edictsRate;
+	if(Karryn.hasEdict(EDICT_DONT_PAY_WAITERS)) chance += 3 * edictsRate;
+	else if(Karryn.hasEdict(EDICT_USE_INMATE_WAITERS)) chance += 1.5 * edictsRate;
+	
+	//Laundry Edict
+	if(Karryn.hasEdict(EDICT_REPAIR_LAUNDRY)) {
+		if(Karryn.hasEdict(EDICT_SELL_LAUNDRY_SERVICE))
+			chance += 1 * edictsRate;
+	}
+	
+	//Dishwashing Edict
+	if(Karryn.hasEdict(EDICT_REPAIR_DISHWASHING)) {
+		if(Karryn.hasEdict(EDICT_USE_INMATE_DISHWASHERS)) 
+			chance += 1 * edictsRate;
+	}
+	
+	//Workshop Edict
+	if(Karryn.hasEdict(EDICT_REPAIR_WORKSHOP)) {
+		if(Karryn.hasEdict(EDICT_HARDER_WORKSHOP_PROJECTS))
+			chance += 5 * edictsRate;
+		else if(Karryn.hasEdict(EDICT_LONGER_WORKSHOP_SHIFTS))
+			chance += 3 * edictsRate;
+		else
+			chance += 1 * edictsRate;
+	}
+	
+	//Thug Edict
+	if(Karryn.hasEdict(EDICT_THE_THUG_PROBLEM)) {
+		if(Karryn.hasEdict(EDICT_WEAKEN_THE_THUGS)) chance -= 1.5 * edictsRate;
+		else if(Karryn.hasEdict(EDICT_NO_THUG_LABOR)) chance -= 7 * edictsRate;
+		
+		chance += 3;
+	}
+	
+	//Classroom Edict
+	if(Karryn.hasEdict(EDICT_REPAIR_CLASSROOM)) {
+		if(Karryn.hasEdict(EDICT_WORKSHOP_CLASSES)) {
+			chance += 1.5 * edictsRate;
+			if(Karryn.hasEdict(EDICT_MANDATORY_CLASSES)) chance += 1.5;
+		}
+	}
+	
+	return chance;
+};
+
+Game_Actor.prototype.edictsLevelTwoRiotChance = function() {
+	let chance = 0;
+	let edictsRate = 1;
+	if(Karryn.hasEdict(EDICT_NEGOTIATE_WITH_SUBJUGATED_INMATES)) edictsRate += 1;
+	
+	//Nerd Edict
+	if(Karryn.hasEdict(EDICT_THREATEN_THE_NERDS)) chance += 5 * edictsRate;
+	else if(Karryn.hasEdict(EDICT_GIVE_IN_TO_NERD_BLACKMAIL)) chance -= 3 * edictsRate;
+	
+	//Accountant Edict
+	if(Karryn.hasEdict(EDICT_INMATE_ASSISTANT_ACCOUNTANT)) chance += 1 * edictsRate;
+	
+	//Toilet Edict
+	if(Karryn.hasEdict(EDICT_REPAIR_TOILET)) {
+		if(Karryn.hasEdict(EDICT_INMATE_JANITORS)) chance += 2 * edictsRate;
+		chance -= 4 * edictsRate;
+	}
+	chance += 4;
+
+	
+	//Classroom Edict
+	if(Karryn.hasEdict(EDICT_REPAIR_CLASSROOM)) {
+		if(!Karryn.hasEdict(EDICT_NO_CLASSES)) {
+			chance += 2 * edictsRate;
+			if(Karryn.hasEdict(EDICT_MANDATORY_CLASSES)) chance += 2; 
+		}
+		
+		if(Karryn.hasEdict(EDICT_REFORM_CLASSES)) {
+			chance += 2 * edictsRate; 
+			if(Karryn.hasEdict(EDICT_MANDATORY_CLASSES)) chance += 2; 
+		}
+		else if(Karryn.hasEdict(EDICT_ANATOMY_CLASSES)) {
+			chance -= 2 * edictsRate; 
+			if(Karryn.hasEdict(EDICT_MANDATORY_CLASSES)) chance -= 2; 
+		}
+	}
+	
+	//Reading Room Edict
+	if(Karryn.hasEdict(EDICT_REPAIR_READING_ROOM)) {
+		if(Karryn.hasEdict(EDICT_READING_ROOM_ENTRANCE_FEE)) chance += 1 * edictsRate;
+		
+		if(Karryn.hasEdict(EDICT_STOCK_WITH_BODYBUILDING_BOOKS)) chance -= 2 * edictsRate;
+		else if(Karryn.hasEdict(EDICT_STOCK_WITH_ENTERTAINMENT_BOOKS)) chance -= 1 * edictsRate;
+		else if(Karryn.hasEdict(EDICT_STOCK_WITH_IMPERIAL_BOOKS)) chance += 1 * edictsRate;
+		
+		chance -= 1 * edictsRate;
+	}
+	chance += 1;
+	
+	//Lizardman
+	if(Karryn.hasEdict(EDICT_SCIENCE_VERSUS_LIZARDMEN)) chance += 3 * edictsRate;
+	
+	return chance;
+};
+
+Game_Actor.prototype.edictsLevelThreeRiotChance = function() {
+	let chance = 0;
+	let edictsRate = 1;
+	if(Karryn.hasEdict(EDICT_NEGOTIATE_WITH_SUBJUGATED_INMATES)) edictsRate += 1;
+	
+	//Strip Club Edicts
+	
+	
+	//Gym Edicts
+	if(Karryn.hasEdict(EDICT_GYM_POLICY_STANDARD)) {
+		chance -= 1 * edictsRate;
+		if(Karryn.hasEdict(EDICT_REFURBISH_GYM))
+			chance -= 1;
+	}
+	else if(Karryn.hasEdict(EDICT_GYM_POLICY_EXTENDED)) {
+		chance -= 2 * edictsRate;
+		if(Karryn.hasEdict(EDICT_REFURBISH_GYM))
+			chance -= 2;
+	}
+	else if(Karryn.hasEdict(EDICT_GYM_POLICY_SHORTEN)) {
+		chance += 2.5 * edictsRate;
+		if(Karryn.hasEdict(EDICT_REFURBISH_GYM))
+			chance += 2.5;
+	}
+	
+	if(Karryn.hasEdict(EDICT_PAID_GYM_MEMBERSHIP)) chance += 4 * edictsRate;
+	
+	//Shower
+	if(Karryn.hasEdict(EDICT_COLD_SHOWERS)) chance += 2 * edictsRate;
+	
+	//Lizardman
+	if(Karryn.hasEdict(EDICT_THE_LIZARDMAN_PROBLEM)) chance += 5;
+	
+	//Orc
+	if(Karryn.hasEdict(EDICT_REJECT_THE_ORCS)) chance += 3 * edictsRate;
+	
+	return chance;
+};
+
+Game_Actor.prototype.edictsLevelFourRiotChance = function() {
+	let chance = 0;
+	let edictsRate = 1;
+	if(Karryn.hasEdict(EDICT_NEGOTIATE_WITH_SUBJUGATED_INMATES)) edictsRate += 1;
+
+
+	return chance;
+};
+
 ///////
 // Halberd Edicts
 /////////////
@@ -824,12 +1108,12 @@ Game_Actor.prototype.edictsBonusClothingMaxDurability = function(skillId) {
 Game_Actor.prototype.edictsHalberdAttack = function() {
 	let halberdAttack = 2.5;
 	
-	if(this.hasEdict(EDICT_HALBERD_UPGRADE_FOUR)) halberdAttack += 0.5;
-	else if(this.hasEdict(EDICT_HALBERD_UPGRADE_THREE)) halberdAttack += 0.4;
+	if(this.hasEdict(EDICT_HALBERD_UPGRADE_FOUR)) halberdAttack += 0.6;
+	else if(this.hasEdict(EDICT_HALBERD_UPGRADE_THREE)) halberdAttack += 0.45;
 	else if(this.hasEdict(EDICT_HALBERD_UPGRADE_TWO)) halberdAttack += 0.3;
 	else if(this.hasEdict(EDICT_HALBERD_UPGRADE_ONE)) halberdAttack += 0.15;
 	
-	if(this.hasEdict(EDICT_HALBERD_OFFENSIVE_SPECIALIZATION)) halberdAttack += 0.2;
+	if(this.hasEdict(EDICT_HALBERD_OFFENSIVE_SPECIALIZATION)) halberdAttack += 0.25;
 	
 	return halberdAttack;
 };
@@ -837,12 +1121,12 @@ Game_Actor.prototype.edictsHalberdAttack = function() {
 Game_Actor.prototype.edictsHalberdDefense = function() {
 	let halberdDefense = 2.5;
 	
-	if(this.hasEdict(EDICT_HALBERD_UPGRADE_FOUR)) halberdDefense += 0.5;
-	else if(this.hasEdict(EDICT_HALBERD_UPGRADE_THREE)) halberdDefense += 0.4;
+	if(this.hasEdict(EDICT_HALBERD_UPGRADE_FOUR)) halberdDefense += 0.6;
+	else if(this.hasEdict(EDICT_HALBERD_UPGRADE_THREE)) halberdDefense += 0.45;
 	else if(this.hasEdict(EDICT_HALBERD_UPGRADE_TWO)) halberdDefense += 0.3;
 	else if(this.hasEdict(EDICT_HALBERD_UPGRADE_ONE)) halberdDefense += 0.15;
 	
-	if(this.hasEdict(EDICT_HALBERD_DEFENSIVE_SPECIALIZATION)) halberdDefense += 0.2;
+	if(this.hasEdict(EDICT_HALBERD_DEFENSIVE_SPECIALIZATION)) halberdDefense += 0.25;
 	
 	return halberdDefense;
 };
@@ -851,24 +1135,13 @@ Game_Actor.prototype.edictsHalberdXParamPlus = function(paramId) {
 	let value = 0;
 	
 	if(paramId === XPARAM_GRAZE_ID) {
-		if(this.hasEdict(EDICT_HALBERD_OFFENSIVE_FOUR)) value += 0.17;
-		else if(this.hasEdict(EDICT_HALBERD_OFFENSIVE_ONE)) value += 0.07;
+		if(this.hasEdict(EDICT_HALBERD_OFFENSIVE_FOUR)) value += 0.47;
+		else if(this.hasEdict(EDICT_HALBERD_OFFENSIVE_ONE)) value += 0.12;
 	}
 	else if(paramId === XPARAM_CNT_ID) {
-		if(this.hasEdict(EDICT_HALBERD_DEFENSIVE_FOUR)) value += 0.25;
-		else if(this.hasEdict(EDICT_HALBERD_DEFENSIVE_ONE)) value += 0.1;
+		if(this.hasEdict(EDICT_HALBERD_DEFENSIVE_FOUR)) value += 0.45;
+		else if(this.hasEdict(EDICT_HALBERD_DEFENSIVE_ONE)) value += 0.15;
 	}
-	else if(paramId === XPARAM_CRIT_EVA_ID) {
-		
-	}
-	
-	return value;
-};
-
-Game_Actor.prototype.edictsHalberdCriticalMultiplierBonus = function() {
-	let value = 0;
-	
-	if(this.hasEdict(EDICT_HALBERD_OFFENSIVE_TWO)) value += 0.35;
 	
 	return value;
 };
@@ -878,30 +1151,49 @@ Game_Actor.prototype.edictsHalberdCriticalMultiplierBonus = function() {
 ///////////////
 
 Game_Actor.prototype.edictsUnarmedAttack = function() {
-	let unarmedAttack = 1;
+	let unarmedAttack = 2;
 	
-	if(this.hasEdict(EDICT_UNARMED_ATTACK_TRAINING_II)) unarmedAttack += 1;
+	if(this.hasEdict(EDICT_UNARMED_ATTACK_TRAINING_III)) unarmedAttack += 1.25;
+	else if(this.hasEdict(EDICT_UNARMED_ATTACK_TRAINING_II)) unarmedAttack += 1;
 	else if(this.hasEdict(EDICT_UNARMED_ATTACK_TRAINING_I)) unarmedAttack += 0.75;
 	else if(this.hasEdict(EDICT_UNARMED_COMBAT_TRAINING)) unarmedAttack += 0.5;
+	
+	if(this.hasEdict(EDICT_RESEARCH_WEREWOLF_STUDY)) unarmedAttack += 0.4;
 	
 	return unarmedAttack;
 };
 
 Game_Actor.prototype.edictsUnarmedDefense = function() {
-	let unarmedDefense = 1;
+	let unarmedDefense = 2;
 	
-	if(this.hasEdict(EDICT_UNARMED_DEFENSE_TRAINING_II)) unarmedDefense += 1;
+	if(this.hasEdict(EDICT_UNARMED_DEFENSE_TRAINING_III)) unarmedDefense += 1.25;
+	else if(this.hasEdict(EDICT_UNARMED_DEFENSE_TRAINING_II)) unarmedDefense += 1;
 	else if(this.hasEdict(EDICT_UNARMED_DEFENSE_TRAINING_I)) unarmedDefense += 0.75;
 	else if(this.hasEdict(EDICT_UNARMED_COMBAT_TRAINING)) unarmedDefense += 0.5;
 	
+	if(this.hasEdict(EDICT_RESEARCH_NERD_STUDY)) unarmedDefense += 0.4;
+	
 	return unarmedDefense;
+};
+
+Game_Actor.prototype.edictsUnarmedXParamPlus = function(paramId) {
+	let value = 0;
+	
+	if(paramId === XPARAM_GRAZE_ID) {
+		if(this.hasEdict(EDICT_UNARMED_ATTACK_TRAINING_I)) value += 0.09;
+	}
+	else if(paramId === XPARAM_CNT_ID) {
+		if(this.hasEdict(EDICT_UNARMED_DEFENSE_TRAINING_III)) value += 0.25;
+	}
+	
+	return value;
 };
 
 ///////////
 // Param
 ///////////
 
-Game_Actor.prototype.karrynEdictParamBonus = function(paramId) {
+Game_Actor.prototype.edictsParamBonus = function(paramId) {
 	let bonus = 0;
 	
 	if(paramId === PARAM_MAXENERGY_ID) {
@@ -912,7 +1204,7 @@ Game_Actor.prototype.karrynEdictParamBonus = function(paramId) {
 	return bonus;
 };
 
-Game_Actor.prototype.karrynEdictParamRate = function(paramId) {
+Game_Actor.prototype.edictsParamRate = function(paramId) {
 	let rate = 1;
 
 	//Training Edicts
@@ -933,47 +1225,91 @@ Game_Actor.prototype.karrynEdictParamRate = function(paramId) {
 	if(paramId === PARAM_MAXSTAMINA_ID && this.hasEdict(EDICT_SPEC_STAMINA_TANK)) rate *= 1.25;
 	if(paramId === PARAM_MAXENERGY_ID && this.hasEdict(EDICT_SPEC_ENERGY_TANK)) rate *= 1.1;
 	
-	//Drug Edicts
-	if(paramId === PARAM_STRENGTH_ID && this.hasEdict(EDICT_EXPERIMENTAL_STRENGTH_BOOSTER)) rate *= 1.1;
-	if(paramId === PARAM_DEXTERITY_ID && this.hasEdict(EDICT_EXPERIMENTAL_DEXTERITY_BOOSTER)) rate *= 1.1;
-	if(paramId === PARAM_ENDURANCE_ID && this.hasEdict(EDICT_EXPERIMENTAL_ENDURANCE_BOOSTER)) rate *= 1.1;
-	if(paramId === PARAM_AGILITY_ID && this.hasEdict(EDICT_EXPERIMENTAL_AGILITY_BOOSTER)) rate *= 1.1;
-	if(paramId === PARAM_MIND_ID) {
-		if(this.hasEdict(EDICT_EXPERIMENTAL_STRENGTH_BOOSTER)) rate *= 0.97;
-		if(this.hasEdict(EDICT_EXPERIMENTAL_DEXTERITY_BOOSTER)) rate *= 0.97;
-		if(this.hasEdict(EDICT_EXPERIMENTAL_ENDURANCE_BOOSTER)) rate *= 0.97;
-		if(this.hasEdict(EDICT_EXPERIMENTAL_AGILITY_BOOSTER)) rate *= 0.97;
-	}
-	
-	
-	
 	return rate;
 }; 
 
-Game_Actor.prototype.karrynEdictXParamPlus = function(id) {
+Game_Actor.prototype.edictsXParamPlus = function(id) {
 	let value = 0;
 	
 	if(id === XPARAM_STA_REGEN_ID) {
 		if(this.hasEdict(EDICT_STAMINA_TRAINING_THREE)) value += 0.05;
 		else if(this.hasEdict(EDICT_STAMINA_TRAINING_ONE)) value += 0.02;
+		if(this.hasEdict(EDICT_RESEARCH_SLIME_STUDY) && Karryn.isInCombatPose()) value += 0.03;
 	}
 
 	return value;
 };
 
+Game_Actor.prototype.edictsXParamRate = function(id) {
+	let rate = 1;
+
+	if(id === XPARAM_HIT_ID) {
+		if(this.hasEdict(EDICT_RESEARCH_GOBLIN_STUDY)) rate *= 1.25;
+	}
+	else if(id === XPARAM_EVA_ID) {
+		if(this.hasEdict(EDICT_RESEARCH_ROGUE_STUDY)) rate *= 1.25;
+	}
+	else if(id === XPARAM_CRIT_EVA_ID) {
+		if(this.hasEdict(EDICT_RESEARCH_LIZARDMAN_STUDY) && this.isInCombatPose()) rate *= 1.25;
+		if(this.isUsingHalberd()) {
+			if(this.hasEdict(EDICT_HALBERD_DEFENSIVE_TWO)) rate *= 1.3;
+		}
+		else {
+			if(this.hasEdict(EDICT_UNARMED_DEFENSE_TRAINING_I)) rate *= 1.2;
+		}
+		if(this.hasEdict(EDICT_SPEC_STAMINA_FOUNDATION)) rate *= 1.2;
+	}
+	else if(id === XPARAM_CRIT_ID) {
+		if(this.hasEdict(EDICT_HALBERD_OFFENSIVE_ONE) && this.isUsingHalberd()) rate *= 1.15;
+	}
+
+	return rate;
+};
+
+Game_Actor.prototype.edictsSParamPlus = function(id) {
+	let value = 0;
+	
+	if(id === SPARAM_WP_REGEN_ID) {
+		if(this.hasEdict(EDICT_RESEARCH_HOMELESS_STUDY) && Karryn.isInCombatPose()) value += 0.07;
+	}
+
+	return value;
+};
+
+
 Game_Actor.prototype.edictsSParamRate = function(id) {
 	let rate = 1;
 
 	if(id === SPARAM_EXR_ID) {
-		if(this.hasEdict(EDICT_LEVEL_TWO_SUBJUGATED)) rate *= 1.5;
+		if(this.hasEdict(EDICT_LEVEL_FOUR_SUBJUGATED)) rate *= 2;
+		else if(this.hasEdict(EDICT_LEVEL_THREE_SUBJUGATED)) rate *= 1.75;
+		else if(this.hasEdict(EDICT_LEVEL_TWO_SUBJUGATED)) rate *= 1.5;
 		else if(this.hasEdict(EDICT_LEVEL_ONE_SUBJUGATED)) rate *= 1.25;
 		
 	}
-	else if(id === XPARAM_CRIT_EVA_ID) {
-		if(this.hasEdict(EDICT_SPEC_STAMINA_FOUNDATION)) rate *= 1.2;
-	}
 
 	return rate;
+};
+
+Game_Actor.prototype.edictsCriticalDamageBonus = function() {
+	let bonus = 0;
+
+	if(this.hasEdict(EDICT_RESEARCH_THUG_STUDY) && this.isInCombatPose()) {
+		bonus += 0.25;
+	}
+	
+	if(this.isUsingHalberd()) {
+		if(this.hasEdict(EDICT_HALBERD_OFFENSIVE_TWO)) {
+			bonus += 0.35;
+		}
+	}
+	else {
+		if(this.hasEdict(EDICT_UNARMED_ATTACK_TRAINING_III)) {
+			bonus += 0.30;
+		}
+	}
+	
+	return bonus;
 };
 
 
@@ -1064,18 +1400,10 @@ Game_Actor.prototype.trainingSpecializationCount = function() {
 	return count;
 };
 
-////////////
-// Drug Element Edict
-// Plus only with no multiplication from other sources
-////////////////
-
-Game_Actor.prototype.karrynEdictDrugElementRate = function() {
+Game_Actor.prototype.edictsCombatElementRate = function(id) {
 	let bonus = 0;
 	
-	if(this.hasEdict(EDICT_EXPERIMENTAL_STRENGTH_BOOSTER)) bonus += 0.1;
-	if(this.hasEdict(EDICT_EXPERIMENTAL_DEXTERITY_BOOSTER)) bonus += 0.1;
-	if(this.hasEdict(EDICT_EXPERIMENTAL_ENDURANCE_BOOSTER)) bonus += 0.1;
-	if(this.hasEdict(EDICT_EXPERIMENTAL_AGILITY_BOOSTER)) bonus += 0.1;
+	if(this.hasEdict(EDICT_RESEARCH_ORC_STUDY)) bonus -= 0.15;
 	
 	return bonus;
 };
@@ -1087,9 +1415,19 @@ Game_Actor.prototype.edictsIncomeRate = function() {
 	let rate = 1;
 
 	if(Karryn.hasEdict(EDICT_THE_THUG_PROBLEM)) {
-		if(Karryn.hasEdict(EDICT_NO_THUG_LABOR)) rate *= 0.85;
-		else if(Karryn.hasEdict(EDICT_THUGS_STRESS_RELIEF)) rate *= 1;
-		else rate *= 0.9;
+		let thugProblemRate = -0.1;
+		
+		if(Karryn.hasEdict(EDICT_NO_THUG_LABOR)) thugProblemRate -= 0.05;
+		else if(Karryn.hasEdict(EDICT_THUGS_STRESS_RELIEF)) thugProblemRate += 0.15;
+		
+		if(Karryn.hasEdict(EDICT_THE_ORC_PROBLEM)) {
+			if(Karryn.hasEdict(EDICT_ACCESSIBILITY_FOR_ORCS) && Karryn.hasEdict(EDICT_NO_THUG_LABOR)) {}
+			else if(Karryn.hasEdict(EDICT_REJECT_THE_ORCS) && Karryn.hasEdict(EDICT_WEAKEN_THE_THUGS)) {}
+			else if(Karryn.hasEdict(EDICT_REACH_UNDERSTANDING_WITH_ORCS) && Karryn.hasEdict(EDICT_THUGS_STRESS_RELIEF)) {}
+			else thugProblemRate -= 0.1;
+		}
+		
+		rate *= (1 + thugProblemRate);
 	}
 	
 	if(Karryn.hasEdict(EDICT_REPAIR_OFFICE))
@@ -1115,16 +1453,7 @@ Game_Actor.prototype.edictsIncomeRate = function() {
 
 Game_Actor.prototype.variablePrisonIncome = function() {
 	let income = 0;
-
-	//Outsourcing
-	if(this.hasEdict(EDICT_PROVIDE_OUTSOURCING) && this.hasEdict(EDICT_REPAIR_MEETING_ROOM)) {
-		let unusedPoints = Math.max(this._storedEdictPoints, this.stsAsp());
-		let maxCarryover = 1;
-		maxCarryover += this.titleEfficientAdminstrator_carryoverUnusedEdictPoint();
 	
-		income += 100 * Math.max(0, unusedPoints - maxCarryover);
-	}
-
 	//Chef
 	if(Karryn.hasEdict(EDICT_HIRE_A_CHEF)) {
 		let chefIncome = 0;
@@ -1165,6 +1494,9 @@ Game_Actor.prototype.variablePrisonIncome = function() {
 		else if(Karryn.hasEdict(EDICT_LONGER_WORKSHOP_SHIFTS))
 			workshopIncome += 75;
 		
+		if(Karryn.hasEdict(EDICT_ACCESSIBILITY_FOR_ORCS))
+			workshopIncomeRate *= 0.6;
+		
 		income += Math.round(workshopIncome * workshopIncomeRate);
 	}
 	
@@ -1175,6 +1507,21 @@ Game_Actor.prototype.variablePrisonIncome = function() {
 		
 	}
 
+	return income;
+};
+
+Game_Actor.prototype.edictsOutsourcingIncome = function() {
+	let income = 0;
+	
+	//Outsourcing
+	if(this.hasEdict(EDICT_PROVIDE_OUTSOURCING) && this.hasEdict(EDICT_REPAIR_MEETING_ROOM)) {
+		let unusedPoints = Math.max(this._storedEdictPoints, this.stsAsp());
+		let maxCarryover = 1;
+		maxCarryover += this.titleEfficientAdminstrator_carryoverUnusedEdictPoint();
+	
+		income += 100 * Math.max(0, unusedPoints - maxCarryover);
+	}
+	
 	return income;
 };
 
@@ -1204,7 +1551,7 @@ Game_Actor.prototype.edictsExpenseRate = function() {
 ///////////
 // Variable Expense
 
-Game_Actor.prototype.variablePrisonExpense = function() {
+Game_Actor.prototype.edictsPrisonFlatExpense = function() {
 	let expense = 0;
 
 	if(this.hasEdict(EDICT_LOUNGE_ISNT_FREE_ANYMORE) && this.hasEdict(EDICT_REPAIR_STAFF_LOUNGE)) {
@@ -1230,6 +1577,13 @@ Game_Actor.prototype.variablePrisonExpense = function() {
 			else
 				expense += 75;
 		}
+	}
+	
+	if(Karryn.hasEdict(EDICT_RIOT_SUPPRESSING_TRAINING_FOR_GUARDS)) {
+		if(Prison.prisonLevelOneIsSubjugated()) expense += 250;
+		if(Prison.prisonLevelTwoIsSubjugated()) expense += 250;
+		if(Prison.prisonLevelThreeIsSubjugated()) expense += 250;
+		if(Prison.prisonLevelFourIsSubjugated()) expense += 250;
 	}
 
 	return expense;
@@ -1290,16 +1644,16 @@ Game_Actor.prototype.edictSkilledStaffMultipler = function() {
 };
 
 /////////
-// Subsidies
+// Max Subsidies
 
 Game_Actor.prototype.edictsSubsidies_Flat = function() {
 	let value = 0;
 
-	if(this.hasEdict(EDICT_LEVEL_FOUR_SUBJUGATED)) value += 1600;
+	if(this.hasEdict(EDICT_LEVEL_FOUR_SUBJUGATED)) value += 1400;
 	else if(this.hasEdict(EDICT_LEVEL_THREE_SUBJUGATED)) value += 1200;
 	else if(this.hasEdict(EDICT_LEVEL_TWO_SUBJUGATED)) value += 800;
 	else if(this.hasEdict(EDICT_LEVEL_ONE_SUBJUGATED)) value += 400;
-	
+
 	
 	if(this.hasEdict(EDICT_REPAIR_CLASSROOM) && this.hasEdict(EDICT_REFORM_CLASSES)) {
 		if(this.hasEdict(EDICT_MANDATORY_CLASSES)) value += 600;
@@ -1331,7 +1685,9 @@ Game_Actor.prototype.edictsSubsidies_Rate = function() {
 	if(this.hasEdict(EDICT_RECEPTION_POLICY_WEAK_ONLY)) rate -= 0.4;
 	else if(this.hasEdict(EDICT_RECEPTION_POLICY_FAVOR_WEAK)) rate -= 0.15;
 	
-	return Math.max(0,rate);
+	if(this.hasEdict(EDICT_NEGOTIATE_WITH_SUBJUGATED_INMATES)) rate -= 0.3;
+	
+	return Math.max(0, rate);
 };
 
 ////////////
@@ -1360,6 +1716,35 @@ Game_Party.prototype.getStoreIncomeMultipler = function() {
 	return multipler;
 };
 
+// Outsourcing
+Game_Party.prototype.getOutsourcingIncome = function() {
+	return $gameActors.actor(ACTOR_KARRYN_ID).edictsOutsourcingIncome();
+};
+
+// Wanted Appearance
+
+Game_Party.prototype.edictsWantedAppearanceChance = function() {
+	let chance = 0;
+	
+	if(Karryn.hasEdict(EDICT_GYM_POLICY_STANDARD)) {
+		chance + 0.05;
+		if(Karryn.hasEdict(EDICT_PAID_GYM_MEMBERSHIP))
+			chance + 0.05;
+	}
+	else if(Karryn.hasEdict(EDICT_GYM_POLICY_EXTENDED)) {
+		chance += 0.1;
+		if(Karryn.hasEdict(EDICT_REFURBISH_GYM))
+			chance += 0.1;
+	}
+	else if(Karryn.hasEdict(EDICT_GYM_POLICY_SHORTEN)) {
+		chance -= 0.09;
+		if(Karryn.hasEdict(EDICT_REFURBISH_GYM))
+			chance -= 0.09;
+	}
+	
+	return chance;
+};
+
 
 ///////////////
 // Invasion Chance
@@ -1378,7 +1763,7 @@ Game_Actor.prototype.getInvasionChance = function() {
 	if(Prison.easyMode()) chance *= 0.8;
 	else if(Prison.hardMode()) chance *= 1.2;
 
-	return chance;
+	return Math.max(Math.round(chance), 0);
 };
 
 Game_Actor.prototype.getInvasionChance_Outside = function() {
@@ -1408,6 +1793,7 @@ Game_Actor.prototype.getInvasionChance_LevelOne = function() {
 	if(this.hasEdict(EDICT_RESEARCH_NEW_LOCKS)) chance -= 15;
 	if(this.hasEdict(EDICT_RESEARCH_ISSUE_CURFEW_PASS)) chance += 25;
 	if(this.hasEdict(EDICT_RESEARCH_STAFF_SLEEP_PERK)) chance += 20;
+	if(this.hasEdict(EDICT_GYM_POLICY_EXTENDED)) chance -= 15;
 	
 	return chance;
 };
@@ -1418,6 +1804,7 @@ Game_Actor.prototype.getInvasionChance_LevelTwo = function() {
 	if(this.hasEdict(EDICT_RESEARCH_NEW_LOCKS)) chance -= 15;
 	if(this.hasEdict(EDICT_RESEARCH_ISSUE_CURFEW_PASS)) chance += 25;
 	if(this.hasEdict(EDICT_RESEARCH_STAFF_SLEEP_PERK)) chance += 30;
+	if(this.hasEdict(EDICT_GYM_POLICY_EXTENDED)) chance -= 15;
 	
 	return chance;
 };
@@ -1427,6 +1814,9 @@ Game_Actor.prototype.getInvasionChance_LevelThree = function() {
 	
 	if(this.hasEdict(EDICT_RESEARCH_NEW_LOCKS)) chance -= 15;
 	if(this.hasEdict(EDICT_RESEARCH_ISSUE_CURFEW_PASS)) chance += 25;
+	if(this.hasEdict(EDICT_GYM_POLICY_EXTENDED)) chance -= 15;
+	
+	if(this.hasPassive(PASSIVE_PILLORY_SEX_COUNT_TWO_ID)) chance += 15;
 	
 	return chance;
 };
@@ -1436,8 +1826,11 @@ Game_Actor.prototype.getInvasionChance_LevelFour = function() {
 	
 	if(this.hasEdict(EDICT_RESEARCH_NEW_LOCKS)) chance -= 15;
 	if(this.hasEdict(EDICT_RESEARCH_ISSUE_CURFEW_PASS)) chance += 25;
+	if(this.hasEdict(EDICT_GYM_POLICY_EXTENDED)) chance -= 15;
 	
-	return chance;
+	if(this.hasPassive(PASSIVE_PILLORY_SEX_COUNT_TWO_ID)) chance += 15;
+	
+	return Math.min(chance, 100);
 };
 
 Game_Actor.prototype.getInvasionChance_LevelFive = function() {
@@ -1467,7 +1860,9 @@ Game_Enemy.prototype.prisonGuardEdictParamRate = function(paramId) {
 
 	//Guard Training
 	let trainingRate = 1;
-	if(Karryn.hasEdict(EDICT_ADVANCED_GUARD_TRAINING)) trainingRate += 0.35;
+	if(Karryn.hasEdict(EDICT_RIOT_SUPPRESSING_TRAINING_FOR_GUARDS)) trainingRate += 0.55;
+	else if(Karryn.hasEdict(EDICT_EXPERT_GUARD_TRAINING)) trainingRate += 0.45;
+	else if(Karryn.hasEdict(EDICT_ADVANCED_GUARD_TRAINING)) trainingRate += 0.3;
 	else if(Karryn.hasEdict(EDICT_BASIC_GUARD_TRAINING)) trainingRate += 0.15;
 	
 	if(trainingRate !== 1) {
@@ -1476,6 +1871,11 @@ Game_Enemy.prototype.prisonGuardEdictParamRate = function(paramId) {
 		if(paramId === PARAM_ENDURANCE_ID) rate *= trainingRate;
 		if(paramId === PARAM_DEXTERITY_ID) rate *= trainingRate;
 		if(paramId === PARAM_CHARM_ID) rate *= trainingRate;
+	}
+	
+	//Aphrodisiac Food
+	if(Karryn.hasEdict(EDICT_APHRODISIACS_IN_GUARD_FOOD) && paramId === PARAM_CHARM_ID) {
+		rate *= 1 - (0.25 * Karryn.edictSkilledStaffMultipler());
 	}
 	
 	//Steroids
@@ -1517,33 +1917,27 @@ Game_Enemy.prototype.inmateEdictParamRate = function(paramId) {
 	////////
 	// General
 
+	//Debuffs
 	if(paramId === PARAM_AGILITY_ID) {
 		if(this.isStateAffected(STATE_SLOW_ID) && Karryn.hasEdict(EDICT_SPEC_LEG_THRUST_POWER))
 			rate *= 0.5;
 	}
-
-	//Massage
-	if(Karryn.hasEdict(EDICT_EXPAND_THERAPY_AREA) && (paramId === PARAM_MAXSTAMINA_ID || paramId === PARAM_MAXENERGY_ID)) {
-		rate *= 1.1;
+	if(paramId === PARAM_STRENGTH_ID) {
+		if(this.isStateAffected(STATE_WEAKEN_ID) && Karryn.hasEdict(EDICT_SPEC_ARM_SLASH_POWER))
+			rate *= 0.6;
 	}
+
 	//Aphrodisiac Food
 	if(Karryn.hasEdict(EDICT_APHRODISIACS_IN_INMATE_FOOD) && paramId === PARAM_CHARM_ID) {
-		rate *= 1 - (0.15 * Karryn.edictSkilledStaffMultipler());
+		rate *= 1 - (0.25 * Karryn.edictSkilledStaffMultipler());
 	}
 	//Aphrodisiac Drug
 	if(Karryn.hasEdict(EDICT_APHRODISIACS_DRUGS_FOR_INMATES) && paramId === PARAM_CHARM_ID) {
-		rate *= 0.85;
+		rate *= 0.75;
 	}
 	//Sex Endurance Drug
 	if(Karryn.hasEdict(EDICT_SEX_ENDURANCE_DRUGS_FOR_INMATES)) {
 		if(paramId === PARAM_ENDURANCE_ID) rate *= 1.3;
-	}
-	
-	//Turn Blind Eye to Black Market
-	if(Karryn.hasEdict(EDICT_TURN_BLIND_EYE_TO_BLACK_MARKET)) {
-		if(paramId === PARAM_MAXSTAMINA_ID || paramId === PARAM_STRENGTH_ID || paramId === PARAM_DEXTERITY_ID
-		|| paramId === PARAM_AGILITY_ID ) 
-			rate *= 1.1;
 	}
 	
 	//Laundry
@@ -1565,9 +1959,14 @@ Game_Enemy.prototype.inmateEdictParamRate = function(paramId) {
 		else rate *= 1.1;
 	}
 	
-	if(paramId === PARAM_STRENGTH_ID) {
-		if(this.isStateAffected(STATE_WEAKEN_ID) && Karryn.hasEdict(EDICT_SPEC_ARM_SLASH_POWER))
-			rate *= 0.6;
+	//Riot Issue
+	if(Karryn.hasEdict(EDICT_HARSHER_PUNISHMENTS_FOR_RIOTERS) && $gameParty.isRiotBattle()) {
+		rate *= 1.1;
+	}
+	
+	//Cold Shower
+	if(Karryn.hasEdict(EDICT_COLD_SHOWERS) && paramId === PARAM_CHARM_ID) {
+		rate *= 1.3;
 	}
 	
 	////////
@@ -1575,12 +1974,19 @@ Game_Enemy.prototype.inmateEdictParamRate = function(paramId) {
 	
 	//Goblin Edict
 	if(paramId === PARAM_AGILITY_ID && this.isGoblinType && Karryn.hasEdict(EDICT_THE_GOBLIN_PROBLEM)) {
-		if(Karryn.hasEdict(EDICT_ANTI_GOBLIN_SQUAD)) rate *= 0.93;
-		else rate *= 1.33;
+		if(Karryn.hasEdict(EDICT_ANTI_GOBLIN_SQUAD)) rate *= 0.6;
+		
+		let goblinProblemRate = 0.33;
+		if(Karryn.hasEdict(EDICT_THE_ORC_PROBLEM)) {
+			if(Karryn.hasEdict(EDICT_ACCESSIBILITY_FOR_ORCS) && Karryn.hasEdict(EDICT_ANTI_GOBLIN_SQUAD)) {}
+			else if(Karryn.hasEdict(EDICT_REJECT_THE_ORCS) && Karryn.hasEdict(EDICT_DEMEAN_GOBLINS)) {}
+			else if(Karryn.hasEdict(EDICT_REACH_UNDERSTANDING_WITH_ORCS) && Karryn.hasEdict(EDICT_BAIT_GOBLINS)) {}
+			else goblinProblemRate += 0.33;
+		}
+		rate *= (1 + goblinProblemRate);
 	}
-	
 	//Thug Edict
-	if(this.isThugType && Karryn.hasEdict(EDICT_THE_THUG_PROBLEM)) {
+	else if(this.isThugType && Karryn.hasEdict(EDICT_THE_THUG_PROBLEM)) {
 		if(Karryn.hasEdict(EDICT_WEAKEN_THE_THUGS)) 
 			rate *= 0.75;
 		
@@ -1592,12 +1998,14 @@ Game_Enemy.prototype.inmateEdictParamRate = function(paramId) {
 				rate *= 1.3;
 		}
 	}
-	
 	//Nerd and Reading Room
-	if(this.isNerdType && Karryn.hasEdict(EDICT_REPAIR_READING_ROOM)) {
+	else if(this.isNerdType && Karryn.hasEdict(EDICT_REPAIR_READING_ROOM)) {
 		rate *= 1.1;
 		if(Karryn.hasEdict(EDICT_STOCK_WITH_BODYBUILDING_BOOKS))
 			rate *= 1.1;
+	}
+	else if(paramId === PARAM_CHARM_ID && Karryn.hasEdict(EDICT_SCIENCE_VERSUS_LIZARDMEN) && this.isLizardmanType) {
+		rate *= 1.3;
 	}
 	
 	//Research
@@ -1616,9 +2024,8 @@ Game_Enemy.prototype.inmateEdictParamRate = function(paramId) {
 Game_Enemy.prototype.enemyEdictXParamPlus = function(paramId) {
 	let value = 0;
 	
-	if(Karryn.isUsingHalberd()) {
-		if(paramId === XPARAM_GRAZE_ID && Karryn.hasEdict(EDICT_HALBERD_DEFENSIVE_THREE)) value -= 0.07;
-		if(paramId === XPARAM_CRIT_EVA_ID && Karryn.hasEdict(EDICT_HALBERD_OFFENSIVE_THREE)) value -= 0.2;
+	if(paramId === XPARAM_GRAZE_ID) {
+		if(Karryn.isUsingHalberd() && Karryn.hasEdict(EDICT_HALBERD_DEFENSIVE_THREE)) value -= 0.13;
 	}
 	
 	return value;
@@ -1636,6 +2043,11 @@ Game_Enemy.prototype.enemyEdictXParamRate = function(paramId) {
 		
 		if(this.isStateAffected(STATE_DIZZY_ID) && Karryn.hasEdict(EDICT_SPEC_HEAD_STRIKE_POWER))
 			rate *= 0.5;
+			
+		if(this.isStateAffected(STATE_ORC_COMMANDING_PRESENCE_ID) && Karryn.hasEdict(EDICT_THE_ORC_PROBLEM)) {
+			if(!Karryn.hasEdict(EDICT_REJECT_THE_ORCS) && !Karryn.hasEdict(EDICT_REACH_UNDERSTANDING_WITH_ORCS))
+				rate *= 1.25;
+		}
 	}
 	else if(paramId === XPARAM_HIT_ID) {
 		if(this.isStateAffected(STATE_DIZZY_ID) && Karryn.hasEdict(EDICT_SPEC_HEAD_STRIKE_POWER))
@@ -1643,11 +2055,26 @@ Game_Enemy.prototype.enemyEdictXParamRate = function(paramId) {
 		
 		if(this.isRogueType && Karryn.hasEdict(EDICT_THE_ROGUE_PROBLEM)) {
 			if(Karryn.hasEdict(EDICT_FORCE_ROGUES_INTO_LABOR))
-				rate *= 1.15;
-			else
-				rate *= 1.75;
+				rate *= 0.5;
+			
+			let rogueProblemRate = 0.75;
+			
+			if(Karryn.hasEdict(EDICT_THE_ORC_PROBLEM)) {
+				if(Karryn.hasEdict(EDICT_ACCESSIBILITY_FOR_ORCS) && Karryn.hasEdict(EDICT_ROGUE_TRAINING_FOR_GUARDS)) {}
+				else if(Karryn.hasEdict(EDICT_REJECT_THE_ORCS) && Karryn.hasEdict(EDICT_FORCE_ROGUES_INTO_LABOR)) {}
+				else if(Karryn.hasEdict(EDICT_REACH_UNDERSTANDING_WITH_ORCS) && Karryn.hasEdict(EDICT_FIGHT_ROGUE_DISTRACTIONS_WITH_DISTRACTIONS)) {}
+				else rogueProblemRate += 0.75;
+			}
+			
+			rate *= (1 + rogueProblemRate);
 		}
 		
+	}
+	else if(paramId === XPARAM_CRIT_EVA_ID) {
+		if(Karryn.hasEdict(EDICT_HALBERD_OFFENSIVE_THREE) && Karryn.isUsingHalberd()) rate *= 0.7;
+	}
+	else if(paramId === XPARAM_CRIT_ID) {
+		if(Karryn.hasEdict(EDICT_HALBERD_DEFENSIVE_THREE) && Karryn.isUsingHalberd()) rate *= 0.75;
 	}
 	
 	return rate;
@@ -1661,20 +2088,24 @@ Game_Enemy.prototype.prisonGuardEdictSParamPlus = function(paramId) {
 	let value = 0;
 
 	//Guard Equipment
-	if(Karryn.hasEdict(EDICT_ADVANCED_GUARD_TRAINING)) {
-		if(paramId === SPARAM_WPATK_ID) value += 0.5;
+	if(Karryn.hasEdict(EDICT_MILITARY_GUARD_EQUIPMENT)) {
+		if(paramId === SPARAM_WPATK_ID) value += 0.55;
+		if(paramId === SPARAM_WPDEF_ID) value += 0.7;
+	}
+	else if(Karryn.hasEdict(EDICT_REINFORCED_GUARD_EQUIPMENT)) {
+		if(paramId === SPARAM_WPATK_ID) value += 0.4;
 		if(paramId === SPARAM_WPDEF_ID) value += 0.5;
 	}
-	else if(Karryn.hasEdict(EDICT_BASIC_GUARD_TRAINING)) {
+	else if(Karryn.hasEdict(EDICT_STANDARD_GUARD_EQUIPMENT)) {
 		if(paramId === SPARAM_WPATK_ID) value += 0.25;
-		if(paramId === SPARAM_WPDEF_ID) value += 0.25;
+		if(paramId === SPARAM_WPDEF_ID) value += 0.3;
 	}
 
 	return value;
 }; //End Guard
 
 /////////
-// XParam Rate
+// SParam Rate
 Game_Enemy.prototype.enemyEdictSParamRate = function(paramId) {
 	let rate = 1;
 	
@@ -1682,11 +2113,31 @@ Game_Enemy.prototype.enemyEdictSParamRate = function(paramId) {
 	if(paramId === SPARAM_WPATK_ID) {
 		if(this.isStateAffected(STATE_WEAKEN_ID) && Karryn.hasEdict(EDICT_SPEC_ARM_SLASH_POWER))
 			rate *= 0.6;
+			
+		if(this.isStateAffected(STATE_ORC_COMMANDING_PRESENCE_ID) && Karryn.hasEdict(EDICT_THE_ORC_PROBLEM)) {
+			if(!Karryn.hasEdict(EDICT_ACCESSIBILITY_FOR_ORCS) && !Karryn.hasEdict(EDICT_REACH_UNDERSTANDING_WITH_ORCS))
+				rate *= 1.25;
+		}
 	}
 	
 	return rate;
 };
 
+/////////
+// Element Rate
+Game_Enemy.prototype.enemyEdictsElementRate = function(elementId) {
+	let rate = 1;
+	
+	if(elementId === ELEMENT_SLASH_ID || elementId === ELEMENT_PIERCE_ID || elementId === ELEMENT_BLUNT_ID) {
+		if(this.isStateAffected(STATE_ORC_COMMANDING_PRESENCE_ID) && Karryn.hasEdict(EDICT_THE_ORC_PROBLEM)) {
+			if(!Karryn.hasEdict(EDICT_REJECT_THE_ORCS) && !Karryn.hasEdict(EDICT_REACH_UNDERSTANDING_WITH_ORCS)) {
+				rate *= 0.66;
+			}
+		}
+	}
+
+	return rate;
+};
 
 //////////
 // AI Level Edict
@@ -1760,6 +2211,14 @@ Game_Enemy.prototype.enemyInitialPleasureEdicts = function() {
 			if(Karryn.hasEdict(EDICT_GIVE_IN_TO_NERD_BLACKMAIL)) addedMulti += 2;
 			else if(Karryn.hasEdict(EDICT_THREATEN_THE_NERDS)) addedMulti -= 3;
 		}
+		else if(this.isLizardmanType) {
+			if(Karryn.hasEdict(EDICT_APPEASE_THE_LIZARDMEN)) addedMulti += 2;
+			else if(Karryn.hasEdict(EDICT_SCIENCE_VERSUS_LIZARDMEN)) addedMulti -= 3;
+		}
+		else if(this.isOrcType) {
+			if(Karryn.hasEdict(EDICT_REACH_UNDERSTANDING_WITH_ORCS)) addedMulti += 2;
+			else if(Karryn.hasEdict(EDICT_REJECT_THE_ORCS)) addedMulti -= 3;
+		}
 	}
 	
 	
@@ -1769,12 +2228,16 @@ Game_Enemy.prototype.enemyInitialPleasureEdicts = function() {
 
 /////////////
 // Anger Edict
+// Attack Chance
 ///////////////
 
 Game_Enemy.prototype.prisonGuardEdictAnger = function() {
 	let bonus = 0;
 	
 	bonus += Prison.guardAggression;
+	
+	if(Karryn.hasEdict(EDICT_APHRODISIACS_IN_GUARD_FOOD)) 
+		bonus -= 30 * Karryn.edictSkilledStaffMultipler();
 	
 	return bonus;
 };
@@ -1793,17 +2256,11 @@ Game_Enemy.prototype.inmateEdictAnger = function() {
 	
 	//Aphrodisiac Food
 	if(Karryn.hasEdict(EDICT_APHRODISIACS_IN_INMATE_FOOD)) 
-		bonus -= 25 * Karryn.edictSkilledStaffMultipler();
-	
-	//Massage
-	if(Karryn.hasEdict(EDICT_EXPAND_THERAPY_AREA)) bonus -= 10;
+		bonus -= 30 * Karryn.edictSkilledStaffMultipler();
 	
 	//Aphrodisiac Drug / Sex Endurance Drug
-	if(Karryn.hasEdict(EDICT_APHRODISIACS_DRUGS_FOR_INMATES)) bonus -= 25;
+	if(Karryn.hasEdict(EDICT_APHRODISIACS_DRUGS_FOR_INMATES)) bonus -= 30;
 	if(Karryn.hasEdict(EDICT_SEX_ENDURANCE_DRUGS_FOR_INMATES)) bonus -= 20;
-	
-	//Blind Eye to Black Market
-	if(Karryn.hasEdict(EDICT_TURN_BLIND_EYE_TO_BLACK_MARKET)) bonus -= 10;
 	
 	//Anatomy Class
 	if(Karryn.hasEdict(EDICT_ANATOMY_CLASSES) && Karryn.hasEdict(EDICT_SUPPLY_MODEL_OF_KARRYNS_BODY)) {
@@ -1814,6 +2271,9 @@ Game_Enemy.prototype.inmateEdictAnger = function() {
 	//Bodybuilding Book
 	if(Karryn.hasEdict(EDICT_STOCK_WITH_BODYBUILDING_BOOKS)) bonus += 40;
 	
+	//Shower
+	if(Karryn.hasEdict(EDICT_COLD_SHOWERS)) bonus += 40;
+	
 	////////////
 	// Type specific
 	
@@ -1821,13 +2281,17 @@ Game_Enemy.prototype.inmateEdictAnger = function() {
 		if(Karryn.hasEdict(EDICT_DEMEAN_GOBLINS)) bonus += 40;
 		else if(Karryn.hasEdict(EDICT_BAIT_GOBLINS)) bonus -= 40;
 	}
-	
-	if(this.isThugType) {
+	else if(this.isThugType) {
 		if(Karryn.hasEdict(EDICT_THUGS_STRESS_RELIEF)) bonus -= 40;
 	}
-	
-	if(this.isRogueType) {
+	else if(this.isRogueType) {
 		if(Karryn.hasEdict(EDICT_FIGHT_ROGUE_DISTRACTIONS_WITH_DISTRACTIONS)) bonus -= 40;
+	}
+	else if(this.isLizardmanType) {
+		if(Karryn.hasEdict(EDICT_APPEASE_THE_LIZARDMEN)) bonus -= 40;
+	}
+	else if(this.isOrcType) {
+		if(Karryn.hasEdict(EDICT_REJECT_THE_ORCS)) bonus += 40;
 	}
 	
 	return bonus;
@@ -1842,7 +2306,7 @@ Game_Enemy.prototype.prisonGuardEdictArousalPoint = function() {
 	
 	//Aphrodisiac Food
 	if(Karryn.hasEdict(EDICT_APHRODISIACS_IN_GUARD_FOOD)) 
-		rate -= 0.1 * Karryn.edictSkilledStaffMultipler();
+		rate -= 0.15 * Karryn.edictSkilledStaffMultipler();
 	
 	return rate;
 };
@@ -1852,9 +2316,9 @@ Game_Enemy.prototype.inmateEdictArousalPoint = function() {
 	
 	//Aphrodisiac Food
 	if(Karryn.hasEdict(EDICT_APHRODISIACS_IN_INMATE_FOOD)) 
-		rate -= 0.1 * Karryn.edictSkilledStaffMultipler();
+		rate -= 0.15 * Karryn.edictSkilledStaffMultipler();
 	//Aphrodisiac Drug
-	if(Karryn.hasEdict(EDICT_APHRODISIACS_DRUGS_FOR_INMATES)) rate -= 0.1;
+	if(Karryn.hasEdict(EDICT_APHRODISIACS_DRUGS_FOR_INMATES)) rate -= 0.15;
 
 	
 	return rate;
@@ -1892,9 +2356,9 @@ Game_Enemy.prototype.prisonGuardEdictEjaculationVolume = function() {
 	
 	//Aphrodisiac Food
 	if(Karryn.hasEdict(EDICT_APHRODISIACS_IN_GUARD_FOOD)) 
-		rate += 0.15 * Karryn.edictSkilledStaffMultipler();
+		rate += 0.2 * Karryn.edictSkilledStaffMultipler();
 	//Performance Enhancement
-	if(Karryn.hasEdict(EDICT_PERFORMANCE_ENHANCEMENT_DRUGS_FOR_GUARDS)) rate += 0.3;
+	if(Karryn.hasEdict(EDICT_PERFORMANCE_ENHANCEMENT_DRUGS_FOR_GUARDS)) rate += 0.4;
 	
 	return rate;
 };
@@ -1904,11 +2368,10 @@ Game_Enemy.prototype.inmateEdictEjaculationVolume = function() {
 	
 	//Aphrodisiac Food
 	if(Karryn.hasEdict(EDICT_APHRODISIACS_IN_INMATE_FOOD)) 
-		rate += 0.15 * Karryn.edictSkilledStaffMultipler();
-	//Massage
-	if(Karryn.hasEdict(EDICT_EXPAND_THERAPY_AREA)) rate += 0.1;
+		rate += 0.2 * Karryn.edictSkilledStaffMultipler();
+		
 	//Aphrodisiac Drug
-	if(Karryn.hasEdict(EDICT_APHRODISIACS_DRUGS_FOR_INMATES)) rate += 0.15;
+	if(Karryn.hasEdict(EDICT_APHRODISIACS_DRUGS_FOR_INMATES)) rate += 0.2;
 	
 	return rate;
 };
@@ -1917,7 +2380,138 @@ Game_Enemy.prototype.inmateEdictEjaculationVolume = function() {
 // Sex Skill Edict
 //////////////////
 
-Game_Enemy.prototype.enemyEdictSexSkill = function() {
+Game_Enemy.prototype.enemyEdictTalkLvl = function() {
+	let value = 0;
+	
+	//Publish Records
+	if(Karryn.hasEdict(EDICT_PUBLISH_PROFILE)) {
+		if(Karryn.hasEdict(EDICT_PUBLISH_VIRGIN_STATUS))
+			value += 0.5;
+		if(Karryn.hasEdict(EDICT_PUBLISH_LAST_TIMES))
+			value += 0.5;
+		if(Karryn.hasEdict(EDICT_PUBLISH_SEX_LEVELS) && Karryn.hasEdict(EDICT_PUBLISH_SENSITIVITIES))
+			value += 0.5;
+	}
+	
+	//Enemy Type
+	if(this.isThugType) {
+		if(Karryn.hasEdict(EDICT_THUGS_STRESS_RELIEF))
+			value += 2;
+	}
+	else if(this.isGoblinType) {
+		if(Karryn.hasEdict(EDICT_BAIT_GOBLINS))
+			value += 2;
+	}
+	else if(this.isNerdType) {
+		if(Karryn.hasEdict(EDICT_GIVE_IN_TO_NERD_BLACKMAIL))
+			value += 2;
+	}
+	else if(this.isRogueType) {
+		if(Karryn.hasEdict(EDICT_FIGHT_ROGUE_DISTRACTIONS_WITH_DISTRACTIONS))
+			value += 2;
+	}
+	else if(this.isLizardmanType) {
+		if(Karryn.hasEdict(EDICT_APPEASE_THE_LIZARDMEN))
+			value += 2;
+	}
+	else if(this.isOrcType) {
+		if(Karryn.hasEdict(EDICT_REACH_UNDERSTANDING_WITH_ORCS))
+			value += 2;
+	}
+
+	return value;
+};
+
+Game_Enemy.prototype.enemyEdictSightLvl = function() {
+	let value = 0;
+	
+	//Classroom
+	if(Karryn.hasEdict(EDICT_REPAIR_CLASSROOM) && Karryn.hasEdict(EDICT_ANATOMY_CLASSES)) {
+		if(Karryn.hasEdict(EDICT_SUPPLY_MODEL_OF_KARRYNS_BODY)) {
+			value += 2;
+			if(Karryn.hasEdict(EDICT_MANDATORY_CLASSES))
+				value += 1;
+		}
+	}
+	
+	//Enemy Type
+	if(this.isThugType) {
+		if(Karryn.hasEdict(EDICT_THUGS_STRESS_RELIEF))
+			value += 2;
+	}
+	else if(this.isGoblinType) {
+		if(Karryn.hasEdict(EDICT_BAIT_GOBLINS))
+			value += 2;
+	}
+	else if(this.isNerdType) {
+		if(Karryn.hasEdict(EDICT_GIVE_IN_TO_NERD_BLACKMAIL))
+			value += 2;
+	}
+	else if(this.isRogueType) {
+		if(Karryn.hasEdict(EDICT_FIGHT_ROGUE_DISTRACTIONS_WITH_DISTRACTIONS))
+			value += 2;
+	}
+	else if(this.isLizardmanType) {
+		if(Karryn.hasEdict(EDICT_APPEASE_THE_LIZARDMEN))
+			value += 2;
+	}
+	else if(this.isOrcType) {
+		if(Karryn.hasEdict(EDICT_REACH_UNDERSTANDING_WITH_ORCS))
+			value += 2;
+	}
+	
+	return value;
+};
+
+Game_Enemy.prototype.enemyEdictToyLvl = function() {
+	let value = 0;
+	
+	if(Karryn.hasEdict(EDICT_REPAIR_READING_ROOM) && Karryn.hasEdict(EDICT_STOCK_WITH_ADULT_BOOKS)) {
+		value += 0.5;
+		if(Karryn.hasEdict(EDICT_ALLOW_BORROWING_ADULT_BOOKS))
+			value += 0.5;
+	}
+	
+	if(Karryn.hasEdict(EDICT_REPAIR_STORE)) {
+		if(this.isPrisonGuard || (this.isInmate && Karryn.hasEdict(EDICT_INMATES_ALLOWED_TO_USE_STORE)))
+			value += 1;
+	}
+
+	return value;
+};
+
+Game_Enemy.prototype.enemyEdictStripLvl = function() {
+	let value = 0;
+	
+	if(this.isInmate) {
+		//Classroom
+		if(Karryn.hasEdict(EDICT_REPAIR_CLASSROOM) && Karryn.hasEdict(EDICT_ANATOMY_CLASSES)) {
+			value += 1;
+			if(Karryn.hasEdict(EDICT_SUPPLY_MODEL_OF_KARRYNS_BODY)) {
+				value += 2;
+				if(Karryn.hasEdict(EDICT_MANDATORY_CLASSES))
+					value += 1;
+			}
+		}
+	}
+
+	return value;
+}; 
+
+Game_Enemy.prototype.enemyEdictMasturbateLvl = function() {
+	let value = 0;
+	
+	if(Karryn.hasEdict(EDICT_REPAIR_READING_ROOM) && Karryn.hasEdict(EDICT_STOCK_WITH_ADULT_BOOKS)) {
+		if(Karryn.hasEdict(EDICT_ALLOW_BORROWING_ADULT_BOOKS))
+			value -= 3;
+		else
+			value -= 1;
+	}
+
+	return value;
+}; 
+
+Game_Enemy.prototype.enemyEdictSexLvl = function() {
 	let value = 0;
 	
 	if(this.isPrisonGuard) {
@@ -1925,30 +2519,55 @@ Game_Enemy.prototype.enemyEdictSexSkill = function() {
 		if(Karryn.hasEdict(EDICT_PERFORMANCE_ENHANCEMENT_DRUGS_FOR_GUARDS)) value += 2;
 		
 		//Reading Room
-		if(Karryn.hasEdict(EDICT_STOCK_WITH_ADULT_BOOKS)) {
+		if(Karryn.hasEdict(EDICT_REPAIR_READING_ROOM) && Karryn.hasEdict(EDICT_STOCK_WITH_ADULT_BOOKS)) {
 			value += 0.5;
 		}
 	}
 	else if(this.isInmate) {
 		//Reading Room
-		if(Karryn.hasEdict(EDICT_STOCK_WITH_ADULT_BOOKS)) {
+		if(Karryn.hasEdict(EDICT_REPAIR_READING_ROOM) && Karryn.hasEdict(EDICT_STOCK_WITH_ADULT_BOOKS)) {
 			value += 1;
 			if(Karryn.hasEdict(EDICT_ALLOW_BORROWING_ADULT_BOOKS))
 				value += 0.5;
 		}
 		
 		//Classroom
-		if(Karryn.hasEdict(EDICT_ANATOMY_CLASSES)) {
+		if(Karryn.hasEdict(EDICT_REPAIR_CLASSROOM) && Karryn.hasEdict(EDICT_ANATOMY_CLASSES)) {
 			value += 1;
 			if(Karryn.hasEdict(EDICT_SUPPLY_MODEL_OF_KARRYNS_BODY))
 				value += 1.5;
 		}
-		
-		//Massage
-		if(Karryn.hasEdict(EDICT_EXPAND_THERAPY_AREA)) value += 0.05;
-		//Turn Blind Eye to Black Market
-		if(Karryn.hasEdict(EDICT_TURN_BLIND_EYE_TO_BLACK_MARKET)) value += 0.15;
 	}
+
+	return value;
+};
+
+Game_Enemy.prototype.enemyEdictSemenLvl = function() {
+	let value = 0;
+	
+	if(this.isInmate) {
+		if(Karryn.hasEdict(EDICT_EXPAND_INMATE_MENU))
+			value += 1;
+		else if(!Karryn.hasEdict(EDICT_REPAIR_KITCHEN_AND_MESS_HALL))
+			value -= 2;
+		else if(!Karryn.hasEdict(EDICT_BULK_FOOD_SUPPLIER))
+			value -= 1;
+		
+		if(Karryn.hasEdict(EDICT_RESEARCH_APHRODISIAC_CONTRACT)) {
+			value += 3;
+		}
+	}
+	else if(this.isPrisonGuard) {
+		if(Karryn.hasEdict(EDICT_GOURMET_GUARD_MEALS))
+			value += 2;
+		else if(Karryn.hasEdict(EDICT_BETTER_GUARD_MEALS))
+			value += 1;
+		
+		if(Karryn.hasEdict(EDICT_RESEARCH_APHRODISIAC_CONTRACT)) {
+			value += 3;
+		}
+	}
+	
 
 	return value;
 };

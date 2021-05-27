@@ -253,7 +253,12 @@ Object.defineProperty(Game_Party.prototype, "receptionistBattleTimeChoice", {
 		else if(value >= 20)
 			choice = 1;
 
-		return choice;
+		let maxLimit = 2;
+		if($gameSwitches.value(SWITCH_WON_BOSS_BATTLE_LV4_ID)) { //temp todo change for full game
+			maxLimit += 2;
+		}
+
+		return Math.min(maxLimit, choice);
 		
 	}, configurable: true
 });
@@ -549,10 +554,10 @@ Game_Actor.prototype.receptionistXParamRate = function(id) {
 	let passiveRate = 1;
 	if(this.isInReceptionistPose()) {
 		if(id === XPARAM_CRIT_EVA_ID || id === XPARAM_EVA_ID) {
-			passiveRate = 0.3;	
+			passiveRate = 0.4;	
 		}
 		else if(id === XPARAM_HIT_ID || id === XPARAM_CRIT_ID) {
-			passiveRate = 0.75;
+			passiveRate = 0.8;
 		}
 		else if(id === XPARAM_STA_REGEN_ID) {
 			if(this.isUsingThisTitle(TITLE_ID_RECEPTIONIST_THIRTY_SHIFTS)) {
@@ -1097,21 +1102,21 @@ Game_Actor.prototype.receptionistBattle_makeSexualNoise = function(value, frontL
 Game_Actor.prototype.skillCost_receptionistBasicSkills = function() {
 	let multipler = 1;
 	if(this.justOrgasmed()) multipler *= 2.5;
-	return Math.round(this.realMaxStamina * 0.03 * multipler);
+	return Math.min(this.realMaxStamina * 0.03 * multipler, (10 + this.level * 1.5) * multipler);
 };
 Game_Actor.prototype.skillCost_receptionistAdvancedSkills = function() {
 	let multipler = 1;
 	if(this.justOrgasmed()) multipler *= 2.5;
-	return Math.round(this.realMaxStamina * 0.08 * multipler);
+	return Math.min(this.realMaxStamina * 0.08 * multipler, (26 + this.level * 4) * multipler);
 };
 
 Game_Actor.prototype.showEval_receptionistBattle_callUnknownVisitor = function() {
 	//return $gameTroop.receptionistBattle_unknownVisitorsNotAtDesk().length > 0;
-	return !this.showEval_receptionistBattle_acceptRequest();
+	return !this.showEval_receptionistBattle_acceptRequest() && !this.showEval_receptionistBattle_acceptRequest_cant();
 	//return true;
 };
 Game_Actor.prototype.customReq_receptionistBattle_callUnknownVisitor = function() {
-	if(this.showEval_receptionistBattle_acceptRequest()) 
+	if(this.showEval_receptionistBattle_acceptRequest() || this.showEval_receptionistBattle_acceptRequest_cant()) 
 		return false;
 	
 	if(this.receptionistBattle_isKissing() || this.receptionistBattle_isGivingBlowjob())
@@ -1146,10 +1151,10 @@ Game_Actor.prototype.afterEval_receptionistBattle_callUnknownVisitor = function(
 // Greet Visitor
 
 Game_Actor.prototype.showEval_receptionistBattle_greetVisitor = function() {
-	return !this.showEval_receptionistBattle_getVisitorPapers() && !this.showEval_receptionistBattle_apologize() && !this.showEval_receptionistBattle_acceptRequest();
+	return !this.showEval_receptionistBattle_getVisitorPapers() && !this.showEval_receptionistBattle_apologize() && !this.showEval_receptionistBattle_acceptRequest() && !this.showEval_receptionistBattle_acceptRequest_cant();
 };
 Game_Actor.prototype.customReq_receptionistBattle_greetVisitor = function() {
-	if(!$gameTroop.receptionistBattle_thereIsVisitorAtDesk() || this.showEval_receptionistBattle_getVisitorPapers() || this.showEval_receptionistBattle_acceptRequest())
+	if(!$gameTroop.receptionistBattle_thereIsVisitorAtDesk() || this.showEval_receptionistBattle_getVisitorPapers() || this.showEval_receptionistBattle_acceptRequest() || this.showEval_receptionistBattle_acceptRequest_cant())
 		return false;
 	let deskVisitor = $gameTroop.receptionistBattle_visitorAtDesk();
 	return deskVisitor.visitorStatusIsUnknown() && !deskVisitor._visitor_isAngry && !deskVisitor._visitor_isIdentified;
@@ -1245,7 +1250,7 @@ Game_Actor.prototype.receptionistBattle_giveVisitorTheirPapers = function(target
 // Get Paper
 
 Game_Actor.prototype.showEval_receptionistBattle_getVisitorPapers = function() {
-	if(!$gameTroop.receptionistBattle_thereIsVisitorAtDesk() || this.showEval_receptionistBattle_acceptRequest())
+	if(!$gameTroop.receptionistBattle_thereIsVisitorAtDesk() || this.showEval_receptionistBattle_acceptRequest() || this.showEval_receptionistBattle_acceptRequest_cant())
 		return false;
 	let deskVisitor = $gameTroop.receptionistBattle_visitorAtDesk();
 	return deskVisitor.visitorStatusIsWriting() && deskVisitor._visitor_finishedWritingPapers && !deskVisitor._visitor_isAngry;
@@ -1272,11 +1277,10 @@ Game_Actor.prototype.afterEval_receptionistBattle_getVisitorPapers = function(ta
 // Process Papers skill
 
 Game_Actor.prototype.showEval_receptionistBattle_beginProcessingPapers = function() {
-	return this.receptionistBattle_remainingProcessingPapersTime() === -1 && !this.showEval_receptionistBattle_acceptRequest();
+	return this.receptionistBattle_remainingProcessingPapersTime() === -1 && !this.showEval_receptionistBattle_acceptRequest() && !this.showEval_receptionistBattle_acceptRequest_cant();
 };
 Game_Actor.prototype.customReq_receptionistBattle_beginProcessingPapers = function() {
-	if($gameTroop.receptionistBattle_thereIsVisitorAtDesk() || this.showEval_receptionistBattle_acceptRequest()) return false;
-	if(this.showEval_receptionistBattle_acceptRequest() || this.showEval_receptionistBattle_apologize())
+	if($gameTroop.receptionistBattle_thereIsVisitorAtDesk() || this.showEval_receptionistBattle_acceptRequest() || this.showEval_receptionistBattle_acceptRequest_cant() || this.showEval_receptionistBattle_apologize())
 		return false;
 	let hasPapersNeedingProcessing = false;
 	for(let i = 0; i < $gameTroop._visitorSeats.length; ++i) {
@@ -1298,7 +1302,9 @@ Game_Actor.prototype.afterEval_receptionistBattle_beginProcessingPapers = functi
 };
 
 Game_Actor.prototype.skillCost_receptionistProcessPaper = function() {
-	return Math.round(this.realMaxStamina * 0.06);
+	let multipler = 1;
+	if(this.justOrgasmed()) multipler *= 2;
+	return Math.min(this.realMaxStamina * 0.06 * multipler, (20 + this.level * 3) * multipler);
 };
 
 Game_Actor.prototype.calculateReceptionistPaperworkProcessingTime = function(pages) {
@@ -1311,12 +1317,12 @@ Game_Actor.prototype.calculateReceptionistPaperworkProcessingTime = function(pag
 
 // Continue Processing
 Game_Actor.prototype.showEval_receptionistBattle_continueProcessingPapers = function() {
-	return this.receptionistBattle_remainingProcessingPapersTime() > 0 && !this.showEval_receptionistBattle_acceptRequest();
+	return this.receptionistBattle_remainingProcessingPapersTime() > 0 && !this.showEval_receptionistBattle_acceptRequest() && !this.showEval_receptionistBattle_acceptRequest_cant();
 };
 Game_Actor.prototype.customReq_receptionistBattle_continueProcessingPapers = function() {
 	if(this.stamina < this.skillCost_receptionistProcessPaper())
 		return false;
-	if($gameTroop.receptionistBattle_thereIsVisitorAtDesk() || this.showEval_receptionistBattle_acceptRequest() || this.justOrgasmed()) return false;
+	if($gameTroop.receptionistBattle_thereIsVisitorAtDesk() || this.showEval_receptionistBattle_acceptRequest() || this.showEval_receptionistBattle_acceptRequest_cant() || this.justOrgasmed()) return false;
 	return !this.receptionistBattle_isLayingOnDesk();
 };
 Game_Actor.prototype.continueProcessingPapersWillCost = function() {
@@ -1331,11 +1337,11 @@ Game_Actor.prototype.afterEval_receptionistBattle_continueProcessingPapers = fun
 		this.receptionistBattle_decreaseRemainingProcessingPapersTime(processingSpeed);
 		this._hp -= this.skillCost_receptionistProcessPaper();
 		if(this.will >= this.continueProcessingPapersWillCost()) {
-			this.gainMindExp(Math.round(processingSpeed * 0.35), this.level);
+			this.gainMindExp(Math.round(processingSpeed * 0.55), this.level);
 			this.gainWill(-this.continueProcessingPapersWillCost());
 		}
 		else {
-			this.gainMindExp(Math.round(processingSpeed * 0.1), this.level);
+			this.gainMindExp(Math.round(processingSpeed * 0.15), this.level);
 		}
 	}
 	
@@ -1400,7 +1406,7 @@ Game_Actor.prototype.receptionistBattle_processingPapersSpeed = function() {
 // Assign To Visiting Room
 
 Game_Actor.prototype.showEval_receptionistBattle_assignToVisitingRoom = function(roomId) {
-	return $gameParty.maxAvailableVisitorRooms() > roomId && !this.showEval_receptionistBattle_acceptRequest();
+	return $gameParty.maxAvailableVisitorRooms() > roomId && !this.showEval_receptionistBattle_acceptRequest() && !this.showEval_receptionistBattle_acceptRequest_cant();
 };
 Game_Actor.prototype.customReq_receptionistBattle_assignToVisitingRoom = function() {
 	return $gameTroop.receptionistBattle_visitorsReadyForVisitingRoom().length > 0;
@@ -1426,7 +1432,7 @@ Game_Actor.prototype.afterEval_receptionistBattle_assignToVisitingRoom = functio
 // Check Visiting Room Status
 
 Game_Actor.prototype.showEval_receptionistBattle_checkVisitingRoomStatus = function(roomId) {
-	return $gameParty.maxAvailableVisitorRooms() > roomId && !this.showEval_receptionistBattle_acceptRequest();
+	return $gameParty.maxAvailableVisitorRooms() > roomId && !this.showEval_receptionistBattle_acceptRequest() && !this.showEval_receptionistBattle_acceptRequest_cant();
 };
 Game_Actor.prototype.customReq_receptionistBattle_checkVisitingRoomStatus = function() {
 	if(this.receptionistBattle_isKissing() || this.receptionistBattle_gettingBoobsRubbed() || this.receptionistBattle_isGivingBlowjob() || this.receptionistBattle_isGivingHandjob())
@@ -1671,7 +1677,7 @@ Game_Actor.prototype.skillDescription_cant_receptionistBattle_acceptRequest = fu
 
 // Breather
 Game_Actor.prototype.showEval_receptionistBattle_Breather = function() {
-	return !this.showEval_receptionistBattle_acceptRequest();
+	return !this.showEval_receptionistBattle_acceptRequest() && !this.showEval_receptionistBattle_acceptRequest_cant();
 };
 Game_Actor.prototype.customReq_receptionistBattle_Breather = function() {
 	return true;
@@ -1687,7 +1693,7 @@ Game_Actor.prototype.afterEval_receptionistBattle_Breather = function() {
 };
 
 Game_Actor.prototype.showEval_receptionistBattle_Rest = function() {
-	return !this.showEval_receptionistBattle_acceptRequest();
+	return !this.showEval_receptionistBattle_acceptRequest() && !this.showEval_receptionistBattle_acceptRequest_cant();
 };
 Game_Actor.prototype.customReq_receptionistBattle_Rest = function() {
 	return true;
@@ -1706,7 +1712,7 @@ Game_Actor.prototype.afterEval_receptionistBattle_endShift = function() {
 
 // Fix clothes
 Game_Actor.prototype.showEval_receptionistBattle_fixClothes = function() {
-	return !this.showEval_receptionistBattle_acceptRequest();
+	return !this.showEval_receptionistBattle_acceptRequest() && !this.showEval_receptionistBattle_acceptRequest_cant();
 };
 Game_Actor.prototype.customReq_receptionistBattle_fixClothes = function() {
 	if(this.justOrgasmed()) return false;
@@ -1722,7 +1728,7 @@ Game_Actor.prototype.afterEval_receptionistBattle_fixClothes = function() {
 // Shoo Away
 
 Game_Actor.prototype.showEval_receptionistBattle_shooAway = function() {
-	return $gameTroop.receptionistBattle_countGoblins() > 0 && !this.showEval_receptionistBattle_acceptRequest();
+	return $gameTroop.receptionistBattle_countGoblins() > 0 && !this.showEval_receptionistBattle_acceptRequest() && !this.showEval_receptionistBattle_acceptRequest_cant();
 };
 Game_Actor.prototype.customReq_receptionistBattle_shooAway = function() {
 	if(this.receptionistBattle_isKissing() || this.receptionistBattle_gettingBoobsRubbed() || this.receptionistBattle_isGivingBlowjob() || this.receptionistBattle_isGivingHandjob())
@@ -1733,7 +1739,7 @@ Game_Actor.prototype.customReq_receptionistBattle_shooAway = function() {
 Game_Actor.prototype.skillCost_receptionistBattle_shooAway = function() {
 	let multipler = 1;
 	if(this.justOrgasmed()) multipler *= 2;
-	return Math.round(this.realMaxStamina * 0.05 * multipler);
+	return Math.min(this.realMaxStamina * 0.05 * multipler, (17 + this.level * 2.5) * multipler);
 };
 Game_Actor.prototype.afterEval_receptionistBattle_shooAway = function(target) {
 	if(this.receptionistBattle_isSayingSexualLines()) {
@@ -1754,7 +1760,7 @@ Game_Actor.prototype.afterEval_receptionistBattle_shooAway = function(target) {
 // Kick Away
 
 Game_Actor.prototype.showEval_receptionistBattle_kickAway = function() {
-	return $gameTroop.receptionistBattle_countGoblins() > 0 && !this.showEval_receptionistBattle_acceptRequest();
+	return $gameTroop.receptionistBattle_countGoblins() > 0 && !this.showEval_receptionistBattle_acceptRequest() && !this.showEval_receptionistBattle_acceptRequest_cant();
 };
 Game_Actor.prototype.customReq_receptionistBattle_kickAway = function() {
 	return !this.receptionistBattle_isLayingOnDesk() && !this.receptionistBattle_isHavingSexBehind() && !this.isHorny && 
@@ -2206,7 +2212,7 @@ Game_Troop.prototype.receptionistBattle_spawnGoblin = function(forceSpawn) {
 			let enemyId = this.receptionistBattle_validGoblinId();
 			let enemy = this.setup_receptionistBattle_goblin(enemyId);
 			enemy.makeUniqueNames();
-			enemy.setupEnemyPrefixEffect();
+			enemy.setupEnemyPrefixEjaculationStockEffect();
 			enemy.onBattleStart();
 			enemy.midBattleSpawn_setupDreamX();
 			SceneManager._scene._spriteset.addEnemy(enemy);
@@ -2541,7 +2547,7 @@ Game_Enemy.prototype.setupForReceptionistBattle_fan = function() {
 	this._fan_skillUseInterval = 0;
 	this._fan_skillCooldown = 0;	
 	this._fan_skillUseInterval = 1;
-	this._fan_turnsUntilRequestFinished = 3 + Math.randomInt(2);
+	this._fan_turnsUntilRequestFinished = 2 + Math.randomInt(3);
 	if(!this._visitor_isVisiting) this._fan_turnsUntilRequestFinished += Math.randomInt(3);
 };	
 
@@ -2681,8 +2687,18 @@ Game_Enemy.prototype.displayName_receptionistBattle = function() {
 	return name;
 };
 
-Game_Enemy.prototype.battlerName_receptionistBattleSuffix = function() {
-	return '';
+Game_Enemy.prototype.battlerName_receptionistBattle = function() {
+	if(this.isWanted) {
+		if(this.isVisitorMaleType && !this._visitor_isVisiting && this.visitorLocationIsDesk() && this._visitor_pervPromoteChance >= 100) {
+			return 'visitorm_99';
+		}
+		else {
+			return this._wantedBattlerName;
+		}
+	}
+	else {
+		return this.enemyType() + '_' + this.battlerNameNum();
+	}
 };
 
 Game_Enemy.prototype.bonusPpt_receptionistBattle = function() {
@@ -3221,7 +3237,10 @@ Game_Enemy.prototype.enemyBattleAIReceptionist_goblin = function(target) {
 				skillArray.push(SKILL_ENEMY_PETTING_SELECTOR_PUSSY_ID);
 				skillArray.push(SKILL_ENEMY_POSEJOIN_RECEPTIONIST_PUSSY_ID);
 				skillArray.push(SKILL_ENEMY_POSEJOIN_RECEPTIONIST_PUSSY_ID);
+				skillArray.push(SKILL_ENEMY_POSEJOIN_RECEPTIONIST_PUSSY_ID);
+				skillArray.push(SKILL_ENEMY_POSEJOIN_RECEPTIONIST_PUSSY_ID);
 				if(target._recordSexPose_GoblinCunnilingusCount > 0) {
+					skillArray.push(SKILL_ENEMY_POSEJOIN_RECEPTIONIST_CUNNI_ID);
 					skillArray.push(SKILL_ENEMY_POSEJOIN_RECEPTIONIST_CUNNI_ID);
 				}
 			}

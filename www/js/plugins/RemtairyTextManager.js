@@ -4,7 +4,7 @@ Remtairy.TextManager = Remtairy.TextManager || {};
 var Imported = Imported || {};
 Imported.RemtairyTextManager = true;
 
-const RemVersionText = '7B.j';
+const RemVersionText = '8.m';
 
 //=============================================================================
  /*:
@@ -83,11 +83,11 @@ const WpDefNameJP = "防御力";
 const OverblowProtectionNameEN = "Overblow Protection";
 const OverblowProtectionNameJP = "ダメージ軽減量";
 const FatigueNameEN = "Fatigue";
-const FatigueNameJP = "疲労";
+const FatigueNameJP = "現在の疲労";
 const FatigueGainNameEN = "Fatigue Gain";
-const FatigueGainNameJP = "疲労蓄積";
+const FatigueGainNameJP = "疲労蓄積量";
 const FatigueRecoveryNameEN = "Fatigue Recovery";
-const FatigueRecoveryNameJP = "疲労回復";
+const FatigueRecoveryNameJP = "疲労回復量";
 const MaxWillpowerNameEN = "Max Willpower";
 const MaxWillpowerNameJP = "最大意志力";
 const WillpowerNameEN = "Willpower";
@@ -428,6 +428,8 @@ const BarIncomeNameEN = "Bar Income";
 const BarIncomeNameJP = "酒場の収入";
 const StoreIncomeNameEN = "Store Income";
 const StoreIncomeNameJP = "ショップの収入";
+const OutsourcingIncomeNameEN = "Outsourcing Income";
+const OutsourcingIncomeNameJP = "残業の収入";
 const NerdBlackmailNameEN = "Nerd Blackmail Payment";
 const NerdBlackmailNameJP = "オタクのゆすり";
 const ExpenseNameEN = "Expense";
@@ -440,11 +442,11 @@ const EstimatedLossNameEN = "Est. Loss";
 const EstimatedLossNameJP = "翌日支出";
 
 const SecretaryModeNameEN = "Secretary Mode";
-const SecretaryModeNameJP = "秘書コース";
+const SecretaryModeNameJP = "秘書モード";
 const WardenModeNameEN = "Warden Mode";
-const WardenModeNameJP = "看守コース";
+const WardenModeNameJP = "看守モード";
 const PrisonerModeNameEN = "Prisoner Mode";
-const PrisonerModeNameJP = "囚人コース";
+const PrisonerModeNameJP = "囚人モード";
 
 //Right Click Status
 const RCMenuSleepQualityNegTwoTextEN = "\\C[7]Karryn barely got any sleep last night... \\C[0](\\C[18]Stats -10%, Charm -20%\\C[0])";
@@ -467,7 +469,7 @@ const RCMenuFatigueLevelTwoTextJP = "\\C[0]疲労感：疲れを感じている�
 const RCMenuFatigueLevelThreeTextEN = "\\C[8]Karryn is starting to feel exhausted... \\C[0](\\C[10]Stats -30%\\C[0])";
 const RCMenuFatigueLevelThreeTextJP = "\\C[8]疲労感：疲れている……。 \\C[0](\\C[10]全ステータス-30％\\C[0])";
 const RCMenuFatigueLevelFourTextEN = "\\C[7]Karryn is exhausted... \\C[0](\\C[18]Stats -40%, Can't Escape\\C[0])";
-const RCMenuFatigueLevelFourTextJP = "\\C[7]疲労感：強く疲弊している………。 \\C[0](\\C[18]全ステータス-40％ / 撤退不可\\C[0])";
+const RCMenuFatigueLevelFourTextJP = "\\C[7]疲労感：かなり疲弊している………。 \\C[0](\\C[18]全ステータス-40％ / 撤退不可\\C[0])";
 const RCMenuFatigueLevelFiveTextEN = "\\C[7]Karryn is dead tired...... \\C[0](\\C[18]Stats -50%, Can't Escape\\C[0])";
 const RCMenuFatigueLevelFiveTextJP = "\\C[7]疲労感：完全に疲労困憊になっている…………。 \\C[0](\\C[18]全ステータス-50％ / 撤退不可\\C[0])";
 
@@ -930,7 +932,7 @@ const StatusBattleEffectDisarmedJP = "【武装：\\C[18]なし\\C[0]】ハル�
 const StatusBattleEffectDefiledHalberdEN = "Karryn's \\C[18]halberd is currently defiled\\C[0]! She can't use her halberd until she rests in her office or a guard station.";
 const StatusBattleEffectDefiledHalberdJP = "【武装：\\C[18]不可\\C[0]】ハルバードが汚されていて武装出来ない。【ベッドで休む必要あり】";
 const StatusBattleEffectOffBalancedEN = "Karryn is \\C[18]off-balanced\\C[0]! Her attack, defense and evasion are decreased.";
-const StatusBattleEffectOffBalancedJP = "【状態：\\C[18]バランスが悪い！\\C[0]】攻撃力、防御力、回避力ダウン。";
+const StatusBattleEffectOffBalancedJP = "【状態：\\C[18]バランス崩壊\\C[0]】攻撃力、防御力、回避力ダウン。";
 const StatusBattleEffectWeakenEN = "Karryn is \\C[18]weakened\\C[0]! Her strength and attack are decreased.";
 const StatusBattleEffectWeakenJP = "【状態：\\C[18]脱力\\C[0]】腕力、攻撃力ダウン。";
 const StatusBattleEffectDizzyEN = "Karryn is \\C[18]dizzy\\C[0]! Her accuracy and evasion are decreased.";
@@ -941,6 +943,10 @@ const StatusBattleEffectVulnerableEN = "Karryn is currently \\C[18]vulnerable\\C
 const StatusBattleEffectVulnerableJP = "【状態：\\C[18]放心\\C[0]】防御力ダウン。";
 const StatusBattleEffectPoisonEN = "Karryn is \\C[18]poisoned\\C[0]! Her stamina decreases every turn instead of regenerating.";
 const StatusBattleEffectPoisonJP = "【状態：\\C[18]毒\\C[0]】体力が減少していく【毎ターン】";
+const StatusBattleEffectYetiHeatAuraOneEN = "Karryn is being affected by \\C[18]the Yeti's heat aura\\C[0]! Her stamina regeneration is greatly decreased.";
+const StatusBattleEffectYetiHeatAuraOneJP = "【状態：\\I[18]イエティの熱オーラ\\C[0]】体力回復量が大幅ダウン！";
+const StatusBattleEffectYetiHeatAuraTwoEN = "Karryn is being affected by \\C[18]the Yetis's heat aura\\C[0]! Her stamina and willpower regeneration are greatly decreased.";
+const StatusBattleEffectYetiHeatAuraTwoJP = "【状態：\\I[18]イエティの熱オーラ\\C[0]】体力回復量、意志力回復量が大幅ダウン！";
 const StatusBattleEffectExposeWeaknessEN = "Karryn's \\C[18]weaknesses are exposed\\C[0]! Her evasion, critical evasion, and all her resists are decreased.";
 const StatusBattleEffectExposeWeaknessJP = "【状態：\\C[18]弱点バレ\\C[0]】回避力、クリティカル回避力、全ての耐性がダウン。";
 const StatusBattleEffectAttackComboEN = "Karryn has attacked \\C[2]%1 consecutive times\\C[0]! The damage, accuracy and cost of her next attack will be increased.";
@@ -1008,7 +1014,7 @@ const StateTooltipsFrustratedJP = "\\C[18]【ムラムラしている！】\\C[0
 const StateTooltipsDisarmedEN = "Karryn is \\C[18]disarmed\\C[0]!!\nShe will need to get closer to her halberd to rearm herself.";
 const StateTooltipsDisarmedJP = "\\C[18]【武装なし】\\C[0]\nハルバードを拾って再武装が必要";
 const StateTooltipsOffBalancedEN = "%1 is \\C[18]off-balanced\\C[0]!\nTheir attack, defense and evasion are decreased.";
-const StateTooltipsOffBalancedJP = "\\C[18]【バランスが悪い！】\\C[0]\n\\I[42]攻撃力 ダウン\n\\I[42]防御力 ダウン\n\\I[42]回避力 ダウン";
+const StateTooltipsOffBalancedJP = "\\C[18]【バランス崩壊】\\C[0]\n\\I[42]攻撃力 ダウン\n\\I[42]防御力 ダウン\n\\I[42]回避力 ダウン";
 const StateTooltipsWeakenEN = "%1 is \\C[18]weakened\\C[0]!\nTheir strength and attack are decreased.";
 const StateTooltipsWeakenJP = "\\C[18]【脱力している！】\\C[0]\n\\I[42]腕力 ダウン\n\\I[42]攻撃力 ダウン";
 const StateTooltipsDizzyEN = "%1 is \\C[18]dizzy\\C[0]!\nTheir accuracy and evasion are decreased.";
@@ -1101,8 +1107,29 @@ const StateTooltipsSlimeRegenFourthEN = "%1 will regenerate 5% of stamina per tu
 const StateTooltipsSlimeRegenFourthJP = "【再生能力】\n\\I[42]体力 5％回復\n（毎ターン）";
 const StateTooltipsOrcDefensivePresenceEN = "%1's defense is increased.";
 const StateTooltipsOrcDefensivePresenceJP = "【オークの肉壁】\n\\I[42]防御力 アップ";
+const StateTooltipsOrcCommandingPresenceOneEN = "%1's attack, defense and evasion are increased.";
+const StateTooltipsOrcCommandingPresenceOneJP = "【進撃のオーク】\n\\I[42]攻撃力＆防御力＆回避力 アップ";
+const StateTooltipsOrcCommandingPresenceTwoEN = "%1's defense and evasion are increased.";
+const StateTooltipsOrcCommandingPresenceTwoJP = "【オークの肉壁】\n\\I[42]防御力＆回避力 アップ";
+const StateTooltipsOrcCommandingPresenceThreeEN = "%1's attack is increased.";
+const StateTooltipsOrcCommandingPresenceThreeJP = "【進撃のオーク】\n\\I[42]攻撃力 アップ";
+const StateTooltipsOrcCommandingPresenceFourEN = "%1's pleasure damage is increased.";
+const StateTooltipsOrcCommandingPresenceFourJP = "【オークの豚汁】\n\\I[42]快楽度ダメージ アップ";
 const StateTooltipsLizardmanRacialEN = "%1 is with another lizardman.\nAll his stats are increased.";
 const StateTooltipsLizardmanRacialJP = "【群れるリザードマン】\n\\I[42]全ステータス アップ";
+const StateTooltipsLizardmanRacialWeakEN = "%1 is with another lizardman.\nAll his stats are slightly increased.";
+const StateTooltipsLizardmanRacialWeakJP = "【群れるリザードマン】\n\\I[42]全ステータス 少しアップ";
+const StateTooltipsYetiHeatAuraEN = "%1's heat aura causes\nvarious debuffs to everyone.";
+const StateTooltipsYetiHeatAuraJP = "【熱オーラ放出中】\n\\I[42]全員に様々なデバフ";
+const StateTooltipsYetiHeatAuraEnemyOneEN = "%1 is being affected by \\C[18]the Yeti's heat aura\\C[0]!\nHe is dealing lower pleasure damage.";
+const StateTooltipsYetiHeatAuraEnemyOneJP = "\\C[18]【イエティの熱オーラ】\\C[0]\n\\I[40]カリンへの快楽度ダメージ ダウン";
+const StateTooltipsYetiHeatAuraEnemyTwoEN = "%1 is being affected by \\C[18]the Yetis's heat aura\\C[0]!\nHe is dealing greatly lower pleasure damage.";
+const StateTooltipsYetiHeatAuraEnemyTwoJP = "\\C[18]【イエティの熱オーラ】\\C[0]\n\\I[40]カリンへの快楽度ダメージ 大幅ダウン";
+const StateTooltipsYetiHeatAuraKarrynOneEN = "Karryn is being affected by \\C[18]the Yeti's heat aura\\C[0]!\nHer stamina regeneration is greatly decreased.";
+const StateTooltipsYetiHeatAuraKarrynOneJP = "\\C[18]【イエティの熱オーラ】\\C[0]\n\\I[42]体力回復量 大幅ダウン";
+const StateTooltipsYetiHeatAuraKarrynTwoEN = "Karryn is being affected by \\C[18]the Yetis's heat aura\\C[0]!\nHer stamina and willpower regeneration\nare greatly decreased.";
+const StateTooltipsYetiHeatAuraKarrynTwoJP = "\\C[18]【イエティの熱オーラ】\\C[0]\n\\I[42]体力回復量＆意志力回復量 大幅ダウン";
+
 const StateTooltipsKarrynClitToyEN = "Karryn has a toy attached to her clitoris!";
 const StateTooltipsKarrynClitToyJP = "【オモチャ】\nピンクローター\n\\I[40]クリに装着中！";
 const StateTooltipsKarrynPussyToyEN = "Karryn has a toy inserted in her pussy!";
@@ -1121,8 +1148,8 @@ const StateTooltipsToiletPenisDildoEN = "Someone left a penis dildo in the stall
 const StateTooltipsToiletPenisDildoJP = "ディルドが放置されている……";
 const StateTooltipsToiletAnalBeadsEN = "Someone left anal beads in the stall...";
 const StateTooltipsToiletAnalBeadsJP = "アナルビーズが放置されている……";
-const StateWaitressNoAlcoholEN = "Karryn is refusing all \\C[2]attempts to get her to drink\\C[0].\nHer willpower regen is halved.\n%1 Willpower will be required to refuse a drink.";
-const StateWaitressNoAlcoholJP = "\\C[2]【飲酒を拒否中】\\C[0]\n客から勧められるアルコールを全て断っている\n\\I[42]意志力回復量 半減\n（飲酒拒否に必要な意志力：%1）";
+const StateWaitressNoAlcoholEN = "Karryn is refusing all \\C[2]attempts to get her to drink\\C[0].\n%1 Willpower will be required to refuse a drink.\nHer Willpower Regen will also be greatly reduced after refusing a drink.";
+const StateWaitressNoAlcoholJP = "\\C[2]【飲酒を拒否中】\\C[0]\n全ての飲み物を断っている\n\\I[42]飲み物を断るのに必要な意志力：%1\n\\I[42]飲み物を断った時は意志力回復量 大幅ダウン";
 const StateWaitressDirtyMugsSingularEN = "%1 has a dirty mug waiting to be collected.";
 const StateWaitressDirtyMugsSingularJP = "【回収待ちのジョッキ】\n1杯";
 const StateWaitressDirtyMugsPluralEN = "%1 has %2 dirty mugs waiting to be collected.";
@@ -1167,7 +1194,7 @@ const StateReceptionistVisitorPaperBeforeEN = "%1's %2 pages of paperwork need t
 const StateReceptionistVisitorPaperBeforeJP = "%2ページある申込書を持っている";
 const StateReceptionistVisitorPaperAfterEN = "%1's %2 pages of paperwork are being processed.";
 const StateReceptionistVisitorPaperAfterJP = "%2ページの申込書を記入中……";
-const StateReceptionistVisitorTimeEN = "%1's paperwork have been processed.\nThey are allowed %2 minutes for visitation.";
+const StateReceptionistVisitorTimeEN = "%1's paperwork has been processed.\nThey are allowed %2 minutes for visitation.";
 const StateReceptionistVisitorTimeJP = "申込書の処理が完了\n\\I[42]所有時間：%2分";
 const StateReceptionistVisitorMovingEN = "%1 is currently walking.";
 const StateReceptionistVisitorMovingJP = "受付デスクに向かっている……";
@@ -1442,6 +1469,10 @@ const RemResultsKarrynBlowjobEN = "\\I[294]\\C[27]Gave blowjobs to %1 %2!";
 const RemResultsKarrynBlowjobJP = "\\I[294]\\C[27]%1人にフェラした！";
 const RemResultsKarrynTitjobEN = "\\I[221]\\C[27]Gave titjobs to %1 %2!";
 const RemResultsKarrynTitjobJP = "\\I[221]\\C[27]%1人にパイズリした！";
+const RemResultsKarrynFootjobEN = "\\I[219]\\C[27]Gave footjobs to %1 %2!";
+const RemResultsKarrynFootjobJP = "\\I[219]\\C[27]%1人に足コキした！";
+const RemResultsKarrynRimjobEN = "\\I[299]\\C[27]Gave rimjobs to %1 %2!";
+const RemResultsKarrynRimjobJP = "\\I[299]\\C[27]%1人にケツ舐めした！";
 const RemResultsKarrynVaginalSexEN = "\\I[295]\\C[27]Had vaginal sex with %1 %2!";
 const RemResultsKarrynVaginalSexJP = "\\I[295]\\C[27]%1人とマンコでセックスした！";
 const RemResultsKarrynAnalSexEN = "\\I[296]\\C[27]Had anal sex with %1 %2!";
@@ -1475,8 +1506,8 @@ const RemDailyReportAnarchyLimitBefore_pluralEN = "\\I[377]Day %2 of Level %1 be
 const RemDailyReportAnarchyLimitBefore_pluralJP = "\\I[377]監獄レベル%1は%2日間\\C[7]無法状態\\C[0]です。そのため、%3日後には統制力が更に減少するかもしれません！";
 const RemDailyReportAnarchyPastLimitEN = "\\I[377]Day %2 of Level %1 being in Anarchy. Control is further decreased by \\C[18]-%3\\C[0] due to unrest!";
 const RemDailyReportAnarchyPastLimitJP = "\\I[377]監獄レベル%1は%2日間\\C[7]無法状態\\C[0]です。そのため統制力が\\C[18]%3\\C[0]減少しました！";
-const RemDailyReportRiot_NewEN = "\\I[407]Level %1 has started \\C[18]RIOTING\\C[0]!!";
-const RemDailyReportRiot_NewJP = "\\I[407]監獄レベル%1で\\C[18]暴動が勃発\\C[0]！！";
+const RemDailyReportRiot_NewEN = "\\I[407]Level %1 has started \\C[18]RIOTING\\C[0]!! Order has decreased by \\C[18]-%2\\C[0]!";
+const RemDailyReportRiot_NewJP = "\\I[407]監獄レベル%1で\\C[18]暴動が勃発\\C[0]！！秩序が\\C[18]%2\\C[0]減少しました！";
 const RemDailyReportRiot_OldEN = "\\I[407]Level %1 has been \\C[18]RIOTING\\C[0] for %2 days! Control is further decreased by \\C[18]-%3\\C[0]!";
 const RemDailyReportRiot_OldJP = "\\I[407]監獄レベル%1の\\C[18]暴動が%2日間継続中\\C[0]！統制力が更に\\C[18]%3\\C[0]減少しました！";
 const RemDailyReportOrderChange_PositiveEN = "\\I[408]Order has risen to %1.";
@@ -1654,24 +1685,24 @@ const RemYanflyOptions_CommandRemember_Help_EN = "The game remembers the last Me
 const RemYanflyOptions_CommandRemember_Help_JP = "メンタルフェーズとアクションフェーズの最後に使ったスキルを記憶します。";
 
 const RemYanflyOptions_Battlelog_Duration_EN = "\\i[273]Battlelog Duration";
-const RemYanflyOptions_Battlelog_Duration_JP = "\\i[273]バトルメッセージ表示速度";
+const RemYanflyOptions_Battlelog_Duration_JP = "\\i[273]バトルメッセージ表示時間";
 const RemYanflyOptions_Battlelog_Duration_Help_EN = "Changes how long battlelog messages stay on the screen.";
-const RemYanflyOptions_Battlelog_Duration_Help_JP = "戦闘で表示されるテキストの速度を変更出来ます。";
+const RemYanflyOptions_Battlelog_Duration_Help_JP = "バトル内テキストの表示時間を変更出来ます。";
 const RemYanflyOptions_Battlelog_Duration_Zero_EN = "Very Short";
-const RemYanflyOptions_Battlelog_Duration_Zero_JP = "最速 ★★★★★";
+const RemYanflyOptions_Battlelog_Duration_Zero_JP = "ベリーショート";
 const RemYanflyOptions_Battlelog_Duration_One_EN = "Short";
-const RemYanflyOptions_Battlelog_Duration_One_JP = "早い ★★★★";
+const RemYanflyOptions_Battlelog_Duration_One_JP = "ショート";
 const RemYanflyOptions_Battlelog_Duration_Two_EN = "Default";
-const RemYanflyOptions_Battlelog_Duration_Two_JP = "普通 ★★★";
+const RemYanflyOptions_Battlelog_Duration_Two_JP = "デフォルト";
 const RemYanflyOptions_Battlelog_Duration_Three_EN = "Long";
-const RemYanflyOptions_Battlelog_Duration_Three_JP = "遅い ★★";
+const RemYanflyOptions_Battlelog_Duration_Three_JP = "ロング";
 const RemYanflyOptions_Battlelog_Duration_Four_EN = "Very Long";
-const RemYanflyOptions_Battlelog_Duration_Four_JP = "最遅 ★";
+const RemYanflyOptions_Battlelog_Duration_Four_JP = "ベリーロング";
 
 const RemYanflyOptions_Battlelog_Fontsize_EN = "\\i[273]Battlelog Font Size";
 const RemYanflyOptions_Battlelog_Fontsize_JP = "\\i[273]バトルメッセージのフォントサイズ";
 const RemYanflyOptions_Battlelog_Fontsize_Help_EN = "Changes the font size for battlelog messages.";
-const RemYanflyOptions_Battlelog_Fontsize_Help_JP = "戦闘で表示されるテキストのサイズを変更出来ます。";
+const RemYanflyOptions_Battlelog_Fontsize_Help_JP = "バトル内テキストのサイズを変更出来ます。";
 const RemYanflyOptions_Battlelog_Fontsize_Zero_EN = "Smallest";
 const RemYanflyOptions_Battlelog_Fontsize_Zero_JP = "最小";
 const RemYanflyOptions_Battlelog_Fontsize_One_EN = "Smaller";
@@ -1699,9 +1730,9 @@ const RemYanflyOptions_MaleDialogueAppear_Four_EN = "Talkative";
 const RemYanflyOptions_MaleDialogueAppear_Four_JP = "おしゃべり";
 
 const RemYanflyOptions_KarrynLinesPrompt_EN = "\\i[273]Karryn Dialogue Pause";
-const RemYanflyOptions_KarrynLinesPrompt_JP = "\\i[273]戦闘時カリンのセリフは待つ";
+const RemYanflyOptions_KarrynLinesPrompt_JP = "\\i[273]カリンのセリフは待つ";
 const RemYanflyOptions_KarrynLinesPrompt_Help_EN = "The battle is paused after Karryn speaks until the confirm key is pressed.\nTurning this option OFF will skip this pause for most of Karryn's battle dialogues.";
-const RemYanflyOptions_KarrynLinesPrompt_Help_JP = "戦闘でカリンが話す時はスキップするかどうかの設定が出来ます。\nON：カリン発言時のみ、決定キーを押すまで戦闘メッセージは停止します。\nOFF：カリンのセリフも含めて、戦闘メッセージは全て自動送りされます。";
+const RemYanflyOptions_KarrynLinesPrompt_Help_JP = "バトル中にカリンが話す時は自動送りするかどうかの設定が出来ます。\nON：カリン発言時のみ、決定キーを押すまで戦闘メッセージは停止します。\nOFF：カリンのセリフも含めて、戦闘メッセージは全て自動送りされます。";
 const RemYanflyOptions_Disable_Rimjobs_EN = "\\i[273]Disable Rimjobs";
 const RemYanflyOptions_Disable_Rimjobs_JP = "\\i[273]『ケツ舐め』プレイの非表示";
 const RemYanflyOptions_Disable_Rimjobs_Help_EN = "Prevents all rimjob content from occuring while this is option is on.\nNote that this game's progression and full content is designed with rimjobs in mind.\nOnly select this option if it'd otherwise keep you from wanting to play this game.";
@@ -1753,24 +1784,28 @@ const RemYanflyOptions_WindowToneBlue_JP = "\\i[279]ウィンドウトーン：B
 const RemYanflyOptions_WindowToneBlue_Help_EN = "Changes the window tone's \\c[14]blue\\c[0] value.\nHold SHIFT while pressing LEFT/RIGHT to adjust more.";
 const RemYanflyOptions_WindowToneBlue_Help_JP = "ウィンドウ色彩の\\c[14]青\\c[0]を変更出来ます。\nSHIFTキーを押しながら左右に動かすことで大きく変更出来ます。";
 const RemYanflyOptions_FasterBattleDialogue_EN = "\\i[276]Fast Battle Dialogues";
-const RemYanflyOptions_FasterBattleDialogue_JP = "\\i[276]戦闘メッセージ倍速化";
+const RemYanflyOptions_FasterBattleDialogue_JP = "\\i[276]バトルメッセージ倍速化";
 const RemYanflyOptions_FasterBattleDialogue_Help_EN = "Turning this option ON will make battle dialogue go faster.";
-const RemYanflyOptions_FasterBattleDialogue_Help_JP = "戦闘中に表示されるメッセージが速くなります。";
+const RemYanflyOptions_FasterBattleDialogue_Help_JP = "バトル中に表示されるメッセージが速くなります。";
 const RemYanflyOptions_FasterBattleCutins_EN = "\\i[276]Fast Battle Cut-ins";
-const RemYanflyOptions_FasterBattleCutins_JP = "\\i[276]戦闘中カットインを省略";
+const RemYanflyOptions_FasterBattleCutins_JP = "\\i[276]カットインを簡略化";
 const RemYanflyOptions_FasterBattleCutins_Help_EN = "Turning this option ON will make battle cut-ins go faster and turn off the cut-in animations.\nTurn this option ON if you're experiencing slowdown during cut-ins.";
-const RemYanflyOptions_FasterBattleCutins_Help_JP = "ON：カットインが速くなり、アニメなしの静止画が表示されます。\nOFF：カットインは通常速度で、アニメ再生もされます。\n※カットイン中にゲームが重くなる場合はONにして下さい。";
+const RemYanflyOptions_FasterBattleCutins_Help_JP = "ON：バトル中のカットインが速くなり、アニメなしの静止画が表示されます。\nOFF：カットインは通常速度で、アニメ再生もされます。\n※カットイン中にゲームが重くなる場合はONにして下さい。";
 const RemYanflyOptions_SmootherBattleCutinLoading_EN = "\\i[276]Smoother Battle Cut-in Loading";
-const RemYanflyOptions_SmootherBattleCutinLoading_JP = "\\i[276]戦闘中カットインのスムーズ化 ※試験段階※";
+const RemYanflyOptions_SmootherBattleCutinLoading_JP = "\\i[276]カットインのスムーズ化";
 const RemYanflyOptions_SmootherBattleCutinLoading_Help_EN = "\\}This is an experimental option for stronger PCs that might make battle cut-ins load in smoother.\n\\{Please turn this option off if you experience slowdowns in your game.\nThis option has no effect when Fast Battle Cut-ins is turned on.";
-const RemYanflyOptions_SmootherBattleCutinLoading_Help_JP = "戦闘でのカットインアニメのロードをスムーズにするオプションです。\n注意１：ゲームが重くなる場合はOFFにしてください。\n注意２：「戦闘中カットイン簡略化」がONの場合は無効になります。";
+const RemYanflyOptions_SmootherBattleCutinLoading_Help_JP = "バトル中のカットインアニメのロードをスムーズにするオプションです。\n注意１：ゲームが重くなる場合はOFFにしてください。\n注意２：「カットイン簡略化」がONの場合は無効になります。";
+const RemYanflyOptions_DisableBattleCutins_EN = "\\i[276]Disable Battle Cut-ins";
+const RemYanflyOptions_DisableBattleCutins_JP = "\\i[276]カットインの非表示";
+const RemYanflyOptions_DisableBattleCutins_Help_EN = "Turning this option ON will completely disable battle cut-ins.\nThe intended visual experience is to play and enjoy the game with battle cut-ins appearing.\nThis option should only be used as a last resort if cut-ins are causing serious FPS issues.";
+const RemYanflyOptions_DisableBattleCutins_Help_JP = "ON：バトル中のカットインは全て表示されません。\nOFF：バトル中のカットインが表示されます。\n※カットインの影響で処理落ちする場合のみ、最終手段としてご使用下さい。";
 const RemYanflyOptions_SmootherCGLoading_EN = "\\i[276]Smoother CG Loading";
 const RemYanflyOptions_SmootherCGLoading_JP = "\\i[276]CG表示のスムーズ化";
 const RemYanflyOptions_SmootherCGLoading_Help_EN = "\\}\\}This is an option for stronger PCs that will make CGs load in smoother at the cost of much longer initial boot up time for the game.\nPlease keep this option off if your initial boot up time is already longer than twenty seconds or if your game often crashes.\n\\{Please restart your game for this option to take effect.";
 const RemYanflyOptions_SmootherCGLoading_Help_JP = "起動時のロード時間が長くなる代わりに、CG表示で発生する遅延をかなり抑制します。\n注意１：起動時間が20秒を超える、または頻繁にフリーズする場合はOFFにして下さい。\n注意２：ONにした後、ゲームを再起動することで設定が有効になります。";
 const RemYanflyOptions_SortPassivesAscending_EN = "\\i[276]Sort Passives Ascending";
 const RemYanflyOptions_SortPassivesAscending_JP = "\\i[276]パッシブの並び順を変更";
-const RemYanflyOptions_SortPassivesAscending_Help_EN = "Passives are visually sorted in the Passives screen by the date they were obtained.\nON: They will be sorted by the first ones you obtained.\nOFF: They will sorted by the most recent ones you obtained.";
+const RemYanflyOptions_SortPassivesAscending_Help_EN = "Passives are visually sorted in the Passives screen by the date they were obtained.\nON: They will be sorted with the oldest ones on top.\nOFF: They will sorted with the newest ones on top.";
 const RemYanflyOptions_SortPassivesAscending_Help_JP = "パッシブの並べ替えをします。\nON：初日から現在までに取得した順列で表示されます。\nOFF：最新取得から過去までの順列で表示されます。";
 const RemYanflyOptions_SynchFPS_EN = "\\i[276]Synch Monitor FPS";
 const RemYanflyOptions_SynchFPS_JP = "\\i[276]FPSの同期処理";
@@ -1778,7 +1813,7 @@ const RemYanflyOptions_SynchFPS_Help_EN = "Keep option turned ON if your monitor
 const RemYanflyOptions_SynchFPS_Help_JP = "モニターが60FPSを超えて動作している場合、ONにしてください。\n60FPSで動作するようにゲーム同期を変更出来ます。\n※F2キーで現在のFPSを確認出来ます。";
 const RemYanflyOptions_LightingEffects_EN = "\\i[276]Map Lighting Effects";
 const RemYanflyOptions_LightingEffects_JP = "\\i[276]フラッシュ演出";
-const RemYanflyOptions_LightingEffects_Help_EN = "Map lighting effects include the effects from light sources such as torches.\nTurning this OFF will remove those effects and help improve game performance if your game \nis experiencing slow downs in areas with map lightning effects." 
+const RemYanflyOptions_LightingEffects_Help_EN = "Map lighting effects include the effects from light sources such as torches.\nTurning this OFF will remove those effects and help improve game performance if\nyour game is experiencing slow downs in areas with map lightning effects." 
 const RemYanflyOptions_LightingEffects_Help_JP = "フラッシュが使われるイベントでゲーム速度が遅くなる場合は、\nOFFにすることでゲームからフラッシュを解除し、\n動作パフォーマンスを向上させることが出来ます。";
 const RemYanflyOptions_MapEffects_EN = "\\i[276]Animated Map Effects";
 const RemYanflyOptions_MapEffects_JP = "\\i[276]マップのエフェクト";
@@ -1791,7 +1826,7 @@ const RemYanflyOptions_DisplayPubicHair_Help_JP = "アンダーヘアの生え�
 const RemYanflyOptions_ShowSexualDamagePopup_EN = "\\i[276]Toggle Karryn Sexual Damage Popup";
 const RemYanflyOptions_ShowSexualDamagePopup_JP = "\\i[276]性ダメージのポップアップ";
 const RemYanflyOptions_ShowSexualDamagePopup_Help_EN = "\\}Turn this option ON to have damage numbers from sexual attacks popup over Karryn's body.\nTurn this option OFF to hide the damage numbers from sexual attacks over Karryn's body.\nInformation about sexual attacks will still appear in the battle log.";
-const RemYanflyOptions_ShowSexualDamagePopup_Help_JP = "戦闘での性ダメージの数字表示を変更出来ます。\nON：カリンの上に性ダメージ数が表示されます。\nOFF：性ダメージはテキストログのみでの表示になります。";
+const RemYanflyOptions_ShowSexualDamagePopup_Help_JP = "バトル中の性ダメージの表示を変更出来ます。\nON：カリンの上に性ダメージ数が表示されます。\nOFF：性ダメージはテキストログのみでの表示になります。";
 
 
 //Options Controls
@@ -2129,20 +2164,24 @@ const RemPrisonerOrcEN = "Orc";
 const RemPrisonerOrcJP = "オーク";
 const RemPrisonerSlimeEN = "Slime";
 const RemPrisonerSlimeJP = "スライム";
-const RemPrisonerWerewolfEN = "Werewolf";
-const RemPrisonerWerewolfJP = "ウェアウルフ";
 const RemPrisonerNerdEN = "Nerd";
 const RemPrisonerNerdJP = "オタク";
 const RemPrisonerRogueEN = "Rogue";
 const RemPrisonerRogueJP = "盗賊";
+const RemPrisonerLizardmanEN = "Lizardman";
+const RemPrisonerLizardmanJP = "リザードマン";
+const RemPrisonerHomelessEN = "Hobo";
+const RemPrisonerHomelessJP = "浮浪者";
+const RemPrisonerWerewolfEN = "Werewolf";
+const RemPrisonerWerewolfJP = "ウェアウルフ";
+const RemPrisonerYetiEN = "Yeti";
+const RemPrisonerYetiJP = "イエティ";
+
+
 const RemReceptionistVisitorEN = "Visitor";
 const RemReceptionistVisitorJP = "面会人";
 const RemReceptionistFanEN = "Fan";
 const RemReceptionistFanJP = "ファン";
-const RemReceptionistLizardmanEN = "Lizardman";
-const RemReceptionistLizardmanJP = "リザードマン";
-const RemReceptionistHomelessEN = "Hobo";
-const RemReceptionistHomelessJP = "浮浪者";
 
 //Boss Types
 const RemBossYasuEN = "Deputy Warden";
@@ -2153,6 +2192,8 @@ const RemBossCargillEN = "Doctor";
 const RemBossCargillJP = "Dr.";
 const RemBossAronEN = "Alpha Lizardman";
 const RemBossAronJP = "アルファリザードマン";
+const RemBossNoinimEN = "Great Yeti";
+const RemBossNoinimJP = "グレートイエティ";
 
 //Skills
 const RemRestoreMindPartialSuccessEN = "%1 succeeds in restoring a bit of her mind.";
@@ -2278,9 +2319,9 @@ const RemReceptionistGoblinDefeatedEN = "\\C[8]%1 has fled away!";
 const RemReceptionistGoblinDefeatedJP = "\\C[8]%1は立ち去った！";
 const RemReceptionistVisitorEntersVisitingRoomEN = "\\C[11]%1 entered %2.";
 const RemReceptionistVisitorEntersVisitingRoomJP = "\\C[11]%1は%2へ向かって行った。";
-const RemReceptionistVisitingRoomStatusOccupiedPluralEN = "\\C[23]\"%1 is in used for %2 more minutes, over!\"";
+const RemReceptionistVisitingRoomStatusOccupiedPluralEN = "\\C[23]\"%1 is in use for %2 more minutes, over!\"";
 const RemReceptionistVisitingRoomStatusOccupiedPluralJP = "\\C[23]「%1は%2分以上使用中になっています！」";
-const RemReceptionistVisitingRoomStatusOccupiedSingleEN = "\\C[23]\"%1 is in used for one more minute, over!\"";
+const RemReceptionistVisitingRoomStatusOccupiedSingleEN = "\\C[23]\"%1 is in use for one more minute, over!\"";
 const RemReceptionistVisitingRoomStatusOccupiedSingleJP = "\\C[23]「%1は1分以上使用中になっています！」";
 const RemReceptionistVisitingRoomStatusNotOccupiedEN = "\\C[23]\"%1 is currently not being used, over!\"";
 const RemReceptionistVisitingRoomStatusNotOccupiedJP = "\\C[23]「現在、%1は空室です！」";
@@ -2311,9 +2352,9 @@ const RemGloryLeftStallCockNameEN = "The Cock on the Left";
 const RemGloryLeftStallCockNameJP = "左のチンポ";
 const RemGloryRightStallCockNameEN = "The Cock on the Right";
 const RemGloryRightStallCockNameJP = "右のチンポ";
-const RemGloryGuestEnterBathroomEN = "\\C[8]Someone has entered into the bathroom.";
+const RemGloryGuestEnterBathroomEN = "\\C[8]Someone has entered the bathroom.";
 const RemGloryGuestEnterBathroomJP = "\\C[8]トイレに人が来た気配がする……。";
-const RemGloryGuestLeaveBathroomEN = "\\C[8]Someone has walked out from the bathroom.";
+const RemGloryGuestLeaveBathroomEN = "\\C[8]Someone has left the bathroom.";
 const RemGloryGuestLeaveBathroomJP = "\\C[8]誰かがトイレから立ち去った。";
 const RemGloryGuestEnterLeftStallEN = "\\C[7]Someone has entered the left stall.";
 const RemGloryGuestEnterLeftStallJP = "\\C[7]誰かが左の個室に入った。";
@@ -2335,6 +2376,9 @@ const RemGloryGuestShowedThroughLeftHoleEN = "\\C[27]A cock appears from the hol
 const RemGloryGuestShowedThroughLeftHoleJP = "\\C[27]左の穴からチンポが現れた！";
 const RemGloryGuestShowedThroughRightHoleEN = "\\C[27]A cock appears from the hole on the right!";
 const RemGloryGuestShowedThroughRightHoleJP = "\\C[27]右の穴からチンポが現れた！";
+
+const RemMidBattleEnemyReinforcementEN = "\\C[2]%1 arrives as enemy reinforcement!";
+const RemMidBattleEnemyReinforcementJP = "\\C[2]増援に%1が現れた！";
 
 /////////
 // TextManager
@@ -2963,6 +3007,12 @@ Object.defineProperties(TextManager, {
 		get: function() { 
 			if(this.isJapanese) return StoreIncomeNameJP;
 			else if(this.isEnglish) return StoreIncomeNameEN;
+		}, configurable: true
+	},	
+	outsourcingIncome: { 
+		get: function() { 
+			if(this.isJapanese) return OutsourcingIncomeNameJP;
+			else if(this.isEnglish) return OutsourcingIncomeNameEN;
 		}, configurable: true
 	},	
 	nerdBlackmail: { 
@@ -4297,6 +4347,19 @@ Object.defineProperties(TextManager, {
 			else if(this.isEnglish) return StatusBattleEffectPoisonEN;
 		}, configurable: true
 	},
+	StatusBattleEffectYetiHeatAuraOne: { 
+		get: function() { 
+			if(this.isJapanese) return StatusBattleEffectYetiHeatAuraOneJP;
+			else if(this.isEnglish) return StatusBattleEffectYetiHeatAuraOneEN;
+		}, configurable: true
+	},
+	StatusBattleEffectYetiHeatAuraTwo: { 
+		get: function() { 
+			if(this.isJapanese) return StatusBattleEffectYetiHeatAuraTwoJP;
+			else if(this.isEnglish) return StatusBattleEffectYetiHeatAuraTwoEN;
+		}, configurable: true
+	},
+	
 	statusBattleEffectExposeWeakness: { 
 		get: function() { 
 			if(this.isJapanese) return StatusBattleEffectExposeWeaknessJP;
@@ -4756,10 +4819,71 @@ Object.defineProperties(TextManager, {
 			else if(this.isEnglish) return StateTooltipsOrcDefensivePresenceEN;
 		}, configurable: true
 	},
+	StateTooltipsOrcCommandingPresenceOne: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsOrcCommandingPresenceOneJP;
+			else if(this.isEnglish) return StateTooltipsOrcCommandingPresenceOneEN;
+		}, configurable: true
+	},
+	StateTooltipsOrcCommandingPresenceTwo: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsOrcCommandingPresenceTwoJP;
+			else if(this.isEnglish) return StateTooltipsOrcCommandingPresenceTwoEN;
+		}, configurable: true
+	},
+	StateTooltipsOrcCommandingPresenceThree: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsOrcCommandingPresenceThreeJP;
+			else if(this.isEnglish) return StateTooltipsOrcCommandingPresenceThreeEN;
+		}, configurable: true
+	},
+	StateTooltipsOrcCommandingPresenceFour: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsOrcCommandingPresenceFourJP;
+			else if(this.isEnglish) return StateTooltipsOrcCommandingPresenceFourEN;
+		}, configurable: true
+	},
 	StateTooltipsLizardmanRacial: { 
 		get: function() { 
 			if(this.isJapanese) return StateTooltipsLizardmanRacialJP;
 			else if(this.isEnglish) return StateTooltipsLizardmanRacialEN;
+		}, configurable: true
+	},
+	StateTooltipsLizardmanRacialWeak: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsLizardmanRacialWeakJP;
+			else if(this.isEnglish) return StateTooltipsLizardmanRacialWeakEN;
+		}, configurable: true
+	},
+	
+	StateTooltipsYetiHeatAura: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsYetiHeatAuraJP;
+			else if(this.isEnglish) return StateTooltipsYetiHeatAuraEN;
+		}, configurable: true
+	},
+	StateTooltipsYetiHeatAuraEnemyOne: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsYetiHeatAuraEnemyOneJP;
+			else if(this.isEnglish) return StateTooltipsYetiHeatAuraEnemyOneEN;
+		}, configurable: true
+	},
+	StateTooltipsYetiHeatAuraEnemyTwo: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsYetiHeatAuraEnemyTwoJP;
+			else if(this.isEnglish) return StateTooltipsYetiHeatAuraEnemyTwoEN;
+		}, configurable: true
+	},
+	StateTooltipsYetiHeatAuraKarrynOne: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsYetiHeatAuraKarrynOneJP;
+			else if(this.isEnglish) return StateTooltipsYetiHeatAuraKarrynOneEN;
+		}, configurable: true
+	},
+	StateTooltipsYetiHeatAuraKarrynTwo: { 
+		get: function() { 
+			if(this.isJapanese) return StateTooltipsYetiHeatAuraKarrynTwoJP;
+			else if(this.isEnglish) return StateTooltipsYetiHeatAuraKarrynTwoEN;
 		}, configurable: true
 	},
 	StateTooltipsKarrynClitToy: { 
@@ -5346,6 +5470,18 @@ Object.defineProperties(TextManager, {
 		get: function() { 
 			if(this.isJapanese) return RemResultsKarrynTitjobJP;
 			else if(this.isEnglish) return RemResultsKarrynTitjobEN;
+		}, configurable: true
+	},
+	resultsKarrynFootjob: { 
+		get: function() { 
+			if(this.isJapanese) return RemResultsKarrynFootjobJP;
+			else if(this.isEnglish) return RemResultsKarrynFootjobEN;
+		}, configurable: true
+	},
+	resultsKarrynRimjob: { 
+		get: function() { 
+			if(this.isJapanese) return RemResultsKarrynRimjobJP;
+			else if(this.isEnglish) return RemResultsKarrynRimjobEN;
 		}, configurable: true
 	},
 	resultsKarrynVaginalSex: { 
@@ -5967,6 +6103,18 @@ Object.defineProperties(TextManager, {
 		get: function() { 
 			if(this.isJapanese) return RemYanflyOptions_SmootherBattleCutinLoading_Help_JP;
 			else if(this.isEnglish) return RemYanflyOptions_SmootherBattleCutinLoading_Help_EN;
+		}, configurable: true
+	},
+	yanflyOptionsDisableBattleCutins: { 
+		get: function() { 
+			if(this.isJapanese) return RemYanflyOptions_DisableBattleCutins_JP;
+			else if(this.isEnglish) return RemYanflyOptions_DisableBattleCutins_EN;
+		}, configurable: true
+	},
+	yanflyOptionsDisableBattleCutinsHelp: { 
+		get: function() { 
+			if(this.isJapanese) return RemYanflyOptions_DisableBattleCutins_Help_JP;
+			else if(this.isEnglish) return RemYanflyOptions_DisableBattleCutins_Help_EN;
 		}, configurable: true
 	},
 	yanflyOptionsSmootherCGLoading: { 
@@ -7114,16 +7262,28 @@ Object.defineProperties(TextManager, {
 	},	
 	prisonerLizardman: { 
 		get: function() { 
-			if(this.isJapanese) return RemReceptionistLizardmanJP;
-			else if(this.isEnglish) return RemReceptionistLizardmanEN;
+			if(this.isJapanese) return RemPrisonerLizardmanJP;
+			else if(this.isEnglish) return RemPrisonerLizardmanEN;
 		}, configurable: true
 	},	
 	prisonerHomeless: { 
 		get: function() { 
-			if(this.isJapanese) return RemReceptionistHomelessJP;
-			else if(this.isEnglish) return RemReceptionistHomelessEN;
+			if(this.isJapanese) return RemPrisonerHomelessJP;
+			else if(this.isEnglish) return RemPrisonerHomelessEN;
 		}, configurable: true
 	},	
+	prisonerWerewolf: { 
+		get: function() { 
+			if(this.isJapanese) return RemPrisonerWerewolfJP;
+			else if(this.isEnglish) return RemPrisonerWerewolfEN;
+		}, configurable: true
+	},	
+	prisonerYeti: { 
+		get: function() { 
+			if(this.isJapanese) return RemPrisonerYetiJP;
+			else if(this.isEnglish) return RemPrisonerYetiEN;
+		}, configurable: true
+	},
 	
 	receptionistVisitor: { 
 		get: function() { 
@@ -7164,6 +7324,13 @@ Object.defineProperties(TextManager, {
 			else if(this.isEnglish) return RemBossAronEN;
 		}, configurable: true
 	},	
+	bossNoinim: { 
+		get: function() { 
+			if(this.isJapanese) return RemBossNoinimJP;
+			else if(this.isEnglish) return RemBossNoinimEN;
+		}, configurable: true
+	},	
+	
 	
 	restoreMindPartialSuccess: { 
 		get: function() { 
@@ -7680,6 +7847,12 @@ Object.defineProperties(TextManager, {
 		}, configurable: true
 	},
 	
+	midBattleEnemyReinforcement: { 
+		get: function() { 
+			if(this.isJapanese) return RemMidBattleEnemyReinforcementJP;
+			else if(this.isEnglish) return RemMidBattleEnemyReinforcementEN;
+		}, configurable: true
+	},
 	
 	
 	

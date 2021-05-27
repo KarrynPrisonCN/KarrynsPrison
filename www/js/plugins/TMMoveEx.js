@@ -158,6 +158,7 @@ Imported.TMMoveEx = true;
     var key = 'movableRegion' + i;
     movableRegionType[i] = parameters[key].split(',');
   }
+  movableRegionType[100] = parameters[key].split(',');
 
   //-----------------------------------------------------------------------------
   // Game_Map

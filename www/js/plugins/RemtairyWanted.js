@@ -12,8 +12,9 @@ const WANTED_CHANCE_MULTIPLER_RECEPTIONIST_BATTLE = 3;
 const WANTED_CHANCE_MULTIPLER_GLORY_BATTLE = 2;
 
 const WANTED_MINIMUM_DAYS_SINCE_DEFEATED = 1;
-const WANTED_LVL_INCREASE_BY_DEFEAT = 1;
-const WANTED_LVL_INCREASE_BY_DEFEAT_HALF_LVL = 2; //For when wanted lvl is half of karryn's level
+const WANTED_LVL_INCREASE_BY_DEFEAT_BASE = 1;
+const WANTED_LVL_INCREASE_BY_DEFEAT_MULTI_BASE = 0.3;
+const WANTED_LVL_INCREASE_BY_DEFEAT_MULTI_REQ = 5;
 
 const WANTED_POINTS_NEEDED_PER_TYPE = 450;
 const WANTED_POINTS_NEEDED_PER_TYPE_OVER_ONE = 2000;
@@ -98,6 +99,7 @@ Wanted_Enemy.prototype.initialize = function(enemy, date, wantedListId) {
 	this._enemyRecordClitPettedCount = enemy._enemyRecordClitPettedCount;
 	this._enemyRecordPussyPettedCount = enemy._enemyRecordPussyPettedCount;
 	this._enemyRecordCockPettedCount = enemy._enemyRecordCockPettedCount;
+	this._enemyRecordCockStaredAtCount = enemy._enemyRecordCockStaredAtCount;
 	this._enemyRecordFingerSuckedCount = enemy._enemyRecordFingerSuckedCount;
 	
 	this._enemyRecordTalkedCount = enemy._enemyRecordTalkedCount;
@@ -144,7 +146,8 @@ Wanted_Enemy.prototype.enemyTypeIsBoss = function() {
 	return this._enemyType === ENEMYTYPE_YASU_TAG || 
 	this._enemyType === ENEMYTYPE_TONKIN_TAG || 
 	this._enemyType === ENEMYTYPE_CARGILL_TAG || 
-	this._enemyType === ENEMYTYPE_ARON_TAG;
+	this._enemyType === ENEMYTYPE_ARON_TAG || 
+	this._enemyType === ENEMYTYPE_NOINIM_TAG;
 };
 
 Wanted_Enemy.prototype.enemyTypeIsVisitor = function() {
@@ -217,6 +220,7 @@ Game_Enemy.prototype.setupWanted = function(wantedStatus) {
 		this._enemyRecordClitPettedCount = wantedStatus._enemyRecordClitPettedCount;
 		this._enemyRecordPussyPettedCount = wantedStatus._enemyRecordPussyPettedCount;
 		this._enemyRecordCockPettedCount = wantedStatus._enemyRecordCockPettedCount;
+		this._enemyRecordCockStaredAtCount = wantedStatus._enemyRecordCockStaredAtCount;
 		this._enemyRecordFingerSuckedCount = wantedStatus._enemyRecordFingerSuckedCount;
 		
 		this._enemyRecordTalkedCount = wantedStatus._enemyRecordTalkedCount;
@@ -256,7 +260,7 @@ Game_Enemy.prototype.setupWanted = function(wantedStatus) {
 Game_Enemy.prototype.checkWantedVirginityStatus = function(wantedStatus) {
 	if(wantedStatus._hasPrefix && wantedStatus._enemyPrefixType == ENEMY_PREFIX_VIRGIN) {
 		if(wantedStatus._enemyRecordPussyFuckedCount > 0 || wantedStatus._enemyRecordAnalFuckedCount > 0) {
-			let availablePrefixSet = [ ENEMY_PREFIX_GOOD, ENEMY_PREFIX_STRONG, ENEMY_PREFIX_DEXTEROUS, ENEMY_PREFIX_AGILE, ENEMY_PREFIX_ENDURING, ENEMY_PREFIX_HORNY, ENEMY_PREFIX_HORNY];
+			let availablePrefixSet = [ ENEMY_PREFIX_GOOD, ENEMY_PREFIX_STRONG, ENEMY_PREFIX_DEXTEROUS, ENEMY_PREFIX_AGILE, ENEMY_PREFIX_ENDURING, ENEMY_PREFIX_HORNY, ENEMY_PREFIX_HORNY, ENEMY_PREFIX_HORNY, ENEMY_PREFIX_SENSITIVE ];
 			$gameTroop.setPrefixTypeAndName(this, availablePrefixSet);
 			wantedStatus._enemyPrefixName = this.getNamePrefix();
 			wantedStatus._enemyPrefixType = this.getNamePrefixType();
@@ -266,16 +270,19 @@ Game_Enemy.prototype.checkWantedVirginityStatus = function(wantedStatus) {
 
 Game_Enemy.prototype.setupWantedGuardSkills = function() {
 	if(this.isGuardType && !this.isCargill && !this.isYasu) {
-		let guardAggression = Prison.guardAggression;
+		let guardAggressionValue = Prison.guardAggression;
 		let currentGuardID = ENEMY_ID_GUARD_LV1;
 		
-		//Find current guard ID
-		if(guardAggression < 3) currentGuardID = ENEMY_ID_GUARD_LV1;
-		else if(guardAggression < 6) currentGuardID = ENEMY_ID_GUARD_LV2;
-		else if(guardAggression < 12) currentGuardID = ENEMY_ID_GUARD_LV3;
-		else if(guardAggression < 20) currentGuardID = ENEMY_ID_GUARD_LV4;
+		if(Karryn.hasEdict(EDICT_RIOT_SUPPRESSING_TRAINING_FOR_GUARDS))
+			guardAggressionValue += 15;
 		
-		else currentGuardID = ENEMY_ID_GUARD_LV4;
+		//Find current guard ID
+		if(guardAggressionValue < 3) currentGuardID = ENEMY_ID_GUARD_LV1;
+		else if(guardAggressionValue < 6) currentGuardID = ENEMY_ID_GUARD_LV2;
+		else if(guardAggressionValue < 12) currentGuardID = ENEMY_ID_GUARD_LV3;
+		else if(guardAggressionValue < 20) currentGuardID = ENEMY_ID_GUARD_LV4;
+		else if(guardAggressionValue < 40) currentGuardID = ENEMY_ID_GUARD_LV5;
+		else currentGuardID = ENEMY_ID_GUARD_LV6;
 		
 		
 		//If this guard ID is not current, add current guard's skills
@@ -319,6 +326,7 @@ Game_Enemy.prototype.setupEnemyRecords = function() {
 	this._enemyRecordClitPettedCount = 0;
 	this._enemyRecordPussyPettedCount = 0;
 	this._enemyRecordCockPettedCount = 0;
+	this._enemyRecordCockStaredAtCount = 0;
 	this._enemyRecordFingerSuckedCount = 0;
 	this._enemyRecordTalkedCount = 0;
 	this._enemyRecordTalkedAboutMouthCount = 0;
@@ -383,7 +391,19 @@ Game_Enemy.prototype.setupEnemyTempRecords = function() {
 	this._enemyTempRecordClitPettedCount = 0;
 	this._enemyTempRecordPussyPettedCount = 0;
 	this._enemyTempRecordCockPettedCount = 0;
+	this._enemyTempRecordCockStaredAtCount = 0;
 	this._enemyTempRecordFingerSuckedCount = 0;
+	
+	this._enemyTempRecordKissedUsageCount = 0;
+	this._enemyTempRecordHandjobUsageCount = 0;
+	this._enemyTempRecordBlowjobUsageCount = 0;
+	this._enemyTempRecordTittyFuckUsageCount = 0;
+	this._enemyTempRecordRimmedUsageCount = 0;
+	this._enemyTempRecordFootjobUsageCount = 0;
+	this._enemyTempRecordPussyFuckedUsageCount = 0;
+	this._enemyTempRecordAnalFuckedUsageCount = 0;
+	this._enemyTempRecordCockPettedUsageCount = 0;
+	this._enemyTempRecordCockStaredAtUsageCount = 0;
 	
 	this._enemyTempRecordFaceBukkakeCount = 0;
 	this._enemyTempRecordTotalEjaculationCount = 0;
@@ -395,7 +415,9 @@ Game_Enemy.prototype.setupEnemyTempRecords = function() {
 	this._enemyTempRecordLevelTwoDefeatSexualPartner = false;
 	this._enemyTempRecordCockJustShrankFromCockStare = false;
 	
+	this._enemyTempRecordUsedLizardmanSummon = false;
 	this._enemyTempRecordSubduedCounted = false;
+	this._enemyTempRecordSubduedWithEventCommand = false;
 	
 };	
 
@@ -902,8 +924,8 @@ Game_Enemy.prototype.addToEnemyCockPettedCountRecord = function(actor) {
 	this._enemyRecordCockPettedCount++;
 	this._enemyTempRecordCockPettedCount++;
 	if(this.isWanted) {
-			let wantedStatus = Prison.getWantedEnemyById(this.getWantedId());
-			wantedStatus._enemyRecordCockPettedCount = this._enemyRecordCockPettedCount;
+		let wantedStatus = Prison.getWantedEnemyById(this.getWantedId());
+		wantedStatus._enemyRecordCockPettedCount = this._enemyRecordCockPettedCount;
 	}
 	let firstCount = false;
     if(this._enemyRecordCockPettedCount == 1) {
@@ -914,6 +936,24 @@ Game_Enemy.prototype.addToEnemyCockPettedCountRecord = function(actor) {
 		firstCountTemp = true;
 	}
 	actor.addToActorCockPettedRecord(firstCount, firstCountTemp);
+};
+
+Game_Enemy.prototype.addToEnemyCockStaredAtCountRecord = function(actor) {
+	this._enemyRecordCockStaredAtCount++;
+	this._enemyTempRecordCockStaredAtCount++;
+	if(this.isWanted) {
+		let wantedStatus = Prison.getWantedEnemyById(this.getWantedId());
+		wantedStatus._enemyRecordCockStaredAtCount = this._enemyRecordCockStaredAtCount;
+	}
+	let firstCount = false;
+    if(this._enemyRecordCockStaredAtCount == 1) {
+		firstCount = true;
+	}
+	let firstCountTemp = false;
+    if(this._enemyTempRecordCockStaredAtCount == 1) {
+		firstCountTemp = true;
+	}
+	actor.addToActorCockStaredAtRecord(firstCount, firstCountTemp);
 };
 
 Game_Enemy.prototype.addToEnemyFingerSuckedCountRecord = function(actor) {
@@ -1237,6 +1277,7 @@ Game_Party.prototype.setupWantedList = function() {
 	this._wantedId_Yasu = -1;
 	this._wantedId_Cargill = -1;
 	this._wantedId_Aron = -1;
+	this._wantedId_Noinim = -1;
 };
 Game_Party.prototype.getWantedEnemyById = function(id) {
 	return this._wantedEnemies[id];
@@ -1253,10 +1294,11 @@ Game_Party.prototype.wantedEnemyListLength = function() {
 };
 
 Game_Party.prototype.resetWantedAppearanceChance = function() {
-	this._currentWantedChance = WANTED_APPEARANCE_BASE_CHANCE + WANTED_APPEARANCE_BASE_CHANCE_BY_LENGTH * this.wantedEnemyListLength();
+	this._currentWantedChance = WANTED_APPEARANCE_BASE_CHANCE + (WANTED_APPEARANCE_BASE_CHANCE_BY_LENGTH * this.wantedEnemyListLength());
+	
 };
 Game_Party.prototype.addWantedAppearanceChance = function() {
-	this._currentWantedChance += WANTED_APPEARANCE_ADDED_CHANCE + WANTED_APPEARANCE_ADDED_CHANCE_BY_LENGTH * this.wantedEnemyListLength();
+	this._currentWantedChance += Math.max(0, WANTED_APPEARANCE_ADDED_CHANCE + (WANTED_APPEARANCE_ADDED_CHANCE_BY_LENGTH * this.wantedEnemyListLength()) + this.edictsWantedAppearanceChance());
 };
 
 Game_Party.prototype.setWantedIdAsAppeared = function(id) {
@@ -1269,19 +1311,35 @@ Game_Party.prototype.setWantedIdAsDefeated = function(id) {
 	this.getWantedEnemyById(id)._lastDefeated = Prison.date;
 	if(this.getWantedEnemyById(id).enemyTypeIsBoss()) return;
 	
+	let gymPolicyIsExtended = Karryn.hasEdict(EDICT_GYM_POLICY_EXTENDED);
+	let gymPolicyIsShorten = Karryn.hasEdict(EDICT_GYM_POLICY_SHORTEN);
+	let gymRefurbished = Karryn.hasEdict(EDICT_REFURBISH_GYM);
+	
 	let levelLimitMulti = 1;
-	if(Prison.hardMode()) levelLimitMulti = 1.1;
-	else if(Prison.easyMode()) levelLimitMulti = 0.9;
+	if(Prison.hardMode()) levelLimitMulti += 0.1;
+	else if(Prison.easyMode()) levelLimitMulti -= 0.1;
+	
+	if(gymPolicyIsExtended) levelLimitMulti += 0.1;
+	else if(gymPolicyIsShorten) levelLimitMulti -= 0.1;
 	
 	let currentWantedLevelLimit = Karryn.getWardenLevelLimit() * levelLimitMulti;
 	
 	if(this.getWantedEnemyById(id)._wantedLvl <= currentWantedLevelLimit) {
 		let levelDifference = Karryn.level - this.getWantedEnemyById(id)._wantedLvl;
-		if(levelDifference < 5) {
-			this.getWantedEnemyById(id)._wantedLvl += 1;
+		let levelIncrease = WANTED_LVL_INCREASE_BY_DEFEAT_BASE;
+		if(gymPolicyIsExtended) levelIncrease += 1;
+		if(gymRefurbished) levelIncrease += 1;
+		
+		let levelIncreaseMulti = WANTED_LVL_INCREASE_BY_DEFEAT_MULTI_BASE;
+		if(gymPolicyIsExtended) levelIncreaseMulti += 0.1;
+		else if(gymPolicyIsShorten) levelIncreaseMulti -= 0.1;
+		if(gymRefurbished) levelIncreaseMulti += 0.05;
+		
+		if(levelDifference < WANTED_LVL_INCREASE_BY_DEFEAT_MULTI_REQ) {
+			this.getWantedEnemyById(id)._wantedLvl += levelIncrease;
 		}
 		else {
-			this.getWantedEnemyById(id)._wantedLvl += Math.round(levelDifference * 0.3);
+			this.getWantedEnemyById(id)._wantedLvl += Math.round(levelDifference * levelIncreaseMulti) + levelIncrease;
 		}
 	}
 };
@@ -1294,8 +1352,8 @@ Game_Party.prototype.checkPotentialNewWanted = function(enemy) {
 			else if(enemy.isTonkin) $gameParty._wantedId_Tonkin = bossWantedId;
 			else if(enemy.isCargill) $gameParty._wantedId_Cargill = bossWantedId;
 			else if(enemy.isAron) $gameParty._wantedId_Aron = bossWantedId;
+			else if(enemy.isNoinim) $gameParty._wantedId_Noinim = bossWantedId;
 			
-
 			return;
 		}
 		
@@ -1390,7 +1448,7 @@ Game_Party.prototype.isThisNameAlreadyInWanted_onlyNameMatters = function(enemyN
 Game_Party.prototype.findAvailableWanted = function(enemy, maxPrisonerMorphHeight) {
 	if(!enemy) return false;
 	
-	let enemyIsBossType = enemy.dataEnemyType === ENEMYTYPE_YASU_TAG || enemy.dataEnemyType === ENEMYTYPE_TONKIN_TAG || enemy.dataEnemyType === ENEMYTYPE_CARGILL_TAG || enemy.dataEnemyType === ENEMYTYPE_ARON_TAG;
+	let enemyIsBossType = enemy.dataEnemyType === ENEMYTYPE_YASU_TAG || enemy.dataEnemyType === ENEMYTYPE_TONKIN_TAG || enemy.dataEnemyType === ENEMYTYPE_CARGILL_TAG || enemy.dataEnemyType === ENEMYTYPE_ARON_TAG || enemy.dataEnemyType === ENEMYTYPE_NOINIM_TAG;
 
 	let availableIds = this.findAvailableWantedIds(enemy, maxPrisonerMorphHeight);
 	let wantedChance = this._currentWantedChance;
@@ -1452,7 +1510,13 @@ Game_Party.prototype.findAvailableWantedIds = function(enemy, maxPrisonerMorphHe
 		}
 		else return [];
 	}
-
+	else if(type == ENEMYTYPE_NOINIM_TAG) {
+		if(this._wantedId_Noinim !== -1) {
+			availableWantedIds.push(this._wantedId_Noinim);
+			return availableWantedIds;
+		}
+		else return [];
+	}
 	
 	for(let i = 0; i < this._wantedEnemies.length; i++) {
 		let wantedEnemy = this._wantedEnemies[i];
@@ -1503,6 +1567,7 @@ Game_Party.prototype.disableAllWanted = function() {
 	this._wantedId_Yasu = -1;
 	this._wantedId_Cargill = -1;
 	this._wantedId_Aron = -1;
+	this._wantedId_Noinim = -1;
 };
 
 ///////

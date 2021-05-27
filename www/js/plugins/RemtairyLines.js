@@ -14,11 +14,11 @@ Remtairy.Lines = Remtairy.Lines || {};
  */
 //=============================================================================
 
-const BATTLE_LOG_VIEW_DURATION_ZERO = 200;
-const BATTLE_LOG_VIEW_DURATION_ONE = 350;
-const BATTLE_LOG_VIEW_DURATION_TWO = 500;
-const BATTLE_LOG_VIEW_DURATION_THREE = 800;
-const BATTLE_LOG_VIEW_DURATION_FOUR = 1400;
+const BATTLE_LOG_VIEW_DURATION_ZERO = 50;
+const BATTLE_LOG_VIEW_DURATION_ONE = 150;
+const BATTLE_LOG_VIEW_DURATION_TWO = 350;
+const BATTLE_LOG_VIEW_DURATION_THREE = 600;
+const BATTLE_LOG_VIEW_DURATION_FOUR = 1000;
 const LINE_DURATION_PER_CHARACTER_JP = 2.3; //unused
 const LINE_DURATION_PER_CHARACTER_EN = 0.8; //unused
 
@@ -210,6 +210,10 @@ const KARRYN_LINE_ENEMY_START_GUARD_GANGBANG = 1610;
 const KARRYN_LINE_ENEMY_START_ORC_PAIZURI = 1611;
 const KARRYN_LINE_ENEMY_START_REVERSE_COWGIRL = 1612;
 const KARRYN_LINE_ENEMY_START_LIZARDMAN_COWGIRL = 1613;
+const KARRYN_LINE_ENEMY_START_WEREWOLF_BACK_PUSSY = 1614;
+const KARRYN_LINE_ENEMY_START_WEREWOLF_BACK_ANAL = 1615;
+const KARRYN_LINE_ENEMY_START_YETI_PAIZURI = 1616;
+const KARRYN_LINE_ENEMY_START_YETI_CARRY = 1618;
 
 const KARRYN_LINE_KARRYN_START_HJ_STANDING = 2601;
 const KARRYN_LINE_KARRYN_START_BJ_KNEELING = 2602;
@@ -235,6 +239,10 @@ const ENEMY_LINE_ENEMY_START_TF_LAYING = 1710;
 const ENEMY_LINE_START_ORC_PAIZURI = 1711;
 const ENEMY_LINE_ENEMY_START_REVERSE_COWGIRL = 1712;
 const ENEMY_LINE_ENEMY_START_LIZARDMAN_COWGIRL = 1713;
+const ENEMY_LINE_ENEMY_START_WEREWOLF_BACK_PUSSY = 1714;
+const ENEMY_LINE_ENEMY_START_WEREWOLF_BACK_ANAL = 1715;
+const ENEMY_LINE_START_YETI_PAIZURI = 1716;
+const ENEMY_LINE_START_YETI_CARRY = 1718;
 
 //Masturbation 
 const LINE_KARRYN_MAS_TOUCH_BOOBS = 3001
@@ -346,7 +354,7 @@ Rem_Lines.prototype.initialize = function(lineType, enemy) {
 		this._visitor_isFan = enemy._visitor_isFan;
 		this._visitor_isPervert = enemy._visitor_isPervert;
 		this._enemyTypeIsInmate = enemy.isInmate;
-		if(enemy.isWanted && actor._firstPussySexWantedID === enemy.getWantedId() && actor._firstPussySexDate === Prison.date && enemy.isUsingBodySlotPenis(PUSSY_ID) && !actor._remLine_saidLostPussyVirginity) {
+		if(enemy.isWanted && actor._firstPussySexWantedID === enemy.getWantedId() && actor._firstPussySexDate === Prison.date && enemy.isUsingBodySlotPenis(PUSSY_ID) && !actor._remLine_saidLostPussyVirginity && !actor._firstPussySexWasToy) {
 			this._enemyJustTookPussyVirginity = true;
 		}
 		else {
@@ -882,11 +890,20 @@ Rem_Lines.prototype.getLineArray = function() {
 	else if(this._lineType === KARRYN_LINE_ENEMY_START_LIZARDMAN_COWGIRL) {
 		lineArray = this.karrynline_enemyPoseStart_PussySex(lineArray);
 	}
+	else if(this._lineType === KARRYN_LINE_ENEMY_START_WEREWOLF_BACK_PUSSY) {
+		lineArray = this.karrynline_enemyPoseStart_PussySex(lineArray);
+	}
+	else if(this._lineType === KARRYN_LINE_ENEMY_START_YETI_CARRY) {
+		lineArray = this.karrynline_enemyPoseStart_PussySex(lineArray);
+	}
 	
 	else if(this._lineType === KARRYN_LINE_ENEMY_START_SLIME_ANAL) {
 		lineArray = this.karrynline_enemyPoseStart_AnalSex(lineArray);
 	}
 	else if(this._lineType === KARRYN_LINE_ENEMY_START_REVERSE_COWGIRL) {
+		lineArray = this.karrynline_enemyPoseStart_AnalSex(lineArray);
+	}
+	else if(this._lineType === KARRYN_LINE_ENEMY_START_WEREWOLF_BACK_ANAL) {
 		lineArray = this.karrynline_enemyPoseStart_AnalSex(lineArray);
 	}
 	
@@ -2296,7 +2313,7 @@ Rem_Lines.prototype.karrynline_Sight_Pussy = function(lineArray) {
 Rem_Lines.prototype.karrynline_Sight_Butt = function(lineArray) {
 	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
 	let hasCreampie = actor._liquidCreampieAnal > 0;
-	let hasBukkake = (actor._liquidBukkakeButt > 0 || actor._liquidBukkakeButtTopRight > 0 || actor._liquidBukkakeButtTopLeft > 0 || actor._liquidBukkakeButtBottomRight > 0 || actor._liquidBukkakeButtBottomLeft > 0);
+	let hasBukkake = (actor._liquidBukkakeButt > 0 || actor._liquidBukkakeButtTopRight > 0 || actor._liquidBukkakeButtTopLeft > 0 || actor._liquidBukkakeButtBottomRight > 0 || actor._liquidBukkakeButtBottomLeft > 0 || actor._liquidBukkakeButtRight > 0 || actor._liquidBukkakeButtLeft > 0);
 	let isInDownOrgasmPose = actor.isInDownOrgasmPose();
 	let reactionScore = actor.getReactionScore() * 0.6;
 	reactionScore += actor.reactionScore_exhibitionPassive() * 0.85;
@@ -4332,6 +4349,7 @@ Rem_Lines.prototype.karrynline_enemy_insertToy_penisDildo = function(lineArray) 
 	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
 	let toyReactionScore = actor.reactionScore_pussyToyPassive(); 
 	let firstPenisDildoInserted = actor._recordPussyToyInsertedCount <= 1;
+	let hasPussySexExperience = actor.hasPassive(PASSIVE_PUSSY_SEX_COUNT_TWO_ID);
 	
 	if(firstPenisDildoInserted) {
 		lineArray.push(['karryn_toy_enemyinsert_pussy_exp0_1', false, false]);
@@ -4345,7 +4363,8 @@ Rem_Lines.prototype.karrynline_enemy_insertToy_penisDildo = function(lineArray) 
 		lineArray.push(['karryn_toy_enemyinsert_pussy_exp3_5', false, false]);
 	}
 	else if(toyReactionScore >= VAR_TOY_RS_LV2_REQ) {
-		lineArray.push(['karryn_toy_enemyinsert_pussy_exp2_1', false, false]);
+		if(hasPussySexExperience)
+			lineArray.push(['karryn_toy_enemyinsert_pussy_exp2_1', false, false]);
 		lineArray.push(['karryn_toy_enemyinsert_pussy_exp2_2', false, false]);
 		lineArray.push(['karryn_toy_enemyinsert_pussy_exp2_3', false, false]);
 		lineArray.push(['karryn_toy_enemyinsert_pussy_exp2_4', false, false]);
@@ -4363,13 +4382,15 @@ Rem_Lines.prototype.karrynline_enemy_insertToy_analBeads = function(lineArray) {
 	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
 	let toyReactionScore = actor.reactionScore_analToyPassive(); 
 	let firstAnalBeadsInserted = actor._recordAnalToyInsertedCount <= 1;
+	let hasAnalSexExperience = actor.hasPassive(PASSIVE_ANAL_SEX_COUNT_TWO_ID);
 	
 	if(firstAnalBeadsInserted) {
 		lineArray.push(['karryn_toy_enemyinsert_anal_exp0_1', false, false]);
 		lineArray.push(['karryn_toy_enemyinsert_anal_exp0_2', false, false]);
 	}
 	else if(toyReactionScore >= VAR_TOY_RS_LV3_REQ) {
-		lineArray.push(['karryn_toy_enemyinsert_anal_exp3_1', false, false]);
+		if(hasAnalSexExperience)
+			lineArray.push(['karryn_toy_enemyinsert_anal_exp3_1', false, false]);
 		lineArray.push(['karryn_toy_enemyinsert_anal_exp3_2', false, false]);
 		lineArray.push(['karryn_toy_enemyinsert_anal_exp3_3', false, false]);
 		lineArray.push(['karryn_toy_enemyinsert_anal_exp3_4', false, false]);
@@ -4380,7 +4401,8 @@ Rem_Lines.prototype.karrynline_enemy_insertToy_analBeads = function(lineArray) {
 		lineArray.push(['karryn_toy_enemyinsert_anal_exp2_2', false, false]);
 		lineArray.push(['karryn_toy_enemyinsert_anal_exp2_3', false, false]);
 		lineArray.push(['karryn_toy_enemyinsert_anal_exp2_4', false, false]);
-		lineArray.push(['karryn_toy_enemyinsert_anal_exp2_5', false, false]);
+		if(hasAnalSexExperience)
+			lineArray.push(['karryn_toy_enemyinsert_anal_exp2_5', false, false]);
 	}
 	else {
 		lineArray.push(['karryn_toy_enemyinsert_anal_exp1_1', false, false]);
@@ -4424,6 +4446,7 @@ Rem_Lines.prototype.karrynline_enemy_playToy_penisDildo = function(lineArray) {
 	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
 	let toyReactionScore = actor.reactionScore_pussyToyPassive(); 
 	let firstPenisDildoPlay = actor._recordPussyToyUsedByEnemyCount <= 1;
+	let hasPussySexExperience = actor.hasPassive(PASSIVE_PUSSY_SEX_COUNT_TWO_ID);
 	
 	if(firstPenisDildoPlay) {
 		lineArray.push(['karryn_toy_enemyplay_pussy_exp0_1', false, false]);
@@ -4438,7 +4461,8 @@ Rem_Lines.prototype.karrynline_enemy_playToy_penisDildo = function(lineArray) {
 	}
 	else if(toyReactionScore >= VAR_TOY_RS_LV2_REQ) {
 		lineArray.push(['karryn_toy_enemyplay_pussy_exp2_1', false, false]);
-		lineArray.push(['karryn_toy_enemyplay_pussy_exp2_2', false, false]);
+		if(hasPussySexExperience)
+			lineArray.push(['karryn_toy_enemyplay_pussy_exp2_2', false, false]);
 		lineArray.push(['karryn_toy_enemyplay_pussy_exp2_3', false, false]);
 		lineArray.push(['karryn_toy_enemyplay_pussy_exp2_4', false, false]);
 	}
@@ -4454,7 +4478,8 @@ Rem_Lines.prototype.karrynline_enemy_playToy_penisDildo = function(lineArray) {
 Rem_Lines.prototype.karrynline_enemy_playToy_analBeads = function(lineArray) {
 	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
 	let toyReactionScore = actor.reactionScore_analToyPassive();
-	let firstAnalBeadsPlay = actor._recordAnalToyUsedByEnemyCount  <= 1;	
+	let firstAnalBeadsPlay = actor._recordAnalToyUsedByEnemyCount  <= 1;
+	let hasAnalSexExperience = actor.hasPassive(PASSIVE_ANAL_SEX_COUNT_TWO_ID);	
 	
 	if(firstAnalBeadsPlay) {
 		lineArray.push(['karryn_toy_enemyplay_anal_exp0_1', false, false]);
@@ -4462,7 +4487,8 @@ Rem_Lines.prototype.karrynline_enemy_playToy_analBeads = function(lineArray) {
 	}
 	else if(toyReactionScore >= VAR_TOY_RS_LV3_REQ) {
 		lineArray.push(['karryn_toy_enemyplay_anal_exp3_1', false, false]);
-		lineArray.push(['karryn_toy_enemyplay_anal_exp3_2', false, false]);
+		if(hasAnalSexExperience)
+			lineArray.push(['karryn_toy_enemyplay_anal_exp3_2', false, false]);
 		lineArray.push(['karryn_toy_enemyplay_anal_exp3_3', false, false]);
 		lineArray.push(['karryn_toy_enemyplay_anal_exp3_4', false, false]);
 		lineArray.push(['karryn_toy_enemyplay_anal_exp3_5', false, false]);
@@ -4587,20 +4613,25 @@ Rem_Lines.prototype.karrynline_karryn_playToy_pinkRotor = function(lineArray) {
 };
 Rem_Lines.prototype.karrynline_karryn_playToy_penisDildo = function(lineArray) {
 	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
-	let toyReactionScore = actor.reactionScore_pussyToyPassive(); 
+	let toyReactionScore = actor.reactionScore_pussyToyPassive();
+	let hasPussySexExperience = actor.hasPassive(PASSIVE_PUSSY_SEX_COUNT_TWO_ID);
 
 	if(toyReactionScore >= VAR_TOY_RS_LV3_REQ) {
-		lineArray.push(['karryn_toy_karrynplay_pussy_exp3_1', false, false]);
+		if(hasPussySexExperience)
+			lineArray.push(['karryn_toy_karrynplay_pussy_exp3_1', false, false]);
 		lineArray.push(['karryn_toy_karrynplay_pussy_exp3_2', false, false]);
-		lineArray.push(['karryn_toy_karrynplay_pussy_exp3_3', false, false]);
+		if(hasPussySexExperience)
+			lineArray.push(['karryn_toy_karrynplay_pussy_exp3_3', false, false]);
 		lineArray.push(['karryn_toy_karrynplay_pussy_exp3_4', false, false]);
 		lineArray.push(['karryn_toy_karrynplay_pussy_exp3_5', false, false]);
 	}
 	else if(toyReactionScore >= VAR_TOY_RS_LV2_REQ) {
 		lineArray.push(['karryn_toy_karrynplay_pussy_exp2_1', false, false]);
-		lineArray.push(['karryn_toy_karrynplay_pussy_exp2_2', false, false]);
+		if(hasPussySexExperience)
+			lineArray.push(['karryn_toy_karrynplay_pussy_exp2_2', false, false]);
 		lineArray.push(['karryn_toy_karrynplay_pussy_exp2_3', false, false]);
-		lineArray.push(['karryn_toy_karrynplay_pussy_exp2_4', false, false]);
+		if(hasPussySexExperience)
+			lineArray.push(['karryn_toy_karrynplay_pussy_exp2_4', false, false]);
 	}
 	else {
 		lineArray.push(['karryn_toy_karrynplay_pussy_exp1_1', false, false]);
@@ -4613,17 +4644,21 @@ Rem_Lines.prototype.karrynline_karryn_playToy_penisDildo = function(lineArray) {
 Rem_Lines.prototype.karrynline_karryn_playToy_analBeads = function(lineArray) {
 	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
 	let toyReactionScore = actor.reactionScore_analToyPassive();
+	let hasAnalSexExperience = actor.hasPassive(PASSIVE_ANAL_SEX_COUNT_TWO_ID);
 
 	if(toyReactionScore >= VAR_TOY_RS_LV3_REQ) {
 		lineArray.push(['karryn_toy_karrynplay_anal_exp3_1', false, false]);
-		lineArray.push(['karryn_toy_karrynplay_anal_exp3_2', false, false]);
-		lineArray.push(['karryn_toy_karrynplay_anal_exp3_3', false, false]);
+		if(hasAnalSexExperience)
+			lineArray.push(['karryn_toy_karrynplay_anal_exp3_2', false, false]);
+		if(hasAnalSexExperience)
+			lineArray.push(['karryn_toy_karrynplay_anal_exp3_3', false, false]);
 		lineArray.push(['karryn_toy_karrynplay_anal_exp3_4', false, false]);
 		lineArray.push(['karryn_toy_karrynplay_anal_exp3_5', false, false]);
 	}
 	else if(toyReactionScore >= VAR_TOY_RS_LV2_REQ) {
 		lineArray.push(['karryn_toy_karrynplay_anal_exp2_1', false, false]);
-		lineArray.push(['karryn_toy_karrynplay_anal_exp2_2', false, false]);
+		if(hasAnalSexExperience)
+			lineArray.push(['karryn_toy_karrynplay_anal_exp2_2', false, false]);
 		lineArray.push(['karryn_toy_karrynplay_anal_exp2_3', false, false]);
 		lineArray.push(['karryn_toy_karrynplay_anal_exp2_4', false, false]);
 	}
@@ -6844,6 +6879,50 @@ Rem_Lines.prototype.enemyline_enemyPoseStart_KickCounter = function(lineArray) {
 			lineArray.push(['guard_posestart_kickcounter_exp0_3', true, false]);
 		}
 	}
+	else if(this._enemyType == ENEMYTYPE_LIZARDMAN_TAG) {
+		if(reactionScore >= VAR_DEF_RS_LV3_REQ && hadKickCounteredBefore) {
+			lineArray.push(['lizardman_posestart_kickcounter_exp3_1', true, false]);
+			lineArray.push(['lizardman_posestart_kickcounter_exp3_2', true, false]);
+			lineArray.push(['lizardman_posestart_kickcounter_exp3_3', true, false]);
+			lineArray.push(['lizardman_posestart_kickcounter_exp3_4', true, false]);
+		}
+		else if(reactionScore >= VAR_DEF_RS_LV2_REQ && hadKickCounteredBefore) {
+			lineArray.push(['lizardman_posestart_kickcounter_exp2_1', true, false]);
+			lineArray.push(['lizardman_posestart_kickcounter_exp2_2', true, false]);
+			lineArray.push(['lizardman_posestart_kickcounter_exp2_3', true, false]);
+		}
+		else if(reactionScore >= VAR_DEF_RS_LV1_REQ && hadKickCounteredBefore) {
+			lineArray.push(['lizardman_posestart_kickcounter_exp1_1', true, false]);
+			lineArray.push(['lizardman_posestart_kickcounter_exp1_2', true, false]);
+			lineArray.push(['lizardman_posestart_kickcounter_exp1_3', true, false]);
+		}
+		else {
+			lineArray.push(['lizardman_posestart_kickcounter_exp0_1', true, false]);
+			lineArray.push(['lizardman_posestart_kickcounter_exp0_2', true, false]);
+		}
+	}
+	else if(this._enemyType == ENEMYTYPE_ORC_TAG) {
+		if(reactionScore >= VAR_DEF_RS_LV3_REQ && hadKickCounteredBefore) {
+			lineArray.push(['orc_posestart_kickcounter_exp3_1', true, false]);
+			lineArray.push(['orc_posestart_kickcounter_exp3_2', true, false]);
+			lineArray.push(['orc_posestart_kickcounter_exp3_3', true, false]);
+			lineArray.push(['orc_posestart_kickcounter_exp3_4', true, false]);
+		}
+		else if(reactionScore >= VAR_DEF_RS_LV2_REQ && hadKickCounteredBefore) {
+			lineArray.push(['orc_posestart_kickcounter_exp2_1', true, false]);
+			lineArray.push(['orc_posestart_kickcounter_exp2_2', true, false]);
+			lineArray.push(['orc_posestart_kickcounter_exp2_3', true, false]);
+		}
+		else if(reactionScore >= VAR_DEF_RS_LV1_REQ && hadKickCounteredBefore) {
+			lineArray.push(['orc_posestart_kickcounter_exp1_1', true, false]);
+			lineArray.push(['orc_posestart_kickcounter_exp1_2', true, false]);
+			lineArray.push(['orc_posestart_kickcounter_exp1_3', true, false]);
+		}
+		else {
+			lineArray.push(['orc_posestart_kickcounter_exp0_1', true, false]);
+			lineArray.push(['orc_posestart_kickcounter_exp0_2', true, false]);
+		}
+	}
 	
 	return lineArray;
 };
@@ -7949,7 +8028,7 @@ Rem_Lines.prototype.karrynline_invasion_battleStart = function(lineArray) {
 Rem_Lines.prototype.karrynline_defeatLv1_battleStart = function(lineArray) {
 	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
 	let reactionScore = actor.getReactionScore();
-	let notFirstDefeatLv1 = actor._recordBlowbangCount > 1;
+	let notFirstDefeatLv1 = actor._recordDefeatedLevelOneCount > 1;
 	
 	if(reactionScore >= VAR_DEF_RS_LV3_REQ && notFirstDefeatLv1) {
 		lineArray.push(['defeat_lv1_start_exp3_1', false, false]);
@@ -7965,7 +8044,7 @@ Rem_Lines.prototype.karrynline_defeatLv1_battleStart = function(lineArray) {
 		lineArray.push(['defeat_lv1_start_exp2_4', false, false]);
 		lineArray.push(['defeat_lv1_start_exp2_5', false, false]);
 	}
-	else if(reactionScore >= VAR_DEF_RS_LV1_REQ && notFirstDefeatLv1) {
+	else if(notFirstDefeatLv1) {
 		lineArray.push(['defeat_lv1_start_exp1_1', false, false]);
 		lineArray.push(['defeat_lv1_start_exp1_2', false, false]);
 		lineArray.push(['defeat_lv1_start_exp1_3', false, false]);
@@ -7983,7 +8062,7 @@ Rem_Lines.prototype.karrynline_defeatLv1_battleStart = function(lineArray) {
 Rem_Lines.prototype.karrynline_defeatLv2_battleStart = function(lineArray) {
 	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
 	let reactionScore = actor.getReactionScore();
-	let notFirstDefeatLv2 = actor._recordUrinalCount > 1;
+	let notFirstDefeatLv2 = actor._recordDefeatedLevelTwoCount > 1;
 	
 	if(reactionScore >= VAR_DEF_RS_LV3_REQ && notFirstDefeatLv2) {
 		lineArray.push(['defeat_lv2_start_exp3_1', false, false]);
@@ -7999,7 +8078,7 @@ Rem_Lines.prototype.karrynline_defeatLv2_battleStart = function(lineArray) {
 		lineArray.push(['defeat_lv2_start_exp2_4', false, false]);
 		lineArray.push(['defeat_lv2_start_exp2_5', false, false]);
 	}
-	else if(reactionScore >= VAR_DEF_RS_LV1_REQ && notFirstDefeatLv2) {
+	else if(notFirstDefeatLv2) {
 		lineArray.push(['defeat_lv2_start_exp1_1', false, false]);
 		lineArray.push(['defeat_lv2_start_exp1_2', false, false]);
 		lineArray.push(['defeat_lv2_start_exp1_3', false, false]);
@@ -8017,10 +8096,10 @@ Rem_Lines.prototype.karrynline_defeatLv2_battleStart = function(lineArray) {
 Rem_Lines.prototype.karrynline_defeatLv3_battleStart = function(lineArray) {
 	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
 	let reactionScore = actor.getReactionScore();
-	let notFirstDefeatLv3 = actor._recordSoloCellCount > 1;
+	let notFirstDefeatLv3 = actor._recordDefeatedLevelThreeCount > 1;
 	
 	if(reactionScore >= VAR_DEF_RS_LV3_REQ && notFirstDefeatLv3) {
-		lineArray.push(['defeat_lv2_start_exp3_1', false, false]);
+		lineArray.push(['defeat_lv3_start_exp3_1', false, false]);
 		lineArray.push(['defeat_lv3_start_exp3_2', false, false]);
 		lineArray.push(['defeat_lv3_start_exp3_3', false, false]);
 		lineArray.push(['defeat_lv3_start_exp3_4', false, false]);
@@ -8033,7 +8112,7 @@ Rem_Lines.prototype.karrynline_defeatLv3_battleStart = function(lineArray) {
 		lineArray.push(['defeat_lv3_start_exp2_4', false, false]);
 		lineArray.push(['defeat_lv3_start_exp2_5', false, false]);
 	}
-	else if(reactionScore >= VAR_DEF_RS_LV1_REQ && notFirstDefeatLv3) {
+	else if(notFirstDefeatLv3) {
 		lineArray.push(['defeat_lv3_start_exp1_1', false, false]);
 		lineArray.push(['defeat_lv3_start_exp1_2', false, false]);
 		lineArray.push(['defeat_lv3_start_exp1_3', false, false]);
@@ -8052,6 +8131,33 @@ Rem_Lines.prototype.karrynline_defeatLv3_battleStart = function(lineArray) {
 Rem_Lines.prototype.karrynline_defeatLv4_battleStart = function(lineArray) {
 	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
 	let reactionScore = actor.getReactionScore();
+	let notFirstDefeatLv4 = actor._recordDefeatedLevelFourCount > 1;
+	
+	if(reactionScore >= VAR_DEF_RS_LV3_REQ && notFirstDefeatLv4) {
+		lineArray.push(['defeat_lv4_start_exp3_1', false, false]);
+		lineArray.push(['defeat_lv4_start_exp3_2', false, false]);
+		lineArray.push(['defeat_lv4_start_exp3_3', false, false]);
+		lineArray.push(['defeat_lv4_start_exp3_4', false, false]);
+		lineArray.push(['defeat_lv4_start_exp3_5', false, false]);
+	}
+	else if(reactionScore >= VAR_DEF_RS_LV2_REQ && notFirstDefeatLv4) {
+		lineArray.push(['defeat_lv4_start_exp2_1', false, false]);
+		lineArray.push(['defeat_lv4_start_exp2_2', false, false]);
+		lineArray.push(['defeat_lv4_start_exp2_3', false, false]);
+		lineArray.push(['defeat_lv4_start_exp2_4', false, false]);
+		lineArray.push(['defeat_lv4_start_exp2_5', false, false]);
+	}
+	else if(notFirstDefeatLv4) {
+		lineArray.push(['defeat_lv4_start_exp1_1', false, false]);
+		lineArray.push(['defeat_lv4_start_exp1_2', false, false]);
+		lineArray.push(['defeat_lv4_start_exp1_3', false, false]);
+		lineArray.push(['defeat_lv4_start_exp1_4', false, false]);
+		lineArray.push(['defeat_lv4_start_exp1_5', false, false]);
+	}
+	else {
+		lineArray.push(['defeat_lv4_start_exp0_1', false, false]);
+		lineArray.push(['defeat_lv4_start_exp0_2', false, false]);
+	}
 	
 	return lineArray;
 };
@@ -8059,6 +8165,7 @@ Rem_Lines.prototype.karrynline_defeatLv4_battleStart = function(lineArray) {
 Rem_Lines.prototype.karrynline_defeatLv5_battleStart = function(lineArray) {
 	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
 	let reactionScore = actor.getReactionScore();
+	let notFirstDefeatLv5 = actor._recordDefeatedLevelFiveCount > 1;
 	
 	return lineArray;
 };

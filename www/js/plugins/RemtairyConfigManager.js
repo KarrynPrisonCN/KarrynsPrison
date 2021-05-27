@@ -28,6 +28,7 @@ ConfigManager.remLinesFast = false;
 ConfigManager.remCutinsFast = false;
 ConfigManager.remCutinsSmootherLoading = false;
 ConfigManager.remSmootherCGLoading = false;
+ConfigManager.remCutinsDisabled = false;
 ConfigManager.remShowSexualDamagePopup = true;
 ConfigManager.disableRimjobs = false;
 ConfigManager.remBattlelogDuration = 2;
@@ -75,6 +76,7 @@ ConfigManager.applyData = function(config) {
 	this.remCutinsFast = config['remCutinsFast'];
 	this.remCutinsSmootherLoading = this.readRemConfig(config, 'remCutinsSmootherLoading');
 	this.remSmootherCGLoading = this.readRemConfig(config, 'remSmootherCGLoading');
+	this.remCutinsDisabled = this.readRemConfig(config, 'remCutinsDisabled');
 	this.remShowSexualDamagePopup = this.readRemConfig(config, 'remShowSexualDamagePopup');
 	
 	this.disableRimjobs = this.readRemConfig(config, 'disableRimjobs');
@@ -138,6 +140,8 @@ ConfigManager.readRemConfig = function(config, name) {
 		else if(name == 'remCutinsSmootherLoading')
 			return false;
 		else if(name == 'remSmootherCGLoading')
+			return false;
+		else if(name == 'remCutinsDisabled')
 			return false;
 		else if(name == 'remShowSexualDamagePopup')
 			return true;
@@ -220,6 +224,7 @@ Window_Options.prototype.addRemOptions = function() {
 	this.addCommand(TextManager.yanflyOptionsFasterBattleCutins, 'remCutinsFast');
 	this.addCommand(TextManager.yanflyOptionsSmootherBattleCutinLoading, 'remCutinsSmootherLoading');
 	this.addCommand(TextManager.yanflyOptionsSmootherCGLoading, 'remSmootherCGLoading');
+	this.addCommand(TextManager.yanflyOptionsDisableBattleCutins, 'remCutinsDisabled');
 	
 	this.addCommand(TextManager.yanflyOptionsShowSexualDamagePopup, 'remShowSexualDamagePopup');
 	

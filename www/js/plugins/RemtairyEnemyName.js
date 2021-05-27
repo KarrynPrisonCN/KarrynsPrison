@@ -38,12 +38,10 @@ const ENEMY_NAMES_GENERIC_JP = [
 	"トーマス", "ブルック", "ヨジ", "カーメン", "ガバチョ", "ヴァルガス", "ポン", "タケ", "ヤマ", "ニキ", "タマオ", "ガリクソン", "ヒデ", "アリ", "デンシャ",
 	"コビー", "キシャ", "ポッポ", "ホーク", "モゲタ", "カツオ", "ナミヘー", "タマ", "ヨネスケ", "シンノス", "ヒロシ", "ノハラ", "ドルマン", "タイサ", "ビッグズ", 
 	"ロック", "ルター", "ニコラス", "ヒカル", "ショウ", "キラ", "ライト", "タイラー", "よし夫", "太郎", "次郎", "三郎", "ユバル", "ハラリ", "メンデス",
-	"ゼイン", "リアム", "ナイル", "ホーラン", "メタラー", "ザクトン", "ナスィン", "ブリンク", "ワン", "エイト", "トゥー", "ソニー", "ノラ", "チンミ",
+	"ゼイン", "リアム", "ナイル", "ホーラン", "ソリマチ", "ザクトン", "ナスィン", "ブリンク", "ワン", "エイト", "トゥー", "ソニー", "ノラ", "チンミ",
 	"パープス", "リムル", "ジオ", "セシール", "セガール", "アンソニー", "パイディ", "モミマン", "パーン", "ロードス", "オッチョ", "セーキ", "アリ", "バーグ",
 	"ココシ", "カカシ", "ナルティ", "バギ", "ゴメス", "ボリバン", "アール", "ベギモン", "カーチュギ", "ユインプ", "イギシ", "カメン", "ナナシ", "マーク",
-	"カーンベ", "コリニュ", "オボエテ", "ワスレテ", "アナッギ", "ケン", "ネック", "ジョウ", "カーネギー", "アンドリュー", "デール", "ジョン", "ベゾス", "ジェフ",
-
-	"赔钱" //January Ci-ens
+	"カーンベ", "コリニュ", "オボエテ", "ワスレテ", "アナッギ", "ケン", "ネック", "ジョウ", "カーネギー", "アンドリュー", "デール", "ジョン", "ベゾス", "ジェフ"
 ];
 
 const ENEMY_NAMES_THUG_EN = [
@@ -110,6 +108,14 @@ const ENEMY_NAMES_NERD_JP = [
 	"ムーン", "バインディン", "マウス", "シックス", "チューブ", "フロッグ", "ネイティブ"
 ];
 
+const ENEMY_NAMES_NERD_CH = [
+	"赔钱" //January Ci-ens
+];
+
+const ENEMY_NAMES_NERD_KR = [
+	"박준영" //May Ci-ens
+];
+
 const ENEMY_NAMES_ROGUE_EN = [
 	"Raynold", "Whisper", "Kavika", "Wade", "Yeet", "Jacques", "Jahnny", "Connor", 
 	"Silence", "Hanzo", "Jexx", "Nakamura", "Yuta", "Valand", "Danzo", "Wilson", 
@@ -124,7 +130,9 @@ const ENEMY_NAMES_ROGUE_JP = [
 	"アルター", "コナー", "エド", "エツィ", "ジェイ", "フライ", "アウディ", "アルノ", "アドウェル", "シャオ", "ユン", "カムイ", "シャドウ",
 	"タミール", "ガルニエ", "タラール", "ロベル", "マイルズ", "ワーレン", "ジョヴァン", "ペトル", "クラウ", "マリオ", "ラァ", "シノビ",
 	"レオナルド", "アントニオ", "ニッコ", "マルコ", "クリス", "ベン", "ジェイムズ", "チャーリー", "スティド", "ウッズ", "朧丸", "カゲ",
-	"レイナルド", "ウィスパー", "ウェイド", "ウィルソン", "ユッタ", "キリン", "モンカ", "ユウ", "グラビィ", "セイクロ", "ニンジャ", "バック"
+	"レイナルド", "ウィスパー", "ウェイド", "ウィルソン", "ユッタ", "キリン", "モンカ", "ユウ", "グラビィ", "セイクロ", "ニンジャ", "バック",
+
+	"バラバラさん" //May Ci-ens
 ];
 
 const ENEMY_NAMES_HOMELESS_EN = [
@@ -194,6 +202,74 @@ const ENEMY_NAMES_ORC_JP = [
 	"オニク", "ブースター", "キートン", "コットン", "トンボ", "ハミルトン", "ウェリントン", "ブービー", "ブーン", "ブータン", "プー太郎", "ぶーやん",
 	"ムー", "ホッグ", "シュヴァイン", "コション", "ポルコ", "セルド", "ヒュース", "スヴェイヤー", "ヴァルクン", "プアア", "チュー", "ドエジ",
 	"ヴァルケン", "ハンズィール", "グリース", "プラッセ", "スーアル", "ポルク", "ビフ", "レイタオ", "ハヌゥート" 
+];
+
+const ENEMY_NAMES_WEREWOLF_EN = [
+	"Itchy", "Scratchy", "Meats", "Vegan", "Vegas", "Fenris", "Jacob", "Lucian", "Bane", "Good Boy", 
+
+	"Poddy", "Edon", "Geralt", "Tommy", "Mutango", "Guguk", "Tatsuya", "Peaches", 
+	"Shumuts", "Dante", "Jerry", "Helsing", "Arnoldo", "Fenrir", "Raplord",
+	"Chis", "Fang", "Stave", "Burny", "Bruce", "Gaspard", "Fluffy", "Rex", "Dan", "Reese", "Bobert",
+	"Koko", "Doggo", "Shirou", "Knotty", "Ray", "Snuffles", "Zion", "Clark", "Jeff", "Frosty",
+	"Arthur", "Spot", "Moon", "Rai", "Thumper", "Berrick", "Sirius", "Hiro", "Stregus", "Palomar",
+	"Spike", "Kenchi", "Juno", "Pochi", "Howler", "Noctis", "Yuuya", "Pellsonn", "Clark", "Surrkra",
+	"Furosan", "Kethor", "Chocho", "Tabi", "Pupster", "Fang", "Phineas", "Vel", "Bobsi", "Martias", "Stalls",
+	//February SubStar
+
+	"Stud", "Fenrir", "Manwolf", "El Jefe", "Irascus", "Lupine III", "Fido", "Dexter", "Hairy Barry", 
+	"Uaf", "Alfie", "Wolfgang", "Claw", "Harry Hams", "Ulfendin", "Bunny Jackie", "Arizona"
+	//February SubStar
+];
+
+const ENEMY_NAMES_WEREWOLF_JP = [
+	"ケヴィン", "カール", "ルガー", "ワンワン", "ドギー", "トウヤ", "ボン", "大神", "モロ", "ジンロー", "ガロン", "ハヤテマル", 
+	"ポチ", "ハチ", "コロ", "ラッシー", "ロッキー", "パトラッシュ", "ギア", "ドッグ", "ディンゴ", "キバ", "ガルル", "コウガ",
+	"ハティ", "マルコ", "オドネル", "アケーラ", "ラクシャ", "ボルフガング", "シベリア", "チーフ", "リカルド", "ホロ", "サダハル",
+	"イギー", "チーズ", "スリンキー", "ニゴウ", "ヴィズ", "ナイツ", "ハイイロ", "ベルクマン", "ドーベル", "ツンドラ", "エゾ", "ダイア"
+];
+
+const ENEMY_NAMES_YETI_EN = [
+	"Icky", "Tiny", "Baby", "Primus", "Tank", "Ester", "Warchest", "Rhodes", "Betty", "Sweaty", "Spaghetti",
+	"Blue", "White", "King",
+	
+	"Jack", "Dylan", "Dylan", "Lunk", "Dorian", "Sheriff", "Keefa", "Riley", "Tim", "Sullivan",
+	"Arnoldo", "Bobo", "Enrico", "Fluffy", "Bumbo", "Kronk", "Kang", "Yama", "Monke", "Randel",
+	"Jeatter", "Vasa", "Rage", "Kupu", "Bolgor", "Milolo", "Redez", "Manfred", "Renato", "Harambe",
+	"Zooke", "Bamba", "Torashi", "Gerodo", "Gerkk", "Steven", "Huiroj", "Fluffnut", "Lucky", "Kong",
+	"Gargos", "Chappu", "Abe", "Loriaes", "Darling", "Rhett", "Icey", "Frosty", "Rhairy", "Guy",
+	"Skips", "Stones", "Nunuu", "Toof", "Hardo", "Oran", "Neji", "Icehand", "King", "Bee", "Dig", //March SubStar
+	
+	"White Furry", "Hairy Terry", "Samsicle", "Furball", "Big Knob", "Nord Fo", "Kemiru",  
+	"Gerald", "Stijl", "Big Footus", "Pellius", "Yetta", "Serinul", "Yeet", "Big Taco",
+	"Tamale", "Mr. Bongo", "Kong", "Kong" //March SubStar
+
+];
+
+const ENEMY_NAMES_YETI_JP = [
+	"ブルー", "マイク", "スノーアイス", "ユッキー", "シロ", "サスカッチ", "ゴマ", "北極", "コング", "ゴリ", 
+	"ドンキー", "ホンダ", "みくら", "カオル", "ツーディー", "マードック", "ラッセル", "ヌードル", "ハロルド", "ソラチ",
+	"ジョージ", "ソン", "サイヤン", "ゴクー", "ゴハン", "ブロリィ", "ベジー太", "コンドー", "グロッド", "ジャイアン",
+	"アカギ", "ゼラ", "ランページ", "オラ", "ウータン", "ドウェイン", "シャバーニ", "アイヴァン" 
+
+];
+
+const ENEMY_NAMES_YETI_CH = [
+	"三次郎"
+
+];
+
+const ENEMY_NAMES_SLIME_EN = [
+	"Drop", "Blob", "Blurp", "Slurp", "Sling", "Smooch", "Funnel", "Faker", "Jerry",
+	"Bouncy", "Burst", "Orange", "Seesaw", "Drip", "Jelly", "Jello", "Busty", "Balloon",
+	"Pieces", "Yesterday", "Mince", "Puri", "Slimy"
+
+];
+
+const ENEMY_NAMES_SLIME_JP = [
+	"リムル", "ゴメ", "ぷよ", "ジェリー", "ビーン", "ベス", "マシュマロ", "バター", "ラメ", "ヨーグルト", "バブル", "マリン", 
+	"ナイト", "タワー", "ボーグ", "ドラゴ", "ファング", "スラッピー", "スラリン", "ホイミン", "サスケ", "アキーラ", "スラリン",
+	"餅", "ライムライム", "ドロドロ", "ヌルヌル", "ポリ", "ホウシャ", "デンプン", "シリコーン", "ウーベタベタ", "グラーチ", "ボンド",
+	"ウーブレック", "グリッター", "エーエス", "エムアール"
 ];
 
 const ENEMY_NAMES_VISITOR_MALE_EN = [
@@ -316,32 +392,32 @@ const ENEMY_PREFIX_SENSITIVE = 'sensitive'; //忍耐なし、精力さらにな�
 const ENEMY_PREFIX_SENSITIVE_EN = ["Sensitive", "Tender", "Excited", "Quick-shot", "Aroused", "Hasty", "Edging", "Fast"];
 const ENEMY_PREFIX_SENSITIVE_JP = ["根性なし", "敏感", "早漏", "汁漏れ", "繊細", "感じやすい", "素直な", "我慢弱い", "忍耐なし", "ひょろチン", "ガチインポ"];
 
-//+15% All Stats, +15% Ejaculation Volume
+//+15% All Stats, +25% Stamina, +15% Ejaculation Volume
 const ENEMY_PREFIX_GOOD = 'good'; //高ステータス
 const ENEMY_PREFIX_GOOD_EN = ["Strong", "Skillful", "Cunning", "Fit", "Virile", "Handsome", "Manly", "Girly", "Experienced", "Big", "Horny", "Aroused", "Bad", "Hard", "Hot", "Fiery", "Mean", "Tanned", "Shady", "Brainy", "Smart"];
 const ENEMY_PREFIX_GOOD_JP = ["強", "手練れ", "一流", "優秀","熟練", "高圧的", "スーパー", "イケメン", "グレート", "イケてる", "でかい", "ゴリゴリ", "猛烈", "ちょいワル", "ごつい", "イカつい", "ハンサム", "凄い", "ガチ"];
-//+30% All Stats, +50% Energy, +25% Ejaculation Volume, +1 ejaculation stock
+//+30% All Stats, +35% Stamina, +50% Energy, +25% Ejaculation Volume, +1 ejaculation stock
 const ENEMY_PREFIX_ELITE = 'elite'; //エリート
 const ENEMY_PREFIX_ELITE_EN = ["Elite", "Terrible", "Wicked", "Perverted", "Peerless", "Greatest", "Intense", "Royal", "Super", "Dominant", "Absolute", "Infamous", "Almighty"];
 const ENEMY_PREFIX_ELITE_JP = ["エリート", "ＶＩＰ", "チャンピオン", "無敗", "無敵", "極頑強", "超一流", "超優秀", "邪悪なる", "極悪", "ロイヤル", "超グレート", "超強靭", "超ガチムチ", "悟りの", "ハイパー", "新生", "孤高の", "凄すぎ", "超絶", "ミスター", "セレブ", "偉大なる", "天才"];
-//+25% Strength, +15% Stamina
+//+30% Strength, +15% Stamina
 const ENEMY_PREFIX_STRONG = 'strong'; //力が強い、体力ある
 const ENEMY_PREFIX_STRONG_EN = ["Strong", "Brawny", "Rugged", "Fit", "Muscular", "Beefy", "Burly"];
 const ENEMY_PREFIX_STRONG_JP = ["強靭な", "筋肉質な", "オラオラ系", "ファイティング", "マッチョ", "デストロイ", "破壊の", "元気爆発"];
-//+25% Dexterity, +10% Energy
+//+30% Dexterity, +10% Energy
 const ENEMY_PREFIX_DEXTEROUS = 'dexterous'; //器用さが高い、精力高い
 const ENEMY_PREFIX_DEXTEROUS_EN = ["Dexterous", "Cunning", "Handsome", "Lithe", "Skillful", "Deft", "Handy", "Tanned", "Experienced"];
 const ENEMY_PREFIX_DEXTEROUS_JP = ["器用な", "ホスト系", "イカせの", "男優", "技術系", "テクニシャン", "上手すぎ"];
-//+25% Agility
+//+30% Agility
 const ENEMY_PREFIX_AGILE = 'agile'; //速い
 const ENEMY_PREFIX_AGILE_EN = ["Agile", "Fast", "Quick", "Light", "Nimble", "Short", "Hasty"];
 const ENEMY_PREFIX_AGILE_JP = ["音速の", "高速", "忍者", "クイック", "スピーディ", "瞬発"];
-//+25% Endurance, +25% Energy, +25% Ejaculation Volume, +1 ejaculation stock
+//+30% Endurance, +35% Stamina, +25% Energy, +25% Ejaculation Volume, +1 ejaculation stock
 const ENEMY_PREFIX_ENDURING = 'enduring'; //忍耐強い、体力高い、精力さらに高い、射精量多い
 const ENEMY_PREFIX_ENDURING_EN = ["Enduring", "Rugged", "Sturdy", "Tough", "Experienced", "Big", "Fit", "Virile", "Manly"];
 const ENEMY_PREFIX_ENDURING_JP = ["忍耐の", "我慢強い", "濃厚", "丈夫な", "頑丈", "汁男", "ぶっかけ", "ヤリチン", "欲望の", "経験豊富", "余裕の"];
 
-//-25% Dexterity, -25% Endurance, +100% Energy
+//-25% Dexterity, -25% Endurance, +50% Energy
 //With passives: -50% Charm, +50% Ejaculation Volume, +1 ejaculation stock
 const ENEMY_PREFIX_VIRGIN = 'virgin'; //童貞
 const ENEMY_PREFIX_VIRGIN_EN = ["Virgin"];
@@ -352,7 +428,7 @@ const ENEMY_PREFIX_HORNY = 'horny'; //興奮状態
 const ENEMY_PREFIX_HORNY_EN = ["Horny", "Perverted", "Excited", "Aroused", "Hard", "Horny", "Horny"];
 const ENEMY_PREFIX_HORNY_JP = ["エキサイト", "変態", "興奮", "ハッスル", "高ぶり", "はぁはぁ", "興奮"];
 
-//+25% Strength, +25% Dexterity, +25% Endurance, -25% Agility, +15% Stamina, +100% Energy, +50% Ejaculation Volume, +1 ejaculation stock
+//+25% Strength, +25% Dexterity, +25% Endurance, -25% Agility, +35% Stamina, +50% Energy, +50% Ejaculation Volume, +1 ejaculation stock
 const ENEMY_PREFIX_BIG = 'big'; //体格とチンポでかい
 const ENEMY_PREFIX_BIG_EN = ["Big", "Huge", "Giant", "Thick", "Towering"];
 const ENEMY_PREFIX_BIG_JP = ["デカマラ", "汁タンク", "ジャイアント", "ビッグ", "巨大", "デカすぎ", "どでか"];
@@ -506,19 +582,14 @@ Game_Troop.prototype.makePrefix = function(enemy) {
 		
 		//Infirmary
 		
-		//Massage Edicts
-		if(Karryn.hasEdict(EDICT_EXPAND_THERAPY_AREA)) {
-			availablePrefixSet.push(ENEMY_PREFIX_SLOW, ENEMY_PREFIX_GOOD, ENEMY_PREFIX_GOOD, ENEMY_PREFIX_ELITE);
-			if(Karryn.hasEdict(EDICT_PAID_THERAPY_SESSIONS)) {
-				availablePrefixSet.push(ENEMY_PREFIX_ANGRY, ENEMY_PREFIX_SADO);
-			}
-		}
-		
 		//Testing
 		if(Karryn.hasEdict(EDICT_ALLOW_RESEARCH_TESTING)) {
 			availablePrefixSet.push(ENEMY_PREFIX_BIG, ENEMY_PREFIX_BIG, ENEMY_PREFIX_HORNY, ENEMY_PREFIX_BAD, ENEMY_PREFIX_METAL, ENEMY_PREFIX_METAL, ENEMY_PREFIX_METAL, ENEMY_PREFIX_METAL);
 			if(Karryn.hasEdict(EDICT_CONDUCT_TESTS_ON_INJURED_INMATES)) {
-				availablePrefixSet.push(ENEMY_PREFIX_ANGRY, ENEMY_PREFIX_BAD);
+				availablePrefixSet.push(ENEMY_PREFIX_ANGRY, ENEMY_PREFIX_BAD, ENEMY_PREFIX_METAL);
+			}
+			if(Karryn.isUsingThisTitle(TITLE_ID_METAL_SEX_ONE)) {
+				availablePrefixSet.push(ENEMY_PREFIX_METAL, ENEMY_PREFIX_METAL, ENEMY_PREFIX_METAL, ENEMY_PREFIX_METAL, ENEMY_PREFIX_METAL);
 			}
 		}
 		
@@ -620,6 +691,16 @@ Game_Troop.prototype.makePrefix = function(enemy) {
 			availablePrefixSet.push(ENEMY_PREFIX_STRONG, ENEMY_PREFIX_DEXTEROUS);
 		}
 		
+		//Gym
+		if(Karryn.hasEdict(EDICT_REFURBISH_GYM) || Karryn.hasEdict(EDICT_GYM_POLICY_EXTENDED)) {
+			availablePrefixSet.push(ENEMY_PREFIX_STRONG, ENEMY_PREFIX_AGILE);
+		}
+		
+		//Shower
+		if(Karryn.hasEdict(EDICT_COLD_SHOWERS)) {
+			availablePrefixSet.push(ENEMY_PREFIX_SLOW, ENEMY_PREFIX_INEPT);
+		}
+		
 		//Type Based
 		if(enemy.isThugType) {
 			if(Karryn.hasPassive(PASSIVE_SEXUAL_PARTNERS_THUG_TWO_ID)) {
@@ -651,7 +732,7 @@ Game_Troop.prototype.makePrefix = function(enemy) {
 					availablePrefixSet.push(ENEMY_PREFIX_GOOD, ENEMY_PREFIX_WEAK, ENEMY_PREFIX_SLOW, ENEMY_PREFIX_SLOW);
 				}
 				else if(Karryn.hasEdict(EDICT_DEMEAN_GOBLINS)) {
-					availablePrefixSet.push(ENEMY_PREFIX_ANGRY, ENEMY_PREFIX_ANGRY, ENEMY_PREFIX_ANGRY, ENEMY_PREFIX_SADO_EN, ENEMY_PREFIX_SADO_EN);
+					availablePrefixSet.push(ENEMY_PREFIX_ANGRY, ENEMY_PREFIX_ANGRY, ENEMY_PREFIX_ANGRY, ENEMY_PREFIX_SADO, ENEMY_PREFIX_SADO);
 				}
 				else if(Karryn.hasEdict(EDICT_BAIT_GOBLINS)) {
 					availablePrefixSet.push(ENEMY_PREFIX_HORNY, ENEMY_PREFIX_HORNY, ENEMY_PREFIX_HORNY, ENEMY_PREFIX_GOOD, ENEMY_PREFIX_AGILE, ENEMY_PREFIX_AGILE);
@@ -723,19 +804,62 @@ Game_Troop.prototype.makePrefix = function(enemy) {
 				availablePrefixSet.push(ENEMY_PREFIX_HORNY, ENEMY_PREFIX_SADO, ENEMY_PREFIX_SADO, ENEMY_PREFIX_HORNY);
 			}
 			
+			if(Karryn.hasEdict(EDICT_THE_LIZARDMAN_PROBLEM)) {
+				if(Karryn.hasEdict(EDICT_LIZARDMEN_FREE_DRINKS)) {
+					availablePrefixSet.push(ENEMY_PREFIX_INEPT, ENEMY_PREFIX_INEPT, ENEMY_PREFIX_INEPT, ENEMY_PREFIX_DRUNK, ENEMY_PREFIX_DRUNK, ENEMY_PREFIX_DRUNK, ENEMY_PREFIX_DRUNK, ENEMY_PREFIX_DRUNK, ENEMY_PREFIX_DRUNK);
+				}
+				else if(Karryn.hasEdict(EDICT_SCIENCE_VERSUS_LIZARDMEN)) {
+					availablePrefixSet.push(ENEMY_PREFIX_BAD, ENEMY_PREFIX_BAD, ENEMY_PREFIX_BAD, ENEMY_PREFIX_WEAK, ENEMY_PREFIX_WEAK, ENEMY_PREFIX_WEAK);
+				}
+				else if(Karryn.hasEdict(EDICT_APPEASE_THE_LIZARDMEN)) {
+					availablePrefixSet.push(ENEMY_PREFIX_ELITE, ENEMY_PREFIX_GOOD, ENEMY_PREFIX_HORNY, ENEMY_PREFIX_HORNY, ENEMY_PREFIX_HORNY, ENEMY_PREFIX_VIRGIN, ENEMY_PREFIX_VIRGIN, ENEMY_PREFIX_VIRGIN);
+				}
+				else {
+					availablePrefixSet.push(ENEMY_PREFIX_ELITE, ENEMY_PREFIX_GOOD, ENEMY_PREFIX_GOOD, ENEMY_PREFIX_GOOD);
+				}
+			}
+			
 		}
 		else if(enemy.isOrcType) {
 			if(Karryn.hasPassive(PASSIVE_SEXUAL_PARTNERS_ORC_TWO_ID)) {
 				availablePrefixSet.push(ENEMY_PREFIX_HORNY, ENEMY_PREFIX_MASO, ENEMY_PREFIX_MASO, ENEMY_PREFIX_HORNY);
 			}
 			
+			if(Karryn.hasEdict(EDICT_THE_ORC_PROBLEM)) {
+				if(Karryn.hasEdict(EDICT_ACCESSIBILITY_FOR_ORCS)) {
+					availablePrefixSet.push(ENEMY_PREFIX_BIG, ENEMY_PREFIX_BIG, ENEMY_PREFIX_GOOD, ENEMY_PREFIX_TALK, ENEMY_PREFIX_DRUNK, ENEMY_PREFIX_DRUNK);
+				}
+				else if(Karryn.hasEdict(EDICT_REJECT_THE_ORCS)) {
+					availablePrefixSet.push(ENEMY_PREFIX_ANGRY, ENEMY_PREFIX_ANGRY, ENEMY_PREFIX_ANGRY, ENEMY_PREFIX_ANGRY, ENEMY_PREFIX_BIG, ENEMY_PREFIX_SADO);
+				}
+				else if(Karryn.hasEdict(EDICT_REACH_UNDERSTANDING_WITH_ORCS)) {
+					availablePrefixSet.push(ENEMY_PREFIX_HORNY, ENEMY_PREFIX_HORNY, ENEMY_PREFIX_HORNY, ENEMY_PREFIX_VIRGIN, ENEMY_PREFIX_TALK, ENEMY_PREFIX_TALK, ENEMY_PREFIX_BIG);
+				}
+				else {
+					availablePrefixSet.push(ENEMY_PREFIX_ELITE, ENEMY_PREFIX_GOOD, ENEMY_PREFIX_GOOD, ENEMY_PREFIX_BIG);
+				}
+			}
 		}
 		else if(enemy.isHomelessType) {
 			if(Karryn.hasPassive(PASSIVE_SEXUAL_PARTNERS_HOMELESS_TWO_ID)) {
 				availablePrefixSet.push(ENEMY_PREFIX_HORNY, ENEMY_PREFIX_GOOD, ENEMY_PREFIX_GOOD, ENEMY_PREFIX_HORNY);
 			}
-			
 		}
+		else if(enemy.isSlimeType) {
+			if(Karryn.hasPassive(PASSIVE_SEXUAL_PARTNERS_SLIME_TWO_ID)) {
+				availablePrefixSet.push(ENEMY_PREFIX_HORNY, ENEMY_PREFIX_HORNY, ENEMY_PREFIX_HORNY);
+			}
+		}
+		else if(enemy.isWerewolfType) {
+			if(Karryn.hasPassive(PASSIVE_SEXUAL_PARTNERS_WEREWOLF_TWO_ID)) {
+				availablePrefixSet.push(ENEMY_PREFIX_HORNY, ENEMY_PREFIX_HORNY, ENEMY_PREFIX_HORNY);
+			}
+		}
+		else if(enemy.isYetiType) {
+			if(Karryn.hasPassive(PASSIVE_SEXUAL_PARTNERS_YETI_TWO_ID)) {
+				availablePrefixSet.push(ENEMY_PREFIX_HORNY, ENEMY_PREFIX_HORNY, ENEMY_PREFIX_HORNY);
+			}
+		}	
 		
 		
 	}//End Inmate
@@ -782,7 +906,14 @@ Game_Troop.prototype.makePrefix = function(enemy) {
 		}	
 		
 		//Training Edicts
-		if(Karryn.hasEdict(EDICT_ADVANCED_GUARD_TRAINING)) {
+		if(Karryn.hasEdict(EDICT_EXPERT_GUARD_TRAINING)) {
+			availablePrefixSet.push(ENEMY_PREFIX_ELITE, ENEMY_PREFIX_ELITE, ENEMY_PREFIX_GOOD, ENEMY_PREFIX_GOOD, ENEMY_PREFIX_GOOD, ENEMY_PREFIX_BIG);
+			
+			if(Karryn.hasEdict(EDICT_RIOT_SUPPRESSING_TRAINING_FOR_GUARDS)) {
+				availablePrefixSet.push(ENEMY_PREFIX_ELITE, ENEMY_PREFIX_ELITE, ENEMY_PREFIX_BIG);
+			}
+		}
+		else if(Karryn.hasEdict(EDICT_ADVANCED_GUARD_TRAINING)) {
 			availablePrefixSet.push(ENEMY_PREFIX_ELITE, ENEMY_PREFIX_ELITE, ENEMY_PREFIX_GOOD, ENEMY_PREFIX_GOOD);
 		}
 		else if(Karryn.hasEdict(EDICT_BASIC_GUARD_TRAINING)) {
@@ -803,6 +934,10 @@ Game_Troop.prototype.makePrefix = function(enemy) {
 		if(Karryn.hasEdict(EDICT_YOU_BREAK_YOU_PAY)) {
 			availablePrefixSet.push(ENEMY_PREFIX_ANGRY);
 		}
+		if(Karryn.hasEdict(EDICT_GUARD_PERFORMANCE_REQUIREMENTS)) {
+			availablePrefixSet.push(ENEMY_PREFIX_ANGRY, ENEMY_PREFIX_ANGRY);
+		}
+		
 		if(Karryn.hasEdict(EDICT_GUARDS_NEED_TO_PAY_IN_STORE)) {
 			availablePrefixSet.push(ENEMY_PREFIX_ANGRY);
 		}
@@ -850,8 +985,9 @@ Game_Troop.prototype.makePrefix = function(enemy) {
 	//Titles
 	if(Karryn.hasThisTitle(TITLE_ID_STOLE_ANAL_VIRGINS)) {
 		availablePrefixSet.push(ENEMY_PREFIX_VIRGIN);
+		availablePrefixSet.push(ENEMY_PREFIX_VIRGIN);
 		if(Karryn.isUsingThisTitle(TITLE_ID_STOLE_ANAL_VIRGINS)) {
-			availablePrefixSet.push(ENEMY_PREFIX_VIRGIN, ENEMY_PREFIX_VIRGIN, ENEMY_PREFIX_VIRGIN);
+			availablePrefixSet.push(ENEMY_PREFIX_VIRGIN, ENEMY_PREFIX_VIRGIN, ENEMY_PREFIX_VIRGIN, ENEMY_PREFIX_VIRGIN, ENEMY_PREFIX_VIRGIN, ENEMY_PREFIX_VIRGIN);
 		}
 	}
 	
@@ -981,9 +1117,9 @@ Game_Troop.prototype.angryPrefixEffect = function() {
 };
 
 
-Game_Troop.prototype.setupEnemyPrefixEffect = function() {
+Game_Troop.prototype.setupEnemyPrefixEjaculationStockEffect = function() {
 	this.members().forEach(function(enemy) {
-		enemy.setupEnemyPrefixEffect();
+		enemy.setupEnemyPrefixEjaculationStockEffect();
 	}, this);
 };
 
@@ -1008,10 +1144,22 @@ Game_Enemy.prototype.makeUniqueNames = function() {
 	else if(enemy.isBossType) {
 		enemy.setRandomName(enemy.originalName());
 		
-		if(enemy._enemyId === ENEMY_ID_LEVELONEBOSS_TONKIN && Prison.hardMode()) {
-			let prefixName = ENEMY_PREFIX_ANGRY_EN[0];
-			if(TextManager.isJapanese) prefixName = ENEMY_PREFIX_ANGRY_JP[0];
-			enemy.addNamePrefix(prefixName, ENEMY_PREFIX_ANGRY);
+		if(Prison.hardMode()) {
+			if(enemy._enemyId === ENEMY_ID_LEVELONEBOSS_TONKIN) {
+				let prefixName = ENEMY_PREFIX_ANGRY_EN[0];
+				if(TextManager.isJapanese) prefixName = ENEMY_PREFIX_ANGRY_JP[0];
+				enemy.addNamePrefix(prefixName, ENEMY_PREFIX_ANGRY);
+			}
+			else if(enemy._enemyId === ENEMY_ID_LEVELTHREEBOSS_ARON) {
+				let prefixName = ENEMY_PREFIX_DEXTEROUS_EN[2];
+				if(TextManager.isJapanese) prefixName = ENEMY_PREFIX_DEXTEROUS_JP[3];
+				enemy.addNamePrefix(prefixName, ENEMY_PREFIX_DEXTEROUS);
+			}
+			else if(enemy._enemyId === ENEMY_ID_LEVELFOURBOSS_NOINIM) {
+				let prefixName = ENEMY_PREFIX_BIG_EN[2];
+				if(TextManager.isJapanese) prefixName = ENEMY_PREFIX_BIG_JP[2];
+				enemy.addNamePrefix(prefixName, ENEMY_PREFIX_BIG);
+			}
 		}
 	}
 	else
@@ -1042,7 +1190,7 @@ Game_Enemy.prototype.makeUniqueNames = function() {
 Game_Enemy.prototype.getAttachPrefixChance = function() {
 	let chance = ENEMY_PREFIX_BASE_ATTACH_CHANCE;
 		
-	if(Karryn.hasEdict(EDICT_LEVEL_FOUR_SUBJUGATED)) chance += 0.2;
+	if(Karryn.hasEdict(EDICT_LEVEL_FOUR_SUBJUGATED)) chance += 0.25;
 	else if(Karryn.hasEdict(EDICT_LEVEL_THREE_SUBJUGATED)) chance += 0.15;
 	else if(Karryn.hasEdict(EDICT_LEVEL_TWO_SUBJUGATED)) chance += 0.1;
 	else if(Karryn.hasEdict(EDICT_LEVEL_ONE_SUBJUGATED)) chance += 0.05;
@@ -1050,8 +1198,8 @@ Game_Enemy.prototype.getAttachPrefixChance = function() {
 	if(Karryn.hasEdict(EDICT_ALLOW_RESEARCH_TESTING)) chance += 0.1;
 	if(Karryn.hasEdict(EDICT_REPAIR_RECEPTION)) chance += 0.1;
 	
-	if(Karryn.hasEdict(EDICT_RECEPTION_POLICY_STRONG_ONLY)) chance += 0.2;
-	else if(Karryn.hasEdict(EDICT_RECEPTION_POLICY_FAVOR_STRONG)) chance += 0.1;
+	if(Karryn.hasEdict(EDICT_RECEPTION_POLICY_STRONG_ONLY)) chance += 0.3;
+	else if(Karryn.hasEdict(EDICT_RECEPTION_POLICY_FAVOR_STRONG)) chance += 0.15;
 	
 	if(Prison.hardMode()) chance += 0.05;
 	
@@ -1086,7 +1234,7 @@ Game_Enemy.prototype.name = function() {
 	if(this.isUnique)
 		return this.originalName() + (this._plural ? this._letter : '');
 	else {
-		if(Karryn.isInReceptionistPose()) {
+		if(Karryn.isInReceptionistPose() && this.isVisitorType) {
 			return this.name_receptionistBattle();
 		}
 		
@@ -1133,8 +1281,8 @@ Game_Enemy.prototype.name = function() {
 };
 
 Game_Enemy.prototype.getRandomName = function() {
-    var name = '';
-	var nameArray = [];
+    let name = '';
+	let nameArray = [];
 	
 	if(TextManager.isEnglish || !TextManager.isJapanese) {
 		nameArray = ENEMY_NAMES_GENERIC_EN.slice(0);
@@ -1187,14 +1335,34 @@ Game_Enemy.prototype.getRandomName = function() {
 			nameArray = nameArray.concat(ENEMY_NAMES_ORC_EN);
 			nameArray = nameArray.concat(ENEMY_NAMES_ORC_EN);
 		}
+		else if(this.isWerewolfType) {
+			nameArray = nameArray.concat(ENEMY_NAMES_WEREWOLF_EN);
+			nameArray = nameArray.concat(ENEMY_NAMES_WEREWOLF_EN);
+			nameArray = nameArray.concat(ENEMY_NAMES_WEREWOLF_EN);
+			nameArray = nameArray.concat(ENEMY_NAMES_WEREWOLF_EN);
+		}
+		else if(this.isYetiType) {
+			nameArray = nameArray.concat(ENEMY_NAMES_YETI_EN);
+			nameArray = nameArray.concat(ENEMY_NAMES_YETI_EN);
+			nameArray = nameArray.concat(ENEMY_NAMES_YETI_EN);
+			nameArray = nameArray.concat(ENEMY_NAMES_YETI_EN);
+		}
+		else if(this.isSlimeType) {
+			nameArray = nameArray.concat(ENEMY_NAMES_SLIME_EN);
+			nameArray = nameArray.concat(ENEMY_NAMES_SLIME_EN);
+			nameArray = nameArray.concat(ENEMY_NAMES_SLIME_EN);
+			nameArray = nameArray.concat(ENEMY_NAMES_SLIME_EN);
+		}
 		
 	}
 	else if(TextManager.isJapanese) {
 		nameArray = ENEMY_NAMES_GENERIC_JP.slice(0);
 		if(this.isVisitorType) {
 			nameArray = ENEMY_NAMES_VISITOR_UNISEX_JP.slice(0);
-			if(this.isVisitorMaleType) 
+			if(this.isVisitorMaleType) {
 				nameArray = nameArray.concat(ENEMY_NAMES_VISITOR_MALE_JP);
+				nameArray = nameArray.concat(ENEMY_NAMES_GENERIC_JP);
+			}
 			else if(this.isVisitorFemaleType)
 				nameArray = nameArray.concat(ENEMY_NAMES_VISITOR_FEMALE_JP);
 		}
@@ -1205,40 +1373,67 @@ Game_Enemy.prototype.getRandomName = function() {
 			nameArray = nameArray.concat(ENEMY_NAMES_THUG_JP);
 		}
 		else if(this.isGoblinType) {
+			nameArray = [];
 			nameArray = nameArray.concat(ENEMY_NAMES_GOBLIN_JP);
 			nameArray = nameArray.concat(ENEMY_NAMES_GOBLIN_JP);
 			nameArray = nameArray.concat(ENEMY_NAMES_GOBLIN_JP);
 			nameArray = nameArray.concat(ENEMY_NAMES_GOBLIN_JP);
 		}
 		else if(this.isNerdType) {
+			nameArray = [];
 			nameArray = nameArray.concat(ENEMY_NAMES_NERD_JP);
 			nameArray = nameArray.concat(ENEMY_NAMES_NERD_JP);
 			nameArray = nameArray.concat(ENEMY_NAMES_NERD_JP);
 			nameArray = nameArray.concat(ENEMY_NAMES_NERD_JP);
 		}
 		else if(this.isRogueType) {
+			nameArray = [];
 			nameArray = nameArray.concat(ENEMY_NAMES_ROGUE_JP);
 			nameArray = nameArray.concat(ENEMY_NAMES_ROGUE_JP);
 			nameArray = nameArray.concat(ENEMY_NAMES_ROGUE_JP);
 			nameArray = nameArray.concat(ENEMY_NAMES_ROGUE_JP);
 		}
 		else if(this.isLizardmanType) {
+			nameArray = [];
 			nameArray = nameArray.concat(ENEMY_NAMES_LIZARDMAN_JP);
 			nameArray = nameArray.concat(ENEMY_NAMES_LIZARDMAN_JP);
 			nameArray = nameArray.concat(ENEMY_NAMES_LIZARDMAN_JP);
 			nameArray = nameArray.concat(ENEMY_NAMES_LIZARDMAN_JP);
 		}
 		else if(this.isHomelessType) {
+			nameArray = [];
 			nameArray = nameArray.concat(ENEMY_NAMES_HOMELESS_JP);
 			nameArray = nameArray.concat(ENEMY_NAMES_HOMELESS_JP);
 			nameArray = nameArray.concat(ENEMY_NAMES_HOMELESS_JP);
 			nameArray = nameArray.concat(ENEMY_NAMES_HOMELESS_JP);
 		}
 		else if(this.isOrcType) {
+			nameArray = [];
 			nameArray = nameArray.concat(ENEMY_NAMES_ORC_JP);
 			nameArray = nameArray.concat(ENEMY_NAMES_ORC_JP);
 			nameArray = nameArray.concat(ENEMY_NAMES_ORC_JP);
 			nameArray = nameArray.concat(ENEMY_NAMES_ORC_JP);
+		}
+		else if(this.isWerewolfType) {
+			nameArray = [];
+			nameArray = nameArray.concat(ENEMY_NAMES_WEREWOLF_JP);
+			nameArray = nameArray.concat(ENEMY_NAMES_WEREWOLF_JP);
+			nameArray = nameArray.concat(ENEMY_NAMES_WEREWOLF_JP);
+			nameArray = nameArray.concat(ENEMY_NAMES_WEREWOLF_JP);
+		}
+		else if(this.isYetiType) {
+			nameArray = [];
+			nameArray = nameArray.concat(ENEMY_NAMES_YETI_JP);
+			nameArray = nameArray.concat(ENEMY_NAMES_YETI_JP);
+			nameArray = nameArray.concat(ENEMY_NAMES_YETI_JP);
+			nameArray = nameArray.concat(ENEMY_NAMES_YETI_JP);
+		}
+		else if(this.isSlimeType) {
+			nameArray = [];
+			nameArray = nameArray.concat(ENEMY_NAMES_SLIME_JP);
+			nameArray = nameArray.concat(ENEMY_NAMES_SLIME_JP);
+			nameArray = nameArray.concat(ENEMY_NAMES_SLIME_JP);
+			nameArray = nameArray.concat(ENEMY_NAMES_SLIME_JP);
 		}
 		
 	}
@@ -1268,6 +1463,8 @@ Game_Enemy.prototype.getEnemyTypeName = function() {
 		else if(this.isTonkin) return TextManager.bossTonkin;
 		else if(this.isCargill) return TextManager.bossCargill;
 		else if(this.isAron) return TextManager.bossAron;
+		else if(this.isNoinim) return TextManager.bossNoinim;
+		
 	}
 	
 	if(this.isPrisonGuard) return TextManager.prisonerGuard;
@@ -1279,6 +1476,9 @@ Game_Enemy.prototype.getEnemyTypeName = function() {
 	else if(this.isNerdType) return TextManager.prisonerNerd;
 	else if(this.isLizardmanType) return TextManager.prisonerLizardman;
 	else if(this.isHomelessType) return TextManager.prisonerHomeless;
+	else if(this.isWerewolfType) return TextManager.prisonerWerewolf;
+	else if(this.isYetiType) return TextManager.prisonerYeti;
+	
 	else if(this.isVisitorType) {
 		if(this._visitor_isIdentified && this._visitor_isFan && !this._visitor_isVisiting)
 			return TextManager.receptionistFan;
@@ -1375,7 +1575,7 @@ Game_Enemy.prototype.enemyInitialPleasurePrefixEffect = function() {
 	return addedMulti;
 };
 
-Game_Enemy.prototype.setupEnemyPrefixEffect = function() {
+Game_Enemy.prototype.setupEnemyPrefixEjaculationStockEffect = function() {
 	//Ejaculation Stock
    if(this.hasElitePrefix() || this.hasEnduringPrefix() || this.hasBigPrefix()) {
 		this._ejaculationStock++;
@@ -1389,50 +1589,93 @@ Game_Enemy.prototype.setupEnemyPrefixEffect = function() {
    }
 };
 
-Game_Enemy.prototype.prefixTalkEffect = function(base) {
+Game_Enemy.prototype.prefixTalkLvl = function(base) {
 	let value = 0;
-	if(this.hasTalkPrefix()) {
+	if(this.hasTalkPrefix()) 
 		value += Math.max(2, Math.round(base * 0.75));
-	}
-	else if(this.hasElitePrefix() || this.hasGoodPrefix() || this.hasBigPrefix()) {
+	else if(this.hasElitePrefix() || this.hasGoodPrefix() || this.hasBigPrefix()) 
 		value += 1;
-	}
    
 	return value;
 };
-Game_Enemy.prototype.prefixSightEffect = function(base) {
+Game_Enemy.prototype.prefixSightLvl = function(base) {
 	let value = 0;
-	if(this.hasSightPrefix()) {
+	if(this.hasSightPrefix()) 
 		value += Math.max(2, Math.round(base * 0.75));
-	}
-	else if(this.hasElitePrefix() || this.hasGoodPrefix() || this.hasBigPrefix()) {
+	else if(this.hasElitePrefix() || this.hasGoodPrefix() || this.hasBigPrefix()) 
 		value += 1;
-	}
 	
 	return value;
 };
-
-Game_Enemy.prototype.prefixMasoEffect = function(base) {
+Game_Enemy.prototype.prefixToyLvl = function(base) {
 	let value = 0;
-	if(this.hasMasoPrefix()) {
-		value += 3;
-	}
+	if(this.hasElitePrefix() || this.hasGoodPrefix() || this.hasDexterousPrefix()) 
+		value += Math.max(1, Math.round(base * 0.67));
+	else if(this.hasVirginPrefix()) 
+		value += Math.max(2, Math.round(base * 0.67));
+	else if(this.hasIneptPrefix() || this.hasBadPrefix())
+		value -= 1;
+   
 	return value;
 };
-
-Game_Enemy.prototype.prefixSadoEffect = function(base) {
-	let value = 0;
-	if(this.hasSadoPrefix()) {
-		value += 3;
-	}
-	return value;
-};
-
-Game_Enemy.prototype.prefixSexSkillEffect = function(base) {
+Game_Enemy.prototype.prefixStripLvl = function(base) {
 	let value = 0;
 	if(this.hasDexterousPrefix() || this.hasElitePrefix())
 		value += Math.max(2, Math.round(base * 0.67));
+	if(this.hasGoodPrefix())
+		value += 1;
 	else if(this.hasIneptPrefix() || this.hasBadPrefix())
+		value -= 1;
+	else if(this.hasVirginPrefix())
+		value -= 2;
+   
+	return value;
+};
+
+Game_Enemy.prototype.prefixMasochismLvl = function(base) {
+	let value = 0;
+	if(this.hasMasoPrefix())
+		value += 2;
+	return value;
+};
+
+Game_Enemy.prototype.prefixSadismLvl = function(base) {
+	let value = 0;
+	if(this.hasSadoPrefix()) 
+		value += 2;
+	return value;
+};
+
+Game_Enemy.prototype.prefixMasturbateLvl = function(base) {
+	let value = 0;
+	if(this.hasVirginPrefix() || this.hasElitePrefix() || this.hasBigPrefix()) 
+		value -= 2;
+	else if(this.hasGoodPrefix() || this.hasDrunkPrefix() || this.hasHungryPrefix() || this.hasStarvingPrefix()) 
+		value -= 1;
+	return value;
+};
+
+Game_Enemy.prototype.prefixSemenLvl = function(base) {
+	let value = 0;
+	if(this.hasBigPrefix() || this.hasElitePrefix())
+		value += Math.max(2, Math.round(base * 0.67));
+	if(this.hasGoodPrefix() || this.hasEnduringPrefix())
+		value += Math.max(1, Math.round(base * 0.5));
+	else if(this.hasSensitivePrefix() || this.hasBadPrefix())
+		value -= 1;
+	else if(this.hasDrunkPrefix() || this.hasHungryPrefix() || this.hasStarvingPrefix())
+		value -= 2;
+	return value;
+};
+
+
+Game_Enemy.prototype.prefixSexLvl = function(base) {
+	let value = 0;
+	if(this.hasDexterousPrefix() || this.hasElitePrefix())
+		value += Math.max(2, Math.round(base * 0.67));
+	if(this.hasGoodPrefix())
+		value += 1;
+	else if(this.hasIneptPrefix() || this.hasBadPrefix() || this.hasVirginPrefix())
 		value -= 1;
 	return value;
 };
@@ -1469,9 +1712,9 @@ Game_Enemy.prototype.enemyPrefixParamRate = function(paramId) {
 		if(this.hasBadPrefix() || this.hasHungryPrefix() || this.hasWeakPrefix()) rate -= 0.15;
 		else if(this.hasStarvingPrefix() || this.hasDrunkPrefix()) rate -= 0.25;
 		else if(this.hasSensitivePrefix()) rate -= 0.10;
-		else if(this.hasGoodPrefix() || this.hasStrongPrefix()) rate += 0.25;
-		else if(this.hasMasoPrefix()) rate += 0.40;
-		else if(this.hasElitePrefix() || this.hasBigPrefix()) rate += 0.50;
+		else if(this.hasStrongPrefix()) rate += 0.15;
+		else if(this.hasGoodPrefix() || this.hasMasoPrefix()) rate += 0.25;
+		else if(this.hasElitePrefix() || this.hasBigPrefix() || this.hasEnduringPrefix()) rate += 0.35;
 	}
 	else if(paramId === PARAM_MAXENERGY_ID) { //Energy
 		if(this.hasBadPrefix() || this.hasHungryPrefix() || this.hasSensitivePrefix()) rate -= 0.15;
@@ -1479,16 +1722,14 @@ Game_Enemy.prototype.enemyPrefixParamRate = function(paramId) {
 		else if(this.hasIneptPrefix()) rate -= 0.10;
 		else if(this.hasDexterousPrefix()) rate += 0.10;
 		else if(this.hasGoodPrefix()) rate += 0.15;
-		else if(this.hasMasoPrefix() || prefixType == ENEMY_PREFIX_ENDURING) rate += 0.25;
-		else if(this.hasElitePrefix()) rate += 0.50;
-		else if(this.hasVirginPrefix() || prefixType == ENEMY_PREFIX_BIG) rate += 1;
+		else if(this.hasMasoPrefix() || this.hasEnduringPrefix()) rate += 0.25;
+		else if(this.hasElitePrefix() || this.hasVirginPrefix() || this.hasBigPrefix()) rate += 0.50;
 	}
 	else if(paramId === PARAM_STRENGTH_ID) { //Strength
 		if(this.hasBadPrefix() || this.hasHungryPrefix()) rate -= 0.15;
 		else if(this.hasStarvingPrefix() || this.hasDrunkPrefix() || this.hasWeakPrefix()) rate -= 0.25;
 		else if(this.hasGoodPrefix() || this.hasHornyPrefix() || this.hasSadoPrefix() || this.hasMetalPrefix()) rate += 0.15;
-		else if(this.hasStrongPrefix()) rate += 0.25;
-		else if(this.hasElitePrefix() || this.hasBigPrefix()) rate += 0.30;
+		else if(this.hasElitePrefix() || this.hasBigPrefix() || this.hasStrongPrefix()) rate += 0.30;
 	}
 	else if(paramId === PARAM_ENDURANCE_ID) { //Endurance
 		if(this.hasBadPrefix() || this.hasHungryPrefix()) rate -= 0.15;
@@ -1501,22 +1742,22 @@ Game_Enemy.prototype.enemyPrefixParamRate = function(paramId) {
 		if(this.hasBadPrefix() || this.hasHungryPrefix()) rate -= 0.15;
 		else if(this.hasIneptPrefix() || this.hasDrunkPrefix() || this.hasStarvingPrefix()  || this.hasVirginPrefix()) rate -= 0.25;
 		else if(this.hasGoodPrefix() || this.hasHornyPrefix() || this.hasSadoPrefix() || this.hasBigPrefix() || this.hasMetalPrefix()) rate += 0.15;
-		else if(this.hasDexterousPrefix()) rate += 0.25;
-		else if(this.hasElitePrefix()) rate += 0.30;
+		else if(this.hasElitePrefix() || this.hasDexterousPrefix()) rate += 0.30;
 	}
 	else if(paramId === PARAM_MIND_ID) { //Mind
-		if(this.hasBadPrefix() || this.hasHungryPrefix()) rate -= 0.15;
-		else if(this.hasStarvingPrefix() || this.hasDrunkPrefix()) rate -= 0.25;
-		else if(this.hasGoodPrefix() || this.hasMetalPrefix()) rate += 0.15;
-		else if(this.hasElitePrefix()) rate += 0.30;
+		if(this.hasBadPrefix() || this.hasDrunkPrefix()) rate -= 0.4;
+		if(this.hasStarvingPrefix() || this.hasHungryPrefix()) rate -= 0.3;
+		else if(this.hasVirginPrefix() || this.hasWeakPrefix() || this.hasIneptPrefix() || this.hasSlowPrefix()) rate -= 0.2;
+		else if(this.hasStrongPrefix() || this.hasDexterousPrefix() || this.hasAgilePrefix() || this.hasEnduringPrefix()) rate += 0.15;
+		else if(this.hasGoodPrefix() || this.hasMetalPrefix() || this.hasBigPrefix()) rate += 0.25;
+		else if(this.hasElitePrefix()) rate += 0.4;
 	}
 	else if(paramId === PARAM_AGILITY_ID) { //Agility
 		if(this.hasBadPrefix() || this.hasHungryPrefix()) rate -= 0.15;
 		else if(this.hasStarvingPrefix() || this.hasDrunkPrefix() || this.hasSlowPrefix() || this.hasBigPrefix()) rate -= 0.25;
 		else if(this.hasGoodPrefix() || this.hasMetalPrefix()) rate += 0.15;
 		else if(this.hasHornyPrefix() || this.hasSadoPrefix()) rate += 0.10;
-		else if(this.hasAgilePrefix()) rate += 0.25;
-		else if(this.hasElitePrefix()) rate += 0.30;
+		else if(this.hasElitePrefix() || this.hasAgilePrefix()) rate += 0.30;
 	}
 	else if(paramId === PARAM_CHARM_ID) { //Charm
 		if(this.hasVirginPrefix()) {
@@ -1535,7 +1776,7 @@ Game_Enemy.prototype.prefixOverblowProtectionRateEffect = function() {
 	let rate = 1;
 	
 	if(this.hasWeakPrefix() || this.hasHungryPrefix() || this.hasBadPrefix()) 
-		rate = 1.2;
+		rate = 1.5;
 	else if(this.hasWeakPrefix())
 		rate = 2;
 	else if(this.hasStrongPrefix() || this.hasBigPrefix())
@@ -1547,6 +1788,7 @@ Game_Enemy.prototype.prefixOverblowProtectionRateEffect = function() {
 };
 
 Game_Enemy.prototype.addJustJoinedState = function() {
+	this.removeState(STATE_CHARGE_ID);
 	if(this.hasWeakPrefix() || this.hasSensitivePrefix() || this.hasIneptPrefix() || this.hasVirginPrefix()) {
 		return;
 	}
@@ -1600,6 +1842,24 @@ Game_Enemy.prototype.battlerHue = function() {
 		else if(this.hasWeakPrefix() || this.hasHungryPrefix()) return 302;
 		else if(this.hasBigPrefix()) return 144;
 		else if(this.isWanted) return 4;
+	}
+	else if(this.isWerewolfType) {
+		if(this.hasMetalPrefix()) return 21;
+		else if(this.hasGoodPrefix()) return 330;
+		else if(this.hasElitePrefix()) return 99;
+		else if(this.hasWeakPrefix() || this.hasHungryPrefix()) return 225;
+		else if(this.hasBigPrefix()) return 144;
+		else if(this.isWanted) return 347;
+	}
+	//White 
+	else if(this.isYetiType) {
+		if(this.hasMetalPrefix()) return 210;
+		else if(this.hasBadPrefix() || this.hasStarvingPrefix()) return 38;
+		else if(this.hasWeakPrefix() || this.hasHungryPrefix()) return 16;
+		else if(this.hasGoodPrefix()) return 338;
+		else if(this.hasElitePrefix()) return 271;
+		else if(this.hasBigPrefix()) return 310;
+		else if(this.isWanted) return 353;
 	}
 	//Human skin tone
 	else {

@@ -70,6 +70,12 @@ const BAR_TAKE_ORDER_TIPSY_TIME_LIMIT = 120;
 const BAR_ANGRY_LEAVING_TIME_LIMIT = 120;
 const BAR_JOKE_TIME_LIMIT = 90;
 const BAR_TIME_LIMIT_BONUS_NUM_OF_CUSTOMERS = 10;
+const BAR_UNTIL_NEXT_FLASH_REQUEST_NORMAL_TIME_LIMIT = 120;
+const BAR_UNTIL_NEXT_FLASH_REQUEST_TIPSY_TIME_LIMIT = 60;
+const BAR_UNTIL_NEXT_FLASH_REQUEST_DRUNK_TIME_LIMIT = 10; //Plus 20
+const BAR_SLEEP_CHANCE_BASE = 50;
+const BAR_SLEEP_CHANCE_DRUNK_PREFIX = 25;
+const BAR_DEAD_DRUNK_STAY_CHANCE = 40;
 
 const BAR_TOTAL_SEATS = 10;
 const BAR_TABLE_A_LEFT_SEAT = 0;
@@ -114,6 +120,8 @@ const BAR_TABLE_B_ENEMY_ID = 117;
 const BAR_TABLE_C_ENEMY_ID = 118;
 const BAR_TABLE_D_ENEMY_ID = 119;
 
+const WILLPOWER_REJECT_ALCOHOL_COST = 15;
+const WILLPOWER_REJECT_ALCOHOL_REGEN = 0.33;
 
 //////////
 // Game Party
@@ -155,6 +163,30 @@ Game_Party.prototype.setWaitressBattleTimeLimit = function(minutes) {
 	//this._waitressBattle_timeLimit = 21;
 };
 
+Object.defineProperty(Game_Party.prototype, "waitressBattleTimeChoice", {
+	get: function () { 
+		let choice = 0;
+		let reputation = $gameParty._barReputation;
+		
+		let value = reputation;
+		
+		if(value >= 20)
+			choice = 3;
+		else if(value >= 10)
+			choice = 2;
+		else if(value >= 2)
+			choice = 1;
+
+		let maxLimit = 2;
+		if($gameSwitches.value(SWITCH_WON_BOSS_BATTLE_LV4_ID)) { //temp todo change for full game
+			maxLimit += 1;
+		}
+
+		return Math.min(maxLimit, choice);
+		
+	}, configurable: true
+});
+
 Game_Party.prototype.setBarReputation = function(value) {
 	let minBarRep = this.getMinimumBarReputation();
 	
@@ -171,6 +203,7 @@ Game_Party.prototype.getMinimumBarReputation = function() {
 };
 
 Game_Party.prototype.preWaitressBattleSetup = function() {
+	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
 	BattleManager.setEnemySneakAttackBattle();
 	this.preBattleSetup();
 	$gameMap.changeBattleback(BATTLEBACK1_BAR_WAITRESS_SERVE_NAME, BATTLEBACK2_BAR_WAITRESS_SERVE_NAME);
@@ -184,10 +217,8 @@ Game_Party.prototype.preWaitressBattleSetup = function() {
 	this._waitressBattle_brawlDamage = 0;
 	this._waitressBattle_customerSatisfaction = 0;
 
-	$gameActors.actor(ACTOR_KARRYN_ID).preWaitressBattleSetup();
+	actor.preWaitressBattleSetup();
 	
-	$gameActors.actor(ACTOR_KARRYN_ID).addState(STATE_AVAILABLE_MUGS_ID);
-	$gameActors.actor(ACTOR_KARRYN_ID).addState(STATE_AVAILABLE_GLASSES_ID);
 	this.waitressBattle_setupStartingMugsAndGlasses();
 	
 };
@@ -222,6 +253,8 @@ Game_Party.prototype.postWaitressBattleCleanup  = function() {
 };
 
 Game_Party.prototype.addWaitressTips = function(value) {
+	if(!value) return;
+	
 	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
 	let multipler = 1;
 	if(Karryn.hasThisTitle(TITLE_ID_HARDWORKING_WAITRESS)) {
@@ -274,6 +307,7 @@ Game_Party.prototype.waitressBattle_increaseBrawlDamage = function(value) {
 	}
 };
 
+//Bar Income
 Game_Party.prototype.getBarIncome = function() {
 	let barIncome = 0;
 	
@@ -286,6 +320,8 @@ Game_Party.prototype.getBarIncome = function() {
 	if(Karryn.hasEdict(EDICT_DONT_PAY_WAITERS)) barIncome -= 70;
 	else if(Karryn.hasEdict(EDICT_USE_INMATE_WAITERS)) barIncome -= 30;
 	
+	
+	if(Karryn.hasEdict(EDICT_LIZARDMEN_FREE_DRINKS)) barIncome *= 0.7;
 	
 	barIncome *= this.getBarReputationIncomeMultipler();
 	return Math.round(barIncome);
@@ -378,6 +414,17 @@ Game_Party.prototype.waitressBattle_increaseAvailableGlasses = function(num) {
 	this.waitressBattle_setAvailableGlasses(this._waitressBattle_availableGlasses + num);
 };
 
+Game_Party.prototype.waitressBattle_thereAreNoMoreMugsOrGlasses = function() {
+	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
+	if(!actor.waitressBattle_isTrayEmpty()) return false;
+	if($gameTroop._tableA._dirtyMugs + $gameTroop._tableA._dirtyGlasses > 0) return false;
+	if($gameTroop._tableB._dirtyMugs + $gameTroop._tableB._dirtyGlasses > 0) return false;
+	if($gameTroop._tableC._dirtyMugs + $gameTroop._tableC._dirtyGlasses > 0) return false;
+	if($gameTroop._tableD._dirtyMugs + $gameTroop._tableD._dirtyGlasses > 0) return false;
+	
+	return this._waitressBattle_availableMugs + this._waitressBattle_availableGlasses === 0;
+};
+
 //////////
 // Game BattlerBase
 ///////////
@@ -454,6 +501,8 @@ Game_Actor.prototype.preWaitressBattleSetup = function() {
 	this._playthroughRecordBarWaitressBattleCount++;
 	
 	this.addState(STATE_ACCEPTING_NO_ALCOHOL_ID);
+	this.addState(STATE_AVAILABLE_MUGS_ID);
+	this.addState(STATE_AVAILABLE_GLASSES_ID);
 	this.removeState(STATE_CONFIDENT_ID);
 	this.emoteWaitressServingPose();
 };
@@ -489,9 +538,11 @@ Game_Actor.prototype.waitressBattle_resetTray = function(dirtyOnly, droppingTray
 		$gameParty.waitressBattle_increaseAvailableMugs(this._barTray_dirtyMugsCount);
 		$gameParty.waitressBattle_increaseAvailableGlasses(this._barTray_dirtyGlassesCount);
 	}
-	if(droppingTray) {
+	else if(droppingTray) {
 		$gameParty.increaseExtraGoldReward(-this._barTray_dirtyMugsCount * 2);
 		$gameParty.increaseExtraGoldReward(-this._barTray_dirtyGlassesCount * 3);
+		if(this._barTray_dirtyMugsCount > 0 || this._barTray_dirtyGlassesCount > 0)
+			this._playthroughRecordWaitressDroppedTrayCount++;
 	}
 	this._barTray_dirtyMugsCount = 0;
 	this._barTray_dirtyGlassesCount = 0;
@@ -873,7 +924,8 @@ Game_Actor.prototype.waitressBattle_askedToDrink = function(target) {
 		BattleManager._logWindow.push('addText', TextManager.waitressRefusesDrink.format(this.displayName()));
 		AudioManager.playSe({name:'+Evade', pan:0, pitch:100, volume:70});
 		this.gainWill(-this.rejectAlcoholWillCost());
-		this.gainMindExp(40, this.level);
+		this.addState(STATE_WAITRESS_WP_REGEN_REDUCE_ID);
+		this.gainMindExp(50, this.level);
 		BattleManager.actionRemLines(KARRYN_LINE_WAITRESS_SERVE_REJECT_DRINK);
 	}
 	else {
@@ -1057,6 +1109,24 @@ Game_Actor.prototype.waitressBattle_flashes = function() {
 			if(Math.random() < enemyHornyChance) {
 				member.addHornyState();
 				enemyHornyAddedCount++;
+				
+				let nextFlashTimeLimit = BAR_UNTIL_NEXT_FLASH_REQUEST_NORMAL_TIME_LIMIT;
+				if(member.isDrunk || member.isDeadDrunk)
+					nextFlashTimeLimit = BAR_UNTIL_NEXT_FLASH_REQUEST_DRUNK_TIME_LIMIT;
+				else if(member.isTipsy)
+					nextFlashTimeLimit = BAR_UNTIL_NEXT_FLASH_REQUEST_TIPSY_TIME_LIMIT;
+				
+				if(Karryn.hasEdict(EDICT_BAR_DRINK_MENU_III)) {
+					nextFlashTimeLimit -= 40;
+				}
+				else if(Karryn.hasEdict(EDICT_BAR_DRINK_MENU_II)) {
+					nextFlashTimeLimit -= 25;
+				}
+				else if(Karryn.hasEdict(EDICT_BAR_DRINK_MENU_I)) {
+					nextFlashTimeLimit -= 15;
+				}
+				
+				member._bar_TimelimitUntilNextFlashRequest = member.waitressBattle_getNewTimeLimit(nextFlashTimeLimit);
 			}
 		}
     });
@@ -1092,7 +1162,7 @@ Game_Actor.prototype.customReq_tableServeDrink = function() {
 	return $gameTroop.waitressBattle_getAwakeMembersOfTable(this._barLocation).length > 0;
 };
 Game_Actor.prototype.skillCost_waitressServeDrink = function() {
-	let cost = this.realMaxStamina * 0.05;
+	let cost = Math.min(this.realMaxStamina * 0.05, 17 + this.level * 2.5);
 	
 	let tableEnemies = $gameTroop.waitressBattle_getAwakeMembersOfTable(this._barLocation);
 	if(tableEnemies.length === 0) return 0;
@@ -1121,7 +1191,9 @@ Game_Actor.prototype.afterEval_tableServeDrink = function(target, drink) {
 		AudioManager.playSe({name:'+Waitress_Pay1', pan:0, pitch:80, volume:70});
 		if(target._bar_TimelimitGetServed !== -1 && target._bar_TimelimitGetServed > $gameParty.waitressBattle_getCurrentTimeInSeconds() && target._bar_orderedDrink === drink) {
 			$gameParty.increaseWaitressCustomerSatisfaction(1);
-			$gameParty.addWaitressTips(Math.randomInt(drink * 1.2) + Math.ceil(drink * 0.4));
+			let tipValue = Math.randomInt(drink * 1.2) + Math.ceil(drink * 0.4);
+			if(target.isLizardmanType && Karryn.hasEdict(EDICT_LIZARDMEN_FREE_DRINKS)) tipValue = 0;
+			$gameParty.addWaitressTips(tipValue);
 			if(target._bar_patiences < 2) target._bar_patiences++;
 			this.gainCharmExp(5, this.level);
 		}
@@ -1229,7 +1301,7 @@ Game_Actor.prototype.afterEval_moveToTable = function(target) {
 };
 
 Game_Actor.prototype.skillCost_moveToTable = function() {
-	let cost = this.realMaxStamina * 0.03;
+	let cost = Math.min(this.realMaxStamina * 0.03, 10 + this.level * 1.5);
 	if(this._barLocation === BAR_LOCATION_STANDBY) cost *= 1.5;
 	let allEnemies = $gameTroop.waitressBattle_awakeMembers();
 	if(allEnemies.length === 0) 
@@ -1655,15 +1727,11 @@ Game_Actor.prototype.waitressXParamRate = function(id) {
 	
 	if($gameParty.isInWaitressBattle) {
 		if(id === XPARAM_CRIT_EVA_ID || id === XPARAM_EVA_ID) {
-			passiveRate -= this.getAlcoholRate() * 0.5;
-		}
-		else if(id === XPARAM_EVA_ID) {
-			passiveRate -= this.getAlcoholRate() * 0.5;
-						
-			if(!this.waitressBattle_isTrayEmpty() && this.isInWaitressServingPose()) {
-				passiveRate *= 0.33;
-			}
+			passiveRate -= this.getAlcoholRate() * 0.33;
 			
+			if(!this.waitressBattle_isTrayEmpty() && this.isInWaitressServingPose()) {
+				passiveRate *= 0.75;
+			}
 		}
 		else if(id === XPARAM_STA_REGEN_ID) {
 			passiveRate *= 0.5;
@@ -1678,8 +1746,8 @@ Game_Actor.prototype.waitressSParamRate = function(id) {
 	let passiveRate = 1;
 	if(this.isInWaitressServingPose()) {
 		if(id === SPARAM_WP_REGEN_ID) {
-			if(this.isNotAcceptingAnyAlcohol())
-				passiveRate *= 0.5;
+			if(this.isStateAffected(STATE_WAITRESS_WP_REGEN_REDUCE_ID))
+				passiveRate *= WILLPOWER_REJECT_ALCOHOL_REGEN;
 			
 			if(this.isDeadDrunk) passiveRate *= 0.3;
 			else if(this.isDrunk) passiveRate *= 0.5;
@@ -1815,7 +1883,7 @@ Game_Actor.prototype.postDamage_ejaculation_waitressSex = function(target, area,
 	
 	tipValue = Math.randomInt(tipValue) + tipValue / 2 + 5;
 	tipValue *= this.waitressSexualTipMultipler();
-	
+
 	if(Math.random() < 0.5)
 		$gameParty.addWaitressTips(tipValue);
 	
@@ -1951,7 +2019,7 @@ Game_Troop.prototype.setupWaitressBattle = function(troopId) {
 		enemy.setupForWaitressBattle_starters();
 	}
 	this.makeUniqueNames();
-	this.setupEnemyPrefixEffect();
+	this.setupEnemyPrefixEjaculationStockEffect();
 	
 	//Spawn
 	this._nextEnemySpawnTimeLimit = BAR_SPAWN_INTERVAL;
@@ -2134,10 +2202,43 @@ Game_Troop.prototype.waitressBattle_validEnemyId = function() {
 		validEnemyTypes.push(83);
 	}
 	
-	if($gameParty._barReputation >= 8 && Karryn.hasPassive(EDICT_LEVEL_TWO_SUBJUGATED)) {
+	//Rogues
+	if($gameParty._barReputation >= 8 && Karryn.hasEdict(EDICT_LEVEL_TWO_SUBJUGATED)) {
 		validEnemyTypes.push(142);
 	}
 	
+	//Nerds
+	if($gameParty._barReputation >= 20 && Karryn.hasEdict(EDICT_LEVEL_TWO_SUBJUGATED) && !Karryn.hasEdict(EDICT_THREATEN_THE_NERDS) && !Prison.prisonLevelTwoIsRioting()) {
+		validEnemyTypes.push(121);
+	}
+	
+	//Lizardman
+	if(Karryn.hasEdict(EDICT_THE_LIZARDMAN_PROBLEM) && Karryn.hasEdict(EDICT_BAR_DRINK_MENU_II)) {
+		if(Karryn.hasEdict(EDICT_LIZARDMEN_FREE_DRINKS)) {
+			validEnemyTypes.push(192);
+			validEnemyTypes.push(193);
+			validEnemyTypes.push(194);
+		}
+		if(!Prison.prisonLevelThreeIsRioting()) {
+			validEnemyTypes.push(191);
+			if($gameParty._barReputation >= 10) {
+				validEnemyTypes.push(192);
+			}
+		}
+	}
+	
+	//Orcs
+	if($gameParty._barReputation >= 8 && Karryn.hasEdict(EDICT_ACCESSIBILITY_FOR_ORCS)) {
+		validEnemyTypes.push(182);
+		validEnemyTypes.push(183);
+	}
+	
+	//Homeless
+	if($gameParty._barReputation >= 20 && Karryn.hasEdict(EDICT_LEVEL_THREE_SUBJUGATED) && !Prison.prisonLevelThreeIsRioting()) {
+		validEnemyTypes.push(211);
+	}
+	
+	//Guards
 	if($gameParty._barReputation >= 2) {
 		validEnemyTypes = validEnemyTypes.concat($gameParty.getGuardEnemyIds());
 	}
@@ -2169,7 +2270,7 @@ Game_Troop.prototype.waitressBattle_spawnCustomer = function(forceSpawn) {
 			let enemyId = this.waitressBattle_validEnemyId();
 			let enemy = this.setup_waitressBattle_customer(enemyId);
 			enemy.makeUniqueNames();
-			enemy.setupEnemyPrefixEffect();
+			enemy.setupEnemyPrefixEjaculationStockEffect();
 			enemy.onBattleStart();
 			enemy.midBattleSpawn_setupDreamX();
 			SceneManager._scene._spriteset.addEnemy(enemy);
@@ -2684,6 +2785,7 @@ Game_Enemy.prototype.setupForWaitressBattle = function() {
 	this._bar_TimelimitAngryLeaving = -1;
 	this._bar_TimelimitTakeOrder = -1;
 	this._bar_TimelimitGetServed = -1;
+	this._bar_TimelimitUntilNextFlashRequest = -1;
 	
 	this._bar_currentDrink = ALCOHOL_TYPE_NOTHING;
 	this._bar_remainingDrinkAmount = 0;
@@ -2703,16 +2805,37 @@ Game_Enemy.prototype.setupForWaitressBattle = function() {
 	if(Karryn.hasEdict(EDICT_BAR_DRINK_MENU_I)) {
 		preferredDrinkArray.push(ALCOHOL_TYPE_VODKA);
 		preferredDrinkArray.push(ALCOHOL_TYPE_GOLD_RUM);
+		if(this.isNerdType) preferredDrinkArray.push(ALCOHOL_TYPE_WATER);
 	}
 	if(Karryn.hasEdict(EDICT_BAR_DRINK_MENU_II)) {
 		preferredDrinkArray.push(ALCOHOL_TYPE_DARK_ALE);
 		preferredDrinkArray.push(ALCOHOL_TYPE_WHISKEY);
+		if(this.isNerdType) preferredDrinkArray.push(ALCOHOL_TYPE_WATER);
+		else if(this.isLizardmanType) {
+			preferredDrinkArray.push(ALCOHOL_TYPE_WHISKEY);
+			preferredDrinkArray.push(ALCOHOL_TYPE_WHISKEY);
+			preferredDrinkArray.push(ALCOHOL_TYPE_WHISKEY);
+			preferredDrinkArray.push(ALCOHOL_TYPE_WHISKEY);
+			preferredDrinkArray.push(ALCOHOL_TYPE_WHISKEY);
+			preferredDrinkArray.push(ALCOHOL_TYPE_WHISKEY);
+			preferredDrinkArray.push(ALCOHOL_TYPE_WHISKEY);
+			preferredDrinkArray.push(ALCOHOL_TYPE_WHISKEY);
+			preferredDrinkArray.push(ALCOHOL_TYPE_WHISKEY);
+			preferredDrinkArray.push(ALCOHOL_TYPE_WHISKEY);
+		}
 	}
 	if(Karryn.hasEdict(EDICT_BAR_DRINK_MENU_III)) {
 		preferredDrinkArray.push(ALCOHOL_TYPE_TEQUILA);
 		preferredDrinkArray.push(ALCOHOL_TYPE_OVERPROOF_RUM);
+		if(this.isNerdType) preferredDrinkArray.push(ALCOHOL_TYPE_WATER);
+		else if(this.isLizardmanType) {
+			preferredDrinkArray.push(ALCOHOL_TYPE_WHISKEY);
+			preferredDrinkArray.push(ALCOHOL_TYPE_WHISKEY);
+		}
 	}
+	
 	this._bar_preferredDrink = preferredDrinkArray[Math.randomInt(preferredDrinkArray.length)];
+	
 };
 
 Game_Enemy.prototype.setupForWaitressBattle_starters = function() {
@@ -3303,7 +3426,7 @@ Game_Enemy.prototype.waitressBattle_action_brawling = function() {
 	while(brawlSkills.length > 0 && !success) {
 		let index = Math.randomInt(brawlSkills.length);
 		let skillId = brawlSkills.splice(index,1)[0];
-		success = this.meetsSkillConditionsEval($dataSkills[skillId], target.index());
+		success = this.meetsSkillConditionsEval($dataSkills[skillId], target);
 		if(success) {
 			this.useAISkill(skillId, target);
 		}
@@ -3320,7 +3443,7 @@ Game_Enemy.prototype.waitressBattle_action_startBrawl = function() {
 	while(brawlSkills.length > 0 && !success) {
 		let index = Math.randomInt(brawlSkills.length);
 		let skillId = brawlSkills.splice(index,1)[0];
-		success = this.meetsSkillConditionsEval($dataSkills[skillId], target.index());
+		success = this.meetsSkillConditionsEval($dataSkills[skillId], target);
 		if(success) {
 			this.useAISkill(skillId, target);
 		}
@@ -3344,6 +3467,8 @@ Game_Enemy.prototype.waitressBattle_action_harassWaitress = function(target) {
 	const BAR_HARASS_PET = 3;
 	let clothesMaxDamaged = target.isClothingMaxDamaged();
 	let metCharmReq = Karryn.inBattleCharm > this.charm;
+	let isAngry = this._bar_TimelimitAngryLeaving !== -1;
+	let timeLimitMetForFlashRequest = this._bar_TimelimitUntilNextFlashRequest <= $gameParty.waitressBattle_getCurrentTimeInSeconds();
 	
 	let flashingLvlOne = this.tachieBoobs == 'waitress_1_flash' || this.tachieBoobs == 'waitress_1_flash_hard';
 	let flashingLvlTwo = this.tachieBoobs == 'waitress_2_flash' || this.tachieBoobs == 'waitress_2_flash_hard';
@@ -3352,32 +3477,61 @@ Game_Enemy.prototype.waitressBattle_action_harassWaitress = function(target) {
 	let barHarassArray = [ BAR_HARASS_PET ];
 	
 	//asking for flash
-	if(!clothesMaxDamaged && metCharmReq && notFlashingAlready && (this.isTipsy || target.isTipsy || target.hasPassive(PASSIVE_FLAUNT_COUNT_ONE_ID))) {
+	if(!clothesMaxDamaged && metCharmReq && notFlashingAlready && timeLimitMetForFlashRequest && !isAngry && (this.isTipsy || target.isTipsy || target.hasPassive(PASSIVE_FLAUNT_COUNT_ONE_ID))) {
 		barHarassArray.push(BAR_HARASS_FLASH);
 		if(this.isDrunk || this.isDeadDrunk)
 			barHarassArray.push(BAR_HARASS_FLASH);
 	}
 	//asking to drink
-	else if(this._bar_currentDrink !== ALCOHOL_TYPE_NOTHING && this._bar_currentDrink !== ALCOHOL_TYPE_WATER){
+	if(this._bar_currentDrink !== ALCOHOL_TYPE_NOTHING && this._bar_currentDrink !== ALCOHOL_TYPE_WATER){
 		barHarassArray.push(BAR_HARASS_DRINK);
 		if(!target.isDrunk && !target.isDeadDrunk)
 			barHarassArray.push(BAR_HARASS_DRINK);
 		
-		if(this.isThugType && Karryn.hasEdict(EDICT_NO_THUG_LABOR)) {
-			barHarassArray.push(BAR_HARASS_DRINK);
+		if(this.isThugType) {
+			if(Karryn.hasEdict(EDICT_NO_THUG_LABOR))
+				barHarassArray.push(BAR_HARASS_DRINK);
+		}
+		else if(this.isLizardmanType) {
+			if(Karryn.hasEdict(EDICT_LIZARDMEN_FREE_DRINKS))
+				barHarassArray.push(BAR_HARASS_DRINK);
+		}
+		else if(this.isOrcType) {
+			if(Karryn.hasEdict(EDICT_ACCESSIBILITY_FOR_ORCS))
+				barHarassArray.push(BAR_HARASS_DRINK);
 		}
 	}
 	
 	if(this.isHorny) {
 		barHarassArray.push(BAR_HARASS_PET);
 	};
+	if(this.pettingLvl() > 0) {
+		barHarassArray.push(BAR_HARASS_PET);
+	};
 	
-	if(this.isThugType && Karryn.hasEdict(EDICT_THUGS_STRESS_RELIEF)) {
-		barHarassArray.push(BAR_HARASS_PET);
-		barHarassArray.push(BAR_HARASS_PET);
+	if(this.isThugType) {
+		if(Karryn.hasEdict(EDICT_THUGS_STRESS_RELIEF))
+			barHarassArray.push(BAR_HARASS_PET);
 	}
-	if(this.isGoblinType && Karryn.hasEdict(EDICT_BAIT_GOBLINS)) {
-		barHarassArray.push(BAR_HARASS_PET);
+	else if(this.isGoblinType) {
+		if(Karryn.hasEdict(EDICT_BAIT_GOBLINS))
+			barHarassArray.push(BAR_HARASS_PET);
+	}
+	else if(this.isRogueType) {
+		if(Karryn.hasEdict(EDICT_FIGHT_ROGUE_DISTRACTIONS_WITH_DISTRACTIONS))
+			barHarassArray.push(BAR_HARASS_PET);
+	}
+	else if(this.isNerdType) {
+		if(Karryn.hasEdict(EDICT_GIVE_IN_TO_NERD_BLACKMAIL))
+			barHarassArray.push(BAR_HARASS_PET);
+	}
+	else if(this.isLizardmanType) {
+		if(Karryn.hasEdict(EDICT_APPEASE_THE_LIZARDMEN))
+			barHarassArray.push(BAR_HARASS_PET);
+	}
+	else if(this.isOrcType) {
+		if(Karryn.hasEdict(EDICT_REACH_UNDERSTANDING_WITH_ORCS))
+			barHarassArray.push(BAR_HARASS_PET);
 	}
 	
 	let barHarass = barHarassArray[Math.randomInt(barHarassArray.length)];
@@ -3491,12 +3645,26 @@ Game_Enemy.prototype.enemyBattleAIWaitressServing = function(target) {
 	}
 	
 	if(this.isDeadDrunk && !isAngry) {
-		if(Math.randomInt(40) < this.currentPercentOfStamina()) 
-			this.waitressBattle_action_leavesBar();
-		else
+		let sleepChance = BAR_SLEEP_CHANCE_BASE;
+		if(this.hasDrunkPrefix()) sleepChance += BAR_SLEEP_CHANCE_DRUNK_PREFIX;
+		if(Math.randomInt(sleepChance) > this.currentPercentOfStamina()) {
 			this.waitressBattle_action_fallAsleep();
-		return;
+			return;
+		}
+		else if(Math.randomInt(100) > BAR_DEAD_DRUNK_STAY_CHANCE - this.currentPercentOfStamina()) {
+			this.waitressBattle_action_leavesBar();
+			return;
+		}
 	}
+	else if(this.isDrunk && !isAngry) {
+		let sleepChance = BAR_SLEEP_CHANCE_BASE;
+		if(this.hasDrunkPrefix()) sleepChance += BAR_SLEEP_CHANCE_DRUNK_PREFIX;
+		if(Math.randomInt(sleepChance) > this.currentPercentOfStamina()) {
+			this.waitressBattle_action_fallAsleep();
+			return;
+		}
+	}
+
 	
 	if(this._bar_currentDrink === ALCOHOL_TYPE_NOTHING && this._bar_TimelimitTakeOrder === -1 && this._bar_TimelimitGetServed === -1) {
 		this.waitressBattle_action_askForWaitress(false);
@@ -3538,12 +3706,12 @@ Game_Enemy.prototype.enemyBattleAIWaitressServing = function(target) {
 		}
 	}
 	
-	if(isInHarrassmentRange && DEBUG_MODE) {
-		this.waitressBattle_action_harassWaitress(target);
+	if(isAngry && Math.random() < 0.33) {
+		this.waitressBattle_action_isFuming();
 		return;
 	}
-	else if(isAngry && Math.random() < 0.33) {
-		this.waitressBattle_action_isFuming();
+	else if(isInHarrassmentRange && DEBUG_MODE) {
+		this.waitressBattle_action_harassWaitress(target);
 		return;
 	}
 	else {

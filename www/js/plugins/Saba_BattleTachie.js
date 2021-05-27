@@ -86,8 +86,8 @@ var Saba;
 				//this.anchor.y = 1;
 				this.anchor.y = 0;
 				this._baseScale = new Point(1, 1);
-				this._breathMax = Math.randomInt(90) + 90;
-				this._breathCount = Math.randomInt(this._breathMax);
+				//this._breathMax = Math.randomInt(90) + 90;
+				//this._breathCount = Math.randomInt(this._breathMax);
             }
             TachieSprite.prototype.setActorCommandWindow = function (commandWindow) {
                 this._commandWindow = commandWindow;

@@ -6,6 +6,7 @@
 
 //selfanimation code
 
+/*
 Remtairy.Misc.Window_BattleLog_showNormalAnimation = Window_BattleLog.prototype.showNormalAnimation;
 Window_BattleLog.prototype.showNormalAnimation = function(targets, animationId, mirror) {
 	if(BattleManager._action.item().hasTag("SelfAnimationSkill")) {
@@ -15,7 +16,7 @@ Window_BattleLog.prototype.showNormalAnimation = function(targets, animationId, 
 	Remtairy.Misc.Window_BattleLog_showNormalAnimation.call(this, targets, animationId, mirror);
 };
 
-
+*/
 
 ////stuff from saba battle
 

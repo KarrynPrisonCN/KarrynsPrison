@@ -16,12 +16,18 @@ Remtairy.EnemyTroop = Remtairy.EnemyAI || {};
 
 const ENEMY_ID_TUTORIALBOSS_YASU = 15;
 const ENEMY_ID_LEVELONEBOSS_TONKIN = 16;
+const ENEMY_ID_LEVELTHREEBOSS_ARON = 208;
+const ENEMY_ID_LEVELFOURBOSS_NOINIM = 240;
 
 const ENEMY_ID_GUARD_LV1 = 21;
 const ENEMY_ID_GUARD_LV2 = 22;
 const ENEMY_ID_GUARD_LV3 = 23;
 const ENEMY_ID_GUARD_LV4 = 24;
 const ENEMY_ID_GUARD_LV5 = 25;
+const ENEMY_ID_GUARD_LV6 = 26;
+const ENEMY_ID_NERD_CLIT_TOY = 121;
+const ENEMY_ID_NERD_PUSSY_TOY = 122;
+const ENEMY_ID_NERD_ANAL_TOY = 123;
 
 const TROOP_TEST_ID = 1;
 const TROOP_WAITRESS_ID = 2;
@@ -33,6 +39,8 @@ const TROOP_RECEPTIONIST_ID = 7;
 const TROOP_DEFEATED_GUARD_ID = 8;
 const TROOP_GLORY_ID = 9;
 const TROOP_DEFEATED_LV3_ID = 11;
+const TROOP_DEFEATED_LV4_ID = 12;
+const TROOP_DEFEATED_LV5_ID = 13;
 
 const TROOP_NORMAL_BATTLE_MAX_SIZE = 6;
 
@@ -108,6 +116,12 @@ Game_Troop.prototype.aliveMembersThatAreNotAron = function() {
     });
 };
 
+Game_Troop.prototype.aliveMembersThatAreNotNoinim = function() {
+    return this.members().filter(function(member) {
+        return member.isAlive() && !member.isNoinim;
+    });
+};
+
 Game_Troop.prototype.erectMembersAll = function() {
     return this.members().filter(function(member) {
         return member.isAlive() && member.isErect;
@@ -177,6 +191,17 @@ Game_Troop.prototype.isThereNonPrisonerTypeEnemyPresent = function() {
 	return found;
 };	
 
+Game_Troop.prototype.isThereNonWerewolfTypeEnemyPresent = function() {
+	let found = false;
+	for(let i = 0; i < this.aliveMembers().length; i++) {
+		if(!this.aliveMembers()[i].isWerewolfType) {
+			found = true;
+			break;
+		}
+	}
+	return found;
+};	
+
 Game_Troop.prototype.getAverageEnemyExperienceLvl = function() {
 	let totalLvl = 0;
 	let count = 0;
@@ -205,7 +230,61 @@ Game_Troop.prototype.getAverageEnemyParam = function(paramId) {
 	return Math.round(totalStat / count);
 };
 
-Game_Troop.prototype.getCountOfLizardmanPresent = function(enemyType) {
+Game_Troop.prototype.getCountOfYetiHeatAura = function() {
+	let count = 0;
+	for(let i = 0; i < this.aliveMembers().length; i++) {
+		if(this.aliveMembers()[i].isStateAffected(STATE_YETI_HEAT_AURA_ID)) {
+			count++;
+		}
+	}
+	return count;
+};	
+Game_Troop.prototype.onTurnEndSpecial_yetiHeatAura = function() {
+	let count = this.getCountOfYetiHeatAura();
+	if(count >= 1) {
+		let actor = $gameActors.actor(ACTOR_KARRYN_ID);
+		
+		if(count >= 2) {
+			actor.addState(STATE_YETI_HEAT_KARRYN_TWO_ID);
+			actor.removeState(STATE_YETI_HEAT_KARRYN_ONE_ID);
+		}
+		else {
+			actor.addState(STATE_YETI_HEAT_KARRYN_ONE_ID);
+			actor.removeState(STATE_YETI_HEAT_KARRYN_TWO_ID);
+		}
+		
+		this.aliveMembers().forEach(function(member) {
+			if(!member.isYetiType) {
+				if(count >= 2) {
+					member.addState(STATE_YETI_HEAT_ENEMY_TWO_ID);
+					member.removeState(STATE_YETI_HEAT_ENEMY_ONE_ID);
+				}
+				else {
+					member.addState(STATE_YETI_HEAT_ENEMY_ONE_ID);
+					member.removeState(STATE_YETI_HEAT_ENEMY_TWO_ID);
+				}
+			}	
+		});
+	}
+};	
+Game_Troop.prototype.checkYetiHeatAuraStateAfterYetiCollapse = function(collapsingEnemy) {
+	let count = this.getCountOfYetiHeatAura();
+	if(count === 0) {
+		let actor = $gameActors.actor(ACTOR_KARRYN_ID);
+		actor.removeState(STATE_YETI_HEAT_KARRYN_ONE_ID);
+		actor.removeState(STATE_YETI_HEAT_KARRYN_TWO_ID);
+		
+		this.aliveMembers().forEach(function(member) {
+			member.removeState(STATE_YETI_HEAT_ENEMY_ONE_ID);
+			member.removeState(STATE_YETI_HEAT_ENEMY_TWO_ID);
+		});
+	}
+	else {
+		this.onTurnEndSpecial_yetiHeatAura();
+	}
+};
+
+Game_Troop.prototype.getCountOfLizardmanPresent = function() {
 	let count = 0;
 	for(let i = 0; i < this.aliveMembers().length; i++) {
 		if(this.aliveMembers()[i].isLizardmanType) {
@@ -219,17 +298,25 @@ Game_Enemy.prototype.lizardmanParamRate = function(paramId) {
 	
 	if(paramId === PARAM_STRENGTH_ID || paramId === PARAM_DEXTERITY_ID || paramId === PARAM_AGILITY_ID) {
 		let lizardmanCount = $gameTroop.getCountOfLizardmanPresent();
+		let addedRate = 0;
 		
 		if(lizardmanCount >= 6)
-			rate = 1.52;
+			addedRate += 0.52;
 		else if(lizardmanCount === 5)
-			rate = 1.5;
+			addedRate += 0.5;
 		else if(lizardmanCount === 4)
-			rate = 1.45;
+			addedRate += 0.45;
 		else if(lizardmanCount === 3)
-			rate = 1.4;
+			addedRate += 0.4;
 		else if(lizardmanCount === 2)
-			rate = 1.3;
+			addedRate += 0.3;
+			
+		if(Karryn.hasEdict(EDICT_SCIENCE_VERSUS_LIZARDMEN))
+			addedRate *= 0.3;
+		else if(Karryn.hasEdict(EDICT_APPEASE_THE_LIZARDMEN))
+			addedRate *= 1.2;
+		
+		rate += addedRate;
 	}
 	
 	return rate;
@@ -305,15 +392,16 @@ Game_Troop.prototype.normalBattle_spawnEnemy = function(enemyId, setSummonStun) 
 	let enemy = this.setupEnemyIdForBattle(enemyId);
 	if(enemy) {
 		enemy.makeUniqueNames();
-		enemy.setupEnemyPrefixEffect();
+		enemy.setupEnemyPrefixEjaculationStockEffect();
 		enemy.onBattleStart();
 		enemy.midBattleSpawn_setupDreamX();
 		SceneManager._scene._spriteset.addEnemy(enemy);
 		
 		if(setSummonStun) enemy.addState(STATE_SUMMON_STUN_ID);
+		
+		return enemy;
 	}
-	
-	//AudioManager.playSe({name:'+Waitress_Chair2', pan:0, pitch:100, volume:90});
+	else return false;
 };
 
 Game_Troop.prototype.setupEnemyIdForBattle = function(enemyId, maxPrisonerMorphHeight) {
@@ -448,7 +536,7 @@ Game_Troop.prototype.setupTestBattle = function(troopId) {
 	
 	
 	this.makeUniqueNames();
-	this.setupEnemyPrefixEffect();
+	this.setupEnemyPrefixEjaculationStockEffect();
 };
 
 //////////
@@ -479,7 +567,7 @@ Game_Troop.prototype.setupGuardBattle = function(troopId) {
 		let enemy = this.setupEnemyIdForBattle(enemyId, 2);
 	}
 	this.makeUniqueNames();
-	this.setupEnemyPrefixEffect();
+	this.setupEnemyPrefixEjaculationStockEffect();
 };
 
 //////////
@@ -497,6 +585,9 @@ Game_Troop.prototype.setupRiotBattle = function(troopId) {
 	}
 	else if(mapId === MAP_ID_READING_ROOM || mapId === MAP_ID_CLASSROOM || mapId === MAP_ID_STAFF_LOUNGE || mapId === MAP_ID_RESEARCH || mapId === MAP_ID_MEETING_ROOM) {
 		riotChance = $gameParty.prisonLevelTwoRiotChance();
+	}
+	else if(mapId === MAP_ID_CELL_BLOCK_SOUTH || mapId === MAP_ID_GYM || mapId === MAP_ID_CELL_BLOCK_NORTH_WEST || mapId === MAP_ID_CELL_BLOCK_NORTH_EAST) {
+		riotChance = $gameParty.prisonLevelThreeRiotChance();
 	}
 
 	if(riotChance <= 4) {
@@ -530,7 +621,7 @@ Game_Troop.prototype.setupRiotBattle = function(troopId) {
 		let enemy = this.setupEnemyIdForBattle(enemyId, 3);
 	}
 	this.makeUniqueNames();
-	this.setupEnemyPrefixEffect();
+	this.setupEnemyPrefixEjaculationStockEffect();
 };
 
 //////////
@@ -541,7 +632,7 @@ Game_Troop.prototype.setupRiotBattle = function(troopId) {
 Game_Troop.prototype.setupDefeatedLevelOneBattle = function(troopId) {
 	let blowbangFactor = $gameActors.actor(ACTOR_KARRYN_ID).getDefeatedLvlOneFactor();
 	let validEnemyIds = $gameParty.getDefeatedLevelOneEnemyIds(blowbangFactor, true);
-	
+		
 	this._maxBlowbangParticipants = Math.max(3, blowbangFactor);
 	this._appearedBlowbangParticipants = 0;
 	
@@ -553,7 +644,7 @@ Game_Troop.prototype.setupDefeatedLevelOneBattle = function(troopId) {
 		this._appearedBlowbangParticipants++;
 	}
 	this.makeUniqueNames();
-	this.setupEnemyPrefixEffect();
+	this.setupEnemyPrefixEjaculationStockEffect();
 	this.setAllEnemiesToAroused();
 };
 
@@ -582,7 +673,7 @@ Game_Troop.prototype.onTurnEndSpecial_defeatedLevelOneBattle = function() {
 		let enemyId = validEnemyIds[Math.randomInt(validEnemyIds.length)];
 		let enemy = this.setupEnemyIdForDefeatedBattle(enemyId);
 		enemy.makeUniqueNames();
-		enemy.setupEnemyPrefixEffect();
+		enemy.setupEnemyPrefixEjaculationStockEffect();
 		enemy.onBattleStart();
 		enemy.midBattleSpawn_setupDreamX();
 		enemy.setPleasureToArousalPoint();
@@ -594,7 +685,7 @@ Game_Troop.prototype.onTurnEndSpecial_defeatedLevelOneBattle = function() {
 Game_Troop.prototype.setupDefeatedLevelTwoBattle = function(troopId) {
 	let bathroomFactor = $gameActors.actor(ACTOR_KARRYN_ID).getDefeatedLvlTwoFactor();
 	let validEnemyIds = $gameParty.getDefeatedLevelTwoEnemyIds(bathroomFactor);
-	
+		
 	this._maxUrinalParticipants = Math.max(3, bathroomFactor);
 	this._appearedUrinalParticipants = 0;
 	
@@ -606,7 +697,7 @@ Game_Troop.prototype.setupDefeatedLevelTwoBattle = function(troopId) {
 		this._appearedUrinalParticipants++;
 	}
 	this.makeUniqueNames();
-	this.setupEnemyPrefixEffect();
+	this.setupEnemyPrefixEjaculationStockEffect();
 	this.setAllEnemiesToAroused();
 };
 
@@ -635,7 +726,7 @@ Game_Troop.prototype.onTurnEndSpecial_defeatedLevelTwoBattle = function() {
 		let enemyId = validEnemyIds[Math.randomInt(validEnemyIds.length)];
 		let enemy = this.setupEnemyIdForDefeatedBattle(enemyId);
 		enemy.makeUniqueNames();
-		enemy.setupEnemyPrefixEffect();
+		enemy.setupEnemyPrefixEjaculationStockEffect();
 		enemy.onBattleStart();
 		enemy.midBattleSpawn_setupDreamX();
 		enemy.setPleasureToArousalPoint();
@@ -647,7 +738,7 @@ Game_Troop.prototype.onTurnEndSpecial_defeatedLevelTwoBattle = function() {
 Game_Troop.prototype.setupDefeatedLevelThreeBattle = function(troopId) {
 	let soloCellFactor = $gameActors.actor(ACTOR_KARRYN_ID).getDefeatedLvlThreeFactor();
 	let validEnemyIds = $gameParty.getDefeatedLevelThreeEnemyIds(soloCellFactor);
-	
+		
 	this._maxSoloCellParticipants = Math.max(3, soloCellFactor);
 	this._appearedSoloCellParticipants = 0;
 	
@@ -659,7 +750,7 @@ Game_Troop.prototype.setupDefeatedLevelThreeBattle = function(troopId) {
 		this._appearedSoloCellParticipants++;
 	}
 	this.makeUniqueNames();
-	this.setupEnemyPrefixEffect();
+	this.setupEnemyPrefixEjaculationStockEffect();
 	this.setAllEnemiesToAroused();
 };
 
@@ -688,12 +779,65 @@ Game_Troop.prototype.onTurnEndSpecial_defeatedLevelThreeBattle = function() {
 		let enemyId = validEnemyIds[Math.randomInt(validEnemyIds.length)];
 		let enemy = this.setupEnemyIdForDefeatedBattle(enemyId);
 		enemy.makeUniqueNames();
-		enemy.setupEnemyPrefixEffect();
+		enemy.setupEnemyPrefixEjaculationStockEffect();
 		enemy.onBattleStart();
 		enemy.midBattleSpawn_setupDreamX();
 		enemy.setPleasureToArousalPoint();
 		SceneManager._scene._spriteset.addEnemy(enemy);
 		this._appearedSoloCellParticipants++;
+	}
+};
+
+Game_Troop.prototype.setupDefeatedLevelFourBattle = function(troopId) {
+	let pilloryFactor = $gameActors.actor(ACTOR_KARRYN_ID).getDefeatedLvlFourFactor();
+	let validEnemyIds = $gameParty.getDefeatedLevelFourEnemyIds(pilloryFactor);
+		
+	this._maxPilloryParticipants = Math.max(3, pilloryFactor);
+	this._appearedPilloryParticipants = 0;
+	
+	let enemyCount = Math.min(4, this._maxPilloryParticipants);
+	
+	for(let i = 0; i < enemyCount; ++i) {
+		let enemyId = validEnemyIds[Math.randomInt(validEnemyIds.length)];
+		let enemy = this.setupEnemyIdForDefeatedBattle(enemyId);
+		this._appearedPilloryParticipants++;
+	}
+	this.makeUniqueNames();
+	this.setupEnemyPrefixEjaculationStockEffect();
+	this.setAllEnemiesToAroused();
+};
+
+Game_Troop.prototype.onTurnEndSpecial_defeatedLevelFourBattle = function() {
+	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
+	let emptySpotsAvailable = 0;
+
+	if(actor.hasNoStamina() && actor.hasNoEnergy()) {
+		actor.addState(STATE_DISABLED_ID);
+		return;
+	}
+	else if(actor.isStateAffected(STATE_DISABLED_ID)) {
+		actor.removeState(STATE_DISABLED_ID);
+	}
+	
+	if(actor.canGetOther1InsertedNone()) emptySpotsAvailable++;
+	if(actor.canGetOther2InsertedNone()) emptySpotsAvailable++;
+	if(actor.canGetOther3InsertedNone()) emptySpotsAvailable++;
+	if(actor.canGetOther4InsertedNone()) emptySpotsAvailable++;
+	
+	emptySpotsAvailable = Math.min(emptySpotsAvailable, this._maxPilloryParticipants - this._appearedPilloryParticipants);
+
+	for(let i = 0; i < emptySpotsAvailable; ++i) {
+		let pilloryFactor = $gameActors.actor(ACTOR_KARRYN_ID).getDefeatedLvlFourFactor();
+		let validEnemyIds = $gameParty.getDefeatedLevelFourEnemyIds(pilloryFactor);
+		let enemyId = validEnemyIds[Math.randomInt(validEnemyIds.length)];
+		let enemy = this.setupEnemyIdForDefeatedBattle(enemyId);
+		enemy.makeUniqueNames();
+		enemy.setupEnemyPrefixEjaculationStockEffect();
+		enemy.onBattleStart();
+		enemy.midBattleSpawn_setupDreamX();
+		enemy.setPleasureToArousalPoint();
+		SceneManager._scene._spriteset.addEnemy(enemy);
+		this._appearedPilloryParticipants++;
 	}
 };
 
@@ -712,7 +856,7 @@ Game_Troop.prototype.setupDefeatedGuardBattle = function(troopId) {
 		this._appearedBedParticipants++;
 	}
 	this.makeUniqueNames();
-	this.setupEnemyPrefixEffect();
+	this.setupEnemyPrefixEjaculationStockEffect();
 	this.setAllEnemiesToAroused();
 };
 
@@ -738,7 +882,7 @@ Game_Troop.prototype.onTurnEndSpecial_defeatedGuardBattle = function() {
 		let enemyId = validEnemyIds[Math.randomInt(validEnemyIds.length)];
 		let enemy = this.setupEnemyIdForDefeatedBattle(enemyId);
 		enemy.makeUniqueNames();
-		enemy.setupEnemyPrefixEffect();
+		enemy.setupEnemyPrefixEjaculationStockEffect();
 		enemy.onBattleStart();
 		enemy.midBattleSpawn_setupDreamX();
 		enemy.setPleasureToArousalPoint();
@@ -799,6 +943,9 @@ Game_Troop.prototype.reorderImagesOnSelection = function() {
 					let x = 0;
 					let y = 0;
 					
+					if(spot === 5 && rowHeight >= 2 || spot === 4 && rowHeight >= 3) 
+						spot = 6;
+					
 					if(spot < 6) {
 						x = ENEMY_NAME_HALFSPECIAL_FIRST_COL_X;
 						y = ENEMY_NAME_HALFSPECIAL_STARTING_Y + ENEMY_NAME_HALFSPECIAL_HEIGHT_SPACING * (spot + (rowHeight - 1));
@@ -812,7 +959,7 @@ Game_Troop.prototype.reorderImagesOnSelection = function() {
 					this._enemies[i]._screenY = y;
 					this._enemies[i].setCustomEnemySpritePosition(x, y);
 					
-					spot++;
+					spot += rowHeight;
 				}
 			}
 		}
@@ -884,31 +1031,133 @@ Game_Troop.prototype.getEnemyIdAppearLvl = function(enemyId) {
 		if(Karryn.hasEdict(EDICT_THE_ROGUE_PROBLEM) && !Karryn.hasEdict(EDICT_FORCE_ROGUES_INTO_LABOR)) appearLvl += 2;
 	}
 	else if(enemyType == ENEMYTYPE_NERD_TAG) {
-		if(Karryn.hasEdict(EDICT_LEVEL_FOUR_SUBJUGATED)) appearLvl += 4;
-		else if(Karryn.hasEdict(EDICT_LEVEL_THREE_SUBJUGATED)) appearLvl += 2;
+		if(Karryn.hasEdict(EDICT_LEVEL_FOUR_SUBJUGATED)) appearLvl += 2;
 		else if(Karryn.hasEdict(EDICT_LEVEL_TWO_SUBJUGATED)) appearLvl += 1;
 		
 		if(Karryn.hasEdict(EDICT_PAY_NERD_BLACKMAIL) || Karryn.hasEdict(EDICT_GIVE_IN_TO_NERD_BLACKMAIL)) appearLvl += 2;
-		if(Karryn.hasEdict(EDICT_REPAIR_READING_ROOM) || !Karryn.hasEdict(EDICT_READING_ROOM_ENTRANCE_FEE)) appearLvl += 1;
+		if(Karryn.hasEdict(EDICT_REPAIR_READING_ROOM) && !Karryn.hasEdict(EDICT_READING_ROOM_ENTRANCE_FEE)) appearLvl += 1;
 		if(Karryn.hasEdict(EDICT_INMATE_ASSISTANT_ACCOUNTANT)) appearLvl += 1;
-		
+		if(Karryn.hasEdict(EDICT_REPAIR_STORE)) appearLvl += 1;
 	}
 	else if(enemyType == ENEMYTYPE_SLIME_TAG) {
 		if(Karryn.hasEdict(EDICT_LEVEL_FOUR_SUBJUGATED)) appearLvl += 8;
 		else if(Karryn.hasEdict(EDICT_LEVEL_THREE_SUBJUGATED)) appearLvl += 4;
 	}
 	else if(enemyType == ENEMYTYPE_LIZARDMAN_TAG) {
-		
+		if(Karryn.hasEdict(EDICT_LEVEL_FOUR_SUBJUGATED)) appearLvl += 5;
+		else if(Karryn.hasEdict(EDICT_LEVEL_THREE_SUBJUGATED)) appearLvl += 2;
+		if(Karryn.hasEdict(EDICT_THE_LIZARDMAN_PROBLEM) && !Karryn.hasEdict(EDICT_SCIENCE_VERSUS_LIZARDMEN)) appearLvl += 2;
+		if(!Karryn.hasEdict(EDICT_BUILD_STRIP_CLUB)) appearLvl += 3;
+		if(Karryn.hasEdict(EDICT_COLD_SHOWERS)) appearLvl += 3;
 	}
 	else if(enemyType == ENEMYTYPE_ORC_TAG) {
-		
+		if(Karryn.hasEdict(EDICT_LEVEL_FOUR_SUBJUGATED)) appearLvl += 4;
+		else if(Karryn.hasEdict(EDICT_LEVEL_THREE_SUBJUGATED)) appearLvl += 2;
+		if(Karryn.hasEdict(EDICT_RESEARCH_WEAPON_AND_TOOL_CONTRACT)) appearLvl += 3;
+		if(Karryn.hasEdict(EDICT_REJECT_THE_ORCS)) appearLvl += 3;
 	}
 	else if(enemyType == ENEMYTYPE_HOMELESS_TAG) {
-		
+		if(Karryn.hasPassive(PASSIVE_SEXUAL_PARTNERS_HOMELESS_THREE_ID)) appearLvl += 6;
+		else if(Karryn.hasPassive(PASSIVE_SEXUAL_PARTNERS_HOMELESS_TWO_ID)) appearLvl += 4;
+		else if(Karryn.hasPassive(PASSIVE_SEXUAL_PARTNERS_HOMELESS_ONE_ID)) appearLvl += 2;
+	}
+	else if(enemyType == ENEMYTYPE_WEREWOLF_TAG) {
+		if(Karryn.hasEdict(EDICT_LEVEL_FOUR_SUBJUGATED)) appearLvl += 4;
+	}
+	else if(enemyType == ENEMYTYPE_YETI_TAG) {
+		if(Karryn.hasEdict(EDICT_LEVEL_FOUR_SUBJUGATED)) appearLvl += 4;
 	}
 	
 	return Math.round(appearLvl);
 };
+
+////////
+// Noinim Reinforcement
+
+Game_Troop.prototype.noinimReinforcementCheck = function() {
+	if($gameParty._isBossBattleFlag && !$gameParty._noinimReinforcement_third && Prison.currentlyPrisonLevelFour() && $gameTroop.members()[0] && $gameTroop.members()[0].isAlive() && $gameTroop.members()[0].isNoinim && $gameTroop.getAvailableFreeEnemySpace_normalBattle() > 0) {
+		if(!$gameParty._noinimReinforcement_first && ($gameTroop.members()[0].stamina <= $gameTroop.members()[0].maxstamina * 0.75 || $gameTroop.members()[0]._ejaculationStock <= 3)) {
+			let spaceReq = 2;
+			if(Prison.hardMode()) spaceReq = 3;
+			else if(Prison.easyMode()) spaceReq = 1;
+			
+			if($gameTroop.getAvailableFreeEnemySpace_normalBattle() >= spaceReq) {
+				let enemy = false;
+				enemy = $gameTroop.normalBattle_spawnEnemy(95, true);
+				if(enemy) {
+					BattleManager._logWindow.push('addText', TextManager.midBattleEnemyReinforcement.format(enemy.displayName()));
+				}
+				if(!Prison.easyMode()) {
+					enemy = $gameTroop.normalBattle_spawnEnemy(143, true);
+					if(enemy) {
+						BattleManager._logWindow.push('addText', TextManager.midBattleEnemyReinforcement.format(enemy.displayName()));
+					}
+				}
+				if(Prison.hardMode()) {
+					enemy = $gameTroop.normalBattle_spawnEnemy(86, true);
+					if(enemy) {
+						BattleManager._logWindow.push('addText', TextManager.midBattleEnemyReinforcement.format(enemy.displayName()));
+					}
+				}
+				
+				AudioManager.playSe({name:'+Footstep1', pan:0, pitch:100, volume:70});
+				$gameParty._noinimReinforcement_first = true;
+			}
+			return;
+		}
+		
+		if(!$gameParty._noinimReinforcement_second && $gameParty._noinimReinforcement_first && ($gameTroop.members()[0].stamina <= $gameTroop.members()[0].maxstamina * 0.5 || $gameTroop.members()[0]._ejaculationStock <= 2)) {
+			let spaceReq = 2;
+			if(Prison.easyMode()) spaceReq = 1;
+			
+			if($gameTroop.getAvailableFreeEnemySpace_normalBattle() >= spaceReq) {
+				let enemy = false;
+				enemy = $gameTroop.normalBattle_spawnEnemy(194, true);
+				if(enemy) {
+					BattleManager._logWindow.push('addText', TextManager.midBattleEnemyReinforcement.format(enemy.displayName()));
+				}
+				if(!Prison.easyMode()) {
+					enemy = $gameTroop.normalBattle_spawnEnemy(54, true);
+					if(enemy) {
+						BattleManager._logWindow.push('addText', TextManager.midBattleEnemyReinforcement.format(enemy.displayName()));
+					}
+				}
+				
+				AudioManager.playSe({name:'+Footstep1', pan:0, pitch:100, volume:70});
+				$gameParty._noinimReinforcement_second = true;
+			}
+			return;
+		}
+		
+		if(!$gameParty._noinimReinforcement_third && $gameParty._noinimReinforcement_second && $gameParty._noinimReinforcement_first&& ($gameTroop.members()[0].stamina <= $gameTroop.members()[0].maxstamina * 0.25 || $gameTroop.members()[0]._ejaculationStock <= 1)) {
+			let spaceReq = 2;
+			if(Prison.hardMode()) spaceReq = 3;
+			
+			if($gameTroop.getAvailableFreeEnemySpace_normalBattle() >= spaceReq) {
+				let enemy = false;
+				enemy = $gameTroop.normalBattle_spawnEnemy(183, true);
+				if(enemy) {
+					BattleManager._logWindow.push('addText', TextManager.midBattleEnemyReinforcement.format(enemy.displayName()));
+				}
+				enemy = $gameTroop.normalBattle_spawnEnemy(126, true);
+				if(enemy) {
+					BattleManager._logWindow.push('addText', TextManager.midBattleEnemyReinforcement.format(enemy.displayName()));
+				}
+				if(Prison.hardMode()) {
+					enemy = $gameTroop.normalBattle_spawnEnemy(214, true);
+					if(enemy) {
+						BattleManager._logWindow.push('addText', TextManager.midBattleEnemyReinforcement.format(enemy.displayName()));
+					}
+				}
+				
+				AudioManager.playSe({name:'+Footstep1', pan:0, pitch:100, volume:70});
+				$gameParty._noinimReinforcement_third = true;
+			}
+			return;
+		}
+	}
+};
+
 
 /////////////
 ///////////////
@@ -1113,7 +1362,7 @@ Game_Party.prototype.setTroopIds = function() {
 		}
 	}
 	//Level Two
-	if(this.currentlyPrisonLevelTwo() && this.prisonLevelTwoIsAnarchy()) {
+	else if(this.currentlyPrisonLevelTwo() && this.prisonLevelTwoIsAnarchy()) {
 		if(mapId === MAP_ID_STORE_BROKEN) {
 			if(this.HighOrder()) {
 				firstTroopId = 92;
@@ -1297,7 +1546,7 @@ Game_Party.prototype.setTroopIds = function() {
 	}//Level 2 end
 	
 	//Level 3
-	if(this.currentlyPrisonLevelThree() && this.prisonLevelThreeIsAnarchy()) {
+	else if(this.currentlyPrisonLevelThree() && this.prisonLevelThreeIsAnarchy()) {
 		if(mapId === MAP_ID_COMMON_AREA_SOUTH_EAST) {
 			if(this.HighOrder()) {
 				firstTroopId = 143;
@@ -1603,6 +1852,181 @@ Game_Party.prototype.setTroopIds = function() {
 		}	
 	}//Level 3 end
 	
+	//Level 4
+	else if(this.currentlyPrisonLevelFour() && this.prisonLevelFourIsAnarchy()) {
+		if(mapId === MAP_ID_LVL4_MUSHROOM_FARM) {
+			let exitBlockerAlive = !$gameSelfSwitches.value([MAP_ID_LVL4_MUSHROOM_FARM, 5, "D"]);
+			if(this.HighOrder()) {
+				firstTroopId = 221;
+				troopsWavesArray.push(224);
+				if(exitBlockerAlive) troopsWavesArray.push(228);
+			}
+			else if(this.MedOrder()) {
+				firstTroopId = 222;
+				troopsWavesArray.push(225);
+				if(exitBlockerAlive) troopsWavesArray.push(228);
+			}
+			else if(this.LowOrder()) {
+				firstTroopId = 222;
+				troopsWavesArray.push(226);
+				if(exitBlockerAlive) troopsWavesArray.push(229);
+				else troopsWavesArray.push(228);
+			}
+			else if(this.VeryLowOrder()) {
+				firstTroopId = 223;
+				troopsWavesArray.push(226);
+				if(exitBlockerAlive) troopsWavesArray.push(230);
+				else troopsWavesArray.push(228);
+			}
+			else if(this.NearNoOrder()) {
+				firstTroopId = 223;
+				troopsWavesArray.push(227);
+				if(exitBlockerAlive) troopsWavesArray.push(230);
+				else troopsWavesArray.push(229);
+			}
+		}	
+		else if(mapId === MAP_ID_LVL4_CHICKEN_PASTURE) {
+			let exitBlockerAlive = !$gameSelfSwitches.value([MAP_ID_LVL4_CHICKEN_PASTURE, 13, "D"]);
+			if(this.HighOrder()) {
+				firstTroopId = 231;
+				troopsWavesArray.push(234);
+				if(exitBlockerAlive) troopsWavesArray.push(237);
+			}
+			else if(this.MedOrder()) {
+				firstTroopId = 231;
+				troopsWavesArray.push(235);
+				if(exitBlockerAlive) troopsWavesArray.push(237);
+			}
+			else if(this.LowOrder()) {
+				firstTroopId = 232;
+				troopsWavesArray.push(235);
+				if(exitBlockerAlive) troopsWavesArray.push(238);
+				else troopsWavesArray.push(237);
+			}
+			else if(this.VeryLowOrder()) {
+				firstTroopId = 232;
+				troopsWavesArray.push(236);
+				if(exitBlockerAlive) troopsWavesArray.push(239);
+				else troopsWavesArray.push(237);
+			}
+			else if(this.NearNoOrder()) {
+				firstTroopId = 233;
+				troopsWavesArray.push(236);
+				if(exitBlockerAlive) troopsWavesArray.push(239);
+				else troopsWavesArray.push(238);
+			}
+		}
+		else if(mapId === MAP_ID_LVL4_UNDERGROUND_POOL) {
+			let exitBlockerAlive = !$gameSelfSwitches.value([MAP_ID_LVL4_UNDERGROUND_POOL, 11, "D"]);
+			if(this.HighOrder()) {
+				firstTroopId = 240;
+				troopsWavesArray.push(243);
+				if(exitBlockerAlive) troopsWavesArray.push(247);
+			}
+			else if(this.MedOrder()) {
+				firstTroopId = 241;
+				troopsWavesArray.push(244);
+				if(exitBlockerAlive) troopsWavesArray.push(247);
+			}
+			else if(this.LowOrder()) {
+				firstTroopId = 241;
+				troopsWavesArray.push(245);
+				if(exitBlockerAlive) troopsWavesArray.push(248);
+				else troopsWavesArray.push(247);
+			}
+			else if(this.VeryLowOrder()) {
+				firstTroopId = 242;
+				troopsWavesArray.push(245);
+				if(exitBlockerAlive) troopsWavesArray.push(249);
+				else troopsWavesArray.push(247);
+			}
+			else if(this.NearNoOrder()) {
+				firstTroopId = 242;
+				troopsWavesArray.push(246);
+				if(exitBlockerAlive) troopsWavesArray.push(249);
+				else troopsWavesArray.push(248);
+			}
+		}
+		else if(mapId === MAP_ID_LVL4_BASKETBALL_COURT) {
+			if(this.HighOrder()) {
+				firstTroopId = 250;
+				troopsWavesArray.push(253);
+			}
+			else if(this.MedOrder()) {
+				firstTroopId = 251;
+				troopsWavesArray.push(253);
+			}
+			else if(this.LowOrder()) {
+				firstTroopId = 251;
+				troopsWavesArray.push(254);
+			}
+			else if(this.VeryLowOrder()) {
+				firstTroopId = 252;
+				troopsWavesArray.push(254);
+			}
+			else if(this.NearNoOrder()) {
+				firstTroopId = 252;
+				troopsWavesArray.push(255);
+			}
+			
+			if($gameSwitches.value(SWITCH_YESTERDAY_DEFEATED_LV4_ID)) {
+				troopsWavesArray.push(256);
+			}
+		}
+		else if(mapId === MAP_ID_LVL4_YETI_CAVERN) {
+			let exitBlockerAlive = !$gameSelfSwitches.value([MAP_ID_LVL4_YETI_CAVERN, 7, "D"]);
+			if(this.HighOrder()) {
+				firstTroopId = 257;
+				if(exitBlockerAlive) troopsWavesArray.push(260);
+			}
+			else if(this.MedOrder()) {
+				firstTroopId = 258;
+				if(exitBlockerAlive) troopsWavesArray.push(261);
+			}
+			else if(this.LowOrder()) {
+				firstTroopId = 258;
+				if(exitBlockerAlive) troopsWavesArray.push(261);
+				else troopsWavesArray.push(260);
+			}
+			else if(this.VeryLowOrder()) {
+				firstTroopId = 259;
+				if(exitBlockerAlive) troopsWavesArray.push(262);
+				else troopsWavesArray.push(260);
+			}
+			else if(this.NearNoOrder()) {
+				firstTroopId = 259;
+				if(exitBlockerAlive) troopsWavesArray.push(262);
+				else troopsWavesArray.push(261);
+			}
+		}
+		else if(mapId === MAP_ID_LVL4_AMBUSH) { 
+			firstTroopId = 263;
+			let exitBlockerAlive = !$gameSelfSwitches.value([MAP_ID_LVL4_AMBUSH, 10, "D"]);
+
+			if(this.HighOrder()) {
+				if(exitBlockerAlive) troopsWavesArray.push(264);
+			}
+			else if(this.MedOrder()) {
+				troopsWavesArray.push(266);
+				if(exitBlockerAlive) troopsWavesArray.push(264);
+			}
+			else if(this.LowOrder()) {
+				troopsWavesArray.push(266);
+				if(exitBlockerAlive) troopsWavesArray.push(265);
+			}
+			else if(this.VeryLowOrder()) {
+				troopsWavesArray.push(267);
+				if(exitBlockerAlive) troopsWavesArray.push(265);
+			}
+			else if(this.NearNoOrder()) {
+				troopsWavesArray.push(267);
+				if(exitBlockerAlive) troopsWavesArray.push(265);
+			}
+		}
+		
+		
+	}//Level 4 end
+	
 	else if(this.currentlyOutsidePrison()) {
 		//testing map
 		if(mapId === 1)
@@ -1706,6 +2130,32 @@ Game_Party.prototype.setInvasionTroopIds = function() {
 			firstTroopId = 190;
 			troopsWavesArray.push(187);
 			troopsWavesArray.push(203);
+		}
+		
+	}
+	else if(mapId === MAP_ID_LVL4_GUARD_STATION) {
+		if(noiseLevel <= 1) {
+			firstTroopId = 221;
+			troopsWavesArray.push(257);
+		}
+		else if(noiseLevel <= 2) {
+			firstTroopId = 222;
+			troopsWavesArray.push(258);
+		}
+		else if(noiseLevel <= 4) {
+			firstTroopId = 222;
+			troopsWavesArray.push(258);
+			troopsWavesArray.push(247);
+		}
+		else if(noiseLevel <= 6) {
+			firstTroopId = 223;
+			troopsWavesArray.push(258);
+			troopsWavesArray.push(248);
+		}
+		else {
+			firstTroopId = 223;
+			troopsWavesArray.push(259);
+			troopsWavesArray.push(249);
 		}
 		
 	}
@@ -1880,6 +2330,9 @@ Game_Party.prototype.setBossTroopIds = function(level) {
 		firstTroopId = 141;
 		troopsWavesArray.push(142);
 	}
+	else if(level === 4) {
+		firstTroopId = 220;
+	}
 
 	$gameVariables.setValue(VARIABLE_TROOPID_ID, firstTroopId);
 	
@@ -1902,27 +2355,44 @@ Game_Party.prototype.getGuardEnemyIds = function() {
 	}
 	else if(guardAggr < 5) {
 		enemyIdArray = [ENEMY_ID_GUARD_LV1, ENEMY_ID_GUARD_LV2];
+		if(Karryn.hasEdict(EDICT_EXPERT_GUARD_TRAINING))
+			enemyIdArray.push(ENEMY_ID_GUARD_LV4);
 	}
 	else if(guardAggr < 8) {
 		enemyIdArray = [ENEMY_ID_GUARD_LV1, ENEMY_ID_GUARD_LV2, ENEMY_ID_GUARD_LV2];
+		if(Karryn.hasEdict(EDICT_EXPERT_GUARD_TRAINING))
+			enemyIdArray.push(ENEMY_ID_GUARD_LV4);
 	}
 	else if(guardAggr < 12) {
 		enemyIdArray = [ENEMY_ID_GUARD_LV1, ENEMY_ID_GUARD_LV2, ENEMY_ID_GUARD_LV3, ENEMY_ID_GUARD_LV2, ENEMY_ID_GUARD_LV3];
+		if(Karryn.hasEdict(EDICT_EXPERT_GUARD_TRAINING))
+			enemyIdArray.push(ENEMY_ID_GUARD_LV5);
 	}
 	else if(guardAggr < 16) {
 		enemyIdArray = [ENEMY_ID_GUARD_LV2, ENEMY_ID_GUARD_LV4, ENEMY_ID_GUARD_LV3];
+		if(Karryn.hasEdict(EDICT_EXPERT_GUARD_TRAINING))
+			enemyIdArray.push(ENEMY_ID_GUARD_LV5);
 	}
 	else if(guardAggr < 20) {
 		enemyIdArray = [ENEMY_ID_GUARD_LV2, ENEMY_ID_GUARD_LV3, ENEMY_ID_GUARD_LV4, ENEMY_ID_GUARD_LV5];
+		if(Karryn.hasEdict(EDICT_RIOT_SUPPRESSING_TRAINING_FOR_GUARDS))
+			enemyIdArray.push(ENEMY_ID_GUARD_LV6);
 	}
 	else if(guardAggr < 25) {
 		enemyIdArray = [ENEMY_ID_GUARD_LV3, ENEMY_ID_GUARD_LV4, ENEMY_ID_GUARD_LV5, ENEMY_ID_GUARD_LV5];
+		if(Karryn.hasEdict(EDICT_EXPERT_GUARD_TRAINING))
+			enemyIdArray.push(ENEMY_ID_GUARD_LV6);
 	}
 	else {
 		enemyIdArray = [ENEMY_ID_GUARD_LV3, ENEMY_ID_GUARD_LV4, ENEMY_ID_GUARD_LV5, ENEMY_ID_GUARD_LV5, ENEMY_ID_GUARD_LV5];
+		if(Karryn.hasEdict(EDICT_EXPERT_GUARD_TRAINING)) {
+			enemyIdArray.push(ENEMY_ID_GUARD_LV6);
+			enemyIdArray.push(ENEMY_ID_GUARD_LV6);
+		}
+		if(Karryn.hasEdict(EDICT_RIOT_SUPPRESSING_TRAINING_FOR_GUARDS))
+			enemyIdArray.push(ENEMY_ID_GUARD_LV6);
 	}
-	
-	//enemyIdArray = [121,122,123];
+
 	
 	return enemyIdArray;
 };
@@ -1944,6 +2414,9 @@ Game_Party.prototype.getRiotEnemyIds = function() {
 			enemyIdArray.push(92);
 			enemyIdArray.push(93);
 			enemyIdArray.push(94);
+		}
+		if(Karryn.hasEdict(EDICT_REJECT_THE_ORCS)) {
+			enemyIdArray.push(182);
 		}
 	}
 	else if(mapId === MAP_ID_DISH_WASHING) {
@@ -2015,6 +2488,14 @@ Game_Party.prototype.getRiotEnemyIds = function() {
 	}
 	else if(mapId === MAP_ID_RESEARCH) {
 		enemyIdArray = [51,54,81,82,83,181,182];
+		if(Karryn.hasEdict(EDICT_SCIENCE_VERSUS_LIZARDMEN)) {
+			enemyIdArray.push(193);
+			enemyIdArray.push(194);
+			enemyIdArray.push(193);
+			enemyIdArray.push(194);
+			enemyIdArray.push(193);
+			enemyIdArray.push(194);
+		}
 	}
 	else if(mapId === MAP_ID_MEETING_ROOM) {
 		enemyIdArray = [51,54,92,94,83,122];
@@ -2022,6 +2503,57 @@ Game_Party.prototype.getRiotEnemyIds = function() {
 			enemyIdArray.push(142);
 			enemyIdArray.push(143);
 		}
+		if(Karryn.hasEdict(EDICT_SCIENCE_VERSUS_LIZARDMEN)) {
+			enemyIdArray.push(193);
+			enemyIdArray.push(194);
+		}
+	}
+	
+	//Level Three
+	else if(mapId === MAP_ID_CELL_BLOCK_SOUTH) { 
+		enemyIdArray = [51,54,191,192];
+		if(!Karryn.hasEdict(EDICT_FIGHT_ROGUE_DISTRACTIONS_WITH_DISTRACTIONS)) {
+			enemyIdArray.push(143);
+			if(Karryn.hasEdict(EDICT_FORCE_ROGUES_INTO_LABOR))
+				enemyIdArray.push(145);
+		}
+		if(Karryn.hasEdict(EDICT_ANTI_GOBLIN_SQUAD)) {
+			enemyIdArray.push(85);
+			enemyIdArray.push(86);
+		}
+		if(!Karryn.hasEdict(EDICT_THUGS_STRESS_RELIEF)) {
+			enemyIdArray.push(97);
+			if(!Karryn.hasEdict(EDICT_NO_THUG_LABOR))
+				enemyIdArray.push(98);
+		}
+		if(Karryn.hasEdict(EDICT_REJECT_THE_ORCS)) {
+			enemyIdArray.push(183);
+		}
+	}
+	else if(mapId === MAP_ID_GYM) {
+		enemyIdArray = [55,91,96,181,193];
+		if(Karryn.hasEdict(EDICT_STOCK_WITH_BODYBUILDING_BOOKS)) {
+			enemyIdArray.push(127);
+		}
+		if(Karryn.hasEdict(EDICT_REJECT_THE_ORCS)) {
+			enemyIdArray.push(183);
+		}
+	}
+	else if(mapId === MAP_ID_CELL_BLOCK_NORTH_WEST) {
+		enemyIdArray = [54,85,96,183,194,212,213];
+		if(Karryn.hasEdict(EDICT_REJECT_THE_ORCS)) {
+			enemyIdArray.push(183);
+		}
+	}
+	else if(mapId === MAP_ID_CELL_BLOCK_NORTH_EAST) {
+		enemyIdArray = [54,85,96,183,194,212,213];
+		if(Karryn.hasEdict(EDICT_REJECT_THE_ORCS)) {
+			enemyIdArray.push(183);
+		}
+	}
+	
+	if(Karryn.hasEdict(EDICT_RIOT_SUPPRESSING_TRAINING_FOR_GUARDS)) {
+		enemyIdArray = enemyIdArray.concat($gameParty.getGuardEnemyIds());
 	}
 
 	return enemyIdArray;
@@ -2048,7 +2580,6 @@ Game_Party.prototype.getDefeatedLevelOneEnemyIds = function(blowbangFactor, star
 	}
 	
 	
-	
 	if(Karryn.hasPassive(PASSIVE_SEXUAL_PARTNERS_ROGUE_ONE_ID) && blowbangFactor >= 6) {
 		enemyIdArray.push(141);
 	}
@@ -2066,8 +2597,26 @@ Game_Party.prototype.getDefeatedLevelOneEnemyIds = function(blowbangFactor, star
 	if(Prison.guardAggression >= 10 && $gameParty._barReputation >= 2 && blowbangFactor >= 9) {
 		enemyIdArray.push(21);
 		enemyIdArray.push(22);
+		if(Prison.guardAggression >= 20 && $gameParty._barReputation >= 8) {
+			enemyIdArray.push(24);
+			if(Prison.guardAggression >= 30) {
+				enemyIdArray.push(25);
+			}
+		}
 	}
-
+	
+	if(Karryn.hasEdict(EDICT_THE_LIZARDMAN_PROBLEM) && Karryn.hasEdict(EDICT_BAR_DRINK_MENU_II) && blowbangFactor >= 4) {
+		enemyIdArray.push(194);
+		if(Karryn.hasEdict(EDICT_LIZARDMEN_FREE_DRINKS)) {
+			enemyIdArray.push(191);
+			enemyIdArray.push(192);
+		}
+	}
+	
+	if(Karryn.hasEdict(EDICT_ACCESSIBILITY_FOR_ORCS) && blowbangFactor >= 8) {
+		enemyIdArray.push(182);
+	}
+	
 	return enemyIdArray;
 };
 
@@ -2087,6 +2636,10 @@ Game_Party.prototype.getDefeatedLevelTwoEnemyIds = function(bathroomFactor) {
 	if(bathroomFactor >= 7) {
 		enemyIdArray.push(122);
 		enemyIdArray.push(123);
+	}
+	
+	if(bathroomFactor >= 7 && Karryn.hasPassive(PASSIVE_SEXUAL_PARTNERS_LIZARDMAN_TWO_ID) && Karryn.hasEdict(EDICT_THE_LIZARDMAN_PROBLEM)) {
+		enemyIdArray.push(193);
 	}
 	
 	if(Karryn.hasEdict(EDICT_GIVE_IN_TO_NERD_BLACKMAIL)) {
@@ -2113,8 +2666,21 @@ Game_Party.prototype.getDefeatedLevelTwoEnemyIds = function(bathroomFactor) {
 		enemyIdArray.push(95);
 	}
 	
+	if(bathroomFactor >= 10 && Karryn.hasPassive(PASSIVE_SEXUAL_PARTNERS_WEREWOLF_ONE_ID) && !Prison.prisonLevelFourIsUnknown) {
+		enemyIdArray.push(222);
+		enemyIdArray.push(223);
+	}
+	
 	if(bathroomFactor >= 11) {
 		enemyIdArray.push(83);
+	}
+	
+	if(bathroomFactor >= 11 && Karryn.hasPassive(PASSIVE_SEXUAL_PARTNERS_LIZARDMAN_ONE_ID) && !Prison.prisonLevelFourIsUnknown) {
+		enemyIdArray.push(194);
+	}
+	
+	if(Karryn.hasEdict(EDICT_THE_ORC_PROBLEM) && Karryn.hasEdict(EDICT_ACCESSIBILITY_FOR_ORCS) && bathroomFactor >= 7) {
+		enemyIdArray.push(182);
 	}
 	
 	return enemyIdArray;
@@ -2148,6 +2714,10 @@ Game_Party.prototype.getDefeatedLevelThreeEnemyIds = function(soloCellFactor) {
 		enemyIdArray.push(94);
 	}
 	
+	if(soloCellFactor >= 6 && Karryn.hasPassive(PASSIVE_SEXUAL_PARTNERS_SLIME_ONE_ID)) {
+		enemyIdArray.push(131);
+	}
+	
 	if(soloCellFactor >= 7) {
 		enemyIdArray.push(142);
 		enemyIdArray.push(182);
@@ -2165,12 +2735,75 @@ Game_Party.prototype.getDefeatedLevelThreeEnemyIds = function(soloCellFactor) {
 		}
 	}
 	
+	if(soloCellFactor >= 11 && Karryn.hasPassive(PASSIVE_SEXUAL_PARTNERS_SLIME_TWO_ID)) {
+		enemyIdArray.push(132);
+	}
+	
 	if(soloCellFactor >= 12) {
 		enemyIdArray.push(212);
 		enemyIdArray.push(192);
 		enemyIdArray.push(54);
 	}
 	
+	
+	return enemyIdArray;
+};
+
+Game_Party.prototype.getDefeatedLevelFourEnemyIds = function(pilloryFactor) {
+	let enemyIdArray = [ 54, 81, 132, 212, 222 ];
+	
+	if(Karryn.hasEdict(EDICT_BAIT_GOBLINS)) {
+		enemyIdArray.push(81);
+	}
+	else if(Karryn.hasEdict(EDICT_DEMEAN_GOBLINS)) {
+		enemyIdArray.push(82);
+		enemyIdArray.push(83);
+	}
+	
+	if(Karryn.hasEdict(EDICT_THUGS_STRESS_RELIEF)) {
+		enemyIdArray.push(92);
+	}
+	
+	if(Karryn.hasEdict(EDICT_GIVE_IN_TO_NERD_BLACKMAIL)) {
+		enemyIdArray.push(121);
+	}
+	else if(Karryn.hasEdict(EDICT_THREATEN_THE_NERDS)) {
+		enemyIdArray.push(125);
+		enemyIdArray.push(126);
+	}
+	
+	if(Karryn.hasEdict(EDICT_FIGHT_ROGUE_DISTRACTIONS_WITH_DISTRACTIONS)) {
+		enemyIdArray.push(141);
+	}
+	else if(Karryn.hasEdict(EDICT_FORCE_ROGUES_INTO_LABOR)) {
+		enemyIdArray.push(143);
+		enemyIdArray.push(144);
+	}
+	
+	if(Karryn.hasEdict(EDICT_APPEASE_THE_LIZARDMEN)) {
+		enemyIdArray.push(192);
+	}
+	else {
+		enemyIdArray.push(193);
+		enemyIdArray.push(194);
+	}
+	
+	if(Karryn.hasEdict(EDICT_REACH_UNDERSTANDING_WITH_ORCS)) {
+		enemyIdArray.push(181);
+	}
+	else if(Karryn.hasEdict(EDICT_REJECT_THE_ORCS)) {
+		enemyIdArray.push(182);
+		enemyIdArray.push(183);
+	}
+	
+	if(Prison.prisonLevelFourIsRioting() && Prison.guardAggression >= 30) {
+		enemyIdArray.push(ENEMY_ID_GUARD_LV5);
+		if(Prison.funding === 0) {
+			enemyIdArray.push(ENEMY_ID_GUARD_LV4);
+			enemyIdArray.push(ENEMY_ID_GUARD_LV5);
+			enemyIdArray.push(ENEMY_ID_GUARD_LV5);
+		}
+	}
 	
 	return enemyIdArray;
 };
@@ -2182,7 +2815,7 @@ Game_Party.prototype.getDefeatedLevelThreeEnemyIds = function(soloCellFactor) {
 //////////
 
 Game_Party.prototype.respawnAnarchyEnemies = function() {
-	
+	let mapId = $gameMap._mapId;
 	if(this.prisonLevelOneIsAnarchy()) {
 		$gameSelfSwitches.setValue([MAP_ID_VISITOR_ROOM_BROKEN, 2, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_VISITOR_CENTER_BROKEN, 30, "D"], false);
@@ -2293,5 +2926,72 @@ Game_Party.prototype.respawnAnarchyEnemies = function() {
 		$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_NORTH_EAST, 22, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_NORTH_EAST, 4, "D"], false);
 	}
+	if(this.prisonLevelFourIsAnarchy()) {
+		$gameSelfSwitches.setValue([MAP_ID_LVL4_MUSHROOM_FARM, 3, "D"], false);
+		$gameSelfSwitches.setValue([MAP_ID_LVL4_MUSHROOM_FARM, 7, "D"], false);
+		$gameSelfSwitches.setValue([MAP_ID_LVL4_MUSHROOM_FARM, 8, "D"], false);
+		$gameSelfSwitches.setValue([MAP_ID_LVL4_MUSHROOM_FARM, 9, "D"], false);
+		$gameSelfSwitches.setValue([MAP_ID_LVL4_MUSHROOM_FARM, 6, "D"], false);
+		$gameSelfSwitches.setValue([MAP_ID_LVL4_MUSHROOM_FARM, 10, "D"], false);
+		$gameSelfSwitches.setValue([MAP_ID_LVL4_CHICKEN_PASTURE, 10, "D"], false);
+		$gameSelfSwitches.setValue([MAP_ID_LVL4_CHICKEN_PASTURE, 12, "D"], false);
+		$gameSelfSwitches.setValue([MAP_ID_LVL4_CHICKEN_PASTURE, 15, "D"], false);
+		$gameSelfSwitches.setValue([MAP_ID_LVL4_CHICKEN_PASTURE, 17, "D"], false);
+		$gameSelfSwitches.setValue([MAP_ID_LVL4_UNDERGROUND_POOL, 6, "D"], false);
+		$gameSelfSwitches.setValue([MAP_ID_LVL4_UNDERGROUND_POOL, 9, "D"], false);
+		$gameSelfSwitches.setValue([MAP_ID_LVL4_UNDERGROUND_POOL, 10, "D"], false);
+		$gameSelfSwitches.setValue([MAP_ID_LVL4_UNDERGROUND_POOL, 12, "D"], false);
+		$gameSelfSwitches.setValue([MAP_ID_LVL4_UNDERGROUND_POOL, 13, "D"], false);
+		$gameSelfSwitches.setValue([MAP_ID_LVL4_UNDERGROUND_POOL, 14, "D"], false);
+		$gameSelfSwitches.setValue([MAP_ID_LVL4_UNDERGROUND_POOL, 15, "D"], false);
+		$gameSelfSwitches.setValue([MAP_ID_LVL4_UNDERGROUND_POOL, 16, "D"], false);
+		$gameSelfSwitches.setValue([MAP_ID_LVL4_UNDERGROUND_POOL, 17, "D"], false);
+		$gameSelfSwitches.setValue([MAP_ID_LVL4_UNDERGROUND_POOL, 18, "D"], false);
+		$gameSelfSwitches.setValue([MAP_ID_LVL4_BASKETBALL_COURT, 3, "D"], false);
+		$gameSelfSwitches.setValue([MAP_ID_LVL4_BASKETBALL_COURT, 9, "D"], false);
+		$gameSelfSwitches.setValue([MAP_ID_LVL4_BASKETBALL_COURT, 10, "D"], false);
+		$gameSelfSwitches.setValue([MAP_ID_LVL4_BASKETBALL_COURT, 11, "D"], false);
+		$gameSelfSwitches.setValue([MAP_ID_LVL4_BASKETBALL_COURT, 12, "D"], false);
+		$gameSelfSwitches.setValue([MAP_ID_LVL4_BASKETBALL_COURT, 13, "D"], false);
+		$gameSelfSwitches.setValue([MAP_ID_LVL4_BASKETBALL_COURT, 14, "D"], false);
+		$gameSelfSwitches.setValue([MAP_ID_LVL4_BASKETBALL_COURT, 15, "D"], false);
+		$gameSelfSwitches.setValue([MAP_ID_LVL4_BASKETBALL_COURT, 16, "D"], false);
+		$gameSelfSwitches.setValue([MAP_ID_LVL4_YETI_CAVERN, 5, "D"], false);
+		$gameSelfSwitches.setValue([MAP_ID_LVL4_YETI_CAVERN, 6, "D"], false);
+		$gameSelfSwitches.setValue([MAP_ID_LVL4_YETI_CAVERN, 10, "D"], false);
+		$gameSelfSwitches.setValue([MAP_ID_LVL4_YETI_CAVERN, 11, "D"], false);
+		if(mapId !== MAP_ID_LVL4_GUARD_STATION) {
+			$gameSelfSwitches.setValue([MAP_ID_LVL4_AMBUSH, 3, "D"], false);
+			$gameSelfSwitches.setValue([MAP_ID_LVL4_AMBUSH, 4, "D"], false);
+			$gameSelfSwitches.setValue([MAP_ID_LVL4_AMBUSH, 5, "D"], false);
+			$gameSelfSwitches.setValue([MAP_ID_LVL4_AMBUSH, 6, "D"], false);
+			$gameSelfSwitches.setValue([MAP_ID_LVL4_AMBUSH, 7, "D"], false);
+			$gameSelfSwitches.setValue([MAP_ID_LVL4_AMBUSH, 8, "D"], false);
+		}
+	}
 	
+	
+};
+
+///////
+// Bosses
+
+// Aron
+Game_Party.prototype.setupAronCallLizardmanLimit = function() {
+	this._aronCallLimit = 8;
+	if(Prison.hardMode()) this._aronCallLimit += 2;
+	if($gameSelfSwitches.value([MAP_ID_CELL_BLOCK_NORTH_EAST, 24, "D"])) this._aronCallLimit -= 5;
+	this._aronCall_failedNormal = false;
+	this._aronCall_failedDesperate = false;
+};
+
+// Noinim
+Game_Party.prototype.setupNoinimReinforcementVariables = function() {
+	this._noinimReinforcement_first = false;
+	this._noinimReinforcement_second = false;
+	this._noinimReinforcement_third = false;
+};
+Game_Party.prototype.resetMinionThrowVariables = function() {
+	this._minionThrow_ammoName = false;
+	this._minionThrow_ammoLoaded = false;
 };

@@ -392,11 +392,65 @@ Game_Actor.prototype.getDefeatedLvlThreeFactor = function() {
 	if(this.hasEdict(EDICT_FIGHT_ROGUE_DISTRACTIONS_WITH_DISTRACTIONS)) factor += 1;
 	if(this.hasEdict(EDICT_GIVE_IN_TO_NERD_BLACKMAIL)) factor += 1;
 	
+	if(this.hasEdict(EDICT_APPEASE_THE_LIZARDMEN)) factor += 1;
+	else if(this.hasEdict(EDICT_SCIENCE_VERSUS_LIZARDMEN)) factor -= 1;
+	if(this.hasEdict(EDICT_REACH_UNDERSTANDING_WITH_ORCS)) factor += 1;
+	
+	if(this.hasEdict(EDICT_COLD_SHOWERS)) factor += 1;
+	if(this.hasEdict(EDICT_PAID_GYM_MEMBERSHIP)) factor += 1;
+	
+	return factor;
+};
+
+Game_Actor.prototype.getDefeatedLvlFourFactor = function() {
+	let factor = 0;
+	
+	if(this.hasPassive(PASSIVE_PILLORY_SEX_COUNT_THREE_ID)) factor += 4;
+	else if(this.hasPassive(PASSIVE_PILLORY_SEX_COUNT_TWO_ID)) factor += 3;
+	else if(this.hasPassive(PASSIVE_PILLORY_SEX_COUNT_ONE_ID)) factor += 2;
+	
+	if(this.hasPassive(PASSIVE_SEXUAL_PARTNERS_TOTAL_FOUR_ID)) factor += 2;
+	else if(this.hasPassive(PASSIVE_SEXUAL_PARTNERS_TOTAL_TWO_ID)) factor += 1;
+	
+	if(this.hasPassive(PASSIVE_SEXUAL_PARTNERS_SLIME_ONE_ID)) factor += 1;
+	if(this.hasPassive(PASSIVE_SEXUAL_PARTNERS_WEREWOLF_ONE_ID)) factor += 1;
+	if(this.hasPassive(PASSIVE_SEXUAL_PARTNERS_YETI_ONE_ID)) factor += 1;
+	
+	if(this.hasEdict(EDICT_THUGS_STRESS_RELIEF)) factor += 1;
+	if(this.hasEdict(EDICT_BAIT_GOBLINS)) factor += 1;
+	else if(this.hasEdict(EDICT_DEMEAN_GOBLINS)) factor += 2;
+	if(this.hasEdict(EDICT_GIVE_IN_TO_NERD_BLACKMAIL)) factor += 1;
+	else if(this.hasEdict(EDICT_THREATEN_THE_NERDS)) factor += 2;
+	if(this.hasEdict(EDICT_FIGHT_ROGUE_DISTRACTIONS_WITH_DISTRACTIONS)) factor += 1;
+	if(this.hasEdict(EDICT_APPEASE_THE_LIZARDMEN)) factor += 1;
+	if(this.hasEdict(EDICT_REACH_UNDERSTANDING_WITH_ORCS)) factor += 1;
+	else if(this.hasEdict(EDICT_REJECT_THE_ORCS)) factor += 2;
+	
+	if($gameParty.prisonGlobalRiotChance() > 0) {
+		factor += Math.min(5, Math.ceil($gameParty.prisonGlobalRiotChance() / 3));
+	}
+	if($gameParty.prisonLevelOneRiotChance() > 0) {
+		factor += Math.min(2, Math.ceil($gameParty.prisonLevelOneRiotChance() / 5));
+	}
+	if($gameParty.prisonLevelTwoRiotChance() > 0) {
+		factor += Math.min(2, Math.ceil($gameParty.prisonLevelTwoRiotChance() / 5));
+	}
+	if($gameParty.prisonLevelThreeRiotChance() > 0) {
+		factor += Math.min(3, Math.ceil($gameParty.prisonLevelThreeRiotChance() / 4));
+	}
+	
+	if(Prison.prisonLevelFourIsRioting() && Prison.guardAggression >= 30) {
+		factor += 1;
+		if(Prison.funding === 0) factor += 2;
+	}
+	
+	
 	return factor;
 };
 
 Game_Actor.prototype.getDefeatedGuardFactor = function() {
 	let factor = 0;
+	let guardAggr = Prison.guardAggression;
 	
 	if(this.hasPassive(PASSIVE_SEXUAL_PARTNERS_GUARD_THREE_ID)) factor += 4;
 	else if(this.hasPassive(PASSIVE_SEXUAL_PARTNERS_GUARD_TWO_ID)) factor += 3;
@@ -408,10 +462,13 @@ Game_Actor.prototype.getDefeatedGuardFactor = function() {
 	if(this.hasPassive(PASSIVE_DEFEATED_COUNT_FOUR_ID)) factor += 2;
 	else if(this.hasPassive(PASSIVE_DEFEATED_COUNT_TWO_ID)) factor += 1;
 	
-	if(Prison.guardAggression >= 20) factor += 4;
-	else if(Prison.guardAggression >= 12) factor += 3;
-	else if(Prison.guardAggression >= 7) factor += 2;
-	else if(Prison.guardAggression >= 3) factor += 1;
+	if(guardAggr >= 30) factor += 5;
+	else if(guardAggr >= 20) factor += 4;
+	else if(guardAggr >= 12) factor += 3;
+	else if(guardAggr >= 7) factor += 2;
+	else if(guardAggr >= 3) factor += 1;
+	
+	if(Prison.funding === 0) factor += 2;
 	
 	return factor;
 };
@@ -500,9 +557,6 @@ Game_Actor.prototype.useOrgasmSkill = function() {
 	if(numOfOrgasm >= 2) {
 		skillId = SKILL_FEMALE_ORGASM_TWO_ID;
 	}
-	
-	//todo: maybe different conditions triggers different orgasm skill for Karryn?
-	//for example, a different orgasm while masturbating or stripping or whatever?
 	
 	this.useAISkill(skillId, target);
 	
@@ -772,7 +826,7 @@ Game_Actor.prototype.selectorKarryn_kiss = function(target) {
 		skillId = SKILL_KARRYN_KISS_TWO_ID;
 	this.setKissedChange(true, target, true);
 	this.useAISkill(skillId, target);
-	this.addToKissUsageCountRecord();
+	this.addToKissUsageCountRecord(target);
 	this.addEnemyEdgingControlStateToTarget(target);
 	return skillId;
 };
@@ -833,6 +887,10 @@ Game_Actor.prototype.selectorKarryn_cockStare = function(target) {
 	if(abortConditions) return false;
 
 	let skillId = SKILL_KARRYN_COCK_STARE_ONE_ID;
+	
+	if($gameParty.isInGloryBattle)
+		skillId = SKILL_KARRYN_COCK_STARE_TOILET_ID;
+	
 	this.useAISkill(skillId, target);
 	return skillId;
 };
@@ -904,8 +962,12 @@ Game_Actor.prototype.selectorKarryn_cockPetting = function(target) {
 	if(abortConditions) return false;
 
 	let skillId = SKILL_KARRYN_COCK_PETTING_ONE_ID;
+	
+	if($gameParty.isInGloryBattle)
+		skillId = SKILL_KARRYN_COCK_PETTING_TOILET_ID;
+	
 	this.useAISkill(skillId, target);
-	this.addToCockPetUsageCountRecord();
+	this.addToCockPetUsageCountRecord(target);
 	this.addEnemyEdgingControlStateToTarget(target);
 	return skillId;
 };
@@ -984,8 +1046,11 @@ Game_Actor.prototype.selectorKarryn_handjob = function(target) {
 		
 	//Use the skill on pose target
 	if(targetIsRightHand || targetIsLeftHand) {
-		if($gameParty.isInGloryBattle)
-			skillId = SKILL_KARRYN_TOILET_HANDJOB_POSESKILL_ID;
+		if($gameParty.isInGloryBattle) {
+			if(target.isValidTargetForHandjobOrBlowjob_gloryBattle())
+				skillId = SKILL_KARRYN_TOILET_HANDJOB_POSESKILL_ID;
+			else return false;
+		}
 		else
 			skillId = SKILL_KARRYN_HANDJOB_POSESKILL_ID;
 		this.useAISkill(skillId, target);
@@ -1025,13 +1090,12 @@ Game_Actor.prototype.selectorKarryn_handjob = function(target) {
 	}
 	//So Karryn is currently not in a sex pose, then start a sex pose with this target
 	else if(!target.isInAPose() && bodySlotAvailable){
-		//Todo: in the future decide which pose to start based on karryn's stats, exp etc
 		skillId = SKILL_KARRYN_START_STANDING_HJ_ID;
 		this.useAISkill(skillId, target);
 	}
 	else return false;
 	
-	this.addToHandjobUsageCountRecord();
+	this.addToHandjobUsageCountRecord(target);
 	this.addEnemyEdgingControlStateToTarget(target);
 	return skillId;
 };
@@ -1108,7 +1172,7 @@ Game_Actor.prototype.selectorKarryn_rimjob = function(target) {
 	}
 	else return false;
 	
-	this.addToRimjobUsageCountRecord();
+	this.addToRimjobUsageCountRecord(target);
 	this.addEnemyEdgingControlStateToTarget(target);
 	return skillId;
 };
@@ -1183,7 +1247,7 @@ Game_Actor.prototype.selectorKarryn_footjob = function(target) {
 	}
 	else return false;
 	
-	this.addToFootjobUsageCountRecord();
+	this.addToFootjobUsageCountRecord(target);
 	this.addEnemyEdgingControlStateToTarget(target);
 	return skillId;
 };
@@ -1270,8 +1334,16 @@ Game_Actor.prototype.selectorKarryn_blowjob = function(target) {
 		skillId = SKILL_ENEMY_POSEJOIN_DEFEAT_LV3_MOUTH_ID;
 		target.useAISkill(skillId, this);
 	}
+	else if(Karryn.isInDefeatedLevel4Pose() && bodySlotAvailable) {
+		skillId = SKILL_ENEMY_POSEJOIN_DEFEAT_LV4_MOUTH_ID;
+		target.useAISkill(skillId, this);
+	}
 	else if($gameParty.isInGloryBattle) {
 		skillId = SKILL_KARRYN_INVITE_TOILET_MOUTH_ID;
+		this.useAISkill(skillId, target);
+	}
+	else if(Karryn.isInYetiPaizuriSexPose() && target.isYetiType && target.isUsingBodySlotPenis(BOOBS_ID) && target.isPoseMaster() && !target.isUsingBodySlotPenis(MOUTH_ID)) {
+		skillId = SKILL_KARRYN_INVITE_PAIZURI_FERA_ID;
 		this.useAISkill(skillId, target);
 	}
 	else if(inSexPose && bodySlotAvailable) {
@@ -1284,7 +1356,7 @@ Game_Actor.prototype.selectorKarryn_blowjob = function(target) {
 	}
 	else return false;
 	
-	this.addToBlowjobUsageCountRecord();
+	this.addToBlowjobUsageCountRecord(target);
 	this.addEnemyEdgingControlStateToTarget(target);
 	return skillId;
 };
@@ -1362,12 +1434,18 @@ Game_Actor.prototype.selectorKarryn_tittyfuck = function(target) {
 		this.useAISkill(skillId, target);
 	}
 	else if(!target.isInAPose() && bodySlotAvailable){
-		skillId = SKILL_KARRYN_START_LAYING_TITTYFUCK_ID;
-		this.useAISkill(skillId, target);
+		if(target.isYetiType) {
+			skillId = SKILL_ENEMY_POSESTART_YETIPAIZURI_ID;
+			target.useAISkill(skillId, this);
+		}
+		else {
+			skillId = SKILL_KARRYN_START_LAYING_TITTYFUCK_ID;
+			this.useAISkill(skillId, target);
+		}
 	}
 	else return false;
 	
-	this.addToTittyFuckUsageCountRecord();
+	this.addToTittyFuckUsageCountRecord(target);
 	this.addEnemyEdgingControlStateToTarget(target);
 	return skillId;
 };
@@ -1459,6 +1537,10 @@ Game_Actor.prototype.selectorKarryn_pussySex = function(target) {
 		skillId = SKILL_ENEMY_POSEJOIN_DEFEAT_LV3_PUSSY_ID;
 		target.useAISkill(skillId, this);
 	}
+	else if(Karryn.isInDefeatedLevel4Pose() && bodySlotAvailable) {
+		skillId = SKILL_ENEMY_POSEJOIN_DEFEAT_LV4_PUSSY_ID;
+		target.useAISkill(skillId, this);
+	}
 	else if($gameParty.isInGloryBattle) {
 		skillId = SKILL_KARRYN_INVITE_TOILET_PUSSY_ID;
 		this.useAISkill(skillId, target);
@@ -1468,12 +1550,18 @@ Game_Actor.prototype.selectorKarryn_pussySex = function(target) {
 		this.useAISkill(skillId, target);
 	}
 	else if(!target.isInAPose() && bodySlotAvailable){
-		skillId = SKILL_KARRYN_START_KARRYN_COWGIRL_ID;
-		this.useAISkill(skillId, target);
+		if(target.isWerewolfType) {
+			skillId = SKILL_ENEMY_POSESTART_WEREWOLF_BACK_PUSSY_ID;
+			target.useAISkill(skillId, this);
+		}
+		else {
+			skillId = SKILL_KARRYN_START_KARRYN_COWGIRL_ID;
+			this.useAISkill(skillId, target);
+		}
 	}
 	else return false;
 	
-	this.addToPussySexUsageCountRecord();
+	this.addToPussySexUsageCountRecord(target);
 	this.addEnemyEdgingControlStateToTarget(target);
 	return skillId;
 };
@@ -1562,6 +1650,10 @@ Game_Actor.prototype.selectorKarryn_analSex = function(target) {
 		skillId = SKILL_ENEMY_POSEJOIN_DEFEAT_LV3_ANAL_ID;
 		target.useAISkill(skillId, this);
 	}
+	else if(Karryn.isInDefeatedLevel4Pose() && bodySlotAvailable) {
+		skillId = SKILL_ENEMY_POSEJOIN_DEFEAT_LV4_ANAL_ID;
+		target.useAISkill(skillId, this);
+	}
 	else if($gameParty.isInGloryBattle) {
 		skillId = SKILL_KARRYN_INVITE_TOILET_ANAL_ID;
 		this.useAISkill(skillId, target);
@@ -1575,6 +1667,10 @@ Game_Actor.prototype.selectorKarryn_analSex = function(target) {
 			skillId = SKILL_ENEMY_POSESTART_SLIMEPILEDRIVER_ID;
 			target.useAISkill(skillId, this);
 		}
+		else if(target.isWerewolfType) {
+			skillId = SKILL_ENEMY_POSESTART_WEREWOLF_BACK_ANAL_ID;
+			target.useAISkill(skillId, this);
+		}
 		else {
 			skillId = SKILL_KARRYN_START_REVERSE_COWGIRL_ID;
 			this.useAISkill(skillId, target);
@@ -1582,7 +1678,7 @@ Game_Actor.prototype.selectorKarryn_analSex = function(target) {
 	}
 	else return false;
 	
-	this.addToAnalSexUsageCountRecord();
+	this.addToAnalSexUsageCountRecord(target);
 	this.addEnemyEdgingControlStateToTarget(target);
 	return skillId;
 };
@@ -1609,7 +1705,16 @@ Game_Actor.prototype.setKissedChange = function (kissed, enemy, karrynSkillUsage
 			this.emoteKickCounterPose(true, false, karrynSkillUsage);
 		}
 		
-	} //Kick counter end
+	} 
+	else if(poseName == POSE_YETI_CARRY) {
+		if(this._cockPussyTarget != enemy || !kissed) {
+			this.emoteYetiCarryPose(false, true, false);
+		}
+		else {
+			this.emoteYetiCarryPose(true, false, karrynSkillUsage);
+		}
+		
+	} 
 	else if(poseName == POSE_WAITRESS_SEX) {
 		if(kissed && enemy) {
 			this.resetTachieStraw();
@@ -1703,6 +1808,19 @@ Game_Actor.prototype.setMouthInserted = function (insert, enemy) {
 		}
 		this.emoteDefeatedGuardPose();
 	}
+	else if(poseName == POSE_WEREWOLF_BACK) {
+		if(insert) {
+			if(Karryn.isCensored())
+				this.setTachieCockMouth(enemyCock + '_cen');
+			else
+				this.setTachieCockMouth(enemyCock);
+			this.setMaxTachieSemenCockMouthId(1);
+		} else {
+			this.resetTachieCockMouth();
+			this.setMaxTachieSemenCockMouthId(0);
+		}
+		this.emoteWerewolfBackPose();
+	}
 	else if(poseName == POSE_DEFEATED_LEVEL3) {
 		if(insert) {
 			if(Karryn.isCensored())
@@ -1715,6 +1833,19 @@ Game_Actor.prototype.setMouthInserted = function (insert, enemy) {
 			this.setMaxTachieSemenCockMouthId(0);
 		}
 		this.emoteDefeatedLevelThreePose();
+	}
+	else if(poseName == POSE_DEFEATED_LEVEL4) {
+		if(insert) {
+			if(Karryn.isCensored())
+				this.setTachieCockMouth(enemyCock + '_cen');
+			else
+				this.setTachieCockMouth(enemyCock);
+			this.setMaxTachieSemenCockMouthId(1);
+		} else {
+			this.resetTachieCockMouth();
+			this.setMaxTachieSemenCockMouthId(0);
+		}
+		this.emoteDefeatedLevelFourPose();
 	}
 	
 	else if(poseName == POSE_GOBLINCUNNILINGUS) {
@@ -1906,12 +2037,15 @@ Game_Actor.prototype.setMouthInserted = function (insert, enemy) {
 				this.setTachieSemenCockMouthExtension('normal_');
 			}
 			this.setMaxTachieSemenCockMouthId(1);
-			this.emoteSlimePiledriver();
+			this.emoteSlimePiledriverPose();
 		} else {
 			this.resetTachieCockMouth();
 			this.setMaxTachieSemenCockMouthId(0);
-			this.emoteSlimePiledriver();
+			this.emoteSlimePiledriverPose();
 		}
+	}
+	else if(poseName == POSE_YETI_PAIZURI) {
+		this.emoteYetiPaizuriPose();
 	}
 	else if(poseName == POSE_RECEPTIONIST) {
 		
@@ -2086,6 +2220,16 @@ Game_Actor.prototype.setBoobsInserted = function (insert, enemy) {
 			this.setMaxTachieSemenCockBoobsId(1);
 		}
 	}
+	else if(poseName == POSE_YETI_PAIZURI) {
+		if(insert) {
+			if(Karryn.isCensored())
+				this.setTachieCockBoobs('yeti_cen');
+			else
+				this.setTachieCockBoobs('yeti');
+			this.setMaxTachieSemenCockBoobsId(1);
+		}
+	}
+	
 	
 	//this.emoteMasterManager();
 };
@@ -2236,17 +2380,54 @@ Game_Actor.prototype.setPussyInserted = function (insert, enemy) {
 		this.emoteDefeatedLevelThreePose();
 	}
 	
+	else if(poseName == POSE_DEFEATED_LEVEL4) {
+		if(insert) {
+			if(Karryn.isCensored())
+				this.setTachieCockPussy(enemyCock + '_cen');
+			else
+				this.setTachieCockPussy(enemyCock);
+			this.setMaxTachieSemenCockPussyId(1);
+		} else {
+			this.resetTachieCockPussy();
+			this.setMaxTachieSemenCockPussyId(0);
+		}
+		this.emoteDefeatedLevelFourPose();
+	}
+	
+	else if(poseName == POSE_YETI_PAIZURI) {
+		if(insert) {
+			if(Karryn.isCensored())
+				this.setTachieCockPussy(enemyCock + '_cen');
+			else
+				this.setTachieCockPussy(enemyCock);
+			this.setMaxTachieSemenCockPussyId(1);
+		} else {
+			this.resetTachieCockPussy();
+			this.setMaxTachieSemenCockPussyId(0);
+		}
+		this.emoteYetiPaizuriPose();
+	}
+	else if(poseName == POSE_YETI_CARRY) {
+		if(insert) {
+			if(Karryn.isCensored())
+				this.setTachieCockPussy(enemyCock + '_cen');
+			else
+				this.setTachieCockPussy(enemyCock);
+			this.setMaxTachieSemenCockPussyId(1);
+		} 
+	}
+	
 	else if(poseName == POSE_PAIZURI_LAYING) {
 		if(insert) {
 			this.setMaxTachieSemenCockPussyId(1);
 			if(Karryn.isCensored())
-				this.setTachieBackD('chin_' + enemyCock + '_cen');
+				this.setTachieCockPussy(enemyCock + '_cen');
 			else
-				this.setTachieBackD('chin_' + enemyCock);
+				this.setTachieCockPussy(enemyCock);
 		} 
 		else {
 			this.setMaxTachieSemenCockPussyId(0);
-			this.resetTachieBackD();
+			this.resetTachieCockPussy();
 		}
 	}
 	else if(poseName == POSE_GOBLINCUNNILINGUS) {
@@ -2421,6 +2602,60 @@ Game_Actor.prototype.setAnalInserted = function (insert, enemy) {
 		this.emoteDefeatedLevelThreePose();
 	}
 	
+	else if(poseName == POSE_DEFEATED_LEVEL4) {
+		if(insert) {
+			if(Karryn.isCensored())
+				this.setTachieCockAnal(enemyCock + '_cen');
+			else
+				this.setTachieCockAnal(enemyCock);
+			this.setMaxTachieSemenCockAnalId(1);
+		} else {
+			this.resetTachieCockAnal();
+			this.setMaxTachieSemenCockAnalId(0);
+		}
+		this.emoteDefeatedLevelFourPose();
+	}
+	else if(poseName == POSE_YETI_PAIZURI) {
+		if(insert) {
+			if(Karryn.isCensored())
+				this.setTachieCockAnal(enemyCock + '_cen');
+			else
+				this.setTachieCockAnal(enemyCock);
+			this.setMaxTachieSemenCockAnalId(1);
+		} else {
+			this.resetTachieCockAnal();
+			this.setMaxTachieSemenCockAnalId(0);
+		}
+		this.emoteYetiPaizuriPose();
+	}
+	else if(poseName == POSE_YETI_CARRY) {
+		if(insert) {
+			if(Karryn.isCensored()) {
+				this.setTachieCockAnal(enemyCock + '_cen');
+				this.setTachieHoleAnus('open_cen');
+			}
+			else {
+				this.setTachieCockAnal(enemyCock);
+				this.setTachieHoleAnus('open');
+			}
+			this.setMaxTachieSemenCockAnalId(1);
+			this.setTachieSemenAnalExtension('open_');
+		} else {
+			this.resetTachieCockAnal();
+			this.setMaxTachieSemenCockAnalId(0);
+			this.resetTachieSemenCockAnalExtension();
+			if(Karryn.isCensored()) {
+				this.setTachieHoleAnus('open_cen');
+			}
+			else {
+				this.setTachieHoleAnus('open');
+			}
+			this.setTachieSemenAnalExtension('open_');
+		}
+		
+		this.emoteYetiCarryPose();
+	}
+	
 	else if(poseName == POSE_GUARDGANGBANG) {
 		if(insert) {
 			if(Karryn.isCensored()) {
@@ -2468,13 +2703,13 @@ Game_Actor.prototype.setAnalInserted = function (insert, enemy) {
 		if(insert) {
 			this.setMaxTachieSemenCockAnalId(1);
 			if(Karryn.isCensored())
-				this.setTachieBackC('chin_' + enemyCock + '_cen');
+				this.setTachieCockAnal(enemyCock + '_cen');
 			else
-				this.setTachieBackC('chin_' + enemyCock);
+				this.setTachieCockAnal(enemyCock);
 		} 
 		else {
 			this.setMaxTachieSemenCockAnalId(0);
-			this.resetTachieBackC();
+			this.resetTachieCockAnal();
 		}
 	}
 	else if(poseName == POSE_WAITRESS_SEX) {
@@ -3001,6 +3236,25 @@ Game_Actor.prototype.setOther1Inserted = function (insert, enemy) {
 			this.setMaxTachieSemenFrontAId(0);
 		}
 	}
+	else if(poseName == POSE_DEFEATED_LEVEL4) {
+		if(insert) {
+			if(Karryn.isCensored())
+				this.setTachieFrontA('rightchin_' + enemyCock + '_cen');
+			else
+				this.setTachieFrontA('rightchin_' + enemyCock);
+			if(this.isSlimeType) {
+				this.setTachieSemenFrontAExtension('slime_')
+			}
+			else {
+				this.resetTachieSemenFrontAExtension();
+			}
+			this.setMaxTachieSemenFrontAId(1);
+		} else {
+			this.resetTachieFrontA();
+			this.resetTachieSemenFrontAExtension();
+			this.setMaxTachieSemenFrontAId(0);
+		}
+	}
 	
 	else if(poseName == POSE_WAITRESS_SEX) {
 		if(insert) {
@@ -3082,6 +3336,25 @@ Game_Actor.prototype.setOther2Inserted = function (insert, enemy) {
 			this.setMaxTachieSemenFrontBId(0);
 		}
 	}
+	else if(poseName == POSE_DEFEATED_LEVEL4) {
+		if(insert) {
+			if(Karryn.isCensored())
+				this.setTachieFrontB('rightchin_' + enemyCock + '_cen');
+			else
+				this.setTachieFrontB('rightchin_' + enemyCock);
+			if(this.isSlimeType) {
+				this.setTachieSemenFrontBExtension('slime_')
+			}
+			else {
+				this.resetTachieSemenFrontBExtension();
+			}
+			this.setMaxTachieSemenFrontBId(1);
+		} else {
+			this.resetTachieFrontB();
+			this.resetTachieSemenFrontBExtension();
+			this.setMaxTachieSemenFrontBId(0);
+		}
+	}
 };
 
 Game_Actor.prototype.setOther3Inserted = function (insert, enemy) {
@@ -3132,6 +3405,19 @@ Game_Actor.prototype.setOther3Inserted = function (insert, enemy) {
 		}
 	}
 	else if(poseName == POSE_DEFEATED_LEVEL3) {
+		if(insert) {
+			if(Karryn.isCensored())
+				this.setTachieFrontC('leftchin_' + enemyCock + '_cen');
+			else
+				this.setTachieFrontC('leftchin_' + enemyCock);
+			this.setMaxTachieSemenFrontCId(1);
+		} else {
+			this.resetTachieFrontC();
+			this.resetTachieSemenFrontCExtension();
+			this.setMaxTachieSemenFrontCId(0);
+		}
+	}
+	else if(poseName == POSE_DEFEATED_LEVEL4) {
 		if(insert) {
 			if(Karryn.isCensored())
 				this.setTachieFrontC('leftchin_' + enemyCock + '_cen');
@@ -3195,6 +3481,19 @@ Game_Actor.prototype.setOther4Inserted = function (insert, enemy) {
 		}
 	}
 	else if(poseName == POSE_DEFEATED_LEVEL3) {
+		if(insert) {
+			if(Karryn.isCensored())
+				this.setTachieFrontD('leftchin_' + enemyCock + '_cen');
+			else
+				this.setTachieFrontD('leftchin_' + enemyCock);
+			this.setMaxTachieSemenFrontDId(1);
+		} else {
+			this.resetTachieFrontD();
+			this.resetTachieSemenFrontDExtension();
+			this.setMaxTachieSemenFrontDId(0);
+		}
+	}
+	else if(poseName == POSE_DEFEATED_LEVEL4) {
 		if(insert) {
 			if(Karryn.isCensored())
 				this.setTachieFrontD('leftchin_' + enemyCock + '_cen');
@@ -3383,7 +3682,15 @@ Game_Actor.prototype.setToyInserted_AnalToy_AnalBeads = function (insert) {
 			
 		}
 	}
-	
+	else if(poseName == POSE_YETI_CARRY) {
+		if(insert) {
+			this.resetTachieHoleAnus();
+			this.resetTachieSemenAnalExtension();
+		}
+		else {
+			
+		}
+	}
 	
 };
 
@@ -3572,7 +3879,7 @@ Game_Actor.prototype.dmgFormula_karrynKiss = function(target, kissingLvl) {
 	let enemySkillLvl = target.kissLvl();
 	let enemyWeakness = target.weaknessToKiss();
 	
-	let enemyPleasureGain = (this.dex * 1.5 + baseDmg + this.level) * actorKissSkillRating * enemyWeakness * actorPassiveEffect * kissLvlDmg;
+	let enemyPleasureGain = (this.dex * 1.8 + baseDmg + this.level) * actorKissSkillRating * enemyWeakness * actorPassiveEffect * kissLvlDmg;
 	if(target.end > this.dex) enemyPleasureGain *= (1 - ((target.end - this.dex) / target.end) * 0.5);
 	
 	let actorDesireGain = (baseDmg + enemySkillLvl) * actorPettingRate;
@@ -3722,7 +4029,8 @@ Game_Actor.prototype.afterEval_karrynCockStare = function(target) {
 	else
 		target._enemyTempRecordCockJustShrankFromCockStare = false;
 	
-	this.addToCockStareUsageCountRecord();
+	this.addToCockStareUsageCountRecord(target);
+	target.addToEnemyCockStaredAtCountRecord(this);
 	this.gainStaminaExp(10, $gameTroop.getAverageEnemyExperienceLvl());
 	
 	this.resetAttackSkillConsUsage();
@@ -3759,7 +4067,10 @@ Game_Actor.prototype.beforeEval_karrynCockPetting = function(target) {
 				target.resetPoseStatus();
 			}
 		}
-		
+	}
+	
+	if(!target.isErect) {
+		this.addState(STATE_COCKPET_TARGET_NOT_ERECT_ID);
 	}
 };
 Game_Actor.prototype.dmgFormula_karrynCockPetting = function(target) {
@@ -3778,7 +4089,7 @@ Game_Actor.prototype.dmgFormula_karrynCockPetting = function(target) {
 	let erectMultipler = VAR_COCK_PETTING_NOTERECT_MULTIPLER;
 	if(target.isErect) erectMultipler = VAR_COCK_PETTING_ISERECT_MULTIPLER;
 
-	let enemyPleasureGain = (this.dex * 1.5 + baseDmg + this.level) * actorPettingSkillRating * enemyWeakness * erectMultipler * actorPassiveEffect;
+	let enemyPleasureGain = (this.dex * 1.8 + baseDmg + this.level) * actorPettingSkillRating * enemyWeakness * erectMultipler * actorPassiveEffect;
 	if(target.end > this.dex) enemyPleasureGain *= (1 - ((target.end - this.dex) / target.end) * 0.5);
 
 
@@ -3817,6 +4128,15 @@ Game_Actor.prototype.dmgFormula_karrynCockPetting = function(target) {
 	//this.emoteMasterManager();
 	return 0;
 };
+Game_Actor.prototype.afterEval_karrynCockPetting = function(target) {
+	if(this.isStateAffected(STATE_COCKPET_TARGET_NOT_ERECT_ID)) {
+		if(target.isErect && !target.isStateAffected(STATE_COCKPET_TARGET_ERECT_COUNTED_ID)) {
+			this._playthroughRecordErectWithCockPetCount++;
+			target.addState(STATE_COCKPET_TARGET_ERECT_COUNTED_ID);
+		}
+		this.removeState(STATE_COCKPET_TARGET_NOT_ERECT_ID);
+	}
+};
 
 
 //Basic Sex gives 50% of the desire to cock, and remaining 50% to a random area with a cock weight of 0
@@ -3845,6 +4165,7 @@ Game_Actor.prototype.dmgFormula_basicSex = function(target, sexAct) {
 		consUsageMultipler += this._tempSexSkillConsUsage * 0.05 + this._tempBlowjobConsUsage * 0.15;
 		dexExpGain = 80;
 		this.justGotHitBySkillType(JUST_SKILLTYPE_KARRYN_BLOWJOB);
+		target.justGotHitBySkillType(JUST_SKILLTYPE_KARRYN_BLOWJOB);
 	}
 	else if(sexAct == SEXACT_RIMJOB) {
 		baseDmg = BASEDMG_SEXACT_RIMJOB;
@@ -3857,6 +4178,7 @@ Game_Actor.prototype.dmgFormula_basicSex = function(target, sexAct) {
 		consUsageMultipler += this._tempSexSkillConsUsage * 0.05 + this._tempRimjobConsUsage * 0.15;
 		dexExpGain = 80;
 		this.justGotHitBySkillType(JUST_SKILLTYPE_KARRYN_MASOCHISM);
+		target.justGotHitBySkillType(JUST_SKILLTYPE_KARRYN_MASOCHISM);
 	}
 	else if(sexAct == SEXACT_FOOTJOB) {
 		baseDmg = BASEDMG_SEXACT_FOOTJOB;
@@ -3869,6 +4191,7 @@ Game_Actor.prototype.dmgFormula_basicSex = function(target, sexAct) {
 		consUsageMultipler += this._tempSexSkillConsUsage * 0.05 + this._tempFootjobConsUsage * 0.15;
 		dexExpGain = 80;
 		this.justGotHitBySkillType(JUST_SKILLTYPE_KARRYN_SADISM);
+		target.justGotHitBySkillType(JUST_SKILLTYPE_KARRYN_SADISM);
 	}
 	else if(sexAct == SEXACT_TITTYFUCK) {
 		baseDmg = BASEDMG_SEXACT_TITTYFUCK;
@@ -3881,6 +4204,7 @@ Game_Actor.prototype.dmgFormula_basicSex = function(target, sexAct) {
 		consUsageMultipler += this._tempSexSkillConsUsage * 0.05 + this._tempTitjobConsUsage * 0.15;
 		dexExpGain = 80;
 		this.justGotHitBySkillType(JUST_SKILLTYPE_KARRYN_TITTYFUCK);
+		target.justGotHitBySkillType(JUST_SKILLTYPE_KARRYN_TITTYFUCK);
 	}
 	else if(sexAct == SEXACT_PUSSYSEX) {
 		baseDmg = BASEDMG_SEXACT_PUSSYSEX;
@@ -3893,6 +4217,7 @@ Game_Actor.prototype.dmgFormula_basicSex = function(target, sexAct) {
 		consUsageMultipler += this._tempSexSkillConsUsage * 0.05 + this._tempPussySexConsUsage * 0.15;
 		dexExpGain = 60;
 		this.justGotHitBySkillType(JUST_SKILLTYPE_KARRYN_PUSSY_SEX);
+		target.justGotHitBySkillType(JUST_SKILLTYPE_KARRYN_PUSSY_SEX);
 	}
 	else if(sexAct == SEXACT_ANALSEX) {
 		baseDmg = BASEDMG_SEXACT_ANALSEX;
@@ -3905,6 +4230,7 @@ Game_Actor.prototype.dmgFormula_basicSex = function(target, sexAct) {
 		consUsageMultipler += this._tempSexSkillConsUsage * 0.05 + this._tempAnalSexConsUsage * 0.15;
 		dexExpGain = 60;
 		this.justGotHitBySkillType(JUST_SKILLTYPE_KARRYN_ANAL_SEX);
+		target.justGotHitBySkillType(JUST_SKILLTYPE_KARRYN_ANAL_SEX);
 	}
 	else if(sexAct == SEXACT_HANDJOB) {
 		baseDmg = BASEDMG_SEXACT_HANDJOB;
@@ -3918,6 +4244,7 @@ Game_Actor.prototype.dmgFormula_basicSex = function(target, sexAct) {
 		consUsageMultipler += this._tempSexSkillConsUsage * 0.05 + this._tempHandjobConsUsage * 0.15;
 		dexExpGain = 100;
 		this.justGotHitBySkillType(JUST_SKILLTYPE_KARRYN_HANDJOB);
+		target.justGotHitBySkillType(JUST_SKILLTYPE_KARRYN_HANDJOB);
 		
 		if(target.isUsingBodySlotPenis(RIGHT_HAND_ID))
 			this._lastHandUsedForHandjob = RIGHT_HAND_ID;
@@ -3931,11 +4258,8 @@ Game_Actor.prototype.dmgFormula_basicSex = function(target, sexAct) {
 	if(this.end > target.dex) actorPleasureFeedback *= (1 - ((this.end - target.dex) / this.end) * 0.5);
 	actorPleasureFeedback *= VAR_KARRYN_PLEASURE_FEEDBACK_REDUCER;
 	
-	let enemyPleasureGain = (this.dex * 2 + baseDmg + this.level) * enemyWeakness * actorSkillRating * actorPassiveEffect * consUsageMultipler;
+	let enemyPleasureGain = (this.dex * 2.4 + baseDmg + this.level) * enemyWeakness * actorSkillRating * actorPassiveEffect * consUsageMultipler;
 	if(target.end > this.dex) enemyPleasureGain *= (1 - ((target.end - this.dex) / target.end) * 0.5);
-	
-
-	target.justGotHitBySkillType(JUST_SKILLTYPE_KARRYN_SEX_SKILL);
 	
 	let results = target.result();
 	results.pleasureDamage = enemyPleasureGain;
@@ -3990,7 +4314,6 @@ Game_Actor.prototype.dmgFormula_basicFemaleOrgasm = function(orgasmSkillId) {
 	this.addToActorOrgasmRecord(ml, numOfOrgasm);
 	if(!this.isInMasturbationCouchPose() && !$gameParty.isInGloryBattle) {
 		$gameTroop.addToEnemyOrgasmPresenceCountRecord(this);
-		//todo: add sight orgasm line here?
 	}
 	
 	if(numOfOrgasm >= 2 || orgasmSkillId === SKILL_FEMALE_ORGASM_TWO_ID) {
@@ -4077,17 +4400,32 @@ Game_Actor.prototype.postDamage_basicSex = function(target, sexAct) {
 };
 
 Game_Actor.prototype.postDamage_spanking = function(target, spankLvl) {
+	let showSpankMarkPose = this.isInDefeatedLevel4Pose();
+	let spankMarkCount = 0;
+	
 	if(spankLvl == SPANK_LVL_THREE) {
+		spankMarkCount = Math.randomInt(3) + 3;
 		this.passivePostSpank_addOffBalanceEffect(2);
 		this.passivePostSpank_addHornyEffect(3);
 	}
 	else if(spankLvl == SPANK_LVL_TWO) {
+		spankMarkCount = Math.randomInt(2) + 2;
 		this.passivePostSpank_addOffBalanceEffect(1.5);
 		this.passivePostSpank_addHornyEffect(2);
 	}
 	else if(spankLvl == SPANK_LVL_ONE) {
+		spankMarkCount = Math.randomInt(2) + 1;
 		this.passivePostSpank_addOffBalanceEffect(1);
 		this.passivePostSpank_addHornyEffect(1);
+	}
+	
+	if(showSpankMarkPose) {
+		for(let i = 0; i < spankMarkCount; ++i) {
+			if(Math.random() < 0.5)
+				this._tempRecordSpankMarksLeftButtcheek++;
+			else
+				this._tempRecordSpankMarksRightButtcheek++;
+		}
 	}
 	
 	if(this.isInReceptionistPose()) {

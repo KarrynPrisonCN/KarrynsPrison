@@ -29,6 +29,11 @@ const GIFT_ID_EMPEROR_LV3_CRIT_DAMAGE = 16;
 const GIFT_ID_EMPEROR_LV3_CHARM = 17;
 const GIFT_ID_EMPEROR_LV3_OVERBLOW_PROTECTION = 18;
 const GIFT_ID_EMPEROR_LV3_SIGHT_RESIST = 19;
+const GIFT_ID_EMPEROR_LV4_EXP_RATE = 20;
+const GIFT_ID_EMPEROR_LV4_FATIGUE_GAIN = 21;
+const GIFT_ID_EMPEROR_LV4_CHARM = 22;
+const GIFT_ID_EMPEROR_LV4_STAMINA_REGEN = 23;
+const GIFT_ID_EMPEROR_LV4_WILL_REGEN = 24;
 
 Game_Actor.prototype.resetAllGifts = function() {
 	this.resetGift_Emperor_LevelOne();
@@ -62,6 +67,11 @@ Game_Actor.prototype.resetGift_Emperor_LevelThree = function() {
 	$gameSwitches.setValue(SWITCH_GIFT_EMPEROR_LV3_ID, false);
 };
 Game_Actor.prototype.resetGift_Emperor_LevelFour = function() {
+	$gameParty.gainItem($dataItems[GIFT_ID_EMPEROR_LV4_EXP_RATE], -1);
+	$gameParty.gainItem($dataItems[GIFT_ID_EMPEROR_LV4_FATIGUE_GAIN], -1);
+	$gameParty.gainItem($dataItems[GIFT_ID_EMPEROR_LV4_CHARM], -1);
+	$gameParty.gainItem($dataItems[GIFT_ID_EMPEROR_LV4_STAMINA_REGEN], -1);
+	$gameParty.gainItem($dataItems[GIFT_ID_EMPEROR_LV4_WILL_REGEN], -1);
 	$gameSwitches.setValue(SWITCH_GIFT_EMPEROR_LV4_ID, false);
 };
 
@@ -79,90 +89,162 @@ Game_Actor.prototype.numOfGifts = function() {
 	return count;
 };
 
-Game_Actor.prototype.allGiftsText = function() {
-	let allText = '';
-	let isEn = TextManager.isEnglish;
-	let isJp = TextManager.isJapanese;
-	let numOfGifts = 0;
+Window_MenuStatus.prototype.drawAllGiftsText = function(x, line, lineHeight, dontResetFontSettings, lineChange, actor) {
+	let numOfGifts = actor.numOfGifts();
+	let firstLineWritten = false;
+	let firstLineText = '';
+	let giftsText = '';
+	//let line = y;
 	
-	if(this.hasGift(GIFT_ID_EMPEROR_LV1_ATTACK)) {
-		if(numOfGifts > 0) allText += '\n';
-		allText += this.giftsName(GIFT_ID_EMPEROR_LV1_ATTACK);
-		numOfGifts++;
-	}
-	if(this.hasGift(GIFT_ID_EMPEROR_LV1_STAMINA)) {
-		if(numOfGifts > 0) allText += '\n';
-		allText += this.giftsName(GIFT_ID_EMPEROR_LV1_STAMINA);
-		numOfGifts++;
-	}
-	if(this.hasGift(GIFT_ID_EMPEROR_LV1_CHARM)) {
-		if(numOfGifts > 0) allText += '\n';
-		allText += this.giftsName(GIFT_ID_EMPEROR_LV1_CHARM);
-		numOfGifts++;
-	}
-	if(this.hasGift(GIFT_ID_EMPEROR_LV1_CRIT_RATE)) {
-		if(numOfGifts > 0) allText += '\n';
-		allText += this.giftsName(GIFT_ID_EMPEROR_LV1_CRIT_RATE);
-		numOfGifts++;
-	}
-	if(this.hasGift(GIFT_ID_EMPEROR_LV1_STRIP_RESIST)) {
-		if(numOfGifts > 0) allText += '\n';
-		allText += this.giftsName(GIFT_ID_EMPEROR_LV1_STRIP_RESIST);
-		numOfGifts++;
-	}
+	if(numOfGifts === 1)
+		firstLineText = TextManager.RCMenuGiftsSingleText;
+	else
+		firstLineText = TextManager.RCMenuGiftsPluralText;
 	
-	if(this.hasGift(GIFT_ID_EMPEROR_LV2_DEFENSE)) {
-		if(numOfGifts > 0) allText += '\n';
-		allText += this.giftsName(GIFT_ID_EMPEROR_LV2_DEFENSE);
-		numOfGifts++;
+	if(actor.hasGift(GIFT_ID_EMPEROR_LV1_ATTACK)) {
+		if(!firstLineWritten) giftsText = firstLineText + actor.giftsName(GIFT_ID_EMPEROR_LV1_ATTACK);
+		else giftsText = actor.giftsName(GIFT_ID_EMPEROR_LV1_ATTACK);
+		this.drawTextEx(giftsText, x, line * lineHeight, dontResetFontSettings);
+		line += lineChange;
+		firstLineWritten = true;
 	}
-	if(this.hasGift(GIFT_ID_EMPEROR_LV2_ENERGY)) {
-		if(numOfGifts > 0) allText += '\n';
-		allText += this.giftsName(GIFT_ID_EMPEROR_LV2_ENERGY);
-		numOfGifts++;
+	if(actor.hasGift(GIFT_ID_EMPEROR_LV1_STAMINA)) {
+		if(!firstLineWritten) giftsText = firstLineText + actor.giftsName(GIFT_ID_EMPEROR_LV1_STAMINA);
+		else giftsText = actor.giftsName(GIFT_ID_EMPEROR_LV1_STAMINA);
+		this.drawTextEx(giftsText, x, line * lineHeight, dontResetFontSettings);
+		line += lineChange;
+		firstLineWritten = true;
 	}
-	if(this.hasGift(GIFT_ID_EMPEROR_LV2_CHARM)) {
-		if(numOfGifts > 0) allText += '\n';
-		allText += this.giftsName(GIFT_ID_EMPEROR_LV2_CHARM);
-		numOfGifts++;
+	if(actor.hasGift(GIFT_ID_EMPEROR_LV1_CHARM)) {
+		if(!firstLineWritten) giftsText = firstLineText + actor.giftsName(GIFT_ID_EMPEROR_LV1_CHARM);
+		else giftsText = actor.giftsName(GIFT_ID_EMPEROR_LV1_CHARM);
+		this.drawTextEx(giftsText, x, line * lineHeight, dontResetFontSettings);
+		line += lineChange;
+		firstLineWritten = true;
 	}
-	if(this.hasGift(GIFT_ID_EMPEROR_LV2_CRIT_EVADE)) {
-		if(numOfGifts > 0) allText += '\n';
-		allText += this.giftsName(GIFT_ID_EMPEROR_LV2_CRIT_EVADE);
-		numOfGifts++;
+	if(actor.hasGift(GIFT_ID_EMPEROR_LV1_CRIT_RATE)) {
+		if(!firstLineWritten) giftsText = firstLineText + actor.giftsName(GIFT_ID_EMPEROR_LV1_CRIT_RATE);
+		else giftsText = actor.giftsName(GIFT_ID_EMPEROR_LV1_CRIT_RATE);
+		this.drawTextEx(giftsText, x, line * lineHeight, dontResetFontSettings);
+		line += lineChange;
+		firstLineWritten = true;
 	}
-	if(this.hasGift(GIFT_ID_EMPEROR_LV2_TALK_RESIST)) {
-		if(numOfGifts > 0) allText += '\n';
-		allText += this.giftsName(GIFT_ID_EMPEROR_LV2_TALK_RESIST);
-		numOfGifts++;
-	}
-	if(this.hasGift(GIFT_ID_EMPEROR_LV3_ACCURACY)) {
-		if(numOfGifts > 0) allText += '\n';
-		allText += this.giftsName(GIFT_ID_EMPEROR_LV3_ACCURACY);
-		numOfGifts++;
-	}
-	if(this.hasGift(GIFT_ID_EMPEROR_LV3_CRIT_DAMAGE)) {
-		if(numOfGifts > 0) allText += '\n';
-		allText += this.giftsName(GIFT_ID_EMPEROR_LV3_CRIT_DAMAGE);
-		numOfGifts++;
-	}
-	if(this.hasGift(GIFT_ID_EMPEROR_LV3_CHARM)) {
-		if(numOfGifts > 0) allText += '\n';
-		allText += this.giftsName(GIFT_ID_EMPEROR_LV3_CHARM);
-		numOfGifts++;
-	}
-	if(this.hasGift(GIFT_ID_EMPEROR_LV3_OVERBLOW_PROTECTION)) {
-		if(numOfGifts > 0) allText += '\n';
-		allText += this.giftsName(GIFT_ID_EMPEROR_LV3_OVERBLOW_PROTECTION);
-		numOfGifts++;
-	}
-	if(this.hasGift(GIFT_ID_EMPEROR_LV3_SIGHT_RESIST)) {
-		if(numOfGifts > 0) allText += '\n';
-		allText += this.giftsName(GIFT_ID_EMPEROR_LV3_SIGHT_RESIST);
-		numOfGifts++;
+	if(actor.hasGift(GIFT_ID_EMPEROR_LV1_STRIP_RESIST)) {
+		if(!firstLineWritten) giftsText = firstLineText + actor.giftsName(GIFT_ID_EMPEROR_LV1_STRIP_RESIST);
+		else giftsText = actor.giftsName(GIFT_ID_EMPEROR_LV1_STRIP_RESIST);
+		this.drawTextEx(giftsText, x, line * lineHeight, dontResetFontSettings);
+		line += lineChange;
+		firstLineWritten = true;
 	}
 	
-	return allText;
+	if(actor.hasGift(GIFT_ID_EMPEROR_LV2_DEFENSE)) {
+		if(!firstLineWritten) giftsText = firstLineText + actor.giftsName(GIFT_ID_EMPEROR_LV2_DEFENSE);
+		else giftsText = actor.giftsName(GIFT_ID_EMPEROR_LV2_DEFENSE);
+		this.drawTextEx(giftsText, x, line * lineHeight, dontResetFontSettings);
+		line += lineChange;
+		firstLineWritten = true;
+	}
+	if(actor.hasGift(GIFT_ID_EMPEROR_LV2_ENERGY)) {
+		if(!firstLineWritten) giftsText = firstLineText + actor.giftsName(GIFT_ID_EMPEROR_LV2_ENERGY);
+		else giftsText = actor.giftsName(GIFT_ID_EMPEROR_LV2_ENERGY);
+		this.drawTextEx(giftsText, x, line * lineHeight, dontResetFontSettings);
+		line += lineChange;
+		firstLineWritten = true;
+	}
+	if(actor.hasGift(GIFT_ID_EMPEROR_LV2_CHARM)) {
+		if(!firstLineWritten) giftsText = firstLineText + actor.giftsName(GIFT_ID_EMPEROR_LV2_CHARM);
+		else giftsText = actor.giftsName(GIFT_ID_EMPEROR_LV2_CHARM);
+		this.drawTextEx(giftsText, x, line * lineHeight, dontResetFontSettings);
+		line += lineChange;
+		firstLineWritten = true;
+	}
+	if(actor.hasGift(GIFT_ID_EMPEROR_LV2_CRIT_EVADE)) {
+		if(!firstLineWritten) giftsText = firstLineText + actor.giftsName(GIFT_ID_EMPEROR_LV2_CRIT_EVADE);
+		else giftsText = actor.giftsName(GIFT_ID_EMPEROR_LV2_CRIT_EVADE);
+		this.drawTextEx(giftsText, x, line * lineHeight, dontResetFontSettings);
+		line += lineChange;
+		firstLineWritten = true;
+	}
+	if(actor.hasGift(GIFT_ID_EMPEROR_LV2_TALK_RESIST)) {
+		if(!firstLineWritten) giftsText = firstLineText + actor.giftsName(GIFT_ID_EMPEROR_LV2_TALK_RESIST);
+		else giftsText = actor.giftsName(GIFT_ID_EMPEROR_LV2_TALK_RESIST);
+		this.drawTextEx(giftsText, x, line * lineHeight, dontResetFontSettings);
+		line += lineChange;
+		firstLineWritten = true;
+	}
+	if(actor.hasGift(GIFT_ID_EMPEROR_LV3_ACCURACY)) {
+		if(!firstLineWritten) giftsText = firstLineText + actor.giftsName(GIFT_ID_EMPEROR_LV3_ACCURACY);
+		else giftsText = actor.giftsName(GIFT_ID_EMPEROR_LV3_ACCURACY);
+		this.drawTextEx(giftsText, x, line * lineHeight, dontResetFontSettings);
+		line += lineChange;
+		firstLineWritten = true;
+	}
+	if(actor.hasGift(GIFT_ID_EMPEROR_LV3_CRIT_DAMAGE)) {
+		if(!firstLineWritten) giftsText = firstLineText + actor.giftsName(GIFT_ID_EMPEROR_LV3_CRIT_DAMAGE);
+		else giftsText = actor.giftsName(GIFT_ID_EMPEROR_LV3_CRIT_DAMAGE);
+		this.drawTextEx(giftsText, x, line * lineHeight, dontResetFontSettings);
+		line += lineChange;
+		firstLineWritten = true;
+	}
+	if(actor.hasGift(GIFT_ID_EMPEROR_LV3_CHARM)) {
+		if(!firstLineWritten) giftsText = firstLineText + actor.giftsName(GIFT_ID_EMPEROR_LV3_CHARM);
+		else giftsText = actor.giftsName(GIFT_ID_EMPEROR_LV3_CHARM);
+		this.drawTextEx(giftsText, x, line * lineHeight, dontResetFontSettings);
+		line += lineChange;
+		firstLineWritten = true;
+	}
+	if(actor.hasGift(GIFT_ID_EMPEROR_LV3_OVERBLOW_PROTECTION)) {
+		if(!firstLineWritten) giftsText = firstLineText + actor.giftsName(GIFT_ID_EMPEROR_LV3_OVERBLOW_PROTECTION);
+		else giftsText = actor.giftsName(GIFT_ID_EMPEROR_LV3_OVERBLOW_PROTECTION);
+		this.drawTextEx(giftsText, x, line * lineHeight, dontResetFontSettings);
+		line += lineChange;
+		firstLineWritten = true;
+	}
+	if(actor.hasGift(GIFT_ID_EMPEROR_LV3_SIGHT_RESIST)) {
+		if(!firstLineWritten) giftsText = firstLineText + actor.giftsName(GIFT_ID_EMPEROR_LV3_SIGHT_RESIST);
+		else giftsText = actor.giftsName(GIFT_ID_EMPEROR_LV3_SIGHT_RESIST);
+		this.drawTextEx(giftsText, x, line * lineHeight, dontResetFontSettings);
+		line += lineChange;
+		firstLineWritten = true;
+	}
+	
+	if(actor.hasGift(GIFT_ID_EMPEROR_LV4_EXP_RATE)) {
+		if(!firstLineWritten) giftsText = firstLineText + actor.giftsName(GIFT_ID_EMPEROR_LV4_EXP_RATE);
+		else giftsText = actor.giftsName(GIFT_ID_EMPEROR_LV4_EXP_RATE);
+		this.drawTextEx(giftsText, x, line * lineHeight, dontResetFontSettings);
+		line += lineChange;
+		firstLineWritten = true;
+	}
+	if(actor.hasGift(GIFT_ID_EMPEROR_LV4_FATIGUE_GAIN)) {
+		if(!firstLineWritten) giftsText = firstLineText + actor.giftsName(GIFT_ID_EMPEROR_LV4_FATIGUE_GAIN);
+		else giftsText = actor.giftsName(GIFT_ID_EMPEROR_LV4_FATIGUE_GAIN);
+		this.drawTextEx(giftsText, x, line * lineHeight, dontResetFontSettings);
+		line += lineChange;
+		firstLineWritten = true;
+	}
+	if(actor.hasGift(GIFT_ID_EMPEROR_LV4_CHARM)) {
+		if(!firstLineWritten) giftsText = firstLineText + actor.giftsName(GIFT_ID_EMPEROR_LV4_CHARM);
+		else giftsText = actor.giftsName(GIFT_ID_EMPEROR_LV4_CHARM);
+		this.drawTextEx(giftsText, x, line * lineHeight, dontResetFontSettings);
+		line += lineChange;
+		firstLineWritten = true;
+	}
+	if(actor.hasGift(GIFT_ID_EMPEROR_LV4_STAMINA_REGEN)) {
+		if(!firstLineWritten) giftsText = firstLineText + actor.giftsName(GIFT_ID_EMPEROR_LV4_STAMINA_REGEN);
+		else giftsText = actor.giftsName(GIFT_ID_EMPEROR_LV4_STAMINA_REGEN);
+		this.drawTextEx(giftsText, x, line * lineHeight, dontResetFontSettings);
+		line += lineChange;
+		firstLineWritten = true;
+	}
+	if(actor.hasGift(GIFT_ID_EMPEROR_LV4_WILL_REGEN)) {
+		if(!firstLineWritten) giftsText = firstLineText + actor.giftsName(GIFT_ID_EMPEROR_LV4_WILL_REGEN);
+		else giftsText = actor.giftsName(GIFT_ID_EMPEROR_LV4_WILL_REGEN);
+		this.drawTextEx(giftsText, x, line * lineHeight, dontResetFontSettings);
+		line += lineChange;
+		firstLineWritten = true;
+	}
+	
+	return line;
 };
 
 Game_Actor.prototype.giftsName = function(giftId) {
@@ -197,6 +279,7 @@ Game_Actor.prototype.giftsParamBonus = function(paramId) {
 		if(this.hasGift(GIFT_ID_EMPEROR_LV1_CHARM)) giftsBonus += 2;
 		if(this.hasGift(GIFT_ID_EMPEROR_LV2_CHARM)) giftsBonus += 2;
 		if(this.hasGift(GIFT_ID_EMPEROR_LV3_CHARM)) giftsBonus += 2;
+		if(this.hasGift(GIFT_ID_EMPEROR_LV4_CHARM)) giftsBonus += 2;
 	}
 	
 
@@ -231,6 +314,16 @@ Game_Actor.prototype.giftsXParamRate = function(paramId) {
 	
 	return giftsRate;
 }; 
+
+Game_Actor.prototype.giftsXParamPlus = function(paramId) {
+	let giftsPlus = 0;
+	
+	if(paramId === XPARAM_STA_REGEN_ID) {
+		if(this.hasGift(GIFT_ID_EMPEROR_LV4_STAMINA_REGEN)) giftsPlus += 0.03;
+	}
+	
+	return giftsPlus;
+}; 
 	
 
 Game_Actor.prototype.giftsSParamRate = function(paramId) {
@@ -242,9 +335,23 @@ Game_Actor.prototype.giftsSParamRate = function(paramId) {
 	else if(paramId === SPARAM_WPDEF_ID) {
 		if(this.hasGift(GIFT_ID_EMPEROR_LV2_DEFENSE)) giftsRate += 0.05;
 	}
+	else if(paramId === SPARAM_EXR_ID) {
+		if(this.hasGift(GIFT_ID_EMPEROR_LV4_EXP_RATE)) giftsRate += 0.25;
+	}
+	
 	
 	return giftsRate;
 }; 
+
+Game_Actor.prototype.giftsSParamPlus = function(paramId) {
+	let giftsPlus = 0;
+	
+	if(paramId === SPARAM_WP_REGEN_ID) {
+		if(this.hasGift(GIFT_ID_EMPEROR_LV4_WILL_REGEN)) giftsPlus += 0.03;
+	}
+	
+	return giftsPlus;
+};
 
 Game_Actor.prototype.giftsElementRate = function(elementId) {
 	let elementRate = 0;

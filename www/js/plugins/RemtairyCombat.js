@@ -250,7 +250,30 @@ const STATE_GLORY_PINK_ROTOR_ID = 174;
 const STATE_GLORY_PENIS_DILDO_ID = 175;
 const STATE_GLORY_ANAL_BEADS_ID = 176;
 const STATE_RECEPTIONIST_REST_ID = 177;
+const STATE_YETI_HEAT_AURA_ID = 179;
+const STATE_YETI_HEAT_ENEMY_ONE_ID = 180;
+const STATE_YETI_HEAT_ENEMY_TWO_ID = 181;
+const STATE_YETI_HEAT_KARRYN_ONE_ID = 182;
+const STATE_YETI_HEAT_KARRYN_TWO_ID = 183;
+const STATE_WAITRESS_WP_REGEN_REDUCE_ID = 184;
+const STATE_ORC_COMMANDING_PRESENCE_ID = 185;
+const STATE_JUST_MINION_THREW_ID = 186;
+const STATE_MINION_AMMO_LARGE_ID = 188;
+const STATE_MINION_AMMO_MED_ID = 189;
+const STATE_MINION_AMMO_SMALL_ID = 190;	
+const STATE_MINION_AMMO_FAT_ID = 191;	
+const STATE_BEFOREEVAL_EJA_COUNTED_ID = 192;
+const STATE_COCKPET_TARGET_NOT_ERECT_ID = 193;
+const STATE_COCKPET_TARGET_ERECT_COUNTED_ID = 194;
 
+const BRACELET_ROPE_ID = 17;
+const BRACELET_STRING_ID = 18;
+const BRACELET_BEADS_ID = 19;
+const BRACELET_RED_ID = 20;
+const BRACELET_PURPLE_ID = 21;
+const BRACELET_SILVER_ID = 22;
+const BRACELET_GOLD_ID = 23;
+const BRACELET_PALLADIUM_ID = 24;
 const RING_MIDI_ID = 25;
 const RING_DOUBLE_ID = 26;
 const RING_FINGERCLAW_ID = 27;
@@ -285,6 +308,10 @@ const MISC_PERFUME_ID = 436;
 const MISC_HANDBAG_ID = 437;
 const MISC_LATEXSTOCKING_ID = 438;
 const MISC_CALFSKINBELT_ID = 439;
+const BRACELET_DIAMOND_CUFF_ID = 440;
+const RING_PURITY_ID = 441;
+const EARRING_PINK_ID = 442;
+const NECKLACE_HERO_ID = 443;
 
 const JUST_SKILLTYPE_KARRYN_ATTACK = 1;
 const JUST_SKILLTYPE_KARRYN_KISSING = 2;
@@ -321,15 +348,15 @@ const JUST_SKILLTYPE_ENEMY_SADISM = 38;
 const JUST_SKILLTYPE_ENEMY_MASTURBATE = 39;
 const JUST_SKILLTYPE_ENEMY_MASOCHISM = 40;
 const JUST_SKILLTYPE_ENEMY_STRIP = 41;
-const JUST_SKILLTYPE_ENEMY_SPANKING = 41;
+const JUST_SKILLTYPE_ENEMY_SPANKING = 42;
 
 const JUST_SKILLTYPE_PASSIVE_SIGHT = 50;
 const JUST_SKILLTYPE_PASSIVE_TOY = 51;
 
-const JUST_SKILLTYPE_ENEMY_TOY_PLAY = 52;
-const JUST_SKILLTYPE_ENEMY_TOY_PLAY_CLIT = 53;
-const JUST_SKILLTYPE_ENEMY_TOY_PLAY_PUSSY = 54;
-const JUST_SKILLTYPE_ENEMY_TOY_PLAY_ANAL = 55;
+const JUST_SKILLTYPE_ENEMY_TOY_PLAY = 54;
+const JUST_SKILLTYPE_ENEMY_TOY_PLAY_CLIT = 55;
+const JUST_SKILLTYPE_ENEMY_TOY_PLAY_PUSSY = 56;
+const JUST_SKILLTYPE_ENEMY_TOY_PLAY_ANAL = 57;
 
 const JUST_SKILLTYPE_WAITRESS_MOVING = 60;
 const JUST_SKILLTYPE_WAITRESS_DRINK = 61;
@@ -348,6 +375,7 @@ const JUST_SKILLTYPE_KARRYN_TOY_PLAY_ANAL = 75;
 
 const SKILL_END_MENTAL_PHASE_ID = 2;
 const SKILL_ESCAPE_ID = 3;
+const SKILL_DO_NOTHING_ID = 4;
 
 const SKILL_DEBUG_SURRENDER_ID = 13;
 const SKILL_DEBUG_DEFEAT_ALL_ID = 14;
@@ -461,13 +489,23 @@ const SKILL_DEFENSIVE_FIX_CLOTHES_ID = 1087;
 const SKILL_COUNTER_REVITALIZE_ID = 1088;
 const SKILL_COUNTER_SECOND_WIND_ID = 1089;
 const SKILL_COUNTER_FIX_CLOTHES_ID = 1090;
+const SKILL_KARRYN_COCK_STARE_TOILET_ID = 1091;
+const SKILL_KARRYN_COCK_PETTING_TOILET_ID = 1092;
 
 const SKILL_CARGILL_CHARGE_ID = 1165;
 const SKILL_CARGILL_REVIVE_ID = 1166;
 const SKILL_CARGILL_SLIMEHEAL_ID = 1167;
 const SKILL_CARGILL_DEBUFF_ID = 1168;
+const SKILL_LIZARDMAN_CHARGE_ID = 1176;
+const SKILL_MINION_THROW_LOAD_AMMO_ID = 1182;
+const SKILL_MINION_THROW_ATTACK_ID = 1183;
 
 const SKILL_ENEMY_CLOTHES_PULL_ID = 1238;
+
+const SKILL_ENEMY_AI_GENERIC_ID = 1351;
+const SKILL_ENEMY_AI_TUTORIAL_ID = 1353;
+const SKILL_ENEMY_AI_CARGILL_ID = 1354;
+const SKILL_ENEMY_AI_TEST_ID = 1355;
 
 const SKILL_ENEMY_EJACULATE_FACE_ID = 1376;
 const SKILL_ENEMY_EJACULATE_PUSSY_ID = 1377;
@@ -590,6 +628,11 @@ const SKILL_ENEMY_POSESTART_GUARDGANGBANG_ID = 1610;
 const SKILL_ENEMY_POSESTART_ORCPAIZURI_ID = 1611;
 const SKILL_ENEMY_POSESTART_COWGIRL_REVERSE_ID = 1612;
 const SKILL_ENEMY_POSESTART_COWGIRL_LIZARDMAN_ID = 1613;
+const SKILL_ENEMY_POSESTART_WEREWOLF_BACK_PUSSY_ID = 1614;
+const SKILL_ENEMY_POSESTART_WEREWOLF_BACK_ANAL_ID = 1615;
+const SKILL_ENEMY_POSESTART_YETIPAIZURI_ID = 1616;
+const SKILL_ENEMY_POSESTART_KICKCOUNTER_YETI_ID = 1617;
+const SKILL_ENEMY_POSESTART_YETICARRY_ID = 1618;
 
 const SKILL_KARRYN_INVITE_TOILET_RIGHTHAND_ID = 1624;
 const SKILL_KARRYN_INVITE_TOILET_LEFTHAND_ID = 1625;
@@ -645,6 +688,13 @@ const SKILL_ENEMY_POSEJOIN_DEFEAT_LV3_OTHER1_ID = 1739;
 const SKILL_ENEMY_POSEJOIN_DEFEAT_LV3_OTHER2_ID = 1740;
 const SKILL_ENEMY_POSEJOIN_DEFEAT_LV3_OTHER3_ID = 1741;
 const SKILL_ENEMY_POSEJOIN_DEFEAT_LV3_OTHER4_ID = 1742;
+const SKILL_ENEMY_POSEJOIN_DEFEAT_LV4_PUSSY_ID = 1743;
+const SKILL_ENEMY_POSEJOIN_DEFEAT_LV4_ANAL_ID = 1744;
+const SKILL_ENEMY_POSEJOIN_DEFEAT_LV4_MOUTH_ID = 1745;
+const SKILL_ENEMY_POSEJOIN_DEFEAT_LV4_OTHER1_ID = 1746;
+const SKILL_ENEMY_POSEJOIN_DEFEAT_LV4_OTHER2_ID = 1747;
+const SKILL_ENEMY_POSEJOIN_DEFEAT_LV4_OTHER3_ID = 1748;
+const SKILL_ENEMY_POSEJOIN_DEFEAT_LV4_OTHER4_ID = 1749;
 
 const SKILL_KARRYN_INVITE_RIGHTHAND_ID = 1781;
 const SKILL_KARRYN_INVITE_LEFTHAND_ID = 1782;
@@ -652,6 +702,7 @@ const SKILL_KARRYN_INVITE_MOUTH_ID = 1783;
 const SKILL_KARRYN_INVITE_ANAL_ID = 1784;
 const SKILL_KARRYN_INVITE_TITTYFUCK_ID = 1785;
 const SKILL_KARRYN_INVITE_PUSSY_ID = 1786;
+const SKILL_KARRYN_INVITE_PAIZURI_FERA_ID = 1787;
 
 const SKILL_ENEMY_POSESKILL_ANAL_ID = 1801;
 const SKILL_ENEMY_POSESKILL_MOUTH_ID = 1802;
@@ -667,6 +718,10 @@ const SKILL_ENEMY_POSESKILL_SLIMEJOIN_MOUTH_ID = 1811;
 const SKILL_ENEMY_POSESKILL_SLIMEJOIN_PUSSY_ID = 1812;
 const SKILL_ENEMY_POSESWITCH_GOBLINCL_PUSSY_ID = 1813;
 
+
+const ACTION_SPEED_FAST_FIRST_PRIORITY = 9999;
+const ACTION_SPEED_FAST_SECOND_PRIORITY = 8888;
+const ACTION_SPEED_FAST_THIRD_PRIORITY = 7777;
 
 //////////////
 /////////////////
@@ -729,17 +784,26 @@ Game_Battler.prototype.dmgFormula_attackDmg = function(target, elementId, userSt
 		
 		let targetStripRate = target.elementRate(ELEMENT_STRIP_ID);
 		let clothingDmg = this.str * userStrMulti + this.dex * userDexMulti + this.agi * userAgiMulti;
-		if(this.isEnemy() && target.isActor() && stripSkill && !target.hasNoStamina()) {
-			clothingDmg -= Math.min(clothingDmg * 0.8, target.str * userStrMulti);
-			
-			if(Karryn.isInReceptionistPose())
-				dmgValue *= 0.1;
-			else
-				dmgValue *= 2;
-		}
 		clothingDmg *= targetStripRate * stripMulti * enemyStripLvlMultipler * this.moddedWeaponAttack();
+		if(this.isEnemy() && target.isActor() && stripSkill && !target.hasNoStamina()) {
+			clothingDmg -= Math.min(clothingDmg * 0.8, target.str * (1 / targetStripRate));
+			
+			let addedStrMulti = 1;
+			
+			if(Karryn.isInReceptionistPose() || Karryn.isInWaitressServingPose()) {
+				dmgValue *= 0.1;
+				addedStrMulti *= 0.5;
+			}
+			else {
+				dmgValue *= 0.25;
+			}
+
+			dmgValue += target.str * Math.min(3, (1 / targetStripRate)) * addedStrMulti;
+			
+		}
 		
 		target.result().clothingDamage = clothingDmg;
+		
 		if(dmgValue > 0) {
 			let actorMasoSensitivity = target.masochismSensitivity();
 			let percentOfDamage = Math.max(20, target.getPercentOfStaminaFromValue(dmgValue, false));
@@ -862,10 +926,6 @@ Game_Battler.prototype.customReq_karrynKickAttackSkills = function() {
 };
 
 Game_Battler.prototype.dmgFormula_karrynSlash = function(target) {
-	this.gainStaminaExp(20, target.enemyExperienceLvl());
-	this.gainStrengthExp(10, target.enemyExperienceLvl());
-	this.gainDexterityExp(80, target.enemyExperienceLvl());
-	
 	let strMulti = 1;
 	
 	let dexMulti = 0.8;
@@ -877,10 +937,15 @@ Game_Battler.prototype.dmgFormula_karrynSlash = function(target) {
 };
 
 Game_Actor.prototype.afterEval_karrynSlash = function(target) {
-	let vulChance = 0;
 	if(this.hasEdict(EDICT_SPEC_BASIC_SLASH_TECH)) {
 		this.addState(STATE_BONUS_PIERCE_DMG_ID);
 	}
+	
+	this.gainStaminaExp(20, target.enemyExperienceLvl());
+	this.gainStrengthExp(10, target.enemyExperienceLvl());
+	this.gainDexterityExp(80, target.enemyExperienceLvl());
+	
+	let vulChance = 0;
 	
 	if(this.hasEdict(EDICT_SPEC_BASIC_SLASH_POWER)) {
 		if(!target.result().evaded) {
@@ -903,10 +968,6 @@ Game_Actor.prototype.afterEval_karrynSlash = function(target) {
 };
 
 Game_Battler.prototype.dmgFormula_karrynThrust = function(target) {
-	this.gainStaminaExp(20, target.enemyExperienceLvl());
-	this.gainStrengthExp(10, target.enemyExperienceLvl());
-	this.gainAgilityExp(80, target.enemyExperienceLvl());
-	
 	let specBasicThrustEffectDamage = 1;
 	if(this.hasEdict(EDICT_SPEC_BASIC_THRUST_POWER)) {
 		if(Math.random() < 0.25) specBasicThrustEffectDamage = 2;
@@ -922,10 +983,14 @@ Game_Battler.prototype.dmgFormula_karrynThrust = function(target) {
 	return this.dmgFormula_attackDmg(target, ELEMENT_PIERCE_ID, strMulti, 1, dexMulti, agiMulti, DEFAULT_DEF_STR_MULTI, 0.06) * specBasicThrustEffectDamage;
 };
 
-Game_Actor.prototype.afterEval_karrynThrust = function() {
+Game_Actor.prototype.afterEval_karrynThrust = function(target) {
 	if(this.hasEdict(EDICT_SPEC_BASIC_THRUST_TECH)) {
 		this.addState(STATE_BONUS_BLUNT_DMG_ID);
 	}
+	
+	this.gainStaminaExp(20, target.enemyExperienceLvl());
+	this.gainStrengthExp(10, target.enemyExperienceLvl());
+	this.gainAgilityExp(80, target.enemyExperienceLvl());
 	
 	this.passivePostAttack_addOffBalanceEffect(1);
 	this._playthroughRecordPierceAttackUsage++;
@@ -937,9 +1002,6 @@ Game_Actor.prototype.afterEval_karrynThrust = function() {
 };
 
 Game_Battler.prototype.dmgFormula_karrynStrike = function(target) {
-	this.gainStaminaExp(20, target.enemyExperienceLvl());
-	this.gainStrengthExp(90, target.enemyExperienceLvl());
-	
 	let strMulti = 2;
 	if(this.hasEdict(EDICT_STRIKE_TRAINING_THREE)) strMulti += 0.3;
 	
@@ -951,11 +1013,14 @@ Game_Battler.prototype.dmgFormula_karrynStrike = function(target) {
 };
 
 Game_Actor.prototype.afterEval_karrynStrike = function(target) {
-	let stunChance = 0;
 	if(this.hasEdict(EDICT_SPEC_BASIC_STRIKE_TECH)) {
 		this.addState(STATE_BONUS_SLASH_DMG_ID);
-		
 	}
+	
+	this.gainStaminaExp(20, target.enemyExperienceLvl());
+	this.gainStrengthExp(90, target.enemyExperienceLvl());
+	
+	let stunChance = 0;
 	
 	if(this.hasEdict(EDICT_SPEC_BASIC_STRIKE_POWER)) {
 		if(!target.result().evaded) {
@@ -982,9 +1047,6 @@ Game_Actor.prototype.afterEval_karrynStrike = function(target) {
 };
 
 Game_Battler.prototype.dmgFormula_karrynArmSlash = function(target) {
-	this.gainStaminaExp(30, target.enemyExperienceLvl());
-	this.gainDexterityExp(120, target.enemyExperienceLvl());
-	
 	let strMulti = 0.8;
 	
 	let dexMulti = 0.9;
@@ -995,6 +1057,9 @@ Game_Battler.prototype.dmgFormula_karrynArmSlash = function(target) {
 	return this.dmgFormula_attackDmg(target, ELEMENT_SLASH_ID, strMulti, 0.5, dexMulti, agiMulti, DEFAULT_DEF_STR_MULTI, 0.04);
 };
 Game_Actor.prototype.afterEval_karrynArmSlash = function(target) {
+	this.gainStaminaExp(30, target.enemyExperienceLvl());
+	this.gainDexterityExp(120, target.enemyExperienceLvl());
+	
 	this.passivePostAttack_addOffBalanceEffect(1);
 	this._playthroughRecordSlashAttackUsage++;
 	this._playthroughRecordActiveAttackUsage++;
@@ -1011,9 +1076,6 @@ Game_Actor.prototype.cooldownEval_karrynArmSlash = function() {
 };
 
 Game_Battler.prototype.dmgFormula_karrynLegThrust = function(target) {
-	this.gainStaminaExp(30, target.enemyExperienceLvl());
-	this.gainAgilityExp(120, target.enemyExperienceLvl());
-	
 	let strMulti = 0.8;
 	
 	let dexMulti = 0;
@@ -1024,6 +1086,9 @@ Game_Battler.prototype.dmgFormula_karrynLegThrust = function(target) {
 	return this.dmgFormula_attackDmg(target, ELEMENT_PIERCE_ID, strMulti, 0.5, dexMulti, agiMulti, DEFAULT_DEF_STR_MULTI, 0.05);
 };
 Game_Actor.prototype.afterEval_karrynLegThrust = function(target) {
+	this.gainStaminaExp(30, target.enemyExperienceLvl());
+	this.gainAgilityExp(120, target.enemyExperienceLvl());
+	
 	this.passivePostAttack_addOffBalanceEffect(1);
 	this._playthroughRecordPierceAttackUsage++;
 	this._playthroughRecordActiveAttackUsage++;
@@ -1040,10 +1105,6 @@ Game_Actor.prototype.cooldownEval_karrynLegThrust = function() {
 };
 
 Game_Battler.prototype.dmgFormula_karrynHeadStrike = function(target) {
-	this.gainStaminaExp(30, target.enemyExperienceLvl());
-	this.gainStrengthExp(120, target.enemyExperienceLvl());
-	
-	
 	let strMulti = 1.85;
 	if(this.hasEdict(EDICT_STRIKE_TRAINING_THREE)) strMulti += 0.3;
 	
@@ -1054,6 +1115,9 @@ Game_Battler.prototype.dmgFormula_karrynHeadStrike = function(target) {
 	return this.dmgFormula_attackDmg(target, ELEMENT_BLUNT_ID, strMulti, strMulti*0.5, dexMulti, agiMulti, DEFAULT_DEF_STR_MULTI, 0.02);
 };
 Game_Actor.prototype.afterEval_karrynHeadStrike = function(target) {
+	this.gainStaminaExp(30, target.enemyExperienceLvl());
+	this.gainStrengthExp(120, target.enemyExperienceLvl());
+	
 	this.passivePostAttack_addOffBalanceEffect(1);
 	this._playthroughRecordBluntAttackUsage++;
 	this._playthroughRecordActiveAttackUsage++;
@@ -1077,8 +1141,8 @@ Game_Battler.prototype.dmgFormula_karrynCleave = function(target) {
 		
 	let strMulti = 0.7;
 	
-	let dexMulti = 1.3;
-	if(this.hasEdict(EDICT_CLEAVE_TRAINING_TWO)) dexMulti += 0.4;
+	let dexMulti = 1.4;
+	if(this.hasEdict(EDICT_CLEAVE_TRAINING_TWO)) dexMulti += 0.5;
 	
 	let agiMulti = 0;
 	
@@ -1126,7 +1190,7 @@ Game_Battler.prototype.dmgFormula_karrynSkewer = function(target) {
 	
 	let dexMulti = 0;
 	
-	let agiMulti = 1.1;
+	let agiMulti = 1.2;
 	
 	return this.dmgFormula_attackDmg(target, ELEMENT_PIERCE_ID, strMulti, 0.5, dexMulti, agiMulti, DEFAULT_DEF_STR_MULTI, 0.06);
 };
@@ -1168,9 +1232,6 @@ Game_Battler.prototype.dmgFormula_karrynSlam = function(target) {
 	
 	if(target.isSlimeType) target.addAngryState();
 	
-	this.gainStaminaExp(50, target.enemyExperienceLvl());
-	this.gainStrengthExp(190, target.enemyExperienceLvl());
-	
 	let slamEffectDamage = 1;
 	if(this.hasEdict(EDICT_SPEC_SLAM_POWER)) {
 		let slamEffect = $gameTroop.slamPushDownOneSpot(target);
@@ -1192,6 +1253,9 @@ Game_Battler.prototype.dmgFormula_karrynSlam = function(target) {
 	return this.dmgFormula_attackDmg(target, ELEMENT_BLUNT_ID, strMulti, strMulti*0.75, dexMulti, agiMulti, DEFAULT_DEF_STR_MULTI, 0.03) * slamEffectDamage;
 };
 Game_Actor.prototype.afterEval_karrynSlam = function(target) {
+	this.gainStaminaExp(50, target.enemyExperienceLvl());
+	this.gainStrengthExp(190, target.enemyExperienceLvl());
+	
 	this.passivePostAttack_addOffBalanceEffect(1);
 	this._playthroughRecordBluntAttackUsage++;
 	this._playthroughRecordActiveAttackUsage++;
@@ -1226,6 +1290,7 @@ Game_Actor.prototype.canPaySkillHpCost = function(skill) {
 
 //Str multi 0.5
 Game_Battler.prototype.skillCost_karrynBasicAttack = function() {
+	//unused
 	return this.skillAttack_staminaCost(50, 0.5);
 };
 
@@ -1235,10 +1300,8 @@ Game_Battler.prototype.skillCost_karrynSlash = function() {
 	if(this.isUsingThisTitle(TITLE_ID_SLASH_TWO)) multipler -= 0.33;
 	let usageMultipler = 1;
 	if(this._tempAttackSkillConsUsage > 0) usageMultipler *= 1.15 ** this._tempAttackSkillConsUsage;
-	if(this.energy == 0)
-		return Math.min(this.stamina, Math.round(staminaCost * multipler * usageMultipler));
-	else
-		return Math.round(staminaCost * multipler * usageMultipler);
+	
+	return Math.min(this.stamina, Math.round(staminaCost * multipler * usageMultipler));
 };
 Game_Battler.prototype.skillCost_karrynThrust = function() {
 	let staminaCost = this.skillAttack_staminaCost(30, 0.2, 0, 0.3);
@@ -1246,10 +1309,8 @@ Game_Battler.prototype.skillCost_karrynThrust = function() {
 	if(this.isUsingThisTitle(TITLE_ID_PIERCE_TWO)) multipler -= 0.33;
 	let usageMultipler = 1;
 	if(this._tempAttackSkillConsUsage > 0) usageMultipler *= 1.15 ** this._tempAttackSkillConsUsage;
-	if(this.energy == 0)
-		return Math.min(this.stamina, Math.round(staminaCost * multipler * usageMultipler));
-	else
-		return Math.round(staminaCost * multipler * usageMultipler);
+
+	return Math.min(this.stamina, Math.round(staminaCost * multipler * usageMultipler));
 };
 Game_Battler.prototype.skillCost_karrynStrike = function() {
 	let staminaCost = this.skillAttack_staminaCost(30, 0.5, 0, 0);
@@ -1257,10 +1318,8 @@ Game_Battler.prototype.skillCost_karrynStrike = function() {
 	if(this.isUsingThisTitle(TITLE_ID_BLUNT_TWO)) multipler -= 0.33;
 	let usageMultipler = 1;
 	if(this._tempAttackSkillConsUsage > 0) usageMultipler *= 1.15 ** this._tempAttackSkillConsUsage;
-	if(this.energy == 0)
-		return Math.min(this.stamina, Math.round(staminaCost * multipler * usageMultipler));
-	else
-		return Math.round(staminaCost * multipler * usageMultipler);
+	
+	return Math.min(this.stamina, Math.round(staminaCost * multipler * usageMultipler));
 };
 
 Game_Battler.prototype.skillCost_karrynArmSlash = function() {
@@ -1389,11 +1448,7 @@ Game_Battler.prototype.skillCost_karrynCockKick = function() {
 };
 
 Game_Battler.prototype.dmgFormula_karrynCockKick = function(target) {
-	let ineffectiveEnemyType = target.isSlimeType || target.isBossType;
-	
-	this.gainStaminaExp(20, target.enemyExperienceLvl());
-	this.gainStrengthExp(30, target.enemyExperienceLvl());
-	this.gainDexterityExp(20, target.enemyExperienceLvl());
+	let ineffectiveEnemyType = (target.isMonstrousType && !target.isYetiType) || target.isBossType;
 	
 	if(ineffectiveEnemyType)
 		return this.dmgFormula_attackDmg(target, ELEMENT_BLUNT_ID, 0.6, 0.3, 0.1, 0, DEFAULT_DEF_STR_MULTI, 0.05);
@@ -1404,7 +1459,7 @@ Game_Battler.prototype.dmgFormula_karrynCockKick = function(target) {
 };
 
 Game_Actor.prototype.beforeEval_karrynCockKick = function(target) {
-	let ineffectiveEnemyType = target.isSlimeType || target.isBossType;
+	let ineffectiveEnemyType = target.isMonstrousType || target.isBossType;
 	
 	this.addState(STATE_USE_UNARMED_MODIFERS_ID);
 	
@@ -1417,6 +1472,10 @@ Game_Actor.prototype.beforeEval_karrynCockKick = function(target) {
 	}
 };
 Game_Actor.prototype.afterEval_karrynCockKick = function(target) {
+	this.gainStaminaExp(20, target.enemyExperienceLvl());
+	this.gainStrengthExp(30, target.enemyExperienceLvl());
+	this.gainDexterityExp(20, target.enemyExperienceLvl());
+	
 	this.addCockinessFromCockKicking();
 	this.addToCockKickUsageCountRecord();
 	this.removeState(STATE_COCK_KICK_CRIT_BONUS_ID);
@@ -1685,12 +1744,37 @@ Game_Actor.prototype.showEval_emptyLegThrust = function() {
 
 ////////
 // Counter Damage
+// Counter attack
 
-Game_Actor.prototype.counterattackDamageMultipler = function() {
+Game_Actor.prototype.counterattackDamageMultipler = function(target) {
 	let multipler = 0.8;
-	if(this.hasThisTitle(TITLE_ID_COUNTERATTACK_TWO)) multipler += 0.04;
-	if(this.isUsingThisTitle(TITLE_ID_COUNTERATTACK_ONE)) multipler += 0.28;
-	return multipler;
+	let titleRate = 1;
+	let edictRate = 1;
+	let dexRate = 1;
+	
+	if(this.hasThisTitle(TITLE_ID_COUNTERATTACK_TWO)) titleRate += 0.05;
+	if(this.isUsingThisTitle(TITLE_ID_COUNTERATTACK_ONE)) titleRate += 0.35;
+	
+	if(this.hasEdict(EDICT_HALBERD_DEFENSIVE_ONE) && this.isUsingHalberd()) edictRate += 0.25;
+	
+	if(this.dex < target.dex) {
+		dexRate = Math.max(0.85, this.dex / target.dex);
+	}
+	else if(this.dex > target.dex) {
+		let diff = this.dex - target.dex;
+		
+		if(diff > 30) {
+			dexRate = Math.min(2, 1.35 + ((diff - 30) * 0.015));
+		}
+		else if(diff > 10) {
+			dexRate = 1.1 + ((diff - 10) * 0.0125);
+		}
+		else {
+			dexRate = 1 + (diff * 0.01);
+		}
+	}
+	
+	return multipler * titleRate * edictRate * dexRate;
 };
 
 //////////
@@ -1701,6 +1785,20 @@ Game_Actor.prototype.afterEval_karrynKickAttack = function(target) {
 	this.removeState(STATE_LIGHT_KICK_ID);
 };
 Game_Actor.prototype.afterEval_karrynCounterAttack = function(target) {
+	this.gainStaminaExp(15, target.enemyExperienceLvl());
+	this.gainStrengthExp(10, target.enemyExperienceLvl());
+	this.gainDexterityExp(60, target.enemyExperienceLvl());
+	
+	if(this.isSlashStance()) {
+		this.gainDexterityExp(10, target.enemyExperienceLvl());
+	}
+	else if(this.isBluntStance()) {
+		this.gainStrengthExp(10, target.enemyExperienceLvl());
+	}
+	else if(this.isPierceStance()) {
+		this.gainAgilityExp(10, target.enemyExperienceLvl());
+	}
+	
 	this._playthroughRecordCounterAttackUsage++;
 	this._playthroughRecordTotalAttackUsage++;
 	this.removeState(STATE_LIGHT_KICK_ID);
@@ -1812,6 +1910,7 @@ Game_Battler.prototype.setupAction_thugRush = function(target) {
 };
 Game_Battler.prototype.afterEval_thugRush = function(target) {
 	if(!target.result().evaded) target._fullyEvadedThugRush = false;
+	this.removeState(STATE_CHARGE_ID);
 };
 
 Game_Battler.prototype.finishAction_thugRush = function(target) {
@@ -1839,6 +1938,7 @@ Game_Battler.prototype.afterEval_goblinBowling = function(target) {
 				target.addFallenState();
 		}
 	}
+	this.removeState(STATE_CHARGE_ID);
 };
 
 Game_Battler.prototype.dmgFormula_tonkinTackle = function(target) {
@@ -1858,6 +1958,7 @@ Game_Battler.prototype.afterEval_tonkinTackle = function(target) {
 				target.addFallenState();
 		}
 	}
+	this.removeState(STATE_CHARGE_ID);
 };
 
 Game_Battler.prototype.customReq_rogueCharge = function() {
@@ -1898,6 +1999,7 @@ Game_Battler.prototype.afterEval_rogueTrip = function(target) {
 			target.addFallenState();
 		}
 	}
+	this.removeState(STATE_CHARGE_ID);
 };
 
 Game_Battler.prototype.customReq_rogueDisarm = function(target) {
@@ -1927,6 +2029,7 @@ Game_Battler.prototype.afterEval_rogueDisarm = function(target) {
 		if(!target.result().missed) 
 			target.increaseDisarmedStateTurns(1);
 	}
+	this.removeState(STATE_CHARGE_ID);
 };
 
 Game_Enemy.prototype.customReq_guardCharge = function() { 
@@ -1948,7 +2051,7 @@ Game_Battler.prototype.customReq_guardTrip = function(target) {
 
 
 Game_Battler.prototype.customReq_nerdExpose = function(target) {
-	return !target.hasWeaknessExposed() && 
+	return !target.hasWeaknessExposed() && !this.isAngry &&  
 	(Karryn.hasEdict(EDICT_PUBLISH_RESISTS) || Karryn.hasEdict(EDICT_PUBLISH_SENSITIVITIES) || Karryn.hasEdict(EDICT_THE_NERD_PROBLEM));
 };
 
@@ -1975,6 +2078,7 @@ Game_Battler.prototype.afterEval_cargillDebuff = function(target) {
 			}
 		}
 	}
+	this.removeState(STATE_CHARGE_ID);
 };
 
 Game_Battler.prototype.dmgFormula_aronTailSwipe = function(target) {
@@ -2061,13 +2165,122 @@ Game_Battler.prototype.customReq_aronCallLizardman_desperate = function() {
 	return !$gameParty._aronCall_failedDesperate && this.hasLessThanOneThirdStamina() && $gameTroop.getAvailableFreeEnemySpace_normalBattle() > 0;
 };
 
-Game_Party.prototype.setupAronCallLizardmanLimit = function() {
-	this._aronCallLimit = 8;
-	if(Prison.hardMode()) this._aronCallLimit += 2;
-	if($gameSelfSwitches.value([MAP_ID_CELL_BLOCK_NORTH_EAST, 24, "D"])) this._aronCallLimit -= 5;
-	this._aronCall_failedNormal = false;
-	this._aronCall_failedDesperate = false;
+Game_Battler.prototype.customReq_mobCallLizardman = function() {
+	return !this._enemyTempRecordUsedLizardmanSummon && Karryn.hasEdict(EDICT_THE_LIZARDMAN_PROBLEM) && !this.isAngry && $gameTroop.getAvailableFreeEnemySpace_normalBattle() > 0;
 };
+Game_Battler.prototype.afterEval_mobCallLizardman = function() {
+	this.removeState(STATE_CHARGE_ID);
+	this._enemyTempRecordUsedLizardmanSummon = true;
+		
+	let summonIDArray = [ 191,192,193,194 ];
+	$gameTroop.normalBattle_spawnEnemy(summonIDArray[Math.randomInt(summonIDArray.length)], true);
+};
+Game_Battler.prototype.warmupEval_mobCallLizardman = function() {
+	let warmup = 0;
+	if(Karryn.hasEdict(EDICT_LIZARDMEN_FREE_DRINKS)) warmup += 2;
+	return warmup;
+};
+
+
+Game_Battler.prototype.customReq_werewolfAttack = function(target) {
+	return !target.isPierceStance() || this.isAngry;
+};
+
+Game_Battler.prototype.customReq_werewolfWait = function(target) {
+	return target.isPierceStance() && Karryn.isInCombatPose() && !this.isAngry;
+};
+Game_Battler.prototype.afterEval_werewolfWait = function() {
+	this.changeStanceToBlunt();
+};
+
+Game_Battler.prototype.customReq_werewolfEscape = function(target) {
+	return target.isPierceStance() && Karryn.isInCombatPose() && !$gameTroop.isThereNonWerewolfTypeEnemyPresent() && this.stamina <= this.maxstamina * 0.33 && !this.isAngry;
+};
+
+//Minion Throw
+
+Game_Battler.prototype.setupMinionThrowVariables = function() {
+	this._minionThrow_ammoTarget = false;
+};
+
+Game_Battler.prototype.customReq_minionThrow_loadAmmo = function(target) {
+	return !target.isActor() && this.isThereValidTargetForMinionThrowAmmoLoading(this) && Karryn.isAttackable();
+};
+Game_Battler.prototype.beforeEval_minionThrow_loadAmmo = function(target) {
+	this._minionThrow_ammoTarget = target;
+	$gameParty._minionThrow_ammoLoaded = true;
+	$gameParty._minionThrow_ammoName = target.displayName();
+
+};
+Game_Battler.prototype.afterEval_minionThrow_loadAmmo = function(target) {
+	this.addState(STATE_CHARGE_ID);
+
+	target.addState(STATE_STUNNED_ID);
+	target.setStateTurns(STATE_STUNNED_ID, 2);
+	target.removeState(STATE_CHARGE_ID);
+	
+	if(target.isGoblinType) {
+		this.addState(STATE_MINION_AMMO_SMALL_ID);
+	}
+	else if(target.isOrcType) {
+		this.addState(STATE_MINION_AMMO_LARGE_ID);
+	}
+	else if(target.isNerdType) {
+		this.addState(STATE_MINION_AMMO_FAT_ID);
+	}
+	else {
+		this.addState(STATE_MINION_AMMO_MED_ID);
+	}
+	
+	$gameSwitches.setValue(SWITCH_NOINIM_FIRST_GRAB_ID, true);
+};
+
+Game_Battler.prototype.customReq_minionThrow_attack = function(target) {
+	return $gameParty._minionThrow_ammoLoaded && this.canAttack(target);
+};
+Game_Battler.prototype.afterEval_minionThrow_attack = function(target) {
+	if(!target.isGuarding && !target.result().evaded) {
+		if(target.result().hpDamage > 0){
+			if(target.result().missed) {
+				target.addOffBalanceState_changableToFallen(0, false);
+				this._minionThrow_ammoTarget.addState(STATE_DIZZY_ID);
+			}
+			else {
+				target.addFallenState();
+			}
+			this._minionThrow_ammoTarget.addState(STATE_VULNERABLE_ID);
+		}
+		else {
+			this._minionThrow_ammoTarget.addState(STATE_VULNERABLE_ID);
+			this._minionThrow_ammoTarget.addState(STATE_STUNNED_ID);
+			this._minionThrow_ammoTarget.setStateTurns(STATE_STUNNED_ID, 2);
+		}
+	}
+	else if(target.result().evaded) {
+		this._minionThrow_ammoTarget.addState(STATE_DIZZY_ID);
+	}
+	else if(target.isGuarding) {
+		this._minionThrow_ammoTarget.addState(STATE_VULNERABLE_ID);
+		this._minionThrow_ammoTarget.addState(STATE_STUNNED_ID);
+		this._minionThrow_ammoTarget.setStateTurns(STATE_STUNNED_ID, 2);
+	}
+	
+	this.removeState(STATE_CHARGE_ID);
+	this.addState(STATE_JUST_MINION_THREW_ID);
+	this.removeState(STATE_MINION_AMMO_LARGE_ID);
+	this.removeState(STATE_MINION_AMMO_MED_ID);
+	this.removeState(STATE_MINION_AMMO_SMALL_ID);
+	this.removeState(STATE_MINION_AMMO_FAT_ID);
+	
+	$gameParty._minionThrow_ammoLoaded = false;
+	//this._minionThrow_ammoTarget = false; //removed in state 186 STATE_JUST_MINION_THREW_ID
+	
+	$gameSwitches.setValue(SWITCH_NOINIM_FIRST_THROW_ID, true);
+};
+Game_Battler.prototype.dmgFormula_minionThrow_attack = function(target) {
+	return this.dmgFormula_attackDmg(target, ELEMENT_BLUNT_ID, 2, 1.8, 0, 0, DEFAULT_DEF_STR_MULTI, 0.3);
+};
+
 
 //Clothes Pull
 Game_Battler.prototype.customReq_clothesPull = function(target) {
@@ -2080,7 +2293,7 @@ Game_Battler.prototype.dmgFormula_clothesPull = function(target) {
 		target.stripOffPanties();
 	
 	let elementType = this.getStance();
-	return this.dmgFormula_attackDmg(target, elementType, 0.6, 0.5, 0.5, 0.3, DEFAULT_DEF_STR_MULTI, 1, true);
+	return this.dmgFormula_attackDmg(target, elementType, 0.6, 0.5, 0.4, 0.3, DEFAULT_DEF_STR_MULTI, 1, true);
 };
 
 //Weapon Kick
@@ -2096,7 +2309,7 @@ Game_Battler.prototype.afterEval_downWeaponKick = function(target) {
 };
 
 Game_Battler.prototype.customReq_disarmedWeaponKick = function(target) {
-	return target.hasDisarmedState() && target.getDisarmedStateTurns() <= 3;
+	return target.hasDisarmedState() && target.getDisarmedStateTurns() <= 3 && (!this.isAngry || target.isInDownPose());
 };
 Game_Battler.prototype.afterEval_disarmedWeaponKickWeak = function(target) {
 	target.increaseDisarmedStateTurns(2);
@@ -2104,10 +2317,27 @@ Game_Battler.prototype.afterEval_disarmedWeaponKickWeak = function(target) {
 
 Game_Battler.prototype.afterEval_reviveEnemy = function(target) {
 	target._performingCollapse = false;
+	
+	if(target.isNerdType) {
+		if(target._hasPinkRotor) {
+			target.addState(STATE_ENEMY_HAS_PINK_ROTOR_ID);
+		}
+		if(target._hasPenisDildo) {
+			target.addState(STATE_ENEMY_HAS_PENIS_DILDO_ID);
+		}
+		if(target._hasAnalBeads) {
+			target.addState(STATE_ENEMY_HAS_ANAL_BEADS_ID);
+		}
+	}
+	
+	this.removeState(STATE_CHARGE_ID);
 };
 
 Game_Battler.prototype.customReq_orcDefensivePresence = function() {
-	return !this.isAngry && Karryn.isInCombatPose() && $gameTroop.thereIsEnemyWithoutOrcDefensivePresence(this);
+	return !this.isAngry && Karryn.isInCombatPose() && $gameTroop.thereIsEnemyWithoutOrcDefensivePresence(this) && !Karryn.hasEdict(EDICT_THE_ORC_PROBLEM);
+};
+Game_Battler.prototype.customReq_orcCommandingPresence = function() {
+	return !this.isAngry && Karryn.isInCombatPose() && $gameTroop.thereIsEnemyWithoutOrcCommandingPresence(this) && Karryn.hasEdict(EDICT_THE_ORC_PROBLEM);
 };
 
 ////////////////
@@ -2125,7 +2355,7 @@ Game_Troop.prototype.slamPushDownOneSpot = function(enemy) {
 	enemy._spriteEnemy._homeY = enemy._screenY;
 	enemy._spriteEnemy.updatePosition();
 	
-	var oldSpot = this._enemySpots[nextSpotId];
+	let oldSpot = this._enemySpots[nextSpotId];
 	this._enemySpots[nextSpotId] = enemy;
 	this._enemySpots[spotId] = oldSpot;
 	
@@ -2169,6 +2399,30 @@ Game_Troop.prototype.thereIsEnemyWithoutOrcDefensivePresence = function(castingE
 	let foundSomeone = false;
 	for(let i = 0; i < this.aliveMembers().length; i++) {
 		if(this.aliveMembers()[i].name() != castingEnemy.name() && !this.aliveMembers()[i].isStateAffected(STATE_ORC_DEFENSIVE_PRESENCE_ID)) {
+			foundSomeone = true;
+			break;
+		}
+	}
+	return foundSomeone;
+};
+
+Game_Troop.prototype.addOrcCommandingPresenceToAllEnemies = function(castingEnemy) {
+	for(let i = 0; i < this.aliveMembers().length; i++) {
+		if(this.aliveMembers()[i].name() != castingEnemy.name()) {
+			this.aliveMembers()[i].addState(STATE_ORC_COMMANDING_PRESENCE_ID);
+		}
+	}
+};
+Game_Troop.prototype.removeOrcCommandingPresenceFromAllEnemies = function(collapsingEnemy) {
+	for(let i = 0; i < this.aliveMembers().length; i++) {
+		if(collapsingEnemy && collapsingEnemy.name() != this.aliveMembers()[i].name())
+			this.aliveMembers()[i].removeState(STATE_ORC_COMMANDING_PRESENCE_ID);
+	}
+};
+Game_Troop.prototype.thereIsEnemyWithoutOrcCommandingPresence = function(castingEnemy) {
+	let foundSomeone = false;
+	for(let i = 0; i < this.aliveMembers().length; i++) {
+		if(this.aliveMembers()[i].name() != castingEnemy.name() && !this.aliveMembers()[i].isStateAffected(STATE_ORC_COMMANDING_PRESENCE_ID)) {
 			foundSomeone = true;
 			break;
 		}

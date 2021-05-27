@@ -99,7 +99,14 @@ Game_Actor.prototype.emoteMasterManager = function() {
 	else if(pose == POSE_RIMJOB)
 		this.emoteRimjobPose();
 	else if(pose == POSE_SLIME_PILEDRIVER_ANAL)
-		this.emoteSlimePiledriver();
+		this.emoteSlimePiledriverPose();
+	else if(pose == POSE_WEREWOLF_BACK)
+		this.emoteWerewolfBackPose();
+	else if(pose == POSE_YETI_PAIZURI)
+		this.emoteYetiPaizuriPose();	
+	else if(pose == POSE_YETI_CARRY)
+		this.emoteYetiCarryPose();
+		
 	else if(pose == POSE_WAITRESS_SEX)
 		this.emoteWaitressSexPose();
 	else if(pose == POSE_RECEPTIONIST)
@@ -112,6 +119,10 @@ Game_Actor.prototype.emoteMasterManager = function() {
 		this.emoteDefeatedLevelTwoPose();
 	else if(pose == POSE_DEFEATED_LEVEL3) 
 		this.emoteDefeatedLevelThreePose();
+	else if(pose == POSE_DEFEATED_LEVEL4) 
+		this.emoteDefeatedLevelFourPose();
+	else if(pose == POSE_DEFEATED_LEVEL5) 
+		this.emoteDefeatedLevelFivePose();
 	else if(pose == POSE_DEFEATED_GUARD) 
 		this.emoteDefeatedGuardPose();
 	
@@ -1049,13 +1060,11 @@ Game_Actor.prototype.emoteStandbyPose = function() {
 	
 	//frontA
 	if(isOffBalanced) {
-		if(ranNum < 75) {
-			if(isConfident) {
-				this.setTachieFrontA('offbalanced_confident');
-			}
-			else {
-				this.setTachieFrontA('offbalanced');
-			}
+		if(isConfident) {
+			this.setTachieFrontA('offbalanced_confident');
+		}
+		else {
+			this.setTachieFrontA('offbalanced');
 		}
 	}
 	
@@ -2474,9 +2483,7 @@ Game_Actor.prototype.emoteUnarmedPose = function() {
 	let ignoreBukkakeEyes = false;
 	
 	if(isOffBalanced) {
-		if(ranNum < 75) {
-			this.setTachieFrontA('offbalanced');
-		}
+		this.setTachieFrontA('offbalanced');
 	}
 	
 	if(karrynGotBukkaked) {
@@ -3669,7 +3676,7 @@ Game_Actor.prototype.emoteDownFalldownPose = function() {
 	}
 	else if(faceId === 16) {
 		eyebrowsArray.push('koma2');
-		eyesArray.push('mae3');
+		eyesArray.push('uru2');
 		eyesArray.push('toji1');
 		mouthArray.push('wa2');
 		mouthArray.push('ahe2');
@@ -6204,7 +6211,397 @@ Game_Actor.prototype.emoteLizardmanCowgirlPose = function() {
 
 
 /////////////////
-// Emote Laying Paizuri Pose
+// Emote Yeti Carry Pose
+/////////////////
+Game_Actor.prototype.emoteYetiCarryPose = function(setKissingOn, setKissingOff, karrynSkillUsage) {
+	let justOrgasmed = this.didLastGetHitBySkillType(JUST_SKILLTYPE_KARRYN_ORGASM);
+	let isAroused = this.isAroused() || justOrgasmed;
+	let analInserted = this.isBodySlotPenis(ANAL_ID);
+	let karrynGotBukkaked = this.didLastGetHitBySkillType(JUST_SKILLTYPE_ENEMY_BUKKAKE);
+	let justGotPussyCreampie = this.didLastGetHitBySkillType(JUST_SKILLTYPE_ENEMY_PUSSY_CREAMPIE);
+	let justGotAnalCreampie = this.didLastGetHitBySkillType(JUST_SKILLTYPE_ENEMY_ANAL_CREAMPIE);
+	let lastHitPussySex = this.didLastGetHitBySkillType(JUST_SKILLTYPE_ENEMY_PUSSY_SEX) || this.didLastGetHitBySkillType(JUST_SKILLTYPE_KARRYN_PUSSY_SEX);
+	let lastHitAnalSex = this.didLastGetHitBySkillType(JUST_SKILLTYPE_ENEMY_ANAL_SEX) || this.didLastGetHitBySkillType(JUST_SKILLTYPE_KARRYN_ANAL_SEX) || this.didLastGetHitBySkillType(JUST_SKILLTYPE_ENEMY_TOY_PLAY_ANAL);
+	
+	let isKissing = setKissingOn || (!setKissingOff && this.tachieFrontA == 'tongue'); 
+	let lightKickCountered = this.isStateAffected(STATE_LIGHT_KICK_COUNTERED_ID);
+	
+	let generalReactionScore = this.getReactionScore();
+	let orgasmReactionScore = this.getOrgasmReactionScore();
+	let pussyCreampieReactionScore = this.getPussyCreampieReactionScore();
+	let analCreampieReactionScore = this.getAnalCreampieReactionScore();
+	let bukkakeReactionScore = this.getBukkakeReactionScore();
+
+	let generallvl3 = generalReactionScore >= VAR_DEF_RS_LV3_REQ;
+	let generallvl2 = generalReactionScore >= VAR_DEF_RS_LV2_REQ;
+	let orgasmlvl3 = orgasmReactionScore >= VAR_DEF_RS_LV3_REQ;
+	let orgasmlvl2 = orgasmReactionScore >= VAR_DEF_RS_LV2_REQ;
+	let pussyCreampielvl3 = pussyCreampieReactionScore  >= VAR_DEF_RS_LV3_REQ;
+	let pussyCreampielvl2 = pussyCreampieReactionScore >= VAR_DEF_RS_LV2_REQ;
+	let analCreampielvl3 = analCreampieReactionScore  >= VAR_DEF_RS_LV3_REQ;
+	let analCreampielvl2 = analCreampieReactionScore >= VAR_DEF_RS_LV2_REQ;
+	let bukkakelvl3 = bukkakeReactionScore  >= VAR_DEF_RS_LV3_REQ;
+	let bukkakelvl2 = bukkakeReactionScore >= VAR_DEF_RS_LV2_REQ;
+	
+	if(isKissing) {
+		this.setTachieFrontA('tongue');
+	}
+	else {
+		this.resetTachieFrontA();
+	}
+	
+	let faceArray = [];
+	this.resetTachieHoppe();
+	this.resetTachieSweat();
+	
+	if(isKissing) {
+		if(justOrgasmed) {
+			if(orgasmlvl3) 
+				faceArray.push(18);
+			else if(orgasmlvl2)
+				faceArray.push(12);
+			else
+				faceArray.push(6);
+		}
+		else {
+			if(generallvl3) 
+				faceArray.push(17);
+			else if(generallvl2) 
+				faceArray.push(11);
+			else
+				faceArray.push(5);
+		}
+	}
+	else {
+		if(justOrgasmed) {
+			if(orgasmlvl3) 
+				faceArray.push(16);
+			else if(orgasmlvl2)
+				faceArray.push(10);
+			else
+				faceArray.push(4);
+		}
+		else if(karrynGotBukkaked) {
+			if(bukkakelvl3) 
+				faceArray.push(15);
+			else if(bukkakelvl2) 
+				faceArray.push(9);
+			else
+				faceArray.push(3);
+		}
+		else if(justGotPussyCreampie) {
+			if(pussyCreampielvl3) 
+				faceArray.push(15);
+			else if(pussyCreampielvl2) 
+				faceArray.push(9);
+			else
+				faceArray.push(3);
+		}
+		else if(justGotAnalCreampie) {
+			if(analCreampielvl3) 
+				faceArray.push(15);
+			else if(analCreampielvl2) 
+				faceArray.push(9);
+			else
+				faceArray.push(3);
+		}
+		else if(lastHitAnalSex) {
+			if(generallvl3) 
+				faceArray.push(14);
+			else if(generallvl2) 
+				faceArray.push(8);
+			else
+				faceArray.push(2);
+		}
+		else {
+			if(generallvl3) 
+				faceArray.push(13);
+			else if(generallvl2) 
+				faceArray.push(7);
+			else
+				faceArray.push(1);
+		}
+		
+	}
+	
+	let faceId = faceArray[Math.randomInt(faceArray.length)];
+	let eyebrowsArray = [];
+	let eyesArray = [];
+	let mouthArray = [];
+	
+	if(faceId === 1) {
+		eyebrowsArray.push('oko1');
+		eyebrowsArray.push('koma1');
+		eyebrowsArray.push('koma2');
+		eyesArray.push('sita1');
+		eyesArray.push('sita2');
+		mouthArray.push('ahe1');
+		mouthArray.push('ahe2');
+		mouthArray.push('ku1');
+		mouthArray.push('ku2');
+		this.setTachieHoppe(1);
+		this.setTachieSweat(1);
+	}
+	else if(faceId === 2) {
+		eyebrowsArray.push('oko1');
+		eyebrowsArray.push('koma1');
+		eyebrowsArray.push('koma2');
+		eyesArray.push('sita1');
+		eyesArray.push('sita2');
+		mouthArray.push('ho1');
+		mouthArray.push('ahe2');
+		mouthArray.push('ku1');
+		mouthArray.push('ku2');
+		this.setTachieHoppe(1);
+		this.setTachieSweat(1);
+	}
+	else if(faceId === 3) {
+		eyebrowsArray.push('oko1');
+		eyebrowsArray.push('koma1');
+		eyebrowsArray.push('koma2');
+		eyesArray.push('urusita1');
+		eyesArray.push('sita2');
+		mouthArray.push('ho1');
+		mouthArray.push('ahe1');
+		mouthArray.push('ahe2');
+		mouthArray.push('ku1');
+		mouthArray.push('ku2');
+		this.setTachieHoppe(1);
+		this.setTachieSweat(1);
+	}
+	else if(faceId === 4) {
+		eyebrowsArray.push('oko1');
+		eyebrowsArray.push('koma1');
+		eyebrowsArray.push('koma2');
+		eyesArray.push('urumae1');
+		eyesArray.push('toji1');
+		mouthArray.push('ho1');
+		mouthArray.push('ahe1');
+		mouthArray.push('ahe2');
+		mouthArray.push('ku1');
+		mouthArray.push('ku2');
+		this.setTachieHoppe(1);
+		this.setTachieSweat(1);
+	}
+	else if(faceId === 5) {
+		eyebrowsArray.push('oko1');
+		eyebrowsArray.push('koma1');
+		eyebrowsArray.push('koma2');
+		eyesArray.push('mae1');
+		eyesArray.push('mae2');
+		mouthArray.push('kiss1');
+		this.setTachieHoppe(1);
+		this.setTachieSweat(1);
+	}
+	else if(faceId === 6) {
+		eyebrowsArray.push('oko1');
+		eyebrowsArray.push('koma1');
+		eyebrowsArray.push('koma2');
+		eyesArray.push('mae2');
+		eyesArray.push('toji1');
+		mouthArray.push('kiss1');
+		this.setTachieHoppe(1);
+		this.setTachieSweat(1);
+	}
+	else if(faceId === 7) {
+		eyebrowsArray.push('kiri1');
+		eyebrowsArray.push('kiri2');
+		eyesArray.push('sita1');
+		eyesArray.push('sita2');
+		mouthArray.push('ho1');
+		mouthArray.push('ahe1');
+		mouthArray.push('ho2');
+		mouthArray.push('ku1');
+		this.setTachieHoppe(1);
+	}
+	else if(faceId === 8) {
+		eyebrowsArray.push('kiri1');
+		eyebrowsArray.push('kiri2');
+		eyebrowsArray.push('koma1');
+		eyebrowsArray.push('koma2');
+		eyesArray.push('sita1');
+		eyesArray.push('sita2');
+		mouthArray.push('ho1');
+		mouthArray.push('ho2');
+		mouthArray.push('ahe2');
+		mouthArray.push('ku2');
+		this.setTachieHoppe(1);
+	}
+	else if(faceId === 9) {
+		eyebrowsArray.push('oko1');
+		eyebrowsArray.push('kiri1');
+		eyebrowsArray.push('kiri2');
+		eyebrowsArray.push('koma1');
+		eyebrowsArray.push('koma2');
+		eyesArray.push('urusita1');
+		eyesArray.push('urusita2');
+		eyesArray.push('sita2');
+		mouthArray.push('ho1');
+		mouthArray.push('ku1');
+		mouthArray.push('ahe1');
+		mouthArray.push('ahe2');
+		mouthArray.push('ku2');
+		this.setTachieHoppe(1);
+		this.setTachieSweat(1);
+	}
+	else if(faceId === 10) {
+		eyebrowsArray.push('oko1');
+		eyebrowsArray.push('kiri1');
+		eyebrowsArray.push('kiri2');
+		eyebrowsArray.push('koma1');
+		eyebrowsArray.push('koma2');
+		eyesArray.push('urumae1');
+		eyesArray.push('urumae2');
+		eyesArray.push('toji1');
+		eyesArray.push('ahe1');
+		mouthArray.push('ho1');
+		mouthArray.push('ku1');
+		mouthArray.push('ahe1');
+		mouthArray.push('ahe3');
+		mouthArray.push('ku2');
+		this.setTachieHoppe(1);
+		this.setTachieSweat(1);
+	}
+	else if(faceId === 11) {
+		eyebrowsArray.push('kiri1');
+		eyebrowsArray.push('kiri2');
+		eyesArray.push('urumae2');
+		eyesArray.push('mae1');
+		eyesArray.push('mae2');
+		mouthArray.push('kiss1');
+		mouthArray.push('kiss2');
+		this.setTachieHoppe(1);
+	}
+	else if(faceId === 12) {
+		eyebrowsArray.push('oko1');
+		eyebrowsArray.push('kiri1');
+		eyebrowsArray.push('kiri2');
+		eyebrowsArray.push('koma1');
+		eyebrowsArray.push('koma2');
+		eyesArray.push('urumae1');
+		eyesArray.push('urumae2');
+		eyesArray.push('toji1');
+		mouthArray.push('kiss1');
+		mouthArray.push('kiss2');
+		this.setTachieHoppe(1);
+		this.setTachieSweat(1);
+	}
+	else if(faceId === 13) {
+		eyebrowsArray.push('kiri1');
+		eyebrowsArray.push('kiri2');
+		eyebrowsArray.push('nico1');
+		eyebrowsArray.push('nico2');
+		eyesArray.push('mae1');
+		eyesArray.push('mae2');
+		eyesArray.push('sita1');
+		eyesArray.push('sita2');
+		mouthArray.push('nico1');
+		mouthArray.push('nico2');
+		mouthArray.push('pero1');
+		mouthArray.push('ho2');
+		if(isAroused) this.setTachieHoppe(1);
+	}
+	else if(faceId === 14) {
+		eyebrowsArray.push('kiri1');
+		eyebrowsArray.push('kiri2');
+		eyebrowsArray.push('nico1');
+		eyebrowsArray.push('nico2');
+		eyesArray.push('urusita1');
+		eyesArray.push('urusita2');
+		eyesArray.push('sita1');
+		eyesArray.push('sita2');
+		mouthArray.push('nico1');
+		mouthArray.push('nico2');
+		mouthArray.push('pero1');
+		mouthArray.push('ahe3');
+		mouthArray.push('ahe4');
+		if(isAroused) this.setTachieHoppe(1);
+	}
+	else if(faceId === 15) {
+		eyebrowsArray.push('kiri1');
+		eyebrowsArray.push('kiri2');
+		eyebrowsArray.push('nico1');
+		eyebrowsArray.push('nico2');
+		eyesArray.push('urusita1');
+		eyesArray.push('urusita2');
+		eyesArray.push('sita2');
+		mouthArray.push('nico1');
+		mouthArray.push('nico2');
+		mouthArray.push('pero1');
+		mouthArray.push('ahe3');
+		mouthArray.push('ahe4');
+		if(isAroused) this.setTachieHoppe(1);
+		if(Math.randomInt(2) === 0) this.setTachieSweat(1);
+	}
+	else if(faceId === 16) {
+		eyebrowsArray.push('koma1');
+		eyebrowsArray.push('koma2');
+		eyebrowsArray.push('oko1');
+		eyebrowsArray.push('kiri1');
+		eyebrowsArray.push('kiri2');
+		eyebrowsArray.push('nico1');
+		eyebrowsArray.push('nico2');
+		eyesArray.push('heartsita1');
+		eyesArray.push('heartsita2');
+		eyesArray.push('heartahe1');
+		eyesArray.push('toji1');
+		mouthArray.push('nico1');
+		mouthArray.push('nico2');
+		mouthArray.push('pero1');
+		mouthArray.push('ahe1');
+		mouthArray.push('ahe2');
+		mouthArray.push('ahe3');
+		mouthArray.push('ahe4');
+		this.setTachieHoppe(1);
+		if(Math.randomInt(2) === 0) this.setTachieSweat(1);
+	}
+	else if(faceId === 17) {
+		eyebrowsArray.push('kiri1');
+		eyebrowsArray.push('kiri2');
+		eyebrowsArray.push('nico1');
+		eyebrowsArray.push('nico2');
+		eyesArray.push('mae1');
+		eyesArray.push('mae2');
+		eyesArray.push('urumae1');
+		eyesArray.push('urumae2');
+		mouthArray.push('kiss1');
+		mouthArray.push('kiss2');
+		mouthArray.push('kiss3');
+		if(isAroused) this.setTachieHoppe(1);
+	}
+	else if(faceId === 18) {
+		eyebrowsArray.push('koma1');
+		eyebrowsArray.push('koma2');
+		eyebrowsArray.push('oko1');
+		eyebrowsArray.push('kiri1');
+		eyebrowsArray.push('kiri2');
+		eyebrowsArray.push('nico1');
+		eyebrowsArray.push('nico2');
+		eyesArray.push('heartmae1');
+		eyesArray.push('heartmae2');
+		eyesArray.push('heartahe1');
+		eyesArray.push('toji1');
+		mouthArray.push('kiss1');
+		mouthArray.push('kiss2');
+		mouthArray.push('kiss3');
+		this.setTachieHoppe(1);
+		if(Math.randomInt(2) === 0) this.setTachieSweat(1);
+	}
+	
+	
+	if(eyebrowsArray.length > 0) {
+		this.setTachieEyebrows(eyebrowsArray[Math.randomInt(eyebrowsArray.length)]);
+	}
+	if(eyesArray.length > 0) {
+		this.setTachieEyes(eyesArray[Math.randomInt(eyesArray.length)]);
+	}
+	if(mouthArray.length > 0) {
+		this.setTachieMouth(mouthArray[Math.randomInt(mouthArray.length)]);
+	}
+};
+
+/////////////////
+// Emote Orc Paizuri Pose
 /////////////////
 Game_Actor.prototype.emoteOrcPaizuriPose = function() {
 	let justOrgasmed = this.didLastGetHitBySkillType(JUST_SKILLTYPE_KARRYN_ORGASM);
@@ -6658,12 +7055,572 @@ Game_Actor.prototype.emoteOrcPaizuriPose = function() {
 };
 
 /////////////////
+// Emote Yeti Paizuri Pose
+/////////////////
+Game_Actor.prototype.emoteYetiPaizuriPose = function() {
+	let justOrgasmed = this.didLastGetHitBySkillType(JUST_SKILLTYPE_KARRYN_ORGASM);
+	let isAroused = this.isAroused() || justOrgasmed;
+	let givingBJ = this.isBodySlotPenis(MOUTH_ID);
+
+	let lastHitTittyFuck = this.didLastGetHitBySkillType(JUST_SKILLTYPE_ENEMY_TITTYFUCK) || this.didLastGetHitBySkillType(JUST_SKILLTYPE_KARRYN_TITTYFUCK);
+	let lastHitSex = this.didLastGetHitBySkillType(JUST_SKILLTYPE_ENEMY_PUSSY_SEX) || this.didLastGetHitBySkillType(JUST_SKILLTYPE_ENEMY_ANAL_SEX) || this.didLastGetHitBySkillType(JUST_SKILLTYPE_KARRYN_PUSSY_SEX) || this.didLastGetHitBySkillType(JUST_SKILLTYPE_KARRYN_ANAL_SEX) || this.didLastGetHitBySkillType(JUST_SKILLTYPE_ENEMY_TOY_PLAY_PUSSY);
+	
+	let karrynSwallowingCum = this.didLastGetHitBySkillType(JUST_SKILLTYPE_ENEMY_CUM_SWALLOW);
+	let karrynGotBukkaked = this.didLastGetHitBySkillType(JUST_SKILLTYPE_ENEMY_BUKKAKE);
+	let justGotPussyCreampie = this.didLastGetHitBySkillType(JUST_SKILLTYPE_ENEMY_PUSSY_CREAMPIE);
+	let justGotAnalCreampie = this.didLastGetHitBySkillType(JUST_SKILLTYPE_ENEMY_ANAL_CREAMPIE);
+	let holeInserted = this.isBodySlotPenis(ANAL_ID) || this.isBodySlotPenis(PUSSY_ID) || this.isBodySlotToy(PUSSY_ID) || this.isBodySlotToy(ANAL_ID);
+	let enemyCummingFromBoobs = $gameTroop._lastEnemySlotToCum === BOOBS_ID;
+	
+	let generalReactionScore = this.getReactionScore();
+	let orgasmReactionScore = this.getOrgasmReactionScore();
+	let bukkakeReactionScore = this.getBukkakeReactionScore();
+	let swallowReactionScore = this.getSwallowReactionScore();
+	let pussyCreampieReactionScore = this.getPussyCreampieReactionScore();
+	let analCreampieReactionScore = this.getAnalCreampieReactionScore();
+	
+	let generallvl3 = generalReactionScore >= VAR_DEF_RS_LV3_REQ;
+	let generallvl2 = generalReactionScore >= VAR_DEF_RS_LV2_REQ;
+	let orgasmlvl3 = orgasmReactionScore >= VAR_DEF_RS_LV3_REQ;
+	let orgasmlvl2 = orgasmReactionScore >= VAR_DEF_RS_LV2_REQ;
+	let bukkakelvl3 = bukkakeReactionScore >= VAR_DEF_RS_LV3_REQ;
+	let bukkakelvl2 = bukkakeReactionScore >= VAR_DEF_RS_LV2_REQ;
+	let pussyCreampielvl3 = pussyCreampieReactionScore  >= VAR_DEF_RS_LV3_REQ;
+	let pussyCreampielvl2 = pussyCreampieReactionScore >= VAR_DEF_RS_LV2_REQ;
+	let analCreampielvl3 = analCreampieReactionScore  >= VAR_DEF_RS_LV3_REQ;
+	let analCreampielvl2 = analCreampieReactionScore >= VAR_DEF_RS_LV2_REQ;
+	let swallowlvl3 = swallowReactionScore  >= VAR_DEF_RS_LV3_REQ;
+	let swallowlvl2 = swallowReactionScore >= VAR_DEF_RS_LV2_REQ;
+	
+	if(!this.isWearingGlovesAndHat()) {
+		this.resetTachieHat();
+		this.setTachieBody('naked_1');
+	}
+	else {
+		this.setTachieBody('1');
+	}
+	
+	let tachieHeadType = 'far';
+	if(givingBJ) {
+		if(this.isWearingGlovesAndHat()) {
+			this.setTachieHat('close_1');
+		}
+		
+		this.setTachieHead('close');
+		this.setTachieSemenFaceExtension('close_');
+		
+		tachieHeadType = 'close';
+	}
+	else {
+		if(this.isWearingGlovesAndHat()) {
+			this.setTachieHat('far_1');
+		}
+		
+		this.setTachieHead('far');
+		this.setTachieSemenFaceExtension('far_');
+	}
+	
+	this.setMaxTachieSemenFaceId(1);
+	
+	let faceArray = [];
+	this.resetTachieHoppe();
+	this.resetTachieSweat();
+	
+	if(givingBJ) {
+		if(karrynSwallowingCum) {
+			if(swallowlvl3) 
+				faceArray.push(26);
+			else if(swallowlvl2) 
+				faceArray.push(17);
+			else
+				faceArray.push(8);
+		}
+		else if(justOrgasmed) {
+			if(orgasmlvl3) 
+				faceArray.push(27);
+			else if(orgasmlvl2) 
+				faceArray.push(18);
+			else
+				faceArray.push(9);
+		}
+		else if(lastHitSex) {
+			if(generallvl3) 
+				faceArray.push(25);
+			else if(generallvl2) 
+				faceArray.push(16);
+			else
+				faceArray.push(7);
+		}
+		else {
+			if(generallvl3) 
+				faceArray.push(24);
+			else if(generallvl2) 
+				faceArray.push(15);
+			else
+				faceArray.push(6);
+		}
+	}
+	else if(karrynGotBukkaked) {
+		if(enemyCummingFromBoobs) {
+			if(bukkakelvl3) 
+				faceArray.push(21);
+			else if(bukkakelvl2) 
+				faceArray.push(12);
+			else
+				faceArray.push(3);
+		}
+		else {
+			if(bukkakelvl3) 
+				faceArray.push(22);
+			else if(bukkakelvl2) 
+				faceArray.push(13);
+			else
+				faceArray.push(4);
+		}
+	}
+	else if(justGotPussyCreampie) {
+		if(pussyCreampielvl3) 
+			faceArray.push(22);
+		else if(pussyCreampielvl2) 
+			faceArray.push(13);
+		else
+			faceArray.push(4);
+	}
+	else if(justGotAnalCreampie) {
+		if(analCreampielvl3) 
+			faceArray.push(22);
+		else if(analCreampielvl2) 
+			faceArray.push(13);
+		else
+			faceArray.push(4);
+	}
+	else if(justOrgasmed) {
+		if(orgasmlvl3) 
+			faceArray.push(23);
+		else if(orgasmlvl2) 
+			faceArray.push(14);
+		else
+			faceArray.push(5);
+	}
+	else if(lastHitSex) {
+		if(generallvl3) 
+			faceArray.push(20);
+		else if(generallvl2) 
+			faceArray.push(11);
+		else
+			faceArray.push(2);
+	}
+	else {
+		if(generallvl3) 
+			faceArray.push(19);
+		else if(generallvl2) 
+			faceArray.push(10);
+		else
+			faceArray.push(1);
+	}
+	
+	let faceId = faceArray[Math.randomInt(faceArray.length)];
+	let eyebrowsArray = [];
+	let eyesArray = [];
+	let mouthArray = [];
+	let tachieHoppeName = false;
+	let tachieSweatName = false;
+	
+	if(faceId === 1) {
+		eyebrowsArray.push('oko1');
+		eyebrowsArray.push('koma1');
+		eyebrowsArray.push('koma2');
+		eyesArray.push('mae1');
+		eyesArray.push('mae2');
+		mouthArray.push('ku1');
+		mouthArray.push('ku2');
+		mouthArray.push('ho1');
+		mouthArray.push('ho2');
+		tachieHoppeName = '1';
+		tachieSweatName = '1';
+	}
+	else if(faceId === 2) {
+		eyebrowsArray.push('oko1');
+		eyebrowsArray.push('koma1');
+		eyebrowsArray.push('koma2');
+		eyesArray.push('sita1');
+		eyesArray.push('sita2');
+		mouthArray.push('ku1');
+		mouthArray.push('ku2');
+		mouthArray.push('ho1');
+		mouthArray.push('ho2');
+		mouthArray.push('ahe1');
+		mouthArray.push('ahe2');
+		tachieHoppeName = '1';
+		tachieSweatName = '1';
+	}
+	else if(faceId === 3) {
+		eyebrowsArray.push('oko1');
+		eyebrowsArray.push('koma1');
+		eyebrowsArray.push('koma2');
+		eyesArray.push('mae2');
+		mouthArray.push('ku1');
+		mouthArray.push('ku2');
+		mouthArray.push('ho2');
+		mouthArray.push('ahe1');
+		mouthArray.push('ahe2');
+		tachieHoppeName = '1';
+		tachieSweatName = '1';
+	}
+	else if(faceId === 4) {
+		eyebrowsArray.push('oko1');
+		eyebrowsArray.push('koma1');
+		eyebrowsArray.push('koma2');
+		eyesArray.push('sita1');
+		eyesArray.push('urusita1');
+		eyesArray.push('urusita2');
+		mouthArray.push('ku1');
+		mouthArray.push('ku2');
+		mouthArray.push('ahe1');
+		mouthArray.push('ahe2');
+		tachieHoppeName = '1';
+		tachieSweatName = '1';
+	}
+	else if(faceId === 5) {
+		eyebrowsArray.push('oko1');
+		eyebrowsArray.push('koma1');
+		eyebrowsArray.push('koma2');
+		eyesArray.push('toji1');
+		eyesArray.push('mae2');
+		eyesArray.push('urumae1');
+		mouthArray.push('ho1');
+		mouthArray.push('ho2');
+		mouthArray.push('ahe1');
+		mouthArray.push('ahe2');
+		tachieHoppeName = '1';
+		tachieSweatName = '1';
+	}
+	else if(faceId === 6) {
+		eyebrowsArray.push('oko1');
+		eyebrowsArray.push('koma1');
+		eyebrowsArray.push('koma2');
+		eyesArray.push('mae1');
+		eyesArray.push('mae2');
+		mouthArray.push('fera1');
+		tachieHoppeName = '1';
+		tachieSweatName = '1';
+	}
+	else if(faceId === 7) {
+		eyebrowsArray.push('oko1');
+		eyebrowsArray.push('koma1');
+		eyebrowsArray.push('koma2');
+		eyesArray.push('sita1');
+		eyesArray.push('sita2');
+		mouthArray.push('fera1');
+		mouthArray.push('fera2');
+		tachieHoppeName = '1';
+		tachieSweatName = '1';
+	}
+	else if(faceId === 8) {
+		eyebrowsArray.push('oko1');
+		eyebrowsArray.push('koma1');
+		eyebrowsArray.push('koma2');
+		eyesArray.push('mae2');
+		eyesArray.push('urumae1');
+		eyesArray.push('urumae2');
+		mouthArray.push('fera1');
+		tachieHoppeName = '1';
+		tachieSweatName = '1';
+	}
+	else if(faceId === 9) {
+		eyebrowsArray.push('oko1');
+		eyebrowsArray.push('koma1');
+		eyebrowsArray.push('koma2');
+		eyesArray.push('toji1');
+		eyesArray.push('urumae1');
+		eyesArray.push('mae2');
+		mouthArray.push('fera1');
+		mouthArray.push('fera2');
+		tachieHoppeName = '1';
+		tachieSweatName = '1';
+	}
+	else if(faceId === 10) {
+		eyebrowsArray.push('kiri1');
+		eyebrowsArray.push('kiri2');
+		eyesArray.push('mae1');
+		eyesArray.push('mae2');
+		mouthArray.push('fu1');
+		mouthArray.push('fu2');
+		mouthArray.push('ho1');
+		mouthArray.push('ho2');
+		tachieHoppeName = '1';
+	}
+	else if(faceId === 11) {
+		eyebrowsArray.push('kiri1');
+		eyebrowsArray.push('kiri2');
+		eyesArray.push('sita1');
+		eyesArray.push('sita2');
+		mouthArray.push('fu1');
+		mouthArray.push('fu2');
+		mouthArray.push('ho1');
+		mouthArray.push('ho2');
+		mouthArray.push('ahe1');
+		mouthArray.push('ahe2');
+		tachieHoppeName = '1';
+	}
+	else if(faceId === 12) {
+		eyebrowsArray.push('kiri1');
+		eyebrowsArray.push('kiri2');
+		eyebrowsArray.push('koma1');
+		eyebrowsArray.push('koma2');
+		eyesArray.push('mae1');
+		eyesArray.push('mae2');
+		mouthArray.push('fu1');
+		mouthArray.push('fu2');
+		mouthArray.push('ho2');
+		mouthArray.push('ahe1');
+		mouthArray.push('ahe2');
+		tachieHoppeName = '1';
+		tachieSweatName = '1';
+	}
+	else if(faceId === 13) {
+		eyebrowsArray.push('kiri1');
+		eyebrowsArray.push('koma1');
+		eyebrowsArray.push('koma2');
+		eyesArray.push('sita2');
+		eyesArray.push('urusita1');
+		eyesArray.push('urusita2');
+		mouthArray.push('fu1');
+		mouthArray.push('ku1');
+		mouthArray.push('ahe1');
+		mouthArray.push('ahe2');
+		tachieHoppeName = '1';
+		tachieSweatName = '1';
+	}
+	else if(faceId === 14) {
+		eyebrowsArray.push('kiri1');
+		eyebrowsArray.push('koma1');
+		eyebrowsArray.push('koma2');
+		eyesArray.push('toji1');
+		eyesArray.push('mae1');
+		eyesArray.push('mae2');
+		eyesArray.push('urumae1');
+		eyesArray.push('urumae2');
+		eyesArray.push('ahe1');
+		mouthArray.push('fu1');
+		mouthArray.push('ku2');
+		mouthArray.push('ho2');
+		mouthArray.push('ahe1');
+		mouthArray.push('ahe2');
+		tachieHoppeName = '1';
+		tachieSweatName = '1';
+	}
+	else if(faceId === 15) {
+		eyebrowsArray.push('kiri1');
+		eyebrowsArray.push('kiri2');
+		eyesArray.push('mae1');
+		eyesArray.push('mae2');
+		mouthArray.push('fera2');
+		mouthArray.push('fera3');
+		tachieHoppeName = '1';
+	}
+	else if(faceId === 16) {
+		eyebrowsArray.push('kiri1');
+		eyebrowsArray.push('kiri2');
+		eyesArray.push('sita1');
+		eyesArray.push('sita2');
+		mouthArray.push('fera2');
+		mouthArray.push('fera3');
+		tachieHoppeName = '1';
+	}
+	else if(faceId === 17) {
+		eyebrowsArray.push('kiri1');
+		eyebrowsArray.push('kiri2');
+		eyebrowsArray.push('koma1');
+		eyebrowsArray.push('koma2');
+		eyesArray.push('mae1');
+		eyesArray.push('mae2');
+		eyesArray.push('urumae1');
+		eyesArray.push('urumae2');
+		mouthArray.push('fera2');
+		tachieHoppeName = '1';
+		tachieSweatName = '1';
+	}
+	else if(faceId === 18) {
+		eyebrowsArray.push('kiri1');
+		eyebrowsArray.push('koma1');
+		eyebrowsArray.push('koma2');
+		eyesArray.push('toji1');
+		eyesArray.push('mae2');
+		eyesArray.push('urumae1');
+		eyesArray.push('urumae2');
+		eyesArray.push('ahe1');
+		mouthArray.push('fera2');
+		mouthArray.push('fera3');
+		tachieHoppeName = '1';
+		tachieSweatName = '1';
+	}
+	else if(faceId === 19) {
+		eyebrowsArray.push('kiri1');
+		eyebrowsArray.push('nico1');
+		eyebrowsArray.push('nico2');
+		eyesArray.push('mae1');
+		eyesArray.push('mae2');
+		mouthArray.push('fu1');
+		mouthArray.push('fu2');
+		mouthArray.push('ho1');
+		mouthArray.push('nico1');
+		if(isAroused) tachieHoppeName = '1';
+	}
+	else if(faceId === 20) {
+		eyebrowsArray.push('kiri1');
+		eyebrowsArray.push('kiri2');
+		eyebrowsArray.push('nico1');
+		eyebrowsArray.push('nico2');
+		eyesArray.push('sita1');
+		eyesArray.push('sita2');
+		mouthArray.push('fu1');
+		mouthArray.push('fu2');
+		mouthArray.push('ho1');
+		mouthArray.push('nico1');
+		mouthArray.push('ahe2');
+		mouthArray.push('ahe3');
+		if(isAroused) tachieHoppeName = '1';
+	}
+	else if(faceId === 21) {
+		eyebrowsArray.push('kiri2');
+		eyebrowsArray.push('nico1');
+		eyebrowsArray.push('nico2');
+		eyesArray.push('mae1');
+		eyesArray.push('mae2');
+		eyesArray.push('urumae1');
+		eyesArray.push('urumae2');
+		eyesArray.push('heartmae1');
+		eyesArray.push('heartmae2');
+		mouthArray.push('fu1');
+		mouthArray.push('fu2');
+		mouthArray.push('ho1');
+		mouthArray.push('nico1');
+		if(isAroused) tachieHoppeName = '1';
+		if(Math.random() < 0.5) tachieSweatName = '1';
+	}
+	else if(faceId === 22) {
+		eyebrowsArray.push('kiri2');
+		eyebrowsArray.push('nico1');
+		eyebrowsArray.push('nico2');
+		eyesArray.push('urusita1');
+		eyesArray.push('urusita2');
+		eyesArray.push('heartsita1');
+		eyesArray.push('heartsita2');
+		mouthArray.push('fu1');
+		mouthArray.push('fu2');
+		mouthArray.push('ho1');
+		mouthArray.push('nico1');
+		mouthArray.push('ahe2');
+		mouthArray.push('ahe3');
+		tachieHoppeName = '1';
+		if(Math.random() < 0.5) tachieSweatName = '1';
+	}
+	else if(faceId === 23) {
+		eyebrowsArray.push('kiri1');
+		eyebrowsArray.push('nico1');
+		eyebrowsArray.push('nico2');
+		eyebrowsArray.push('koma1');
+		eyebrowsArray.push('oko1');
+		eyesArray.push('toji1');
+		eyesArray.push('urumae1');
+		eyesArray.push('urumae2');
+		eyesArray.push('heartmae1');
+		eyesArray.push('heartmae2');
+		eyesArray.push('heartahe1');
+		mouthArray.push('fu1');
+		mouthArray.push('fu2');
+		mouthArray.push('ho1');
+		mouthArray.push('ho2');
+		mouthArray.push('nico1');
+		mouthArray.push('ahe1');
+		mouthArray.push('ahe2');
+		mouthArray.push('ahe3');
+		tachieHoppeName = '1';
+		if(Math.random() < 0.5) tachieSweatName = '1';
+	}
+	else if(faceId === 24) {
+		eyebrowsArray.push('kiri2');
+		eyebrowsArray.push('nico1');
+		eyebrowsArray.push('nico2');
+		eyesArray.push('mae1');
+		eyesArray.push('mae2');
+		eyesArray.push('urumae1');
+		eyesArray.push('urumae2');
+		eyesArray.push('ahe1');
+		mouthArray.push('fera1');
+		mouthArray.push('fera2');
+		mouthArray.push('fera3');
+		mouthArray.push('fera4');
+		mouthArray.push('fera5');
+		if(isAroused) tachieHoppeName = '1';
+	}
+	else if(faceId === 25) {
+		eyebrowsArray.push('kiri1');
+		eyebrowsArray.push('kiri2');
+		eyebrowsArray.push('nico1');
+		eyebrowsArray.push('nico2');
+		eyesArray.push('sita1');
+		eyesArray.push('sita2');
+		eyesArray.push('urusita1');
+		eyesArray.push('urusita2');
+		mouthArray.push('fera4');
+		mouthArray.push('fera5');
+		if(isAroused) tachieHoppeName = '1';
+	}
+	else if(faceId === 26) {
+		eyebrowsArray.push('kiri2');
+		eyebrowsArray.push('nico1');
+		eyebrowsArray.push('nico2');
+		eyesArray.push('mae1');
+		eyesArray.push('mae2');
+		eyesArray.push('urumae1');
+		eyesArray.push('urumae2');
+		eyesArray.push('heartmae1');
+		eyesArray.push('heartmae2');
+		mouthArray.push('fera5');
+		tachieHoppeName = '1';
+		if(Math.random() < 0.5) tachieSweatName = '1';
+	}
+	else if(faceId === 27) {
+		eyebrowsArray.push('kiri1');
+		eyebrowsArray.push('nico1');
+		eyebrowsArray.push('nico2');
+		eyebrowsArray.push('koma1');
+		eyebrowsArray.push('oko1');
+		eyesArray.push('toji1');
+		eyesArray.push('urumae1');
+		eyesArray.push('urumae2');
+		eyesArray.push('heartmae1');
+		eyesArray.push('heartmae2');
+		eyesArray.push('heartahe1');
+		mouthArray.push('fera4');
+		mouthArray.push('fera5');
+		tachieHoppeName = '1';
+		if(Math.random() < 0.5) tachieSweatName = '1';
+	}
+	
+	
+	if(eyebrowsArray.length > 0) {
+		this.setTachieEyebrows('' + tachieHeadType + '_' + eyebrowsArray[Math.randomInt(eyebrowsArray.length)]);
+	}
+	if(eyesArray.length > 0) {
+		this.setTachieEyes('' + tachieHeadType + '_' + eyesArray[Math.randomInt(eyesArray.length)]);
+	}
+	if(mouthArray.length > 0) {
+		this.setTachieMouth('' + tachieHeadType + '_' + mouthArray[Math.randomInt(mouthArray.length)]);
+	}
+	
+	if(tachieHoppeName) this.setTachieHoppe('' + tachieHeadType + '_' + tachieHoppeName);
+	if(tachieSweatName) this.setTachieSweat('' + tachieHeadType + '_' + tachieSweatName);	
+};
+
+/////////////////
 // Emote Laying Paizuri Pose
 /////////////////
 Game_Actor.prototype.emoteLayingPaizuriPose = function() {
 	let justOrgasmed = this.didLastGetHitBySkillType(JUST_SKILLTYPE_KARRYN_ORGASM);
 	let isAroused = this.isAroused() || justOrgasmed;
-	let mouthDesire = this.mouthDesire;
 	let givingBJ = this.isBodySlotPenis(MOUTH_ID);
 	let givingRightHJ = this.isBodySlotPenis(RIGHT_HAND_ID);
 	let lastHitHandjob = this.didLastGetHitBySkillType(JUST_SKILLTYPE_ENEMY_HANDJOB) || this.didLastGetHitBySkillType(JUST_SKILLTYPE_KARRYN_HANDJOB);
@@ -6700,7 +7657,6 @@ Game_Actor.prototype.emoteLayingPaizuriPose = function() {
 	let faceArray = [];
 	this.resetTachieHoppe();
 	this.resetTachieSweat();
-	if(givingBJ) this.resetTachieMouth();
 	
 	if(givingBJ) {
 		if(karrynSwallowingCum) {
@@ -6870,6 +7826,7 @@ Game_Actor.prototype.emoteLayingPaizuriPose = function() {
 		eyebrowsArray.push('koma2');
 		eyesArray.push('sage1');
 		eyesArray.push('sage2');
+		mouthArray.push('fera1');
 		if(isAroused) this.setTachieHoppe(1);
 		this.setTachieSweat(1);
 	}
@@ -6877,6 +7834,7 @@ Game_Actor.prototype.emoteLayingPaizuriPose = function() {
 		eyebrowsArray.push('ku1');
 		eyebrowsArray.push('koma3');
 		eyesArray.push('toji1');
+		mouthArray.push('fera1');
 		this.setTachieHoppe(1);
 		this.setTachieSweat(1);
 	}
@@ -6948,6 +7906,8 @@ Game_Actor.prototype.emoteLayingPaizuriPose = function() {
 		eyebrowsArray.push('kiri1');
 		eyesArray.push('sage1');
 		eyesArray.push('sage2');
+		mouthArray.push('fera2');
+		mouthArray.push('fera3');
 		this.setTachieHoppe(1);
 		if(isAroused) this.setTachieSweat(1);
 	}
@@ -6955,6 +7915,8 @@ Game_Actor.prototype.emoteLayingPaizuriPose = function() {
 		eyebrowsArray.push('kiri1');
 		eyesArray.push('toji1');
 		eyesArray.push('toji2');
+		mouthArray.push('fera2');
+		mouthArray.push('fera3');
 		this.setTachieHoppe(1);
 		this.setTachieSweat(1);
 	}
@@ -7038,6 +8000,8 @@ Game_Actor.prototype.emoteLayingPaizuriPose = function() {
 		eyesArray.push('sage1');
 		eyesArray.push('sage2');
 		eyesArray.push('sage3');
+		mouthArray.push('fera4');
+		mouthArray.push('fera5');
 		if(isAroused) this.setTachieHoppe(1);
 	}
 	else if(faceId === 24) {
@@ -7045,6 +8009,8 @@ Game_Actor.prototype.emoteLayingPaizuriPose = function() {
 		eyesArray.push('toji1');
 		eyesArray.push('toji4');
 		eyesArray.push('sage3');
+		mouthArray.push('fera4');
+		mouthArray.push('fera5');
 		if(isAroused) this.setTachieHoppe(1);
 		if(isAroused) this.setTachieSweat(1);
 	}
@@ -8036,9 +9002,390 @@ Game_Actor.prototype.emoteKickCounterPose = function(setKissingOn, setKissingOff
 };
 
 /////////////////
+// Emote Werewolf Back Pose
+/////////////////
+Game_Actor.prototype.emoteWerewolfBackPose = function() {
+	let justOrgasmed = this.didLastGetHitBySkillType(JUST_SKILLTYPE_KARRYN_ORGASM);
+	let isAroused = this.isAroused() || justOrgasmed;
+
+	let pussyInserted = this.isBodySlotPenis(PUSSY_ID);
+	let analInserted = this.isBodySlotPenis(ANAL_ID);
+	let givingBJ = this.isBodySlotPenis(MOUTH_ID);
+
+	let lastHitSex = this.didLastGetHitBySkillType(JUST_SKILLTYPE_ENEMY_PUSSY_SEX) || this.didLastGetHitBySkillType(JUST_SKILLTYPE_ENEMY_ANAL_SEX) || this.didLastGetHitBySkillType(JUST_SKILLTYPE_KARRYN_PUSSY_SEX) || this.didLastGetHitBySkillType(JUST_SKILLTYPE_KARRYN_ANAL_SEX) || this.didLastGetHitBySkillType(JUST_SKILLTYPE_ENEMY_TOY_PLAY_PUSSY) || this.didLastGetHitBySkillType(JUST_SKILLTYPE_ENEMY_TOY_PLAY_ANAL);
+
+	let karrynSwallowingCum = this.didLastGetHitBySkillType(JUST_SKILLTYPE_ENEMY_CUM_SWALLOW);
+	let justGotPussyCreampie = this.didLastGetHitBySkillType(JUST_SKILLTYPE_ENEMY_PUSSY_CREAMPIE);
+	let justGotAnalCreampie = this.didLastGetHitBySkillType(JUST_SKILLTYPE_ENEMY_ANAL_CREAMPIE);
+	let karrynGotBukkaked = this.didLastGetHitBySkillType(JUST_SKILLTYPE_ENEMY_BUKKAKE);
+	let enemyCummingFromMouth = $gameTroop._lastEnemySlotToCum === MOUTH_ID;
+	
+	let generalReactionScore = this.getReactionScore();
+	let orgasmReactionScore = this.getOrgasmReactionScore();
+	let bukkakeReactionScore = this.getBukkakeReactionScore();
+	let swallowReactionScore = this.getSwallowReactionScore();
+	let pussyCreampieReactionScore = this.getPussyCreampieReactionScore();
+	let analCreampieReactionScore = this.getAnalCreampieReactionScore();
+	
+	let generallvl3 = generalReactionScore >= VAR_DEF_RS_LV3_REQ;
+	let generallvl2 = generalReactionScore >= VAR_DEF_RS_LV2_REQ;
+	let orgasmlvl3 = orgasmReactionScore >= VAR_DEF_RS_LV3_REQ;
+	let orgasmlvl2 = orgasmReactionScore >= VAR_DEF_RS_LV2_REQ;
+	let bukkakelvl3 = bukkakeReactionScore >= VAR_DEF_RS_LV3_REQ;
+	let bukkakelvl2 = bukkakeReactionScore >= VAR_DEF_RS_LV2_REQ;
+	let swallowlvl3 = swallowReactionScore  >= VAR_DEF_RS_LV3_REQ;
+	let swallowlvl2 = swallowReactionScore >= VAR_DEF_RS_LV2_REQ;
+	let pussyCreampielvl3 = pussyCreampieReactionScore  >= VAR_DEF_RS_LV3_REQ;
+	let pussyCreampielvl2 = pussyCreampieReactionScore >= VAR_DEF_RS_LV2_REQ;
+	let analCreampielvl3 = analCreampieReactionScore  >= VAR_DEF_RS_LV3_REQ;
+	let analCreampielvl2 = analCreampieReactionScore >= VAR_DEF_RS_LV2_REQ;
+	
+	let faceArray = [];
+	this.resetTachieHoppe();
+	this.resetTachieSweat();
+
+
+	if(givingBJ) {
+		if(karrynSwallowingCum) {
+			if(swallowlvl3) 
+				faceArray.push(17);
+			else if(swallowlvl2) 
+				faceArray.push(11);
+			else
+				faceArray.push(5);
+		}
+		else if(justOrgasmed) {
+			if(orgasmlvl3) 
+				faceArray.push(18);
+			else if(orgasmlvl2) 
+				faceArray.push(12);
+			else
+				faceArray.push(6);
+		}
+		else {
+			if(generallvl3) 
+				faceArray.push(16);
+			else if(generallvl2) 
+				faceArray.push(10);
+			else
+				faceArray.push(4);
+		}
+		
+	}
+	else { //not fera
+		if(justGotPussyCreampie) {
+			if(pussyCreampielvl3) 
+				faceArray.push(14);
+			else if(pussyCreampielvl2) 
+				faceArray.push(8);
+			else
+				faceArray.push(2);
+		}
+		else if(justGotAnalCreampie) {
+			if(analCreampielvl3) 
+				faceArray.push(14);
+			else if(analCreampielvl2) 
+				faceArray.push(8);
+			else
+				faceArray.push(2);
+		}
+		else if(karrynGotBukkaked) {
+			if(enemyCummingFromMouth) {
+				if(bukkakelvl3) 
+					faceArray.push(15);
+				else if(bukkakelvl2) 
+					faceArray.push(9);
+				else
+					faceArray.push(3);
+			}
+			else {
+				if(bukkakelvl3) 
+					faceArray.push(14);
+				else if(bukkakelvl2) 
+					faceArray.push(8);
+				else
+					faceArray.push(2);
+			}
+		}
+		else if(justOrgasmed) {
+			if(orgasmlvl3) 
+				faceArray.push(15);
+			else if(orgasmlvl2) 
+				faceArray.push(9);
+			else
+				faceArray.push(3);
+		}
+		else {
+			if(generallvl3) 
+				faceArray.push(13);
+			else if(generallvl2) 
+				faceArray.push(7);
+			else
+				faceArray.push(1);
+		}
+	}
+
+	let faceId = faceArray[Math.randomInt(faceArray.length)];
+	let eyebrowsArray = [];
+	let eyesArray = [];
+	let mouthArray = [];
+	
+	if(faceId === 1) {
+		eyebrowsArray.push('koma1');
+		eyebrowsArray.push('koma2');
+		eyebrowsArray.push('oko1');
+		eyesArray.push('mae1');
+		eyesArray.push('mae2');
+		eyesArray.push('yoko1');
+		eyesArray.push('yoko2');
+		mouthArray.push('ku1');
+		mouthArray.push('ho1');
+		mouthArray.push('ahe1');
+		this.setTachieHoppe(1);
+		this.setTachieSweat(1);
+	}
+	else if(faceId === 2) {
+		eyebrowsArray.push('koma1');
+		eyebrowsArray.push('koma2');
+		eyebrowsArray.push('oko1');
+		eyesArray.push('yoko2');
+		eyesArray.push('yoko3');
+		mouthArray.push('ku1');
+		mouthArray.push('ho2');
+		mouthArray.push('ahe1');
+		mouthArray.push('ahe2');
+		this.setTachieHoppe(1);
+		this.setTachieSweat(1);
+	}
+	else if(faceId === 3) {
+		eyebrowsArray.push('koma1');
+		eyebrowsArray.push('koma2');
+		eyebrowsArray.push('oko1');
+		eyesArray.push('yoko3');
+		eyesArray.push('mae3');
+		eyesArray.push('toji1');
+		mouthArray.push('ho2');
+		mouthArray.push('ahe2');
+		mouthArray.push('ahe3');
+		mouthArray.push('ahe4');
+		this.setTachieHoppe(1);
+		this.setTachieSweat(1);
+	}
+	else if(faceId === 4) {
+		eyebrowsArray.push('koma1');
+		eyebrowsArray.push('koma2');
+		eyebrowsArray.push('oko1');
+		eyesArray.push('mae1');
+		eyesArray.push('mae2');
+		mouthArray.push('fera1');
+		this.setTachieHoppe(1);
+		this.setTachieSweat(1);
+	}
+	else if(faceId === 5) {
+		eyebrowsArray.push('koma1');
+		eyebrowsArray.push('koma2');
+		eyebrowsArray.push('oko1');
+		eyesArray.push('mae2');
+		eyesArray.push('mae3');
+		mouthArray.push('fera1');
+		this.setTachieHoppe(1);
+		this.setTachieSweat(1);
+	}
+	else if(faceId === 6) {
+		eyebrowsArray.push('koma1');
+		eyebrowsArray.push('koma2');
+		eyesArray.push('mae3');
+		eyesArray.push('urumae1');
+		eyesArray.push('urumae2');
+		eyesArray.push('toji1');
+		mouthArray.push('fera1');
+		this.setTachieHoppe(1);
+		this.setTachieSweat(1);
+	}
+	else if(faceId === 7) {
+		eyebrowsArray.push('koma1');
+		eyebrowsArray.push('oko2');
+		eyesArray.push('yoko1');
+		eyesArray.push('yoko2');
+		eyesArray.push('mae1');
+		eyesArray.push('mae2');
+		mouthArray.push('ho1');
+		mouthArray.push('ho2');
+		mouthArray.push('chu1');
+		this.setTachieHoppe(1);
+	}
+	else if(faceId === 8) {
+		eyebrowsArray.push('koma1');
+		eyebrowsArray.push('koma2');
+		eyebrowsArray.push('oko2');
+		eyesArray.push('yoko2');
+		eyesArray.push('yoko3');
+		eyesArray.push('uruyoko1');
+		eyesArray.push('uruyoko2');
+		mouthArray.push('ahe1');
+		mouthArray.push('ahe2');
+		mouthArray.push('ho2');
+		mouthArray.push('chu1');
+		this.setTachieHoppe(1);
+		this.setTachieSweat(1);
+	}
+	else if(faceId === 9) {
+		eyebrowsArray.push('koma1');
+		eyebrowsArray.push('koma2');
+		eyebrowsArray.push('oko1');
+		eyebrowsArray.push('oko2');
+		eyesArray.push('mae3');
+		eyesArray.push('yoko3');
+		eyesArray.push('urumae2');
+		eyesArray.push('uruyoko2');
+		eyesArray.push('toji1');
+		mouthArray.push('ahe1');
+		mouthArray.push('ahe2');
+		mouthArray.push('ahe3');
+		mouthArray.push('ahe4');
+		this.setTachieHoppe(1);
+		this.setTachieSweat(1);
+	}
+	else if(faceId === 10) {
+		eyebrowsArray.push('koma1');
+		eyebrowsArray.push('koma2');
+		eyebrowsArray.push('oko2');
+		eyesArray.push('mae1');
+		eyesArray.push('mae2');
+		eyesArray.push('urumae2');
+		mouthArray.push('fera1');
+		this.setTachieHoppe(1);
+	}
+	else if(faceId === 11) {
+		eyebrowsArray.push('koma1');
+		eyebrowsArray.push('koma2');
+		eyebrowsArray.push('oko1');
+		eyesArray.push('mae3');
+		eyesArray.push('urumae3');
+		eyesArray.push('urumae2');
+		mouthArray.push('fera1');
+		this.setTachieHoppe(1);
+		this.setTachieSweat(1);
+	}
+	else if(faceId === 12) {
+		eyebrowsArray.push('koma1');
+		eyebrowsArray.push('koma2');
+		eyesArray.push('ahe1');
+		eyesArray.push('toji1');
+		eyesArray.push('urumae3');
+		eyesArray.push('urumae2');
+		mouthArray.push('fera1');
+		this.setTachieHoppe(1);
+		this.setTachieSweat(1);
+	}
+	else if(faceId === 13) {
+		eyebrowsArray.push('nico1');
+		eyebrowsArray.push('nico2');
+		eyesArray.push('mae1');
+		eyesArray.push('uruyoko1');
+		eyesArray.push('uruyoko2');
+		eyesArray.push('urumae2');
+		mouthArray.push('chu1');
+		mouthArray.push('nico1');
+		mouthArray.push('nico2');
+		mouthArray.push('pero1');
+		if(isAroused) this.setTachieHoppe(1);
+	}
+	else if(faceId === 14) {
+		eyebrowsArray.push('nico1');
+		eyebrowsArray.push('nico2');
+		eyebrowsArray.push('oko2');
+		eyesArray.push('uruyoko1');
+		eyesArray.push('uruyoko2');
+		eyesArray.push('heartyoko1');
+		eyesArray.push('heartyoko2');
+		mouthArray.push('chu1');
+		mouthArray.push('ho2');
+		mouthArray.push('ahe1');
+		mouthArray.push('ahe2');
+		this.setTachieHoppe(1);
+		if(Math.randomInt(2) === 0) this.setTachieSweat(1);
+	}
+	else if(faceId === 15) {
+		eyebrowsArray.push('nico1');
+		eyebrowsArray.push('nico2');
+		eyebrowsArray.push('koma1');
+		eyebrowsArray.push('koma2');
+		eyesArray.push('heartmae1');
+		eyesArray.push('heartmae2');
+		eyesArray.push('heartyoko1');
+		eyesArray.push('heartyoko2');
+		eyesArray.push('heartahe1');
+		eyesArray.push('toji1');
+		mouthArray.push('ahe3');
+		mouthArray.push('ahe4');
+		mouthArray.push('ahe1');
+		mouthArray.push('ahe2');
+		if(isAroused) this.setTachieHoppe(1);
+		if(Math.randomInt(2) === 0) this.setTachieSweat(1);
+	}
+	else if(faceId === 16) {
+		eyebrowsArray.push('nico1');
+		eyebrowsArray.push('nico2');
+		eyesArray.push('heartmae1');
+		eyesArray.push('mae1');
+		eyesArray.push('mae2');
+		eyesArray.push('urumae1');
+		eyesArray.push('urumae2');
+		mouthArray.push('fera2');
+		mouthArray.push('fera3');
+		if(isAroused) this.setTachieHoppe(1);
+	}
+	else if(faceId === 17) {
+		eyebrowsArray.push('nico1');
+		eyebrowsArray.push('nico2');
+		eyebrowsArray.push('koma1');
+		eyebrowsArray.push('koma2');
+		eyebrowsArray.push('oko2');
+		eyesArray.push('heartmae2');
+		eyesArray.push('mae3');
+		eyesArray.push('mae2');
+		eyesArray.push('urumae3');
+		eyesArray.push('urumae2');
+		mouthArray.push('fera2');
+		mouthArray.push('fera3');
+		if(isAroused) this.setTachieHoppe(1);
+		if(Math.randomInt(2) === 0) this.setTachieSweat(1);
+	}
+	else if(faceId === 18) {
+		eyebrowsArray.push('nico1');
+		eyebrowsArray.push('nico2');
+		eyebrowsArray.push('koma1');
+		eyebrowsArray.push('koma2');
+		eyebrowsArray.push('oko1');
+		eyebrowsArray.push('oko2');
+		eyesArray.push('heartmae1');
+		eyesArray.push('heartmae2');
+		eyesArray.push('heartahe1');
+		eyesArray.push('toji1');
+		eyesArray.push('urumae3');
+		mouthArray.push('fera1');
+		mouthArray.push('fera2');
+		mouthArray.push('fera3');
+		if(isAroused) this.setTachieHoppe(1);
+		if(Math.randomInt(2) === 0) this.setTachieSweat(1);
+	}
+
+	if(eyebrowsArray.length > 0) {
+		this.setTachieEyebrows(eyebrowsArray[Math.randomInt(eyebrowsArray.length)]);
+	}
+	if(eyesArray.length > 0) {
+		this.setTachieEyes(eyesArray[Math.randomInt(eyesArray.length)]);
+	}
+	if(mouthArray.length > 0) {
+		this.setTachieMouth(mouthArray[Math.randomInt(mouthArray.length)]);
+	}
+};
+
+/////////////////
 // Emote Slime Anal Pose
 /////////////////
-Game_Actor.prototype.emoteSlimePiledriver = function() {
+Game_Actor.prototype.emoteSlimePiledriverPose = function() {
 	let ranNum = Math.randomInt(100);
 	let justOrgasmed = this.didLastGetHitBySkillType(JUST_SKILLTYPE_KARRYN_ORGASM);
 	let isAroused = this.isAroused() || justOrgasmed;
@@ -8297,7 +9644,7 @@ Game_Actor.prototype.emoteSlimePiledriver = function() {
 		this.setTachieSweat(1);
 	}
 	
-	if(givingBJ) 
+	if(this.tachieCockMouth) 
 		this.resetTachieMouth();
 };
 
@@ -9350,6 +10697,593 @@ Game_Actor.prototype.emoteDefeatedLevelThreePose = function() {
 	if(mouthArray.length > 0) {
 		this.setTachieMouth(mouthArray[Math.randomInt(mouthArray.length)]);
 	}
+};
+
+// Defeated Level Four
+Game_Actor.prototype.emoteDefeatedLevelFourPose = function() {
+	let justOrgasmed = this.didLastGetHitBySkillType(JUST_SKILLTYPE_KARRYN_ORGASM);
+	let isAroused = this.isAroused() || justOrgasmed;
+	
+	let givingBJ = this.isBodySlotPenis(MOUTH_ID);
+	
+	let lastHitSex = this.didLastGetHitBySkillType(JUST_SKILLTYPE_ENEMY_PUSSY_SEX) || this.didLastGetHitBySkillType(JUST_SKILLTYPE_ENEMY_ANAL_SEX) || this.didLastGetHitBySkillType(JUST_SKILLTYPE_KARRYN_PUSSY_SEX) || this.didLastGetHitBySkillType(JUST_SKILLTYPE_KARRYN_ANAL_SEX) || this.didLastGetHitBySkillType(JUST_SKILLTYPE_ENEMY_TOY_PLAY_PUSSY) || this.didLastGetHitBySkillType(JUST_SKILLTYPE_ENEMY_TOY_PLAY_ANAL);
+	let justGotSpanked = this.didLastGetHitBySkillType(JUST_SKILLTYPE_ENEMY_SPANKING);
+	
+	let karrynSwallowingCum = this.didLastGetHitBySkillType(JUST_SKILLTYPE_ENEMY_CUM_SWALLOW);
+	let justGotPussyCreampie = this.didLastGetHitBySkillType(JUST_SKILLTYPE_ENEMY_PUSSY_CREAMPIE);
+	let justGotAnalCreampie = this.didLastGetHitBySkillType(JUST_SKILLTYPE_ENEMY_ANAL_CREAMPIE);
+	let karrynGotBukkaked = this.didLastGetHitBySkillType(JUST_SKILLTYPE_ENEMY_BUKKAKE);
+
+
+	let generalReactionScore = this.getReactionScore();
+	let orgasmReactionScore = this.getOrgasmReactionScore();
+	let bukkakeReactionScore = this.getBukkakeReactionScore();
+	let swallowReactionScore = this.getSwallowReactionScore();
+	let pussyCreampieReactionScore = this.getPussyCreampieReactionScore();
+	let analCreampieReactionScore = this.getAnalCreampieReactionScore();
+	
+	let generallvl3 = generalReactionScore >= VAR_DEF_RS_LV3_REQ;
+	let generallvl2 = generalReactionScore >= VAR_DEF_RS_LV2_REQ;
+	let orgasmlvl3 = orgasmReactionScore >= VAR_DEF_RS_LV3_REQ;
+	let orgasmlvl2 = orgasmReactionScore >= VAR_DEF_RS_LV2_REQ;
+	let bukkakelvl3 = bukkakeReactionScore >= VAR_DEF_RS_LV3_REQ;
+	let bukkakelvl2 = bukkakeReactionScore >= VAR_DEF_RS_LV2_REQ;
+	let swallowlvl3 = swallowReactionScore  >= VAR_DEF_RS_LV3_REQ;
+	let swallowlvl2 = swallowReactionScore >= VAR_DEF_RS_LV2_REQ;
+	let pussyCreampielvl3 = pussyCreampieReactionScore  >= VAR_DEF_RS_LV3_REQ;
+	let pussyCreampielvl2 = pussyCreampieReactionScore >= VAR_DEF_RS_LV2_REQ;
+	let analCreampielvl3 = analCreampieReactionScore  >= VAR_DEF_RS_LV3_REQ;
+	let analCreampielvl2 = analCreampieReactionScore >= VAR_DEF_RS_LV2_REQ;
+	
+	let faceArray = [];
+	this.resetTachieHoppe();
+	this.resetTachieSweat();
+	
+	if(givingBJ) {
+		if(karrynSwallowingCum) {
+			if(swallowlvl3) 
+				faceArray.push(30);
+			else if(swallowlvl2) 
+				faceArray.push(20);
+			else
+				faceArray.push(10);
+		}
+		else if(justOrgasmed) {
+			if(orgasmlvl3) 
+				faceArray.push(30);
+			else if(orgasmlvl2) 
+				faceArray.push(20);
+			else
+				faceArray.push(10);
+		}
+		else if(justGotPussyCreampie) {
+			if(pussyCreampielvl3) 
+				faceArray.push(29);
+			else if(pussyCreampielvl2) 
+				faceArray.push(19);
+			else
+				faceArray.push(9);
+		}
+		else if(justGotAnalCreampie) {
+			if(analCreampielvl3) 
+				faceArray.push(29);
+			else if(analCreampielvl2) 
+				faceArray.push(19);
+			else
+				faceArray.push(9);
+		}
+		else if(justGotSpanked) {
+			if(generallvl3) 
+				faceArray.push(28);
+			else if(generallvl2) 
+				faceArray.push(18);
+			else
+				faceArray.push(8);
+		}
+		else if(lastHitSex) {
+			if(generallvl3) 
+				faceArray.push(27);
+			else if(generallvl2) 
+				faceArray.push(17);
+			else
+				faceArray.push(7);
+		}
+		else {
+			if(generallvl3) 
+				faceArray.push(26);
+			else if(generallvl2) 
+				faceArray.push(16);
+			else
+				faceArray.push(6);
+		}
+	}
+	else { //not fera
+		if(justOrgasmed) {
+			if(orgasmlvl3) 
+				faceArray.push(25);
+			else if(orgasmlvl2) 
+				faceArray.push(15);
+			else
+				faceArray.push(5);
+		}
+		else if(justGotPussyCreampie) {
+			if(pussyCreampielvl3) 
+				faceArray.push(24);
+			else if(pussyCreampielvl2) 
+				faceArray.push(14);
+			else
+				faceArray.push(4);
+		}
+		else if(justGotAnalCreampie) {
+			if(analCreampielvl3) 
+				faceArray.push(24);
+			else if(analCreampielvl2) 
+				faceArray.push(14);
+			else
+				faceArray.push(4);
+		}
+		else if(justGotSpanked) {
+			if(generallvl3) 
+				faceArray.push(23);
+			else if(generallvl2) 
+				faceArray.push(13);
+			else
+				faceArray.push(3);
+		}
+		else if(lastHitSex) {
+			if(generallvl3) 
+				faceArray.push(22);
+			else if(generallvl2) 
+				faceArray.push(12);
+			else
+				faceArray.push(2);
+		}
+		else {
+			if(generallvl3) 
+				faceArray.push(21);
+			else if(generallvl2) 
+				faceArray.push(11);
+			else
+				faceArray.push(1);
+		}
+		
+	}
+	
+	let faceId = faceArray[Math.randomInt(faceArray.length)];
+	let eyebrowsArray = [];
+	let eyesArray = [];
+	let mouthArray = [];
+	
+	if(faceId === 1) {
+		eyebrowsArray.push('oko1');
+		eyebrowsArray.push('koma1');
+		eyebrowsArray.push('koma2');
+		eyesArray.push('yoko1');
+		eyesArray.push('yoko2');
+		mouthArray.push('mu1');
+		mouthArray.push('ho1');
+		mouthArray.push('ho2');
+		mouthArray.push('ku1');
+		mouthArray.push('ku2');
+		this.setTachieHoppe(1);
+		this.setTachieSweat(1);
+	}
+	else if(faceId === 2) {
+		eyebrowsArray.push('oko1');
+		eyebrowsArray.push('koma1');
+		eyebrowsArray.push('koma2');
+		eyesArray.push('yoko1');
+		eyesArray.push('yoko2');
+		mouthArray.push('ahe1');
+		mouthArray.push('ho1');
+		mouthArray.push('ho2');
+		mouthArray.push('ku1');
+		mouthArray.push('ku2');
+		this.setTachieHoppe(1);
+		this.setTachieSweat(1);
+	}
+	else if(faceId === 3) {
+		eyebrowsArray.push('oko1');
+		eyesArray.push('toji2');
+		eyesArray.push('yoko2');
+		eyesArray.push('uruyoko2');
+		mouthArray.push('ku1');
+		mouthArray.push('ku2');
+		this.setTachieHoppe(1);
+		this.setTachieSweat(1);
+	}
+	else if(faceId === 4) {
+		eyebrowsArray.push('koma1');
+		eyebrowsArray.push('koma2');
+		eyesArray.push('yoko1');
+		eyesArray.push('yoko2');
+		eyesArray.push('uruyoko1');
+		mouthArray.push('ho2');
+		mouthArray.push('mu2');
+		mouthArray.push('ku1');
+		mouthArray.push('ku2');
+		this.setTachieHoppe(1);
+		this.setTachieSweat(1);
+	}
+	else if(faceId === 5) {
+		eyebrowsArray.push('oko1');
+		eyebrowsArray.push('koma1');
+		eyebrowsArray.push('koma2');
+		eyesArray.push('toji2');
+		eyesArray.push('yoko2');
+		eyesArray.push('uruyoko2');
+		mouthArray.push('ho2');
+		mouthArray.push('ku1');
+		mouthArray.push('ku2');
+		mouthArray.push('ahe1');
+		mouthArray.push('ahe2');
+		this.setTachieHoppe(1);
+		this.setTachieSweat(1);
+	}
+	else if(faceId === 6) {
+		eyebrowsArray.push('oko1');
+		eyebrowsArray.push('koma1');
+		eyebrowsArray.push('koma2');
+		eyesArray.push('mae1');
+		eyesArray.push('mae2');
+		mouthArray.push('fera1');
+		mouthArray.push('fera2');
+		this.setTachieHoppe(1);
+		this.setTachieSweat(1);
+	}
+	else if(faceId === 7) {
+		eyebrowsArray.push('oko1');
+		eyebrowsArray.push('koma1');
+		eyebrowsArray.push('koma2');
+		eyesArray.push('yoko1');
+		eyesArray.push('yoko2');
+		mouthArray.push('fera1');
+		mouthArray.push('fera2');
+		this.setTachieHoppe(1);
+		this.setTachieSweat(1);
+	}
+	else if(faceId === 8) {
+		eyebrowsArray.push('oko1');
+		eyesArray.push('toji2');
+		eyesArray.push('yoko2');
+		eyesArray.push('uruyoko2');
+		mouthArray.push('fera1');
+		mouthArray.push('fera2');
+		this.setTachieHoppe(1);
+		this.setTachieSweat(1);
+	}
+	else if(faceId === 9) {
+		eyebrowsArray.push('koma1');
+		eyebrowsArray.push('koma2');
+		eyesArray.push('yoko1');
+		eyesArray.push('yoko2');
+		eyesArray.push('uruyoko1');
+		mouthArray.push('fera1');
+		mouthArray.push('fera2');
+		this.setTachieHoppe(1);
+		this.setTachieSweat(1);
+	}
+	else if(faceId === 10) {
+		eyebrowsArray.push('oko1');
+		eyebrowsArray.push('koma1');
+		eyebrowsArray.push('koma2');
+		eyesArray.push('toji1');
+		eyesArray.push('mae2');
+		eyesArray.push('urumae2');
+		mouthArray.push('fera1');
+		mouthArray.push('fera2');
+		this.setTachieHoppe(1);
+		this.setTachieSweat(1);
+	}
+	else if(faceId === 11) {
+		eyebrowsArray.push('kiri1');
+		eyebrowsArray.push('kiri2');
+		eyesArray.push('yoko1');
+		eyesArray.push('yoko2');
+		mouthArray.push('mu1');
+		mouthArray.push('mu2');
+		mouthArray.push('ho1');
+		mouthArray.push('ho2');
+		this.setTachieHoppe(1);
+	}
+	else if(faceId === 12) {
+		eyebrowsArray.push('kiri1');
+		eyebrowsArray.push('koma1');
+		eyebrowsArray.push('koma2');
+		eyesArray.push('yoko1');
+		eyesArray.push('yoko2');
+		mouthArray.push('mu2');
+		mouthArray.push('ho1');
+		mouthArray.push('ho2');
+		mouthArray.push('nico1');
+		mouthArray.push('ahe1');
+		this.setTachieHoppe(1);
+	}
+	else if(faceId === 13) {
+		eyebrowsArray.push('oko1');
+		eyesArray.push('toji1');
+		eyesArray.push('yoko2');
+		eyesArray.push('uruyoko2');
+		mouthArray.push('ahe1');
+		mouthArray.push('mu2');
+		mouthArray.push('ku1');
+		mouthArray.push('ku2');
+		this.setTachieHoppe(1);
+		this.setTachieSweat(1);
+	}
+	else if(faceId === 14) {
+		eyebrowsArray.push('kiri1');
+		eyebrowsArray.push('kiri2');
+		eyebrowsArray.push('koma1');
+		eyesArray.push('yoko1');
+		eyesArray.push('yoko2');
+		eyesArray.push('uruyoko1');
+		mouthArray.push('ho1');
+		mouthArray.push('ho2');
+		mouthArray.push('nico1');
+		mouthArray.push('mu1');
+		this.setTachieHoppe(1);
+		this.setTachieSweat(1);
+	}
+	else if(faceId === 15) {
+		eyebrowsArray.push('oko1');
+		eyebrowsArray.push('koma1');
+		eyebrowsArray.push('koma2');
+		eyebrowsArray.push('kiri1');
+		eyesArray.push('toji2');
+		eyesArray.push('yoko2');
+		eyesArray.push('uruyoko2');
+		eyesArray.push('ahe1');
+		mouthArray.push('ho1');
+		mouthArray.push('ho2');
+		mouthArray.push('ku1');
+		mouthArray.push('ahe1');
+		mouthArray.push('ahe2');
+		mouthArray.push('ahe3');
+		this.setTachieHoppe(1);
+		this.setTachieSweat(1);
+	}
+	else if(faceId === 16) {
+		eyebrowsArray.push('kiri1');
+		eyebrowsArray.push('kiri2');
+		eyesArray.push('mae1');
+		eyesArray.push('mae2');
+		eyesArray.push('urumae1');
+		mouthArray.push('fera3');
+		mouthArray.push('fera4');
+		this.setTachieHoppe(1);
+	}
+	else if(faceId === 17) {
+		eyebrowsArray.push('kiri1');
+		eyebrowsArray.push('koma1');
+		eyebrowsArray.push('koma2');
+		eyesArray.push('yoko1');
+		eyesArray.push('yoko2');
+		mouthArray.push('fera3');
+		mouthArray.push('fera4');
+		this.setTachieHoppe(1);
+	}
+	else if(faceId === 18) {
+		eyebrowsArray.push('oko1');
+		eyesArray.push('toji1');
+		eyesArray.push('yoko2');
+		eyesArray.push('uruyoko2');
+		mouthArray.push('fera3');
+		mouthArray.push('fera4');
+		this.setTachieHoppe(1);
+		this.setTachieSweat(1);
+	}
+	else if(faceId === 19) {
+		eyebrowsArray.push('kiri1');
+		eyebrowsArray.push('kiri2');
+		eyebrowsArray.push('koma1');
+		eyesArray.push('yoko1');
+		eyesArray.push('yoko2');
+		eyesArray.push('uruyoko1');
+		mouthArray.push('fera3');
+		mouthArray.push('fera4');
+		this.setTachieHoppe(1);
+		this.setTachieSweat(1);
+	}
+	else if(faceId === 20) {
+		eyebrowsArray.push('oko1');
+		eyebrowsArray.push('koma1');
+		eyebrowsArray.push('koma2');
+		eyebrowsArray.push('kiri1');
+		eyesArray.push('toji1');
+		eyesArray.push('mae2');
+		eyesArray.push('urumae2');
+		eyesArray.push('ahe1');
+		mouthArray.push('fera3');
+		mouthArray.push('fera4');
+		this.setTachieHoppe(1);
+		this.setTachieSweat(1);
+	}
+	else if(faceId === 21) {
+		eyebrowsArray.push('nico1');
+		eyebrowsArray.push('nico2');
+		eyesArray.push('yoko1');
+		eyesArray.push('yoko2');
+		mouthArray.push('nico1');
+		mouthArray.push('nico2');
+		mouthArray.push('nico3');
+		mouthArray.push('mu2');
+		mouthArray.push('ho1');
+		mouthArray.push('ho2');
+		mouthArray.push('ho3');
+		if(isAroused) this.setTachieHoppe(1);
+	}
+	else if(faceId === 22) {
+		eyebrowsArray.push('nico1');
+		eyebrowsArray.push('nico2');
+		eyebrowsArray.push('kiri1');
+		eyebrowsArray.push('kiri2');
+		eyesArray.push('yoko1');
+		eyesArray.push('yoko2');
+		eyesArray.push('uruyoko1');
+		eyesArray.push('uruyoko2');
+		mouthArray.push('mu2');
+		mouthArray.push('ho2');
+		mouthArray.push('ho3');
+		mouthArray.push('nico1');
+		mouthArray.push('nico2');
+		mouthArray.push('nico3');
+		mouthArray.push('ahe3');
+		if(isAroused) this.setTachieHoppe(1);
+	}
+	else if(faceId === 23) {
+		eyebrowsArray.push('nico1');
+		eyebrowsArray.push('nico2');
+		eyebrowsArray.push('kiri1');
+		eyebrowsArray.push('kiri2');
+		eyesArray.push('toji2');
+		eyesArray.push('uruyoko1');
+		eyesArray.push('uruyoko2');
+		eyesArray.push('heartyoko1');
+		eyesArray.push('ahe1');
+		mouthArray.push('nico1');
+		mouthArray.push('nico2');
+		mouthArray.push('nico3');
+		mouthArray.push('ahe1');
+		mouthArray.push('ahe2');
+		mouthArray.push('ahe4');
+		mouthArray.push('mu2');
+		if(isAroused) this.setTachieHoppe(1);
+		if(Math.randomInt(2) === 0) this.setTachieSweat(1);
+	}
+	else if(faceId === 24) {
+		eyebrowsArray.push('nico1');
+		eyebrowsArray.push('nico2');
+		eyebrowsArray.push('kiri1');
+		eyebrowsArray.push('kiri2');
+		eyebrowsArray.push('koma1');
+		eyesArray.push('yoko1');
+		eyesArray.push('yoko2');
+		eyesArray.push('uruyoko1');
+		eyesArray.push('uruyoko2');
+		mouthArray.push('ho3');
+		mouthArray.push('nico1');
+		mouthArray.push('nico2');
+		mouthArray.push('nico3');
+		mouthArray.push('ahe2');
+		mouthArray.push('ahe3');
+		mouthArray.push('ahe4');
+		if(isAroused) this.setTachieHoppe(1);
+		if(Math.randomInt(2) === 0) this.setTachieSweat(1);
+	}
+	else if(faceId === 25) {
+		eyebrowsArray.push('oko1');
+		eyebrowsArray.push('koma1');
+		eyebrowsArray.push('kiri2');
+		eyebrowsArray.push('nico1');
+		eyesArray.push('toji1');
+		eyesArray.push('uruyoko1');
+		eyesArray.push('uruyoko2');
+		eyesArray.push('heartyoko1');
+		eyesArray.push('heartyoko2');
+		eyesArray.push('ahe1');
+		eyesArray.push('heartahe1');
+		mouthArray.push('ho2');
+		mouthArray.push('ho3');
+		mouthArray.push('nico2');
+		mouthArray.push('nico3');
+		mouthArray.push('ahe2');
+		mouthArray.push('ahe3');
+		mouthArray.push('ahe4');
+		this.setTachieHoppe(1);
+		if(Math.randomInt(2) === 0) this.setTachieSweat(1);
+	}
+	else if(faceId === 26) {
+		eyebrowsArray.push('nico1');
+		eyebrowsArray.push('nico2');
+		eyesArray.push('mae1');
+		eyesArray.push('mae2');
+		mouthArray.push('fera4');
+		mouthArray.push('fera5');
+		mouthArray.push('fera6');
+		if(isAroused) this.setTachieHoppe(1);
+	}
+	else if(faceId === 27) {
+		eyebrowsArray.push('nico1');
+		eyebrowsArray.push('nico2');
+		eyebrowsArray.push('kiri1');
+		eyebrowsArray.push('kiri2');
+		eyesArray.push('yoko1');
+		eyesArray.push('yoko2');
+		eyesArray.push('uruyoko1');
+		eyesArray.push('uruyoko2');
+		mouthArray.push('fera4');
+		mouthArray.push('fera5');
+		mouthArray.push('fera6');
+		if(isAroused) this.setTachieHoppe(1);
+		if(Math.randomInt(2) === 0) this.setTachieSweat(1);
+	}
+	else if(faceId === 28) {
+		eyebrowsArray.push('nico1');
+		eyebrowsArray.push('nico2');
+		eyebrowsArray.push('kiri1');
+		eyebrowsArray.push('kiri2');
+		eyesArray.push('toji2');
+		eyesArray.push('uruyoko1');
+		eyesArray.push('uruyoko2');
+		eyesArray.push('heartyoko1');
+		eyesArray.push('ahe1');
+		mouthArray.push('fera4');
+		mouthArray.push('fera5');
+		mouthArray.push('fera6');
+		if(isAroused) this.setTachieHoppe(1);
+		if(Math.randomInt(2) === 0) this.setTachieSweat(1);
+	}
+	else if(faceId === 29) {
+		eyebrowsArray.push('nico1');
+		eyebrowsArray.push('nico2');
+		eyebrowsArray.push('kiri1');
+		eyebrowsArray.push('kiri2');
+		eyebrowsArray.push('koma1');
+		eyesArray.push('yoko1');
+		eyesArray.push('yoko2');
+		eyesArray.push('uruyoko1');
+		eyesArray.push('uruyoko2');
+		mouthArray.push('fera4');
+		mouthArray.push('fera5');
+		mouthArray.push('fera6');
+		this.setTachieHoppe(1);
+		if(Math.randomInt(2) === 0) this.setTachieSweat(1);
+	}
+	else if(faceId === 30) {
+		eyebrowsArray.push('oko1');
+		eyebrowsArray.push('nico1');
+		eyebrowsArray.push('kiri2');
+		eyebrowsArray.push('koma1');
+		eyesArray.push('toji1');
+		eyesArray.push('urumae1');
+		eyesArray.push('urumae2');
+		eyesArray.push('heartmae1');
+		eyesArray.push('heartmae2');
+		eyesArray.push('ahe1');
+		eyesArray.push('heartahe1');
+		mouthArray.push('fera4');
+		mouthArray.push('fera5');
+		mouthArray.push('fera6');
+		this.setTachieHoppe(1);
+		if(Math.randomInt(2) === 0) this.setTachieSweat(1);
+	}
+	
+	if(eyebrowsArray.length > 0) {
+		this.setTachieEyebrows(eyebrowsArray[Math.randomInt(eyebrowsArray.length)]);
+	}
+	if(eyesArray.length > 0) {
+		this.setTachieEyes(eyesArray[Math.randomInt(eyesArray.length)]);
+	}
+	if(mouthArray.length > 0) {
+		this.setTachieMouth(mouthArray[Math.randomInt(mouthArray.length)]);
+	}
+};
+
+// Defeated Level Five
+Game_Actor.prototype.emoteDefeatedLevelFivePose = function() {
+	
+	
 };
 
 // Defeated Guard
@@ -13876,7 +15810,7 @@ Game_Actor.prototype.emoteGloryToiletStandLeftPose = function() {
 	}
 	
 	this.setMaxTachieSemenBoobsId(1);
-	this.setMaxTachieSemenRightArmId(1);
+	this.setMaxTachieSemenLeftArmId(1);
 	this.setMaxTachieSemenRightLegId(1);
 	this.setMaxTachieSemenLeftLegId(1);
 	this.setMaxTachieSemenBackId(1);

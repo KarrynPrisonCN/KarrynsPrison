@@ -102,7 +102,14 @@ Game_Actor.prototype.getStaminaGrowthRate = function(useExpRate) {
 	
 	growthRate *= this.passiveGrowthRate(PARAM_MAXSTAMINA_ID);
 	
-	if(this.isEquippingThisAccessory(EARRING_TEAR_ID)) growthRate *= 1.2;
+	if(this.isEquippingThisAccessory(EARRING_TEAR_ID)) {
+		if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) growthRate *= 1.1;
+		else growthRate *= 1.2;
+	}
+	if(this.isEquippingThisAccessory(EARRING_MOON_ID)) {
+		if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) growthRate *= 1.25;
+		else growthRate *= 1.5;
+	}
 	if(this.isEquippingThisAccessory(EARRING_SUN_ID)) growthRate *= 0.25;
 	
 	if(this.isUsingThisTitle(TITLE_ID_BATHROOM_QUEEN)) growthRate *= 1.75;
@@ -124,9 +131,15 @@ Game_Actor.prototype.getEnergyGrowthRate = function(useExpRate) {
 	
 	growthRate *= this.passiveGrowthRate(PARAM_MAXENERGY_ID);
 	
-	if(this.isEquippingThisAccessory(EARRING_HEART_ID)) growthRate *= 1.2;
-	if(this.isEquippingThisAccessory(EARRING_SUN_ID)) growthRate *= 1.75;
-	if(this.isEquippingThisAccessory(EARRING_STAR_ID)) growthRate *= 0.2;
+	if(this.isEquippingThisAccessory(EARRING_HEART_ID)) {
+		if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) growthRate *= 1.1;
+		else growthRate *= 1.2;
+	}
+	if(this.isEquippingThisAccessory(EARRING_SUN_ID)) {
+		if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) growthRate *= 1.375;
+		else growthRate *= 1.75;
+	}
+	if(this.isEquippingThisAccessory(EARRING_STAR_ID)) growthRate *= 0.8;
 	
 	if(useExpRate) growthRate *= this.exr;
 	growthRate *= $gameParty.difficultyGrowthRate();
@@ -149,14 +162,24 @@ Game_Actor.prototype.getStrengthGrowthRate = function(useExpRate) {
 	
 	growthRate *= this.passiveGrowthRate(PARAM_STRENGTH_ID);
 	
-	if(this.isEquippingThisAccessory(EARRING_TEAR_ID)) growthRate *= 1.4;
-	if(this.isEquippingThisAccessory(EARRING_CHEETAH_ID)) growthRate *= 1.15;
-	if(this.isEquippingThisAccessory(EARRING_SKULL_ID)) growthRate *= 1.33;
+	if(this.isEquippingThisAccessory(EARRING_TEAR_ID)) {
+		if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) growthRate *= 1.2;
+		else growthRate *= 1.4;
+	}
+	if(this.isEquippingThisAccessory(EARRING_CHEETAH_ID)) {
+		if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) growthRate *= 1.075;
+		else growthRate *= 1.15;
+	}
+	if(this.isEquippingThisAccessory(EARRING_SKULL_ID)) {
+		if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) growthRate *= 1.33;
+		else growthRate *= 1.66;
+	}
 	
 	if(this.isUsingThisTitle(TITLE_ID_HARDCORE_MASOCHIST)) growthRate *= 0.25;
 	else if(this.isUsingThisTitle(TITLE_ID_SOFTCORE_MASOCHIST)) growthRate *= 0.5;
 	else if(this.isUsingThisTitle(TITLE_ID_STRENGTH_TWO)) growthRate *= 1.42;
 	else if(this.isUsingThisTitle(TITLE_ID_STRENGTH_ONE)) growthRate *= 1.25;
+	else if(this.isUsingThisTitle(TITLE_ID_SEX_SKILL_FOOTJOB_TWO)) growthRate *= 1.3;
 	
 	if(useExpRate) growthRate *= this.exr;
 	growthRate *= $gameParty.difficultyGrowthRate();
@@ -174,12 +197,22 @@ Game_Actor.prototype.getDexterityGrowthRate = function(useExpRate) {
 	
 	growthRate *= this.passiveGrowthRate(PARAM_DEXTERITY_ID);
 	
-	if(this.isEquippingThisAccessory(EARRING_LIONESS_ID)) growthRate *= 1.4;
-	if(this.isEquippingThisAccessory(EARRING_SKULL_ID)) growthRate *= 1.33;
-	if(this.isEquippingThisAccessory(MISC_SCARF_ID)) growthRate *= 1.07;
+	if(this.isEquippingThisAccessory(EARRING_LIONESS_ID)) {
+		if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) growthRate *= 1.2;
+		else growthRate *= 1.4;
+	}
+	if(this.isEquippingThisAccessory(EARRING_SKULL_ID)) {
+		if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) growthRate *= 1.33;
+		else growthRate *= 1.66;
+	}
+	if(this.isEquippingThisAccessory(MISC_SCARF_ID)) {
+		if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) growthRate *= 1.035;
+		else growthRate *= 1.07;
+	}
 	
 	if(this.isUsingThisTitle(TITLE_ID_DEXTERITY_TWO)) growthRate *= 1.42;
 	else if(this.isUsingThisTitle(TITLE_ID_DEXTERITY_ONE)) growthRate *= 1.25;
+	else if(this.isUsingThisTitle(TITLE_ID_SEX_SKILL_TITJOB_TWO)) growthRate *= 1.3;
 	
 	if(useExpRate) growthRate *= this.exr;
 	growthRate *= $gameParty.difficultyGrowthRate();
@@ -197,9 +230,18 @@ Game_Actor.prototype.getAgilityGrowthRate = function(useExpRate) {
 	
 	growthRate *= this.passiveGrowthRate(PARAM_AGILITY_ID);
 	
-	if(this.isEquippingThisAccessory(EARRING_CHEETAH_ID)) growthRate *= 1.3;
-	if(this.isEquippingThisAccessory(EARRING_SKULL_ID)) growthRate *= 1.33;
-	if(this.isEquippingThisAccessory(MISC_HIGHHEELS_ID)) growthRate *= 1.05;
+	if(this.isEquippingThisAccessory(EARRING_CHEETAH_ID)) {
+		if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) growthRate *= 1.2;
+		else growthRate *= 1.4;
+	}
+	if(this.isEquippingThisAccessory(EARRING_SKULL_ID)) {
+		if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) growthRate *= 1.33;
+		else growthRate *= 1.66;
+	}
+	if(this.isEquippingThisAccessory(MISC_HIGHHEELS_ID)) {
+		if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) growthRate *= 1.025;
+		else growthRate *= 1.05;
+	}
 	
 	if(this.isUsingThisTitle(TITLE_ID_HARDCORE_MASOCHIST)) growthRate *= 0.25;
 	else if(this.isUsingThisTitle(TITLE_ID_SOFTCORE_MASOCHIST)) growthRate *= 0.5;
@@ -226,7 +268,15 @@ Game_Actor.prototype.getEnduranceGrowthRate = function(useExpRate) {
 	
 	growthRate *= this.passiveGrowthRate(PARAM_ENDURANCE_ID);
 	
-	if(this.isEquippingThisAccessory(EARRING_HEART_ID)) growthRate *= 1.3;
+	if(this.isEquippingThisAccessory(EARRING_HEART_ID)) {
+		if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) growthRate *= 1.15;
+		else growthRate *= 1.3;
+	}
+	
+	if(this.isEquippingThisAccessory(EARRING_PINK_ID)) {
+		if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) growthRate *= 0.33;
+		else growthRate *= 0.66;
+	}
 	
 	if(this.isUsingThisTitle(TITLE_ID_FREELOADING_DRINKER)) growthRate *= 1.25;
 	else if(this.isUsingThisTitle(TITLE_ID_HARDCORE_MASOCHIST)) growthRate *= 1.5;
@@ -269,7 +319,15 @@ Game_Actor.prototype.getCharmGrowthRate = function(useExpRate) {
 	
 	if(this.hasEdict(EDICT_CHARM_SPECIALIZATION))growthRate *= 1.42;
 	
-	if(this.isEquippingThisAccessory(EARRING_MOON_ID)) growthRate *= 1.33;
+	if(this.isEquippingThisAccessory(EARRING_MOON_ID)) {
+		if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) growthRate *= 1.165;
+		else growthRate *= 1.33;
+	}
+	
+	if(this.isEquippingThisAccessory(EARRING_PINK_ID)) {
+		if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) growthRate *= 2.5;
+		else growthRate *= 1.75;
+	}
 	
 	if(this.isUsingThisTitle(TITLE_ID_FIRST_KISS_TO_ANUS)) growthRate *= 1.42;
 	else if(this.isUsingThisTitle(TITLE_ID_BUSTY_BARMAID)) growthRate *= 1.15;
@@ -291,7 +349,9 @@ Game_Actor.prototype.getCharmGrowthRate = function(useExpRate) {
 Game_Actor.prototype.getWardenLevelLimit = function() {
 	let limit = 12;
 	
-	if(this.hasEdict(EDICT_LEVEL_TWO_SUBJUGATED)) limit += 24;
+	if(this.hasEdict(EDICT_LEVEL_FOUR_SUBJUGATED)) limit += 38;
+	else if(this.hasEdict(EDICT_LEVEL_THREE_SUBJUGATED)) limit += 36;
+	else if(this.hasEdict(EDICT_LEVEL_TWO_SUBJUGATED)) limit += 24;
 	else if(this.hasEdict(EDICT_LEVEL_ONE_SUBJUGATED)) limit += 12;
 	
 	return limit;
@@ -527,8 +587,11 @@ Game_Party.prototype.applyOrderResults = function() {
 	if(this._gainHalfOrderFlag) this._orderResult *= 0.5;
 	if(!Karryn.isInReceptionistPose()) {
 		if(Karryn.isUsingThisTitle(TITLE_ID_FULL_ORDER_TWO)) this._orderResult = 0;
-		if($gameParty.isRiotBattle()) {
-			if(Karryn.isUsingThisTitle(TITLE_ID_SUPPRESS_RIOT_THREE)) this._orderResult *= 1.5;
+		else if($gameParty.isRiotBattle()) {
+			let bonusRiotOrderRate = 1;
+			if(Karryn.isUsingThisTitle(TITLE_ID_SUPPRESS_RIOT_THREE)) bonusRiotOrderRate += 0.5;
+			if(Karryn.hasEdict(EDICT_HARSHER_PUNISHMENTS_FOR_RIOTERS)) bonusRiotOrderRate += 0.5;
+			this._orderResult *= bonusRiotOrderRate;
 		}
 	}
 	
@@ -921,7 +984,7 @@ Window_VictoryExp.prototype.drawPrisonResults = function() {
 	
 	//Masturbate
 	if(actor._tempRecordMasturbatedInBattleCount > 0) {
-		let value = actor._tempRecordOrgasmCount;
+		let value = actor._tempRecordMasturbatedInBattleCount;
 		let text = '';
 		y = -this._scrollY + this.lineHeight() * this._resultsLine;
 		this._resultsLine++;
@@ -977,6 +1040,28 @@ Window_VictoryExp.prototype.drawPrisonResults = function() {
 		
 		let value = actor._tempRecordTittyFuckedPeople;
 		let text = TextManager.resultsKarrynTitjob;
+		
+		text = text.format(value, TextManager.pluralText_JustPeople(value));
+	
+		this.drawTextEx(text, x, y, width, 'left');	
+	}
+	if(actor._tempRecordFootjobPeople > 0) {
+		y = -this._scrollY + this.lineHeight() * this._resultsLine;
+		this._resultsLine++;
+		
+		let value = actor._tempRecordFootjobPeople;
+		let text = TextManager.resultsKarrynFootjob;
+		
+		text = text.format(value, TextManager.pluralText_JustPeople(value));
+	
+		this.drawTextEx(text, x, y, width, 'left');	
+	}
+	if(actor._tempRecordRimjobPeople > 0) {
+		y = -this._scrollY + this.lineHeight() * this._resultsLine;
+		this._resultsLine++;
+		
+		let value = actor._tempRecordRimjobPeople;
+		let text = TextManager.resultsKarrynRimjob;
 		
 		text = text.format(value, TextManager.pluralText_JustPeople(value));
 	

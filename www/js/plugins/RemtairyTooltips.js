@@ -247,8 +247,36 @@ TextManager.stateTooltipText = function(battler, stateId) {
 	else if(stateId === STATE_ORC_DEFENSIVE_PRESENCE_ID) {
 		return TextManager.StateTooltipsOrcDefensivePresence.format(battlerName);
 	}
+	else if(stateId === STATE_ORC_COMMANDING_PRESENCE_ID) {
+		if(Karryn.hasEdict(EDICT_ACCESSIBILITY_FOR_ORCS))
+			return TextManager.StateTooltipsOrcCommandingPresenceTwo.format(battlerName);
+		else if(Karryn.hasEdict(EDICT_REJECT_THE_ORCS))
+			return TextManager.StateTooltipsOrcCommandingPresenceThree.format(battlerName);
+		else if(Karryn.hasEdict(EDICT_REACH_UNDERSTANDING_WITH_ORCS))
+			return TextManager.StateTooltipsOrcCommandingPresenceFour.format(battlerName);
+		else 
+			return TextManager.StateTooltipsOrcCommandingPresenceOne.format(battlerName);
+	}
 	else if(stateId === STATE_LIZARDMAN_TWO_ID || stateId === STATE_LIZARDMAN_THREE_ID || stateId === STATE_LIZARDMAN_FOUR_ID || stateId === STATE_LIZARDMAN_FIVE_ID || stateId === STATE_LIZARDMAN_SEX_ID) {
-		return TextManager.StateTooltipsLizardmanRacial.format(battlerName);
+		if(Karryn.hasEdict(EDICT_SCIENCE_VERSUS_LIZARDMEN))
+			return TextManager.StateTooltipsLizardmanRacialWeak.format(battlerName);
+		else
+			return TextManager.StateTooltipsLizardmanRacial.format(battlerName);
+	}
+	else if(stateId === STATE_YETI_HEAT_AURA_ID) {
+		return TextManager.StateTooltipsYetiHeatAura.format(battlerName);
+	}
+	else if(stateId === STATE_YETI_HEAT_ENEMY_ONE_ID) {
+		return TextManager.StateTooltipsYetiHeatAuraEnemyOne.format(battlerName);
+	}
+	else if(stateId === STATE_YETI_HEAT_ENEMY_TWO_ID) {
+		return TextManager.StateTooltipsYetiHeatAuraEnemyTwo.format(battlerName);
+	}
+	else if(stateId === STATE_YETI_HEAT_KARRYN_ONE_ID) {
+		return TextManager.StateTooltipsYetiHeatAuraKarrynOne;
+	}
+	else if(stateId === STATE_YETI_HEAT_KARRYN_TWO_ID) {
+		return TextManager.StateTooltipsYetiHeatAuraKarrynTwo;
 	}
 	else if(stateId === STATE_CLIT_TOY_PINK_ROTOR_ID) {
 		return TextManager.StateTooltipsKarrynClitToy;

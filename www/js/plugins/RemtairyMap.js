@@ -65,6 +65,18 @@ const MAP_LEVEL_THREE_SUBJUGATED_BGM_VOLUME = 80;
 const MAP_LEVEL_THREE_RIOTING_BGM_NAME = 'Prison_Riot1';
 const MAP_LEVEL_THREE_RIOTING_BGM_VOLUME = 80;
 
+//Level 4 is Anarchy BGM
+const MAP_LEVEL_FOUR_ANARCHY_BGM_NAME = 'Prison_Anarchy4';
+const MAP_LEVEL_FOUR_ANARCHY_BGM_VOLUME = 80;
+
+//Level 4 is Subjugated BGM
+const MAP_LEVEL_FOUR_SUBJUGATED_BGM_NAME = 'Prison_Subjugated1';
+const MAP_LEVEL_FOUR_SUBJUGATED_BGM_VOLUME = 80;
+
+//Level 4 is Rioting BGM
+const MAP_LEVEL_FOUR_RIOTING_BGM_NAME = 'Prison_Riot1';
+const MAP_LEVEL_FOUR_RIOTING_BGM_VOLUME = 80;
+
 //Bar BGM
 const MAP_BAR_BGM_NAME = 'Bar1';
 const MAP_BAR_BGM_VOLUME = 75;
@@ -84,6 +96,9 @@ const MAP_BORDER_BACKGROUND_OUTSIDE = "MapBorders_Bg_Outside";
 const MAP_BORDER_BACKGROUND_BAR = "MapBorders_Bg_Bar";
 const MAP_BORDER_BACKGROUND_EB = "MapBorders_Bg_Eb";
 const MAP_BORDER_BACKGROUND_BASEMENT1 = "MapBorders_Bg_Basement1";
+const MAP_BORDER_BACKGROUND_BASEMENT2 = "MapBorders_Bg_Basement2";
+const MAP_BORDER_BACKGROUND_BASEMENT3 = "MapBorders_Bg_Basement3";
+const MAP_BORDER_BACKGROUND_BASEMENT4 = "MapBorders_Bg_Basement4";
 
 //Map Chat
 const MAP_CHAT_TEXT_WINDOW_X = 0;
@@ -224,7 +239,16 @@ const MAP_ID_CELL_BLOCK_NORTH_WEST = 58;
 const MAP_ID_CELL_BLOCK_NORTH_EAST = 57;
 const MAP_ID_COMMON_AREA_NORTH_EAST = 59;
 
-const MAP_ID_LVL4_GUARD_STATION = 999;
+const MAP_ID_LVL4_STAIRS_TO_LVL3 = 64;
+const MAP_ID_LVL4_MUSHROOM_FARM = 66;
+const MAP_ID_LVL4_CHICKEN_PASTURE = 67;
+const MAP_ID_LVL4_UNDERGROUND_POOL = 68;
+const MAP_ID_LVL4_BASKETBALL_COURT = 69;
+const MAP_ID_LVL4_ABANDONED_AREA = 70;
+const MAP_ID_LVL4_GUARD_STATION = 73;
+const MAP_ID_LVL4_YETI_CAVERN = 71;
+const MAP_ID_LVL4_AMBUSH = 65;
+const MAP_ID_LVL4_STAIRS_TO_LVL5 = 72;
 
 /////////
 // Scene Map
@@ -438,10 +462,34 @@ Scene_Map.prototype.changeBGMOnTransfer = function() {
 			bgmVolume = MAP_LEVEL_THREE_SUBJUGATED_BGM_VOLUME;
 		}
 		else {
-			bgmName = MAP_LEVEL_THREE_SUBJUGATED_BGM_NAME;
-			bgmVolume = MAP_LEVEL_THREE_SUBJUGATED_BGM_VOLUME;
+			if(mapId === MAP_ID_GYM || mapId === MAP_ID_CELL_BLOCK_SOUTH || mapId === MAP_ID_SHOWER_BLOCK_SOUTH || mapId === MAP_ID_SHOWER_BLOCK_NORTH || mapId === MAP_ID_CELL_BLOCK_NORTH_WEST || mapId === MAP_ID_CELL_BLOCK_NORTH_EAST || mapId === MAP_ID_LVL3_GUARD_STATION) {
+				bgmName = MAP_LEVEL_THREE_RIOTING_BGM_NAME;
+				bgmVolume = MAP_LEVEL_THREE_RIOTING_BGM_VOLUME;
+			}
+			else {
+				bgmName = MAP_LEVEL_THREE_SUBJUGATED_BGM_NAME;
+				bgmVolume = MAP_LEVEL_THREE_SUBJUGATED_BGM_VOLUME;
+			}
 		}
 	}	
+	else if(Prison.currentlyPrisonLevelFour()) {	
+		if(mapId === MAP_ID_LVL4_STAIRS_TO_LVL3 || (mapId === MAP_ID_LVL4_STAIRS_TO_LVL5 && !Prison.prisonLevelFourIsAnarchy())) {
+			bgmName = false;
+		}
+		else if(Prison.prisonLevelFourIsAnarchy() || Prison.prisonLevelFourIsUnknown()) {
+			bgmName = MAP_LEVEL_FOUR_ANARCHY_BGM_NAME;
+			bgmVolume = MAP_LEVEL_FOUR_ANARCHY_BGM_VOLUME;
+		}
+		else if(Prison.prisonLevelFourIsSubjugated()) {
+			bgmName = MAP_LEVEL_FOUR_SUBJUGATED_BGM_NAME;
+			bgmVolume = MAP_LEVEL_FOUR_SUBJUGATED_BGM_VOLUME;
+		}
+		else {
+			bgmName = MAP_LEVEL_FOUR_RIOTING_BGM_NAME;
+			bgmVolume = MAP_LEVEL_FOUR_RIOTING_BGM_VOLUME;
+		}
+	
+	}
 		
 	if(bgmName) {
 		AudioManager.playBgm({name:bgmName, pan:0, pitch:100, pos:0, volume:bgmVolume});
@@ -587,6 +635,18 @@ Game_Screen.prototype.setMapBordersBackgroundBasement1 = function() {
 	this.setMapBordersBackgroundName(MAP_BORDER_BACKGROUND_BASEMENT1);
 	this._remLowerBordersRefreshNeeded = true;
 };
+Game_Screen.prototype.setMapBordersBackgroundBasement2 = function() {
+	this.setMapBordersBackgroundName(MAP_BORDER_BACKGROUND_BASEMENT2);
+	this._remLowerBordersRefreshNeeded = true;
+};
+Game_Screen.prototype.setMapBordersBackgroundBasement3 = function() {
+	this.setMapBordersBackgroundName(MAP_BORDER_BACKGROUND_BASEMENT3);
+	this._remLowerBordersRefreshNeeded = true;
+};
+Game_Screen.prototype.setMapBordersBackgroundBasement4 = function() {
+	this.setMapBordersBackgroundName(MAP_BORDER_BACKGROUND_BASEMENT4);
+	this._remLowerBordersRefreshNeeded = true;
+};
 
 
 Game_Screen.prototype.changeMapBordersBackgroundOnTransfer = function() {
@@ -604,7 +664,23 @@ Game_Screen.prototype.changeMapBordersBackgroundOnTransfer = function() {
 	else if(mapId === MAP_ID_LVL1_STAIRS_TO_LVL3 || mapId === MAP_ID_LVL1_STAIRS_TO_LVL2) {
 		this.setMapBordersBackgroundDefault();
 	}
-	else if(mapId === MAP_ID_LVL3_STAIRS_TO_LVL1_LVL4 || Prison.currentlyPrisonLevelThree()) {
+	else if(mapId === MAP_ID_LVL4_STAIRS_TO_LVL3 || mapId === MAP_ID_LVL4_STAIRS_TO_LVL5) {
+		this.setMapBordersBackgroundBasement2();
+	}
+	else if(mapId === MAP_ID_LVL3_STAIRS_TO_LVL1_LVL4) {
+		this.setMapBordersBackgroundBasement1();
+	}
+	else if(mapId === MAP_ID_LVL4_YETI_CAVERN) {
+		this.setMapBordersBackgroundBasement3();
+	}
+	else if(mapId === MAP_ID_LVL4_CHICKEN_PASTURE) {
+		this.setMapBordersBackgroundBasement4();
+	}
+	
+	else if(Prison.currentlyPrisonLevelFour()) {
+		this.setMapBordersBackgroundBasement2();
+	}
+	else if(Prison.currentlyPrisonLevelThree()) {
 		this.setMapBordersBackgroundBasement1();
 	}
 	else

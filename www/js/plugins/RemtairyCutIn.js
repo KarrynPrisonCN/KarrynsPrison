@@ -83,6 +83,9 @@ const REM_CUT_IN_SEX_FOOTJ_Y_OFFSET = 0;
 const REM_CUT_IN_SEX_RIMMING_X_OFFSET = -40; //セックス　rimming
 const REM_CUT_IN_SEX_RIMMING_Y_OFFSET = 0;
 
+const REM_CUT_IN_SEX_WEREWOLF_BACK_X_OFFSET = 800; //セックス werewolf_back
+const REM_CUT_IN_SEX_WEREWOLF_BACK_Y_OFFSET = 0;
+
 //=============================================================================
  /*:
  * @plugindesc Cut-in
@@ -170,7 +173,8 @@ Game_Actor.prototype.hasTachieCutInOnScreen = function() {
 };
 
 Game_Actor.prototype.setTachieCutIn = function (n) {
-	if (this._tachieCutIn === n) {
+	if(ConfigManager.remCutinsDisabled) return;
+	if(this._tachieCutIn === n) {
 		return;
 	}
 	this._tachieCutIn = n;
@@ -619,6 +623,12 @@ Game_Actor.prototype.setCutInWaitAndDirection = function(cutInName) {
 			goalX += REM_CUT_IN_SEX_SLIME_PL_X_OFFSET;
 			startingY += REM_CUT_IN_SEX_SLIME_PL_Y_OFFSET;
 			goalY += REM_CUT_IN_SEX_SLIME_PL_Y_OFFSET;
+		}
+		else if(this.isInWerewolfBackPose()) {
+			startingX += REM_CUT_IN_SEX_WEREWOLF_BACK_X_OFFSET;
+			goalX += REM_CUT_IN_SEX_WEREWOLF_BACK_X_OFFSET;
+			startingY += REM_CUT_IN_SEX_WEREWOLF_BACK_Y_OFFSET;
+			goalY += REM_CUT_IN_SEX_WEREWOLF_BACK_Y_OFFSET;
 		}
 	}
 	

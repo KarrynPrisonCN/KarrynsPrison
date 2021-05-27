@@ -33,6 +33,9 @@ const BM_PLVL3_BOSS_START_BGM_NAME = "Battle3";
 const BM_PLVL3_BOSS_START_BGM_VOLUME = 85;
 const BM_PLVL3_BOSS_ARON_BGM_NAME = "Battle4"; 
 const BM_PLVL3_BOSS_ARON_BGM_VOLUME = 80;
+//Noinim Battle 
+const BM_PLVL4_BOSS_BGM_NAME = "Battle6"; 
+const BM_PLVL4_BOSS_BGM_VOLUME = 95;
 
 //enemy sex pose
 const BM_ENEMY_SEX_BGM_NAME = "H_Gangbang1";
@@ -56,7 +59,7 @@ const BM_WAITRESS_JOB_BGM_VOLUME = 95;
 const BM_WAITRESS_SEX_BGM_NAME = "H_Job1";
 const BM_WAITRESS_SEX_BGM_PAN = 0;
 const BM_WAITRESS_SEX_BGM_PITCH = 100;
-const BM_WAITRESS_SEX_BGM_VOLUME = 91;
+const BM_WAITRESS_SEX_BGM_VOLUME = 95;
 
 //receptionist job
 const BM_RECEPTIONIST_JOB_BGM_NAME = "Job1";
@@ -67,7 +70,7 @@ const BM_RECEPTIONIST_JOB_BGM_VOLUME = 63;
 const BM_RECEPTIONIST_SEX_BGM_NAME = "H_Job1";
 const BM_RECEPTIONIST_SEX_BGM_PAN = 0;
 const BM_RECEPTIONIST_SEX_BGM_PITCH = 100;
-const BM_RECEPTIONIST_SEX_BGM_VOLUME = 91;
+const BM_RECEPTIONIST_SEX_BGM_VOLUME = 95;
 
 //glory hole
 const BM_GLORY_START_NORMAL_BGM_NAME = "M_Sofa1";
@@ -83,7 +86,7 @@ const BM_GLORY_START_SLUTTY_BGM_VOLUME = 80;
 const BM_GLORY_SEX_BGM_NAME = "H_Job1";
 const BM_GLORY_SEX_BGM_PAN = 0;
 const BM_GLORY_SEX_BGM_PITCH = 100;
-const BM_GLORY_SEX_BGM_VOLUME = 91;
+const BM_GLORY_SEX_BGM_VOLUME = 95;
 
 //down pose - stamina
 const BM_DOWN_STAMINA_BGM_NAME = "Down1";
@@ -95,9 +98,9 @@ const BM_DOWN_STAMINA_BGM_PITCH_CHANGE = -32; //unused
 const BM_DOWN_STAMINA_BGM_VOLUME_CHANGE = 0; //unused
 
 //down pose - other
-const BM_DOWN_OTHER_BGM_NAME = "Down1";
+const BM_DOWN_OTHER_BGM_NAME = "Down2";
 const BM_DOWN_OTHER_BGM_PAN = 0;
-const BM_DOWN_OTHER_BGM_PITCH = 70;
+const BM_DOWN_OTHER_BGM_PITCH = 100;
 const BM_DOWN_OTHER_BGM_VOLUME = 80;
 
 //defeated lvl 1 - normal
@@ -135,6 +138,18 @@ const BM_DEFEATED_LV3_SLUTTY_BGM_NAME = "H_Slut2";
 const BM_DEFEATED_LV3_SLUTTY_BGM_PAN = 0;
 const BM_DEFEATED_LV3_SLUTTY_BGM_PITCH = 100;
 const BM_DEFEATED_LV3_SLUTTY_BGM_VOLUME = 80;
+
+//defeated lvl 4 - normal
+const BM_DEFEATED_LV4_NORMAL_BGM_NAME = "H_Defeated1";
+const BM_DEFEATED_LV4_NORMAL_BGM_PAN = 0;
+const BM_DEFEATED_LV4_NORMAL_BGM_PITCH = 100;
+const BM_DEFEATED_LV4_NORMAL_BGM_VOLUME = 70;
+
+//defeated lvl 4 - slutty
+const BM_DEFEATED_LV4_SLUTTY_BGM_NAME = "H_Slut2";
+const BM_DEFEATED_LV4_SLUTTY_BGM_PAN = 0;
+const BM_DEFEATED_LV4_SLUTTY_BGM_PITCH = 100;
+const BM_DEFEATED_LV4_SLUTTY_BGM_VOLUME = 80;
 
 //defeated guard - normal
 const BM_DEFEATED_GUARD_NORMAL_BGM_NAME = "H_Defeated1";
@@ -280,6 +295,20 @@ BattleManager.playBattleBgm = function() {
 				bgmVolume = BM_DEFEATED_LV3_NORMAL_BGM_VOLUME;
 			}
 		}
+		else if(Karryn.isInDefeatedLevel4Pose()) {
+			if(useSluttyDefeatedVersion) {
+				bgmName = BM_DEFEATED_LV4_SLUTTY_BGM_NAME;
+				bgmPitch = BM_DEFEATED_LV4_SLUTTY_BGM_PITCH;
+				bgmPan = BM_DEFEATED_LV4_SLUTTY_BGM_PAN;
+				bgmVolume = BM_DEFEATED_LV4_SLUTTY_BGM_VOLUME;
+			}
+			else {
+				bgmName = BM_DEFEATED_LV4_NORMAL_BGM_NAME;
+				bgmPitch = BM_DEFEATED_LV4_NORMAL_BGM_PITCH;
+				bgmPan = BM_DEFEATED_LV4_NORMAL_BGM_PAN;
+				bgmVolume = BM_DEFEATED_LV4_NORMAL_BGM_VOLUME;
+			}
+		}
 		else if(Karryn.isInDefeatedGuardPose()) {
 			if(useSluttyDefeatedVersion) {
 				bgmName = BM_DEFEATED_GUARD_SLUTTY_BGM_NAME;
@@ -344,7 +373,7 @@ BattleManager.playBattleBgm = function() {
 			bgmName = BM_PLVL1_NORMAL_BGM_NAME;
 			bgmVolume = BM_PLVL1_NORMAL_BGM_VOLUME;
 			
-			if(mapId === MAP_ID_RECEPTION && ($gameTroop._troopId === 67 || $gameTroop._troopId === 68)) {
+			if(mapId === MAP_ID_RECEPTION && $gameParty._isBossBattleFlag) {
 				bgmName = BM_PLVL1_BOSS_BGM_NAME;
 				bgmVolume = BM_PLVL1_BOSS_BGM_VOLUME;
 			}
@@ -353,7 +382,7 @@ BattleManager.playBattleBgm = function() {
 			bgmName = BM_PLVL2_NORMAL_BGM_NAME;
 			bgmVolume = BM_PLVL2_NORMAL_BGM_VOLUME;
 			
-			if(mapId === MAP_ID_OFFICE_FLOODED && $gameTroop._troopId === 91) {
+			if(mapId === MAP_ID_OFFICE_FLOODED && $gameParty._isBossBattleFlag) {
 				bgmName = BM_PLVL2_BOSS_BGM_NAME;
 				bgmVolume = BM_PLVL2_BOSS_BGM_VOLUME;
 			}
@@ -379,7 +408,10 @@ BattleManager.playBattleBgm = function() {
 			bgmName = BM_PLVL4_NORMAL_BGM_NAME;
 			bgmVolume = BM_PLVL4_NORMAL_BGM_VOLUME;
 			
-			
+			if(mapId === MAP_ID_LVL4_STAIRS_TO_LVL5 && $gameParty._isBossBattleFlag) {
+				bgmName = BM_PLVL4_BOSS_BGM_NAME;
+				bgmVolume = BM_PLVL4_BOSS_BGM_VOLUME;
+			}
 		}
 	}
 	
@@ -764,9 +796,17 @@ BattleManager.eligibleEnemyReplacementMasters  = function(leavingMaster) {
 	for (let i = 0; i < enemies.length; ++i) {
 		let enemy = enemies[i];
 		
-		if(!enemy.usedSkillThisTurn() && enemy._aiPoseStartSkills && enemy.isErect
-		&& enemy._aiPoseStartSkills.includes(poseMasterSkillID)) {
-			eligibleMasters.push(enemy);
+		if(poseMasterSkillID === SKILL_ENEMY_POSESTART_KICKCOUNTER_ID || poseMasterSkillID === SKILL_ENEMY_POSESTART_KICKCOUNTER_YETI_ID) {
+			let counterSkillsArray = enemy.counterSkills();
+			if(!enemy.usedSkillThisTurn() && enemy.isErect && counterSkillsArray && counterSkillsArray.includes(poseMasterSkillID)) {
+				eligibleMasters.push(enemy);
+			}
+		}
+		else {
+			if(!enemy.usedSkillThisTurn() && enemy._aiPoseStartSkills && enemy.isErect
+			&& enemy._aiPoseStartSkills.includes(poseMasterSkillID)) {
+				eligibleMasters.push(enemy);
+			}
 		}
     }
 	return eligibleMasters;
@@ -788,12 +828,11 @@ BattleManager.updateTurn = function() {
         this.processTurn();
     } else {
 		//this.setBMAllowTachieUpdate(true);
-		//this.preEndTurnManagement();
+		this.preEndTurnManagement();
         this.endTurn();
 		this.refreshAllBattlerPoses();
     }
 };
-
 
 Remtairy.BM.BattleManager_invokeAction = BattleManager.invokeAction;
 BattleManager.invokeAction = function(subject, target) {
@@ -813,12 +852,20 @@ BattleManager.invokeAction = function(subject, target) {
 };
 
 // End of Turn Functions
-//Unused
 BattleManager.preEndTurnManagement = function() {
-	this.checkForEnemiesOrgasm();
-	this.checkForPartyOrgasm();
-	this.refreshAllBattlerPoses();
+	this.checkForEnemyReinforcements();
+	
+	//this.checkForEnemiesOrgasm();
+	//this.checkForPartyOrgasm();
+	//this.refreshAllBattlerPoses();
 };
+
+//Enemy Reinforcement
+BattleManager.checkForEnemyReinforcements = function() {
+	$gameTroop.noinimReinforcementCheck();
+};
+
+
 
 //Enemies
 //Unused
@@ -858,6 +905,30 @@ BattleManager.removeImmortalStateFromEveryone = function() {
 		group[i].removeImmortal();
 	}
 };
+/*
+BattleManager.checkCounterEval = function(code, skill, subject, target) {
+    let action = this._action;
+    let a = subject;
+    let user = subject;
+    let attacker = subject;
+    let b = target;
+    let defender = target;
+    let item = skill;
+    let s = $gameSwitches._data;
+    let v = $gameVariables._data;
+    let code = code;
+	
+	if(skill.id === SKILL_MINION_THROW_ATTACK_ID) {
+		attacker = subject._minionThrow_ammoTarget;
+	}
+	
+    try {
+      return eval(code);
+    } catch (e) {
+      Yanfly.Util.displayError(e, code, 'COUNTER CHECK ERROR');
+      return false;
+    }
+};*/
 
 /////////
 // End Of Every Action
@@ -1188,6 +1259,10 @@ BattleManager.checkBattleEndJobs = function() {
 			this.processVictory();
             return true;
 		}
+		else if($gameParty.waitressBattle_thereAreNoMoreMugsOrGlasses()) {
+            this.processDefeat();
+            return true;
+		}
 		else if($gameParty.isAllDead()) {
             this.processDefeat();
             return true;
@@ -1296,4 +1371,17 @@ Game_Interpreter.prototype.command339 = function() {
         }
     }.bind(this));
     return true;
+};
+
+Game_Interpreter.prototype.changeHp = function(target, value, allowDeath) {
+    if(target.isAlive()) {
+        if(!allowDeath && target.hp <= -value) {
+            value = 1 - target.hp;
+        }
+        target.gainHp(value);
+        if(target.isDead()) {
+			target._enemyTempRecordSubduedWithEventCommand = true;
+            target.performCollapse();
+        }
+    }
 };

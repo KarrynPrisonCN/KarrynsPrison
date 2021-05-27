@@ -22,8 +22,6 @@ const WILLPOWER_PER_MIND_PLVL = 0.7;
 const WILLPOWER_SKILL_START = 81;
 const WILLPOWER_SKILL_END = 109;
 
-const WILLPOWER_REJECT_ALCOHOL_COST = 15;
-
 /////////
 // Window SkillList
 ////////////////////
@@ -460,9 +458,9 @@ Game_Actor.prototype.afterEval_suppressDesires = function(area) {
 	buttMultipler *= 1 - this.masturbateLvl() * 0.02;
 	
 	if(area == AREA_COCK)
-		this.gainMindExp(50, $gameTroop.getAverageEnemyExperienceLvl());
+		this.gainMindExp(55, $gameTroop.getAverageEnemyExperienceLvl());
 	else
-		this.gainMindExp(35, $gameTroop.getAverageEnemyExperienceLvl());
+		this.gainMindExp(40, $gameTroop.getAverageEnemyExperienceLvl());
 	
 	baseValue = Math.max(1, baseValue);
 	
@@ -492,7 +490,7 @@ Game_Actor.prototype.getSuppressMouthDesireLowerLimit = function() {
 	if(inKissingPose)
 		lowerLimit = Math.max(lowerLimit, this.kissingMouthDesireRequirement());
 	
-	return Math.max(this.minimumDesireLimit(), lowerLimit); 
+	return Math.max(this.minimumMouthDesireLimit(), lowerLimit); 
 };
 Game_Actor.prototype.getSuppressBoobsDesireLowerLimit = function() {
 	let lowerLimit = 0;
@@ -506,7 +504,7 @@ Game_Actor.prototype.getSuppressBoobsDesireLowerLimit = function() {
 	if(inBoobsPettingPose)
 		lowerLimit = Math.max(lowerLimit, this.boobsPettingBoobsDesireRequirement());
 	
-	return Math.max(this.minimumDesireLimit(), lowerLimit); 
+	return Math.max(this.minimumBoobsDesireLimit(), lowerLimit); 
 };
 Game_Actor.prototype.getSuppressPussyDesireLowerLimit = function() {
 	let lowerLimit = 0;
@@ -520,7 +518,7 @@ Game_Actor.prototype.getSuppressPussyDesireLowerLimit = function() {
 	if(this.isWearingClitToy())
 		lowerLimit = Math.max(lowerLimit, this.clitToyPussyDesireRequirement());
 	
-	return Math.max(this.minimumDesireLimit(), lowerLimit); 
+	return Math.max(this.minimumPussyDesireLimit(), lowerLimit); 
 };
 Game_Actor.prototype.getSuppressButtDesireLowerLimit = function() {
 	let lowerLimit = 0;
@@ -530,7 +528,7 @@ Game_Actor.prototype.getSuppressButtDesireLowerLimit = function() {
 	if(this.isWearingAnalToy())
 		lowerLimit = Math.max(lowerLimit, this.analToyButtDesireRequirement());
 	
-	return Math.max(this.minimumDesireLimit(), lowerLimit); 
+	return Math.max(this.minimumButtDesireLimit(), lowerLimit); 
 };
 Game_Actor.prototype.getSuppressCockDesireLowerLimit = function() {
 	let lowerLimit = 0;
@@ -548,7 +546,7 @@ Game_Actor.prototype.getSuppressCockDesireLowerLimit = function() {
 	if(this.isBodySlotPenis(FEET_ID))
 		lowerLimit = Math.max(lowerLimit, this.footjobCockDesireRequirement());
 	
-	return Math.max(this.minimumDesireLimit(), lowerLimit); 
+	return Math.max(this.minimumCockDesireLimit(), lowerLimit); 
 };
 
 
@@ -603,7 +601,7 @@ Game_Actor.prototype.afterEval_consciousDesires = function(area) {
 	baseValue += Math.random() * variance;
 	baseValue -= Math.random() * variance;
 
-	this.gainMindExp(35, $gameTroop.getAverageEnemyExperienceLvl());
+	this.gainMindExp(40, $gameTroop.getAverageEnemyExperienceLvl());
 	
 	if(area == AREA_COCK) return this.gainCockDesire(baseValue, true, false);	
 	else if(area == AREA_MOUTH) return this.gainMouthDesire(baseValue, true, false);	
@@ -622,13 +620,19 @@ Game_Actor.prototype.showEval_healingThoughts = function() {
 	return this.hasEdict(EDICT_HEALING_THOUGHTS_ONE);
 };
 Game_Actor.prototype.dmgFormula_healingThoughts = function() {
+	let mindExp = 40;
 	let percent = 0.15;
 	percent += this.mind / 300
-	if(this.hasEdict(EDICT_HEALING_THOUGHTS_TWO)) percent *= 1.3;
+	if(this.hasEdict(EDICT_HEALING_THOUGHTS_TWO)) {
+		percent *= 1.3;
+		mindExp += 10;
+	}
 	
 	let dmg = this.maxenergy * percent;
 
-	this.gainMindExp(40, $gameTroop.getAverageEnemyExperienceLvl());
+	
+
+	this.gainMindExp(mindExp, $gameTroop.getAverageEnemyExperienceLvl());
 	return Math.round(dmg);
 };
 
@@ -636,7 +640,10 @@ Game_Actor.prototype.cooldownEval_healingThoughts = function() {
 	let baseCD = 3;
 	if(this.hasEdict(EDICT_SPEC_DEFENSIVE_MIND_HEALING)) baseCD--;
 	let currentCD = baseCD + Math.floor(this._tempHealingThoughtsExtraCooldown);
-	this._tempHealingThoughtsExtraCooldown += 0.5;
+	let extraCDrate = 1;
+	if(Karryn.isInReceptionistPose()) extraCDrate *= RECEPTIONIST_MENTAL_PHASE_COOLDOWN;
+	else if($gameParty.isInGloryBattle) extraCDrate *= GLORY_MENTAL_PHASE_COOLDOWN;
+	this._tempHealingThoughtsExtraCooldown += 0.5 * extraCDrate;
 	return currentCD;
 };
 
@@ -654,14 +661,17 @@ Game_Actor.prototype.dmgFormula_mindOverMatter = function() {
 	percent += this.mind / 200
 	let dmg = this.maxenergy * percent;
 
-	this.gainMindExp(65, $gameTroop.getAverageEnemyExperienceLvl());
+	this.gainMindExp(95, $gameTroop.getAverageEnemyExperienceLvl());
 	return Math.round(dmg);
 };
 
 Game_Actor.prototype.cooldownEval_mindOverMatter = function() {
 	let baseCD = 8;
-	let currentCD = baseCD + this._tempMindOverMatterExtraCooldown;
-	this._tempMindOverMatterExtraCooldown++;
+	let currentCD = baseCD + Math.floor(this._tempMindOverMatterExtraCooldown);
+	let extraCDrate = 1;
+	if(Karryn.isInReceptionistPose()) extraCDrate *= RECEPTIONIST_MENTAL_PHASE_COOLDOWN;
+	else if($gameParty.isInGloryBattle) extraCDrate *= GLORY_MENTAL_PHASE_COOLDOWN;
+	this._tempMindOverMatterExtraCooldown += 1 * extraCDrate;
 	return currentCD;
 };
 
@@ -683,7 +693,7 @@ Game_Actor.prototype.showEval_hearNoEvil = function() {
 };
 
 Game_Actor.prototype.afterEval_seeNoEvil = function() {
-	this.gainMindExp(40, $gameTroop.getAverageEnemyExperienceLvl());
+	this.gainMindExp(45, $gameTroop.getAverageEnemyExperienceLvl());
 	
 	this.addState(STATE_SEE_NO_EVIL_ID);
 	
@@ -695,7 +705,7 @@ Game_Actor.prototype.afterEval_seeNoEvil = function() {
 	}
 };
 Game_Actor.prototype.afterEval_hearNoEvil = function() {
-	this.gainMindExp(40, $gameTroop.getAverageEnemyExperienceLvl());
+	this.gainMindExp(45, $gameTroop.getAverageEnemyExperienceLvl());
 	
 	this.addState(STATE_HEAR_NO_EVIL_ID);
 	
@@ -758,7 +768,7 @@ Game_Actor.prototype.afterEval_speakNoEvil = function() {
 	this.gainButtDesire(-buttValue, true, false);
 	this.gainCockDesire(-cockValue, true, false);	
 	
-	this.gainMindExp(50, $gameTroop.getAverageEnemyExperienceLvl());
+	this.gainMindExp(75, $gameTroop.getAverageEnemyExperienceLvl());
 };
 
 /////////////
@@ -808,7 +818,7 @@ Game_Actor.prototype.showEval_realityMarble = function() {
 };
 
 Game_Actor.prototype.afterEval_realityMarble = function() {
-	this.gainMindExp(40, $gameTroop.getAverageEnemyExperienceLvl());
+	this.gainMindExp(60, $gameTroop.getAverageEnemyExperienceLvl());
 };
 
 Game_Actor.prototype.willpowerRealityMarbleEffect = function() {
@@ -826,7 +836,10 @@ Game_Actor.prototype.showEval_eyeOfTheMind = function() {
 	(this.isInCombatPose() || (this.hasEdict(EDICT_SPEC_SENSUAL_MIND_EOTM) && this.isInSexPose()));
 };
 Game_Actor.prototype.afterEval_eyeOfTheMind = function() {
-	this.gainMindExp(40, $gameTroop.getAverageEnemyExperienceLvl());
+	let mindExp = 55;
+	if(this.hasEdict(EDICT_SPEC_OFFENSIVE_MIND_EOTM)) mindExp += 15;
+	
+	this.gainMindExp(mindExp, $gameTroop.getAverageEnemyExperienceLvl());
 	
 	this.addState(STATE_EYE_OF_THE_MIND_ID);
 	
@@ -853,7 +866,9 @@ Game_Actor.prototype.showEval_ki = function() {
 	return this.isInCombatPose();
 };
 Game_Actor.prototype.afterEval_ki = function() {
-	this.gainMindExp(35, $gameTroop.getAverageEnemyExperienceLvl());
+	let mindExp = 40;
+	if(this.hasEdict(EDICT_SPEC_OFFENSIVE_MIND_KI)) mindExp += 10;
+	this.gainMindExp(mindExp, $gameTroop.getAverageEnemyExperienceLvl());
 };
 Game_Actor.prototype.willpowerKiSParamEffect = function() {
 	return (30 + this.mind) / 100;
@@ -867,7 +882,9 @@ Game_Actor.prototype.showEval_focus = function() {
 	return this.isInCombatPose();
 };
 Game_Actor.prototype.afterEval_focus = function() {
-	this.gainMindExp(35, $gameTroop.getAverageEnemyExperienceLvl());
+	let mindExp = 40;
+	if(this.hasEdict(EDICT_SPEC_DEFENSIVE_MIND_FOCUS)) mindExp += 10;
+	this.gainMindExp(mindExp, $gameTroop.getAverageEnemyExperienceLvl());
 };
 Game_Actor.prototype.willpowerFocusXParamEffect = function() {
 	if(!this.isInCombatPose()) return 0;
@@ -890,7 +907,7 @@ Game_Actor.prototype.showEval_edgingControl = function() {
 	return this.hasEdict(EDICT_EDGING_CONTROL) && !this.isInDownPose();
 };
 Game_Actor.prototype.afterEval_edgingControl = function() {
-	this.gainMindExp(30, $gameTroop.getAverageEnemyExperienceLvl());
+	this.gainMindExp(50, $gameTroop.getAverageEnemyExperienceLvl());
 	
 	this.addState(STATE_KARRYN_EDGING_CONTROL_ID);
 	
@@ -919,7 +936,7 @@ Game_Actor.prototype.showEval_resistOrgasm = function() {
 	return DEBUG_MODE && this.hasEdict(EDICT_RESIST_ORGASM);
 };
 Game_Actor.prototype.afterEval_resistOrgasm = function() {
-	this.gainMindExp(45, $gameTroop.getAverageEnemyExperienceLvl());
+	this.gainMindExp(65, $gameTroop.getAverageEnemyExperienceLvl());
 	
 	this.addState(STATE_KARRYN_RESIST_ORGASM_ID);
 	this.addState(STATE_KARRYN_RESIST_ORGASM_ICON_ID);
@@ -970,11 +987,11 @@ Game_Actor.prototype.afterEval_restoreMind = function() {
 			BattleManager._logWindow.push('addText', TextManager.restoreMindPartialSuccess.format(this.name()));
 		}
 		
-		this.gainMindExp(35, $gameTroop.getAverageEnemyExperienceLvl());	
+		this.gainMindExp(55, $gameTroop.getAverageEnemyExperienceLvl());	
 	}
 	else {
 		BattleManager._logWindow.push('addText', TextManager.restoreMindFailure.format(this.name()));
-		this.gainMindExp(25, $gameTroop.getAverageEnemyExperienceLvl());	
+		this.gainMindExp(35, $gameTroop.getAverageEnemyExperienceLvl());	
 	}
 	if(!this.hasEdict(EDICT_SPEC_SENSUAL_MIND_RESTORE)) this.enterActionPhase();
 };

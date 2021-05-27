@@ -90,11 +90,14 @@ Game_Actor.prototype.setSpriteBattlerPosData = function(poseName) {
 		this._sbp_current_x = 835;
 		this._sbp_current_y = 0;
 	} else if(poseName == POSE_DEFEATED_LEVEL2) {
-		this._sbp_current_x = 850;
-		this._sbp_current_y = -180;
+		this._sbp_current_x = 990;
+		this._sbp_current_y = -310;
 	} else if(poseName == POSE_DEFEATED_LEVEL3) {
 		this._sbp_current_x = 1165;
 		this._sbp_current_y = -150;
+	} else if(poseName == POSE_DEFEATED_LEVEL4) {
+		this._sbp_current_x = 920;
+		this._sbp_current_y = -175;
 	} else if(poseName == POSE_DEFEATED_GUARD) {
 		this._sbp_current_x = 900;
 		this._sbp_current_y = -230;		
@@ -140,6 +143,15 @@ Game_Actor.prototype.setSpriteBattlerPosData = function(poseName) {
 	} else if(poseName == POSE_WAITRESS_SEX) {
 		this._sbp_current_x = 1040;
 		this._sbp_current_y = -150;
+	} else if(poseName == POSE_WEREWOLF_BACK) {
+		this._sbp_current_x = 830;
+		this._sbp_current_y = 15;
+	} else if(poseName == POSE_YETI_PAIZURI) {
+		this._sbp_current_x = 1110;
+		this._sbp_current_y = -180;
+	} else if(poseName == POSE_YETI_CARRY) {
+		this._sbp_current_x = 1205;
+		this._sbp_current_y = -225;	
 	} else if(poseName == POSE_RECEPTIONIST) {
 		this._sbp_current_x = 1045;
 		this._sbp_current_y = -40;	
@@ -197,7 +209,7 @@ Sprite_Actor.prototype.damageOffsetX = function() {
 		offset = 15; 
 	}
 	else if(poseName == POSE_DEFEATED_LEVEL2) {
-		offset = -20;
+		offset = 10;
 	}
 	else if(poseName == POSE_DEFEATED_GUARD) {
 		offset = -32;
@@ -250,7 +262,7 @@ Sprite_Actor.prototype.damageOffsetY = function() {
 		offset = 70; 
 	}
 	else if(poseName == POSE_DEFEATED_LEVEL2) {
-		offset = 20;
+		offset = 70;
 	}
 	else if(poseName == POSE_DEFEATED_GUARD) {
 		offset = 47;
@@ -278,6 +290,9 @@ Sprite_Actor.prototype.damageOffsetY = function() {
 	}
 	else if(poseName == POSE_LIZARDMAN_COWGIRL) {
 		offset = 90; 
+	}
+	else if(poseName == POSE_YETI_CARRY) {
+		offset = 20; 
 	}
 	else if(poseName == POSE_KICKCOUNTER) {
 		offset = 80; 
@@ -374,7 +389,7 @@ Sprite_Battler.prototype.remSpriteBattlerPosY = function() {
 //////
 
 BattleManager.actionClearBattleLog = function() {
-    this._logWindow.clear();
-	$gameActors.actor(1).resetTachieCutIn();
+    //this._logWindow.clear();
+	$gameActors.actor(ACTOR_KARRYN_ID).resetTachieCutIn();
     return false;
 };

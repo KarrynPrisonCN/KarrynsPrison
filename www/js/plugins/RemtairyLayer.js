@@ -43,6 +43,8 @@ const LAYER_TYPE_PANTIES = 33; //panties_
 const LAYER_TYPE_PUBIC = 34; //pubic_
 const LAYER_TYPE_HOLE_PUSSY = 35; //ana_manko_
 const LAYER_TYPE_HOLE_ANUS = 36; //ana_anaru_
+const LAYER_TYPE_SPANKMARK_LEFTBUTT = 37; //spank_leftbutt_
+const LAYER_TYPE_SPANKMARK_RIGHTBUTT = 38; //spank_rightbutt_
 
 const LAYER_TYPE_BACK_A = 40; //backA_
 const LAYER_TYPE_BACK_B = 41; //backB_
@@ -75,16 +77,18 @@ const LAYER_TYPE_DROOL_MOUTH = 102; //yodare_mouth_
 const LAYER_TYPE_DROOL_FINGERS = 103; //yodare_finger_
 const LAYER_TYPE_DROOL_NIPPLES = 104; //yodare_chikubi_
 
-const LAYER_TYPE_SEMEN_BACK = 120; //zaa_back_
-const LAYER_TYPE_SEMEN_BELLY = 121; //zaa_belly_
-const LAYER_TYPE_SEMEN_BOOBS = 122; //zaa_boobs_
-const LAYER_TYPE_SEMEN_LEFT_BOOB = 123; //zaa_leftboob_
-const LAYER_TYPE_SEMEN_RIGHT_BOOB = 124; //zaa_rightboob_
-const LAYER_TYPE_SEMEN_BUTT = 125; //zaa_butt_
-const LAYER_TYPE_SEMEN_BUTT_UPPER_RIGHT = 126; //zaa_butt_right_ue_
-const LAYER_TYPE_SEMEN_BUTT_UPPER_LEFT = 127; //zaa_butt_left_ue_
-const LAYER_TYPE_SEMEN_BUTT_BOTTOM_RIGHT = 128; //zaa_butt_right_sita_
-const LAYER_TYPE_SEMEN_BUTT_BOTTOM_LEFT = 129; //zaa_butt_left_sita_
+const LAYER_TYPE_SEMEN_BACK = 110; //zaa_back_
+const LAYER_TYPE_SEMEN_BELLY = 111; //zaa_belly_
+const LAYER_TYPE_SEMEN_BOOBS = 112; //zaa_boobs_
+const LAYER_TYPE_SEMEN_LEFT_BOOB = 113; //zaa_leftboob_
+const LAYER_TYPE_SEMEN_RIGHT_BOOB = 114; //zaa_rightboob_
+const LAYER_TYPE_SEMEN_BUTT = 115; //zaa_butt_
+const LAYER_TYPE_SEMEN_BUTT_UPPER_RIGHT = 116; //zaa_butt_right_ue_
+const LAYER_TYPE_SEMEN_BUTT_UPPER_LEFT = 117; //zaa_butt_left_ue_
+const LAYER_TYPE_SEMEN_BUTT_BOTTOM_RIGHT = 118; //zaa_butt_right_sita_
+const LAYER_TYPE_SEMEN_BUTT_BOTTOM_LEFT = 119; //zaa_butt_left_sita_
+const LAYER_TYPE_SEMEN_BUTT_RIGHT = 120; //zaa_rightbutt_
+const LAYER_TYPE_SEMEN_BUTT_LEFT = 121; //zaa_leftbutt_
 
 const LAYER_TYPE_SEMEN_PUSSY = 130; //zaa_crotch_
 const LAYER_TYPE_SEMEN_PUSSY_PANTIES = 131; //zaa_crotch_panties_
@@ -140,6 +144,8 @@ Game_Actor.prototype.getCustomTachieLayerLoadout = function() {
 		return this.getLayerLoadout_DefeatedLv2();
 	else if(pose == POSE_DEFEATED_LEVEL3)
 		return this.getLayerLoadout_DefeatedLv3();
+	else if(pose == POSE_DEFEATED_LEVEL4)
+		return this.getLayerLoadout_DefeatedLv4();
 	else if(pose == POSE_KICKCOUNTER)
 		return this.getLayerLoadout_KickCounter();
 	else if(pose == POSE_GUARDGANGBANG)
@@ -156,6 +162,15 @@ Game_Actor.prototype.getCustomTachieLayerLoadout = function() {
 		return this.getLayerLoadout_KarrynCowgirl();
 	else if(pose == POSE_LIZARDMAN_COWGIRL)
 		return this.getLayerLoadout_LizardmanCowgirl();
+	else if(pose == POSE_PAIZURI_LAYING)
+		return this.getLayerLoadout_PaizuriLaying();
+	else if(pose == POSE_WEREWOLF_BACK)
+		return this.getLayerLoadout_WerewolfBack();	
+	else if(pose == POSE_YETI_PAIZURI)
+		return this.getLayerLoadout_YetiPaizuri();	
+	else if(pose == POSE_YETI_CARRY)
+		return this.getLayerLoadout_YetiCarry();	
+		
 	else if(pose == POSE_MASTURBATE_INBATTLE)
 		return this.getLayerLoadout_MasturbateInBattle();
 	
@@ -342,6 +357,60 @@ Game_Actor.prototype.getLayerLoadout_DefeatedLv3 = function() {
 	return layerArray;
 };
 
+//defeated_level4
+Game_Actor.prototype.getLayerLoadout_DefeatedLv4 = function() {
+	let layerArray = [];
+	
+	layerArray = [
+		LAYER_TYPE_SEMEN_FRONT_A,
+		LAYER_TYPE_SEMEN_FRONT_B,
+		LAYER_TYPE_SEMEN_FRONT_C,
+		LAYER_TYPE_SEMEN_FRONT_D,
+		LAYER_TYPE_SEMEN_COCK_ANAL,
+		LAYER_TYPE_SEMEN_COCK_PUSSY,
+		LAYER_TYPE_SEMEN_COCK_MOUTH,
+		
+		LAYER_TYPE_FRONT_A,
+		LAYER_TYPE_FRONT_B,
+		LAYER_TYPE_FRONT_C,
+		LAYER_TYPE_FRONT_D,
+		LAYER_TYPE_COCK_ANAL,
+		LAYER_TYPE_COCK_PUSSY,
+		
+		LAYER_TYPE_TOY_ANAL,
+		LAYER_TYPE_TOY_PUSSY,
+		
+		LAYER_TYPE_HAT,
+		
+		LAYER_TYPE_SEMEN_ANAL,
+		LAYER_TYPE_SEMEN_PUSSY,
+		LAYER_TYPE_SEMEN_FACE,
+		LAYER_TYPE_SEMEN_BUTT_LEFT,
+		LAYER_TYPE_SEMEN_BUTT_RIGHT,
+		LAYER_TYPE_SEMEN_LEFT_LEG,
+		LAYER_TYPE_SEMEN_RIGHT_LEG,
+		LAYER_TYPE_SEMEN_BACK,
+		LAYER_TYPE_SEMEN_LEFT_ARM,
+		LAYER_TYPE_SEMEN_RIGHT_ARM,
+		LAYER_TYPE_SEMEN_BOOBS,
+		LAYER_TYPE_WET,
+		
+		LAYER_TYPE_EYEBROWS,
+		LAYER_TYPE_EYES,
+		LAYER_TYPE_SWEAT,
+		LAYER_TYPE_HOPPE,
+		LAYER_TYPE_MOUTH,
+		
+		LAYER_TYPE_SPANKMARK_RIGHTBUTT,
+		LAYER_TYPE_SPANKMARK_LEFTBUTT,
+		LAYER_TYPE_BODY,
+		
+		LAYER_TYPE_COCK_MOUTH
+	]
+
+	return layerArray;
+};
+
 //kick counter
 Game_Actor.prototype.getLayerLoadout_KickCounter = function() {
 	let layerArray = [];
@@ -413,6 +482,165 @@ Game_Actor.prototype.getLayerLoadout_GuardGangbang = function() {
 		LAYER_TYPE_HAT,
 		LAYER_TYPE_BODY
 		
+	]
+	
+	return layerArray;
+};
+
+//Werewolf Back
+Game_Actor.prototype.getLayerLoadout_WerewolfBack = function() {
+	let layerArray = [];
+	
+	layerArray = [
+		LAYER_TYPE_SEMEN_COCK_MOUTH,
+		LAYER_TYPE_SEMEN_RIGHT_ARM,
+		LAYER_TYPE_SEMEN_LEFT_ARM,
+		LAYER_TYPE_SEMEN_ANAL,
+		LAYER_TYPE_SEMEN_BUTT,
+		LAYER_TYPE_SEMEN_BACK,
+		LAYER_TYPE_SEMEN_PUSSY,
+		LAYER_TYPE_WET,
+		LAYER_TYPE_SEMEN_FACE,
+		LAYER_TYPE_SEMEN_BOOBS,
+		
+		LAYER_TYPE_HAT,
+		
+		LAYER_TYPE_EYEBROWS,
+		LAYER_TYPE_EYES,
+		
+		LAYER_TYPE_MOUTH,
+		LAYER_TYPE_COCK_MOUTH,
+		
+		LAYER_TYPE_SWEAT,
+		LAYER_TYPE_HOPPE,
+		
+		LAYER_TYPE_BODY,
+		LAYER_TYPE_BUTT
+	]
+	
+	return layerArray;
+};
+
+//Paizuri Laying
+Game_Actor.prototype.getLayerLoadout_PaizuriLaying = function() {
+	let layerArray = [];
+	
+	layerArray = [
+		LAYER_TYPE_SEMEN_FACE,
+		LAYER_TYPE_SEMEN_BOOBS,
+		LAYER_TYPE_SEMEN_LEFT_ARM,
+		LAYER_TYPE_SEMEN_RIGHT_ARM,
+		LAYER_TYPE_SEMEN_BUTT,
+		LAYER_TYPE_SEMEN_COCK_MOUTH,
+		LAYER_TYPE_SEMEN_COCK_RIGHT_ARM,
+		LAYER_TYPE_SEMEN_COCK_BOOBS,
+		LAYER_TYPE_SEMEN_COCK_PUSSY,
+		LAYER_TYPE_SEMEN_COCK_ANAL,
+		
+		LAYER_TYPE_EYEBROWS,
+		LAYER_TYPE_EYES,
+		LAYER_TYPE_SWEAT,
+		LAYER_TYPE_HOPPE,
+		LAYER_TYPE_MOUTH,
+		LAYER_TYPE_HEAD,
+		LAYER_TYPE_COCK_MOUTH,
+		
+		LAYER_TYPE_HAT,
+		
+		LAYER_TYPE_FRONT_B,
+		LAYER_TYPE_FRONT_A,
+		
+		LAYER_TYPE_COCK_BOOBS,
+		LAYER_TYPE_COCK_RIGHT_ARM,
+		
+		LAYER_TYPE_BODY,
+		LAYER_TYPE_BACK_A,
+		LAYER_TYPE_BACK_B,
+		
+		LAYER_TYPE_TOY_ANAL,
+		LAYER_TYPE_TOY_PUSSY,
+		LAYER_TYPE_COCK_ANAL,
+		LAYER_TYPE_COCK_PUSSY
+	]
+	
+	return layerArray;
+};
+
+//Yeti Paizuri
+Game_Actor.prototype.getLayerLoadout_YetiPaizuri = function() {
+	let layerArray = [];
+	
+	layerArray = [
+		LAYER_TYPE_HAT,
+		
+		LAYER_TYPE_SEMEN_FACE,
+		LAYER_TYPE_SEMEN_BOOBS,
+		LAYER_TYPE_SEMEN_LEFT_ARM,
+		LAYER_TYPE_SEMEN_BACK,
+		LAYER_TYPE_SEMEN_BELLY,
+		LAYER_TYPE_SEMEN_BUTT,
+		LAYER_TYPE_SEMEN_ANAL,
+		LAYER_TYPE_SEMEN_PUSSY,
+		
+		LAYER_TYPE_EYEBROWS,
+		LAYER_TYPE_EYES,
+		LAYER_TYPE_SWEAT,
+		LAYER_TYPE_HOPPE,
+		LAYER_TYPE_MOUTH,
+		LAYER_TYPE_HEAD,
+		
+		LAYER_TYPE_SEMEN_COCK_BOOBS,
+		LAYER_TYPE_TOY_CLIT,
+		LAYER_TYPE_PUBIC,
+		LAYER_TYPE_BODY,
+		
+		LAYER_TYPE_TOY_ANAL,
+		LAYER_TYPE_TOY_PUSSY,
+		
+		LAYER_TYPE_COCK_ANAL,
+		LAYER_TYPE_COCK_PUSSY,
+		
+		LAYER_TYPE_COCK_BOOBS
+
+	]
+	
+	return layerArray;
+};
+
+//Yeti Carry
+Game_Actor.prototype.getLayerLoadout_YetiCarry = function() {
+	let layerArray = [];
+	let tempArray = [];
+	
+	layerArray = [
+		LAYER_TYPE_SEMEN_COCK_ANAL,
+		
+		LAYER_TYPE_TOY_ANAL,
+		LAYER_TYPE_COCK_ANAL,
+		
+		LAYER_TYPE_SEMEN_ANAL,
+		LAYER_TYPE_SEMEN_COCK_PUSSY,
+		LAYER_TYPE_SEMEN_PUSSY,
+		LAYER_TYPE_SEMEN_FACE,
+		LAYER_TYPE_SEMEN_LEFT_ARM,
+		LAYER_TYPE_SEMEN_RIGHT_ARM,
+		LAYER_TYPE_SEMEN_BOOBS,
+		LAYER_TYPE_SEMEN_BUTT,
+		LAYER_TYPE_WET,
+		
+		LAYER_TYPE_HAT,
+		
+		LAYER_TYPE_FRONT_A,
+		
+		LAYER_TYPE_EYEBROWS,
+		LAYER_TYPE_EYES,
+		LAYER_TYPE_SWEAT,
+		LAYER_TYPE_HOPPE,
+		LAYER_TYPE_MOUTH,
+		
+		LAYER_TYPE_HOLE_ANUS,
+		LAYER_TYPE_COCK_PUSSY,
+		LAYER_TYPE_BODY
 	]
 	
 	return layerArray;
@@ -713,10 +941,10 @@ Game_Actor.prototype.getLayerLoadout_MasturbateInBattle = function() {
 		mergedSemenLeftBoobArray = true;
 	}
 	
-	if(!mergedWetArray) {
-		layerArray = layerArray.concat(wetArray);
-		mergedWetArray = true;
-	}
+	/*if(!mergedWetArray) {
+	//	layerArray = layerArray.concat(wetArray);
+	//	mergedWetArray = true;
+	}*/
 	
 	if(!mergedSemenRightArmArray && rightArmIsSuckFinger) {
 		layerArray = layerArray.concat(semenRightArmArray);

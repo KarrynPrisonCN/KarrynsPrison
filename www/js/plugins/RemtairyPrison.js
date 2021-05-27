@@ -46,7 +46,7 @@ const PRISON_LEVEL_THREE_ANARCHY_ORDER_CHANGE = 16;
 const PRISON_LEVEL_THREE_RIOTING_ORDER_CHANGE = 2;
 const PRISON_LEVEL_FOUR_ANARCHY_ORDER_CHANGE = 14;
 const PRISON_LEVEL_FOUR_RIOTING_ORDER_CHANGE = 2;
-const PRISON_LEVEL_FIVE_ANARCHY_ORDER_CHANGE = 13;
+const PRISON_LEVEL_FIVE_ANARCHY_ORDER_CHANGE = 12;
 const PRISON_LEVEL_FIVE_RIOTING_ORDER_CHANGE = 2;
 const PRISON_FIRST_DAY_RIOTING_ORDER_CHANGE_MULTIPLER = 0.5;
 const PRISON_RIOTING_ORDER_CHANGE_EASY_DIVIDER = 2;
@@ -65,7 +65,7 @@ const PRISON_ANARCHY_DEC_EASY_DIVIDER = 3;
 const PRISON_ANARCHY_DEC_LEVEL_ONE_DIVIDER = 1;
 const PRISON_ANARCHY_DEC_LEVEL_TWO_DIVIDER = 2.4;
 const PRISON_ANARCHY_DEC_LEVEL_THREE_DIVIDER = 3;
-const PRISON_ANARCHY_DEC_LEVEL_FOUR_DIVIDER = 3.5;
+const PRISON_ANARCHY_DEC_LEVEL_FOUR_DIVIDER = 3;
 const PRISON_ANARCHY_DEC_LEVEL_FIVE_DIVIDER = 3;
 
 //Enemy Level increase from each riot
@@ -86,6 +86,8 @@ const DIFFICULTY_HARD_GROWTH_RATE = 0.9;
 const BATTLEBACK1_DEFEATED_LV1_NAME = 'Defeated1';
 const BATTLEBACK1_DEFEATED_LV2_NAME = 'Defeated2';
 const BATTLEBACK1_DEFEATED_LV3_NAME = 'Defeated3';
+const BATTLEBACK1_DEFEATED_LV4_NAME = 'Defeated4';
+const BATTLEBACK1_DEFEATED_LV5_NAME = 'Defeated5';
 const BATTLEBACK1_DEFEATED_GUARD_NAME = 'Defeated_guard';
 
 
@@ -126,6 +128,7 @@ const VARIABLE_FIRST_DEFEAT_PROGRESS_ID = 36;
 const VARIABLE_LOST_TO_TONKIN_COUNT_ID = 61;
 const VARIABLE_LOST_TO_CARGILL_COUNT_ID = 62;
 const VARIABLE_LOST_TO_ARON_COUNT_ID = 66;
+const VARIABLE_LOST_TO_NOINIM_COUNT_ID = 67;
 
 const VARIABLE_MOG_TURNS_SHOWED_1_ID = 161;
 const VARIABLE_MOG_TURNS_SHOWED_2_ID = 162;
@@ -246,6 +249,13 @@ const SWITCH_TODAY_STRIPPER_DEFEAT_ID = 158;
 const SWITCH_TODAY_STORE_ITEM_ID = 159;
 const SWITCH_YESTERDAY_DEFEATED_LV3_ID = 160;
 const SWITCH_TODAY_STORE_ROGUE_RAN_ID = 162;
+const SWITCH_YESTERDAY_DEFEATED_LV4_ID = 163;
+const SWITCH_YESTERDAY_DEFEATED_LV5_ID = 164;
+const SWITCH_LV4_TRIGGER_AMBUSH_ID = 165;
+const SWITCH_LV4_SHORTCUT_TO_LV5_ID = 166;
+const SWITCH_OFFICE_EDICT_FAILSAFE_ID = 167;
+const SWITCH_NOINIM_FIRST_GRAB_ID = 168;
+const SWITCH_NOINIM_FIRST_THROW_ID = 169;
 
 const SWITCH_GIFT_EMPEROR_LV1_ID = 181;
 const SWITCH_GIFT_EMPEROR_LV2_ID = 182;
@@ -323,6 +333,9 @@ Prison.getBarIncome = function() {
 Prison.getStoreIncome = function() { 
 	return $gameParty.getStoreIncome();
 };
+Prison.getOutsourcingIncome = function() { 
+	return $gameParty.getOutsourcingIncome();
+};
 Prison.getNerdBlackmail = function() { 
 	return $gameParty.getNerdBlackmail();
 };
@@ -342,10 +355,6 @@ Prison.normalMode = function() {
 };
 Prison.hardMode = function() { 
 	return $gameParty.hardMode();
-};
-
-Prison.blackMarketIsOpened = function() { 
-	return $gameParty.blackMarketIsOpened();
 };
 
 Prison.HighOrder = function() { 
@@ -667,6 +676,12 @@ Prison.preDefeatedLevelTwoBattleSetup = function() {
 Prison.preDefeatedLevelThreeBattleSetup = function() { 
 	$gameParty.preDefeatedLevelThreeBattleSetup();
 };
+Prison.preDefeatedLevelFourBattleSetup = function() { 
+	$gameParty.preDefeatedLevelFourBattleSetup();
+};
+Prison.preDefeatedLevelFiveBattleSetup = function() { 
+	$gameParty.preDefeatedLevelFiveBattleSetup();
+};
 
 Prison.preDefeatedGuardBattleSetup = function() { 
 	$gameParty.preDefeatedGuardBattleSetup();
@@ -697,6 +712,14 @@ Prison.isThisNameAlreadyInWanted = function(enemyName, enemyType, enemyPrefixNam
 Prison.canOpenSaveMenu = function() { 
 	return $gameParty.canOpenSaveMenu();
 };
+
+Prison.determineLevelFourEntranceRoutes = function() { 
+	$gameParty.determineLevelFourEntranceRoutes();
+};
+Prison.determineLevelFourAmbushMap = function() { 
+	$gameParty.determineLevelFourAmbushMap();
+};
+
 
 
 //////////////
@@ -784,8 +807,6 @@ Game_Party.prototype.setupPrison = function() {
 Game_Party.prototype.setPrisonToFullReset = function() {
 	this._currentRunPlaythroughs = 0;
 	this.setStartingDate(this._dayCount);
-	//this.disableAllWanted();
-	this.setupWantedList();
 };
 
 //STS Clear Actor(1) ALL 
@@ -804,6 +825,14 @@ Game_Party.prototype.setPrisonToStartingState = function() {
 	this.setOrderChangePerDay(PRISON_STARTING_ORDER_PER_DAY); 
 	this.setCorruption(PRISON_STARTING_CORRUPTION);
 	this._lastDefeatedDate = -1;
+	this._lastDefeatedLevelOneDate = -1;
+	this._lastDefeatedLevelTwoDate = -1;
+	this._lastDefeatedLevelThreeDate = -1;
+	this._lastDefeatedLevelFourDate = -1;
+	this._lastDefeatedLevelFiveDate = -1;
+	this._lastDefeatedGuardDate = -1;
+	
+	
 	this.setStartingRunDate(this._dayCount);
 	this._gold = PRISON_STARTING_FUNDING;
 	this._storedEdictPoints = 0;
@@ -831,7 +860,6 @@ Game_Party.prototype.setPrisonToStartingState = function() {
 	this._todayVisitorRepDecayed = false;
 	this._daysWithoutDoingGloryHole = 0;
 	this._todayGloryHoleRepDecayed = false;
-	this._daysWithoutVisitingGlory = 0;
 	this._prisonLevelOne_riotingDays = 0;
 	this._prisonLevelTwo_riotingDays = 0;
 	this._prisonLevelThree_riotingDays = 0;
@@ -839,6 +867,7 @@ Game_Party.prototype.setPrisonToStartingState = function() {
 	this._prisonLevelFive_riotingDays = 0;
 	this.setCancelFollowingNextDayRiotManager(false);
 	this._enableResearchEdicts = false;
+	this.setupWantedList();
 	this.setBarReputation(0);
 	this.setGloryReputation(0);
 	this.initializeReceptionistSettings();
@@ -863,12 +892,32 @@ Game_Party.prototype.setPrisonToStartingState = function() {
 	$gameSelfSwitches.setValue([MAP_ID_RESEARCH, 8, "D"], false); //Door guard
 	$gameSelfSwitches.setValue([MAP_ID_MEETING_ROOM, 5, "D"], false); //Door guard
 	$gameSelfSwitches.setValue([MAP_ID_COMMON_AREA_NORTH_EAST, 3, "A"], false); //Aron boss
-	$gameSelfSwitches.setValue([MAP_ID_COMMON_AREA_NORTH_EAST, 10, "A"], false); //Aron boss
 	$gameSelfSwitches.setValue([MAP_ID_COMMON_AREA_SOUTH_EAST, 6, "D"], false); //Door guard
 	$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_SOUTH, 33, "D"], false); //Entrance
 	$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_SOUTH, 40, "D"], false); //Door guard
 	$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_NORTH_EAST, 25, "D"], false);  //Door guard
 	$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_NORTH_EAST, 29, "D"], false);  //Entrance
+	$gameSelfSwitches.setValue([MAP_ID_LVL4_MUSHROOM_FARM, 4, "D"], false); //Door guard
+	$gameSelfSwitches.setValue([MAP_ID_LVL4_MUSHROOM_FARM, 5, "D"], false); //Door guard
+	$gameSelfSwitches.setValue([MAP_ID_LVL4_CHICKEN_PASTURE, 13, "D"], false); //Door guard
+	$gameSelfSwitches.setValue([MAP_ID_LVL4_CHICKEN_PASTURE, 14, "D"], false); //Door guard
+	$gameSelfSwitches.setValue([MAP_ID_LVL4_CHICKEN_PASTURE, 11, "D"], false); //Chaser
+	$gameSelfSwitches.setValue([MAP_ID_LVL4_UNDERGROUND_POOL, 11, "D"], false); //Door guard
+	$gameSelfSwitches.setValue([MAP_ID_LVL4_UNDERGROUND_POOL, 8, "D"], false); //Chaser
+	$gameSelfSwitches.setValue([MAP_ID_LVL4_YETI_CAVERN, 7, "D"], false); //Door guard
+	$gameSelfSwitches.setValue([MAP_ID_LVL4_YETI_CAVERN, 8, "D"], false); //Door guard
+	$gameSelfSwitches.setValue([MAP_ID_LVL4_YETI_CAVERN, 9, "D"], false); //Door guard
+	$gameSelfSwitches.setValue([MAP_ID_LVL4_AMBUSH, 3, "D"], false); //Normal
+	$gameSelfSwitches.setValue([MAP_ID_LVL4_AMBUSH, 4, "D"], false); //Normal
+	$gameSelfSwitches.setValue([MAP_ID_LVL4_AMBUSH, 5, "D"], false); //Normal
+	$gameSelfSwitches.setValue([MAP_ID_LVL4_AMBUSH, 6, "D"], false); //Normal
+	$gameSelfSwitches.setValue([MAP_ID_LVL4_AMBUSH, 7, "D"], false); //Normal
+	$gameSelfSwitches.setValue([MAP_ID_LVL4_AMBUSH, 8, "D"], false); //Normal
+	$gameSelfSwitches.setValue([MAP_ID_LVL4_AMBUSH, 10, "D"], false); //Door guard
+	$gameSelfSwitches.setValue([MAP_ID_LVL4_AMBUSH, 11, "D"], false); //Door guard
+	$gameSelfSwitches.setValue([MAP_ID_LVL4_AMBUSH, 12, "D"], false); //Door guard
+	$gameSelfSwitches.setValue([MAP_ID_LVL4_AMBUSH, 13, "D"], false); //Door guard
+	$gameSelfSwitches.setValue([MAP_ID_LVL4_STAIRS_TO_LVL5, 3, "A"], false); //Noinim boss
 	
 	this.resetDifficulty();
 	this.closeEdictsMenuCalculations();
@@ -1170,10 +1219,25 @@ Game_Party.prototype.advanceNextDay = function() {
 	this.recalculateBaseIncomeAndExpense();
 	this.gainGold(this.calculateBalance(false));
 	
+	//Bankruptcy
 	if(Prison.funding === 0) {
 		this.titlesBankruptcyOrder(false);
 		this._daysInBankruptcy++;
 		this._gold = 0;
+		if(Karryn.hasEdict(EDICT_RIOT_SUPPRESSING_TRAINING_FOR_GUARDS)) {
+			if(this.prisonLevelOneIsSubjugated()) {
+				this.riotOutbreakPrisonLevelOne();
+			}
+			if(this.prisonLevelTwoIsSubjugated()) {
+				this.riotOutbreakPrisonLevelTwo();
+			}
+			if(this.prisonLevelThreeIsSubjugated()) {
+				this.riotOutbreakPrisonLevelThree();
+			}
+			if(this.prisonLevelFourIsSubjugated()) {
+				this.riotOutbreakPrisonLevelFour();
+			}
+		}
 	}
 	
 	this.checkForNewTitle();
@@ -1201,6 +1265,9 @@ Game_Party.prototype.restAtOffice = function() {
 		recovery *= 0.5;
 		sleepQuality--;
 		$gameSwitches.setValue(SWITCH_HALF_FATIGUE_RECOVERY_ID, false);
+	}
+	if(actor.isAroused() && !actor._todayMasturbatedBeforeRest) {
+		actor.increaseOnaniFrustration();
 	}
 	actor.recoverFatigue(recovery);
 	actor.setSleepQuality(sleepQuality);
@@ -1230,6 +1297,9 @@ Game_Party.prototype.restOutside = function() {
 		recovery *= 0.5;
 		sleepQuality--;
 		$gameSwitches.setValue(SWITCH_HALF_FATIGUE_RECOVERY_ID, false);
+	}
+	if(actor.isAroused() && !actor._todayMasturbatedBeforeRest) {
+		actor.increaseOnaniFrustration();
 	}
 	actor.recoverFatigue(recovery);
 	actor.setSleepQuality(sleepQuality);
@@ -1305,7 +1375,7 @@ Game_Party.prototype.resetSpecialBattles = function() {
 	
 	if($gameSwitches.value(SWITCH_TODAY_GLORYHOLE_BATTLE_ID)) {
 		$gameSwitches.setValue(SWITCH_TODAY_GLORYHOLE_BATTLE_ID, false);
-		this._daysWithoutVisitingGlory = 0;
+		this._daysWithoutDoingGloryHole = 0;
 	}
 	else if(Karryn.hasEdict(EDICT_REFIT_MIDDLE_STALL) && this._gloryReputation > this.getMinimumGloryHoleReputation()){
 		if(this._daysWithoutDoingGloryHole >= GLORY_HOLE_REP_DECAY_DAYS) {
@@ -1337,10 +1407,22 @@ Game_Party.prototype.resetSpecialBattles = function() {
 	$gameSwitches.setValue(SWITCH_TODAY_STORE_ITEM_ID, false);
 	$gameSwitches.setValue(SWITCH_TODAY_STORE_ROGUE_RAN_ID, false);
 	
-	if(this._lastDefeatedDate + 1 < this.date) {
+	if(this._lastDefeatedLevelOneDate + 1 < this.date) {
 		$gameSwitches.setValue(SWITCH_YESTERDAY_DEFEATED_LV1_ID, false);
+	}
+	if(this._lastDefeatedLevelTwoDate + 1 < this.date) {
 		$gameSwitches.setValue(SWITCH_YESTERDAY_DEFEATED_LV2_ID, false);
+	}
+	if(this._lastDefeatedLevelThreeDate + 1 < this.date) {
 		$gameSwitches.setValue(SWITCH_YESTERDAY_DEFEATED_LV3_ID, false);
+	}
+	if(this._lastDefeatedLevelFourDate + 1 < this.date) {
+		$gameSwitches.setValue(SWITCH_YESTERDAY_DEFEATED_LV4_ID, false);
+	}
+	if(this._lastDefeatedLevelFiveDate + 1 < this.date) {
+		$gameSwitches.setValue(SWITCH_YESTERDAY_DEFEATED_LV5_ID, false);
+	}
+	if(this._lastDefeatedGuardDate + 1 < this.date) {
 		$gameSwitches.setValue(SWITCH_YESTERDAY_DEFEATED_GUARD_ID, false);
 	}
 };
@@ -1530,7 +1612,7 @@ Game_Party.prototype.additionalExpense = function() {
 Game_Actor.prototype.additionalExpense = function() {
 	let value = 0;
 	value += this.titlesFlatExpense();
-	value += this.variablePrisonExpense();
+	value += this.edictsPrisonFlatExpense();
 	
 	return value;
 };
@@ -1543,8 +1625,10 @@ Game_Actor.prototype.incomeMultipler = function() {
 	multipler *= this.titlesIncomeRate();
 	multipler *= this.edictsIncomeRate();
 	
-	if(this.isEquippingThisAccessory(NECKLACE_JADE_ID) && this._flagEquippedJadeNecklaceForWholeDay) 
-		multipler *= 1.1;
+	if(this.isEquippingThisAccessory(NECKLACE_JADE_ID) && this._flagEquippedJadeNecklaceForWholeDay) {
+		if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) multipler *= 1.05;
+		else multipler *= 1.1;
+	}
 	
 	return multipler;
 };
@@ -1563,6 +1647,7 @@ Game_Party.prototype.calculateBalance = function(estimated) {
 	let balance = this.income;
 	balance += this.getBarIncome();
 	balance += this.getStoreIncome();
+	balance += this.getOutsourcingIncome();
 	balance -= this.getNerdBlackmail();
 	balance -= this.expense;
 	balance += this.calculateSubsidies(estimated);
@@ -1663,6 +1748,11 @@ Game_Party.prototype.setupPrisonLevels = function() {
 	this._prisonLevelTwo_staffLoungeRioting = false;
 	this._prisonLevelTwo_classroomRioting = false;
 	this._prisonLevelTwo_readingRoomRioting = false;
+	
+	this._prisonLevelThree_gymRioting = false;
+	this._prisonLevelThree_cellBlockSouthRioting = false;
+	this._prisonLevelThree_cellBlockNorthWestRioting = false;
+	this._prisonLevelThree_cellBlockNorthEastRioting = false;
 };
 
 //Level One Getters
@@ -1766,9 +1856,33 @@ Game_Party.prototype.prisonLevelThreeIsRioting = function() {
 	return this._prisonLevelThreeStatus === PRISON_LEVEL_STATUS_RIOTING;
 };
 Game_Party.prototype.prisonLevelThreeStatusText = function() {
-	if(this.prisonLevelThreeIsAnarchy()) return TextManager.prisonLevelStatusAnarchy;
+	if(this.prisonLevelThreeIsAnarchy()) {
+		let anarchyText = TextManager.prisonLevelStatusAnarchy;
+		let anarchyGracePeriod = this.anarchyGracePeriod();
+		let anarchyDecreaseDivider = this.anarchyDecreaseDivider();
+	
+		let levelAnarchyGracePeriod =  anarchyGracePeriod * PRISON_ANARCHY_GRACE_LEVEL_TWO_MULTIPLER;
+		anarchyDecreaseDivider *= PRISON_ANARCHY_DEC_LEVEL_TWO_DIVIDER;
+		if(this._prisonLevelThree_anarchyDays + this._levelThreeBonusGracePeriod > levelAnarchyGracePeriod) {
+			anarchyText += ' (' + Math.ceil((this._prisonLevelThree_anarchyDays + this._levelThreeBonusGracePeriod - levelAnarchyGracePeriod)/anarchyDecreaseDivider) + ')';
+		}
+		
+		return anarchyText;
+	}
 	else if(this.prisonLevelThreeIsSubjugated()) return TextManager.prisonLevelStatusSubjugated;
-	else if(this.prisonLevelThreeIsRioting()) return TextManager.prisonLevelStatusRioting;
+	else if(this.prisonLevelThreeIsRioting())  {
+		let riotText = TextManager.prisonLevelStatusRioting;
+		let riotRoomCount = 0;
+		
+		if(this._prisonLevelThree_gymRioting) riotRoomCount++;
+		if(this._prisonLevelThree_cellBlockSouthRioting) riotRoomCount++;
+		if(this._prisonLevelThree_cellBlockNorthWestRioting) riotRoomCount++;
+		if(this._prisonLevelThree_cellBlockNorthEastRioting) riotRoomCount++;
+
+		riotText += ' (' + riotRoomCount + ')';
+		
+		return riotText;
+	}
 	else return TextManager.prisonLevelStatusUnknown;
 };
 //Level Four Getters
@@ -1787,7 +1901,16 @@ Game_Party.prototype.prisonLevelFourIsRioting = function() {
 Game_Party.prototype.prisonLevelFourStatusText = function() {
 	if(this.prisonLevelFourIsAnarchy()) return TextManager.prisonLevelStatusAnarchy;
 	else if(this.prisonLevelFourIsSubjugated()) return TextManager.prisonLevelStatusSubjugated;
-	else if(this.prisonLevelFourIsRioting()) return TextManager.prisonLevelStatusRioting;
+	else if(this.prisonLevelFourIsRioting()) {
+		let riotText = TextManager.prisonLevelStatusRioting;
+		let riotRoomCount = 0;
+		
+		//todo v10
+
+		riotText += ' (' + riotRoomCount + ')';
+		
+		return riotText;
+	}
 	else return TextManager.prisonLevelStatusUnknown;
 };
 //Level Five Getters
@@ -1895,22 +2018,27 @@ Game_Party.prototype.getCurrentPrisonLevelName = function() {
 };
 
 Game_Party.prototype.changeCurrentPrisonOnTransfer = function() {
-	if($gamePlayer.getReturnMapID() === MAP_ID_OUTSIDE || $gamePlayer.getReturnMapID() === MAP_ID_YARD || $gamePlayer.getReturnMapID() === MAP_ID_KARRYN_OFFICE) {
+	let returnMapId = $gamePlayer.getReturnMapID();
+	if(returnMapId === MAP_ID_OUTSIDE || returnMapId === MAP_ID_YARD || returnMapId === MAP_ID_KARRYN_OFFICE) {
 		this.changeCurrentPrisonLevelToOutside();
 		$gameScreen.setMapInfoRefreshNeeded();
 	}
-	else if($gamePlayer.getReturnMapID() === MAP_ID_VISITOR_CENTER || $gamePlayer.getReturnMapID() === MAP_ID_VISITOR_CENTER_BROKEN 
-	|| $gamePlayer.getReturnMapID() === MAP_ID_VISITOR_ROOM || $gamePlayer.getReturnMapID() === MAP_ID_VISITOR_ROOM_BROKEN
-	|| $gamePlayer.getReturnMapID() === MAP_ID_BAR_BROKEN || $gamePlayer.getReturnMapID() === MAP_ID_LVL1_STAIRS_TO_LVL3 || $gamePlayer.getReturnMapID() === MAP_ID_LVL1_STAIRS_TO_LVL2 || $gamePlayer.getReturnMapID() === MAP_ID_BAR_STORAGE) {
+	else if(returnMapId === MAP_ID_VISITOR_CENTER || returnMapId === MAP_ID_VISITOR_CENTER_BROKEN 
+	|| returnMapId === MAP_ID_VISITOR_ROOM || returnMapId === MAP_ID_VISITOR_ROOM_BROKEN
+	|| returnMapId === MAP_ID_BAR_BROKEN || returnMapId === MAP_ID_LVL1_STAIRS_TO_LVL3 || returnMapId === MAP_ID_LVL1_STAIRS_TO_LVL2 || returnMapId === MAP_ID_BAR_STORAGE) {
 		this.changeCurrentPrisonLevelToLevelOne();
 		$gameScreen.setMapInfoRefreshNeeded();
 	}
-	else if($gamePlayer.getReturnMapID() === MAP_ID_LVL2_STAIRS_TO_LVL1 || $gamePlayer.getReturnMapID() === MAP_ID_STORE_FIXED || $gamePlayer.getReturnMapID() === MAP_ID_STORE_BROKEN || $gamePlayer.getReturnMapID() === MAP_ID_READING_ROOM) {
+	else if(returnMapId === MAP_ID_LVL2_STAIRS_TO_LVL1 || returnMapId === MAP_ID_STORE_FIXED || returnMapId === MAP_ID_STORE_BROKEN || returnMapId === MAP_ID_READING_ROOM || returnMapId === MAP_ID_BATHROOM_BROKEN || returnMapId === MAP_ID_BATHROOM_FIXED) {
 		this.changeCurrentPrisonLevelToLevelTwo();
 		$gameScreen.setMapInfoRefreshNeeded();
 	}
-	else if($gamePlayer.getReturnMapID() === MAP_ID_LVL3_STAIRS_TO_LVL1_LVL4) {
+	else if(returnMapId === MAP_ID_LVL3_STAIRS_TO_LVL1_LVL4 || returnMapId === MAP_ID_LVL3_DEFEAT_SOLITARY_CELL) {
 		this.changeCurrentPrisonLevelToLevelThree();
+		$gameScreen.setMapInfoRefreshNeeded();
+	}
+	else if(returnMapId === MAP_ID_LVL4_STAIRS_TO_LVL3 || returnMapId === MAP_ID_LVL4_STAIRS_TO_LVL5 || returnMapId === MAP_ID_LVL4_ABANDONED_AREA) {
+		this.changeCurrentPrisonLevelToLevelFour();
 		$gameScreen.setMapInfoRefreshNeeded();
 	}
 };
@@ -1964,8 +2092,11 @@ Game_Party.prototype.preBattleSetup = function() {
 Game_Party.prototype.preBossBattleSetup = function() {
 	this.preBattleSetup();
 	this._showTopRightWaveNumberFlag = false;
+	this._isBossBattleFlag = true;
 	Karryn.turnOnCantEscapeFlag();
 	this.setupAronCallLizardmanLimit();
+	this.setupNoinimReinforcementVariables();
+	this.resetMinionThrowVariables();
 };
 
 Game_Party.prototype.preGuardBattleSetup = function() {
@@ -2023,7 +2154,12 @@ Game_Party.prototype.preDefeatedLevelOneBattleSetup = function() {
 	$gameVariables.setValue(VARIABLE_MOG_TURNS_SHOWED_1_ID, 0);
 	$gameVariables.setValue(VARIABLE_MOG_TURNS_SHOWED_2_ID, 1);
 	$gameSwitches.setValue(SWITCH_IN_COMBAT_ID, true);
-	$gameSwitches.setValue(SWITCH_YESTERDAY_DEFEATED_LV1_ID, true);
+	
+	if(!$gameSwitches.value(SWITCH_TODAY_WAITRESS_DEFEAT_ID) && !$gameSwitches.value(SWITCH_TODAY_RECEPTIONIST_DEFEAT_ID)) {
+		this._lastDefeatedLevelOneDate = this.date;
+		$gameSwitches.setValue(SWITCH_YESTERDAY_DEFEATED_LV1_ID, true);
+	}
+
 	
 	this.setDefeatedSwitchesOff();
 	this._forceAdvantage = 'SURPRISE';
@@ -2051,7 +2187,12 @@ Game_Party.prototype.preDefeatedLevelTwoBattleSetup = function() {
 	$gameVariables.setValue(VARIABLE_MOG_TURNS_SHOWED_1_ID, 0);
 	$gameVariables.setValue(VARIABLE_MOG_TURNS_SHOWED_2_ID, 1);
 	$gameSwitches.setValue(SWITCH_IN_COMBAT_ID, true);
-	$gameSwitches.setValue(SWITCH_YESTERDAY_DEFEATED_LV2_ID, true);
+	
+	if($gameSwitches.value(SWITCH_TODAY_GLORYHOLE_DEFEAT_ID)) {
+		this._lastDefeatedLevelTwoDate = this.date;
+		$gameSwitches.setValue(SWITCH_YESTERDAY_DEFEATED_LV2_ID, true);
+	}
+
 	
 	this.setDefeatedSwitchesOff();
 	this._forceAdvantage = 'SURPRISE';
@@ -2079,7 +2220,11 @@ Game_Party.prototype.preDefeatedLevelThreeBattleSetup = function() {
 	$gameVariables.setValue(VARIABLE_MOG_TURNS_SHOWED_1_ID, 0);
 	$gameVariables.setValue(VARIABLE_MOG_TURNS_SHOWED_2_ID, 1);
 	$gameSwitches.setValue(SWITCH_IN_COMBAT_ID, true);
-	$gameSwitches.setValue(SWITCH_YESTERDAY_DEFEATED_LV3_ID, true);
+	
+	if(!$gameSwitches.value(SWITCH_TODAY_STRIPPER_DEFEAT_ID)) {
+		this._lastDefeatedLevelThreeDate = this.date;
+		$gameSwitches.setValue(SWITCH_YESTERDAY_DEFEATED_LV3_ID, true);
+	}
 	
 	this.setDefeatedSwitchesOff();
 	this._forceAdvantage = 'SURPRISE';
@@ -2102,12 +2247,78 @@ Game_Party.prototype.preDefeatedLevelThreeBattleSetup = function() {
 	BattleManager.setBMAllowTachieUpdate(true);
 };
 
+Game_Party.prototype.preDefeatedLevelFourBattleSetup = function() {
+	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
+	$gameVariables.setValue(VARIABLE_MOG_TURNS_SHOWED_1_ID, 0);
+	$gameVariables.setValue(VARIABLE_MOG_TURNS_SHOWED_2_ID, 1);
+	$gameSwitches.setValue(SWITCH_IN_COMBAT_ID, true);
+	
+	this._lastDefeatedLevelFourDate = this.date;
+	$gameSwitches.setValue(SWITCH_YESTERDAY_DEFEATED_LV4_ID, true);
+
+	
+	this.setDefeatedSwitchesOff();
+	this._forceAdvantage = 'SURPRISE';
+	
+	actor.preDefeatedBattleSetup();
+	actor.setDefeatedLevel4Pose();
+	actor.refreshSlutLvlStageVariables_General();
+	
+	let pilloryFactor = actor.getDefeatedLvlFourFactor();
+	$gameVariables.setValue(VARIABLE_DEFEATED_SPRITES_ID, Math.max(3, pilloryFactor));
+	
+	//$gameMap.setupBattleback(); 
+	//$gameMap.changeBattleback(BATTLEBACK1_DEFEATED_LV4_NAME, null);
+	
+	this._gainHalfOrderFlag = false;
+	this._gainHalfFatigueFlag = false;
+	Karryn.turnOnCantEscapeFlag();
+	
+	this.clearPrisonResults();
+	BattleManager.setBMAllowTachieUpdate(true);
+};
+
+Game_Party.prototype.preDefeatedLevelFiveBattleSetup = function() {
+	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
+	$gameVariables.setValue(VARIABLE_MOG_TURNS_SHOWED_1_ID, 0);
+	$gameVariables.setValue(VARIABLE_MOG_TURNS_SHOWED_2_ID, 1);
+	$gameSwitches.setValue(SWITCH_IN_COMBAT_ID, true);
+	
+	this._lastDefeatedLevelFiveDate = this.date;
+	$gameSwitches.setValue(SWITCH_YESTERDAY_DEFEATED_LV5_ID, true);
+	
+	this.setDefeatedSwitchesOff();
+	this._forceAdvantage = 'SURPRISE';
+	
+	actor.preDefeatedBattleSetup();
+	actor.setDefeatedLevel5Pose();
+	actor.refreshSlutLvlStageVariables_General();
+	
+	//let Factor = actor.getDefeatedLvlFiveFactor();
+	//$gameVariables.setValue(VARIABLE_DEFEATED_SPRITES_ID, Math.max(3, Factor));
+	
+	//$gameMap.setupBattleback(); 
+	//$gameMap.changeBattleback(BATTLEBACK1_DEFEATED_LV5_NAME, null);
+	
+	this._gainHalfOrderFlag = false;
+	this._gainHalfFatigueFlag = false;
+	Karryn.turnOnCantEscapeFlag();
+	
+	this.clearPrisonResults();
+	BattleManager.setBMAllowTachieUpdate(true);
+};
+
 Game_Party.prototype.preDefeatedGuardBattleSetup = function() {
 	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
 	$gameVariables.setValue(VARIABLE_MOG_TURNS_SHOWED_1_ID, 0);
 	$gameVariables.setValue(VARIABLE_MOG_TURNS_SHOWED_2_ID, 1);
 	$gameSwitches.setValue(SWITCH_IN_COMBAT_ID, true);
-	$gameSwitches.setValue(SWITCH_YESTERDAY_DEFEATED_GUARD_ID, true);
+	
+	if(!$gameSwitches.value(SWITCH_TODAY_RECEPTIONIST_DEFEAT_ID)) {
+		this._lastDefeatedGuardDate = this.date;
+		$gameSwitches.setValue(SWITCH_YESTERDAY_DEFEATED_GUARD_ID, true);
+	}
+	
 	
 	this.setDefeatedSwitchesOff();
 	this._forceAdvantage = 'SURPRISE';
@@ -2178,13 +2389,24 @@ Game_Party.prototype.riotingRoomsCheck = function() {
 		this._prisonLevelTwo_meetingRoomRioting = false;
 	
 	//Level Three
-	
+	if(this._prisonLevelThree_gymRioting && $gameSelfSwitches.value([MAP_ID_GYM, 8, "D"]))
+		this._prisonLevelThree_gymRioting = false;
+	if(this._prisonLevelThree_cellBlockSouthRioting && $gameSelfSwitches.value([MAP_ID_CELL_BLOCK_SOUTH, 37, "D"]))
+		this._prisonLevelThree_cellBlockSouthRioting = false;
+	if(this._prisonLevelThree_cellBlockNorthWestRioting && $gameSelfSwitches.value([MAP_ID_CELL_BLOCK_NORTH_WEST, 34, "D"]))
+		this._prisonLevelThree_cellBlockNorthWestRioting = false;
+	if(this._prisonLevelThree_cellBlockNorthEastRioting && $gameSelfSwitches.value([MAP_ID_CELL_BLOCK_NORTH_EAST, 28, "D"]))
+		this._prisonLevelThree_cellBlockNorthEastRioting = false;
+		
+	//Level Four
+	//todo v10
 };
 
 //This gets called right after battle, and possibly before a defeat battle
 Game_Party.prototype.postBossBattleCleanup  = function() {
 	this._showTopRightWaveNumberFlag = true;
 	this._showTopRightTimeNumberFlag = false;
+	this._isBossBattleFlag = false;
 	$gameActors.actor(ACTOR_KARRYN_ID).setPleasure(0);
 }; 
 
@@ -2237,15 +2459,15 @@ Game_Party.prototype.setDefeatedSwitchesOn = function() {
 	}
 	else if(Prison.currentlyPrisonLevelOne()) {
 		$gameSwitches.setValue(SWITCH_DEFEATED_IN_LEVEL_ONE_ID, true);
-		this._levelOneBonusGracePeriod++;
+		if(!Karryn.isInJobPose()) this._levelOneBonusGracePeriod++;
 	}
 	else if(Prison.currentlyPrisonLevelTwo()) {
 		$gameSwitches.setValue(SWITCH_DEFEATED_IN_LEVEL_TWO_ID, true);
-		this._levelTwoBonusGracePeriod++;
+		if(!Karryn.isInJobPose()) this._levelTwoBonusGracePeriod++;
 	}
 	else if(Prison.currentlyPrisonLevelThree()) {
 		$gameSwitches.setValue(SWITCH_DEFEATED_IN_LEVEL_THREE_ID, true);
-		this._levelThreeBonusGracePeriod++;
+		if(!Karryn.isInJobPose()) this._levelThreeBonusGracePeriod++;
 	}
 	else if(Prison.currentlyPrisonLevelFour()) {
 		$gameSwitches.setValue(SWITCH_DEFEATED_IN_LEVEL_FOUR_ID, true);
@@ -2274,17 +2496,10 @@ Game_Party.prototype.closeEdictsMenuCalculations = function() {
 	
 };
 
-////////
-// Black Market Opened
-//////////////
-
-Game_Party.prototype.blackMarketIsOpened = function() {
-    return Karryn.hasEdict(EDICT_BLACK_MARKET) && !Karryn.hasEdict(EDICT_CLOSE_BLACK_MARKET);
-};
-
 /////////
 // Special
 
+//Turn End
 Game_Party.prototype.onTurnEndSpecial = function() {
 	if(Karryn.isInWaitressServingPose()) {
 		$gameTroop.onTurnEndSpecial_waitressBattle(false);
@@ -2304,9 +2519,17 @@ Game_Party.prototype.onTurnEndSpecial = function() {
 	else if(Karryn.isInDefeatedLevel3Pose()) {
 		$gameTroop.onTurnEndSpecial_defeatedLevelThreeBattle();
 	}
+	else if(Karryn.isInDefeatedLevel4Pose()) {
+		$gameTroop.onTurnEndSpecial_defeatedLevelFourBattle();
+	}
+	else if(Karryn.isInDefeatedLevel5Pose()) {
+		$gameTroop.onTurnEndSpecial_defeatedLevelFiveBattle();
+	}
 	else if(Karryn.isInDefeatedGuardPose()) {
 		$gameTroop.onTurnEndSpecial_defeatedGuardBattle();
 	}
+	
+	$gameTroop.onTurnEndSpecial_yetiHeatAura();
 };
 
 Game_Party.prototype.isInGuardBattle = function() {
@@ -2328,7 +2551,7 @@ Game_Party.prototype.orderChangeRiotManager = function() {
 	let orderChange = 0;
 	let anarchyGracePeriod = this.anarchyGracePeriod();
 	let anarchyDecreaseDivider = this.anarchyDecreaseDivider();
-	
+
 	if(this.prisonLevelOneIsAnarchy()) {
 		orderChange += PRISON_LEVEL_ONE_ANARCHY_ORDER_CHANGE;
 		let levelAnarchyGracePeriod =  anarchyGracePeriod * PRISON_ANARCHY_GRACE_LEVEL_ONE_MULTIPLER;
@@ -2338,7 +2561,7 @@ Game_Party.prototype.orderChangeRiotManager = function() {
 	}
 	
 	else if(this.prisonLevelOneIsRioting()) {
-		orderChange += this.riotingOrderChange(1);
+		orderChange += this.riotingOrderChange(1, false);
 	}
 	
 	if(this.prisonLevelTwoIsAnarchy()) {
@@ -2349,30 +2572,34 @@ Game_Party.prototype.orderChangeRiotManager = function() {
 			orderChange += Math.ceil((this._prisonLevelTwo_anarchyDays + this._levelTwoBonusGracePeriod - levelAnarchyGracePeriod)/anarchyDecreaseDivider);
 	}
 	else if(this.prisonLevelTwoIsRioting()) {
-		orderChange += this.riotingOrderChange(2);
+		orderChange += this.riotingOrderChange(2, false);
 	}
 	
 	if(this.prisonLevelThreeIsAnarchy()) {
 		orderChange += PRISON_LEVEL_THREE_ANARCHY_ORDER_CHANGE;
+		let levelAnarchyGracePeriod =  anarchyGracePeriod * PRISON_ANARCHY_GRACE_LEVEL_THREE_MULTIPLER;
+		anarchyDecreaseDivider *= PRISON_ANARCHY_DEC_LEVEL_THREE_DIVIDER;
+		if(!Prison.easyMode() && this._prisonLevelThree_anarchyDays + this._levelThreeBonusGracePeriod > levelAnarchyGracePeriod) 
+			orderChange += Math.ceil((this._prisonLevelThree_anarchyDays + this._levelThreeBonusGracePeriod - levelAnarchyGracePeriod)/anarchyDecreaseDivider);
 	}
 	else if(this.prisonLevelThreeIsRioting()) {
-		orderChange += this._prisonLevelThree_riotingDays;
+		orderChange += this.riotingOrderChange(3, false);
 	}
 	
 	if(this.prisonLevelFourIsAnarchy()) {
 		orderChange += PRISON_LEVEL_FOUR_ANARCHY_ORDER_CHANGE;
 	}
 	else if(this.prisonLevelFourIsRioting()) {
-		orderChange += this._prisonLevelFour_riotingDays;
+		orderChange += this.riotingOrderChange(4, false);
 	}
 	
 	if(this.prisonLevelFiveIsAnarchy()) {
 		orderChange += PRISON_LEVEL_FIVE_ANARCHY_ORDER_CHANGE;
 	}
 	else if(this.prisonLevelFiveIsRioting()) {
-		orderChange += this._prisonLevelFive_riotingDays;
+		orderChange += this.riotingOrderChange(5, false);
 	}
-	
+
 	if(orderChange != 0) orderChange *= -1;
 	return orderChange;
 };
@@ -2387,17 +2614,19 @@ Game_Party.prototype.anarchyDecreaseDivider = function() {
 	let anarchyDecreaseDivider = 1;
 	
 	if(this.easyMode()) anarchyDecreaseDivider = PRISON_ANARCHY_DEC_EASY_DIVIDER;
-	if(Karryn.hasEdict(EDICT_ADVANCED_GUARD_TRAINING)) anarchyDecreaseDivider += 0.2;
+	if(Karryn.hasEdict(EDICT_EXPERT_GUARD_TRAINING)) anarchyDecreaseDivider += 0.3;
+	else if(Karryn.hasEdict(EDICT_ADVANCED_GUARD_TRAINING)) anarchyDecreaseDivider += 0.2;
 	else if(Karryn.hasEdict(EDICT_BASIC_GUARD_TRAINING)) anarchyDecreaseDivider += 0.1;
-	if(Karryn.hasEdict(EDICT_REINFORCED_EQUIPMENT)) anarchyDecreaseDivider += 0.1;
-	else if(Karryn.hasEdict(EDICT_STANDARD_EQUIPMENT)) anarchyDecreaseDivider += 0.05;
+	if(Karryn.hasEdict(EDICT_MILITARY_GUARD_EQUIPMENT)) anarchyDecreaseDivider += 0.15;
+	else if(Karryn.hasEdict(EDICT_REINFORCED_GUARD_EQUIPMENT)) anarchyDecreaseDivider += 0.1;
+	else if(Karryn.hasEdict(EDICT_STANDARD_GUARD_EQUIPMENT)) anarchyDecreaseDivider += 0.05;
 	
 	return anarchyDecreaseDivider;
 };
 
-Game_Party.prototype.riotingOrderChange = function(level) {
+Game_Party.prototype.riotingOrderChange = function(level, firstDayDailyReport) {
 	let value = 0;
-	
+
 	if(level === 1) {
 		if(this._prisonLevelOne_workshopRioting) value += PRISON_LEVEL_ONE_RIOTING_ORDER_CHANGE;
 		if(this._prisonLevelOne_laundryRioting) value += PRISON_LEVEL_ONE_RIOTING_ORDER_CHANGE;
@@ -2406,7 +2635,7 @@ Game_Party.prototype.riotingOrderChange = function(level) {
 		
 		value += this._prisonLevelOne_riotingDays;
 		
-		if(this._prisonLevelOne_riotingDays === 1)
+		if(this._prisonLevelOne_riotingDays <= 0 || firstDayDailyReport)
 			value = Math.round(value * PRISON_FIRST_DAY_RIOTING_ORDER_CHANGE_MULTIPLER);
 	}
 	else if(level === 2) {
@@ -2415,15 +2644,35 @@ Game_Party.prototype.riotingOrderChange = function(level) {
 		if(this._prisonLevelTwo_staffLoungeRioting) value += PRISON_LEVEL_TWO_RIOTING_ORDER_CHANGE;
 		if(this._prisonLevelTwo_classroomRioting) value += PRISON_LEVEL_TWO_RIOTING_ORDER_CHANGE;
 		if(this._prisonLevelTwo_readingRoomRioting) value += PRISON_LEVEL_TWO_RIOTING_ORDER_CHANGE;
-		
+
 		value += this._prisonLevelTwo_riotingDays;
 		
-		if(this._prisonLevelTwo_riotingDays === 1)
+		if(this._prisonLevelTwo_riotingDays <= 0 || firstDayDailyReport)
 			value = Math.round(value * PRISON_FIRST_DAY_RIOTING_ORDER_CHANGE_MULTIPLER);
+	}
+	else if(level === 3) {
+		if(this._prisonLevelThree_gymRioting) value += PRISON_LEVEL_THREE_RIOTING_ORDER_CHANGE;
+		if(this._prisonLevelThree_cellBlockSouthRioting) value += PRISON_LEVEL_THREE_RIOTING_ORDER_CHANGE;
+		if(this._prisonLevelThree_cellBlockNorthWestRioting) value += PRISON_LEVEL_THREE_RIOTING_ORDER_CHANGE;
+		if(this._prisonLevelThree_cellBlockNorthEastRioting) value += PRISON_LEVEL_THREE_RIOTING_ORDER_CHANGE;
+		
+		value += this._prisonLevelThree_riotingDays;
+		
+		if(this._prisonLevelThree_riotingDays <= 0 || firstDayDailyReport)
+			value = Math.round(value * PRISON_FIRST_DAY_RIOTING_ORDER_CHANGE_MULTIPLER);
+	}
+	else if(level === 4) {
+		
+		
+		value += this._prisonLevelFour_riotingDays;
+		
+		if(this._prisonLevelFour_riotingDays <= 0 || firstDayDailyReport)
+			value = Math.round(value * PRISON_FIRST_DAY_RIOTING_ORDER_CHANGE_MULTIPLER);
+		
 	}
 	
 	if(Prison.easyMode()) value = Math.round(value / PRISON_RIOTING_ORDER_CHANGE_EASY_DIVIDER);
-	
+
 	return value;
 };
 
@@ -2442,11 +2691,20 @@ Game_Party.prototype.nextDayRiotManager = function() {
 	else {
 		//Check for new riots
 		if(this.prisonLevelOneIsSubjugated()) {
-			this._prisonLevelOneRiotBuildup = Math.max(0, this._prisonLevelOneRiotBuildup + this.prisonLevelOneRiotChance());
+			if(ConfigManager.cheatInstantRiotsOne && Prison.easyMode()) {
+				this._prisonLevelOneRiotBuildup = 100;
+			}
+			else if(Karryn.hasEdict(EDICT_RIOT_SUPPRESSING_TRAINING_FOR_GUARDS) && Prison.funding + Prison.calculateBalance(true) > 0) {
+				this._prisonLevelOneRiotBuildup = 0;
+			}
+			else {
+				let buildupRate = 1;
+				if(Karryn.hasEdict(EDICT_RIOT_SUPPRESSING_TRAINING_FOR_GUARDS)) buildupRate *= 2;
+				
+				this._prisonLevelOneRiotBuildup = Math.max(0, this._prisonLevelOneRiotBuildup + this.prisonLevelOneRiotChance() * buildupRate);
+			}
 			
-			if(ConfigManager.cheatInstantRiotsOne && Prison.easyMode()) this._prisonLevelOneRiotBuildup = 100;
-			
-			if(this._daysSinceLastLevelOneRiot >= RIOT_MIN_DAYS_BEFORE_BUILDUP && Math.random() * 100 < this._prisonLevelOneRiotBuildup) {
+			if(this._daysSinceLastLevelOneRiot >= this.minDaysBeforeRiotBuildup() && Math.random() * 100 < this._prisonLevelOneRiotBuildup) {
 				this.riotOutbreakPrisonLevelOne();
 				newRiotCount++;
 			}
@@ -2455,11 +2713,20 @@ Game_Party.prototype.nextDayRiotManager = function() {
 			}
 		}
 		if(this.prisonLevelTwoIsSubjugated()) {
-			this._prisonLevelTwoRiotBuildup = Math.max(0, this._prisonLevelTwoRiotBuildup + this.prisonLevelTwoRiotChance());
-
-			if(ConfigManager.cheatInstantRiotsTwo && Prison.easyMode()) this._prisonLevelTwoRiotBuildup = 100;
+			if(ConfigManager.cheatInstantRiotsTwo && Prison.easyMode()) {
+				this._prisonLevelTwoRiotBuildup = 100;
+			}
+			else if(Karryn.hasEdict(EDICT_RIOT_SUPPRESSING_TRAINING_FOR_GUARDS) && Prison.funding + Prison.calculateBalance(true) > 0) {
+				this._prisonLevelTwoRiotBuildup = 0;
+			}
+			else {
+				let buildupRate = 1;
+				if(Karryn.hasEdict(EDICT_RIOT_SUPPRESSING_TRAINING_FOR_GUARDS)) buildupRate *= 2;
+				
+				this._prisonLevelTwoRiotBuildup = Math.max(0, this._prisonLevelTwoRiotBuildup + this.prisonLevelTwoRiotChance() * buildupRate);
+			}
 			
-			if(this._daysSinceLastLevelTwoRiot >= RIOT_MIN_DAYS_BEFORE_BUILDUP && Math.random() * 100 < this._prisonLevelTwoRiotBuildup) {
+			if(this._daysSinceLastLevelTwoRiot >= this.minDaysBeforeRiotBuildup() && Math.random() * 100 < this._prisonLevelTwoRiotBuildup) {
 				this.riotOutbreakPrisonLevelTwo();
 				newRiotCount++;
 			}
@@ -2468,12 +2735,21 @@ Game_Party.prototype.nextDayRiotManager = function() {
 			}
 		}
 		if(this.prisonLevelThreeIsSubjugated()) {
-			this._prisonLevelThreeRiotBuildup = Math.max(0, this._prisonLevelThreeRiotBuildup + this.prisonLevelThreeRiotChance());
+			if(ConfigManager.cheatInstantRiotsThree && Prison.easyMode()) {
+				this._prisonLevelThreeRiotBuildup = 100;
+			}
+			else if(Karryn.hasEdict(EDICT_RIOT_SUPPRESSING_TRAINING_FOR_GUARDS) && Prison.funding + Prison.calculateBalance(true) > 0) {
+				this._prisonLevelThreeRiotBuildup = 0;
+			}
+			else {
+				let buildupRate = 1;
+				if(Karryn.hasEdict(EDICT_RIOT_SUPPRESSING_TRAINING_FOR_GUARDS)) buildupRate *= 2;
+				
+				this._prisonLevelThreeRiotBuildup = Math.max(0, this._prisonLevelThreeRiotBuildup + this.prisonLevelThreeRiotChance() * buildupRate);
+			}
 			
-			if(ConfigManager.cheatInstantRiotsThree && Prison.easyMode()) this._prisonLevelThreeRiotBuildup = 100;
-			
-			if(this._daysSinceLastLevelThreeRiot >= RIOT_MIN_DAYS_BEFORE_BUILDUP && Math.random() * 100 < this._prisonLevelThreeRiotBuildup) {
-				this.setPrisonLevelThreeRiot();
+			if(this._daysSinceLastLevelThreeRiot >= this.minDaysBeforeRiotBuildup() && Math.random() * 100 < this._prisonLevelThreeRiotBuildup) {
+				this.riotOutbreakPrisonLevelThree();
 				newRiotCount++;
 			}
 			else {
@@ -2481,12 +2757,21 @@ Game_Party.prototype.nextDayRiotManager = function() {
 			}
 		}
 		if(this.prisonLevelFourIsSubjugated()) {
-			this._prisonLevelFourRiotBuildup = Math.max(0, this._prisonLevelFourRiotBuildup + this.prisonLevelFourRiotChance());
+			if(ConfigManager.cheatInstantRiotsFour && Prison.easyMode()) {
+				this._prisonLevelFourRiotBuildup = 100;
+			}
+			else if(Karryn.hasEdict(EDICT_RIOT_SUPPRESSING_TRAINING_FOR_GUARDS) && Prison.funding + Prison.calculateBalance(true) > 0) {
+				this._prisonLevelFourRiotBuildup = 0;
+			}
+			else {
+				let buildupRate = 1;
+				if(Karryn.hasEdict(EDICT_RIOT_SUPPRESSING_TRAINING_FOR_GUARDS)) buildupRate *= 2;
+				
+				this._prisonLevelFourRiotBuildup = Math.max(0, this._prisonLevelFourRiotBuildup + this.prisonLevelFourRiotChance() * buildupRate);
+			}
 
-			if(ConfigManager.cheatInstantRiotsFour && Prison.easyMode()) this._prisonLevelFourRiotBuildup = 100;
-
-			if(this._daysSinceLastLevelFourRiot >= RIOT_MIN_DAYS_BEFORE_BUILDUP && Math.random() * 100 < this._prisonLevelFourRiotBuildup) {
-				this.setPrisonLevelFourRiot();
+			if(this._daysSinceLastLevelFourRiot >= this.minDaysBeforeRiotBuildup() && Math.random() * 100 < this._prisonLevelFourRiotBuildup) {
+				this.riotOutbreakPrisonLevelFour();
 				newRiotCount++;
 			}
 			else {
@@ -2496,7 +2781,14 @@ Game_Party.prototype.nextDayRiotManager = function() {
 		if(this.prisonLevelFiveIsSubjugated() && false) {
 			this._prisonLevelFiveRiotBuildup = Math.max(0, this._prisonLevelFiveRiotBuildup + this.prisonLevelFiveRiotChance());
 			
-			if(this._daysSinceLastLevelFiveRiot >= RIOT_MIN_DAYS_BEFORE_BUILDUP && Math.random() * 100 < this._prisonLevelFiveRiotBuildup) {
+			if(ConfigManager.cheatInstantRiotsOne && Prison.easyMode()) {
+				this._prisonLevelFiveRiotBuildup = 100;
+			}
+			else if(Karryn.hasEdict(EDICT_RIOT_SUPPRESSING_TRAINING_FOR_GUARDS)) {
+				this._prisonLevelFiveRiotBuildup = 0;
+			}
+			
+			if(this._daysSinceLastLevelFiveRiot >= this.minDaysBeforeRiotBuildup() && Math.random() * 100 < this._prisonLevelFiveRiotBuildup) {
 				this.setPrisonLevelFiveRiot();
 				newRiotCount++;
 			}
@@ -2549,6 +2841,20 @@ Game_Party.prototype.nextDayRiotManager = function() {
 		this._prisonLevelTwo_riotingDays = 0;
 	}
 	
+	if(this.prisonLevelThreeIsRioting() && !this._prisonLevelThree_gymRioting && !this._prisonLevelThree_cellBlockSouthRioting && !this._prisonLevelThree_cellBlockNorthWestRioting && !this._prisonLevelThree_cellBlockNorthEastRioting) {
+		actor._playthroughRecordLevelThreeRiotSuppressedCount++;
+		actor._playthroughRecordLevelTotalRiotsSuppressedCount++;
+		this.setPrisonLevelThreeSubjugated();
+		this._prisonLevelThree_riotingDays = 0;
+	}
+	
+	if(this.prisonLevelFourIsRioting() && false) { //todo v10
+		actor._playthroughRecordLevelFourRiotSuppressedCount++;
+		actor._playthroughRecordLevelTotalRiotsSuppressedCount++;
+		this.setPrisonLevelFourSubjugated();
+		this._prisonLevelFour_riotingDays = 0;
+	}
+	
 	//Insurance
 	
 	if(Prison.funding + Prison.calculateBalance(true) > 0) {
@@ -2589,6 +2895,13 @@ Game_Party.prototype.nextDayRiotManager = function() {
 	}
 	
 };
+
+Game_Party.prototype.minDaysBeforeRiotBuildup = function(status) {
+	let value = RIOT_MIN_DAYS_BEFORE_BUILDUP;
+	if(Karryn.hasEdict(EDICT_HARSHER_PUNISHMENTS_FOR_RIOTERS)) value += 2;
+	return value;
+};
+
 
 Game_Party.prototype.setCancelFollowingNextDayRiotManager = function(status) {
 	this._cancelFollowingNextDayRiotManager = status;
@@ -2817,8 +3130,11 @@ Game_Party.prototype.firstSubjugationPrisonLevelThree = function() {
 	this.setPrisonLevelThreeSubjugated();
 	this.setPrisonLevelFourAnarchy();
 	Karryn.learnSkill(EDICT_LEVEL_THREE_SUBJUGATED);
-	//Karryn.learnSkill(EDICT_THE_ORC_PROBLEM);
-	//Karryn.learnSkill(EDICT_THE_LIZARDMAN_PROBLEM);
+	Karryn.learnSkill(EDICT_THE_ORC_PROBLEM);
+	Karryn.learnSkill(EDICT_THE_LIZARDMAN_PROBLEM);
+	Karryn.learnSkill(EDICT_WHAT_TO_DO_ABOUT_RIOTS);
+	Karryn.learnSkill(EDICT_GYM_AND_SHOWERS);
+	Karryn.learnSkill(EDICT_GYM_POLICY_STANDARD);
 	this.recalculateBaseOrderChange();
 	
 	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
@@ -2932,9 +3248,6 @@ Game_Party.prototype.riotOutbreakPrisonLevelTwo = function() {
 Game_Party.prototype.riotOutbreakPrisonLevelThree = function() {
 	this.setPrisonLevelThreeRiot();
 	
-	$gameSelfSwitches.setValue([MAP_ID_COMMON_AREA_SOUTH_EAST, 3, "D"], false);
-	$gameSelfSwitches.setValue([MAP_ID_COMMON_AREA_SOUTH_EAST, 4, "D"], false);
-	$gameSelfSwitches.setValue([MAP_ID_COMMON_AREA_SOUTH_EAST, 5, "D"], false);
 	$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_SOUTH, 34, "D"], false);
 	$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_SOUTH, 35, "D"], false);
 	$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_SOUTH, 36, "D"], false);
@@ -2946,38 +3259,20 @@ Game_Party.prototype.riotOutbreakPrisonLevelThree = function() {
 	$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_SOUTH, 43, "D"], false);
 	$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_SOUTH, 44, "D"], false);
 	$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_SOUTH, 45, "D"], false);
-	$gameSelfSwitches.setValue([MAP_ID_SHOWER_BLOCK_SOUTH, 3, "D"], false);
-	$gameSelfSwitches.setValue([MAP_ID_SHOWER_BLOCK_SOUTH, 4, "D"], false);
-	$gameSelfSwitches.setValue([MAP_ID_SHOWER_BLOCK_SOUTH, 5, "D"], false);
-	$gameSelfSwitches.setValue([MAP_ID_SHOWER_BLOCK_SOUTH, 6, "D"], false);
-	$gameSelfSwitches.setValue([MAP_ID_SHOWER_BLOCK_NORTH, 3, "D"], false);
-	$gameSelfSwitches.setValue([MAP_ID_SHOWER_BLOCK_NORTH, 4, "D"], false);
-	$gameSelfSwitches.setValue([MAP_ID_SHOWER_BLOCK_NORTH, 6, "D"], false);
-	$gameSelfSwitches.setValue([MAP_ID_SHOWER_BLOCK_NORTH, 7, "D"], false);
-	$gameSelfSwitches.setValue([MAP_ID_GYM, 7, "D"], false);
 	$gameSelfSwitches.setValue([MAP_ID_GYM, 8, "D"], false);
-	$gameSelfSwitches.setValue([MAP_ID_GYM, 9, "D"], false);
-	$gameSelfSwitches.setValue([MAP_ID_GYM, 10, "D"], false);
-	$gameSelfSwitches.setValue([MAP_ID_GYM, 11, "D"], false);
 	$gameSelfSwitches.setValue([MAP_ID_GYM, 12, "D"], false);
 	$gameSelfSwitches.setValue([MAP_ID_GYM, 13, "D"], false);
-	$gameSelfSwitches.setValue([MAP_ID_GYM, 14, "D"], false);
 	$gameSelfSwitches.setValue([MAP_ID_GYM, 21, "D"], false);
 	$gameSelfSwitches.setValue([MAP_ID_GYM, 22, "D"], false);
 	$gameSelfSwitches.setValue([MAP_ID_GYM, 23, "D"], false);
 	$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_NORTH_WEST, 10, "D"], false);
-	$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_NORTH_WEST, 30, "D"], false);
-	$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_NORTH_WEST, 31, "D"], false);
 	$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_NORTH_WEST, 32, "D"], false);
-	$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_NORTH_WEST, 33, "D"], false);
 	$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_NORTH_WEST, 34, "D"], false);
 	$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_NORTH_WEST, 35, "D"], false);
 	$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_NORTH_WEST, 36, "D"], false);
 	$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_NORTH_WEST, 27, "D"], false);
 	$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_NORTH_WEST, 28, "D"], false);
 	$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_NORTH_WEST, 29, "D"], false);
-	$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_NORTH_EAST, 23, "D"], false);
-	$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_NORTH_EAST, 24, "D"], false);
 	$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_NORTH_EAST, 26, "D"], false);
 	$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_NORTH_EAST, 27, "D"], false);
 	$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_NORTH_EAST, 28, "D"], false);
@@ -2986,13 +3281,11 @@ Game_Party.prototype.riotOutbreakPrisonLevelThree = function() {
 	$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_NORTH_EAST, 22, "D"], false);
 	$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_NORTH_EAST, 4, "D"], false);
 	
-	//this._prisonLevelTwo_meetingRoomRioting = true;
-	//this._prisonLevelTwo_researchRioting = true;
-	//this._prisonLevelTwo_staffLoungeRioting = true;
-	//this._prisonLevelTwo_classroomRioting = true;
-	//this._prisonLevelTwo_readingRoomRioting = true;
+	this._prisonLevelThree_gymRioting = true;
+	this._prisonLevelThree_cellBlockSouthRioting = true;
+	this._prisonLevelThree_cellBlockNorthWestRioting = true;
+	this._prisonLevelThree_cellBlockNorthEastRioting = true;
 	
-
 	if($gameVariables.value(VARIABLE_FIRST_RIOT_PROGRESS_ID) === 0) {
 		$gameVariables.setValue(VARIABLE_FIRST_RIOT_PROGRESS_ID, 1);
 		$gameVariables.setValue(VARIABLE_FIRST_RIOT_LEVEL_ID, 3);
@@ -3000,6 +3293,21 @@ Game_Party.prototype.riotOutbreakPrisonLevelThree = function() {
 	
 	this._prisonLevelThree_riotingDays = 0;
 	this._daysSinceLastLevelThreeRiot = 0;
+	this._daysSinceLastPrisonRiot = 0;
+};
+
+Game_Party.prototype.riotOutbreakPrisonLevelFour = function() {
+	this.setPrisonLevelFourRiot();
+	
+	//todo v10
+	
+	if($gameVariables.value(VARIABLE_FIRST_RIOT_PROGRESS_ID) === 0) {
+		$gameVariables.setValue(VARIABLE_FIRST_RIOT_PROGRESS_ID, 1);
+		$gameVariables.setValue(VARIABLE_FIRST_RIOT_LEVEL_ID, 4);
+	}
+	
+	this._prisonLevelFour_riotingDays = 0;
+	this._daysSinceLastLevelFourRiot = 0;
 	this._daysSinceLastPrisonRiot = 0;
 };
 
@@ -3018,6 +3326,10 @@ Game_Party.prototype.isRiotBattle = function() {
 		if(mapId === MAP_ID_READING_ROOM || mapId === MAP_ID_CLASSROOM || mapId === MAP_ID_STAFF_LOUNGE || mapId === MAP_ID_RESEARCH || mapId === MAP_ID_MEETING_ROOM)
 			return true;
 	}
+	if(this.prisonLevelThreeIsRioting()) {
+		if(mapId === MAP_ID_COMMON_AREA_SOUTH_EAST || mapId === MAP_ID_GYM || mapId === MAP_ID_CELL_BLOCK_NORTH_WEST || mapId === MAP_ID_CELL_BLOCK_NORTH_EAST)
+			return true;
+	}
 
 	return false;
 };
@@ -3027,79 +3339,12 @@ Game_Party.prototype.isRiotBattle = function() {
 ///////////////
 
 Game_Party.prototype.prisonGlobalRiotChance = function(useOnlyTodaysGoldForBankruptcyChance) {
+	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
 	let chance = RIOT_GLOBAL_STARTING_CHANCE;
 	 
 	chance += this.titlesBankruptcyRiotChance(useOnlyTodaysGoldForBankruptcyChance);
 	chance += this.titlesGlobalRiotChance();
-	
-	//Hiring Edict
-	if(Karryn.hasEdict(EDICT_NO_HIRING_STANDARDS)) chance += 4;
-	else if(Karryn.hasEdict(EDICT_HIRE_CURRENT_INMATES)) chance += 3;	
-	else if(Karryn.hasEdict(EDICT_LAXER_HIRING_STANDARDS)) chance += 2;	
-	
-	//Kitchen Edicts
-	//Inmate Cooks
-	if(Karryn.hasEdict(EDICT_COOKING_TRAINING_PROGRAM)) chance += 2;
-	else if(Karryn.hasEdict(EDICT_USE_INMATE_COOKS)) chance += 1;
-	
-	//Monetize Good Food
-	if(Karryn.hasEdict(EDICT_PAY_FOR_BETTER_FOOD)) chance += 2;
-	
-	//Infirmary Edicts
-	if(Karryn.hasEdict(EDICT_PAID_THERAPY_SESSIONS)) chance += 1;
-	if(Karryn.hasEdict(EDICT_CONDUCT_TESTS_ON_INJURED_INMATES)) chance += 2;
-	
-	//Black Market Edict
-	if(Karryn.hasEdict(EDICT_BAN_BLACK_MARKET)) chance += 1;
-	
-	//Laundry Edict
-	if(Karryn.hasEdict(EDICT_REPAIR_LAUNDRY)) {
-		chance -= 1;
-		if(Karryn.hasEdict(EDICT_NO_FREE_LAUNDRY))
-			chance += 2;
-	}
-	
-	//Visitor Center Edict
-	if(Karryn.hasEdict(EDICT_CHARGE_INMATES_FOR_VISITATION)) chance += 7;
-	else if(Karryn.hasEdict(EDICT_CHARGE_VISITORS_FOR_EXPRESS)) chance += 2;
-	else if(Karryn.hasEdict(EDICT_CHARGE_VISITORS_FOR_VISITATION)) chance -= 1;
-	if(Karryn.hasEdict(EDICT_REPAIR_VISITOR_CENTER)) chance -= 2;
-	
-	//Reception Edict
-	if(Karryn.hasEdict(EDICT_RECEPTION_POLICY_WEAK_ONLY)) chance -= 2;
-	else if(Karryn.hasEdict(EDICT_RECEPTION_POLICY_FAVOR_WEAK)) chance -= 1;	
-	
-	//Rogue Edict
-	if(Karryn.hasEdict(EDICT_FORCE_ROGUES_INTO_LABOR)) chance += 3;
-	
-	//Toilet
-	if(Karryn.hasEdict(EDICT_REPAIR_TOILET)) chance -= 1; 
-	
-	//Classroom Edict
-	if(Karryn.hasEdict(EDICT_MANDATORY_CLASSES)) chance += 1; 
-	
-	if(Karryn.hasEdict(EDICT_REFORM_CLASSES)) {
-		if(Karryn.hasEdict(EDICT_MANDATORY_CLASSES)) chance += 4; 
-		else chance += 2; 
-	}
-	
-	if(Karryn.hasEdict(EDICT_ANATOMY_CLASSES)) {
-		if(Karryn.hasEdict(EDICT_MANDATORY_CLASSES)) chance -= 2; 
-		else chance -= 1; 
-	}
-	
-	//Reading Room Edict
-	if(Karryn.hasEdict(EDICT_STOCK_WITH_IMPERIAL_BOOKS)) chance += 1;
-	else if(Karryn.hasEdict(EDICT_STOCK_WITH_ADULT_BOOKS)) {
-		if(Karryn.hasEdict(EDICT_ALLOW_BORROWING_ADULT_BOOKS)) chance -= 2;
-		else chance -= 1;
-	}
-	
-	//Research Edict
-	if(Karryn.hasEdict(EDICT_RESEARCH_NEW_LOCKS)) chance -= 1;
-	if(Karryn.hasEdict(EDICT_RESEARCH_ISSUE_CURFEW_PASS)) chance -= 1;
-	if(Karryn.hasEdict(EDICT_RESEARCH_LAUNDRY_PRODUCT_CONTRACT)) chance -= 1;
-	
+	chance += actor.edictsGlobalRiotChance();
 	chance += this.prisonDifficultyRiotChance();
 	
 
@@ -3113,52 +3358,11 @@ Game_Party.prototype.prisonDifficultyRiotChance = function() {
 };
 
 Game_Party.prototype.prisonLevelOneRiotChance = function() {
+	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
     let chance = this.prisonGlobalRiotChance();
 	
-	//Bar Edicts
-	if(Karryn.hasEdict(EDICT_REPAIR_BAR)) chance += 1;
-	if(Karryn.hasEdict(EDICT_DONT_PAY_WAITERS)) chance += 3;
-	else if(Karryn.hasEdict(EDICT_USE_INMATE_WAITERS)) chance += 1.5;
+	chance += actor.edictsLevelOneRiotChance();
 	
-	//Laundry Edict
-	if(Karryn.hasEdict(EDICT_REPAIR_LAUNDRY)) {
-		if(Karryn.hasEdict(EDICT_SELL_LAUNDRY_SERVICE))
-			chance += 1;
-	}
-	
-	//Dishwashing Edict
-	if(Karryn.hasEdict(EDICT_REPAIR_DISHWASHING)) {
-		if(Karryn.hasEdict(EDICT_USE_INMATE_DISHWASHERS)) 
-			chance += 1;
-	}
-	
-	//Workshop Edict
-	if(Karryn.hasEdict(EDICT_REPAIR_WORKSHOP)) {
-		if(Karryn.hasEdict(EDICT_HARDER_WORKSHOP_PROJECTS))
-			chance += 5;
-		else if(Karryn.hasEdict(EDICT_LONGER_WORKSHOP_SHIFTS))
-			chance += 3;
-		else
-			chance += 1;
-	}
-	
-	//Thug Edict
-	if(Karryn.hasEdict(EDICT_THE_THUG_PROBLEM)) {
-		if(Karryn.hasEdict(EDICT_WEAKEN_THE_THUGS)) chance += 1.5;
-		else if(Karryn.hasEdict(EDICT_NO_THUG_LABOR)) chance -= 1;
-		else chance += 3;
-	}
-	
-	//Classroom Edict
-	if(Karryn.hasEdict(EDICT_REPAIR_CLASSROOM)) {
-		if(Karryn.hasEdict(EDICT_WORKSHOP_CLASSES)) {
-			if(Karryn.hasEdict(EDICT_MANDATORY_CLASSES))
-				chance += 3;
-			else
-				chance += 1.5;
-		}
-	}
-
 	if(this._daysSinceLastLevelOneRiot >= RIOT_MIN_DAYS_BEFORE_EXTRA_BUILDUP && this._daysSinceLastPrisonRiot > 1) 
 		chance += RIOT_EXTRA_BUILDUP;
 
@@ -3166,48 +3370,11 @@ Game_Party.prototype.prisonLevelOneRiotChance = function() {
 };
 
 Game_Party.prototype.prisonLevelTwoRiotChance = function() {
+    let actor = $gameActors.actor(ACTOR_KARRYN_ID);
     let chance = this.prisonGlobalRiotChance();
+	
+	chance += actor.edictsLevelTwoRiotChance();
 
-	//Nerd Edict
-	if(Karryn.hasEdict(EDICT_THREATEN_THE_NERDS)) chance += 5;
-	else if(Karryn.hasEdict(EDICT_GIVE_IN_TO_NERD_BLACKMAIL)) chance -= 3;
-	
-	//Accountant Edict
-	if(Karryn.hasEdict(EDICT_INMATE_ASSISTANT_ACCOUNTANT)) chance += 1;
-	
-	//Toilet Edict
-	if(Karryn.hasEdict(EDICT_REPAIR_TOILET)) {
-		if(Karryn.hasEdict(EDICT_INMATE_JANITORS)) chance += 2;
-	}
-	else
-		chance += 4;
-	
-	//Classroom Edict
-	if(Karryn.hasEdict(EDICT_REPAIR_CLASSROOM)) {
-		if(!Karryn.hasEdict(EDICT_NO_CLASSES)) {
-			chance += 2;
-			if(Karryn.hasEdict(EDICT_MANDATORY_CLASSES)) chance += 2; 
-		}
-		
-		if(Karryn.hasEdict(EDICT_REFORM_CLASSES)) {
-			if(Karryn.hasEdict(EDICT_MANDATORY_CLASSES)) chance += 4; 
-			else chance += 2; 
-		}
-		else if(Karryn.hasEdict(EDICT_ANATOMY_CLASSES)) {
-			if(Karryn.hasEdict(EDICT_MANDATORY_CLASSES)) chance -= 2; 
-			else chance -= 1; 
-		}
-	}
-	
-	//Reading Room Edict
-	if(Karryn.hasEdict(EDICT_REPAIR_READING_ROOM)) {
-		if(Karryn.hasEdict(EDICT_READING_ROOM_ENTRANCE_FEE)) chance += 1;
-		
-		if(Karryn.hasEdict(EDICT_STOCK_WITH_BODYBUILDING_BOOKS)) chance -= 2;
-		else if(Karryn.hasEdict(EDICT_STOCK_WITH_ENTERTAINMENT_BOOKS)) chance -= 1;
-		else if(Karryn.hasEdict(EDICT_STOCK_WITH_IMPERIAL_BOOKS)) chance += 1;
-	}
-	else chance += 1;
 
 	if(this._daysSinceLastLevelTwoRiot >= RIOT_MIN_DAYS_BEFORE_EXTRA_BUILDUP && this._daysSinceLastPrisonRiot > 1) 
 		chance += RIOT_EXTRA_BUILDUP;
@@ -3216,7 +3383,10 @@ Game_Party.prototype.prisonLevelTwoRiotChance = function() {
 };
 
 Game_Party.prototype.prisonLevelThreeRiotChance = function() {
+	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
     let chance = this.prisonGlobalRiotChance();
+	
+	chance += actor.edictsLevelThreeRiotChance();
 	
 	if(this._daysSinceLastLevelThreeRiot >= RIOT_MIN_DAYS_BEFORE_EXTRA_BUILDUP && this._daysSinceLastPrisonRiot > 1) 
 		chance += RIOT_EXTRA_BUILDUP;
@@ -3225,7 +3395,11 @@ Game_Party.prototype.prisonLevelThreeRiotChance = function() {
 };
 
 Game_Party.prototype.prisonLevelFourRiotChance = function() {
+    let actor = $gameActors.actor(ACTOR_KARRYN_ID);
     let chance = this.prisonGlobalRiotChance();
+	
+	chance += actor.edictsLevelFourRiotChance();
+	if(chance > 0) chance += actor.edictsLevelFourRiotChance();	
 	
 	if(this._daysSinceLastLevelFourRiot >= RIOT_MIN_DAYS_BEFORE_EXTRA_BUILDUP && this._daysSinceLastPrisonRiot > 1) 
 		chance += RIOT_EXTRA_BUILDUP;
@@ -3238,3 +3412,26 @@ Game_Party.prototype.prisonLevelFiveRiotChance = function() {
 	
 	return Math.max(1, chance);
 };
+
+// Level Four Switches
+Game_Party.prototype.determineLevelFourEntranceRoutes = function() {
+	let showShortcutToLv5 = Prison.prisonLevelFourIsSubjugated();
+	
+	$gameSwitches.setValue(SWITCH_LV4_SHORTCUT_TO_LV5_ID, showShortcutToLv5);
+};
+
+
+Game_Party.prototype.determineLevelFourAmbushMap = function() {
+	let triggerAmbushMap = false;
+	if(Prison.prisonLevelFourIsUnknown()) triggerAmbushMap = true;
+	else if(Prison.prisonLevelFourIsAnarchy()) {
+		if($gameSelfSwitches.value([MAP_ID_LVL4_AMBUSH, 3, "D"])) 
+			triggerAmbushMap = false;
+		else
+			triggerAmbushMap = true;
+	}
+	else triggerAmbushMap = false;
+	
+	$gameSwitches.setValue(SWITCH_LV4_TRIGGER_AMBUSH_ID, triggerAmbushMap);
+};
+

@@ -32,6 +32,7 @@ const REM_ENERGY_GAUGE_COLOR_1 = 31;
 const REM_ENERGY_GAUGE_COLOR_2 = 30;
 
 const REM_TACHIE_NULL = '';
+const REM_TACHIE_ZERO = 0;
 
 const BATTLETACHIE_FULLSCREEN_APPEAR_X = 0;
 const BATTLETACHIE_NORMAL_APPEAR_X = 0;
@@ -74,6 +75,7 @@ const CHAT_FOLDER_YASU = 'yasu';
 const CHAT_FOLDER_TONKIN = 'tonkin';
 const CHAT_FOLDER_DOCTOR = 'doctor';
 const CHAT_FOLDER_ARON = 'aron';
+const CHAT_FOLDER_NOINIM = 'noinim';
 
 const FONT_GAMEFONT_NAME = 'GameFont';
 const FONT_JAPANESE_NAME = 'SourceHanSansJP-Regular';
@@ -1767,6 +1769,10 @@ Window_Base.prototype.convertExtraEscapeCharacters = function(text) {
 	text = text.replace(/\x1bREM_GHRSE\[(\d+)\]/gi, function() {
         return this.remMiscGloryHoleRepStaffEff(parseInt(arguments[1]));
     }.bind(this));
+	//REM_BCP[n]
+	text = text.replace(/\x1bREM_BCP\[(\d+)\]/gi, function() {
+        return this.remMiscRelationPassiveCount(parseInt(arguments[1]));
+    }.bind(this));
 	
 	//REM_RAC[n]
 	text = text.replace(/\x1bREM_RAC\[(\d+)\]/gi, function() {
@@ -1850,6 +1856,10 @@ Window_Base.prototype.remMiscAvailableVisitorRooms = function(n) {
 
 Window_Base.prototype.remMiscGloryHoleRepStaffEff = function(n) {
 	return Math.round($gameParty.gloryHoleReputationEffect_staffEfficiency() * 100);
+};
+
+Window_Base.prototype.remMiscRelationPassiveCount = function(n) {
+	return $gameActors.actor(ACTOR_KARRYN_ID).relationsPassiveCount();
 };
 
 
@@ -3069,6 +3079,27 @@ Game_System.prototype.getMessageFontName = function() {
 
 /////////////
 // Graphics
+ResourceHandler._defaultRetryInterval = [1];
+
+Graphics.printLoadingError = function(url) {
+    if (this._errorPrinter && !this._errorShowed) {
+        this._errorPrinter.innerHTML = this._makeErrorHtml('Loading Error', 'Failed to load: ' + url);
+		console.error('Failed to load: ' + url);
+        var button = document.createElement('button');
+        button.innerHTML = 'Retry';
+        button.style.fontSize = '24px';
+        button.style.color = '#ffffff';
+        button.style.backgroundColor = '#000000';
+        button.onmousedown = button.ontouchstart = function(event) {
+            ResourceHandler.retry();
+            event.stopPropagation();
+        };
+        this._errorPrinter.appendChild(button);
+        this._loadingCount = -Infinity;
+    }
+};
+
+
 Graphics.render = function(stage) {
     if (this._skipCount <= 0) {
         var startTime = Date.now();
@@ -3088,3 +3119,5 @@ Graphics.render = function(stage) {
     }
     this.frameCount++;
 };
+
+

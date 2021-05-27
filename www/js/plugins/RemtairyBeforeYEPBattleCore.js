@@ -63,6 +63,14 @@ Game_Troop.prototype.setup = function(troopId) {
 		this.setupDefeatedLevelThreeBattle(troopId);
 		return;
 	}
+	if(troopId === TROOP_DEFEATED_LV4_ID) {
+		this.setupDefeatedLevelFourBattle(troopId);
+		return;
+	}
+	if(troopId === TROOP_DEFEATED_LV5_ID) {
+		this.setupDefeatedLevelFiveBattle(troopId);
+		return;
+	}
 	if(troopId === TROOP_DEFEATED_GUARD_ID) {
 		this.setupDefeatedGuardBattle(troopId);
 		return;
@@ -140,7 +148,7 @@ Game_Troop.prototype.setup = function(troopId) {
         }
     }, this);
     this.makeUniqueNames();
-	this.setupEnemyPrefixEffect();
+	this.setupEnemyPrefixEjaculationStockEffect();
 };
 
 ////////////

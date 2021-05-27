@@ -4120,7 +4120,7 @@ function Scene_STS() {
 					if(costTypes > 0) costText += ', ';
 					costTypes++;
 					fundingCost = this._actor.modifiedEdictGoldCost(cost.value, this._skillId);
-					costText += fundingCost + 'G';
+					costText += fundingCost.toLocaleString() + 'G';
 					//this.drawFundingCost(cost.value, x, y + lh * i, width);
 					//this.drawFundingCost(cost.value, x, y, width);
 				}

@@ -45,7 +45,7 @@ SceneManager.debugCommand = function() {
 		
 		//console.log($gameTroop.aliveMembers());
 		//$gameTroop.debugConsoleLogEnemyInfo();
-		console.log($gameParty._wantedEnemies);
+		//console.log($gameParty._wantedEnemies);
 		//console.log($gameParty._wantedId_Tonkin);
 		console.log(actor)
 		
@@ -77,6 +77,7 @@ SceneManager.debugCommand = function() {
 		//$gameParty.gainGold(10000);
 		//actor.getAsp(20);
 		//$gameParty._prisonLevelTwoRiotBuildup = 999;
+		$gameParty.debug_clearMapEnemies();
 		
 		//console.log($gameParty.orderChange);
 
@@ -99,8 +100,8 @@ SceneManager.debugCommand = function() {
 		$gameParty.setOrder(50);
 		//$gameParty._currentWantedChance = 1;
 		actor._mp = actor.maxenergy;
-		actor._hp = actor.maxstamina;
-		actor._liquidPussyJuice = LIQUID_PUSSY_WET_REQ + 10;
+		actor._hp = Math.round(actor.maxstamina * 0.75);
+		actor._liquidPussyJuice = LIQUID_PUSSY_WET_STAGE_TWO + 10;
 		//actor.setFatigue(0);
 		
 		
@@ -121,6 +122,7 @@ SceneManager.debugCommand = function() {
 		$gameTroop.setAllEnemiesToAroused();
 		//$gameTroop.setAllEnemiesToHorny();
 		//$gameTroop.debugMakeEveryoneToOrgasmPoint();
+		//$gameTroop.debugMakeAllEnemiesDamaged();
 		
 		actor.recalculateBodySensitivities();
 		actor.recalculateSkillLvls();
@@ -172,9 +174,6 @@ Game_Actor.prototype.debugLearnSkills = function() {
 		this.recalculateSlutLvl();
 	}
 	
-	//this.setCharacterCreatorPassive(PASSIVE_FLAUNT_COUNT_ONE_ID); 
-	//this.setCharacterCreatorPassive(PASSIVE_FLAUNT_COUNT_TWO_ID); 
-	//this.setCharacterCreatorPassive(PASSIVE_FLAUNT_COUNT_THREE_ID); 
 	
 	if(TESTING_DELETE_ALL_PASSIVES) {
 		for(let i = PASSIVES_LIST_START_ID; i <= PASSIVES_LIST_END_ID; i++) {
@@ -194,8 +193,9 @@ Game_Actor.prototype.debugLearnSkills = function() {
 		$gameParty.gainItem($dataArmors[TITLE_ID_CC_COST_SAVING_SUPERVISOR],1,false);
 		$gameParty.gainItem($dataArmors[TITLE_ID_CC_HARDWORKING_TUTOR],1,false);
 		$gameParty.gainItem($dataArmors[TITLE_ID_CC_MANAGEMENT_CONSULTANT],1,false);
-		for(let i = 53; i <= 144; i++) {
+		for(let i = TITLE_LIST_START_ID; i <= TITLE_LIST_END_ID; i++) {
 			$gameParty.gainItem($dataArmors[i],1,false);
+			this._obtainedTitles[i] = true;
 		}
 	}
 	
@@ -246,7 +246,7 @@ Game_Actor.prototype.debugLearnSkills = function() {
 Game_Actor.prototype.debugMaxAllLiquids = function() {
 	if(TESTING_LIQUID_ALL) {
 		let num = TESTING_LIQUID_VAR;
-		this._liquidPussyJuice = LIQUID_PUSSY_WET_REQ + 10;
+		this._liquidPussyJuice = LIQUID_PUSSY_WET_STAGE_TWO + 10;
 		this._liquidSwallow = num;
 		this._liquidCreampiePussy = num;
 		this._liquidCreampieAnal = num;
@@ -257,6 +257,8 @@ Game_Actor.prototype.debugMaxAllLiquids = function() {
 		this._liquidBukkakeButtTopLeft = num;
 		this._liquidBukkakeButtBottomRight = num;
 		this._liquidBukkakeButtBottomLeft = num;
+		this._liquidBukkakeButtRight = num;
+		this._liquidBukkakeButtLeft = num;
 		this._liquidBukkakeLeftArm = num;
 		this._liquidBukkakeRightArm = num;
 		this._liquidBukkakeLeftLeg = num;
@@ -313,6 +315,14 @@ Game_Troop.prototype.debugMakeEveryoneToOrgasmPoint = function() {
 	}, this);
 };
 
+Game_Troop.prototype.debugMakeAllEnemiesDamaged = function() {
+	this.members().forEach(function(enemy) {
+		if(enemy.isAppeared()) {
+			enemy._hp = enemy.mhp * 0.3;
+		}
+	}, this);
+};
+
 Game_Troop.prototype.debugConsoleLogEnemyInfo = function() {
 	this.aliveMembers().forEach(function(enemy) {
 		console.log(enemy.name());
@@ -326,8 +336,10 @@ Game_Troop.prototype.debugConsoleLogEnemyInfo = function() {
 };
 
 Game_Enemy.prototype.enemyBattleAITest = function() {
-	let target = BattleManager._targets[0];
-	this._lastAITarget = BattleManager._targets[0];
+	//let target = BattleManager._targets[0];
+	//this._lastAITarget = BattleManager._targets[0];
+	let target = $gameActors.actor(ACTOR_KARRYN_ID);
+	this._lastAITarget = $gameActors.actor(ACTOR_KARRYN_ID);
 	
 	if(this.usedSkillThisTurn() || this.isStateAffected(STATE_ENEMY_CAME_THIS_TURN_ID))
 		return;
@@ -381,6 +393,13 @@ DataManager.debugMissingRemLinesLocalization = function() {
 	//$remLines
 	//$remLinesCH
 	
+};
+
+Game_Party.prototype.debug_clearMapEnemies = function() {
+	for(let eventId = 1; eventId < $gameMap._events.length; eventId++) {
+		let key = [$gameMap._mapId, eventId, "D"];
+		$gameSelfSwitches.setValue(key, true);
+	}
 };
 
 Karryn.isCensored = function() {

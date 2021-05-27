@@ -55,7 +55,7 @@ const MASTURBATE_INBATTLE_SKILL_START = 1326;
 const MASTURBATE_INBATTLE_SKILL_END = 1349;
 
 const VAR_BASE_MASTURBATE_TURNS = 7;
-const VAR_NOISE_LEVEL_MIN_EFFECT = 5;
+const VAR_NOISE_LEVEL_MIN_EFFECT = 4;
 const VAR_NOISE_LEVEL_INVASION_CHANCE = 0.2;
 
 const TROOP_ONANI_COUCH_ID = 15;
@@ -572,6 +572,8 @@ Game_Actor.prototype.dmgFormula_masInBattleSkill = function(area, useRightHand, 
 			targetSensitivity = target.analSensitivity();
 			this.addToAnalToyUsedByEnemyRecord(false);
 			BattleManager.actionRemLines(KARRYN_LINE_KARRYN_PETTING_ANAL_BEADS);
+			hitBySkillTypeSet = true;
+			target.justGotHitBySkillType(JUST_SKILLTYPE_KARRYN_TOY_PLAY_ANAL);
 
 		}
 		else if(!usingAnalToy) {
@@ -580,8 +582,6 @@ Game_Actor.prototype.dmgFormula_masInBattleSkill = function(area, useRightHand, 
 			targetSensitivity = target.analSensitivity();
 			this.addToActorAnalPettedRecord(false, false, true);
 			BattleManager.actionRemLines(LINE_KARRYN_MAS_FINGER_ANUS);
-			hitBySkillTypeSet = true;
-			target.justGotHitBySkillType(JUST_SKILLTYPE_KARRYN_TOY_PLAY_ANAL);
 		}
 	}
 	else if(area == AREA_FINGERS) {
@@ -604,9 +604,9 @@ Game_Actor.prototype.dmgFormula_masInBattleSkill = function(area, useRightHand, 
 	else console.log("Error dmgFormula masInBattleSkill area: " + area);
 	
 	let targetDesireGain = (baseDmg + enemySkillLvl) * targetPettingRate;
-	let targetPleasureGain = (targetDesireGain + this.dex) * enemySkillRating * targetPettingRate * targetSensitivity;
+	let targetPleasureGain = (targetDesireGain + this.dex * 1.3) * enemySkillRating * targetPettingRate * targetSensitivity;
 
-	targetPleasureGain *= Math.max(targetPettingRate * targetSensitivity * 0.01, 1 + (0.02 * (this.dex - target.end)));
+	//targetPleasureGain *= Math.max(targetPettingRate * targetSensitivity * 0.01, 1 + (0.02 * (this.dex - target.end)));
 	
 	targetPleasureGain *= target.passivePettingPleasureRate();
 	
@@ -1066,7 +1066,7 @@ Game_Actor.prototype.postMasturbationBattleCleanup = function() {
 	if(invasionChance > 0)
 		invasionChance += invasionNoiseLevel * invasionNoiseLevelEffect;
 	
-	if(Math.randomInt(100) < invasionChance) {
+	if(invasionChance > 0 && Math.randomInt(100) < invasionChance) {
 		$gameSwitches.setValue(SWITCH_INVASION_BATTLE_ID, true);
 		this._startOfInvasionBattle = true;
 		if(this._tempRecordOrgasmCount > 0) 
@@ -1618,8 +1618,8 @@ Game_Actor.prototype.dmgFormula_masturbateBattle = function(target) {
 			boobsDesireGain += desireGain * 0.3;
 			randomDesireGainFromRightHand += desireGain * 0.7;
 			
-			let possiblePleasure = (desireGain + this.dex) * skillRating * pettingRate * sensitivityRating;
-			possiblePleasure -= (this.end * (0.5 - desireTotal / 400));
+			let possiblePleasure = (desireGain + this.dex * 1.3) * skillRating * pettingRate * sensitivityRating;
+			//possiblePleasure -= (this.end * (0.5 - desireTotal / 400));
 			
 			if(possiblePleasure > 0) {
 				pleasureFeedback += possiblePleasure;
@@ -1637,8 +1637,8 @@ Game_Actor.prototype.dmgFormula_masturbateBattle = function(target) {
 			pussyDesireGain += desireGain * 0.4;
 			randomDesireGainFromRightHand += desireGain * 0.6;
 			
-			let possiblePleasure = (desireGain + this.dex) * skillRating * pettingRate * sensitivityRating;
-			possiblePleasure -= (this.end * (0.5 - desireTotal / 400));
+			let possiblePleasure = (desireGain + this.dex * 1.3) * skillRating * pettingRate * sensitivityRating;
+			//possiblePleasure -= (this.end * (0.5 - desireTotal / 400));
 			
 			if(possiblePleasure > 0) {
 				pleasureFeedback += possiblePleasure;
@@ -1656,8 +1656,8 @@ Game_Actor.prototype.dmgFormula_masturbateBattle = function(target) {
 			pussyDesireGain += desireGain * 0.3;
 			randomDesireGainFromRightHand += desireGain * 0.7;
 			
-			let possiblePleasure = (desireGain + this.dex) * skillRating * pettingRate * sensitivityRating;
-			possiblePleasure -= (this.end * (0.5 - desireTotal / 400));
+			let possiblePleasure = (desireGain + this.dex * 1.3) * skillRating * pettingRate * sensitivityRating;
+			//possiblePleasure -= (this.end * (0.5 - desireTotal / 400));
 			
 			if(possiblePleasure > 0) {
 				pleasureFeedback += possiblePleasure;
@@ -1681,11 +1681,16 @@ Game_Actor.prototype.dmgFormula_masturbateBattle = function(target) {
 			boobsDesireGain += desireGain * 0.4;
 			randomDesireGainFromLeftHand += desireGain * 0.6;
 			
-			let possiblePleasure = (desireGain + this.dex) * skillRating * pettingRate * sensitivityRating;
-			possiblePleasure -= (this.end * (0.5 - desireTotal / 400));
+			let possiblePleasure = (desireGain + this.dex * 1.3) * skillRating * pettingRate * sensitivityRating;
+			//possiblePleasure -= (this.end * (0.5 - desireTotal / 400));
 			
 			if(possiblePleasure > 0) {
-				pleasureFeedback += possiblePleasure;
+				if(pleasureFeedback > 0) {
+					pleasureFeedback = (pleasureFeedback + possiblePleasure) * 0.75;
+				}
+				else {
+					pleasureFeedback += possiblePleasure;
+				}
 				this.addToActorBoobsPleasureRecord(possiblePleasure);
 			}
 			
@@ -1700,11 +1705,16 @@ Game_Actor.prototype.dmgFormula_masturbateBattle = function(target) {
 			boobsDesireGain += desireGain * 0.3;
 			randomDesireGainFromLeftHand += desireGain * 0.7;
 			
-			let possiblePleasure = (desireGain + this.dex) * skillRating * pettingRate * sensitivityRating;
-			possiblePleasure -= (this.end * (0.5 - desireTotal / 400));
+			let possiblePleasure = (desireGain + this.dex * 1.3) * skillRating * pettingRate * sensitivityRating;
+			//possiblePleasure -= (this.end * (0.5 - desireTotal / 400));
 			
 			if(possiblePleasure > 0) {
-				pleasureFeedback += possiblePleasure;
+				if(pleasureFeedback > 0) {
+					pleasureFeedback = (pleasureFeedback + possiblePleasure) * 0.75;
+				}
+				else {
+					pleasureFeedback += possiblePleasure;
+				}
 				this.addToActorNipplesPleasureRecord(possiblePleasure);
 			}
 			
@@ -1720,11 +1730,16 @@ Game_Actor.prototype.dmgFormula_masturbateBattle = function(target) {
 			pussyDesireGain += desireGain * 0.4;
 			randomDesireGainFromLeftHand += desireGain * 0.6;
 			
-			let possiblePleasure = (desireGain + this.dex) * skillRating * pettingRate * sensitivityRating;
-			possiblePleasure -= (this.end * (0.5 - desireTotal / 400));
+			let possiblePleasure = (desireGain + this.dex * 1.3) * skillRating * pettingRate * sensitivityRating;
+			//possiblePleasure -= (this.end * (0.5 - desireTotal / 400));
 			
 			if(possiblePleasure > 0) {
-				pleasureFeedback += possiblePleasure;
+				if(pleasureFeedback > 0) {
+					pleasureFeedback = (pleasureFeedback + possiblePleasure) * 0.75;
+				}
+				else {
+					pleasureFeedback += possiblePleasure;
+				}
 				this.addToActorClitPleasureRecord(possiblePleasure);
 			}
 			
@@ -1739,11 +1754,16 @@ Game_Actor.prototype.dmgFormula_masturbateBattle = function(target) {
 			pussyDesireGain += desireGain * 0.3;
 			randomDesireGainFromLeftHand += desireGain * 0.7;
 			
-			let possiblePleasure = (desireGain + this.dex) * skillRating * pettingRate * sensitivityRating;
-			possiblePleasure -= (this.end * (0.5 - desireTotal / 400));
+			let possiblePleasure = (desireGain + this.dex * 1.3) * skillRating * pettingRate * sensitivityRating;
+			//possiblePleasure -= (this.end * (0.5 - desireTotal / 400));
 			
 			if(possiblePleasure > 0) {
-				pleasureFeedback += possiblePleasure;
+				if(pleasureFeedback > 0) {
+					pleasureFeedback = (pleasureFeedback + possiblePleasure) * 0.75;
+				}
+				else {
+					pleasureFeedback += possiblePleasure;
+				}
 				this.addToActorPussyPleasureRecord(possiblePleasure);
 			}
 			
@@ -1758,11 +1778,16 @@ Game_Actor.prototype.dmgFormula_masturbateBattle = function(target) {
 			buttDesireGain += desireGain * 0.3;
 			randomDesireGainFromLeftHand += desireGain * 0.7;
 			
-			let possiblePleasure = (desireGain + this.dex) * skillRating * pettingRate * sensitivityRating;
-			possiblePleasure -= (this.end * (0.5 - desireTotal / 400));
+			let possiblePleasure = (desireGain + this.dex * 1.3) * skillRating * pettingRate * sensitivityRating;
+			//possiblePleasure -= (this.end * (0.5 - desireTotal / 400));
 			
 			if(possiblePleasure > 0) {
-				pleasureFeedback += possiblePleasure;
+				if(pleasureFeedback > 0) {
+					pleasureFeedback = (pleasureFeedback + possiblePleasure) * 0.75;
+				}
+				else {
+					pleasureFeedback += possiblePleasure;
+				}
 				this.addToActorAnalPleasureRecord(possiblePleasure);
 			}
 			
@@ -1783,11 +1808,16 @@ Game_Actor.prototype.dmgFormula_masturbateBattle = function(target) {
 			boobsDesireGain += desireGain * 0.3;
 			randomDesireGainFromMouth += desireGain * 0.7;
 			
-			let possiblePleasure = (desireGain + this.dex) * skillRating * pettingRate * sensitivityRating;
-			possiblePleasure -= (this.end * (0.5 - desireTotal / 400));
+			let possiblePleasure = (desireGain + this.dex * 1.3) * skillRating * pettingRate * sensitivityRating;
+			//possiblePleasure -= (this.end * (0.5 - desireTotal / 400));
 			
 			if(possiblePleasure > 0) {
-				pleasureFeedback += possiblePleasure;
+				if(pleasureFeedback > 0) {
+					pleasureFeedback = (pleasureFeedback + possiblePleasure) * 0.75;
+				}
+				else {
+					pleasureFeedback += possiblePleasure;
+				}
 				this.addToActorNipplesPleasureRecord(possiblePleasure);
 			}
 			
@@ -1803,8 +1833,8 @@ Game_Actor.prototype.dmgFormula_masturbateBattle = function(target) {
 			mouthDesireGain += desireGain * 0.3;
 			randomDesireGainFromMouth += desireGain * 0.7;
 			
-			let possiblePleasure = (desireGain + this.dex) * skillRating * pettingRate * sensitivityRating;
-			possiblePleasure -= (this.end * (0.5 - desireTotal / 400));
+			let possiblePleasure = (desireGain + this.dex * 1.3) * skillRating * pettingRate * sensitivityRating;
+			//possiblePleasure -= (this.end * (0.5 - desireTotal / 400));
 			
 			if(possiblePleasure > 0) {
 				pleasureFeedback += possiblePleasure;
@@ -1830,16 +1860,13 @@ Game_Actor.prototype.dmgFormula_masturbateBattle = function(target) {
 	let noiseGain = 0; 
 	
 	if(activeAreas === 1) {
-		this.gainDexterityExp(30, this.level);
-		this.gainEnduranceExp(20, this.level);
+		this.gainDexterityExp(40, this.level);
 	}
 	else if(activeAreas === 2) {
-		this.gainDexterityExp(45, this.level);
-		this.gainEnduranceExp(25, this.level);
+		this.gainDexterityExp(50, this.level);
 	}
 	else if(activeAreas === 3) {
 		this.gainDexterityExp(60, this.level);
-		this.gainEnduranceExp(35, this.level);
 	}
 	this.gainStaminaExp(15, this.level);
 	

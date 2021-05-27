@@ -115,7 +115,7 @@ const EQUIP_SLOT_TITLE_ID = 6;
 const ACCESSORY_ID_START_ONE = 17;
 const ACCESSORY_ID_END_ONE = 48;
 const ACCESSORY_ID_START_TWO = 430;
-const ACCESSORY_ID_END_TWO = 439;
+const ACCESSORY_ID_END_TWO = 443;
 
 const CLOTHING_ID_WARDEN = 1;
 const CLOTHING_ID_NAKED = 2;
@@ -349,6 +349,12 @@ Object.defineProperty(Karryn, 'cockiness', {
 });
 Object.defineProperty(Karryn, 'isWet', {
     get: function() { return $gameActors.actor(ACTOR_KARRYN_ID).isWet; }, configurable: true
+});
+Object.defineProperty(Karryn, 'isWetStageTwo', {
+    get: function() { return $gameActors.actor(ACTOR_KARRYN_ID).isWetStageTwo; }, configurable: true
+});
+Object.defineProperty(Karryn, 'isWetStageThree', {
+    get: function() { return $gameActors.actor(ACTOR_KARRYN_ID).isWetStageThree; }, configurable: true
 });
 Object.defineProperty(Karryn, "body", {
 	get: function() { return $gameActors.actor(ACTOR_KARRYN_ID)._body; }, configurable: true
@@ -796,7 +802,15 @@ Karryn.isInKarrynCowgirlPose = function() {
 Karryn.isInLizardmanCowgirlPose = function() { 
 	return $gameActors.actor(ACTOR_KARRYN_ID).isInLizardmanCowgirlPose();
 };
-
+Karryn.isInWerewolfBackPose = function() { 
+	return $gameActors.actor(ACTOR_KARRYN_ID).isInWerewolfBackPose();
+};
+Karryn.isInYetiPaizuriSexPose = function() { 
+	return $gameActors.actor(ACTOR_KARRYN_ID).isInYetiPaizuriSexPose();
+};
+Karryn.isInYetiCarryPose = function() { 
+	return $gameActors.actor(ACTOR_KARRYN_ID).isInYetiCarryPose();
+};
 
 Karryn.isInWaitressServingPose = function() { 
 	return $gameActors.actor(ACTOR_KARRYN_ID).isInWaitressServingPose();
@@ -842,6 +856,12 @@ Karryn.isInDefeatedLevel2Pose = function() {
 };
 Karryn.isInDefeatedLevel3Pose = function() { 
 	return $gameActors.actor(ACTOR_KARRYN_ID).isInDefeatedLevel3Pose();
+};
+Karryn.isInDefeatedLevel4Pose = function() { 
+	return $gameActors.actor(ACTOR_KARRYN_ID).isInDefeatedLevel4Pose();
+};
+Karryn.isInDefeatedLevel5Pose = function() { 
+	return $gameActors.actor(ACTOR_KARRYN_ID).isInDefeatedLevel5Pose();
 };
 Karryn.isInDefeatedGuardPose = function() { 
 	return $gameActors.actor(ACTOR_KARRYN_ID).isInDefeatedGuardPose();
@@ -994,7 +1014,10 @@ Object.defineProperty(Game_Actor.prototype, 'inBattleCharm', {
 		let charm = this.charm; 
 		let multipler = 1;
 		if(this.isEquippingThisAccessory(MISC_CALFSKINBELT_ID)) multipler *= 0.8;
-		if(this.isEquippingThisAccessory(NECKLACE_DIAMOND_ID)) multipler *= 1.1;
+		if(this.isEquippingThisAccessory(NECKLACE_DIAMOND_ID)) {
+			if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) multipler *= 1.085;
+			else multipler *= 1.17;
+		}
 		
 		if(this.isUsingThisTitle(TITLE_ID_TOILET_EAT_ORGASM)) multipler *= 1.07;
 		
@@ -1026,7 +1049,13 @@ Object.defineProperty(Game_Actor.prototype, "asc", {
 });
 
 Object.defineProperty(Game_Actor.prototype, "isWet", {
-	get: function () { return this._liquidPussyJuice > LIQUID_PUSSY_WET_REQ; }, configurable: true
+	get: function () { return this._liquidPussyJuice > LIQUID_PUSSY_WET_STAGE_ONE; }, configurable: true
+});
+Object.defineProperty(Game_Actor.prototype, "isWetStageTwo", {
+	get: function () { return this._liquidPussyJuice > LIQUID_PUSSY_WET_STAGE_TWO; }, configurable: true
+});
+Object.defineProperty(Game_Actor.prototype, "isWetStageThree", {
+	get: function () { return this._liquidPussyJuice > LIQUID_PUSSY_WET_STAGE_THREE; }, configurable: true
 });
 Object.defineProperty(Game_Actor.prototype, "slutLvl", {
 	get: function () { return this._slutLvl; }, configurable: true
@@ -1455,7 +1484,7 @@ Game_Actor.prototype.setupStatsBeforeBattle = function() {
 	this.setHp(this.maxstamina);
 	this.setMp(this.maxenergy);
 	this.setWillToMax();
-	this.setPleasure(Math.min(this.pleasure, this.orgasmPoint() * 0.99));
+	this.setPleasure(Math.min(this.pleasure, Math.floor(this.orgasmPoint() * 0.99)));
 }; 
 
 //Pre Battle
@@ -1560,21 +1589,20 @@ Game_Actor.prototype.postBattleCleanup = function() {
 /////////
 
 Game_Actor.prototype.setupDesires = function() {
-	this.setCockDesire(this.startingCockDesire(), false);
 	this.setMouthDesire(this.startingMouthDesire(), false);
 	this.setBoobsDesire(this.startingBoobsDesire(), false);
 	this.setPussyDesire(this.startingPussyDesire(), false);
 	this.setButtDesire(this.startingButtDesire(), false);
+	this.setCockDesire(this.startingCockDesire(), false);
 	this.startingRandomDesire();
 };
 
 Game_Actor.prototype.resetDesires = function() {
-	let minDesire = this.minimumDesireLimit();
-	this._cockDesire = minDesire;
-	this._mouthDesire = minDesire;
-	this._boobsDesire = minDesire;
-	this._pussyDesire = minDesire;
-	this._buttDesire = minDesire;
+	this._mouthDesire = this.minimumMouthDesireLimit();
+	this._boobsDesire = this.minimumBoobsDesireLimit();
+	this._pussyDesire = this.minimumPussyDesireLimit();
+	this._buttDesire = this.minimumButtDesireLimit();
+	this._cockDesire = this.minimumCockDesireLimit();
 };
 
 /////////
@@ -1582,7 +1610,7 @@ Game_Actor.prototype.resetDesires = function() {
 
 
 Game_Actor.prototype.getActorAge = function() {
-	return VAR_STARTING_AGE + Math.floor(Prison.date/365);
+	return VAR_STARTING_AGE + Math.floor((Prison.date + 69)/365);
 }; 
 
 ////////
@@ -1695,7 +1723,7 @@ Game_Actor.prototype.criticalChanceBonus = function() {
 
 Game_Actor.prototype.criticalDamageRate = function() {
 	let rate = 1;
-	if(this.isEquippingThisAccessory(NECKLACE_RUBY_ID)) rate *= 0.85;
+	if(this.isEquippingThisAccessory(NECKLACE_SAPPHIRE_ID)) rate *= 0.85;
 	return rate;
 };
 
@@ -1730,16 +1758,43 @@ Game_Actor.prototype.criticalDamageBonus = function() {
 
 Game_Actor.prototype.bonusActionSpeed = function(item) {
     let bonusSpeed = 0;
-	let itemId = item.id;
+	let itemId = -1;
+	if(item) itemId = item.id;
 	
-	if(this.isStateAffected(STATE_KARRYN_FIRST_TURN_ID)) bonusSpeed += 9999;
+	if(this.isStateAffected(STATE_KARRYN_FIRST_TURN_ID)) 
+		bonusSpeed += ACTION_SPEED_FAST_SECOND_PRIORITY;
 	
-	if((item.id === SKILL_KARRYN_BLOWJOB_SELECTOR_ID) && this.hasPassive(PASSIVE_BJ_PEOPLE_TWO_ID)) bonusSpeed += 9999;
+	if((item.id === SKILL_KARRYN_BLOWJOB_SELECTOR_ID) && this.hasPassive(PASSIVE_BJ_PEOPLE_TWO_ID))
+		bonusSpeed += ACTION_SPEED_FAST_THIRD_PRIORITY;
+	else if((item.id === SKILL_KARRYN_RIMJOB_SELECTOR_ID) && this.isUsingThisTitle(TITLE_ID_SEX_SKILL_RIMJOB_TWO)) 
+		bonusSpeed += ACTION_SPEED_FAST_THIRD_PRIORITY;
 	
-	if($gameTemp.isPlaytest() && TESTING_ALWAYS_FIRST) bonusSpeed += 9999;
+	if($gameTemp.isPlaytest() && TESTING_ALWAYS_FIRST) 
+		bonusSpeed += ACTION_SPEED_FAST_SECOND_PRIORITY;
 	
 	
 	return bonusSpeed;
+};
+
+Game_Actor.prototype.actionSpeedRate = function(item) {
+    let speedRate = 1;
+	let itemId = -1;
+	
+	if(item) {
+		itemId = item.id;
+		
+		if(item.hasTag(TAG_ACTOR_ATTACK_SKILL)) {
+			if(this.isUsingHalberd()) {
+				if(this.hasEdict(EDICT_HALBERD_OFFENSIVE_THREE)) speedRate += 0.3;
+			}
+			else {
+				if(this.hasEdict(EDICT_UNARMED_ATTACK_TRAINING_II)) speedRate += 0.3;
+			}
+		}
+	}
+	
+	
+	return speedRate;
 };
 
 ///////////////
@@ -1751,7 +1806,10 @@ Game_Actor.prototype.fatigueGainRate = function() {
 	let rate = 1;
 	
 	rate *= this.titlesFatigueGainRate();
-	if(this.ateArtisanMeal(ARTISAN_MEAL_ARMED)) rate *= 0.67;
+	if(this.ateArtisanMeal(ARTISAN_MEAL_ARMED)) {
+		if(this.isUsingThisTitle(TITLE_ID_GOURMET_FOODIE)) rate *= 0.5;
+		else rate *= 0.67;
+	}
 	if(this.isUsingStoreItem(STORE_ITEM_ENERGY_DRINK)) rate *= 0.8;
 	
 	if(this.hasPassive(PASSIVE_ORGASM_ML_TWO_ID) && this._todayOrgasmML > 0)
@@ -1759,6 +1817,7 @@ Game_Actor.prototype.fatigueGainRate = function() {
 	if(this.hasPassive(PASSIVE_HJ_COUNT_ONE_ID) && this._tempRecordHandjobPeople > 0)
 		rate *= 1 + Math.min(0.33, this._tempRecordHandjobPeople * 0.01);
 	
+	if(this.hasGift(GIFT_ID_EMPEROR_LV4_FATIGUE_GAIN)) rate *= 0.85;
 	
 	return rate;
 };
@@ -1790,7 +1849,6 @@ Game_Actor.prototype.fatigueRecoveryNumber = function() {
 
 	if(this.isAroused() && !this._todayMasturbatedBeforeRest) {
 		num *= this.fatigueRecoveryNumberRateWhenAroused();
-		this.increaseOnaniFrustration();
 	}
 
 	num *= this.fatigueRecoveryRate();
@@ -1932,7 +1990,12 @@ Game_Actor.prototype.regenerateHp = function() {
 Game_Actor.prototype.regenerateStaminaRate = function() {
 	let rate = 1;
 	let exceptionForNeverRegen = this.isInMasturbationCouchPose();
-	let exceptionForRegenWhenZeroStamina = $gameParty.isInGloryBattle && $gameTroop.getCurrentTurn_gloryBattle() < this._gloryBattle_restingTilTurn;
+	let exceptionForRegenWhenZeroStamina = false;
+	if($gameParty.isInGloryBattle && $gameTroop.getCurrentTurn_gloryBattle() < this._gloryBattle_restingTilTurn)
+		exceptionForRegenWhenZeroStamina = true;
+	if(Karryn.isInReceptionistPose() && this.isStateAffected(STATE_RECEPTIONIST_REST_ID))
+		exceptionForRegenWhenZeroStamina = true;
+
 	if((this.hasNoStamina() && !exceptionForRegenWhenZeroStamina) || exceptionForNeverRegen) rate = 0;
 	return rate;
 };
@@ -2078,8 +2141,8 @@ Game_Actor.prototype.paramBase = function(paramId) {
 		}
 	}
 	num += this.passiveParamBonus(paramId); 
-	num += this.karrynEdictParamBonus(paramId);
-	num += this.titleParamBonus(paramId);
+	num += this.edictsParamBonus(paramId);
+	num += this.titlesParamBonus(paramId);
 	num += this.giftsParamBonus(paramId);
 
 	if(paramId === PARAM_CHARM_ID) {
@@ -2120,7 +2183,7 @@ Game_Actor.prototype.paramRate = function(paramId) {
       if (obj && obj.rateParams) rate *= obj.rateParams[paramId];
     }
 	
-	rate *= this.karrynEdictParamRate(paramId);
+	rate *= this.edictsParamRate(paramId);
 	rate *= this.passiveParamRate(paramId);
 	rate *= this.willpowerParamRate(paramId);
 	rate *= this.confidentParamRate(paramId);
@@ -2131,6 +2194,7 @@ Game_Actor.prototype.paramRate = function(paramId) {
 	rate *= this.giftsParamRate(paramId);
 	rate *= this.waitressParamRate(paramId);
 	rate *= this.receptionistParamRate(paramId);
+	rate *= this.accessoriesParamRate(paramId);
 
 	if($gameParty.isRiotBattle()) {
 		if(this.hasThisTitle(TITLE_ID_SUPPRESS_RIOT_THREE)) rate *= 1.03;
@@ -2139,17 +2203,39 @@ Game_Actor.prototype.paramRate = function(paramId) {
 		if(this.isUsingThisTitle(TITLE_ID_SUPPRESS_RIOT_TWO)) rate *= 1.05;
 	}
 	
-	if(paramId === PARAM_MAXSTAMINA_ID && this.ateArtisanMeal(ARTISAN_MEAL_HEART)) rate *= 1.15;
+	if(paramId === PARAM_MAXSTAMINA_ID && this.ateArtisanMeal(ARTISAN_MEAL_HEART)) {
+		if(this.isUsingThisTitle(TITLE_ID_GOURMET_FOODIE)) rate *= 1.23;
+		else rate *= 1.15;
+	}
 	if(this.ateArtisanMeal(ARTISAN_MEAL_HERO)) {
-		if(paramId === PARAM_STRENGTH_ID || paramId === PARAM_DEXTERITY_ID || paramId === PARAM_AGILITY_ID)
-			rate *= 1.05;
+		if(paramId === PARAM_STRENGTH_ID || paramId === PARAM_DEXTERITY_ID || paramId === PARAM_AGILITY_ID) {
+			if(this.isUsingThisTitle(TITLE_ID_GOURMET_FOODIE)) rate *= 1.075;
+			else rate *= 1.05;
+		}
+			
 	}
 	
 	if(this.isUsingStoreItem(STORE_ITEM_ENERGY_DRINK)) rate *= 0.95;
-	
-	//if(paramId === PARAM_DEXTERITY_ID) rate *= 0.01;
+
 	
     return rate;
+};
+
+Game_Actor.prototype.paramPlus = function(paramId) {
+    let value = Game_Battler.prototype.paramPlus.call(this, paramId);
+    value += this.actor().plusParams[paramId];
+    value += this.currentClass().plusParams[paramId];
+    let length = this.equips().length;
+    for (let i = 0; i < length; ++i) {
+		let obj = this.equips()[i];
+		if (!obj) continue;
+		value += obj.params[paramId];
+		if (obj.plusParams) value += obj.plusParams[paramId];
+    }
+	
+	value += this.accessoriesParamPlus(paramId);
+	
+    return value;
 };
 
 Game_Actor.prototype.xparamPlus = function(id) {
@@ -2162,36 +2248,43 @@ Game_Actor.prototype.xparamPlus = function(id) {
     value += this.actor().plusXParams[id];
     value += this.currentClass().plusXParams[id];
 	
-	value += this.karrynEdictXParamPlus(id);
+	value += this.edictsXParamPlus(id);
 	value += this.willpowerXParamPlus(id);
 	value += this.passiveXParamPlus(id);
-	value += this.titleXParamPlus(id);
+	value += this.titlesXParamPlus(id);
 	value += this.halberdAndUnarmedXParamPlus(id);
+	value += this.giftsXParamPlus(id);
+	value += this.accessoriesXParamPlus(id);
+	value += this.defStanceXParamPlus(id);
+	value += this.counterStanceXParamPlus(id);
 	
-	//Counter Stance
-	if(id === XPARAM_CNT_ID && this.isStateAffected(STATE_COUNTER_STANCE_ID)) {
-		value += this.counterStanceXParamPlus();
+	if(id === XPARAM_CNT_ID) {
+		
 	}
-	//Defensive Stance
-	if(id === XPARAM_STA_REGEN_ID && this.isStateAffected(STATE_GUARD_ID)) {
-		value += this.defStanceXParamPlus();
+	else if(id === XPARAM_STA_REGEN_ID) {
+		if(this.isCoolAndCollected())
+			value += 0.02;
+		
+		if(this.ateArtisanMeal(ARTISAN_MEAL_COMFY)) {
+			if(this.isUsingThisTitle(TITLE_ID_GOURMET_FOODIE)) value += 0.075;
+			else value += 0.05;
+		}
+		
+		if(this.isUsingStoreItem(STORE_ITEM_PAIN_RESIST_PILL))
+			value -= 0.02;
 	}
-	
-	//Artisan
-	if((id === XPARAM_STA_REGEN_ID || id === XPARAM_EN_REGEN_ID) && this.ateArtisanMeal(ARTISAN_MEAL_COMFY)) 
-		value += 0.05;
-	
-	//Store
-	if(id === XPARAM_STA_REGEN_ID && this.isUsingStoreItem(STORE_ITEM_PAIN_RESIST_PILL)) 
-		value -= 0.02;
-	else if(id === XPARAM_CRIT_ID && this.isUsingHalberd() && this.isUsingStoreItem(STORE_ITEM_WELTSTONE)) 
-		value += 0.25;
-	
-	if(this.isCoolAndCollected()) {
-		if(id === XPARAM_STA_REGEN_ID) 
+	else if(id === XPARAM_EN_REGEN_ID) {
+		if(this.isCoolAndCollected())
 			value += 0.02;
-		else if(id === XPARAM_EN_REGEN_ID)
-			value += 0.02;
+		
+		if(this.ateArtisanMeal(ARTISAN_MEAL_COMFY)) {
+			if(this.isUsingThisTitle(TITLE_ID_GOURMET_FOODIE)) value += 0.075;
+			else value += 0.05;
+		}
+	}
+	else if(id === XPARAM_CRIT_ID) {
+		if(this.isUsingStoreItem(STORE_ITEM_WELTSTONE) && this.isUsingHalberd()) 
+			value += 0.25;
 	}
 	
     return value;
@@ -2208,6 +2301,8 @@ Game_Actor.prototype.xparamRate = function(id) {
     value *= this.currentClass().rateXParams[id];
 	
 	value *= this.passiveXParamRate(id);
+	value *= this.edictsXParamRate(id);
+	value *= this.titlesXParamRate(id);
 	value *= this.passiveDebuffXParamRate(id);
 	value *= this.exposedWeaknessXParamRate(id);
 	value *= this.onaniFrustrationXParamRate(id);
@@ -2217,22 +2312,36 @@ Game_Actor.prototype.xparamRate = function(id) {
 	value *= this.waitressXParamRate(id);
 	value *= this.receptionistXParamRate(id);
 	value *= this.gloryXParamRate(id);
+	value *= this.accessoriesXParamRate(id);
+	value *= this.cautiousStanceXParamRate(id);
 	
-	//Non combat evasion
-	if(id === XPARAM_EVA_ID && (this.isInSexPose() || this.isInDownPose() || this.isInMasturbationPose())) value = 0;
+	
+	if(id === XPARAM_EVA_ID) {
+		if(this.isInSexPose() || this.isInDownPose() || this.isInMasturbationPose()) 
+			return 0;
+		if(Prison.easyMode() && ConfigManager.cheatActorNoEvasion)
+			return 0;
+		if($gameTemp.isPlaytest() && TESTING_KARRYN_NO_EVADE)
+			return 0;
 
-	//Poison
-	if(id === XPARAM_STA_REGEN_ID && this.isStateAffected(STATE_POISON_ID)) value = 0;
-	
-	if(id === XPARAM_EVA_ID && $gameTemp.isPlaytest() && TESTING_KARRYN_NO_EVADE) value = 0;
-	
-	if(id === XPARAM_EVA_ID && Prison.easyMode() && ConfigManager.cheatActorNoEvasion) value = 0;
-	
-	if((id === XPARAM_EVA_ID || id === XPARAM_CRIT_EVA_ID) && this.isStateAffected(STATE_CAUTIOUS_STANCE_ID)) {
-		value *= this.cautiousStanceXParamRate();
 	}
-	
-	if(id === XPARAM_HIT_ID) value *= 1 + this._tempAttackSkillConsUsage * 0.05;
+	else if(id === XPARAM_HIT_ID) {
+		value *= (1 + this._tempAttackSkillConsUsage * 0.05);
+	}
+	else if(id === XPARAM_CRIT_EVA_ID) {
+		
+	}
+	else if(id === XPARAM_CNT_ID) {
+		if(this.isInSexPose() || this.isInDownPose() || this.isInMasturbationPose())
+			return 0;
+	}
+	else if(id === XPARAM_STA_REGEN_ID) {
+		if(this.isStateAffected(STATE_POISON_ID)) 
+			return 0;
+		
+		if(this.isStateAffected(STATE_YETI_HEAT_KARRYN_ONE_ID) || this.isStateAffected(STATE_YETI_HEAT_KARRYN_TWO_ID))
+			value *= 0.25;
+	}
 	
     return value;
 };
@@ -2247,7 +2356,9 @@ Game_Actor.prototype.xparamFlat = function(id) {
     value += this.actor().flatXParams[id];
     value += this.currentClass().flatXParams[id];
 	
-	if(id === XPARAM_STA_REGEN_ID && this.isStateAffected(STATE_POISON_ID)) value = -0.1;
+	if(id === XPARAM_STA_REGEN_ID) {
+		if(this.isStateAffected(STATE_POISON_ID)) value = -0.1;
+	}
 	
     return value;
 };
@@ -2262,15 +2373,28 @@ Game_Actor.prototype.sparamPlus = function(id) {
     value += this.actor().plusSParams[id];
     value += this.currentClass().plusSParams[id];
 	
+	
+	value += this.edictsSParamPlus(id);
 	value += this.halberdAndUnarmedSParamPlus(id);
 	value += this.titlesSParamPlus(id);
+	value += this.giftsSParamPlus(id);
 	
-	if(id === SPARAM_WP_REGEN_ID && this.ateArtisanMeal(ARTISAN_MEAL_COMFY)) value += 0.05;
+	if(id === SPARAM_WP_REGEN_ID) {
+		if(this.ateArtisanMeal(ARTISAN_MEAL_COMFY)) {
+			if(this.isUsingThisTitle(TITLE_ID_GOURMET_FOODIE)) value += 0.075;
+			else value += 0.05;
+		}
+		
+		if(this.isEquippingThisAccessory(BRACELET_DIAMOND_CUFF_ID)) {
+			if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) value += 0.1;
+			else value += 0.05;
+		}
 	
-	if(this.isCoolAndCollected()) {
-		if(id === SPARAM_WP_REGEN_ID) 
-			value += 0.02;
+		if(this.isCoolAndCollected()) value += 0.02;
 	}
+	
+	
+
 	
     return value;
 };
@@ -2285,26 +2409,40 @@ Game_Actor.prototype.sparamRate = function(id) {
     value *= this.actor().rateSParams[id];
     value *= this.currentClass().rateSParams[id];
 	
-	if(id === SPARAM_ESC_ID || id === SPARAM_WSC_ID) value *= this.accessoryBonusEscWsc();
-	else if(id === SPARAM_ASC_ID || (id === SPARAM_SSC_ID && DEBUG_MODE)) value *= this.accessoryBonusAscSsc();
-	
-	if(id === SPARAM_EXR_ID && this.ateArtisanMeal(ARTISAN_MEAL_SMART)) value *= 1.5;
-	
-	if(id === SPARAM_EXR_ID && this.metalExpRateBonus() > 0) value *= (1 + (this.metalExpRateBonus() * 0.01));
-	
-	if(id === SPARAM_EXR_ID && Prison.easyMode() && ConfigManager.cheatActorHalfExpRate) value *= 0.5;
-	
-	if(id === SPARAM_WPATK_ID && this.isStateAffected(STATE_COUNTER_STANCE_ID)) {
-		value *= this.counterStanceSParamRate();
+	if(id === SPARAM_ESC_ID) {
+		value *= this.accessoryBonusEscWsc();
 	}
-	
-	if(id === SPARAM_WPDEF_ID && this.isStateAffected(STATE_GUARD_ID)) {
-		value *= this.defStanceSParamRate();
+	else if(id === SPARAM_WSC_ID) {
+		value *= this.accessoryBonusEscWsc();
 	}
-	
-	if(id === SPARAM_WPDEF_ID && this.isUsingHalberd() && this.isUsingStoreItem(STORE_ITEM_WELTSTONE)) 
-		value *= 0.9;
-	
+	else if(id === SPARAM_ASC_ID) {
+		value *= this.accessoryBonusAscSsc();
+	}
+	else if(id === SPARAM_SSC_ID && DEBUG_MODE) {
+		value *= this.accessoryBonusAscSsc();
+	}
+	else if(id === SPARAM_EXR_ID) {
+		if(this.ateArtisanMeal(ARTISAN_MEAL_SMART)) {
+			if(this.isUsingThisTitle(TITLE_ID_GOURMET_FOODIE)) value *= 1.75;
+			else value *= 1.5;
+		}
+		
+		if(this.metalExpRateBonus() > 0) 
+			value *= (1 + (this.metalExpRateBonus() * 0.01));
+		
+		if(Prison.easyMode() && ConfigManager.cheatActorHalfExpRate) value *= 0.5;
+	}
+	else if(id === SPARAM_WPATK_ID) {
+		
+	}
+	else if(id === SPARAM_WPDEF_ID) {
+		if(this.isUsingHalberd() && this.isUsingStoreItem(STORE_ITEM_WELTSTONE))
+			value *= 0.9;
+	}
+	else if(id === SPARAM_WP_REGEN_ID) {
+		if(this.isStateAffected(STATE_YETI_HEAT_KARRYN_TWO_ID)) 
+			value *= 0.5;
+	}
 	
 	value *= this.passiveDebuffSParamRate(id);
 	value *= this.willpowerSParamRate(id);
@@ -2317,6 +2455,9 @@ Game_Actor.prototype.sparamRate = function(id) {
 	value *= this.glorySParamRate(id);
 	value *= this.titlesSParamRate(id);
 	value *= this.edictsSParamRate(id);
+	value *= this.accessoriesSParamRate(id);
+	value *= this.defStanceSParamRate(id);
+	value *= this.counterStanceSParamRate(id);
 	
     return value;
 };
@@ -2334,13 +2475,10 @@ Game_Actor.prototype.criticalMultiplierBonus = function() {
       if (equip) multiplier += equip.critMultBonus;
     }
 	
-	if(this.isUsingHalberd()) {
-		multiplier += this.edictsHalberdCriticalMultiplierBonus();
-	}
-	
 	if(this.hasGift(GIFT_ID_EMPEROR_LV3_CRIT_DAMAGE)) 
 		multiplier += 0.1;
 	
+	multiplier += this.edictsCriticalDamageBonus();
 	multiplier += this.passiveCriticalDamageBonus();
 	multiplier += this.desireCriticalMultiplierBonus();
 	
@@ -2376,21 +2514,25 @@ Game_Actor.prototype.elementRate = function(elementId) {
 		bonus += this.karrynPassivePettingElementRate();
 		
 		if(this.hasEdict(EDICT_SPEC_PETTING_RESIST)) bonus -= 0.25;
-		if(this.ateArtisanMeal(ARTISAN_MEAL_WARDEN)) bonus -= 0.2;
+		if(this.ateArtisanMeal(ARTISAN_MEAL_WARDEN)) {
+			if(this.isUsingThisTitle(TITLE_ID_GOURMET_FOODIE)) bonus -= 0.3;
+			else bonus -= 0.2;
+		}
 		
 	}
 	else if(elementId === ELEMENT_SEX_ID) {
 		bonus += this.karrynPassiveSexElementRate();
 		
 		if(this.hasEdict(EDICT_SPEC_SEX_RESIST)) bonus -= 0.15;
-		if(this.ateArtisanMeal(ARTISAN_MEAL_WARDEN)) bonus -= 0.2;
-	}
-	else if(elementId === ELEMENT_DRUGS_ID) {
-		bonus += this.karrynEdictDrugElementRate();
+		if(this.ateArtisanMeal(ARTISAN_MEAL_WARDEN)) {
+			if(this.isUsingThisTitle(TITLE_ID_GOURMET_FOODIE)) bonus -= 0.3;
+			else bonus -= 0.2;
+		}
 	}
 	else if(elementId === ELEMENT_SLASH_ID || elementId === ELEMENT_PIERCE_ID || elementId === ELEMENT_BLUNT_ID) {
 
 		bonus += this.karrynPassiveCombatElementRate(elementId);
+		bonus += this.edictsCombatElementRate(elementId);
 		
 		if(this.isUsingStoreItem(STORE_ITEM_PAIN_RESIST_PILL)) bonus -= 0.15;
 	}
@@ -2439,6 +2581,207 @@ Game_Actor.prototype.downPoseAndNoStaminaElementRate = function(elementId) {
 	return 0;
 };
 
+/////////
+// Accessories
+
+Game_Actor.prototype.accessoriesParamRate = function(paramId) {
+	let rate = 1;
+	
+	if(paramId === PARAM_STRENGTH_ID) {
+		if(this.isEquippingThisAccessory(MISC_HANDBAG_ID)) {
+			if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) rate *= 1.015;
+			else rate *= 1.03;
+		}
+		
+		if(this.isEquippingThisAccessory(EARRING_LIONESS_ID)) rate *= 0.88;
+		if(this.isEquippingThisAccessory(EARRING_HEART_ID)) rate *= 0.9;
+	}
+	else if(paramId === PARAM_DEXTERITY_ID) {
+		if(this.isEquippingThisAccessory(MISC_PERFUME_ID)) {
+			if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) rate *= 1.025;
+			else rate *= 1.05;
+		}
+		
+		if(this.isEquippingThisAccessory(EARRING_STAR_ID)) rate *= 0.8;
+		if(this.isEquippingThisAccessory(EARRING_CHEETAH_ID)) rate *= 0.85;
+		if(this.isEquippingThisAccessory(EARRING_SKULL_ID)) rate *= 0.87;
+		if(this.isEquippingThisAccessory(MISC_SCARF_ID)) rate *= 0.67;
+	}
+	else if(paramId === PARAM_AGILITY_ID) {
+		if(this.isEquippingThisAccessory(EARRING_LIONESS_ID)) {
+			if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) rate *= 1.025;
+			else rate *= 1.05;
+		}
+		if(this.isEquippingThisAccessory(MISC_PERFUME_ID)) {
+			if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) rate *= 1.025;
+			else rate *= 1.05;
+		}
+		
+		if(this.isEquippingThisAccessory(EARRING_TEAR_ID)) rate *= 0.95;
+		if(this.isEquippingThisAccessory(EARRING_SKULL_ID)) rate *= 0.87;
+		if(this.isEquippingThisAccessory(MISC_HIGHHEELS_ID)) rate *= 0.67;
+		if(this.isEquippingThisAccessory(MISC_LATEXSTOCKING_ID)) rate *= 0.8;
+	}
+	else if(paramId === PARAM_MIND_ID) {
+		if(this.isEquippingThisAccessory(EARRING_STAR_ID)) {
+			if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) rate *= 1.075;
+			else rate *= 1.15;
+		}
+		if(this.isEquippingThisAccessory(NECKLACE_EMERALD_ID)) {
+			if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) rate *= 1.05;
+			else rate *= 1.1;
+		}
+		
+		if(this.isEquippingThisAccessory(EARRING_SKULL_ID)) rate *= 0.34;
+		if(this.isEquippingThisAccessory(MISC_PERFUME_ID)) rate *= 0.75;
+	}
+	else if(paramId === PARAM_ENDURANCE_ID) {
+		if(this.isEquippingThisAccessory(EARRING_STAR_ID)) {
+			if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) rate *= 1.025;
+			else rate *= 1.05;
+		}
+		
+		if(this.isEquippingThisAccessory(EARRING_CHEETAH_ID)) rate *= 0.9;
+		if(this.isEquippingThisAccessory(EARRING_MOON_ID)) rate *= 0.9;
+		if(this.isEquippingThisAccessory(EARRING_SKULL_ID)) rate *= 0.67;
+	}
+	else if(paramId === PARAM_MAXENERGY_ID) {
+		if(this.isEquippingThisAccessory(EARRING_SUN_ID)) {
+			if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) rate *= 1.1;
+			else rate *= 1.2;
+		}
+	}
+	
+	return rate;
+};
+
+Game_Actor.prototype.accessoriesParamPlus = function(paramId) {
+	let value = 0;
+	
+	if(paramId === PARAM_STRENGTH_ID) {
+		if(this.isEquippingThisAccessory(BRACELET_ROPE_ID)) {
+			if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) value += 5;
+			else value += 10;
+		}
+		
+		if(this.isEquippingThisAccessory(EARRING_HEART_ID)) value -= 5;
+	}
+	else if(paramId === PARAM_DEXTERITY_ID) {
+		if(this.isEquippingThisAccessory(BRACELET_STRING_ID)) {
+			if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) value += 5;
+			else value += 10;
+		}
+		
+		if(this.isEquippingThisAccessory(EARRING_TEAR_ID)) value -= 5;
+	}
+	else if(paramId === PARAM_AGILITY_ID) {
+		if(this.isEquippingThisAccessory(BRACELET_BEADS_ID)) {
+			if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) value += 5;
+			else value += 10;
+		}
+		
+		if(this.isEquippingThisAccessory(EARRING_TEAR_ID)) value -= 7;
+	}
+	else if(paramId === PARAM_MIND_ID) {
+		if(this.isEquippingThisAccessory(BRACELET_PURPLE_ID)) {
+			if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) value += 5;
+			else value += 10;
+		}
+		
+		if(this.isEquippingThisAccessory(EARRING_TEAR_ID)) value -= 4;
+		if(this.isEquippingThisAccessory(EARRING_LIONESS_ID)) value -= 5;
+		if(this.isEquippingThisAccessory(EARRING_HEART_ID)) value -= 6;
+	}
+	else if(paramId === PARAM_ENDURANCE_ID) {
+		if(this.isEquippingThisAccessory(BRACELET_SILVER_ID)) {
+			if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) value += 7;
+			else value += 15;
+		}
+		if(this.isEquippingThisAccessory(EARRING_STAR_ID)) {
+			if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) value += 4;
+			else value += 8;
+		}
+		
+		if(this.isEquippingThisAccessory(EARRING_CHEETAH_ID)) value -= 8;
+		if(this.isEquippingThisAccessory(EARRING_MOON_ID)) value -= 7;
+		
+	}
+	else if(paramId === PARAM_MAXSTAMINA_ID) {
+		if(this.isEquippingThisAccessory(BRACELET_RED_ID)) {
+			if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) value += 150;
+			else value += 300;
+		}
+	}
+	else if(paramId === PARAM_MAXENERGY_ID) {
+		if(this.isEquippingThisAccessory(BRACELET_PALLADIUM_ID)) {
+			if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) value += 5;
+			else value += 10;
+		}
+		
+		if(this.isEquippingThisAccessory(EARRING_HEART_ID)) {
+			if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) value += 2;
+			else value += 4;
+		}
+	}
+	
+	
+	return value;
+};
+
+Game_Actor.prototype.accessoriesXParamRate = function(paramId) {
+	let rate = 1;
+	
+	if(paramId === XPARAM_EVA_ID) {
+		if(this.isEquippingThisAccessory(NECKLACE_SAPPHIRE_ID)) {
+			if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) rate *= 1.1;
+			else rate *= 1.2;
+		}
+	}
+	else if(paramId === XPARAM_CRIT_ID) {
+		if(this.isEquippingThisAccessory(NECKLACE_SAPPHIRE_ID)) rate *= 0.85;
+	}
+	
+	return rate;
+};
+
+Game_Actor.prototype.accessoriesXParamPlus = function(paramId) {
+	let value = 0;
+	
+	if(paramId === XPARAM_STA_REGEN_ID) {
+		if(this.isEquippingThisAccessory(BRACELET_RED_ID)) {
+			if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) value += 0.01;
+			else value += 0.02;
+		}
+	}
+	else if(paramId === XPARAM_EN_REGEN_ID) {
+		if(this.isEquippingThisAccessory(BRACELET_PALLADIUM_ID)) {
+			if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) value += 0.015;
+			else value += 0.03;
+		}
+	}
+	else if(paramId === XPARAM_HIT_ID) {
+		if(this.isEquippingThisAccessory(BRACELET_GOLD_ID)) {
+			if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) value += 0.2;
+			else value += 0.4;
+		}
+	}
+	
+	return value;
+};
+
+Game_Actor.prototype.accessoriesSParamRate = function(paramId) {
+	let rate = 1;
+	
+	if(paramId === SPARAM_WPATK_ID) {
+		if(this.isEquippingThisAccessory(NECKLACE_RUBY_ID)) rate *= 0.9;
+	}
+	
+	return rate;
+};
+
+
+
+
 Game_Actor.prototype.karrynAccessoryElementRate = function(elementId) {
 	let bonus = 0;
 	if(elementId === ELEMENT_TALK_ID) {
@@ -2472,12 +2815,21 @@ Game_Actor.prototype.karrynAccessoryElementRate = function(elementId) {
 Game_Actor.prototype.karrynAccTalkElementRate = function() {
 	let accBonus = 0;
 	
-	if(this.isEquippingThisAccessory(RING_MIDI_ID)) accBonus -= 0.25;
+	if(this.isEquippingThisAccessory(RING_MIDI_ID)) {
+		if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) accBonus -= 0.125;
+		else accBonus -= 0.25;
+	}
 	
 	
-	if(this.isEquippingThisAccessory(MISC_NAILPOLISH_ID)) accBonus -= 0.05;
+	if(this.isEquippingThisAccessory(MISC_NAILPOLISH_ID)) {
+		if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) accBonus -= 0.025;
+		else accBonus -= 0.05;
+	}
 	if(this.isEquippingThisAccessory(MISC_LIPGLOSS_ID)) accBonus += 0.2;
-	if(this.isEquippingThisAccessory(MISC_PHONESTRAP_ID)) accBonus -= 0.06;
+	if(this.isEquippingThisAccessory(MISC_PHONESTRAP_ID)) {
+		if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) accBonus -= 0.03;
+		else accBonus -= 0.06;
+	}
 	if(this.isEquippingThisAccessory(MISC_HANDBAG_ID)) accBonus += 0.15;
 	if(this.isEquippingThisAccessory(MISC_LATEXSTOCKING_ID)) accBonus += 0.15;
 	
@@ -2487,11 +2839,20 @@ Game_Actor.prototype.karrynAccTalkElementRate = function() {
 Game_Actor.prototype.karrynAccSightElementRate = function() {
 	let accBonus = 0;
 	
-	if(this.isEquippingThisAccessory(RING_MIDI_ID)) accBonus -= 0.25;
+	if(this.isEquippingThisAccessory(RING_MIDI_ID)) {
+		if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) accBonus -= 0.125;
+		else accBonus -= 0.25;
+	}
 	
 	if(this.isEquippingThisAccessory(MISC_NAILPOLISH_ID)) accBonus += 0.2;
-	if(this.isEquippingThisAccessory(MISC_EYELINER_ID)) accBonus -= 0.05;
-	if(this.isEquippingThisAccessory(MISC_PHONESTRAP_ID)) accBonus -= 0.06;
+	if(this.isEquippingThisAccessory(MISC_EYELINER_ID)) {
+		if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) accBonus -= 0.025;
+		else accBonus -= 0.05;
+	}
+	if(this.isEquippingThisAccessory(MISC_PHONESTRAP_ID)) {
+		if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) accBonus -= 0.03;
+		else accBonus -= 0.06;
+	}
 	if(this.isEquippingThisAccessory(MISC_HANDBAG_ID)) accBonus += 0.15;
 	if(this.isEquippingThisAccessory(MISC_LATEXSTOCKING_ID)) accBonus += 0.15;
 	
@@ -2501,13 +2862,24 @@ Game_Actor.prototype.karrynAccSightElementRate = function() {
 Game_Actor.prototype.karrynAccPettingElementRate = function() {
 	let accBonus = 0;
 	
-	if(this.isEquippingThisAccessory(RING_SCORPION_ID)) accBonus -= 0.3;
+	if(this.isEquippingThisAccessory(RING_SCORPION_ID)) {
+		if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) accBonus -= 0.15;
+		else accBonus -= 0.3;
+	}
 	
-	if(this.isEquippingThisAccessory(MISC_LIPGLOSS_ID)) accBonus -= 0.05;
+	if(this.isEquippingThisAccessory(MISC_LIPGLOSS_ID)) {
+		if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) accBonus -= 0.025;
+		else accBonus -= 0.05;
+	}
 	if(this.isEquippingThisAccessory(MISC_PHONESTRAP_ID)) accBonus += 0.2;
 	if(this.isEquippingThisAccessory(MISC_PERFUME_ID)) accBonus += 0.2;
 	if(this.isEquippingThisAccessory(MISC_HANDBAG_ID)) accBonus += 0.15;
 	if(this.isEquippingThisAccessory(MISC_LATEXSTOCKING_ID)) accBonus += 0.15;
+	
+	if(this.isEquippingThisAccessory(BRACELET_DIAMOND_CUFF_ID)) {
+		if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) accBonus += 0.4;
+		else accBonus += 0.2;
+	}
 	
 	return accBonus;
 };
@@ -2515,11 +2887,22 @@ Game_Actor.prototype.karrynAccPettingElementRate = function() {
 Game_Actor.prototype.karrynAccSexElementRate = function() {
 	let accBonus = 0;
 	
-	if(this.isEquippingThisAccessory(RING_GOLDGLASS_ID)) accBonus -= 0.3;
+	if(this.isEquippingThisAccessory(RING_GOLDGLASS_ID)) {
+		if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) accBonus -= 0.15;
+		else accBonus -= 0.3;
+	}
 	if(this.isEquippingThisAccessory(NECKLACE_EMERALD_ID)) accBonus += 0.2;
 	if(this.isEquippingThisAccessory(MISC_EYELINER_ID)) accBonus += 0.15;
 	if(this.isEquippingThisAccessory(MISC_PERFUME_ID)) accBonus += 0.2;
-	if(this.isEquippingThisAccessory(MISC_LATEXSTOCKING_ID)) accBonus -= 0.07;
+	if(this.isEquippingThisAccessory(MISC_LATEXSTOCKING_ID)) {
+		if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) accBonus += 0.035;
+		else accBonus += 0.07;
+	} 
+	
+	if(this.isEquippingThisAccessory(BRACELET_DIAMOND_CUFF_ID)) {
+		if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) accBonus += 0.3;
+		else accBonus += 0.15;
+	}
 	
 	return accBonus;
 };
@@ -2527,7 +2910,15 @@ Game_Actor.prototype.karrynAccSexElementRate = function() {
 Game_Actor.prototype.karrynAccStripElementRate = function() {
 	let accBonus = 0;
 	
-	if(this.isEquippingThisAccessory(MISC_CALFSKINBELT_ID)) accBonus -= 0.25;
+	if(this.isEquippingThisAccessory(MISC_CALFSKINBELT_ID)) {
+		if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) accBonus -= 0.125;
+		else accBonus -= 0.25;
+	}
+	
+	if(this.isEquippingThisAccessory(NECKLACE_HERO_ID)) {
+		if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) accBonus += 0.5;
+		else accBonus += 0.25;
+	}
 	
 	return accBonus;
 };
@@ -2535,24 +2926,51 @@ Game_Actor.prototype.karrynAccStripElementRate = function() {
 Game_Actor.prototype.karrynAccSlashElementRate = function() {
 	let accBonus = 0;
 	
-	if(this.isEquippingThisAccessory(NECKLACE_DOGTAG_ID)) accBonus -= 0.33;
+	if(this.isEquippingThisAccessory(NECKLACE_DOGTAG_ID)) {
+		if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) accBonus -= 0.165;
+		else accBonus -= 0.33;
+	}
+		
 	if(this.isEquippingThisAccessory(NECKLACE_BALL_ID)) accBonus += 0.1;
+	
+	if(this.isEquippingThisAccessory(NECKLACE_HERO_ID)) {
+		if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) accBonus -= 0.25;
+		else accBonus -= 0.12;
+	}
 	
 	return accBonus;
 };
 Game_Actor.prototype.karrynAccPierceElementRate = function() {
 	let accBonus = 0;
 	
-	if(this.isEquippingThisAccessory(NECKLACE_BALL_ID)) accBonus -= 0.33;
+	if(this.isEquippingThisAccessory(NECKLACE_BALL_ID)) {
+		if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) accBonus -= 0.165;
+		else accBonus -= 0.33;
+	}
+	
 	if(this.isEquippingThisAccessory(NECKLACE_CHAIN_ID)) accBonus += 0.1;
+	
+	if(this.isEquippingThisAccessory(NECKLACE_HERO_ID)) {
+		if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) accBonus -= 0.25;
+		else accBonus -= 0.12;
+	}
 	
 	return accBonus;
 };
 Game_Actor.prototype.karrynAccBluntElementRate = function() {
 	let accBonus = 0;
 	
-	if(this.isEquippingThisAccessory(NECKLACE_CHAIN_ID)) accBonus -= 0.33;
+	if(this.isEquippingThisAccessory(NECKLACE_CHAIN_ID)) {
+		if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) accBonus -= 0.165;
+		else accBonus -= 0.33;
+	}
+	
 	if(this.isEquippingThisAccessory(NECKLACE_DOGTAG_ID)) accBonus += 0.1;
+	
+	if(this.isEquippingThisAccessory(NECKLACE_HERO_ID)) {
+		if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) accBonus -= 0.25;
+		else accBonus -= 0.12;
+	}
 	
 	return accBonus;
 };
@@ -2588,6 +3006,9 @@ Game_Actor.prototype.halberdAndUnarmedXParamPlus = function(paramId) {
 	if(this.isUsingHalberd()) {
 		weaponXParamPlus += this.edictsHalberdXParamPlus(paramId);
 	}
+	else {
+		weaponXParamPlus += this.edictsUnarmedXParamPlus(paramId);
+	}
 	
 	return weaponXParamPlus;
 };
@@ -2616,6 +3037,17 @@ Game_Actor.prototype.halberdAndUnarmedSParamPlus = function(paramId) {
 };
 
 /////////
+// Counter
+/////////////////
+
+Game_Actor.prototype.counterTotal = function() {
+    let total = 2;
+	if(this.isStateAffected(STATE_COUNTER_STANCE_ID)) total += 2;
+	if(this.hasEdict(EDICT_HALBERD_DEFENSIVE_FOUR) && this.isUsingHalberd()) total += 1;
+	return total;
+};
+
+/////////
 // Overblow Protection
 ///////////////////
 
@@ -2624,14 +3056,26 @@ Game_Actor.prototype.overblowProtectionRate = function() {
 	
 	if(Prison.easyMode()) op -= 0.15;
 	
-	if(this.hasEdict(EDICT_HALBERD_DEFENSIVE_TWO)) op -= 0.1;
+	if(this.isUsingHalberd()) {
+		if(this.hasEdict(EDICT_HALBERD_DEFENSIVE_FOUR)) op -= 0.15;
+		else if(this.hasEdict(EDICT_HALBERD_DEFENSIVE_TWO)) op -= 0.1;
+	}
+	else {
+		if(this.hasEdict(EDICT_UNARMED_DEFENSE_TRAINING_II)) op -= 0.08;
+	}
+	
+	
+	if(this.hasEdict(EDICT_RESEARCH_YETI_STUDY)) op -= 0.07;
 	
 	if(this.hasEdict(EDICT_SPEC_DEFENSIVE_MIND_FOCUS) && this.isStateAffected(STATE_FOCUS_ID)) 
 		op -= this.willpowerFocusOverblowProtectionEffect();
 	
 	op -= (this._accessoryBonusLvl - 1) * 0.04
 	
-	if(this.isEquippingThisAccessory(NECKLACE_RUBY_ID)) op -= 0.1;
+	if(this.isEquippingThisAccessory(NECKLACE_RUBY_ID)) {
+		if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) op -= 0.05;
+		else op -= 0.1;
+	}
 	
 	if(this.hasGift(GIFT_ID_EMPEROR_LV3_OVERBLOW_PROTECTION)) op -= 0.07;
 	
@@ -2830,6 +3274,10 @@ Game_Actor.prototype.setClitToy_PinkRotor = function(enemy) {
 		let multipler = 0.4 + enemy.toyLvl() * 0.1;
 		this._toyValue_clitToy = enemy.dex * multipler;
 	}
+	else {
+		let multipler = 0.2 + $gameTroop.getEnemyIdAppearLvl(ENEMY_ID_NERD_CLIT_TOY) * 0.04;
+		this._toyValue_clitToy = this.dex * multipler;
+	}
 };
 Game_Actor.prototype.setPussyToy_PenisDildo = function(enemy) {
 	//this.setBodyPartToy(PUSSY_ID);
@@ -2838,6 +3286,10 @@ Game_Actor.prototype.setPussyToy_PenisDildo = function(enemy) {
 		let multipler = 0.4 + enemy.toyLvl() * 0.1;
 		this._toyValue_pussyToy = enemy.dex * multipler;
 	}
+	else {
+		let multipler = 0.2 + $gameTroop.getEnemyIdAppearLvl(ENEMY_ID_NERD_PUSSY_TOY) * 0.04;
+		this._toyValue_pussyToy = this.dex * multipler;
+	}
 };
 Game_Actor.prototype.setAnalToy_AnalBeads = function(enemy) {
 	//this.setBodyPartToy(ANAL_ID);
@@ -2845,6 +3297,10 @@ Game_Actor.prototype.setAnalToy_AnalBeads = function(enemy) {
 	if(enemy) {
 		let multipler = 0.4 + enemy.toyLvl() * 0.1;
 		this._toyValue_analToy = enemy.dex * multipler;
+	}
+	else {
+		let multipler = 0.2 + $gameTroop.getEnemyIdAppearLvl(ENEMY_ID_NERD_ANAL_TOY) * 0.04;
+		this._toyValue_analToy = this.dex * multipler;
 	}
 };
 
@@ -2933,6 +3389,32 @@ Game_Actor.prototype.getTachieAnalToyExtension = function() {
 		return this.getTachieAnalToyExtension_gloryBattle();
 	else return '';
 };
+
+/////////
+// Spank Mark
+/////////
+
+Game_Actor.prototype.getTachieSpankMarkRightButtId = function() {
+	let spankMarkId = 0;
+	if(this._tempRecordSpankMarksRightButtcheek >= 12)
+		spankMarkId = 3;
+	if(this._tempRecordSpankMarksRightButtcheek >= 5)
+		spankMarkId = 2;
+	if(this._tempRecordSpankMarksRightButtcheek >= 2)
+		spankMarkId = 1;
+	return spankMarkId;
+};
+Game_Actor.prototype.getTachieSpankMarkLeftButtId = function() {
+	let spankMarkId = 0;
+	if(this._tempRecordSpankMarksLeftButtcheek >= 12)
+		spankMarkId = 3;
+	if(this._tempRecordSpankMarksLeftButtcheek >= 5)
+		spankMarkId = 2;
+	if(this._tempRecordSpankMarksLeftButtcheek >= 2)
+		spankMarkId = 1;
+	return spankMarkId;
+};
+
 
 //////////
 // Orgasm
@@ -3516,10 +3998,13 @@ Game_Actor.prototype.isCoolAndCollected = function() {
 };
 Game_Actor.prototype.coolXParamRate = function(paramId) {
 	let rate = 1;
-	if(this.isCoolAndCollected()) {
-		if(paramId === XPARAM_HIT_ID || paramId === XPARAM_EVA_ID || paramId === XPARAM_CRIT_ID || paramId === XPARAM_CRIT_EVA_ID)
-			rate = 1.05;
+	
+	if(paramId === XPARAM_HIT_ID || paramId === XPARAM_EVA_ID || paramId === XPARAM_CRIT_ID || paramId === XPARAM_CRIT_EVA_ID) {
+		if(this.isCoolAndCollected()) {
+			rate += 0.075;
+		}
 	}
+	
 	return rate;
 };
 
@@ -3561,6 +4046,13 @@ Game_Actor.prototype.exposedWeaknessXParamRate = function(paramId) {
 			exposedValue -= 2;
 			exposedPower -= 0.02;
 		}
+		
+		if(Karryn.hasEdict(EDICT_THE_ORC_PROBLEM)) {
+			if(Karryn.hasEdict(EDICT_ACCESSIBILITY_FOR_ORCS) && Karryn.hasEdict(EDICT_PAY_NERD_BLACKMAIL)) {}
+			else if(Karryn.hasEdict(EDICT_REJECT_THE_ORCS) && Karryn.hasEdict(EDICT_THREATEN_THE_NERDS)) {}
+			else if(Karryn.hasEdict(EDICT_REACH_UNDERSTANDING_WITH_ORCS) && Karryn.hasEdict(EDICT_GIVE_IN_TO_NERD_BLACKMAIL)) {}
+			else exposedPower += 0.015;
+		}
 	}
 	
 	return 1 - ((exposedPower * exposedValue) * 0.2);
@@ -3597,7 +4089,15 @@ Game_Actor.prototype.exposedWeaknessElementRate = function(elementId, rate, bonu
 			exposedValue -= 2;
 			exposedPower -= 0.02;
 		}
+		
+		if(Karryn.hasEdict(EDICT_THE_ORC_PROBLEM)) {
+			if(Karryn.hasEdict(EDICT_ACCESSIBILITY_FOR_ORCS) && Karryn.hasEdict(EDICT_PAY_NERD_BLACKMAIL)) {}
+			else if(Karryn.hasEdict(EDICT_REJECT_THE_ORCS) && Karryn.hasEdict(EDICT_THREATEN_THE_NERDS)) {}
+			else if(Karryn.hasEdict(EDICT_REACH_UNDERSTANDING_WITH_ORCS) && Karryn.hasEdict(EDICT_GIVE_IN_TO_NERD_BLACKMAIL)) {}
+			else exposedPower += 0.015;
+		}
 	}
+	
 	
 	return exposedPower * exposedValue;
 };
@@ -3609,8 +4109,7 @@ Game_Actor.prototype.passiveLizardmanElementRate = function(elementId) {
 
 	let lizardmanCount = $gameTroop.getCountOfLizardmanPresent();
 	if(this.hasPassive(PASSIVE_SEXUAL_PARTNERS_LIZARDMAN_TWO_ID) && lizardmanCount > 1) {
-		let rate = 0.02;
-	
+		let rate = 0.015;
 		lizBonus -= rate * lizardmanCount;
 	}
 
@@ -3623,11 +4122,46 @@ Game_Actor.prototype.passiveLizardmanElementRate = function(elementId) {
 Game_Actor.prototype.resetArtisanMeal = function() {
 	this._artisanMeal = false;
 };
-Game_Actor.prototype.eatArtisanMeal = function(meal) {
-	this._artisanMeal = meal;
+Game_Actor.prototype.eatArtisanMeal = function(mealId) {
+	this._artisanMeal = mealId;
+	
+	switch (mealId) {
+	case ARTISAN_MEAL_SMART:
+		this._playthroughRecordArtisanMealSMARTCount++;
+		break;
+	case ARTISAN_MEAL_COMFY:
+		this._playthroughRecordArtisanMealCOMFYCount++;
+		break;
+	case ARTISAN_MEAL_HEART:
+		this._playthroughRecordArtisanMealHEARTCount++;
+		break;
+	case ARTISAN_MEAL_SLUT:
+		this._playthroughRecordArtisanMealSLUTCount++;
+		break;
+	case ARTISAN_MEAL_PUSSY:
+		this._playthroughRecordArtisanMealPUSSYCount++;
+		break;
+	case ARTISAN_MEAL_HERO:
+		this._playthroughRecordArtisanMealHEROCount++;
+		break;
+	case ARTISAN_MEAL_ARMED:
+		this._playthroughRecordArtisanMealARMEDCount++;
+		break;
+	case ARTISAN_MEAL_WARDEN:
+		this._playthroughRecordArtisanMealWARDENCount++;
+		break;
+	case ARTISAN_MEAL_BITCH:
+		this._playthroughRecordArtisanMealBITCHCount++;
+		break;
+	case ARTISAN_MEAL_ANAL:
+		this._playthroughRecordArtisanMealANALCount++;
+		break;
+	}
+	
+	this._playthroughRecordArtisanMealTotalCount++;
 };
-Game_Actor.prototype.ateArtisanMeal = function(meal) {
-	return this._artisanMeal === meal;
+Game_Actor.prototype.ateArtisanMeal = function(mealId) {
+	return this._artisanMeal === mealId;
 };
 Game_Actor.prototype.hadAnArtisanMeal = function() {
 	return this._artisanMeal != false;
@@ -3704,6 +4238,7 @@ Game_Actor.prototype.resetTodayRecords = function() {
 	this._todayFootjobPeople = 0;
 	this._todayButtSpankedPeople = 0;
 	this._todayCockPettedPeople = 0;
+	this._todayCockStaredAtPeople = 0;
 	this._todayFingersSuckedPeople = 0;
 	this._todayBoobsPettedPeople = 0;
 	this._todayNipplesPettedPeople = 0;
@@ -3712,9 +4247,14 @@ Game_Actor.prototype.resetTodayRecords = function() {
 	this._todayButtPettedPeople = 0;
 	this._todayAnalPettedPeople = 0;
 	
+	this._todayBlowjobUsagePeople = 0;
+	this._todayRimjobUsagePeople = 0;
+	
 	this._todayCockKickUsageCount = 0;
 	this._todayCockStareUsageCount = 0;
 	this._todayCockPetUsageCount = 0;
+	
+	this._todayKickCounterAfterLightKickCount = 0;
 	
 	this._todayTotalToysInsertedCount = 0;
 	this._todayClitToyInsertedCount = 0;
@@ -3751,6 +4291,20 @@ Game_Actor.prototype.resetTodayRecords = function() {
 	this._todayOrgasmCount = 0;
 	this._todayOrgasmML = 0;
 	
+	this._todayPussySexUsagePartnersThug = 0;
+	this._todayPussySexUsagePartnersPrisoner = 0;
+	this._todayPussySexUsagePartnersGuard = 0;
+	this._todayPussySexUsagePartnersGoblin = 0;
+	this._todayPussySexUsagePartnersNerd = 0;
+	this._todayPussySexUsagePartnersRogue = 0;
+	this._todayPussySexUsagePartnersSlime = 0;
+	this._todayPussySexUsagePartnersLizardman = 0;
+	this._todayPussySexUsagePartnersOrc = 0;
+	this._todayPussySexUsagePartnersHomeless = 0;
+	this._todayPussySexUsagePartnersWerewolf = 0;
+	this._todayPussySexUsagePartnersYeti = 0;
+	this._todayPussySexUsagePartnersDifferentTotal = 0;
+	
 	this._todaySubduedMetalEnemiesCount = 0;
 	this._todayMasturbatedBeforeRest = false;
 	this._todayServedGuardInBar = 0;
@@ -3777,7 +4331,10 @@ Game_Actor.prototype.metalExpRateBonus = function() {
 	if(this._todaySubduedMetalEnemiesCount > 0) {
 		bonus = 30;
 		
-		bonus += this._todaySubduedMetalEnemiesCount * 5;
+		let rate = 5;
+		if(this.hasThisTitle(TITLE_ID_METAL_SEX_ONE)) rate += 10;
+		
+		bonus += this._todaySubduedMetalEnemiesCount * rate;
 	}
 	
 	return bonus;
@@ -3837,11 +4394,25 @@ Game_Actor.prototype.gainMouthDesire = function(value, fromWillpowerSkill, fromD
 	let tempCap = 0;
 	
 	if(fromDesireRegen) {
-		if(this.isEquippingThisAccessory(RING_DOUBLE_ID)) rawValue *= 0.34;
+		if(this.isEquippingThisAccessory(RING_DOUBLE_ID)) {
+			if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) rawValue *= 0.67;
+			else rawValue *= 0.34;
+		}
+		if(this.isEquippingThisAccessory(RING_PURITY_ID)) {
+			if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) rawValue *= 0.6;
+			else rawValue *= 0.8;
+		}
 	}
 	else if(rawValue > 0 && !fromWillpowerSkill) {
 		rawValue *= this.gainMouthDesirePassiveMultipler();
-		if(this.isEquippingThisAccessory(RING_DOUBLE_ID)) rawValue *= 0.34;
+		if(this.isEquippingThisAccessory(RING_DOUBLE_ID)) {
+			if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) rawValue *= 0.67;
+			else rawValue *= 0.34;
+		}
+		if(this.isEquippingThisAccessory(RING_PURITY_ID)) {
+			if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) rawValue *= 0.6;
+			else rawValue *= 0.8;
+		}
 	}
 	
 	if(rawValue > 0) {
@@ -3997,11 +4568,25 @@ Game_Actor.prototype.gainBoobsDesire = function(value, fromWillpowerSkill, fromD
 	let tempCap = 0;
 	
 	if(fromDesireRegen) {
-		if(this.isEquippingThisAccessory(RING_FINGERCLAW_ID)) rawValue *= 0.34;
+		if(this.isEquippingThisAccessory(RING_FINGERCLAW_ID)) {
+			if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) rawValue *= 0.67;
+			else rawValue *= 0.34;
+		}
+		if(this.isEquippingThisAccessory(RING_PURITY_ID)) {
+			if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) rawValue *= 0.6;
+			else rawValue *= 0.8;
+		}
 	}
 	else if(rawValue > 0 && !fromWillpowerSkill) {
 		rawValue *= this.gainBoobsDesirePassiveMultipler();
-		if(this.isEquippingThisAccessory(RING_FINGERCLAW_ID)) rawValue *= 0.34;
+		if(this.isEquippingThisAccessory(RING_FINGERCLAW_ID)) {
+			if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) rawValue *= 0.67;
+			else rawValue *= 0.34;
+		}
+		if(this.isEquippingThisAccessory(RING_PURITY_ID)) {
+			if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) rawValue *= 0.6;
+			else rawValue *= 0.8;
+		}
 	}
 	
 	if(rawValue > 0) {
@@ -4157,11 +4742,25 @@ Game_Actor.prototype.gainPussyDesire = function(value, fromWillpowerSkill, fromD
 	let tempCap = 0;
 	
 	if(fromDesireRegen) {
-		if(this.isEquippingThisAccessory(RING_PEARL_ID)) rawValue *= 0.34;
+		if(this.isEquippingThisAccessory(RING_PEARL_ID)) {
+			if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) rawValue *= 0.67;
+			else rawValue *= 0.34;
+		}
+		if(this.isEquippingThisAccessory(RING_PURITY_ID)) {
+			if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) rawValue *= 0.6;
+			else rawValue *= 0.8;
+		}
 	}
 	else if(rawValue > 0 && !fromWillpowerSkill) {
 		rawValue *= this.gainPussyDesirePassiveMultipler();
-		if(this.isEquippingThisAccessory(RING_PEARL_ID)) rawValue *= 0.34;
+		if(this.isEquippingThisAccessory(RING_PEARL_ID)) {
+			if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) rawValue *= 0.67;
+			else rawValue *= 0.34;
+		}
+		if(this.isEquippingThisAccessory(RING_PURITY_ID)) {
+			if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) rawValue *= 0.6;
+			else rawValue *= 0.8;
+		}
 	}
 	
 	if(rawValue > 0) {
@@ -4317,11 +4916,25 @@ Game_Actor.prototype.gainButtDesire = function(value, fromWillpowerSkill, fromDe
 	let tempCap = 0;
 	
 	if(fromDesireRegen) {
-		if(this.isEquippingThisAccessory(RING_CHAINHAND_ID)) rawValue *= 0.34;
+		if(this.isEquippingThisAccessory(RING_CHAINHAND_ID)) {
+			if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) rawValue *= 0.67;
+			else rawValue *= 0.34;
+		}
+		if(this.isEquippingThisAccessory(RING_PURITY_ID)) {
+			if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) rawValue *= 0.6;
+			else rawValue *= 0.8;
+		}
 	}
 	else if(rawValue > 0 && !fromWillpowerSkill) {
 		rawValue *= this.gainButtDesirePassiveMultipler();
-		if(this.isEquippingThisAccessory(RING_CHAINHAND_ID)) rawValue *= 0.34;
+		if(this.isEquippingThisAccessory(RING_CHAINHAND_ID)) {
+			if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) rawValue *= 0.67;
+			else rawValue *= 0.34;
+		}
+		if(this.isEquippingThisAccessory(RING_PURITY_ID)) {
+			if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) rawValue *= 0.6;
+			else rawValue *= 0.8;
+		}
 	}
 	
 	if(rawValue > 0) {
@@ -4477,11 +5090,26 @@ Game_Actor.prototype.gainCockDesire = function(value, fromWillpowerSkill, fromDe
 	let tempCap = 0;
 	
 	if(fromDesireRegen) {
-		if(this.isEquippingThisAccessory(RING_GEMSTONE_ID)) rawValue *= 0.34;
+		if(this.isEquippingThisAccessory(RING_GEMSTONE_ID)) {
+			if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) rawValue *= 0.67;
+			else rawValue *= 0.34;
+		}
+		if(this.isEquippingThisAccessory(RING_PURITY_ID)) {
+			if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) rawValue *= 0.6;
+			else rawValue *= 0.8;
+		}
 	}
 	else if(rawValue > 0 && !fromWillpowerSkill) {
 		rawValue *= this.gainCockDesirePassiveMultipler();
-		if(this.isEquippingThisAccessory(RING_GEMSTONE_ID)) rawValue *= 0.34;
+		if(this.isEquippingThisAccessory(RING_GEMSTONE_ID)) {
+			if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) rawValue *= 0.67;
+			else rawValue *= 0.34;
+		}
+		if(this.isEquippingThisAccessory(RING_PURITY_ID)) {
+			if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) rawValue *= 0.6;
+			else rawValue *= 0.8;
+		}
+		if(this.isUsingThisTitle(TITLE_ID_SEX_SKILL_COCKSTARE_TWO)) rawValue *= 1.25;
 	}
 	
 	if(rawValue > 0) {
@@ -4712,7 +5340,7 @@ Game_Actor.prototype.canGetBukkakedBoobsSeen = function() {
 	return this._liquidBukkakeBoobs > 0 && this.canGetBoobsSeen();
 };
 Game_Actor.prototype.canGetBukkakedButtSeen = function() { 
-	return (this._liquidBukkakeButt > 0 || this._liquidBukkakeButtTopRight > 0 || this._liquidBukkakeButtTopLeft > 0 || this._liquidBukkakeButtBottomRight > 0 || this._liquidBukkakeButtBottomLeft > 0) && this.canGetButtSeen();
+	return (this._liquidBukkakeButt > 0 || this._liquidBukkakeButtTopRight > 0 || this._liquidBukkakeButtTopLeft > 0 || this._liquidBukkakeButtBottomRight > 0 || this._liquidBukkakeButtBottomLeft > 0 || this._liquidBukkakeButtRight > 0 || this._liquidBukkakeButtLeft > 0) && this.canGetButtSeen();
 };
 Game_Actor.prototype.canGetMouthSwallowSeen = function() { 
 	return this._liquidSwallow > 0 && this.canGetMouthSeen();
@@ -4885,13 +5513,13 @@ Game_Actor.prototype.canGetRightHandInserted = function(actorSkill) {
 	let req = this.handjobCockDesireRequirement();
 	let insertable = actorSkill || this.isClothingAtStageAccessHands();
 
-	return this.cockDesire >= req && this.isBodySlotAvailableForPenis(RIGHT_HAND_ID);
+	return this.cockDesire >= req && this.isBodySlotAvailableForPenis(RIGHT_HAND_ID) && insertable;
 };
 Game_Actor.prototype.canGetLeftHandInserted = function(actorSkill) { 
 	let req = this.handjobCockDesireRequirement();
 	let insertable = actorSkill || this.isClothingAtStageAccessHands();
 
-	return this.cockDesire >= req && this.isBodySlotAvailableForPenis(LEFT_HAND_ID);
+	return this.cockDesire >= req && this.isBodySlotAvailableForPenis(LEFT_HAND_ID) && insertable;
 };
 
 Game_Actor.prototype.canGetFeetInserted = function(actorSkill) { 

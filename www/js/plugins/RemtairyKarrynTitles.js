@@ -14,6 +14,9 @@ Remtairy.KarrynTitles = Remtairy.KarrynTitles || {};
  */
 //=============================================================================
 
+const TITLE_LIST_START_ID = 53;
+const TITLE_LIST_END_ID = 180;
+
 const TITLE_ID_EMPEROR_SECRETARY = 2;
 const TITLE_ID_NEWBIE = 3;
 
@@ -120,6 +123,39 @@ const TITLE_ID_TOILET_RESTER = 144;
 const TITLE_ID_EVASION_ONE = 145;
 const TITLE_ID_EVASION_TWO = 146;
 const TITLE_ID_EVASION_THREE = 147;
+const TITLE_ID_ASPIRING_HERO = 148;
+const TITLE_ID_FULFILLED_HERO = 149; //Not implemented
+const TITLE_ID_GALACTIC_HERO = 150; //Not implemented
+const TITLE_ID_PRISON_CHAMPION = 151; //Not implemented
+const TITLE_ID_SUPER_WORLD_CHAMPION = 152; //Not implemented
+const TITLE_ID_GOURMET_FOODIE = 153;
+const TITLE_ID_LEVEL_ONE_BOSS = 154;
+const TITLE_ID_LEVEL_TWO_BOSS = 155;
+const TITLE_ID_LEVEL_THREE_BOSS = 156;
+const TITLE_ID_LEVEL_FOUR_BOSS = 157;
+const TITLE_ID_LEVEL_FIVE_BOSS = 158; //Not implemented
+const TITLE_ID_SEX_SKILL_KISS_ONE = 159;
+const TITLE_ID_SEX_SKILL_KISS_TWO = 160;
+const TITLE_ID_SEX_SKILL_COCKSTARE_ONE = 161;
+const TITLE_ID_SEX_SKILL_COCKSTARE_TWO = 162;
+const TITLE_ID_SEX_SKILL_COCKPET_ONE = 163;
+const TITLE_ID_SEX_SKILL_COCKPET_TWO = 164;
+const TITLE_ID_SEX_SKILL_HANDJOB_ONE = 165;
+const TITLE_ID_SEX_SKILL_HANDJOB_TWO = 166;
+const TITLE_ID_SEX_SKILL_BLOWJOB_ONE = 167;
+const TITLE_ID_SEX_SKILL_BLOWJOB_TWO = 168;
+const TITLE_ID_SEX_SKILL_RIMJOB_ONE = 169;
+const TITLE_ID_SEX_SKILL_RIMJOB_TWO = 170;
+const TITLE_ID_SEX_SKILL_FOOTJOB_ONE = 171;
+const TITLE_ID_SEX_SKILL_FOOTJOB_TWO = 172;
+const TITLE_ID_SEX_SKILL_TITJOB_ONE = 173;
+const TITLE_ID_SEX_SKILL_TITJOB_TWO = 174;
+const TITLE_ID_SEX_SKILL_PUSSYSEX_ONE = 175;
+const TITLE_ID_SEX_SKILL_PUSSYSEX_TWO = 176;
+const TITLE_ID_SEX_SKILL_ANALSEX_ONE = 177;
+const TITLE_ID_SEX_SKILL_ANALSEX_TWO = 178;
+const TITLE_ID_METAL_SEX_ONE = 179;
+const TITLE_ID_SEX_SKILL_LIGHT_KICK = 180;
 
 //////
 // Scene Equip
@@ -215,11 +251,17 @@ Game_Actor.prototype.registerFirstTimeTitleEquip = function() {
 			else if(id === TITLE_ID_FULL_ORDER_THREE) {
 				$gameParty.gainGold(250);
 			}
+			else if(id === TITLE_ID_LEVEL_TWO_BOSS) {
+				$gameParty.gainGold(150);
+			}
+			else if(id === TITLE_ID_LEVEL_FOUR_BOSS) {
+				$gameParty.gainGold(150);
+			}
 			//Receptionist
 			else if(id === TITLE_ID_RECEPTIONIST_HANDSHAKE) {
 				$gameParty.increaseReceptionistFame(3);
 			}
-			else if(id === TITLE_ID_RECEPTIONIST_HANDSHAKE) {
+			else if(id === TITLE_ID_VISITOR_FIRST_KISS) {
 				$gameParty.increaseReceptionistFame(2);
 				$gameParty.increaseReceptionistNotoriety(3);
 			}
@@ -381,12 +423,11 @@ Game_Party.prototype.checkForNewTitle = function() {
 	if(!actor.hasThisTitle(TITLE_ID_COUNTERATTACK_ONE) && actor._playthroughRecordCounterAttackUsage >= 50) {
 		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_COUNTERATTACK_ONE]);
 	}
-	if(!actor.hasThisTitle(TITLE_ID_COUNTERATTACK_TWO) && actor.level >= 15 && actor._playthroughRecordTotalAttackUsage >= 100 && actor._playthroughRecordCounterAttackUsage >= actor._playthroughRecordActiveAttackUsage + 25) {
+	if(!actor.hasThisTitle(TITLE_ID_COUNTERATTACK_TWO) && actor.level > 15 && actor._playthroughRecordTotalAttackUsage >= 100 && actor._playthroughRecordCounterAttackUsage >= actor._playthroughRecordActiveAttackUsage + 25) {
 		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_COUNTERATTACK_TWO]);
 	}
-	if(!actor.hasThisTitle(TITLE_ID_COUNTERATTACK_THREE) && actor.level >= 35 && actor._playthroughRecordTotalAttackUsage >= 200 && actor._playthroughRecordCounterAttackUsage >= actor._playthroughRecordActiveAttackUsage * 3) {
+	if(!actor.hasThisTitle(TITLE_ID_COUNTERATTACK_THREE) && actor.level > 35 && actor._playthroughRecordTotalAttackUsage >= 200 && actor._playthroughRecordCounterAttackUsage >= actor._playthroughRecordActiveAttackUsage * 3) {
 		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_COUNTERATTACK_THREE]);
-		if(!actor.hasEdict(EDICT_COUNTER_STANCE)) actor.learnSkill(EDICT_COUNTER_STANCE);
 	}
 	
 	//Blunt Titles
@@ -432,47 +473,47 @@ Game_Party.prototype.checkForNewTitle = function() {
 	if(!actor.hasThisTitle(TITLE_ID_KICK_TWO) && actor._playthroughRecordKickAttackUsage > 42 && actor.level > 15) {
 		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_KICK_TWO]);
 	}
-	if(!actor.hasThisTitle(TITLE_ID_KICK_THREE) && actor._playthroughRecordKickAttackUsage > 100 && actor.level > 35) {
+	if(!actor.hasThisTitle(TITLE_ID_KICK_THREE) && actor._playthroughRecordKickAttackUsage > 150 && actor.level > 35) {
 		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_KICK_THREE]);
 	}
 	
 	//Strength Titles
-	if(!actor.hasThisTitle(TITLE_ID_STRENGTH_ONE) && actor.level >= 15 && actor._paramLvl[PARAM_STRENGTH_ID] > actor._paramLvl[PARAM_DEXTERITY_ID] + 2 && actor._paramLvl[PARAM_STRENGTH_ID] > actor._paramLvl[PARAM_AGILITY_ID] + 2) {
+	if(!actor.hasThisTitle(TITLE_ID_STRENGTH_ONE) && actor.level > 15 && actor._paramLvl[PARAM_STRENGTH_ID] > actor._paramLvl[PARAM_DEXTERITY_ID] + 4 && actor._paramLvl[PARAM_STRENGTH_ID] > actor._paramLvl[PARAM_AGILITY_ID] + 4 && actor._paramLvl[PARAM_STRENGTH_ID] > actor._paramLvl[PARAM_ENDURANCE_ID] + 3 && actor._paramLvl[PARAM_STRENGTH_ID] > actor._paramLvl[PARAM_MIND_ID] + 3) {
 		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_STRENGTH_ONE]);
 	}
-	if(!actor.hasThisTitle(TITLE_ID_STRENGTH_TWO) && actor.level >= 35 && actor._paramLvl[PARAM_STRENGTH_ID] > actor._paramLvl[PARAM_DEXTERITY_ID] + 4 && actor._paramLvl[PARAM_STRENGTH_ID] > actor._paramLvl[PARAM_AGILITY_ID] + 4) {
+	if(!actor.hasThisTitle(TITLE_ID_STRENGTH_TWO) && actor.level > 35 && actor._paramLvl[PARAM_STRENGTH_ID] > actor._paramLvl[PARAM_DEXTERITY_ID] + 8 && actor._paramLvl[PARAM_STRENGTH_ID] > actor._paramLvl[PARAM_AGILITY_ID] + 8 && actor._paramLvl[PARAM_STRENGTH_ID] > actor._paramLvl[PARAM_ENDURANCE_ID] + 6 && actor._paramLvl[PARAM_STRENGTH_ID] > actor._paramLvl[PARAM_MIND_ID] + 6) {
 		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_STRENGTH_TWO]);
 	}
 	
 	//Dexterity Titles
-	if(!actor.hasThisTitle(TITLE_ID_DEXTERITY_ONE) && actor.level >= 15 && actor._paramLvl[PARAM_DEXTERITY_ID] > actor._paramLvl[PARAM_STRENGTH_ID] + 2 && actor._paramLvl[PARAM_DEXTERITY_ID] > actor._paramLvl[PARAM_AGILITY_ID] + 2) {
+	if(!actor.hasThisTitle(TITLE_ID_DEXTERITY_ONE) && actor.level > 15 && actor._paramLvl[PARAM_DEXTERITY_ID] > actor._paramLvl[PARAM_STRENGTH_ID] + 4 && actor._paramLvl[PARAM_DEXTERITY_ID] > actor._paramLvl[PARAM_AGILITY_ID] + 4 && actor._paramLvl[PARAM_DEXTERITY_ID] > actor._paramLvl[PARAM_ENDURANCE_ID] + 3 && actor._paramLvl[PARAM_DEXTERITY_ID] > actor._paramLvl[PARAM_MIND_ID] + 3) {
 		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_DEXTERITY_ONE]);
 	}
-	if(!actor.hasThisTitle(TITLE_ID_DEXTERITY_TWO) && actor.level >= 35 && actor._paramLvl[PARAM_DEXTERITY_ID] > actor._paramLvl[PARAM_STRENGTH_ID] + 4 && actor._paramLvl[PARAM_DEXTERITY_ID] > actor._paramLvl[PARAM_AGILITY_ID] + 4) {
+	if(!actor.hasThisTitle(TITLE_ID_DEXTERITY_TWO) && actor.level > 35 && actor._paramLvl[PARAM_DEXTERITY_ID] > actor._paramLvl[PARAM_STRENGTH_ID] + 8 && actor._paramLvl[PARAM_DEXTERITY_ID] > actor._paramLvl[PARAM_AGILITY_ID] + 8 && actor._paramLvl[PARAM_DEXTERITY_ID] > actor._paramLvl[PARAM_ENDURANCE_ID] + 6 && actor._paramLvl[PARAM_DEXTERITY_ID] > actor._paramLvl[PARAM_MIND_ID] + 6) {
 		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_DEXTERITY_TWO]);
 	}
 	
 	//Agility Titles
-	if(!actor.hasThisTitle(TITLE_ID_AGILITY_ONE) && actor.level >= 15 && actor._paramLvl[PARAM_AGILITY_ID] > actor._paramLvl[PARAM_DEXTERITY_ID] + 2 && actor._paramLvl[PARAM_AGILITY_ID] > actor._paramLvl[PARAM_STRENGTH_ID] + 2) {
+	if(!actor.hasThisTitle(TITLE_ID_AGILITY_ONE) && actor.level > 15 && actor._paramLvl[PARAM_AGILITY_ID] > actor._paramLvl[PARAM_DEXTERITY_ID] + 4 && actor._paramLvl[PARAM_AGILITY_ID] > actor._paramLvl[PARAM_STRENGTH_ID] + 4 && actor._paramLvl[PARAM_AGILITY_ID] > actor._paramLvl[PARAM_ENDURANCE_ID] + 3 && actor._paramLvl[PARAM_AGILITY_ID] > actor._paramLvl[PARAM_MIND_ID] + 3) {
 		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_AGILITY_ONE]);
 	}
-	if(!actor.hasThisTitle(TITLE_ID_AGILITY_TWO) && actor.level >= 35 && actor._paramLvl[PARAM_AGILITY_ID] > actor._paramLvl[PARAM_DEXTERITY_ID] + 4 && actor._paramLvl[PARAM_AGILITY_ID] > actor._paramLvl[PARAM_STRENGTH_ID] + 4) {
+	if(!actor.hasThisTitle(TITLE_ID_AGILITY_TWO) && actor.level > 35 && actor._paramLvl[PARAM_AGILITY_ID] > actor._paramLvl[PARAM_DEXTERITY_ID] + 8 && actor._paramLvl[PARAM_AGILITY_ID] > actor._paramLvl[PARAM_STRENGTH_ID] + 8 && actor._paramLvl[PARAM_AGILITY_ID] > actor._paramLvl[PARAM_ENDURANCE_ID] + 6 && actor._paramLvl[PARAM_AGILITY_ID] > actor._paramLvl[PARAM_MIND_ID] + 6) {
 		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_AGILITY_TWO]);
 	}
 	
 	//Endurance Titles
-	if(!actor.hasThisTitle(TITLE_ID_ENDURANCE_ONE) && actor.level >= 15 && actor._paramLvl[PARAM_ENDURANCE_ID] > actor._paramLvl[PARAM_DEXTERITY_ID] + 1 && actor._paramLvl[PARAM_ENDURANCE_ID] > actor._paramLvl[PARAM_STRENGTH_ID] + 1 && actor._paramLvl[PARAM_ENDURANCE_ID] > actor._paramLvl[PARAM_AGILITY_ID] + 1) {
+	if(!actor.hasThisTitle(TITLE_ID_ENDURANCE_ONE) && actor.level > 15 && actor._paramLvl[PARAM_ENDURANCE_ID] > actor._paramLvl[PARAM_DEXTERITY_ID] + 4 && actor._paramLvl[PARAM_ENDURANCE_ID] > actor._paramLvl[PARAM_STRENGTH_ID] + 4 && actor._paramLvl[PARAM_ENDURANCE_ID] > actor._paramLvl[PARAM_AGILITY_ID] + 4 && actor._paramLvl[PARAM_ENDURANCE_ID] > actor._paramLvl[PARAM_MIND_ID] + 4) {
 		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_ENDURANCE_ONE]);
 	}
-	if(!actor.hasThisTitle(TITLE_ID_ENDURANCE_TWO) && actor.level >= 35 && actor._paramLvl[PARAM_ENDURANCE_ID] > actor._paramLvl[PARAM_DEXTERITY_ID] + 2 && actor._paramLvl[PARAM_ENDURANCE_ID] > actor._paramLvl[PARAM_STRENGTH_ID] + 3 && actor._paramLvl[PARAM_ENDURANCE_ID] > actor._paramLvl[PARAM_AGILITY_ID] + 3) {
+	if(!actor.hasThisTitle(TITLE_ID_ENDURANCE_TWO) && actor.level > 35 && actor._paramLvl[PARAM_ENDURANCE_ID] > actor._paramLvl[PARAM_DEXTERITY_ID] + 8 && actor._paramLvl[PARAM_ENDURANCE_ID] > actor._paramLvl[PARAM_STRENGTH_ID] + 8 && actor._paramLvl[PARAM_ENDURANCE_ID] > actor._paramLvl[PARAM_AGILITY_ID] + 8 && actor._paramLvl[PARAM_ENDURANCE_ID] > actor._paramLvl[PARAM_MIND_ID] + 8) {
 		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_ENDURANCE_TWO]);
 	}
 	
 	//Mind Titles
-	if(!actor.hasThisTitle(TITLE_ID_MIND_ONE) &&  actor.level >= 15 && actor._paramLvl[PARAM_MIND_ID] > actor._paramLvl[PARAM_DEXTERITY_ID] + 1 && actor._paramLvl[PARAM_MIND_ID] > actor._paramLvl[PARAM_STRENGTH_ID] + 1 && actor._paramLvl[PARAM_MIND_ID] > actor._paramLvl[PARAM_AGILITY_ID] + 1) {
+	if(!actor.hasThisTitle(TITLE_ID_MIND_ONE) &&  actor.level > 15 && actor._paramLvl[PARAM_MIND_ID] > actor._paramLvl[PARAM_DEXTERITY_ID] + 3 && actor._paramLvl[PARAM_MIND_ID] > actor._paramLvl[PARAM_STRENGTH_ID] + 3 && actor._paramLvl[PARAM_MIND_ID] > actor._paramLvl[PARAM_AGILITY_ID] + 3 && actor._paramLvl[PARAM_MIND_ID] > actor._paramLvl[PARAM_ENDURANCE_ID] + 3) {
 		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_MIND_ONE]);
 	}
-	if(!actor.hasThisTitle(TITLE_ID_MIND_TWO) && actor.level >= 35 && actor._paramLvl[PARAM_MIND_ID] > actor._paramLvl[PARAM_DEXTERITY_ID] + 2 && actor._paramLvl[PARAM_MIND_ID] > actor._paramLvl[PARAM_STRENGTH_ID] + 2 && actor._paramLvl[PARAM_MIND_ID] > actor._paramLvl[PARAM_AGILITY_ID] + 2) {
+	if(!actor.hasThisTitle(TITLE_ID_MIND_TWO) && actor.level > 35 && actor._paramLvl[PARAM_MIND_ID] > actor._paramLvl[PARAM_DEXTERITY_ID] + 6 && actor._paramLvl[PARAM_MIND_ID] > actor._paramLvl[PARAM_STRENGTH_ID] + 6 && actor._paramLvl[PARAM_MIND_ID] > actor._paramLvl[PARAM_AGILITY_ID] + 6 && actor._paramLvl[PARAM_MIND_ID] > actor._paramLvl[PARAM_ENDURANCE_ID] + 6) {
 		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_MIND_TWO]);
 	}
 	
@@ -480,7 +521,7 @@ Game_Party.prototype.checkForNewTitle = function() {
 	if(!actor.hasThisTitle(TITLE_ID_SEXSKILL_ONE) && actor._playthroughRecordTotalSexSkillUsage + actor._playthroughRecordTotalAttackUsage > 50 && actor._playthroughRecordTotalSexSkillUsage > actor._playthroughRecordTotalAttackUsage + 10) {
 		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_SEXSKILL_ONE]);
 	}
-	if(!actor.hasThisTitle(TITLE_ID_SEXSKILL_TWO) && actor._playthroughRecordTotalSexSkillUsage + actor._playthroughRecordTotalAttackUsage > 150 && actor._playthroughRecordTotalSexSkillUsage > actor._playthroughRecordTotalAttackUsage * 2.5) {
+	if(!actor.hasThisTitle(TITLE_ID_SEXSKILL_TWO) && actor._playthroughRecordTotalSexSkillUsage + actor._playthroughRecordTotalAttackUsage > 150 && actor._playthroughRecordTotalSexSkillUsage > actor._playthroughRecordTotalAttackUsage * 3) {
 		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_SEXSKILL_TWO]);
 	}
 	
@@ -491,7 +532,7 @@ Game_Party.prototype.checkForNewTitle = function() {
 	if(!actor.hasThisTitle(TITLE_ID_SUPPRESS_RIOT_TWO) && actor._playthroughRecordLevelTotalRiotsSuppressedCount >= 15) {
 		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_SUPPRESS_RIOT_TWO]);
 	}
-	if(!actor.hasThisTitle(TITLE_ID_SUPPRESS_RIOT_THREE) && actor._playthroughRecordLevelTotalRiotsSuppressedCount >= 75) {
+	if(!actor.hasThisTitle(TITLE_ID_SUPPRESS_RIOT_THREE) && actor._playthroughRecordLevelTotalRiotsSuppressedCount >= 69) {
 		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_SUPPRESS_RIOT_THREE]);
 	}
 	
@@ -524,7 +565,7 @@ Game_Party.prototype.checkForNewTitle = function() {
 	if(!actor.hasThisTitle(TITLE_ID_BUSTY_BARMAID) && actor._playthroughRecordWaitressServingPettedCount >= 25) {
 		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_BUSTY_BARMAID]);
 	}
-	if(!actor.hasThisTitle(TITLE_ID_WAITRESS_ORGASM) && actor._playthroughRecordWaitressServingOrgasmCount >= 3) {
+	if(!actor.hasThisTitle(TITLE_ID_WAITRESS_ORGASM) && actor._playthroughRecordWaitressDroppedTrayCount >= 3) {
 		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_WAITRESS_ORGASM]);
 	}
 	if(!actor.hasThisTitle(TITLE_ID_CUM_GUZZLER) && actor._playthroughRecordWaitressBattleDrankSemenMugML >= 300) {
@@ -588,9 +629,106 @@ Game_Party.prototype.checkForNewTitle = function() {
 	
 	if(!actor.hasThisTitle(TITLE_ID_EVASION_THREE) && actor._playthroughRecordAttackEvadedCount >= 150 && actor._playthroughRecordAttackEvadedCount > actor._playthroughRecordFullHitTakenCount * 1.3 && actor.level > 35) {
 		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_EVASION_THREE]);
-		if(!actor.hasEdict(EDICT_CAUTIOUS_STANCE)) actor.learnSkill(EDICT_CAUTIOUS_STANCE);
+	}
+	
+	// Hero
+	if(!actor.hasThisTitle(TITLE_ID_ASPIRING_HERO) && actor.hasGift(GIFT_ID_EMPEROR_LV1_STRIP_RESIST) && actor.hasGift(GIFT_ID_EMPEROR_LV2_TALK_RESIST) && actor.hasGift(GIFT_ID_EMPEROR_LV3_SIGHT_RESIST) && actor.hasGift(GIFT_ID_EMPEROR_LV4_WILL_REGEN)) {
+		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_ASPIRING_HERO]);
+	}
+	
+	
+	//Artisan
+	if(!actor.hasThisTitle(TITLE_ID_GOURMET_FOODIE) && actor._playthroughRecordArtisanMealSMARTCount > 0 && actor._playthroughRecordArtisanMealCOMFYCount > 0 && actor._playthroughRecordArtisanMealHEARTCount > 0 && actor._playthroughRecordArtisanMealSLUTCount > 0 && actor._playthroughRecordArtisanMealPUSSYCount > 0 && actor._playthroughRecordArtisanMealHEROCount > 0 && actor._playthroughRecordArtisanMealARMEDCount > 0 && actor._playthroughRecordArtisanMealWARDENCount > 0 && actor._playthroughRecordArtisanMealBITCHCount > 0 && actor._playthroughRecordArtisanMealANALCount > 0) {
+		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_GOURMET_FOODIE]);
 	}
 
+	//Boss
+	if(!actor.hasThisTitle(TITLE_ID_LEVEL_ONE_BOSS) && $gameSwitches.value(SWITCH_WON_BOSS_BATTLE_LV1_ID)) {
+		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_LEVEL_ONE_BOSS]);
+	}
+	if(!actor.hasThisTitle(TITLE_ID_LEVEL_TWO_BOSS) && $gameSwitches.value(SWITCH_WON_BOSS_BATTLE_LV2_ID)) {
+		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_LEVEL_TWO_BOSS]);
+	}
+	if(!actor.hasThisTitle(TITLE_ID_LEVEL_THREE_BOSS) && $gameSwitches.value(SWITCH_WON_BOSS_BATTLE_LV3_ID)) {
+		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_LEVEL_THREE_BOSS]);
+	}
+	if(!actor.hasThisTitle(TITLE_ID_LEVEL_FOUR_BOSS) && $gameSwitches.value(SWITCH_WON_BOSS_BATTLE_LV4_ID)) {
+		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_LEVEL_FOUR_BOSS]);
+	}
+	if(!actor.hasThisTitle(TITLE_ID_LEVEL_FIVE_BOSS) && $gameSwitches.value(SWITCH_WON_BOSS_BATTLE_LV5_ID)) {
+		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_LEVEL_FIVE_BOSS]);
+	}
+	
+	//Sex Skills
+	if(!actor.hasThisTitle(TITLE_ID_SEX_SKILL_KISS_ONE) && actor._recordKissUsageCount > 0) {
+		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_SEX_SKILL_KISS_ONE]);
+	}
+	if(!actor.hasThisTitle(TITLE_ID_SEX_SKILL_KISS_TWO) && actor._playthroughRecordEjaculatedWithKarrynKissCount >= 5) {
+		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_SEX_SKILL_KISS_TWO]);
+	}
+	if(!actor.hasThisTitle(TITLE_ID_SEX_SKILL_COCKSTARE_ONE) && actor._recordCockStareUsageCount > 0) {
+		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_SEX_SKILL_COCKSTARE_ONE]);
+	}
+	if(!actor.hasThisTitle(TITLE_ID_SEX_SKILL_COCKSTARE_TWO) && actor._playthroughRecordCockStaredAtPeople >= 30) {
+		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_SEX_SKILL_COCKSTARE_TWO]);
+	}
+	if(!actor.hasThisTitle(TITLE_ID_SEX_SKILL_COCKPET_ONE) && actor._recordCockPetUsageCount > 0) {
+		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_SEX_SKILL_COCKPET_ONE]);
+	}
+	if(!actor.hasThisTitle(TITLE_ID_SEX_SKILL_COCKPET_TWO) && actor._playthroughRecordErectWithCockPetCount >= 30) {
+		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_SEX_SKILL_COCKPET_TWO]);
+	}
+	if(!actor.hasThisTitle(TITLE_ID_SEX_SKILL_HANDJOB_ONE) && actor._recordHandjobUsageCount > 0) {
+		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_SEX_SKILL_HANDJOB_ONE]);
+	}
+	if(!actor.hasThisTitle(TITLE_ID_SEX_SKILL_HANDJOB_TWO) && actor._playthroughRecordEjaculatedWithKarrynDoubleHandjobCount >= 10) {
+		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_SEX_SKILL_HANDJOB_TWO]);
+	}
+	if(!actor.hasThisTitle(TITLE_ID_SEX_SKILL_BLOWJOB_ONE) && actor._recordBlowjobUsageCount > 0) {
+		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_SEX_SKILL_BLOWJOB_ONE]);
+	}
+	if(!actor.hasThisTitle(TITLE_ID_SEX_SKILL_BLOWJOB_TWO) && actor._todayBlowjobUsagePeople >= 20) {
+		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_SEX_SKILL_BLOWJOB_TWO]);
+	}
+	if(!actor.hasThisTitle(TITLE_ID_SEX_SKILL_RIMJOB_ONE) && actor._recordRimjobUsageCount > 0) {
+		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_SEX_SKILL_RIMJOB_ONE]);
+	}
+	if(!actor.hasThisTitle(TITLE_ID_SEX_SKILL_RIMJOB_TWO) && actor._todayRimjobUsagePeople >= 5) {
+		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_SEX_SKILL_RIMJOB_TWO]);
+	}
+	if(!actor.hasThisTitle(TITLE_ID_SEX_SKILL_FOOTJOB_ONE) && actor._recordFootjobUsageCount > 0) {
+		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_SEX_SKILL_FOOTJOB_ONE]);
+	}
+	if(!actor.hasThisTitle(TITLE_ID_SEX_SKILL_FOOTJOB_TWO) && actor._playthroughRecordFootjobThugPeople > 0 && actor._playthroughRecordFootjobOrcPeople > 0 && actor._playthroughRecordFootjobThugPeople + actor._playthroughRecordFootjobOrcPeople >= 15) {
+		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_SEX_SKILL_FOOTJOB_TWO]);
+	}
+	if(!actor.hasThisTitle(TITLE_ID_SEX_SKILL_TITJOB_ONE) && actor._recordTittyFuckUsageCount > 0) {
+		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_SEX_SKILL_TITJOB_ONE]);
+	}
+	if(!actor.hasThisTitle(TITLE_ID_SEX_SKILL_TITJOB_TWO) && actor._playthroughRecordTittyFuckUsagePeople >= 50) {
+		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_SEX_SKILL_TITJOB_TWO]);
+	}
+	if(!actor.hasThisTitle(TITLE_ID_SEX_SKILL_PUSSYSEX_ONE) && actor._recordPussySexUsageCount > 0) {
+		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_SEX_SKILL_PUSSYSEX_ONE]);
+	}
+	if(!actor.hasThisTitle(TITLE_ID_SEX_SKILL_PUSSYSEX_TWO) && actor._todayPussySexUsagePartnersDifferentTotal >= 9) {
+		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_SEX_SKILL_PUSSYSEX_TWO]);
+	}
+	if(!actor.hasThisTitle(TITLE_ID_SEX_SKILL_ANALSEX_ONE) && actor._recordAnalSexUsageCount > 0) {
+		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_SEX_SKILL_ANALSEX_ONE]);
+	}
+	if(!actor.hasThisTitle(TITLE_ID_SEX_SKILL_ANALSEX_TWO) && actor._playthroughRecordAnalSexUsagePeopleSingleBattleMaxRecord >= 10) {
+		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_SEX_SKILL_ANALSEX_TWO]);
+	}
+	
+	if(!actor.hasThisTitle(TITLE_ID_METAL_SEX_ONE) && actor._playthroughRecordMetalSexualPartnersCount >= 5) {
+		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_METAL_SEX_ONE]);
+	}
+	
+	if(!actor.hasThisTitle(TITLE_ID_SEX_SKILL_LIGHT_KICK) && actor._playthroughRecordKickCounterAfterLightKickSingleDayMaxRecord >= 3) {
+		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_SEX_SKILL_LIGHT_KICK]);
+	}
+	
 	
 	///////////////
 	//New Title Text
@@ -625,6 +763,10 @@ Game_Actor.prototype.setupObtainedTitlesArray = function() {
 Game_Actor.prototype.setupTitleFlags = function() {
 	this._flagNeverUnequippedSecretaryTitle = true;
 	this._flagNeverUnequippedDisappointmentTitle = true;
+	this._flagNeverUnequippedExcellentLeaderTitle = true;
+	this._flagNeverUnequippedPrisonFighterTitle = true;
+	this._flagNeverUnequippedAspringHeroTitle = true;
+	this._flagNeverUnequippedFinalDestinationTitle = true;
 	this._flagEquippedBeautifulWardenTitleForWholeDay = false;
 	this._flagEquippedHellWardenOneTitleForWholeDay = false;
 	this._flagEquippedHellWardenTwoTitleForWholeDay = false;
@@ -640,6 +782,16 @@ Game_Actor.prototype.checkTitleFlagsAfterClosingEquipScreen = function() {
 		this._flagNeverUnequippedSecretaryTitle = false;
 	if(this._flagNeverUnequippedDisappointmentTitle && !this.isUsingThisTitle(TITLE_ID_DISAPPOINTMENT))
 		this._flagNeverUnequippedDisappointmentTitle = false;
+	if(this._flagNeverUnequippedExcellentLeaderTitle && !this.isUsingThisTitle(TITLE_ID_FULL_ORDER_TWO))
+		this._flagNeverUnequippedExcellentLeaderTitle = false;
+	if(this._flagNeverUnequippedPrisonFighterTitle && !this.isUsingThisTitle(TITLE_ID_KICK_ONE))
+		this._flagNeverUnequippedPrisonFighterTitle = false;
+	if(this._flagNeverUnequippedAspringHeroTitle && !this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO))
+		this._flagNeverUnequippedAspringHeroTitle = false;
+	if(this._flagNeverUnequippedFinalDestinationTitle && !this.isUsingThisTitle(TITLE_ID_FINAL_DESTINATION))
+		this._flagNeverUnequippedFinalDestinationTitle = false;
+	
+		
 	if(this._flagEquippedBeautifulWardenTitleForWholeDay && !this.isUsingThisTitle(TITLE_ID_BEAUTIFUL_WARDEN))
 		this._flagEquippedBeautifulWardenTitleForWholeDay = false;
 	if(this._flagEquippedHellWardenOneTitleForWholeDay && !this.isUsingThisTitle(TITLE_ID_HELL_WARDEN_ONE))
@@ -697,7 +849,7 @@ Game_Actor.prototype.checkTitleFlagsOnNewDay = function() {
 //////
 // Effects
 
-Game_Actor.prototype.titleParamBonus = function(paramId) {
+Game_Actor.prototype.titlesParamBonus = function(paramId) {
 	let bonus = 0;
 	
 	if(paramId === PARAM_CHARM_ID) {
@@ -709,6 +861,10 @@ Game_Actor.prototype.titleParamBonus = function(paramId) {
 		if(this.hasThisTitle(TITLE_ID_FIX_CLOTHES_TWO)) bonus += 2;
 		else if(this.hasThisTitle(TITLE_ID_FIX_CLOTHES_ONE)) bonus += 1;
 		if(this.hasThisTitle(TITLE_ID_FULL_ORDER_FOUR)) bonus += 1;
+		
+	}
+	else if(paramId === PARAM_MAXSTAMINA_ID) {
+		if(this.hasThisTitle(TITLE_ID_GOURMET_FOODIE)) bonus += 30;
 		
 	}
 	else if(paramId === PARAM_STRENGTH_ID) {
@@ -742,15 +898,10 @@ Game_Actor.prototype.titleParamBonus = function(paramId) {
 	return bonus;
 };
 
-Game_Actor.prototype.titleXParamPlus = function(id) {
+Game_Actor.prototype.titlesXParamPlus = function(id) {
 	let titleParam = 0;
 	
-	if(id === XPARAM_EVA_ID) {
-		if(this.isUsingThisTitle(TITLE_ID_ENCHANTING_WARDEN)) titleParam += 0.05;
-		else if(this.isUsingThisTitle(TITLE_ID_HARDCORE_SADIST)) titleParam -= 0.5;
-		else if(this.isUsingThisTitle(TITLE_ID_SOFTCORE_SADIST)) titleParam -= 0.33;
-	}
-	else if(id === XPARAM_GRAZE_ID) {
+	if(id === XPARAM_GRAZE_ID) {
 		if(this.isUsingThisTitle(TITLE_ID_DISAPPOINTMENT)) titleParam -= 0.08;
 	}
 	else if(id === XPARAM_CNT_ID) {
@@ -765,6 +916,27 @@ Game_Actor.prototype.titleXParamPlus = function(id) {
 	}
 
 	return titleParam;
+};
+
+Game_Actor.prototype.titlesXParamRate = function(id) {
+	let titleRate = 1;
+	
+	if(id === XPARAM_EVA_ID) {
+		if(this.isUsingThisTitle(TITLE_ID_ENCHANTING_WARDEN)) titleRate += 0.1;
+		else if(this.isUsingThisTitle(TITLE_ID_HARDCORE_SADIST)) titleRate -= 0.5;
+		else if(this.isUsingThisTitle(TITLE_ID_SOFTCORE_SADIST)) titleRate -= 0.33;
+		else if(this.isUsingThisTitle(TITLE_ID_SLEEPY_BEAUTY)) titleRate -= 0.5;
+	}
+	else if(id === XPARAM_CRIT_ID) {
+		if(this.isUsingThisTitle(TITLE_ID_FINAL_DESTINATION)) titleRate += 1;
+		else if(this.isUsingThisTitle(TITLE_ID_SEX_SKILL_COCKPET_ONE)) titleRate += 0.05;
+		else if(this.isUsingThisTitle(TITLE_ID_SEX_SKILL_COCKPET_TWO)) titleRate += 0.2;
+	}
+	else if(id === XPARAM_CRIT_EVA_ID) {
+		if(this.isUsingThisTitle(TITLE_ID_SEX_SKILL_COCKPET_ONE)) titleRate -= 0.15;
+	}
+	
+	return titleRate;
 };
 
 Game_Actor.prototype.titlesSParamPlus = function(id) {
@@ -786,8 +958,10 @@ Game_Actor.prototype.titlesSParamPlus = function(id) {
 	else if(id === SPARAM_WPDEF_ID) {
 		if(this.hasThisTitle(TITLE_ID_HARDCORE_MASOCHIST)) titleParam += 0.15;
 		else if(this.hasThisTitle(TITLE_ID_SOFTCORE_MASOCHIST)) titleParam += 0.05;
+		
 		if(this.isUsingThisTitle(TITLE_ID_HARDCORE_SADIST)) titleParam -= 0.5;
 		else if(this.isUsingThisTitle(TITLE_ID_SOFTCORE_SADIST)) titleParam -= 0.33;
+		else if(this.isUsingThisTitle(TITLE_ID_METAL_SEX_ONE)) titleParam += 0.15;
 	}	
 	else if(id === SPARAM_ASC_ID) {
 		if(this.hasThisTitle(TITLE_ID_SLASH_TWO)) titleParam -= 0.06;
@@ -797,7 +971,7 @@ Game_Actor.prototype.titlesSParamPlus = function(id) {
 		if(this.hasThisTitle(TITLE_ID_BLUNT_TWO)) titleParam -= 0.06;
 		else if(this.hasThisTitle(TITLE_ID_BLUNT_ONE)) titleParam -= 0.03;
 	}
-	else if(id === SPARAM_SSC_ID) {
+	else if(id === SPARAM_SSC_ID && DEBUG_MODE) {
 		if(this.hasThisTitle(TITLE_ID_SEXSKILL_TWO)) titleParam -= 0.09;
 		else if(this.hasThisTitle(TITLE_ID_SEXSKILL_ONE)) titleParam -= 0.03;
 	}
@@ -821,9 +995,6 @@ Game_Actor.prototype.titlesSParamRate = function(id) {
 	else if(id === SPARAM_WPDEF_ID) {
 		if(this.isUsingThisTitle(TITLE_ID_SEXSKILL_TWO)) titleRate -= 0.5;
 		else if(this.isUsingThisTitle(TITLE_ID_SEXSKILL_ONE)) titleRate -= 0.25;
-	}
-	else if(id === XPARAM_CRIT_ID) {
-		if(this.isUsingThisTitle(TITLE_ID_FINAL_DESTINATION)) titleRate += 1;
 	}
 	
 
@@ -853,7 +1024,9 @@ Game_Actor.prototype.titlesElementRate = function(elementId) {
 		else if(this.isUsingThisTitle(TITLE_ID_VISITOR_SWALLOWER)) elementRate += 0.3;
 		else if(this.isUsingThisTitle(TITLE_ID_SCANDELOUS_IDOL)) elementRate += 0.3;
 		else if(this.isUsingThisTitle(TITLE_ID_GLORIOUS_HOLES)) elementRate -= 0.15;
-		
+		else if(this.isUsingThisTitle(TITLE_ID_SEX_SKILL_COCKPET_ONE)) elementRate += 0.15;
+		else if(this.isUsingThisTitle(TITLE_ID_SEX_SKILL_HANDJOB_ONE)) elementRate += 0.15;
+		else if(this.isUsingThisTitle(TITLE_ID_SEX_SKILL_RIMJOB_ONE)) elementRate += 0.15;
 		
 	}
 	else if(elementId === ELEMENT_SIGHT_ID) {
@@ -869,6 +1042,8 @@ Game_Actor.prototype.titlesElementRate = function(elementId) {
 		else if(this.isUsingThisTitle(TITLE_ID_SCANDELOUS_IDOL)) elementRate += 0.3;
 		else if(this.isUsingThisTitle(TITLE_ID_WORLD_CLASS_RECEPTIONIST)) elementRate -= 0.2;
 		else if(this.isUsingThisTitle(TITLE_ID_TOILET_EAT_ORGASM)) elementRate += 0.2;
+		else if(this.isUsingThisTitle(TITLE_ID_SEX_SKILL_COCKSTARE_TWO)) elementRate -= 0.1;
+		else if(this.isUsingThisTitle(TITLE_ID_SEX_SKILL_FOOTJOB_ONE)) elementRate += 0.15;
 	}
 	else if(elementId === ELEMENT_STRIP_ID) {
 		if(this.isUsingThisTitle(TITLE_ID_FIX_CLOTHES_TWO)) elementRate -= 0.4;
@@ -880,25 +1055,31 @@ Game_Actor.prototype.titlesElementRate = function(elementId) {
 		else if(this.isUsingThisTitle(TITLE_ID_HARDWORKING_WAITRESS)) elementRate += 0.3;
 		else if(this.isUsingThisTitle(TITLE_ID_EXPERIENCED_WAITRESS)) elementRate -= 0.15;
 		else if(this.isUsingThisTitle(TITLE_ID_TOILET_QUEUE)) elementRate += 0.3;
-		else if(this.isUsingThisTitle(TITLE_ID_EVASION_THREE)) elementRate += 0.15;
+		else if(this.isUsingThisTitle(TITLE_ID_EVASION_THREE)) elementRate -= 0.15;
+		else if(this.isUsingThisTitle(TITLE_ID_SEX_SKILL_KISS_TWO)) elementRate -= 0.1;
+		else if(this.isUsingThisTitle(TITLE_ID_SEX_SKILL_HANDJOB_ONE)) elementRate += 0.2;
 	}
 	else if(elementId === ELEMENT_PETTING_ID) {
 		if(this.isUsingThisTitle(TITLE_ID_VISITOR_FIRST_KISS)) elementRate += 0.2;
 		else if(this.isUsingThisTitle(TITLE_ID_BUSTY_BARMAID)) elementRate += 0.15;
 		else if(this.isUsingThisTitle(TITLE_ID_GOLDEN_WAITRESS)) elementRate -= 0.15;
 		else if(this.isUsingThisTitle(TITLE_ID_PUSSY_PETTER)) elementRate += 0.25;
+		else if(this.isUsingThisTitle(TITLE_ID_SEX_SKILL_KISS_ONE)) elementRate += 0.15;
+		else if(this.isUsingThisTitle(TITLE_ID_SEX_SKILL_TITJOB_ONE)) elementRate += 0.15;
+		else if(this.isUsingThisTitle(TITLE_ID_SEX_SKILL_ANALSEX_ONE)) elementRate += 0.15;
 	}
 	else if(elementId === ELEMENT_SEX_ID) {
 		if(this.isUsingThisTitle(TITLE_ID_CUM_GUZZLER)) elementRate += 0.25;
 		else if(this.isUsingThisTitle(TITLE_ID_GLORIOUS_HOLES)) elementRate -= 0.1;
-		
+		else if(this.isUsingThisTitle(TITLE_ID_SEX_SKILL_COCKSTARE_ONE)) elementRate += 0.15;
+		else if(this.isUsingThisTitle(TITLE_ID_SEX_SKILL_ANALSEX_TWO)) elementRate -= 0.1;
 	}
 	
 	return elementRate;
 };
 
 Game_Actor.prototype.titlesUnarmedAttack = function() {
-	let unarmedAttack = 1;
+	let unarmedAttack = 0;
 
 	if(this.hasThisTitle(TITLE_ID_KICK_THREE)) unarmedAttack += 0.25;
 	else if(this.hasThisTitle(TITLE_ID_KICK_TWO)) unarmedAttack += 0.15;
@@ -906,11 +1087,13 @@ Game_Actor.prototype.titlesUnarmedAttack = function() {
 	if(this.hasThisTitle(TITLE_ID_KICK_REWARD_TWO)) unarmedAttack += 0.25;
 	else if(this.hasThisTitle(TITLE_ID_KICK_REWARD_ONE)) unarmedAttack += 0.1;
 	
+	if(this.isUsingThisTitle(TITLE_ID_SEX_SKILL_LIGHT_KICK)) unarmedAttack -= 1.51;
+	
 	return unarmedAttack;
 };
 
 Game_Actor.prototype.titlesUnarmedDefense = function() {
-	let unarmedDefense = 1;
+	let unarmedDefense = 0;
 
 	if(this.hasThisTitle(TITLE_ID_KICK_THREE)) unarmedDefense += 0.25;
 	else if(this.hasThisTitle(TITLE_ID_KICK_TWO)) unarmedDefense += 0.15;
@@ -918,15 +1101,102 @@ Game_Actor.prototype.titlesUnarmedDefense = function() {
 	if(this.hasThisTitle(TITLE_ID_KICK_REWARD_TWO)) unarmedDefense += 0.25;
 	else if(this.hasThisTitle(TITLE_ID_KICK_REWARD_ONE)) unarmedDefense += 0.1;
 	
+	if(this.isUsingThisTitle(TITLE_ID_SEX_SKILL_LIGHT_KICK)) unarmedDefense += 0.25;
+	
 	return unarmedDefense;
 };
 
+Game_Actor.prototype.titlesPassiveRequirementRate = function(skillId) {
+	let rate = 1;
+	
+	if(skillId === PASSIVE_KISS_PEOPLE_ONE_ID || skillId === PASSIVE_KISS_PEOPLE_TWO_ID) {
+		if(this.titleHasBeenEquippedOnceBefore(TITLE_ID_SEX_SKILL_KISS_TWO)) rate *= 0.6;
+		if(this.titleHasBeenEquippedOnceBefore(TITLE_ID_SEX_SKILL_KISS_ONE)) rate *= 0.6;
+	}
+	else if(skillId === PASSIVE_KARRYN_STARE_COCK_ONE_ID) {
+		if(this.titleHasBeenEquippedOnceBefore(TITLE_ID_SEX_SKILL_COCKSTARE_TWO)) rate *= 0.6;
+		if(this.titleHasBeenEquippedOnceBefore(TITLE_ID_SEX_SKILL_COCKSTARE_ONE)) rate *= 0.6;
+	}
+	else if(skillId === PASSIVE_HJ_COUNT_THREE_ID) {
+		if(this.titleHasBeenEquippedOnceBefore(TITLE_ID_SEX_SKILL_COCKPET_TWO)) rate *= 0.6;
+		if(this.titleHasBeenEquippedOnceBefore(TITLE_ID_SEX_SKILL_COCKPET_ONE)) rate *= 0.6;
+	}
+	else if(skillId === PASSIVE_HJ_COUNT_ONE_ID || skillId === PASSIVE_HJ_COUNT_TWO_ID) {
+		if(this.titleHasBeenEquippedOnceBefore(TITLE_ID_SEX_SKILL_HANDJOB_TWO)) rate *= 0.6;
+		if(this.titleHasBeenEquippedOnceBefore(TITLE_ID_SEX_SKILL_HANDJOB_ONE)) rate *= 0.6;
+		
+		if(this.titleHasBeenEquippedOnceBefore(TITLE_ID_SEX_SKILL_COCKPET_TWO)) rate *= 0.85;
+		if(this.titleHasBeenEquippedOnceBefore(TITLE_ID_SEX_SKILL_COCKPET_ONE)) rate *= 0.85;
+	}
+	else if(skillId === PASSIVE_BJ_COUNT_ONE_ID || skillId === PASSIVE_BJ_COUNT_TWO_ID) {
+		if(this.titleHasBeenEquippedOnceBefore(TITLE_ID_SEX_SKILL_BLOWJOB_TWO)) rate *= 0.6;
+		if(this.titleHasBeenEquippedOnceBefore(TITLE_ID_SEX_SKILL_BLOWJOB_ONE)) rate *= 0.6;
+	}
+	else if(skillId === PASSIVE_RIMJOB_COUNT_ONE_ID || skillId === PASSIVE_RIMJOB_COUNT_TWO_ID) {
+		if(this.titleHasBeenEquippedOnceBefore(TITLE_ID_SEX_SKILL_RIMJOB_TWO)) rate *= 0.6;
+		if(this.titleHasBeenEquippedOnceBefore(TITLE_ID_SEX_SKILL_RIMJOB_ONE)) rate *= 0.6;
+	}
+	else if(skillId === PASSIVE_FOOTJOB_COUNT_ONE_ID || skillId === PASSIVE_FOOTJOB_COUNT_TWO_ID) {
+		if(this.titleHasBeenEquippedOnceBefore(TITLE_ID_SEX_SKILL_FOOTJOB_TWO)) rate *= 0.6;
+		if(this.titleHasBeenEquippedOnceBefore(TITLE_ID_SEX_SKILL_FOOTJOB_ONE)) rate *= 0.6;
+	}
+	else if(skillId === PASSIVE_TITTYFUCK_COUNT_ONE_ID || skillId === PASSIVE_TITTYFUCK_COUNT_TWO_ID) {
+		if(this.titleHasBeenEquippedOnceBefore(TITLE_ID_SEX_SKILL_TITJOB_TWO)) rate *= 0.6;
+		if(this.titleHasBeenEquippedOnceBefore(TITLE_ID_SEX_SKILL_TITJOB_ONE)) rate *= 0.6;
+	}
+	else if(skillId === PASSIVE_PUSSY_SEX_COUNT_ONE_ID || skillId === PASSIVE_PUSSY_SEX_COUNT_TWO_ID) {
+		if(this.titleHasBeenEquippedOnceBefore(TITLE_ID_SEX_SKILL_PUSSYSEX_TWO)) rate *= 0.6;
+		if(this.titleHasBeenEquippedOnceBefore(TITLE_ID_SEX_SKILL_PUSSYSEX_ONE)) rate *= 0.6;
+	}
+	else if(skillId === PASSIVE_ANAL_SEX_COUNT_ONE_ID || skillId === PASSIVE_ANAL_SEX_COUNT_TWO_ID) {
+		if(this.titleHasBeenEquippedOnceBefore(TITLE_ID_SEX_SKILL_ANALSEX_TWO)) rate *= 0.6;
+		if(this.titleHasBeenEquippedOnceBefore(TITLE_ID_SEX_SKILL_ANALSEX_ONE)) rate *= 0.6;
+	}
+	else if(skillId === PASSIVE_KICK_COUNTER_SEX_COUNT_TWO_ID) {
+		if(this.titleHasBeenEquippedOnceBefore(TITLE_ID_SEX_SKILL_LIGHT_KICK)) rate *= 0.6;
+	}
+	
+	
+	return rate;
+};
 
-
-Game_Actor.prototype.titlesEdictCostRate = function() {
+Game_Actor.prototype.titlesEdictCostRate = function(skillId) {
 	let rate = 1;
 	
 	if(this.hasThisTitle(TITLE_ID_CC_COST_SAVING_SUPERVISOR)) rate *= 0.87;
+	
+	if(skillId) {
+		if(skillId === EDICT_COUNTER_STANCE) {
+			if(this.hasThisTitle(TITLE_ID_COUNTERATTACK_THREE)) rate *= 0.5;
+		}
+		else if(skillId === EDICT_SLASH_TRAINING_TWO) {
+			if(this.hasThisTitle(TITLE_ID_SLASH_THREE)) rate *= 0.5;
+		}
+		else if(skillId === EDICT_THRUST_TRAINING_TWO) {
+			if(this.hasThisTitle(TITLE_ID_PIERCE_THREE)) rate *= 0.5;
+		}
+		else if(skillId === EDICT_STRIKE_TRAINING_TWO) {
+			if(this.hasThisTitle(TITLE_ID_BLUNT_THREE)) rate *= 0.5;
+		}
+		else if(skillId === EDICT_SLAM_TRAINING_ONE) {
+			if(this.hasThisTitle(TITLE_ID_STRENGTH_THREE)) rate *= 0.5;
+		}
+		else if(skillId === EDICT_CLEAVE_TRAINING_ONE) {
+			if(this.hasThisTitle(TITLE_ID_DEXTERITY_THREE)) rate *= 0.5;
+		}
+		else if(skillId === EDICT_SKEWER_TRAINING_ONE) {
+			if(this.hasThisTitle(TITLE_ID_AGILITY_THREE)) rate *= 0.5;
+		}
+		else if(skillId === EDICT_DEFENSIVE_STANCE) {
+			if(this.hasThisTitle(TITLE_ID_ENDURANCE_THREE)) rate *= 0.5;
+		}
+		else if(skillId === EDICT_HEALING_THOUGHTS_ONE) {
+			if(this.hasThisTitle(TITLE_ID_MIND_THREE)) rate *= 0.5;
+		}
+		else if(skillId === EDICT_CAUTIOUS_STANCE) {
+			if(this.hasThisTitle(TITLE_ID_EVASION_THREE)) rate *= 0.5;
+		}
+	}
 	
 	return rate;
 };
@@ -1000,17 +1270,14 @@ Game_Actor.prototype.titlesOrderChange = function() {
 Game_Actor.prototype.titleInmateAngerEffect = function(enemy) {
 	let effect = 0;
 	
-	if(this.hasThisTitle(TITLE_ID_ALLURING_WARDEN)) {
-		effect -= 10;
-	}
+	if(this.hasThisTitle(TITLE_ID_ALLURING_WARDEN) && this.titleHasBeenEquippedOnceBefore(TITLE_ID_ALLURING_WARDEN)) effect -= 10;
 	if(this.isUsingThisTitle(TITLE_ID_SLEEPY_BEAUTY)) effect -= 20;
-	else if(this.isUsingThisTitle(TITLE_ID_ALLURING_WARDEN)) effect -= 40;
+	else if(this.isUsingThisTitle(TITLE_ID_ALLURING_WARDEN)) effect -= 50;
 	else if(this.isUsingThisTitle(TITLE_ID_KICK_TWO)) effect += 30;
 	else if(this.isUsingThisTitle(TITLE_ID_KICK_THREE)) effect += 60;
 	
-	if(this.isUsingThisTitle(TITLE_ID_VISITOR_GOBLIN_CREAMPIE) && enemy.isGoblinType) {
-		effect -= 30;
-	}
+	if(this.isUsingThisTitle(TITLE_ID_VISITOR_GOBLIN_CREAMPIE) && enemy.isGoblinType) effect -= 30;
+	
 	
 	return effect;
 };
@@ -1071,10 +1338,9 @@ Game_Actor.prototype.titleEnemyEjaculationVolume = function(enemy) {
 Game_Actor.prototype.titlesSubsidies_Flat = function() {
 	let value = 0;
 	
-	if(this.hasThisTitle(TITLE_ID_FULL_ORDER_TWO)) value += 25;
-	
 	if(this.hasThisTitle(TITLE_ID_REDEEMED_TWO)) value += 25;
-	
+	if(this.hasThisTitle(TITLE_ID_LEVEL_THREE_BOSS)) value += 30;
+	else if(this.hasThisTitle(TITLE_ID_LEVEL_ONE_BOSS)) value += 15;
 	if(this.hasThisTitle(TITLE_ID_PUSSY_PETTER)) value += 10;
 	
 	if(this.hasThisTitle(TITLE_ID_CC_SKILLED_MANAGER)) value += 50;
@@ -1186,7 +1452,7 @@ Game_Actor.prototype.titleStunningWarden_stunChance = function() {
 	let chance = 0;
 	if(this.hasThisTitle(TITLE_ID_STUNNING_WARDEN)) {
 		chance += 0.1;
-		if(this.isUsingThisTitle(TITLE_ID_STUNNING_WARDEN)) chance += 0.15;
+		if(this.isUsingThisTitle(TITLE_ID_STUNNING_WARDEN)) chance += 0.4;
 	}
 	return chance;
 };
@@ -1197,4 +1463,27 @@ Game_Actor.prototype.titleEfficientAdminstrator_carryoverUnusedEdictPoint = func
 };
 
 
+///////
+// Game Enemy
+/////////
 
+Game_Enemy.prototype.enemyTitlesSParamRate = function(id) {
+	let rate = 1;
+	
+	if(id === SPARAM_WPATK_ID || id === SPARAM_WPDEF_ID) {
+		if(Karryn.isUsingThisTitle(TITLE_ID_LEVEL_ONE_BOSS) && this.isOrcType) {
+			rate *= 0.95;
+		}
+		else if(Karryn.isUsingThisTitle(TITLE_ID_LEVEL_TWO_BOSS) && this.isMonstrousType) {
+			rate *= 0.95;
+		}
+		else if(Karryn.isUsingThisTitle(TITLE_ID_LEVEL_THREE_BOSS) && (this.hasElitePrefix() || this.hasGoodPrefix())) {
+			rate *= 0.95;
+		}
+		else if(Karryn.isUsingThisTitle(TITLE_ID_LEVEL_FOUR_BOSS) && this.hasBigPrefix()) {
+			rate *= 0.95;
+		}
+	}
+	
+	return rate;
+};

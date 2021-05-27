@@ -501,7 +501,7 @@ Window_BattleLog.prototype.clear = function() {
     this._baseLineStack = [];
     if (MPPlugin.LogType === 0) {
         //this._clearDuration = MPPlugin.ViewDuration;
-		this._clearDuration = $gameTemp.getBattleLogDuration();
+		this._clearDuration = Math.min(1000, $gameTemp.getBattleLogDuration() * 5);
 	}
 };
 Window_BattleLog.prototype.clear_mppSBL = function() {
@@ -619,6 +619,7 @@ Window_BattleLog.prototype.endAction = function(subject) {
 };
 
 //345
+/*
 Alias.WiBaLo_displayAction = Window_BattleLog.prototype.displayAction;
 Window_BattleLog.prototype.displayAction = function(subject, item) {
     if (MPPlugin.ItemNameOnly) {
@@ -628,6 +629,7 @@ Window_BattleLog.prototype.displayAction = function(subject, item) {
     }
     Alias.WiBaLo_displayAction.apply(this, arguments);
 };
+*/
 
 Window_BattleLog.prototype.drawItem = function(index) {
     var rect = this.itemRectForText(index);

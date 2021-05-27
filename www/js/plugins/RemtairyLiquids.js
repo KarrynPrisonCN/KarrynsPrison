@@ -1,7 +1,9 @@
 ﻿var Remtairy = Remtairy || {};
 Remtairy.Liquids = Remtairy.Liquids || {};
 
-const LIQUID_PUSSY_WET_REQ = 25;
+const LIQUID_PUSSY_WET_STAGE_ONE = 25;
+const LIQUID_PUSSY_WET_STAGE_TWO = 80;
+const LIQUID_PUSSY_WET_STAGE_THREE = 200;
 
 //=============================================================================
  /*:
@@ -25,13 +27,13 @@ Game_Actor.prototype.getTachieWetId = function() {
 	if(maxId == 0) return false;
 	let liquid = this._liquidPussyJuice;
 	let id = 0;
-	if(liquid >= 200) {
+	if(liquid >= LIQUID_PUSSY_WET_STAGE_THREE) {
 		id = 3;
 	}
-	else if(liquid >= 80) {
+	else if(liquid >= LIQUID_PUSSY_WET_STAGE_TWO) {
 		id = 2;
 	}
-	else if(liquid >= LIQUID_PUSSY_WET_REQ) {
+	else if(liquid >= LIQUID_PUSSY_WET_STAGE_ONE) {
 		id = 1;
 	}
 	else return false;
@@ -46,13 +48,13 @@ Game_Actor.prototype.getTachieWetPantiesId = function() {
 	if(maxId == 0) return false;
 	let liquid = this._liquidPussyJuice;
 	var id = 0;
-	if(liquid >= 200) {
+	if(liquid >= LIQUID_PUSSY_WET_STAGE_THREE) {
 		id = 3;
 	}
-	else if(liquid >= 80) {
+	else if(liquid >= LIQUID_PUSSY_WET_STAGE_TWO) {
 		id = 2;
 	}
-	else if(liquid >= LIQUID_PUSSY_WET_REQ) {
+	else if(liquid >= LIQUID_PUSSY_WET_STAGE_ONE) {
 		id = 1;
 	}
 	else return false;
@@ -305,6 +307,43 @@ Game_Actor.prototype.getTachieSemenButtBottomLeftId = function() {
 	return id;
 };
 
+Game_Actor.prototype.getTachieSemenButtLeftId = function() {
+	let maxId = this._maxTachieSemenButtLeftId;
+	if(maxId == 0) return false;
+	let liquid = this._liquidBukkakeButtLeft;
+	if(liquid >= 90) {
+		id = 3;
+	}
+	else if(liquid >= 45) {
+		id = 2;
+	}
+	else if(liquid >= 1) {
+		id = 1;
+	}
+	else return false;
+	
+	id = Math.min(id, maxId);
+	return id;
+};
+Game_Actor.prototype.getTachieSemenButtRightId = function() {
+	let maxId = this._maxTachieSemenButtRightId;
+	if(maxId == 0) return false;
+	let liquid = this._liquidBukkakeButtRight;
+	if(liquid >= 90) {
+		id = 3;
+	}
+	else if(liquid >= 45) {
+		id = 2;
+	}
+	else if(liquid >= 1) {
+		id = 1;
+	}
+	else return false;
+	
+	id = Math.min(id, maxId);
+	return id;
+};
+
 Game_Actor.prototype.getTachieSemenBackId = function() {
 	let maxId = this._maxTachieSemenBackId;
 	if(maxId == 0) return false;
@@ -369,13 +408,13 @@ Game_Actor.prototype.getTachieWetToiletSeatId = function() {
 	if(maxId == 0) return false;
 	let liquid = this._liquidJuiceOnToiletSeat;
 	let id = 0;
-	if(liquid >= 200) {
+	if(liquid >= LIQUID_PUSSY_WET_STAGE_THREE) {
 		id = 3;
 	}
-	else if(liquid >= 80) {
+	else if(liquid >= LIQUID_PUSSY_WET_STAGE_TWO) {
 		id = 2;
 	}
-	else if(liquid >= LIQUID_PUSSY_WET_REQ) {
+	else if(liquid >= LIQUID_PUSSY_WET_STAGE_ONE) {
 		id = 1;
 	}
 	else return false;
@@ -938,6 +977,8 @@ Game_Actor.prototype.setMaxTachieSemenButtTopRightId = function(value) { this._m
 Game_Actor.prototype.setMaxTachieSemenButtBottomRightId = function(value) { this._maxTachieSemenButtBottomRightId = value; }; 
 Game_Actor.prototype.setMaxTachieSemenButtTopLeftId = function(value) { this._maxTachieSemenButtTopLeftId = value; }; 
 Game_Actor.prototype.setMaxTachieSemenButtBottomLeftId = function(value) { this._maxTachieSemenButtBottomLeftId = value; }; 
+Game_Actor.prototype.setMaxTachieSemenButtRightId = function(value) { this._maxTachieSemenButtRightId = value; }; 
+Game_Actor.prototype.setMaxTachieSemenButtLeftId = function(value) { this._maxTachieSemenButtLeftId = value; }; 
 Game_Actor.prototype.setMaxTachieSemenAnalId = function(value) { this._maxTachieSemenAnalId = value; }; 
 Game_Actor.prototype.setMaxTachieSemenCrotchId = function(value) { this._maxTachieSemenCrotchId = value; }; 
 Game_Actor.prototype.setMaxTachieSemenCrotchPantiesId = function(value) { this._maxTachieSemenCrotchPantiesId = value; }; 
@@ -1175,6 +1216,8 @@ Game_Actor.prototype.cleanUpLiquids = function() {
 	this._liquidBukkakeButtTopLeft = 0;
 	this._liquidBukkakeButtBottomRight = 0;
 	this._liquidBukkakeButtBottomLeft = 0;
+	this._liquidBukkakeButtRight = 0;
+	this._liquidBukkakeButtLeft = 0;
 	this._liquidBukkakeLeftArm = 0;
 	this._liquidBukkakeRightArm = 0;
 	this._liquidBukkakeLeftLeg = 0;
@@ -1252,6 +1295,15 @@ Game_Actor.prototype.increaseLiquidBukkakeButtBottomLeft = function(semen) {
 	this._liquidBukkakeButtBottomLeft += semen;
 	//this.setCacheChanged();
 }; 
+Game_Actor.prototype.increaseLiquidBukkakeButtRight = function(semen) {
+	this._liquidBukkakeButtRight += semen;
+	//this.setCacheChanged();
+}; 
+Game_Actor.prototype.increaseLiquidBukkakeButtLeft = function(semen) {
+	this._liquidBukkakeButtLeft += semen;
+	//this.setCacheChanged();
+}; 
+
 Game_Actor.prototype.increaseLiquidBukkakeRightArm = function(semen) {
 	this._liquidBukkakeRightArm += semen;
 	//this.setCacheChanged();
@@ -1311,6 +1363,10 @@ Game_Actor.prototype.getCurrentBukkakeTotal = function() {
 	if(this.isInDefeatedLevel2Pose()) {
 		total += this._liquidBukkakeButtTopRight + this._liquidBukkakeButtTopLeft + this._liquidBukkakeButtBottomRight + this._liquidBukkakeButtBottomLeft;
 	}
+	else if(this.isInDefeatedLevel4Pose()) {
+		total += this._liquidBukkakeButtRight + this._liquidBukkakeButtLeft;
+	}
+	
 	
 	return total;
 }; 

@@ -277,6 +277,11 @@ Game_Actor.prototype.showEval_fallenRest = function() {
 Game_Actor.prototype.customReq_fallenRest = function() {
 	return this.hasPassive(PASSIVE_FALLEN_COUNT_TWO_ID) && this.isInDownFallDownPose();
 };
+Game_Actor.prototype.cooldownEval_fallenRest = function() {
+	let baseCD = 3;
+	if(this.hasPassive(PASSIVE_FALLEN_COUNT_THREE_ID)) baseCD -= 1;
+	return baseCD;
+};
 Game_Actor.prototype.dmgFormula_fallenRest = function() {
 	let percent = Math.max(0.2, this.hrg * 2);
 	let dmg = this.maxstamina * percent;
@@ -316,6 +321,7 @@ Game_Actor.prototype.customExecution_karrynTaunt = function() {
 	
 	if(this.hasPassive(PASSIVE_TAUNT_COUNT_THREE_ID) && this.hasHalberd()) {
 		this.addDisarmedState(false);
+		this.setStateTurns(STATE_DISARMED_ID, 1);
 	}
 };
 Game_Actor.prototype.afterEval_karrynTaunt = function(target) {
@@ -327,7 +333,7 @@ Game_Actor.prototype.afterEval_karrynTaunt = function(target) {
 		this.addCockinessFromTaunting();
 
 		let angerChance = 0.5;
-		angerChance -= target.masochismLvl() * 0.15;
+		angerChance -= target.masochismLvl() * 0.1;
 		angerChance += target.sadismLvl() * 0.15;
 		if(target.level > this.level) {
 			angerChance += (target.level - this.level) * 0.05;
@@ -454,7 +460,6 @@ Game_Actor.prototype.dmgFormula_karrynDogeza = function(target) {
 		}
 	}
 	
-	//todo: cutin
 	
 	this.addToActorDogezaCountRecord();
 	return 0;
@@ -501,9 +506,14 @@ Game_Actor.prototype.afterEval_cautiousStance = function() {
 	
 };
 
-Game_Actor.prototype.cautiousStanceXParamRate = function() {
-	if(!this.isInCombatPose()) return 1;
-	let rate = 1.33;
+Game_Actor.prototype.cautiousStanceXParamRate = function(id) {
+	let rate = 1;
+	
+	if(id === XPARAM_EVA_ID || id === XPARAM_CRIT_EVA_ID) {
+		if(this.isStateAffected(STATE_CAUTIOUS_STANCE_ID) && this.isInCombatPose())
+			rate *= 1.33;
+	}
+
 	return rate;
 };
 
@@ -537,18 +547,26 @@ Game_Actor.prototype.afterEval_defStance = function() {
 	this.gainEnergyExp(10, $gameTroop.getAverageEnemyExperienceLvl());
 };
 
-Game_Actor.prototype.defStanceXParamPlus = function() {
-	if(!this.isInCombatPose()) return 0;
+Game_Actor.prototype.defStanceXParamPlus = function(id) {
 	let value = 0;
-	if(this.hasEdict(EDICT_DEFENSIVE_STANCE_UPGRADE_I))
-		value += 0.03;
+	
+	if(id === XPARAM_STA_REGEN_ID) {
+		if(this.isInCombatPose() && this.isStateAffected(STATE_GUARD_ID) && this.hasEdict(EDICT_DEFENSIVE_STANCE_UPGRADE_I)) 
+			value += 0.03;
+	}
+	
 	return value;
 };
 
-Game_Actor.prototype.defStanceSParamRate = function() {
-	if(!this.isInCombatPose()) return 1;
-	let rate = 2.5;
-	if(this.hasEdict(EDICT_DEFENSIVE_STANCE_UPGRADE_I)) rate += 1;
+Game_Actor.prototype.defStanceSParamRate = function(id) {
+	let rate = 1;
+	
+	if(id === SPARAM_WPDEF_ID) {
+		if(this.isInCombatPose() && this.isStateAffected(STATE_GUARD_ID)) {
+			if(this.hasEdict(EDICT_DEFENSIVE_STANCE_UPGRADE_I)) rate *= 3.5;
+			else rate *= 2.5;
+		}
+	}
 
 	return rate;
 };
@@ -583,17 +601,30 @@ Game_Actor.prototype.afterEval_counterStance = function() {
 	this.gainEnergyExp(20, $gameTroop.getAverageEnemyExperienceLvl());
 };
 
-Game_Actor.prototype.counterStanceXParamPlus = function() {
-	if(!this.isInCombatPose()) return 0;
-	let value = 0.4;
-	if(this.isUsingThisTitle(TITLE_ID_COUNTERATTACK_TWO))
-		value += 0.25;
+Game_Actor.prototype.counterStanceXParamPlus = function(id) {
+	let value = 0;
+	
+	if(id === XPARAM_CNT_ID) {
+		if(this.isStateAffected(STATE_COUNTER_STANCE_ID) && this.isInCombatPose()) {
+			value += 0.4;
+			
+			if(this.isUsingThisTitle(TITLE_ID_COUNTERATTACK_TWO))
+				value += 0.25;
+		}
+	}
+
 	return value;
 };
 
-Game_Actor.prototype.counterStanceSParamRate = function() {
-	if(!this.isInCombatPose() || !this.hasEdict(EDICT_COUNTER_STANCE_UPGRADE_I)) return 1;
-	return 1.4;
+Game_Actor.prototype.counterStanceSParamRate = function(id) {
+	let rate = 1;
+	
+	if(id === SPARAM_WPATK_ID) {
+		if(this.isStateAffected(STATE_COUNTER_STANCE_ID) && this.isInCombatPose() && this.hasEdict(EDICT_COUNTER_STANCE_UPGRADE_I))
+			rate *= 1.4;
+	}
+	
+	return rate;
 };
 
 

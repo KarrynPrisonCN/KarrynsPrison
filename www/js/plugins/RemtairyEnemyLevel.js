@@ -26,13 +26,17 @@ const ENEMY_LVL_PRISON_LEVEL_THREE_PLUS_TWO = 4;
 const ENEMY_LVL_PRISON_LEVEL_THREE_PLUS_THREE = 6;
 const ENEMY_LVL_PRISON_LEVEL_THREE_PLUS_FOUR = 9;
 
-const ENEMY_LVL_PRISON_LEVEL_FOUR_EASY = 22;
-const ENEMY_LVL_PRISON_LEVEL_FOUR_NORMAL = 22;
-const ENEMY_LVL_PRISON_LEVEL_FOUR_HARD = 22;
+const ENEMY_LVL_PRISON_LEVEL_FOUR_EASY = 21;
+const ENEMY_LVL_PRISON_LEVEL_FOUR_NORMAL = 24;
+const ENEMY_LVL_PRISON_LEVEL_FOUR_HARD = 27;
+const ENEMY_LVL_PRISON_LEVEL_FOUR_PLUS_ONE = 2;
+const ENEMY_LVL_PRISON_LEVEL_FOUR_PLUS_TWO = 4;
+const ENEMY_LVL_PRISON_LEVEL_FOUR_PLUS_THREE = 6;
+const ENEMY_LVL_PRISON_LEVEL_FOUR_PLUS_FOUR = 9;
 
-const ENEMY_LVL_PRISON_LEVEL_FIVE_EASY = 35;
+const ENEMY_LVL_PRISON_LEVEL_FIVE_EASY = 31;
 const ENEMY_LVL_PRISON_LEVEL_FIVE_NORMAL = 35;
-const ENEMY_LVL_PRISON_LEVEL_FIVE_HARD = 35;
+const ENEMY_LVL_PRISON_LEVEL_FIVE_HARD = 37;
 
 //Number of days until enemy lvl increases
 const ENEMY_LVL_INCREASE_DAY_EASY = 14; 
@@ -156,15 +160,26 @@ const GROWTH_TYPE_ORC = [
 	[0.2, 0] //Charm
 ];
 
-const GROWTH_TYPE_BOSS = [
-	[0, 0], //Stamina
-	[0, 0], //Energy
-	[0, 0], //Strength
-	[0, 0], //Endurance
-	[0, 0], //Dexterity
-	[0, 0], //Mind
-	[0, 0], //Agility
-	[0, 0] //Charm
+const GROWTH_TYPE_WEREWOLF = [
+	[18, 0.06], //Stamina
+	[0.3, 0], //Energy
+	[1.15, 0.01], //Strength
+	[0.8, 0.01], //Endurance
+	[1.5, 0.01], //Dexterity
+	[0.45, 0], //Mind
+	[1.35, 0.01], //Agility
+	[0.15, 0] //Charm
+];
+
+const GROWTH_TYPE_YETI = [
+	[28, 0.06], //Stamina
+	[0.3, 0], //Energy
+	[1.25, 0.01], //Strength
+	[0.9, 0.01], //Endurance
+	[0.7, 0.01], //Dexterity
+	[0.4, 0], //Mind
+	[0.35, 0.01], //Agility
+	[0.3, 0] //Charm
 ];
 
 const GROWTH_TYPE_VISITOR = [
@@ -176,6 +191,17 @@ const GROWTH_TYPE_VISITOR = [
 	[0.3, 0.01], //Mind
 	[0.3, 0.015], //Agility
 	[0.2, 0] //Charm
+];
+
+const GROWTH_TYPE_BOSS = [
+	[0, 0], //Stamina
+	[0, 0], //Energy
+	[0, 0], //Strength
+	[0, 0], //Endurance
+	[0, 0], //Dexterity
+	[0, 0], //Mind
+	[0, 0], //Agility
+	[0, 0] //Charm
 ];
 
 //=============================================================================
@@ -246,7 +272,8 @@ Game_Enemy.prototype.getGrowthRates = function() {
 	else if(this.isHomelessType) growth = GROWTH_TYPE_HOMELESS;
 	else if(this.isLizardmanType) growth = GROWTH_TYPE_LIZARDMAN;
 	else if(this.isOrcType) growth = GROWTH_TYPE_ORC;
-	
+	else if(this.isWerewolfType) growth = GROWTH_TYPE_WEREWOLF;
+	else if(this.isYetiType) growth = GROWTH_TYPE_YETI;
 	
 	return growth;
 };
@@ -353,6 +380,15 @@ Game_Enemy.prototype.enemyLvl_difficultyBase_PrisonLevelFour = function() {
 	else if(Prison.hardMode()) lvl += ENEMY_LVL_PRISON_LEVEL_FOUR_HARD;
 	
 	let mapId = $gameMap._mapId;
+	
+	if($gameParty.isRiotBattle() || mapId === MAP_ID_LVL4_ABANDONED_AREA || mapId === MAP_ID_LVL4_STAIRS_TO_LVL5)
+		lvl += ENEMY_LVL_PRISON_LEVEL_FOUR_PLUS_FOUR;
+	else if(mapId === MAP_ID_LVL4_YETI_CAVERN || mapId === MAP_ID_LVL4_AMBUSH)
+		lvl += ENEMY_LVL_PRISON_LEVEL_FOUR_PLUS_THREE;
+	else if(mapId === MAP_ID_LVL4_ABANDONED_AREA || mapId === MAP_ID_LVL4_GUARD_STATION)
+		lvl += ENEMY_LVL_PRISON_LEVEL_FOUR_PLUS_TWO;
+	else if(mapId === MAP_ID_LVL4_UNDERGROUND_POOL || mapId === MAP_ID_LVL4_BASKETBALL_COURT)
+		lvl += ENEMY_LVL_PRISON_LEVEL_FOUR_PLUS_ONE;
 	
 	return lvl;
 };

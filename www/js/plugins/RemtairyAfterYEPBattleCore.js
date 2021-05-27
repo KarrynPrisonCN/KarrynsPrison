@@ -125,6 +125,51 @@ Sprite_Damage.prototype.setupPleasureEffect = function() {
 // BattleManager
 /////////////////
 
+BattleManager.startAction = function() {
+	var subject = this._subject;
+    if (!subject) return this.endAction();
+    var action = subject.currentAction();
+    this._action = action;
+    if (!this._action) return this.endAction();
+    if (!this._action.item()) return this.endAction();
+	
+	let itemId = this._action.item().id;
+	
+	if(itemId === SKILL_DO_NOTHING_ID) {
+		subject.doNothing();
+		return this.endAction();
+	}
+	else if(itemId === SKILL_ENEMY_AI_GENERIC_ID) {
+		subject.enemyBattleAIGeneric();
+		return this.endAction();
+	}
+	else if(itemId === SKILL_ENEMY_AI_TUTORIAL_ID) {
+		subject.enemyBattleAITutorial();
+		return this.endAction();
+	}
+	else if(itemId === SKILL_ENEMY_AI_CARGILL_ID) {
+		subject.enemyBattleAICargill();
+		return this.endAction();
+	}
+	else if(itemId === SKILL_ENEMY_AI_TEST_ID) {
+		subject.enemyBattleAITest();
+		return this.endAction();
+	}
+	
+    var targets = action.makeTargets();
+    this.setTargets(targets);
+    this._allTargets = targets.slice();
+    this._individualTargets = targets.slice();
+	
+    this._phase = 'phaseChange';
+    this._phaseSteps = ['setup', 'whole', 'target', 'follow', 'finish'];
+    this._returnPhase = '';
+    this._actionList = [];
+    subject.useItem(this._action.item());
+    this._action.applyGlobal();
+    this._logWindow.startAction(this._subject, this._action, this._targets);
+};
+
 BattleManager.actionDisplayAction = function() {
 	if(this._targets) {
 		this._logWindow.displayAction(this._subject, this._action.item(), this._targets[0]);
@@ -140,20 +185,25 @@ BattleManager.actionDisplayAction = function() {
 
 Window_BattleLog.prototype.displayAction = function(subject, item, target) {
     var numMethods = this._methods.length;
-	var targetName = '';
+	let targetName = '';
+	let thirdVariable = '';
 	if(target) {
 		targetName = target.displayName();
 	}
-    if (DataManager.isSkill(item)) {
+    if(DataManager.isSkill(item)) {
+		let skillId = item.id;
+		if(skillId === SKILL_MINION_THROW_ATTACK_ID && $gameParty._minionThrow_ammoName)
+			thirdVariable = $gameParty._minionThrow_ammoName;
+		
 		if(TextManager.isEnglish) {
 			if(item.hasRemMessageEN[0]) {
-				this.push('addText', item.remMessageEN[0].format(subject.displayName(),targetName));
+				this.push('addText', item.remMessageEN[0].format(subject.displayName(), targetName, thirdVariable));
 			}
 			else if (item.message1) {
 				this.push('addText', subject.displayName() + item.message1.format(item.name));		
 			}
 			if(item.hasRemMessageEN[1]) {
-				this.push('addText', item.remMessageEN[1].format(subject.displayName(),targetName));
+				this.push('addText', item.remMessageEN[1].format(subject.displayName(), targetName, thirdVariable));
 			}
 			else if (item.message2) {
 				this.push('addText', item.message2.format(item.name));		
@@ -161,13 +211,13 @@ Window_BattleLog.prototype.displayAction = function(subject, item, target) {
 		}
 		else if(TextManager.isJapanese) {
 			if(item.hasRemMessageJP[0]) {
-				this.push('addText', item.remMessageJP[0].format(subject.displayName(),targetName));
+				this.push('addText', item.remMessageJP[0].format(subject.displayName(), targetName, thirdVariable));
 			}
 			else if (item.message1) {
 				this.push('addText', subject.displayName() + item.message1.format(item.name));		
 			}
 			if(item.hasRemMessageJP[1]) {
-				this.push('addText', item.remMessageJP[1].format(subject.displayName(),targetName));
+				this.push('addText', item.remMessageJP[1].format(subject.displayName(), targetName, thirdVariable));
 			}
 			else if (item.message2) {
 				this.push('addText', item.message2.format(item.name));		
@@ -175,13 +225,13 @@ Window_BattleLog.prototype.displayAction = function(subject, item, target) {
 		}
 		else if(TextManager.isSChinese) {
 			if(item.hasRemMessageSCH[0]) {
-				this.push('addText', item.remMessageSCH[0].format(subject.displayName(),targetName));
+				this.push('addText', item.remMessageSCH[0].format(subject.displayName(), targetName, thirdVariable));
 			}
 			else if (item.message1) {
 				this.push('addText', subject.displayName() + item.message1.format(item.name));		
 			}
 			if(item.hasRemMessageSCH[1]) {
-				this.push('addText', item.remMessageSCH[1].format(subject.displayName(),targetName));
+				this.push('addText', item.remMessageSCH[1].format(subject.displayName(), targetName, thirdVariable));
 			}
 			else if (item.message2) {
 				this.push('addText', item.message2.format(item.name));		
@@ -189,13 +239,13 @@ Window_BattleLog.prototype.displayAction = function(subject, item, target) {
 		}
 		else if(TextManager.isTChinese) {
 			if(item.hasRemMessageTCH[0]) {
-				this.push('addText', item.remMessageTCH[0].format(subject.displayName(),targetName));
+				this.push('addText', item.remMessageTCH[0].format(subject.displayName(), targetName, thirdVariable));
 			}
 			else if (item.message1) {
 				this.push('addText', subject.displayName() + item.message1.format(item.name));		
 			}
 			if(item.hasRemMessageTCH[1]) {
-				this.push('addText', item.remMessageTCH[1].format(subject.displayName(),targetName));
+				this.push('addText', item.remMessageTCH[1].format(subject.displayName(), targetName, thirdVariable));
 			}
 			else if (item.message2) {
 				this.push('addText', item.message2.format(item.name));		
@@ -203,13 +253,13 @@ Window_BattleLog.prototype.displayAction = function(subject, item, target) {
 		}
 		else if(TextManager.isKorean) {
 			if(item.hasRemMessageKR[0]) {
-				this.push('addText', item.remMessageKR[0].format(subject.displayName(),targetName));
+				this.push('addText', item.remMessageKR[0].format(subject.displayName(), targetName, thirdVariable));
 			}
 			else if (item.message1) {
 				this.push('addText', subject.displayName() + item.message1.format(item.name));		
 			}
 			if(item.hasRemMessageKR[1]) {
-				this.push('addText', item.remMessageKR[1].format(subject.displayName(),targetName));
+				this.push('addText', item.remMessageKR[1].format(subject.displayName(), targetName, thirdVariable));
 			}
 			else if (item.message2) {
 				this.push('addText', item.message2.format(item.name));		

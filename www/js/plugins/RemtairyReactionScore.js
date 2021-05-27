@@ -76,6 +76,12 @@ Game_Actor.prototype.getReactionScore = function() {
 		score += this.reactionScore_masochismLevel(10);
 		score += this.reactionScore_defeatedSoloCellPassive() * 1.5;
 	}
+	else if(this.isInDefeatedLevel4Pose()) {
+		score += this.getReactionDuringSexScore(0.8, 0.8);
+		score += this.reactionScore_slutLevel();
+		score += this.reactionScore_masochismLevel(10);
+		score += this.reactionScore_defeatedPilloryPassive() * 1.5;
+	}
 	else if(this.isInDefeatedGuardPose()) {
 		score += this.getReactionDuringSexScore(0.8, 1);
 		score += this.reactionScore_slutLevel();
@@ -370,6 +376,14 @@ Game_Actor.prototype.currentSexualPartnersReactionScore = function(partnerMultip
 		partnerTypes++;
 		score += this.reactionScore_enemyHomelessPassive();
 	}
+	if(partnerArray[ENEMYTYPE_WEREWOLF_TAG] > 0) {
+		partnerTypes++;
+		score += this.reactionScore_enemyWerewolfPassive();
+	}
+	if(partnerArray[ENEMYTYPE_YETI_TAG] > 0) {
+		partnerTypes++;
+		score += this.reactionScore_enemyYetiPassive();
+	}
 	
 	if(partnerTypes === 0) return 0;
 	return score / partnerTypes * partnerMultipler;
@@ -407,7 +421,7 @@ Game_Actor.prototype.reactionScore_sadismLevel = function(multipler) {
 Game_Actor.prototype.reactionScore_masturbateLevel = function(multipler) {
 	if(multipler === 0) { return 0; } 
 	else if(!multipler) multipler = 5;
-	return this.masturbateLvl * multipler;
+	return this.masturbateLvl() * multipler;
 };
 
 //Exhibition passive
@@ -1200,6 +1214,14 @@ Game_Actor.prototype.reactionScore_defeatedSoloCellPassive = function() {
 	else if(this.hasPassive(PASSIVE_TIED_SEX_COUNT_ONE_ID)) score += 10;
 	return score;
 };
+Game_Actor.prototype.reactionScore_defeatedPilloryPassive = function() {
+	let score = 0;
+	if(this.hasPassive(PASSIVE_PILLORY_SEX_COUNT_THREE_ID)) score += 30;
+	else if(this.hasPassive(PASSIVE_PILLORY_SEX_COUNT_TWO_ID)) score += 20;
+	else if(this.hasPassive(PASSIVE_PILLORY_SEX_COUNT_ONE_ID)) score += 10;
+	return score;
+};
+
 
 //Glory Hole
 //Max 110
@@ -1285,6 +1307,20 @@ Game_Actor.prototype.reactionScore_enemyHomelessPassive = function() {
 	if(this.hasPassive(PASSIVE_SEXUAL_PARTNERS_HOMELESS_THREE_ID)) score += 30;
 	else if(this.hasPassive(PASSIVE_SEXUAL_PARTNERS_HOMELESS_TWO_ID)) score += 20;
 	else if(this.hasPassive(PASSIVE_SEXUAL_PARTNERS_HOMELESS_ONE_ID)) score += 10;
+	return score;
+};
+Game_Actor.prototype.reactionScore_enemyWerewolfPassive = function() {
+	let score = 0;
+	if(this.hasPassive(PASSIVE_SEXUAL_PARTNERS_WEREWOLF_THREE_ID)) score += 30;
+	else if(this.hasPassive(PASSIVE_SEXUAL_PARTNERS_WEREWOLF_TWO_ID)) score += 20;
+	else if(this.hasPassive(PASSIVE_SEXUAL_PARTNERS_WEREWOLF_ONE_ID)) score += 10;
+	return score;
+};
+Game_Actor.prototype.reactionScore_enemyYetiPassive = function() {
+	let score = 0;
+	if(this.hasPassive(PASSIVE_SEXUAL_PARTNERS_YETI_THREE_ID)) score += 30;
+	else if(this.hasPassive(PASSIVE_SEXUAL_PARTNERS_YETI_TWO_ID)) score += 20;
+	else if(this.hasPassive(PASSIVE_SEXUAL_PARTNERS_YETI_ONE_ID)) score += 10;
 	return score;
 };
 

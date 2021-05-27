@@ -1053,6 +1053,11 @@ BattleManager.invokeCounterAttack = function(subject, target) {
   if (!this.isMaxCounterQueue()) {
     if (this.isValidCounterAction(target)) target.payCounter();
   }
+  if(target.isStateAffected(STATE_JUST_MINION_THREW_ID)) {
+	  target = target._minionThrow_ammoTarget;
+	  this.invokeNormalAction(subject, target);
+	  return;
+  }
   if (target.canCounter()) {
     this._counterSkill = this.getCounterSkill(subject, target);
     this._counterQueue = this._counterQueue || [];

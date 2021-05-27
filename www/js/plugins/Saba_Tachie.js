@@ -2160,6 +2160,8 @@ var Saba;
 				this.doPreloadTachie(this.tachiePussyToyFile());
 				this.doPreloadTachie(this.tachieAnalToyFile());
 				this.doPreloadTachieCutin(this.tachieCutInFile());
+				this.doPreloadTachie(this.tachieSpankMarkLeftButtFile());
+				this.doPreloadTachie(this.tachieSpankMarkRightButtFile());
                 this.doPreloadTachie(this.tachieSemenWetFile());
 				this.doPreloadTachie(this.tachieWetPantiesFile());
 				this.doPreloadTachie(this.tachieSemenRightArmFile());
@@ -2193,6 +2195,8 @@ var Saba;
 				this.doPreloadTachie(this.tachieSemenButtBottomRightFile());
 				this.doPreloadTachie(this.tachieSemenButtTopLeftFile());
 				this.doPreloadTachie(this.tachieSemenButtBottomLeftFile());
+				this.doPreloadTachie(this.tachieSemenButtRightFile());
+				this.doPreloadTachie(this.tachieSemenButtLeftFile());
 				this.doPreloadTachie(this.tachieSemenAnalFile());
 				this.doPreloadTachie(this.tachieDroolMouthFile());
 				this.doPreloadTachie(this.tachieDroolFingersFile());
@@ -2241,9 +2245,11 @@ var Saba;
 				if(cutinArray[CUT_IN_ARRAY_FRONT_NAME_ID])
 					ImageManager.loadTachie(cutinArray[CUT_IN_ARRAY_FRONT_NAME_ID], this.getTachieCutinFolderName());
 				
-				if(ConfigManager.remCutinsSmootherLoading && cutinArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].length > 0) {
-					for(let i = 0; i < cutinArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].length; ++i) {
-						ImageManager.loadTachie(cutinArray[CUT_IN_ARRAY_PRELOAD_LIST_ID][i], this.getTachieCutinFolderName());
+				if(ConfigManager.remCutinsSmootherLoading && !ConfigManager.remCutinsDisabled && !ConfigManager.remCutinsFast) {
+					if(cutinArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].length > 0) {
+						for(let i = 0; i < cutinArray[CUT_IN_ARRAY_PRELOAD_LIST_ID].length; ++i) {
+							ImageManager.loadTachie(cutinArray[CUT_IN_ARRAY_PRELOAD_LIST_ID][i], this.getTachieCutinFolderName());
+						}
 					}
 				}
 				
@@ -2268,79 +2274,79 @@ var Saba;
 				return this.tachieBaseId + 'leftarm_' + this.tachieLeftArm;			
             };
 			_Game_Actor.prototype.tachieHeadFile = function () {
-				if(this.tachieHead == REM_TACHIE_NULL) return null;
+				if(this.tachieHead == REM_TACHIE_NULL || this.tachieHead == REM_TACHIE_ZERO) return null;
                 return this.tachieBaseId + 'head_' + this.tachieHead;
             };	
 			_Game_Actor.prototype.tachieGlassesFile = function () {
-				if(this.tachieGlasses == REM_TACHIE_NULL) return null;
+				if(this.tachieGlasses == REM_TACHIE_NULL || this.tachieGlasses == REM_TACHIE_ZERO) return null;
                 return this.tachieBaseId + 'glasses_' + this.tachieGlasses;
             };	
 			_Game_Actor.prototype.tachieTieFile = function () {
-				if(this.tachieTie == REM_TACHIE_NULL) return null;
+				if(this.tachieTie == REM_TACHIE_NULL || this.tachieTie == REM_TACHIE_ZERO) return null;
                 return this.tachieBaseId + 'tie_' + this.tachieTie;
             };	
 			_Game_Actor.prototype.tachieWeaponFile = function () {
-				if(this.tachieWeapon == REM_TACHIE_NULL) return null;
+				if(this.tachieWeapon == REM_TACHIE_NULL || this.tachieWeapon == REM_TACHIE_ZERO) return null;
                 return this.tachieBaseId + 'weapon_' + this.tachieWeapon;
             };	
 			_Game_Actor.prototype.tachieHatFile = function () {
-				if(this.tachieHat == REM_TACHIE_NULL) return null;
+				if(this.tachieHat == REM_TACHIE_NULL || this.tachieHat == REM_TACHIE_ZERO) return null;
                 return this.tachieBaseId + 'hat_' + this.tachieHat;
             };	
 			_Game_Actor.prototype.tachiePantiesFile = function () {
-				if(this.tachiePanties == REM_TACHIE_NULL || !this.isWearingPanties()) return null;
+				if(this.tachiePanties == REM_TACHIE_NULL || this.tachiePanties == REM_TACHIE_ZERO || !this.isWearingPanties()) return null;
                 return this.tachieBaseId + 'panties_' + this.tachiePanties;
             };	
 			_Game_Actor.prototype.tachieHolePussyFile = function () {
-				if(this.tachieHolePussy == REM_TACHIE_NULL) return null;
+				if(this.tachieHolePussy == REM_TACHIE_NULL || this.tachieHolePussy == REM_TACHIE_ZERO) return null;
                 return this.tachieBaseId + 'ana_manko_' + this.tachieHolePussy;
             };	
 			_Game_Actor.prototype.tachieHoleAnusFile = function () {
-				if(this.tachieHoleAnus == REM_TACHIE_NULL) return null;
+				if(this.tachieHoleAnus == REM_TACHIE_NULL || this.tachieHoleAnus == REM_TACHIE_ZERO) return null;
                 return this.tachieBaseId + 'ana_anaru_' + this.tachieHoleAnus;
             };	
 			_Game_Actor.prototype.tachiePubicFile = function () {
-				if(this.tachiePubicId() == REM_TACHIE_NULL) return null;
+				if(this.tachiePubicId() == REM_TACHIE_NULL || this.tachiePubicId() == REM_TACHIE_ZERO) return null;
                 return this.tachieBaseId + 'pubic_' + this.tachiePubicId();
             };	
 			_Game_Actor.prototype.tachieClothesFile = function () {
-				if(this.tachieClothes == REM_TACHIE_NULL) return null;
+				if(this.tachieClothes == REM_TACHIE_NULL || this.tachieClothes == REM_TACHIE_ZERO) return null;
                 return this.tachieBaseId + 'clothes_' + this.tachieClothes;
             };
 			_Game_Actor.prototype.tachieSkirtFile = function () {
-				if(this.tachieSkirt == REM_TACHIE_NULL) return null;
+				if(this.tachieSkirt == REM_TACHIE_NULL || this.tachieSkirt == REM_TACHIE_ZERO) return null;
                 return this.tachieBaseId + 'skirt_' + this.tachieSkirt;
             };
 			_Game_Actor.prototype.tachieLegsFile = function () {
-				if(this.tachieLegs == REM_TACHIE_NULL) return null;
+				if(this.tachieLegs == REM_TACHIE_NULL || this.tachieLegs == REM_TACHIE_ZERO) return null;
                 return this.tachieBaseId + 'legs_' + this.tachieLegs;
             };
 			_Game_Actor.prototype.tachieMugFile = function () {
-				if(this.tachieMugId() == REM_TACHIE_NULL) return null;
+				if(this.tachieMugId() == REM_TACHIE_NULL || this.tachieMugId() == REM_TACHIE_ZERO) return null;
                 return this.tachieBaseId + 'mug_' + this.tachieMugId();
             };	
 			_Game_Actor.prototype.tachieStrawFile = function () {
-				if(this.tachieStraw == REM_TACHIE_NULL) return null;
+				if(this.tachieStraw == REM_TACHIE_NULL || this.tachieStraw == REM_TACHIE_ZERO) return null;
                 return this.tachieBaseId + 'straw_' + this.tachieStraw;
             };	
 			_Game_Actor.prototype.tachieLeftHoleFile = function () {
-				if(this.tachieLeftHole == REM_TACHIE_NULL) return null;
+				if(this.tachieLeftHole == REM_TACHIE_NULL || this.tachieLeftHole == REM_TACHIE_ZERO) return null;
                 return this.tachieBaseId + 'hole_left_' + this.tachieLeftHole;
             };
 			_Game_Actor.prototype.tachieRightHoleFile = function () {
-				if(this.tachieRightHole == REM_TACHIE_NULL) return null;
+				if(this.tachieRightHole == REM_TACHIE_NULL || this.tachieRightHole == REM_TACHIE_ZERO) return null;
                 return this.tachieBaseId + 'hole_right_' + this.tachieRightHole;
             };
 			_Game_Actor.prototype.tachieBoobsFile = function () {
-				if(this.tachieBoobs == REM_TACHIE_NULL) return null;
+				if(this.tachieBoobs == REM_TACHIE_NULL || this.tachieBoobs == REM_TACHIE_ZERO) return null;
                 return this.tachieBaseId + 'boobs_' + this.tachieBoobs;
             };	
 			_Game_Actor.prototype.tachieLeftBoobFile = function () {
-				if(this.tachieLeftBoob == REM_TACHIE_NULL) return null;
+				if(this.tachieLeftBoob == REM_TACHIE_NULL || this.tachieLeftBoob == REM_TACHIE_ZERO) return null;
                 return this.tachieBaseId + 'leftboob_' + this.tachieLeftBoob;
             };	
 			_Game_Actor.prototype.tachieRightBoobFile = function () {
-				if(this.tachieRightBoob == REM_TACHIE_NULL) return null;
+				if(this.tachieRightBoob == REM_TACHIE_NULL || this.tachieRightBoob == REM_TACHIE_ZERO) return null;
                 return this.tachieBaseId + 'rightboob_' + this.tachieRightBoob;
             };	
 			_Game_Actor.prototype.tachieBoobsErectionFile = function () {
@@ -2348,97 +2354,97 @@ var Saba;
                 return this.tachieBaseId + 'boobs_bokki';
             };	
 			_Game_Actor.prototype.tachieButtFile = function () {
-				if(this.tachieButt == REM_TACHIE_NULL) return null;
+				if(this.tachieButt == REM_TACHIE_NULL || this.tachieButt == REM_TACHIE_ZERO) return null;
                 return this.tachieBaseId + 'butt_' + this.tachieButt;
             };	
 			_Game_Actor.prototype.tachieCockFile = function () {
-				if(this.tachieCock == REM_TACHIE_NULL) return null;
+				if(this.tachieCock == REM_TACHIE_NULL || this.tachieCock == REM_TACHIE_ZERO) return null;
                 return this.tachieBaseId + 'chin_' + this.tachieCock;
             };	
 			_Game_Actor.prototype.tachieCockBoobsFile = function () {
-				if(this.tachieCockBoobs == REM_TACHIE_NULL) return null;
+				if(this.tachieCockBoobs == REM_TACHIE_NULL || this.tachieCockBoobs == REM_TACHIE_ZERO) return null;
                 return this.tachieBaseId + 'chin_boobs_' + this.tachieCockBoobs;
             };	
 			_Game_Actor.prototype.tachieCockMouthFile = function () {
-				if(this.tachieCockMouth == REM_TACHIE_NULL) return null;
+				if(this.tachieCockMouth == REM_TACHIE_NULL || this.tachieCockMouth == REM_TACHIE_ZERO) return null;
                 return this.tachieBaseId + 'chin_mouth_' + this.tachieCockMouth;
             };
 			_Game_Actor.prototype.tachieCockFeetFile = function () {
-				if(this.tachieCockFeet == REM_TACHIE_NULL) return null;
+				if(this.tachieCockFeet == REM_TACHIE_NULL || this.tachieCockFeet == REM_TACHIE_ZERO) return null;
                 return this.tachieBaseId + 'chin_feet_' + this.tachieCockFeet;
             };
 			_Game_Actor.prototype.tachieCockPussyFile = function () {
-				if(this.tachieCockPussy == REM_TACHIE_NULL) return null;
+				if(this.tachieCockPussy == REM_TACHIE_NULL || this.tachieCockPussy == REM_TACHIE_ZERO) return null;
                 return this.tachieBaseId + 'chin_manko_' + this.tachieCockPussy;
             };
 			_Game_Actor.prototype.tachieCockAnalFile = function () {
-				if(this.tachieCockAnal == REM_TACHIE_NULL) return null;
+				if(this.tachieCockAnal == REM_TACHIE_NULL || this.tachieCockAnal == REM_TACHIE_ZERO) return null;
                 return this.tachieBaseId + 'chin_anaru_' + this.tachieCockAnal;
             };
 			_Game_Actor.prototype.tachieCockRightArmFile = function () {
-				if(this.tachieCockRightArm == REM_TACHIE_NULL) return null;
+				if(this.tachieCockRightArm == REM_TACHIE_NULL || this.tachieCockRightArm == REM_TACHIE_ZERO) return null;
                 return this.tachieBaseId + 'chin_rightarm_' + this.tachieCockRightArm;
             };
 			_Game_Actor.prototype.tachieCockLeftArmFile = function () {
-				if(this.tachieCockLeftArm == REM_TACHIE_NULL) return null;
+				if(this.tachieCockLeftArm == REM_TACHIE_NULL || this.tachieCockLeftArm == REM_TACHIE_ZERO) return null;
                 return this.tachieBaseId + 'chin_leftarm_' + this.tachieCockLeftArm;
             };
 			
 			_Game_Actor.prototype.tachieVisitorAFile = function () {
-				if(this.tachieVisitorA == REM_TACHIE_NULL) return null;
+				if(this.tachieVisitorA == REM_TACHIE_NULL || this.tachieVisitorA == REM_TACHIE_ZERO) return null;
                 return this.tachieBaseId + 'visitorA_' + this.tachieVisitorA;
             };
 			_Game_Actor.prototype.tachieVisitorBFile = function () {
-				if(this.tachieVisitorB == REM_TACHIE_NULL) return null;
+				if(this.tachieVisitorB == REM_TACHIE_NULL || this.tachieVisitorB == REM_TACHIE_ZERO) return null;
                 return this.tachieBaseId + 'visitorB_' + this.tachieVisitorB;
             };
 			_Game_Actor.prototype.tachieVisitorCFile = function () {
-				if(this.tachieVisitorC == REM_TACHIE_NULL) return null;
+				if(this.tachieVisitorC == REM_TACHIE_NULL || this.tachieVisitorC == REM_TACHIE_ZERO) return null;
                 return this.tachieBaseId + 'visitorC_' + this.tachieVisitorC;
             };
 			_Game_Actor.prototype.tachieVisitorDFile = function () {
-				if(this.tachieVisitorD == REM_TACHIE_NULL) return null;
+				if(this.tachieVisitorD == REM_TACHIE_NULL || this.tachieVisitorD == REM_TACHIE_ZERO) return null;
                 return this.tachieBaseId + 'visitorD_' + this.tachieVisitorD;
             };
 			
 			_Game_Actor.prototype.tachieBackAFile = function () {
-				if(this.tachieBackA == REM_TACHIE_NULL) return null;
+				if(this.tachieBackA == REM_TACHIE_NULL || this.tachieBackA == REM_TACHIE_ZERO) return null;
                 return this.tachieBaseId + 'backA_' + this.tachieBackA;
             };
 			_Game_Actor.prototype.tachieBackBFile = function () {
-				if(this.tachieBackB == REM_TACHIE_NULL) return null;
+				if(this.tachieBackB == REM_TACHIE_NULL || this.tachieBackB == REM_TACHIE_ZERO) return null;
                 return this.tachieBaseId + 'backB_' + this.tachieBackB;
             };
 			_Game_Actor.prototype.tachieBackCFile = function () {
-				if(this.tachieBackC == REM_TACHIE_NULL) return null;
+				if(this.tachieBackC == REM_TACHIE_NULL || this.tachieBackC == REM_TACHIE_ZERO) return null;
                 return this.tachieBaseId + 'backC_' + this.tachieBackC;
             };
 			_Game_Actor.prototype.tachieBackDFile = function () {
-				if(this.tachieBackD == REM_TACHIE_NULL) return null;
+				if(this.tachieBackD == REM_TACHIE_NULL || this.tachieBackD == REM_TACHIE_ZERO) return null;
                 return this.tachieBaseId + 'backD_' + this.tachieBackD;
             };
 			_Game_Actor.prototype.tachieBackEFile = function () {
-				if(this.tachieBackE == REM_TACHIE_NULL) return null;
+				if(this.tachieBackE == REM_TACHIE_NULL || this.tachieBackE == REM_TACHIE_ZERO) return null;
                 return this.tachieBaseId + 'backE_' + this.tachieBackE;
             };
 			_Game_Actor.prototype.tachieFrontAFile = function () {
-				if(this.tachieFrontA == REM_TACHIE_NULL) return null;
+				if(this.tachieFrontA == REM_TACHIE_NULL || this.tachieFrontA == REM_TACHIE_ZERO) return null;
                 return this.tachieBaseId + 'frontA_' + this.tachieFrontA;
             };	
 			_Game_Actor.prototype.tachieFrontBFile = function () {
-				if(this.tachieFrontB == REM_TACHIE_NULL) return null;
+				if(this.tachieFrontB == REM_TACHIE_NULL || this.tachieFrontB == REM_TACHIE_ZERO) return null;
                 return this.tachieBaseId + 'frontB_' + this.tachieFrontB;
             };	
 			_Game_Actor.prototype.tachieFrontCFile = function () {
-				if(this.tachieFrontC == REM_TACHIE_NULL) return null;
+				if(this.tachieFrontC == REM_TACHIE_NULL || this.tachieFrontC == REM_TACHIE_ZERO) return null;
                 return this.tachieBaseId + 'frontC_' + this.tachieFrontC;
             };	
 			_Game_Actor.prototype.tachieFrontDFile = function () {
-				if(this.tachieFrontD == REM_TACHIE_NULL) return null;
+				if(this.tachieFrontD == REM_TACHIE_NULL || this.tachieFrontD == REM_TACHIE_ZERO) return null;
                 return this.tachieBaseId + 'frontD_' + this.tachieFrontD;
             };	
 			_Game_Actor.prototype.tachieFrontEFile = function () {
-				if(this.tachieFrontE == REM_TACHIE_NULL) return null;
+				if(this.tachieFrontE == REM_TACHIE_NULL || this.tachieFrontE == REM_TACHIE_ZERO) return null;
                 return this.tachieBaseId + 'frontE_' + this.tachieFrontE;
             };	
 			_Game_Actor.prototype.tachieClitToyFile = function () {
@@ -2458,6 +2464,16 @@ var Saba;
 				let id = this.getAnalToyId();
 				if(!id || id == NO_TOY) return null;
                 return this.tachieBaseId + 'toyA_' + id;
+            };	
+			_Game_Actor.prototype.tachieSpankMarkRightButtFile = function () {
+				let id = this.getTachieSpankMarkRightButtId();
+				if(!id || id === 0) return null;
+                return this.tachieBaseId + 'spank_rightbutt_' + id;
+            };	
+			_Game_Actor.prototype.tachieSpankMarkLeftButtFile = function () {
+				let id = this.getTachieSpankMarkLeftButtId();
+				if(!id || id === 0) return null;
+                return this.tachieBaseId + 'spank_leftbutt_' + id;
             };	
 			_Game_Actor.prototype.tachieSemenWetFile = function () {
 				let id = this.getTachieWetId();
@@ -2544,6 +2560,16 @@ var Saba;
 				let id = this.getTachieSemenButtBottomLeftId();
 				if(!id) return null;
                 return this.tachieBaseId + 'zaa_butt_left_sita_' + id;
+            };
+			_Game_Actor.prototype.tachieSemenButtLeftFile = function () {
+				let id = this.getTachieSemenButtLeftId();
+				if(!id) return null;
+                return this.tachieBaseId + 'zaa_leftbutt_' + id;
+            };
+			_Game_Actor.prototype.tachieSemenButtRightFile = function () {
+				let id = this.getTachieSemenButtRightId();
+				if(!id) return null;
+                return this.tachieBaseId + 'zaa_rightbutt_' + id;
             };
 			_Game_Actor.prototype.tachieSemenAnalFile = function () {
 				let id = this.getTachieSemenAnalId();
@@ -2738,43 +2764,43 @@ var Saba;
             };	
 			
 			_Game_Actor.prototype.tachieHoppeFile = function () {
-                if (this.tachieHoppe == REM_TACHIE_NULL) {
+                if(this.tachieHoppe == REM_TACHIE_NULL || this.tachieHoppe == REM_TACHIE_ZERO) {
                     return null;
                 }
                 return this.tachieBaseId + 'hoppe_' + this.tachieHoppe;
             };
 			_Game_Actor.prototype.tachieSweatFile = function () {
-                if (this.tachieSweat == REM_TACHIE_NULL) {
+                if(this.tachieSweat == REM_TACHIE_NULL || this.tachieSweat == REM_TACHIE_ZERO) {
                     return null;
                 }
                 return this.tachieBaseId + 'sweat_' + this.tachieSweat;
             };
 			_Game_Actor.prototype.tachieEyebrowsFile = function () {
-                if (this.tachieEyebrows == REM_TACHIE_NULL) {
+                if(this.tachieEyebrows == REM_TACHIE_NULL || this.tachieEyebrows == REM_TACHIE_ZERO) {
                     return null;
                 }
                 return this.tachieBaseId + 'eyebrows_' + this.tachieEyebrows;
             };
 			_Game_Actor.prototype.tachieMouthFile = function () {
-                if (this.tachieMouth == REM_TACHIE_NULL) {
+                if(this.tachieMouth == REM_TACHIE_NULL || this.tachieMouth == REM_TACHIE_ZERO) {
                     return null;
                 }
                 return this.tachieBaseId + 'mouth_' + this.tachieMouth;
             };
 			_Game_Actor.prototype.tachieEyesFile = function () {
-                if (this.tachieEyes == REM_TACHIE_NULL) {
+                if(this.tachieEyes == REM_TACHIE_NULL || this.tachieEyes == REM_TACHIE_ZERO) {
                     return null;
                 }
                 return this.tachieBaseId + 'eyes_' + this.tachieEyes;
             };
 			_Game_Actor.prototype.tachieHairFile = function () {
-                if (this.tachieHair == REM_TACHIE_NULL) {
+                if(this.tachieHair == REM_TACHIE_NULL || this.tachieHair == REM_TACHIE_ZERO) {
                     return null;
                 }
                 return this.tachieBaseId + 'hair_' + this.tachieHair;
             };
 			_Game_Actor.prototype.tachieCutInFile = function () {
-                if (this.tachieCutIn == REM_TACHIE_NULL) {
+                if(this.tachieCutIn == REM_TACHIE_NULL) {
                     return null;
                 }
                 return this.tachieCutIn;
@@ -2823,7 +2849,7 @@ var Saba;
             for (var key in this.cache._inner) {
                 var bitmap = this.cache._inner[key].item;
                 if (bitmap.isError()) {
-                    if (bitmap.url.indexOf('tachie') >= 0 || bitmap.url.indexOf('karryn') >= 0) {
+                    if (bitmap.url.indexOf('karryn') >= 0 || bitmap.url.indexOf('chatface') >= 0) {
                         console.error('Failed to load: ' + bitmap.url);
                         this.cache._inner[key].item = new Bitmap();
 						let error = new Error('Failed to load: ' + bitmap.url);
@@ -2840,6 +2866,7 @@ var Saba;
             }
             return true;
         };
+		/*
         Decrypter.decryptImg = function (url, bitmap) {
             url = this.extToEncryptExt(url);
             var requestFile = new XMLHttpRequest();
@@ -2860,7 +2887,7 @@ var Saba;
                     Bitmap.prototype._onLoad.call(bitmap);
                 }
             };
-        };
+        };*/
         var _Game_Temp = (function (_super) {
             __extends(_Game_Temp, _super);
             function _Game_Temp() {
@@ -3093,6 +3120,10 @@ var Saba;
 								this.drawTachieEyebrows(actor, cache);
 							else if(layerType === LAYER_TYPE_MOUTH)
 								this.drawTachieMouth(actor, cache);
+							else if(layerType === LAYER_TYPE_SPANKMARK_LEFTBUTT)
+								this.drawTachieSpankMarkLeftButt(actor, cache);
+							else if(layerType === LAYER_TYPE_SPANKMARK_RIGHTBUTT)
+								this.drawTachieSpankMarkRightButt(actor, cache);
 							else if(layerType === LAYER_TYPE_WET)
 								this.drawTachieSemenWet(actor, cache);
 							else if(layerType === LAYER_TYPE_WET_PANTIES)
@@ -3131,6 +3162,10 @@ var Saba;
 								this.drawTachieFile(actor.tachieSemenButtBottomRightFile(),cache, actor);
 							else if(layerType === LAYER_TYPE_SEMEN_BUTT_BOTTOM_LEFT)
 								this.drawTachieFile(actor.tachieSemenButtBottomLeftFile(),cache, actor);
+							else if(layerType === LAYER_TYPE_SEMEN_BUTT_RIGHT)
+								this.drawTachieFile(actor.tachieSemenButtRightFile(),cache, actor);
+							else if(layerType === LAYER_TYPE_SEMEN_BUTT_LEFT)
+								this.drawTachieFile(actor.tachieSemenButtLeftFile(),cache, actor);
 							else if(layerType === LAYER_TYPE_SEMEN_ANAL)
 								this.drawTachieSemenAnal(actor, cache);
 							else if(layerType === LAYER_TYPE_SEMEN_FACE)
@@ -3191,6 +3226,7 @@ var Saba;
 					this.drawTachieCutIn(actor, tempBitmap);
 					this.drawTachieCache(actor, tempBitmap, bitmap, x, y, rect, scale);
 					this.lastDrawnActorId = actor.actorId();
+					this.lastDrawnPoseName = actor.poseName;
 					return true;
 				}
 				
@@ -3549,6 +3585,7 @@ var Saba;
 				this.drawTachieCutIn(actor, tempBitmap);
                 this.drawTachieCache(actor, tempBitmap, bitmap, x, y, rect, scale);
                 this.lastDrawnActorId = actor.actorId();
+				this.lastDrawnPoseName = actor.poseName;
                 return true;
             };
             this.calcTachieActorPos = function (actor) {
@@ -3947,6 +3984,13 @@ var Saba;
                 this.drawTachieFile(actor.tachieMouthFile(), bitmap, actor);
             };
 			
+			this.drawTachieSpankMarkLeftButt = function (actor, bitmap) {
+                this.drawTachieFile(actor.tachieSpankMarkLeftButtFile(), bitmap, actor);
+            };
+			this.drawTachieSpankMarkRightButt = function (actor, bitmap) {
+                this.drawTachieFile(actor.tachieSpankMarkRightButtFile(), bitmap, actor);
+            };
+			
 			this.drawTachieSemenWet = function (actor, bitmap) {
                 this.drawTachieFile(actor.tachieSemenWetFile(), bitmap, actor);
             };
@@ -3999,6 +4043,12 @@ var Saba;
 				this.drawTachieFile(actor.tachieSemenButtBottomLeftFile(), bitmap, actor);
 				this.drawTachieFile(actor.tachieSemenButtTopRightFile(), bitmap, actor);
 				this.drawTachieFile(actor.tachieSemenButtBottomRightFile(), bitmap, actor);
+            };
+			this.drawTachieSemenButtLeft = function (actor, bitmap) {
+                this.drawTachieFile(actor.tachieSemenButtLeftFile(), bitmap, actor);
+            };
+			this.drawTachieSemenButtRight = function (actor, bitmap) {
+                this.drawTachieFile(actor.tachieSemenButtRightFile(), bitmap, actor);
             };
 			this.drawTachieSemenAnal = function (actor, bitmap) {
                 this.drawTachieFile(actor.tachieSemenAnalFile(), bitmap, actor);
@@ -4133,9 +4183,13 @@ var Saba;
                 if (actorId === 0) {
                     return;
                 }
-                if (this.lastDrawnActorId !== actorId) {
+                if(this.lastDrawnActorId !== actorId) {
                     this.bitmap.clear();
                 }
+				else if(actorId === ACTOR_CHAT_FACE_ID && this.lastDrawnPoseName !== $gameActors.actor(actorId).poseName) {
+                    this.bitmap.clear();
+                }
+
                 var success = this.drawTachie(actorId, this.bitmap, 0, 0, null, 0, 1, true);
 				var actor = $gameActors.actor(actorId);
 				if(actor.tachieFlip) {

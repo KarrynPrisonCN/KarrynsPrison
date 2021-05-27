@@ -357,6 +357,17 @@ Game_BattlerBase.prototype.bonusActionSpeed = function(item) {
     return 0;
 };
 
+Game_BattlerBase.prototype.actionSpeedRate = function(item) {
+    return 1;
+};
+
+Remtairy.Battler.Game_Action_speed = Game_Action.prototype.speed;
+Game_Action.prototype.speed = function() {
+    let speed = Remtairy.Battler.Game_Action_speed.call(this);
+	let speedRate = this.subject().actionSpeedRate(this.item());
+    return speed * speedRate;
+};
+
 //////
 // Will
 //////
@@ -641,6 +652,12 @@ Game_BattlerBase.prototype.evadeReductionStageXParamRate = function() {
 	return Math.max(0.01, rate);
 };
 
+// Counter
+
+Game_Battler.prototype.counterTotal = function() {
+    return 2;
+};
+
 ////////////
 // Overblow Protection
 
@@ -758,7 +775,7 @@ Game_BattlerBase.prototype.justGotHitBySkillType = function(skillType) {
 };
 Game_BattlerBase.prototype.didLastGetHitBySkillType = function(skillType) { 
 	if(skillType === JUST_SKILLTYPE_ENEMY_TOY_PLAY) {
-		return this._justGotHitBySkillType === JUST_SKILLTYPE_ENEMY_TOY_PLAY_CLIT || this._justGotHitBySkillType === JUST_SKILLTYPE_ENEMY_TOY_PLAY_PUSSY || this._justGotHitBySkillType === JUST_SKILLTYPE_ENEMY_TOY_PLAY_ANAL;
+		return this.didLastGetHitBySkillType(JUST_SKILLTYPE_ENEMY_TOY_PLAY_CLIT) || this.didLastGetHitBySkillType(JUST_SKILLTYPE_ENEMY_TOY_PLAY_PUSSY) || this.didLastGetHitBySkillType(JUST_SKILLTYPE_ENEMY_TOY_PLAY_ANAL);
 	}
 
 	return this._justGotHitBySkillType === skillType;
@@ -935,6 +952,18 @@ Game_Battler.prototype.isThereAnErectOpponent = function() {
 	for (let i = 0; i < group.length; ++i) {
         let opponent = group[i];
         if (opponent && opponent.isErect) {
+			return true;
+		}
+	}
+	return false;
+};
+
+
+Game_Battler.prototype.isThereValidTargetForMinionThrowAmmoLoading = function(thrower) {
+	let group = this.friendsUnit().aliveMembers();
+	for (let i = 0; i < group.length; ++i) {
+        let opponent = group[i];
+        if(opponent && thrower.name() != opponent.name() && opponent.isValidTargetForMinionThrowAmmoLoading()) {
 			return true;
 		}
 	}

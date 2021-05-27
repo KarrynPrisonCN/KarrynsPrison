@@ -1285,6 +1285,13 @@ Window_StatusInfo.prototype.drawEffects = function() {
 			if(actor.hasWeaknessExposed())
 				effectText = TextManager.statusBattleEffectExposeWeakness;
 		}
+		else if(i === 24) {
+			lineSize = 1;
+			if(actor.isStateAffected(STATE_YETI_HEAT_KARRYN_ONE_ID))
+				effectText = TextManager.StatusBattleEffectYetiHeatAuraOne;
+			else if(actor.isStateAffected(STATE_YETI_HEAT_KARRYN_TWO_ID))
+				effectText = TextManager.StatusBattleEffectYetiHeatAuraTwo;
+		}
 	
 
 		if(effectText) {
@@ -2220,6 +2227,24 @@ Window_Base.prototype.remDailyReportText = function(id) {
 			else if($gameParty.prisonLevelThreeIsAnarchy()) {
 				currentAnarchyLevel = 3;
 				anarchyDays = $gameParty._prisonLevelThree_anarchyDays;
+				anarchyDecreaseDivider *= PRISON_ANARCHY_DEC_LEVEL_THREE_DIVIDER;
+				let levelAnarchyGracePeriod = anarchyGracePeriod * PRISON_ANARCHY_GRACE_LEVEL_THREE_MULTIPLER;
+				
+				if(Prison.easyMode()) {
+					showAnarchyNoLimitText = true;
+				}
+				else if(anarchyDays + $gameParty._levelThreeBonusGracePeriod > levelAnarchyGracePeriod) {
+					showAnarchyPastLimitText = true;
+					decreasedAnarchyControl = Math.ceil((anarchyDays + $gameParty._levelThreeBonusGracePeriod - levelAnarchyGracePeriod)/anarchyDecreaseDivider);
+				}
+				else {
+					showAnarchyBeforeLimitText = true;
+					estimatedDaysBeforeLimit = levelAnarchyGracePeriod - anarchyDays + $gameParty._levelThreeBonusGracePeriod;
+				}
+			}
+			else if($gameParty.prisonLevelFourIsAnarchy()) {
+				currentAnarchyLevel = 4;
+				anarchyDays = $gameParty._prisonLevelFour_anarchyDays;
 				
 				if(Prison.easyMode()) {
 					showAnarchyNoLimitText = true;
@@ -2262,11 +2287,12 @@ Window_Base.prototype.remDailyReportText = function(id) {
 		
 		if($gameParty.prisonLevelOneIsRioting()) {
 			riotDayCount = $gameParty._prisonLevelOne_riotingDays;
-			decreasedRiotControl = $gameParty.riotingOrderChange(riotLevel);
+			let firstDay = riotDayCount === 1;
+			decreasedRiotControl = $gameParty.riotingOrderChange(riotLevel, firstDay);
 		}
 	
 		if(riotDayCount === 1) {
-			text += TextManager.RemDailyReportRiot_New.format(riotLevel);
+			text += TextManager.RemDailyReportRiot_New.format(riotLevel,decreasedRiotControl);
 			text += '\n';
 		}
 		else if(riotDayCount > 1) {
@@ -2281,11 +2307,12 @@ Window_Base.prototype.remDailyReportText = function(id) {
 	
 		if($gameParty.prisonLevelTwoIsRioting()) {
 			riotDayCount = $gameParty._prisonLevelTwo_riotingDays;
-			decreasedRiotControl = $gameParty.riotingOrderChange(riotLevel);
+			let firstDay = riotDayCount === 1;
+			decreasedRiotControl = $gameParty.riotingOrderChange(riotLevel, firstDay);
 		}
 	
 		if(riotDayCount === 1) {
-			text += TextManager.RemDailyReportRiot_New.format(riotLevel);
+			text += TextManager.RemDailyReportRiot_New.format(riotLevel,decreasedRiotControl);
 			text += '\n';
 		}
 		else if(riotDayCount > 1) {
@@ -2300,11 +2327,12 @@ Window_Base.prototype.remDailyReportText = function(id) {
 	
 		if($gameParty.prisonLevelThreeIsRioting()) {
 			riotDayCount = $gameParty._prisonLevelThree_riotingDays;
-			decreasedRiotControl = $gameParty.riotingOrderChange(riotLevel);
+			let firstDay = riotDayCount === 1;
+			decreasedRiotControl = $gameParty.riotingOrderChange(riotLevel, firstDay);
 		}
 	
 		if(riotDayCount === 1) {
-			text += TextManager.RemDailyReportRiot_New.format(riotLevel);
+			text += TextManager.RemDailyReportRiot_New.format(riotLevel,decreasedRiotControl);
 			text += '\n';
 		}
 		else if(riotDayCount > 1) {
@@ -2319,11 +2347,12 @@ Window_Base.prototype.remDailyReportText = function(id) {
 	
 		if($gameParty.prisonLevelFourIsRioting()) {
 			riotDayCount = $gameParty._prisonLevelFour_riotingDays;
-			decreasedRiotControl = $gameParty.riotingOrderChange(riotLevel);
+			let firstDay = riotDayCount === 1;
+			decreasedRiotControl = $gameParty.riotingOrderChange(riotLevel, firstDay);
 		}
 	
 		if(riotDayCount === 1) {
-			text += TextManager.RemDailyReportRiot_New.format(riotLevel);
+			text += TextManager.RemDailyReportRiot_New.format(riotLevel,decreasedRiotControl);
 			text += '\n';
 		}
 		else if(riotDayCount > 1) {
@@ -2503,7 +2532,7 @@ Window_PrisonInfo.prototype.refresh = function() {
 		line += 0.6;
 	}
 	
-	//Bar Income
+	//Store Income
 	if(Prison.getStoreIncome() > 0) {
 		let storeIncomeText = TextManager.storeIncome;
 		let storeIncomeValue = '+' + Prison.getStoreIncome().toLocaleString();
@@ -2511,6 +2540,16 @@ Window_PrisonInfo.prototype.refresh = function() {
 		this.drawText(storeIncomeValue, x, line * lh, width, 'right');
 		line += 0.6;
 	}
+	
+	if(Karryn.hasEdict(EDICT_PROVIDE_OUTSOURCING)) {
+		let storeIncomeText = TextManager.outsourcingIncome;
+		let storeIncomeValue = '+' + Prison.getOutsourcingIncome().toLocaleString();
+		this.drawText(storeIncomeText, x, line * lh, width);
+		this.drawText(storeIncomeValue, x, line * lh, width, 'right');
+		line += 0.6;
+	}
+	
+	
 	
 	//Estimated Subsidies
 	let subsidiesText = TextManager.estimatedSubsidies;
@@ -2638,8 +2677,13 @@ Window_MenuStatus.prototype.drawKarrynStatus = function() {
 	
 	let nameFontSize = 32;
 	let titleFontSize = 20;
-	let statsFontSize = 26;
-	let statusFontSize = 16;
+	let statsFontSize = 25;
+	let statusFontSize = 15;
+	
+	let nameLineChange = 0.5;
+	let titleLineChange = 0.7;
+	let statusLineChange = 0.35;
+	let statsLineChange = 0.55;
 	
 	this.resetTextColor();
 	
@@ -2648,14 +2692,14 @@ Window_MenuStatus.prototype.drawKarrynStatus = function() {
 	let nameText = actor.name();
 	this.drawText(nameText, x, line * lh, width + centerOffsetX, 'center');
 	this.resetTextColor();
-	line+= 0.5;
+	line += nameLineChange;
 	
 	//Title
 	this.contents.fontSize = titleFontSize;
 	let titleText = actor.getTitleText();
 	this.drawText(titleText, x, line * lh, width + centerOffsetX, 'center');
 	this.resetTextColor();
-	line++;
+	line += titleLineChange;
 	
 	////////
 	//Stats
@@ -2727,22 +2771,20 @@ Window_MenuStatus.prototype.drawKarrynStatus = function() {
 		this.drawText(valueName, valueX, line * lh, lineWidth, 'left');
 		this.drawText(valueNum.toLocaleString(), valueX, line * lh, lineWidth, 'right');
 
-		if(i % 2 === 1) line += 0.6;
+		if(i % 2 === 1) line += statsLineChange;
 	}
 	
 	////////
 	//Status
-	line += 0.4;
+	line += statusLineChange;
 	this.contents.fontSize = statusFontSize;
-	
-	let statusLineChange = 0.4;
 	
 	//Arousal
 	if(actor.isAroused()) {
 		let arousedText = '';
 		if(actor.reachedOrgasmPoint()) arousedText = TextManager.RCMenuArousedLevelTwoText;
 		else arousedText = TextManager.RCMenuArousedLevelOneText;
-		this.drawTextEx(arousedText, x, line * lh, width, 'left', true);
+		this.drawTextEx(arousedText, x, line * lh, true);
 		line += statusLineChange;
 	}
 	
@@ -2751,7 +2793,7 @@ Window_MenuStatus.prototype.drawKarrynStatus = function() {
 		let frustratedText = '';
 		if(actor._onaniFrustration >= 4) frustratedText = TextManager.RCMenuFrustratedLevelTwoText;
 		else frustratedText = TextManager.RCMenuFrustratedLevelOneText;
-		this.drawTextEx(frustratedText, x, line * lh, width, 'left', true);
+		this.drawTextEx(frustratedText, x, line * lh, true);
 		line += statusLineChange;
 	}
 	
@@ -2759,7 +2801,7 @@ Window_MenuStatus.prototype.drawKarrynStatus = function() {
 	//Panties
 	if(!actor.isWearingPanties()) {
 		let lostPantiesText = TextManager.RCMenuLostPantiesText;
-		this.drawTextEx(lostPantiesText, x, line * lh, width, 'left', true);
+		this.drawTextEx(lostPantiesText, x, line * lh, true);
 		line += statusLineChange;
 	}
 	
@@ -2773,7 +2815,7 @@ Window_MenuStatus.prototype.drawKarrynStatus = function() {
 		else if(fatigueLevel === 4) fatigueText = TextManager.RCMenuFatigueLevelFourText;
 		else if(fatigueLevel === 5) fatigueText = TextManager.RCMenuFatigueLevelFiveText;
 		
-		this.drawTextEx(fatigueText, x, line * lh, width, 'left', true);
+		this.drawTextEx(fatigueText, x, line * lh, true);
 		line += statusLineChange;
 	}
 	
@@ -2788,13 +2830,13 @@ Window_MenuStatus.prototype.drawKarrynStatus = function() {
 	else if(sleepQuality === 2) sleepQualityText = TextManager.RCMenuSleepQualityTwoText;
 	else if(sleepQuality >= 3) sleepQualityText = TextManager.RCMenuSleepQualityThreeText;
 	
-	this.drawTextEx(sleepQualityText, x, line * lh, width, 'left', true);
+	this.drawTextEx(sleepQualityText, x, line * lh, true);
 	line += statusLineChange;
 	
 	//Panties
 	if(actor._halberdIsDefiled) {
 		let defiledHalberdText = TextManager.RCMenuDefiledHalberdText;
-		this.drawTextEx(defiledHalberdText, x, line * lh, width, 'left', true);
+		this.drawTextEx(defiledHalberdText, x, line * lh, true);
 		line += statusLineChange;
 	}
 	
@@ -2808,38 +2850,40 @@ Window_MenuStatus.prototype.drawKarrynStatus = function() {
 		else {
 			metalExpText = TextManager.RCMenuMetalSingleText.format(actor.metalExpRateBonus());
 		}
-		this.drawTextEx(metalExpText, x, line * lh, width, 'left', true);
+		this.drawTextEx(metalExpText, x, line * lh, true);
 		line += statusLineChange;
 	}
 	
 	//Artisan Meal
 	if(actor.hadAnArtisanMeal()) {
 		let mealText = TextManager.artisanMeal(actor._artisanMeal);
-		this.drawTextEx(mealText, x, line * lh, width, 'left', true);
+		this.drawTextEx(mealText, x, line * lh, true);
 		line += statusLineChange;
 	}
 	
 	//Store Item
 	if(actor.isUsingAnyStoreItem()) {
 		let storeItemText = TextManager.storeItem(actor._usingStoreItem);
-		this.drawTextEx(storeItemText, x, line * lh, width, 'left', true);
+		this.drawTextEx(storeItemText, x, line * lh, true);
 		line += statusLineChange;
 	}
 	
 	//Gifts
 	let numOfGifts = actor.numOfGifts();
-	let giftsText = '';
-	
 	if(numOfGifts > 0) {
-		if(numOfGifts === 1)
-			giftsText = TextManager.RCMenuGiftsSingleText;
-		else
-			giftsText = TextManager.RCMenuGiftsPluralText;
+		line = this.drawAllGiftsText(x, line, lh, true, statusLineChange, actor);
 		
-		giftsText += actor.allGiftsText();
+		//let giftsText = '';
 		
-		this.drawTextEx(giftsText, x, line * lh, width, 'left', true);
-		line += statusLineChange;
+		//if(numOfGifts === 1)
+		//	giftsText = TextManager.RCMenuGiftsSingleText;
+		//else
+		//	giftsText = TextManager.RCMenuGiftsPluralText;
+		
+		//giftsText += actor.allGiftsText(x, line * lh, true, statusLineChange);
+		
+		//this.drawTextEx(giftsText, x, line * lh, width, 'left', true);
+		//line += statusLineChange;
 	}
 	
 };
