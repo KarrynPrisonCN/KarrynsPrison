@@ -557,10 +557,10 @@ DataManager.processSCDNotetags1 = function(group) {
       var line = notedata[i];
       if (line.match(/<(?:COOLDOWN):[ ](\d+)>/i)) {
         obj.cooldown[obj.id] = parseInt(RegExp.$1);
-      } else if (line.match(/<(?:AFTER BATTLE COOLDOWN):[ ]([\+\-]\d+)>/i)) {
-        obj.afterBattleCooldown = parseInt(RegExp.$1);
-      } else if (line.match(/<(?:COOLDOWN STEPS):[ ](\d+)>/i)) {
-        obj.cooldownSteps = parseInt(RegExp.$1);
+      //} else if (line.match(/<(?:AFTER BATTLE COOLDOWN):[ ]([\+\-]\d+)>/i)) {
+      //  obj.afterBattleCooldown = parseInt(RegExp.$1);
+      //} else if (line.match(/<(?:COOLDOWN STEPS):[ ](\d+)>/i)) {
+      //  obj.cooldownSteps = parseInt(RegExp.$1);
       } else if (line.match(/<(?:WARMUP):[ ](\d+)>/i)) {
         obj.warmup = parseInt(RegExp.$1);
       } else if (line.match(/<(?:SKILL)[ ](\d+)[ ](?:COOLDOWN):[ ](\d+)>/i)) {
@@ -573,12 +573,12 @@ DataManager.processSCDNotetags1 = function(group) {
           continue;
         }
         obj.cooldown[id] = parseInt(RegExp.$2);
-      } else if (line.match(/<(?:STYPE)[ ](\d+)[ ](?:COOLDOWN):[ ](\d+)>/i)) {
-        obj.stypeCooldown[parseInt(RegExp.$1)] = parseInt(RegExp.$2);
-      } else if (line.match(/<(?:GLOBAL COOLDOWN):[ ](\d+)>/i)) {
-        obj.globalCooldown = parseInt(RegExp.$1);
-      } else if (line.match(/<(?:BYPASS COOLDOWN)>/i)) {
-        obj.bypassCooldown = true;
+      //} else if (line.match(/<(?:STYPE)[ ](\d+)[ ](?:COOLDOWN):[ ](\d+)>/i)) {
+      //  obj.stypeCooldown[parseInt(RegExp.$1)] = parseInt(RegExp.$2);
+      //} else if (line.match(/<(?:GLOBAL COOLDOWN):[ ](\d+)>/i)) {
+      //  obj.globalCooldown = parseInt(RegExp.$1);
+      //} else if (line.match(/<(?:BYPASS COOLDOWN)>/i)) {
+      //  obj.bypassCooldown = true;
       } else if (line.match(/<(?:COOLDOWN EVAL)>/i)) {
         obj.cooldown[obj.id] = obj.cooldown[obj.id] || 0;
         evalMode = 'cooldown';
@@ -734,21 +734,21 @@ Yanfly.SCD.BattleManager_processActionSequence =
   BattleManager.processActionSequence;
   BattleManager.processActionSequence = function(actionName, actionArgs) {
     // GLOBAL COOLDOWN
-    if (actionName === 'GLOBAL COOLDOWN') {
-      return this.actionGlobalCooldown(actionArgs);
-    }
+    //if (actionName === 'GLOBAL COOLDOWN') {
+    //  return this.actionGlobalCooldown(actionArgs);
+    //}
     // SKILL COOLDOWN
     if (actionName.match(/SKILL[ ](\d+)[ ]COOLDOWN/i)) {
       return this.actionSkillCooldown(parseInt(RegExp.$1), actionArgs);
     }
     // SKILL TYPE COOLDOWN
-    if (actionName.match(/SKILL[ ]TYPE[ ](\d+)[ ]COOLDOWN/i)) {
-      return this.actionSTypeCooldown(parseInt(RegExp.$1), actionArgs);
-    }
+    //if (actionName.match(/SKILL[ ]TYPE[ ](\d+)[ ]COOLDOWN/i)) {
+    //  return this.actionSTypeCooldown(parseInt(RegExp.$1), actionArgs);
+    //}
     // STYPE COOLDOWN
-    if (actionName.match(/STYPE[ ](\d+)[ ]COOLDOWN/i)) {
-      return this.actionSTypeCooldown(parseInt(RegExp.$1), actionArgs);
-    }
+    //if (actionName.match(/STYPE[ ](\d+)[ ]COOLDOWN/i)) {
+    //  return this.actionSTypeCooldown(parseInt(RegExp.$1), actionArgs);
+    //}
     return Yanfly.SCD.BattleManager_processActionSequence.call(this,
       actionName, actionArgs);
   };
@@ -900,8 +900,11 @@ Game_BattlerBase.prototype.setWarmup = function(skillId, value) {
 
 Game_BattlerBase.prototype.startWarmups = function() {
     if (this._warmupTurns === undefined) this.clearWarmups();
-    for (var i = 0; i < this.allSkills().length; ++i) {
-      var skill = this.allSkills()[i];
+	if(this.isActor()) return;
+    //for (var i = 0; i < this.allSkills().length; ++i) {
+    //  var skill = this.allSkills()[i];
+	for (let i = SKILL_WARMUP_POTENTIAL_START_ID; i < SKILL_WARMUP_POTENTIAL_END_ID; ++i) {
+      var skill = this.skills()[i];
       if (!skill) continue;
       var warmup = skill.warmup;
       if (skill.warmupEval.length > 0) {
@@ -986,8 +989,8 @@ Yanfly.SCD.Game_BattlerBase_paySkillCost =
     Game_BattlerBase.prototype.paySkillCost;
 Game_BattlerBase.prototype.paySkillCost = function(skill) {
     Yanfly.SCD.Game_BattlerBase_paySkillCost.call(this, skill);
-    this.payGlobalCooldown(skill);
-    this.payStypeCooldownCost(skill);
+    //this.payGlobalCooldown(skill);
+    //this.payStypeCooldownCost(skill);
     this.payCooldownCost(skill);
     this.applyCooldownMods(skill);
 };
@@ -995,11 +998,11 @@ Game_BattlerBase.prototype.paySkillCost = function(skill) {
 Game_BattlerBase.prototype.payGlobalCooldown = function(mainSkill) {
     for (var i = 0; i < this.allSkills().length; ++i) {
       var skill = this.allSkills()[i];
-      if (!skill) continue;
+      if (!skill) continue; 
       var value = mainSkill.globalCooldown;
       value *= this.cooldownDuration(mainSkill);
       value = Math.max(value, this.cooldown(skill.id));
-      this.setCooldown(skill.id, value);
+      this.setCooldown(skill.id, value); 
     }
 };
 
@@ -1068,8 +1071,8 @@ Game_BattlerBase.prototype.updateCooldownSteps = function() {
 };
 
 Game_BattlerBase.prototype.applyCooldownEffect = function(skill) {
-    this.applyGlobalCooldownChange(skill);
-    this.applyStypeCooldownChange(skill);
+    //this.applyGlobalCooldownChange(skill);
+    //this.applyStypeCooldownChange(skill);
     this.applyCooldownChange(skill);
 };
 
@@ -1108,13 +1111,13 @@ Game_BattlerBase.prototype.applyGlobalCooldownChange = function(mainSkill) {
 
 Game_BattlerBase.prototype.getWarmupMods = function(skill) {
     var value = 0;
-    value += this.flatWarmupChange(skill);
+    //value += this.flatWarmupChange(skill);
     return value;
 };
 
 Game_BattlerBase.prototype.applyCooldownMods = function(skill) {
     var value = this.cooldown(skill.id);
-    value += this.flatCooldownChange(skill);
+    //value += this.flatCooldownChange(skill);
     this.setCooldown(skill.id, Math.max(0, value));
 };
 

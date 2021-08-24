@@ -55,6 +55,18 @@ const REM_TIMER_FONT_SIZE = 22;
 const REM_BATTLE_PAUSE_ARROW_X = 440;
 const REM_BATTLE_PAUSE_ARROW_Y = 170;
 
+const PICTURE_BATTLE_0_ID = 30;
+const PICTURE_BATTLE_1_ID = 31;
+const PICTURE_BATTLE_2_ID = 32;
+const PICTURE_BATTLE_3_ID = 33;
+const PICTURE_BATTLE_4_ID = 34;
+const PICTURE_BATTLE_5_ID = 35;
+const PICTURE_BATTLE_6_ID = 36;
+const PICTURE_BATTLE_7_ID = 37;
+const PICTURE_BATTLE_8_ID = 38;
+const PICTURE_BATTLE_9_ID = 39;
+const PICTURE_CUTIN_ID = 70;
+
 //=============================================================================
  /*:
  * @plugindesc Misc
@@ -144,12 +156,10 @@ Game_CharacterBase.prototype.distancePerFrame = function() {
 ///////////////////
 
 Sprite_Battler.prototype.createVisualHpGaugeWindow = function() {
-	if (!this._battler) return;
-	if (this._createdVisualHpGaugeWindow && this._battler.displayVisualHpGaugeWindow()) return;
-	if (this.checkVisualATBGauge()) {
-		if (!this._visualATBWindow) return;
-		if (!this.parent.parent.children.contains(this._visualATBWindow)) return;
-	}
+	if(!this._battler) return;
+	if(this._battler.isActor()) return;
+	if(this._createdVisualHpGaugeWindow && this._battler.displayVisualHpGaugeWindow()) return;
+	
 	if(this._battler.displayVisualHpGaugeWindow()) {
 		this._createdVisualHpGaugeWindow = true;
 		this._visualHpGauge = new Window_VisualHPGauge();
@@ -160,26 +170,40 @@ Sprite_Battler.prototype.createVisualHpGaugeWindow = function() {
 		this._createdVisualHpGaugeWindow = false;
 		this.parent.parent.removeChild(this._visualHpGauge);
 		this._visualHpGauge = false;
-		if(this._visualPleasureGauge) {
-			this.parent.parent.removeChild(this._visualPleasureGauge);
-			this._visualPleasureGauge = false;
-		}
+		/*
 		if(this._visualEnergyGauge) {
 			this.parent.parent.removeChild(this._visualEnergyGauge);
 			this._visualEnergyGauge = false;
 		}
+		*/
 	}
-	
-	if(this._battler.displayVisualPleasureGaugeWindow()) {
-		this._visualPleasureGauge = new Window_VisualPleasureGauge();
-		this._visualPleasureGauge.setBattler(this._battler);
-		this.parent.parent.addChild(this._visualPleasureGauge);
-	}
+
+	/*
 	if(this._battler.displayVisualEnergyGaugeWindow()) {
 		this._visualEnergyGauge = new Window_VisualEnergyGauge();
 		this._visualEnergyGauge.setBattler(this._battler);
 		this.parent.parent.addChild(this._visualEnergyGauge);
 	}
+	*/
+};
+
+Sprite_Battler.prototype.createVisualPleasureGaugeWindow = function() {
+	if(!this._battler) return;
+	if(this._battler.isActor()) return;
+	if(this._createdVisualPleasureGaugeWindow && this._battler.displayVisualPleasureGaugeWindow()) return;
+	
+	if(this._battler.displayVisualPleasureGaugeWindow()) {
+		this._createdVisualPleasureGaugeWindow = true;
+		this._visualPleasureGauge = new Window_VisualPleasureGauge();
+		this._visualPleasureGauge.setBattler(this._battler);
+		this.parent.parent.addChild(this._visualPleasureGauge);
+	}
+	else if(this._createdVisualPleasureGaugeWindow) {
+		this._createdVisualPleasureGaugeWindow = false;
+		this.parent.parent.removeChild(this._visualPleasureGauge);
+		this._visualPleasureGauge = false;
+	}
+	
 };
 
 Sprite_Battler.prototype.updateSelectionEffect = function() {
@@ -218,10 +242,13 @@ Spriteset_Battle.prototype.createLowerLayer = function() {
     this.createBackground();
     this.createBattleField();
     this.createBattleback();
-    if(!$gameSystem.drawEnemiesAboveBattleTachie()) { 
+    if(!$gameSystem.drawEnemiesAboveBattleTachie()) {  
 		this.createEnemies();
-	}
+	} 
     this.createActors();
+	if($gameSystem.drawEnemiesAboveBattleTachie()) {  
+		this.createEnemies();
+	} 
 };
 
 Spriteset_Battle.prototype.addEnemy = function(enemy) {
@@ -282,8 +309,8 @@ Game_BattlerBase.prototype.skillMpCost = function(skill) {
 /////////////
 
 Game_Enemy.prototype.displayVisualHpGaugeWindow = function() {
-	if(Karryn.isInDrawEnemiesAtHalfWidthPose()) return false;
-	if(Karryn.isInDontShowEnemyGaugePose()) return false;
+	//if(Karryn.isInDrawEnemiesAtHalfWidthPose()) return false;
+	if(Karryn.isInDontShowEnemyHealthGaugePose()) return false;
 	
 	let validShow = !this._tagDontDrawGauge || 
 	(Karryn.isInShowEnemyGaugeOnlyDuringValidSelectionPose() && this._tagDontDrawGauge && (SceneManager._scene._enemyWindow.isOpenAndActive() && this._selectionShowName));
@@ -295,8 +322,8 @@ Game_Actor.prototype.displayVisualHpGaugeWindow = function() {
 };
 
 Game_Enemy.prototype.displayVisualPleasureGaugeWindow = function() {
-	if(Karryn.isInDrawEnemiesAtHalfWidthPose()) return false;
-	if(Karryn.isInDontShowEnemyGaugePose()) return false;
+	//if(Karryn.isInDrawEnemiesAtHalfWidthPose()) return false;
+	if(Karryn.isInDontShowEnemyPleasureGaugePose()) return false;
 	
 	let validShow = !this._tagDontDrawGauge || 
 	(Karryn.isInShowEnemyGaugeOnlyDuringValidSelectionPose() && (SceneManager._scene._enemyWindow.isOpenAndActive() && this._selectionShowName));
@@ -313,6 +340,13 @@ Game_Enemy.prototype.displayVisualEnergyGaugeWindow = function() {
 
 Game_Actor.prototype.displayVisualEnergyGaugeWindow = function() {
 	return false;
+};
+
+Game_Enemy.prototype.hpGaugeWidth = function() {
+	let width = this.spriteWidth() / 2;	
+	
+	//width = Math.max(width,	Yanfly.Param.VHGMinHpWidth);
+	return (width & 1) ? width + 1 : width;
 };
 
 //////////
@@ -448,6 +482,25 @@ Window_BattleEnemy.prototype.isMouseOverEnemy = function(enemy) {
       y < rect.y + rect.height);
 };
 
+/////////
+// Touch Input
+/*
+TouchInput._setupEventHandlers = function() {
+    var isSupportPassive = Utils.isSupportPassiveEvent();
+    document.addEventListener('mousedown', this._onMouseDown.bind(this));
+    document.addEventListener('mousemove', this._onMouseMove.bind(this));
+    document.addEventListener('mouseup', this._onMouseUp.bind(this));
+    document.addEventListener('wheel', this._onWheel.bind(this));
+    document.addEventListener('pointerdown', this._onPointerDown.bind(this));
+	if(Utils.isMobileDevice()) {
+		document.addEventListener('touchstart', this._onTouchStart.bind(this), isSupportPassive ? {passive: false} : false);
+		document.addEventListener('touchmove', this._onTouchMove.bind(this), isSupportPassive ? {passive: false} : false);
+		document.addEventListener('touchend', this._onTouchEnd.bind(this));
+		document.addEventListener('touchcancel', this._onTouchCancel.bind(this));
+	}
+};
+*/
+
 /////////////
 // Scene Title
 ///////////////
@@ -466,9 +519,12 @@ Scene_Title.prototype.commandRemWebsite = function() {
 	
 	let url = 'https://subscribestar.adult/remtairy';
 	let url_jp = 'https://ci-en.dlsite.com/creator/2068';
+	let url_steam = 'https://store.steampowered.com/app/1619750/Karryns_Prison/';
 	
 	const commander = GameStartUpWebSite.getInstance();
-	if(TextManager.isJapanese)
+	if(STEAM_MODE)
+		commander.execute(url_steam);
+	else if(TextManager.isJapanese)
 		commander.execute(url_jp);
 	else
 		commander.execute(url);
@@ -1786,6 +1842,10 @@ Window_Base.prototype.convertExtraEscapeCharacters = function(text) {
 	text = text.replace(/\x1bREM_EDICT_DESC\[(\d+)\]/gi, function() {
         return this.remMiscEdictDescription(parseInt(arguments[1]));
     }.bind(this));
+	//REM_SMEGMA_DESC[n]
+	text = text.replace(/\x1bREM_SMEGMA_DESC\[(\d+)\]/gi, function() {
+        return this.remMiscSmegmaDescription(parseInt(arguments[1]));
+    }.bind(this));
 	//REM_CANT[n]
 	text = text.replace(/\x1bREM_CANT\[(\d+)\]/gi, function() {
         return this.remMiscSkillCant(parseInt(arguments[1]));
@@ -1874,6 +1934,11 @@ Window_Base.prototype.remMiscTrayDescription = function(n) {
 Window_Base.prototype.remMiscEdictDescription = function(n) {
 	return TextManager.edictsDesc(n);
 };
+
+Window_Base.prototype.remMiscSmegmaDescription = function(n) {
+	return TextManager.smegmaDesc(n);
+};
+
 
 
 Window_Base.prototype.remMiscSkillCant = function(n) {
@@ -2018,16 +2083,27 @@ Window_VisualPleasureGauge.prototype.makeWindowBoundaries = function() {
 };
 
 Window_VisualPleasureGauge.prototype.updateWindowPosition = function() {
-    if (!this._battler) return;
-    var battler = this._battler;
-    //this.x = battler.spritePosX();
-    this.x = battler.spritePosX() + this.standardPadding() + ENEMY_NAME_TEXT_X;
-    //this.x -= Math.ceil(this.width / 2); 
-	this.x -= Math.ceil(this.width); 
-    this.x = this.x.clamp(this._minX, this._maxX);
-    this.y = battler.spritePosY() + ENEMY_NAME_Y_VARIABLE;
-	//this.y = this.y.clamp(this._minY, this._maxY);
-	this.y += Yanfly.Param.VHGBufferY;
+    if(!this._battler) return;
+    let battler = this._battler;
+
+	
+	if($gameParty.isInStripperBattle && !Karryn.isInStripperSexPose()) {
+		this.x = battler.spritePosX();
+		this.x -= Math.ceil(this.width / 2); 
+		this.x += STRIP_CLUB_ENEMY_PLEASURE_GAUGE_X;
+		this.y = battler.spritePosY() + ENEMY_NAME_Y_VARIABLE;
+		this.y += Yanfly.Param.VHGBufferY;
+		this.y += STRIP_CLUB_ENEMY_PLEASURE_GAUGE_Y;
+	}
+	else {
+		this.x = battler.spritePosX() + this.standardPadding() + ENEMY_NAME_TEXT_X;
+		this.x -= Math.ceil(this.width); 
+		this.x = this.x.clamp(this._minX, this._maxX);
+		this.y = battler.spritePosY() + ENEMY_NAME_Y_VARIABLE;
+		this.y += Yanfly.Param.VHGBufferY;
+	}
+	
+	
 	if(this._battler.displayVisualEnergyGaugeWindow()) {
 		this.y -= this.standardPadding() - this._battler.hpGaugeHeight() * 2 + 4;
 	}
@@ -2726,6 +2802,14 @@ Game_Player.prototype.getReturnMapY = function() {
 	return $gameParty._returnY;
 };
 
+Game_Actor.prototype.performMapDamage = function() {
+    return false;;
+};
+
+Game_Player.prototype.isOnDamageFloor = function() {
+    return false;
+};
+
 /////////
 // Sprite RemNumber
 ///////////////////
@@ -3024,7 +3108,7 @@ DataManager.processRemTMNotetags_RemtairyMisc_StateIcons = function(group) {
 // Battle Tachie
 
 Game_System.prototype.battleTachieAppearX = function() {
-	if(Karryn.poseName == POSE_STANDBY && $gameParty._forceAdvantage == 'NORMAL') {
+	if(Karryn.isInStandbyPose() && $gameParty._forceAdvantage == 'NORMAL') {
 		return BATTLETACHIE_NORMAL_APPEAR_X;
 	}
 	else {
@@ -3033,7 +3117,7 @@ Game_System.prototype.battleTachieAppearX = function() {
 };
 
 Game_System.prototype.battleTachieHiddenX = function() {
-	if(Karryn.poseName == POSE_STANDBY && $gameParty._forceAdvantage == 'NORMAL') {
+	if(Karryn.isInStandbyPose() && $gameParty._forceAdvantage == 'NORMAL') {
 		return BATTLETACHIE_HIDDEN_X;
 	}
 	else {
@@ -3120,4 +3204,49 @@ Graphics.render = function(stage) {
     this.frameCount++;
 };
 
+///////////
+// Scene Map
 
+Scene_Map.prototype.start = function() {
+    Scene_Base.prototype.start.call(this);
+    SceneManager.clearStack();
+    if (this._transfer) {
+        this.fadeInForTransfer();
+		if(!this._spriteset || !this._mapNameWindow) 
+			this.createDisplayObjects();
+        this._mapNameWindow.open();
+        $gameMap.autoplay();
+    } else if (this.needsFadeIn()) {
+        this.startFadeIn(this.fadeSpeed(), false);
+    }
+    this.menuCalling = false;
+};
+
+Scene_Map.prototype.performAutosave = function() {
+  if ($gameMap.mapId() <= 0) return;
+  if ($gameTemp._autosaveNewGame) return;
+  if (!$gameSystem.canAutosave()) return;
+  $gameSystem.onBeforeSave();
+  StorageManager.backupAutosave(StorageManager.getCurrentAutosaveSlot());
+  DataManager.saveGameWithoutRescue(StorageManager.getCurrentAutosaveSlot());
+  if (this._autosaveMsgWindow) this._autosaveMsgWindow.reveal();
+};
+
+///////////
+// Storage Manager
+
+StorageManager.backupAutosave = function(savefileId) {
+    if (this.exists(savefileId)) {
+        if (this.isLocalMode()) {
+            var data = this.loadFromLocalFile(savefileId);
+            var compressed = LZString.compressToBase64(data);
+            var fs = require('fs');
+            var dirPath = this.localFileDirectoryPath();
+            var filePath = dirPath + "lastsave.autobak";
+            if (!fs.existsSync(dirPath)) {
+                fs.mkdirSync(dirPath);
+            }
+            fs.writeFileSync(filePath, compressed);
+        } 
+    }
+};

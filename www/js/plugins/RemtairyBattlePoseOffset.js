@@ -21,11 +21,7 @@ Game_Actor.prototype.getBattlePoseOffetArray = function () {
 	let y_offset = 0;
 	//ここから
 	
-	if(poseName == POSE_DOWN_ORGASM) {
-        x_offset = 70;
-        y_offset = 0;
-    }
-	else if(poseName == POSE_KICK) {
+	if(poseName == POSE_KICK) {
         x_offset = 100;
         y_offset = 0;
     }

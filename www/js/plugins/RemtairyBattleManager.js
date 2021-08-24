@@ -1,22 +1,22 @@
 ﻿var Remtairy = Remtairy || {};
 Remtairy.BM = Remtairy.BM || {};
 
-//Prison level normal battle bgm
-const BM_EB_BGM_NAME = "Battle1";
-const BM_EB_BGM_VOLUME = 67;
+//EB normal battle bgm
+const BM_EB_BGM_NAME = "Battle_EB1";
+const BM_EB_BGM_VOLUME = 65;
 
 //Level 1 Normal Battle BGM
 const BM_PLVL1_NORMAL_BGM_NAME = "Battle1";
-const BM_PLVL1_NORMAL_BGM_VOLUME = 62;
+const BM_PLVL1_NORMAL_BGM_VOLUME = 65;
 //Level 2 Normal Battle BGM
-const BM_PLVL2_NORMAL_BGM_NAME = "Battle1";
-const BM_PLVL2_NORMAL_BGM_VOLUME = 62;
+const BM_PLVL2_NORMAL_BGM_NAME = "Battle7";
+const BM_PLVL2_NORMAL_BGM_VOLUME = 70;
 //Level 3 Normal Battle BGM
 const BM_PLVL3_NORMAL_BGM_NAME = "Battle5";
-const BM_PLVL3_NORMAL_BGM_VOLUME = 67;
+const BM_PLVL3_NORMAL_BGM_VOLUME = 65;
 //Level 4 Normal Battle BGM
-const BM_PLVL4_NORMAL_BGM_NAME = "Battle5";
-const BM_PLVL4_NORMAL_BGM_VOLUME = 67;
+const BM_PLVL4_NORMAL_BGM_NAME = "Battle8";
+const BM_PLVL4_NORMAL_BGM_VOLUME = 90;
 
 //Prison level boss battle bgm
 //Yasu Tutorial Battle
@@ -35,7 +35,7 @@ const BM_PLVL3_BOSS_ARON_BGM_NAME = "Battle4";
 const BM_PLVL3_BOSS_ARON_BGM_VOLUME = 80;
 //Noinim Battle 
 const BM_PLVL4_BOSS_BGM_NAME = "Battle6"; 
-const BM_PLVL4_BOSS_BGM_VOLUME = 95;
+const BM_PLVL4_BOSS_BGM_VOLUME = 90;
 
 //enemy sex pose
 const BM_ENEMY_SEX_BGM_NAME = "H_Gangbang1";
@@ -87,6 +87,18 @@ const BM_GLORY_SEX_BGM_NAME = "H_Job1";
 const BM_GLORY_SEX_BGM_PAN = 0;
 const BM_GLORY_SEX_BGM_PITCH = 100;
 const BM_GLORY_SEX_BGM_VOLUME = 95;
+
+//stripper show
+const BM_STRIPPER_SHOW_BGM_NAME = "Job1";
+const BM_STRIPPER_SHOW_BGM_PAN = 0;
+const BM_STRIPPER_SHOW_BGM_PITCH = 100;
+const BM_STRIPPER_SHOW_BGM_VOLUME = 95;
+
+//stripper sex
+const BM_STRIPPER_SEX_BGM_NAME = "H_Job1";
+const BM_STRIPPER_SEX_BGM_PAN = 0;
+const BM_STRIPPER_SEX_BGM_PITCH = 100;
+const BM_STRIPPER_SEX_BGM_VOLUME = 95;
 
 //down pose - stamina
 const BM_DOWN_STAMINA_BGM_NAME = "Down1";
@@ -151,6 +163,18 @@ const BM_DEFEATED_LV4_SLUTTY_BGM_PAN = 0;
 const BM_DEFEATED_LV4_SLUTTY_BGM_PITCH = 100;
 const BM_DEFEATED_LV4_SLUTTY_BGM_VOLUME = 80;
 
+//defeated lvl 5 - normal
+const BM_DEFEATED_LV5_NORMAL_BGM_NAME = "H_Defeated1";
+const BM_DEFEATED_LV5_NORMAL_BGM_PAN = 0;
+const BM_DEFEATED_LV5_NORMAL_BGM_PITCH = 100;
+const BM_DEFEATED_LV5_NORMAL_BGM_VOLUME = 70;
+
+//defeated lvl 5 - slutty
+const BM_DEFEATED_LV5_SLUTTY_BGM_NAME = "H_Slut2";
+const BM_DEFEATED_LV5_SLUTTY_BGM_PAN = 0;
+const BM_DEFEATED_LV5_SLUTTY_BGM_PITCH = 100;
+const BM_DEFEATED_LV5_SLUTTY_BGM_VOLUME = 80;
+
 //defeated guard - normal
 const BM_DEFEATED_GUARD_NORMAL_BGM_NAME = "H_Defeated1";
 const BM_DEFEATED_GUARD_NORMAL_BGM_PAN = 0;
@@ -162,6 +186,18 @@ const BM_DEFEATED_GUARD_SLUTTY_BGM_NAME = "H_Slut2";
 const BM_DEFEATED_GUARD_SLUTTY_BGM_PAN = 0;
 const BM_DEFEATED_GUARD_SLUTTY_BGM_PITCH = 100;
 const BM_DEFEATED_GUARD_SLUTTY_BGM_VOLUME = 80;
+
+//night battle - normal
+const BM_NIGHT_BATTLE_NORMAL_BGM_NAME = "Battle_Night1";
+const BM_NIGHT_BATTLE_NORMAL_BGM_PAN = 0;
+const BM_NIGHT_BATTLE_NORMAL_BGM_PITCH = 100;
+const BM_NIGHT_BATTLE_NORMAL_BGM_VOLUME = 80;
+
+//night battle - slutty
+const BM_NIGHT_BATTLE_SLUTTY_BGM_NAME = "Battle_Night2";
+const BM_NIGHT_BATTLE_SLUTTY_BGM_PAN = 0;
+const BM_NIGHT_BATTLE_SLUTTY_BGM_PITCH = 95;
+const BM_NIGHT_BATTLE_SLUTTY_BGM_VOLUME = 70;
 
 //masturbation battle bgm
 const BM_MAS_BGM_NAME = "M_Sofa1";
@@ -245,7 +281,7 @@ BattleManager.playBattleBgm = function() {
 	let bgmPan = 0;
 	let bgmPitch = 100;
 	let mapId = $gameMap._mapId;
-	
+
 	if(Karryn.isInMasturbationCouchPose()) {
 		bgmName = BM_MAS_BGM_NAME;
 		bgmVolume = BM_MAS_BGM_VOLUME;
@@ -340,7 +376,7 @@ BattleManager.playBattleBgm = function() {
 		bgmPan = BM_WAITRESS_SEX_BGM_PAN;
 		bgmVolume = BM_WAITRESS_SEX_BGM_VOLUME;
 	}
-	else if(Karryn.isInReceptionistPose()) {
+	else if($gameParty.isInReceptionistBattle) {
 		bgmName = BM_RECEPTIONIST_JOB_BGM_NAME;
 		bgmPitch = BM_RECEPTIONIST_JOB_BGM_PITCH;
 		bgmPan = BM_RECEPTIONIST_JOB_BGM_PAN;
@@ -360,37 +396,74 @@ BattleManager.playBattleBgm = function() {
 			bgmVolume = BM_GLORY_START_NORMAL_BGM_VOLUME;
 		}
 	}
+	else if($gameParty.isInStripperBattle) {
+		AudioManager.stopBgm();
+		AudioManager.stopBgs();
+		return;
+	}
 	else {
+		let sluttyVersionBgm = Karryn.getMapReactionScore() >= VAR_DEF_RS_LV2_REQ;
 		if(mapId === MAP_ID_KARRYN_OFFICE && $gameVariables.value(VARIABLE_PROLOGUE_PROGRESS_ID) === 5 && !$gameSwitches.value(SWITCH_PROLOGUE_ENDED)) {
 			bgmName = BM_TUTORIAL_BGM_NAME;
 			bgmVolume = BM_TUTORIAL_BGM_VOLUME;
 		}
 		else if(Prison.currentlyOutsidePrison()) {
-			bgmName = BM_EB_BGM_NAME;
-			bgmVolume = BM_EB_BGM_VOLUME;
+			if((mapId === MAP_ID_EB_HALLWAY || mapId === MAP_ID_YARD || mapId === MAP_ID_OUTSIDE) && $gameParty.isNightBattle()) {
+				if(sluttyVersionBgm) {
+					bgmName = BM_NIGHT_BATTLE_SLUTTY_BGM_NAME;
+					bgmVolume = BM_NIGHT_BATTLE_SLUTTY_BGM_VOLUME;
+				}
+				else {
+					bgmName = BM_NIGHT_BATTLE_NORMAL_BGM_NAME;
+					bgmVolume = BM_NIGHT_BATTLE_NORMAL_BGM_VOLUME;
+				}
+			}
+			else {
+				bgmName = BM_EB_BGM_NAME;
+				bgmVolume = BM_EB_BGM_VOLUME;
+			}
 		}
 		else if(Prison.currentlyPrisonLevelOne()) {
-			bgmName = BM_PLVL1_NORMAL_BGM_NAME;
-			bgmVolume = BM_PLVL1_NORMAL_BGM_VOLUME;
-			
 			if(mapId === MAP_ID_RECEPTION && $gameParty._isBossBattleFlag) {
 				bgmName = BM_PLVL1_BOSS_BGM_NAME;
 				bgmVolume = BM_PLVL1_BOSS_BGM_VOLUME;
 			}
+			else if((mapId === MAP_ID_LVL1_HALLWAY || mapId === MAP_ID_VISITOR_ROOM || mapId === MAP_ID_VISITOR_ROOM_BROKEN) && $gameParty.isNightBattle()) {
+				if(sluttyVersionBgm) {
+					bgmName = BM_NIGHT_BATTLE_SLUTTY_BGM_NAME;
+					bgmVolume = BM_NIGHT_BATTLE_SLUTTY_BGM_VOLUME;
+				}
+				else {
+					bgmName = BM_NIGHT_BATTLE_NORMAL_BGM_NAME;
+					bgmVolume = BM_NIGHT_BATTLE_NORMAL_BGM_VOLUME;
+				}
+			}
+			else {
+				bgmName = BM_PLVL1_NORMAL_BGM_NAME;
+				bgmVolume = BM_PLVL1_NORMAL_BGM_VOLUME;
+			}
 		}
 		else if(Prison.currentlyPrisonLevelTwo()) {
-			bgmName = BM_PLVL2_NORMAL_BGM_NAME;
-			bgmVolume = BM_PLVL2_NORMAL_BGM_VOLUME;
-			
 			if(mapId === MAP_ID_OFFICE_FLOODED && $gameParty._isBossBattleFlag) {
 				bgmName = BM_PLVL2_BOSS_BGM_NAME;
 				bgmVolume = BM_PLVL2_BOSS_BGM_VOLUME;
 			}
+			else if(mapId === MAP_ID_LVL2_HALLWAY && $gameParty.isNightBattle()) {
+				if(sluttyVersionBgm) {
+					bgmName = BM_NIGHT_BATTLE_SLUTTY_BGM_NAME;
+					bgmVolume = BM_NIGHT_BATTLE_SLUTTY_BGM_VOLUME;
+				}
+				else {
+					bgmName = BM_NIGHT_BATTLE_NORMAL_BGM_NAME;
+					bgmVolume = BM_NIGHT_BATTLE_NORMAL_BGM_VOLUME;
+				}
+			}
+			else {
+				bgmName = BM_PLVL2_NORMAL_BGM_NAME;
+				bgmVolume = BM_PLVL2_NORMAL_BGM_VOLUME;
+			}
 		}
 		else if(Prison.currentlyPrisonLevelThree()) {
-			bgmName = BM_PLVL3_NORMAL_BGM_NAME;
-			bgmVolume = BM_PLVL3_NORMAL_BGM_VOLUME;
-			
 			if(mapId === MAP_ID_COMMON_AREA_NORTH_EAST) {
 				if($gameTroop._troopId === 142 && $gameTroop._aronAppeared) {
 					bgmName = BM_PLVL3_BOSS_ARON_BGM_NAME;
@@ -402,19 +475,44 @@ BattleManager.playBattleBgm = function() {
 
 				}
 			}
+			else if(mapId === MAP_ID_COMMON_AREA_SOUTH_EAST && $gameParty.isNightBattle()) {
+				if(sluttyVersionBgm) {
+					bgmName = BM_NIGHT_BATTLE_SLUTTY_BGM_NAME;
+					bgmVolume = BM_NIGHT_BATTLE_SLUTTY_BGM_VOLUME;
+				}
+				else {
+					bgmName = BM_NIGHT_BATTLE_NORMAL_BGM_NAME;
+					bgmVolume = BM_NIGHT_BATTLE_NORMAL_BGM_VOLUME;
+				}
+			}
+			else {
+				bgmName = BM_PLVL3_NORMAL_BGM_NAME;
+				bgmVolume = BM_PLVL3_NORMAL_BGM_VOLUME;
+			}
 		
 		}
 		else if(Prison.currentlyPrisonLevelFour()) {
-			bgmName = BM_PLVL4_NORMAL_BGM_NAME;
-			bgmVolume = BM_PLVL4_NORMAL_BGM_VOLUME;
-			
 			if(mapId === MAP_ID_LVL4_STAIRS_TO_LVL5 && $gameParty._isBossBattleFlag) {
 				bgmName = BM_PLVL4_BOSS_BGM_NAME;
 				bgmVolume = BM_PLVL4_BOSS_BGM_VOLUME;
 			}
+			else if($gameParty.isNightBattle()) {
+				if(sluttyVersionBgm) {
+					bgmName = BM_NIGHT_BATTLE_SLUTTY_BGM_NAME;
+					bgmVolume = BM_NIGHT_BATTLE_SLUTTY_BGM_VOLUME;
+				}
+				else {
+					bgmName = BM_NIGHT_BATTLE_NORMAL_BGM_NAME;
+					bgmVolume = BM_NIGHT_BATTLE_NORMAL_BGM_VOLUME;
+				}
+			}
+			else {
+				bgmName = BM_PLVL4_NORMAL_BGM_NAME;
+				bgmVolume = BM_PLVL4_NORMAL_BGM_VOLUME;
+			}
 		}
 	}
-	
+
 	AudioManager.playBgm({name:bgmName, pan:bgmPan, pitch:bgmPitch, pos:0, volume:bgmVolume});
     AudioManager.stopBgs();
 };
@@ -507,8 +605,6 @@ BattleManager.playSpecialBgm_WaitressSex = function() {
 	if(!this._playingSpecialBgm) {
 		this._normalBgm = AudioManager.saveBgm();
 		if(this._playingDownBgmChange) {
-			//this._normalBgm.pitch = this._normalBgm.pitch - BM_DOWN_STAMINA_BGM_PITCH_CHANGE;
-			//this._normalBgm.volume = this._normalBgm.volume - BM_DOWN_STAMINA_BGM_VOLUME_CHANGE;
 			this._playingDownBgmChange = false;
 		}
 	}
@@ -521,8 +617,6 @@ BattleManager.playSpecialBgm_ReceptionistSex = function() {
 	if(!this._playingSpecialBgm) {
 		this._normalBgm = AudioManager.saveBgm();
 		if(this._playingDownBgmChange) {
-			//this._normalBgm.pitch = this._normalBgm.pitch - BM_DOWN_STAMINA_BGM_PITCH_CHANGE;
-			//this._normalBgm.volume = this._normalBgm.volume - BM_DOWN_STAMINA_BGM_VOLUME_CHANGE;
 			this._playingDownBgmChange = false;
 		}
 	}
@@ -535,12 +629,33 @@ BattleManager.playSpecialBgm_GlorySex = function() {
 	if(!this._playingSpecialBgm) {
 		this._normalBgm = AudioManager.saveBgm();
 		if(this._playingDownBgmChange) {
-			//this._normalBgm.pitch = this._normalBgm.pitch - BM_DOWN_STAMINA_BGM_PITCH_CHANGE;
-			//this._normalBgm.volume = this._normalBgm.volume - BM_DOWN_STAMINA_BGM_VOLUME_CHANGE;
 			this._playingDownBgmChange = false;
 		}
 	}
     AudioManager.playBgm({name:BM_GLORY_SEX_BGM_NAME, pan:BM_GLORY_SEX_BGM_PAN, pitch:BM_GLORY_SEX_BGM_PITCH, pos:0, volume: BM_GLORY_SEX_BGM_VOLUME});
+	AudioManager.stopBgs();
+	this._playingSpecialBgm = true;
+};
+
+BattleManager.playSpecialBgm_StripperShow = function() {
+	if(!this._playingSpecialBgm) {
+		this._normalBgm = AudioManager.saveBgm();
+		if(this._playingDownBgmChange) {
+			this._playingDownBgmChange = false;
+		}
+	}
+    AudioManager.playBgm({name:BM_STRIPPER_SHOW_BGM_NAME, pan:BM_STRIPPER_SHOW_BGM_PAN, pitch:BM_STRIPPER_SHOW_BGM_PITCH, pos:0, volume: BM_STRIPPER_SHOW_BGM_VOLUME});
+	AudioManager.stopBgs();
+	this._playingSpecialBgm = true;
+};
+BattleManager.playSpecialBgm_StripperSex = function() {
+	if(!this._playingSpecialBgm) {
+		this._normalBgm = AudioManager.saveBgm();
+		if(this._playingDownBgmChange) {
+			this._playingDownBgmChange = false;
+		}
+	}
+    AudioManager.playBgm({name:BM_STRIPPER_SEX_BGM_NAME, pan:BM_STRIPPER_SEX_BGM_PAN, pitch:BM_STRIPPER_SEX_BGM_PITCH, pos:0, volume: BM_STRIPPER_SEX_BGM_VOLUME});
 	AudioManager.stopBgs();
 	this._playingSpecialBgm = true;
 };
@@ -569,6 +684,7 @@ BattleManager.pullOutAllEnemies = function() {
 	
 	actor.setPostSexPose();
 	actor.setAllowTachieUpdate(true);
+	actor.setAllowTachieEmoteUpdate(true);
 };
 
 BattleManager.pullOutEnemy = function(enemy) {
@@ -830,7 +946,7 @@ BattleManager.updateTurn = function() {
 		//this.setBMAllowTachieUpdate(true);
 		this.preEndTurnManagement();
         this.endTurn();
-		this.refreshAllBattlerPoses();
+		this.refreshAllBattlerPoses(false);
     }
 };
 
@@ -937,14 +1053,14 @@ BattleManager.checkCounterEval = function(code, skill, subject, target) {
 Remtairy.BM.BattleManager_endAction = BattleManager.endAction;
 BattleManager.endAction = function() {
     Remtairy.BM.BattleManager_endAction.call(this);
-	this.refreshAllBattlerPoses();
+	this.refreshAllBattlerPoses(false);
 	//this.resetAllSpriteBattlerPos();
 };
 
-BattleManager.refreshAllBattlerPoses = function() {
+BattleManager.refreshAllBattlerPoses = function(onlyChangeIfDifferent) {
 	for(var i = 0; i < $gameParty.members().length; i++) {
 		if(!$gameParty.members()[i]) { continue; }
-		$gameParty.members()[i].refreshPose();	
+		$gameParty.members()[i].refreshPose(onlyChangeIfDifferent);	
 	}
 };
 
@@ -1005,7 +1121,7 @@ Game_Action.prototype.isActorKickSkill = function() {
 };
 
 Game_Action.prototype.isActorCombatStanceSkill = function() {
-    if (this.isSkill()) {
+    if(this.isSkill()) {
         let skillId = this._item._itemId;
 		
 		//for testing empty attack skillIds
@@ -1148,6 +1264,7 @@ BattleManager.processVictory = function() {
 		this.onStartOfConBat();
 		return;	
 	}
+	
 	this.getDataRewardsCB();
 	
     $gameParty.performVictory();
@@ -1166,6 +1283,10 @@ BattleManager.processVictory = function() {
 };
 
 BattleManager.processNormalVictory = function() {
+	if($gameParty.isNightBattle() && !$gameParty._nightBattleVariableCounted) {
+		$gameParty._nightBattleVariableCounted = true;
+		$gameParty.addNightBattleCompletedRecord();
+	}
     this.makeRewards();
 	this.makeExpResults();
 	//$gameParty.calculateParamLvlsGained();
@@ -1268,7 +1389,21 @@ BattleManager.checkBattleEndJobs = function() {
             return true;
 		}
 	}
-	else if(Karryn.isInReceptionistPose()) {
+	else if(Karryn.isInWaitressSexPose()) {
+		if ($gameParty.isAllDead()) {
+            this.processDefeat();
+            return true;
+        } 
+		else if($gameTroop.isAllOutOfEjaculationStock()) {
+			if(actor._karrynMugContent === ALCOHOL_TYPE_SEMEN && actor._karrynMugAmount > 0)
+				return false
+			else {
+				this.processVictory();
+				return true;
+			}
+        }
+	}
+	else if($gameParty.isInReceptionistBattle) {
 		if($gameParty.receptionistBattle_getCurrentTimeInSeconds() >= $gameParty._receptionistBattle_timeLimit) {
 			this.processVictory();
             return true;
@@ -1278,19 +1413,6 @@ BattleManager.checkBattleEndJobs = function() {
             return true;
 		}
 	}
-	else if(Karryn.isInWaitressSexPose()) {
-		if ($gameParty.isAllDead()) {
-            this.processDefeat();
-            return true;
-        } else if ($gameTroop.isAllOutOfEjaculationStock()) {
-			if(actor._karrynMugContent === ALCOHOL_TYPE_SEMEN && actor._karrynMugAmount > 0)
-				return false
-			else {
-				this.processVictory();
-				return true;
-			}
-        }
-	}
 	else if($gameParty.isInGloryBattle) {
 		if($gameParty.isAllDead() || actor._gloryBattle_badExit) {
             this.processDefeat();
@@ -1299,6 +1421,24 @@ BattleManager.checkBattleEndJobs = function() {
 		else if(actor._gloryBattle_safeExit) {
 			this.processVictory();
 				return true;
+		}
+	}
+	else if($gameParty.isInStripperBattle) {
+		if($gameParty.stripperBattle_getCurrentTimeInSeconds() >= $gameParty._stripperBattle_timeLimit) {
+			this.processVictory();
+            return true;
+		}
+		else if($gameTroop.isAllDead()) {
+			if(Karryn.hasNoStamina() && Karryn.hasNoEnergy()) {
+				this.processDefeat();
+				return true;
+			}
+			this.processVictory();
+			return true;
+		}
+		else if($gameParty.isAllDead()) {
+            this.processDefeat();
+            return true;
 		}
 	}
 	
@@ -1315,6 +1455,8 @@ BattleManager.processVictoryFinish = function() {
     $gameParty.clearVictoryData();
     this.endBattle(this._victoryType);
 	AudioManager.stopBgm();
+	AudioManager.stopVoice();
+	AudioManager.stopMoan();
 	this._playingSpecialBgm = false;
 	this._playingDownBgmChange = false;
     this.replayBgmAndBgs();
@@ -1347,6 +1489,10 @@ BattleManager.processDefeat = function() {
 	}
 	else if($gameParty.isInGloryBattle) {
 		$gameParty.setDefeatedSwitchesOn();
+	}
+	if($gameParty.isNightBattle() && !$gameParty._nightBattleVariableCounted) {
+		$gameParty._nightBattleVariableCounted = true;
+		$gameParty.addNightBattleCompletedRecord();
 	}
 	this._phase = 'rem defeat';
 	this._victoryPhase = true;

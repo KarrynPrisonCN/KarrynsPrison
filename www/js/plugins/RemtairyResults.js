@@ -22,10 +22,10 @@ const RESULTS_PLVLS_BEFORE_EXP_REDUCE = 10;
 const RESULTS_PLVLS_BEFORE_EXP_REDUCE_EASY_MODE = 20;
 
 const RESULTS_EXP_REDUCE_RATE = 0.15;
-const RESULTS_MIN_EXP_RATE_EASY_MODE = 0.25; //unused
-const RESULTS_MIN_EXP_RATE_NORMAL_MODE = 0.2; //unused
-const RESULTS_MIN_EXP_RATE_HARD_MODE = 0.15; //unused
-const RESULTS_MIN_EXP_RATE = 0.1;
+const RESULTS_MIN_EXP_RATE_EASY_MODE = 0.4; 
+const RESULTS_MIN_EXP_RATE_NORMAL_MODE = 0.25;
+const RESULTS_MIN_EXP_RATE_HARD_MODE = 0.15; 
+const RESULTS_MIN_EXP_RATE = 0.1; //unused
 
 //=============================================================================
  /*:
@@ -96,9 +96,9 @@ Game_Actor.prototype.getParamGrowthRate = function(paramId, useExpRate) {
 Game_Actor.prototype.getStaminaGrowthRate = function(useExpRate) {
 	let growthRate = 1;
 	
-	if(this.hasEdict(EDICT_STAMINA_TRAINING_THREE)) growthRate *= 1.25;
-	if(this.hasEdict(EDICT_STAMINA_TRAINING_TWO)) growthRate *= 1.25;
-	if(this.hasEdict(EDICT_STAMINA_TRAINING_ONE)) growthRate *= 1.25;
+	if(this.hasEdict(EDICT_STAMINA_TRAINING_THREE)) growthRate *= 1.3;
+	if(this.hasEdict(EDICT_STAMINA_TRAINING_TWO)) growthRate *= 1.3;
+	if(this.hasEdict(EDICT_STAMINA_TRAINING_ONE)) growthRate *= 1.3;
 	
 	growthRate *= this.passiveGrowthRate(PARAM_MAXSTAMINA_ID);
 	
@@ -125,8 +125,8 @@ Game_Actor.prototype.getStaminaGrowthRate = function(useExpRate) {
 Game_Actor.prototype.getEnergyGrowthRate = function(useExpRate) {
 	let growthRate = 1;
 	
-	if(this.hasEdict(EDICT_ENERGY_TRAINING_TWO)) growthRate *= 1.25;
-	if(this.hasEdict(EDICT_ENERGY_TRAINING_ONE)) growthRate *= 1.25;
+	if(this.hasEdict(EDICT_ENERGY_TRAINING_TWO)) growthRate *= 1.3;
+	if(this.hasEdict(EDICT_ENERGY_TRAINING_ONE)) growthRate *= 1.3;
 	
 	
 	growthRate *= this.passiveGrowthRate(PARAM_MAXENERGY_ID);
@@ -154,7 +154,7 @@ Game_Actor.prototype.getStrengthGrowthRate = function(useExpRate) {
 	
 	let trainingCount = this.karrynTrainingEdictsCount_Strength();
 	for(let i = 0; i < trainingCount; ++i) {
-		growthRate *= 1.25;
+		growthRate *= 1.30;
 	}
 	
 	growthRate *= 1 + (0.03 * this.sadismLvl());
@@ -192,7 +192,7 @@ Game_Actor.prototype.getDexterityGrowthRate = function(useExpRate) {
 	
 	let trainingCount = this.karrynTrainingEdictsCount_Dexterity();
 	for(let i = 0; i < trainingCount; ++i) {
-		growthRate *= 1.25;
+		growthRate *= 1.3;
 	}
 	
 	growthRate *= this.passiveGrowthRate(PARAM_DEXTERITY_ID);
@@ -225,7 +225,7 @@ Game_Actor.prototype.getAgilityGrowthRate = function(useExpRate) {
 	
 	let trainingCount = this.karrynTrainingEdictsCount_Agility();
 	for(let i = 0; i < trainingCount; ++i) {
-		growthRate *= 1.25;
+		growthRate *= 1.3;
 	}
 	
 	growthRate *= this.passiveGrowthRate(PARAM_AGILITY_ID);
@@ -260,7 +260,7 @@ Game_Actor.prototype.getEnduranceGrowthRate = function(useExpRate) {
 	
 	let trainingCount = this.karrynTrainingEdictsCount_Endurance();
 	for(let i = 0; i < trainingCount; ++i) {
-		growthRate *= 1.25;
+		growthRate *= 1.3;
 	}
 	
 	growthRate *= 1 + (0.01 * this.sadismLvl());
@@ -294,7 +294,7 @@ Game_Actor.prototype.getMindGrowthRate = function(useExpRate) {
 	
 	let trainingCount = this.karrynTrainingEdictsCount_Mind();
 	for(let i = 0; i < trainingCount; ++i) {
-		growthRate *= 1.25;
+		growthRate *= 1.3;
 	}
 	
 	growthRate *= 1 - (0.02 * this.sadismLvl());
@@ -363,9 +363,13 @@ Game_Actor.prototype.calculateParamExpRate = function(enemyLvl) {
 	let expRate = 1;
 	if(lvl >= this.getWardenLevelLimit()) expRate = 0;
 	else if(lvl > enemyLvl) 
-		expRate = Math.max(this.minimumExpRate(), 1 - 0.2 * (lvl - enemyLvl));
-	//else if(lvl < enemyLvl)
-	//	expRate += Math.min(0.3, 0.1 * (enemyLvl - lvl));
+		expRate = Math.max(this.minimumExpRate(), 1 - 0.15 * (lvl - enemyLvl));
+	else if(lvl < enemyLvl && lvl >= 12) {
+		let lvlDiff = enemyLvl - lvl;
+		if(lvlDiff > 3) {
+			expRate += Math.min(1, 0.05 * (lvlDiff - 3));
+		}
+	}
 
 	let plvlsBeforeExpReduce = RESULTS_PLVLS_BEFORE_EXP_REDUCE;
 	if(Prison.easyMode()) plvlsBeforeExpReduce = RESULTS_PLVLS_BEFORE_EXP_REDUCE_EASY_MODE;
@@ -378,8 +382,8 @@ Game_Actor.prototype.calculateParamExpRate = function(enemyLvl) {
 };
 
 Game_Actor.prototype.minimumExpRate = function() {
-	return RESULTS_MIN_EXP_RATE;
-	//below are unused for now
+	//return RESULTS_MIN_EXP_RATE;
+
 	let minExpRate = 1;	
 	if(Prison.easyMode()) {
 		minExpRate = RESULTS_MIN_EXP_RATE_EASY_MODE;
@@ -500,7 +504,7 @@ Game_Actor.prototype.seeIfMainLvlGained = function() {
 	if(newMainLvl != this.level) {
 		if(newMainLvl > this.level)
 			this._totalMainLvlsGained += newMainLvl - this.level;
-		this.changeLevel(newMainLvl);
+		this.changeLevel(newMainLvl, false);
 	}
 };
 
@@ -529,7 +533,7 @@ Game_Actor.prototype.calculateMainLvlsGained = function() {
 	if(newMainLvl != this.level) {
 		if(newMainLvl > this.level)
 			this._totalMainLvlsGained += newMainLvl - this.level;
-		this.changeLevel(newMainLvl);
+		this.changeLevel(newMainLvl, false);
 	}
 };
 
@@ -584,7 +588,8 @@ Game_Party.prototype.getOrderResults = function() {
 	return this._orderResult;
 };
 Game_Party.prototype.applyOrderResults = function() {
-	if(this._gainHalfOrderFlag) this._orderResult *= 0.5;
+	if(this._gainNoOrderFlag) this._orderResult = 0;
+	else if(this._gainHalfOrderFlag) this._orderResult *= 0.5;
 	if(!Karryn.isInReceptionistPose()) {
 		if(Karryn.isUsingThisTitle(TITLE_ID_FULL_ORDER_TWO)) this._orderResult = 0;
 		else if($gameParty.isRiotBattle()) {
@@ -613,11 +618,11 @@ Game_Party.prototype.increaseFatigueGainFromEnemy = function(value, enemyLvl) {
 	let level = Karryn.level
 	if(level < enemyLvl) {
 		let diff = enemyLvl - level;
-		modifiedFatigueGain *= Math.min(2,(1 + 0.2 * diff));
+		modifiedFatigueGain *= Math.min(2, (1 + 0.2 * diff));
 	}
 	else if(level > enemyLvl) {
 		let diff = level - enemyLvl;
-		modifiedFatigueGain *= Math.max(0.5,(1 - 0.1 * diff));
+		modifiedFatigueGain *= Math.max(0.5, (1 - 0.1 * diff));
 	}
 	
 	if($gameParty.isRiotBattle()) {
@@ -761,6 +766,7 @@ Scene_Battle.prototype.createVictoryPassives = function() {
 Scene_Battle.prototype.finishVictoryPassives = function() {
 	SoundManager.playOk();
 	this._victoryPassivesWindow.close();
+	AudioManager.stopVoice();
 	this.processNextVictoryStep();
 };
 
@@ -1195,7 +1201,7 @@ Window_VictoryExp.prototype.drawExpBreakdown = function(actor, rect) {
 		text = text.format(actor.name(), actor.level);
 		this.drawTextEx(text, x, wy, rect.width, 'left');
 	}
-	else if(actor.level === actor.getWardenLevelLimit()) {
+	else if(actor.level >= actor.getWardenLevelLimit()) {
 		let text = TextManager.wardenLevelLimitReached;
 		text = text.format(actor.name());
 		this.drawTextEx(text, x, wy, rect.width, 'left');

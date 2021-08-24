@@ -108,6 +108,14 @@ Imported.RemEditedForeground = true;
     this._foregroundLoopY = false;
     this._foregroundSx = 0;
     this._foregroundSy = 0;
+	
+	this._foregroundNameB = '';
+    this._foregroundZeroB = false;
+    this._foregroundLoopXB = false;
+    this._foregroundLoopYB = false;
+    this._foregroundSxB = 0;
+    this._foregroundSyB = 0;
+	
     this._foregroundX = 0;
     this._foregroundY = 0;
   };
@@ -128,9 +136,16 @@ Imported.RemEditedForeground = true;
     this.guardForeground();
     return this._foregroundName;
 };
+Game_Map.prototype.foregroundNameB = function() {
+    this.guardForeground();
+    return this._foregroundNameB;
+};
 
 Game_Map.prototype.foregroundSwitch = function() {
     return this._foregroundSwitch;
+};
+Game_Map.prototype.foregroundSwitchB = function() {
+    return this._foregroundSwitchB;
 };
 
   //
@@ -153,6 +168,15 @@ Game_Map.prototype.foregroundSwitch = function() {
     this._foregroundLoopY = !!$dataMap.meta.fgLoopY;
     this._foregroundSx = Number($dataMap.meta.fgSx) || 0;
     this._foregroundSy = Number($dataMap.meta.fgSy) || 0;
+	
+	this._foregroundNameB = $dataMap.meta.fgName_b || '';
+	this._foregroundSwitchB = $dataMap.meta.fgSwitch_b || 0;
+    this._foregroundZeroB = ImageManager.isZeroForeground(this._foregroundNameB);
+    this._foregroundLoopXB = !!$dataMap.meta.fgLoopX_b;
+    this._foregroundLoopYB = !!$dataMap.meta.fgLoopY_b;
+    this._foregroundSxB = Number($dataMap.meta.fgSx_b) || 0;
+    this._foregroundSyB = Number($dataMap.meta.fgSy_b) || 0;
+	
     this._foregroundX = 0;
     this._foregroundY = 0;
   };
@@ -190,6 +214,28 @@ Game_Map.prototype.foregroundSwitch = function() {
   Game_Map.prototype.foregroundOy = function() {
     this.guardForeground();
     if (this._foregroundZero) {
+      return this._foregroundY * this.tileHeight();
+    } else if (this._foregroundLoopY) {
+      return this._foregroundY * this.tileHeight() / 2;
+    } else {
+      return 0;
+    }
+  };
+  
+  Game_Map.prototype.foregroundOxB = function() {
+    this.guardForeground();
+    if (this._foregroundZeroB) {
+      return this._foregroundX * this.tileWidth();
+    } else if (this._foregroundLoopX) {
+      return this._foregroundX * this.tileWidth() / 2;
+    } else {
+      return 0;
+    }
+  };
+
+  Game_Map.prototype.foregroundOyB = function() {
+    this.guardForeground();
+    if (this._foregroundZeroB) {
       return this._foregroundY * this.tileHeight();
     } else if (this._foregroundLoopY) {
       return this._foregroundY * this.tileHeight() / 2;
@@ -257,7 +303,7 @@ Game_Map.prototype.foregroundSwitch = function() {
       if (this._foregroundLoopY) {
         this._foregroundY -= distance;
       }
-    } else if (this.height() >= this.screenTileY()) {
+    } else if (this.height() >= this.screenTileY() && !this.ignoreForegroundScrollUp()) {
       var displayY = Math.max(lastY - distance, 0);
       this._foregroundY += displayY - lastY;
     }
@@ -308,18 +354,41 @@ Game_Map.prototype.foregroundSwitch = function() {
   };
 
   Spriteset_Map.prototype.updateForeground = function() {
-	if(!ConfigManager.remMapEffect || 
-	  ($gameMap.foregroundSwitch() !== 0 && !$gameSwitches.value($gameMap.foregroundSwitch())) ) 
-		return;
-	  
-    if (this._foregroundName !== $gameMap.foregroundName()) {
-      this._foregroundName = $gameMap.foregroundName();
-      this._foreground.bitmap = ImageManager.loadParallax(this._foregroundName);
-    }
-    if (this._foreground.bitmap) {
-      this._foreground.origin.x = $gameMap.foregroundOx();
-      this._foreground.origin.y = $gameMap.foregroundOy();
-    }
+	if(!ConfigManager.remMapEffect) return;
+	if($gameMap.foregroundSwitch() !== 0 && $gameMap.foregroundSwitchB() !== 0 && !$gameSwitches.value($gameMap.foregroundSwitch()) && !$gameSwitches.value($gameMap.foregroundSwitchB())) return;
+	if($gameMap.foregroundSwitch() !== 0 && $gameMap.foregroundSwitchB() === 0 && !$gameSwitches.value($gameMap.foregroundSwitch())) return;
+	if($gameMap.foregroundSwitchB() !== 0 && $gameMap.foregroundSwitch() === 0 && !$gameSwitches.value($gameMap.foregroundSwitchB()) && !$gameMap.foregroundName()) return;
+	 
+	if($gameSwitches.value($gameMap.foregroundSwitch())) {
+		if(this._foregroundName !== $gameMap.foregroundName()) {
+		  this._foregroundName = $gameMap.foregroundName();
+		  this._foreground.bitmap = ImageManager.loadParallax(this._foregroundName);
+		}
+		if(this._foreground.bitmap) {
+		  this._foreground.origin.x = $gameMap.foregroundOx();
+		  this._foreground.origin.y = $gameMap.foregroundOy();
+		}
+	}
+	else if($gameSwitches.value($gameMap.foregroundSwitchB())) {
+		if(this._foregroundNameB !== $gameMap.foregroundNameB()) {
+		  this._foregroundNameB = $gameMap.foregroundNameB();
+		  this._foreground.bitmap = ImageManager.loadParallax(this._foregroundNameB);
+		}
+		if(this._foreground.bitmap) {
+		  this._foreground.origin.x = $gameMap.foregroundOxB();
+		  this._foreground.origin.y = $gameMap.foregroundOyB();
+		}
+	}
+	else {
+		if(this._foregroundName !== $gameMap.foregroundName()) {
+		  this._foregroundName = $gameMap.foregroundName();
+		  this._foreground.bitmap = ImageManager.loadParallax(this._foregroundName);
+		}
+		if(this._foreground.bitmap) {
+		  this._foreground.origin.x = $gameMap.foregroundOx();
+		  this._foreground.origin.y = $gameMap.foregroundOy();
+		}
+	}
   };
 
 })();

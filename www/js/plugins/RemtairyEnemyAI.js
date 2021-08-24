@@ -52,16 +52,19 @@ Game_Enemy.prototype.enemyBattleAIGeneric = function() {
 		return;
 	
 	//Special AI
-	if(target.isInWaitressServingPose()) {
-		this.enemyBattleAIWaitressServing(target);
-		return;
+	if($gameParty.isInWaitressBattle) {
+		if(target.isInWaitressServingPose()) {
+			this.enemyBattleAIWaitressServing(target);
+			return;
+		}	
+		else if(target.isInWaitressSexPose()) {
+			this.enemyBattleAIWaitressSex(target);
+			return;
+		}	
 	}	
-	if(target.isInWaitressSexPose()) {
-		this.enemyBattleAIWaitressSex(target);
-		return;
-	}	
+
 	
-	if(target.isInReceptionistPose()) {
+	if($gameParty.isInReceptionistBattle) {
 		this.enemyBattleAIReceptionist(target);
 		return;
 	}	
@@ -69,6 +72,17 @@ Game_Enemy.prototype.enemyBattleAIGeneric = function() {
 	if($gameParty.isInGloryBattle) {
 		this.enemyBattleAIGloryHole(target);
 		return;
+	}	
+	
+	if($gameParty.isInStripperBattle) {
+		if(target.isInStripperSexPose()) {
+			this.enemyBattleAIStripperSex(target);
+			return;
+		}	
+		else {
+			this.enemyBattleAIStripperShow(target);
+			return;
+		}	
 	}	
 	
 	if(target.isInDefeatedLevel1Pose()) {
@@ -307,7 +321,7 @@ Game_Enemy.prototype.enemyBattleAIWaitressSex = function(target) {
 		
 	//this._lastAITarget = BattleManager._targets[0];
 	this._lastAITarget = $gameActors.actor(ACTOR_KARRYN_ID);
-	let canStillCum = this._ejaculationStock > 0;
+	let canStillCum = this.hasEjaculationStock();
 	
 	if(this.waitressSex_refillWaitressMug(target)) return;
 	if(this.waitressSex_dumpWaitressMug(target)) return;
@@ -365,6 +379,14 @@ Game_Enemy.prototype.enemyBattleAIWaitressSex = function(target) {
 	}
 };
 
+//Stripper Sex AI
+Game_Enemy.prototype.enemyBattleAIStripperSex = function(target) {
+	if(this.usedSkillThisTurn())
+		return;
+	
+	
+};
+
 
 //Defeated Level 1 battle ai
 Game_Enemy.prototype.enemyBattleAIDefeatedLevel1 = function(target) {
@@ -397,11 +419,11 @@ Game_Enemy.prototype.enemyBattleAIDefeatedLevel1 = function(target) {
 	}
 	else if(insertedIntoOther) {
 	//Fourth: Check if right hand or left hand is free
-		if(this.canInsertRightHand(target)) {
+		if(this.canInsertRightHand(target) && (this.isUsingBodySlotPenis(OTHER_2_ID) || this.isUsingBodySlotPenis(OTHER_3_ID))) {
 			this.useAISkill(SKILL_ENEMY_POSEJOIN_DEFEAT_LV1_RIGHT_HJ_ID,target);
 			return;
 		}
-		else if(this.canInsertLeftHand(target)) {
+		else if(this.canInsertLeftHand(target) && (this.isUsingBodySlotPenis(OTHER_1_ID) || this.isUsingBodySlotPenis(OTHER_4_ID))) {
 			this.useAISkill(SKILL_ENEMY_POSEJOIN_DEFEAT_LV1_LEFT_HJ_ID,target);
 			return;
 		}
@@ -826,14 +848,14 @@ Game_Enemy.prototype.enemyBattleAICargill = function() {
 		}
 		else if(this._cargillAction === ACTION_CARGILL_REVIVE_ROGUE) {
 			this._lastAITarget = rogue;
-			if(rogue._ejaculationStock === 0) rogue._ejaculationStock++;
+			if(!rogue.hasEjaculationStock()) rogue._ejaculationStock = 1;
 			rogue._mp += Math.randomInt(8) + 8;
 			rogue._mp = rogue._mp.clamp(0, rogue.mmp);
 			this.useAISkill(SKILL_CARGILL_REVIVE_ID,rogue);
 		}
 		else if(this._cargillAction === ACTION_CARGILL_REVIVE_NERD) {
 			this._lastAITarget = nerd;
-			if(nerd._ejaculationStock === 0) nerd._ejaculationStock++;
+			if(!nerd.hasEjaculationStock()) nerd._ejaculationStock = 1;
 			nerd._mp += Math.randomInt(10) + 15;
 			nerd._mp = nerd._mp.clamp(0, nerd.mmp);
 			this.useAISkill(SKILL_CARGILL_REVIVE_ID,nerd);

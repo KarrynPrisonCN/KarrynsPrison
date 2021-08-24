@@ -166,6 +166,7 @@ Yanfly.Param.FpsSDefault = eval(String(Yanfly.Parameters['Default Setting']));
 // MainCode
 //=============================================================================
 
+/*
 ConfigManager.synchFps = Yanfly.Param.FpsSDefault;
 
 Yanfly.FpsSynch.ConfigManager_makeData = ConfigManager.makeData;
@@ -189,6 +190,7 @@ ConfigManager.readConfigFpsSynch = function(config, name) {
         return Yanfly.Param.FpsSDefault;
     }
 };
+*/
 
 //=============================================================================
 // SceneManager

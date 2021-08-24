@@ -12,6 +12,8 @@ const VAR_KARRYN_MASOCHISM_COMBAT_PLEASURE = 15;
 const VAR_ENEMY_SADISM_COMBAT_PLEASURE = 5;
 const VAR_ENEMY_MASOCHISM_COMBAT_PLEASURE = 5;
 
+const VAR_KARRYN_KICK_PUSSY_JUICE_INC = 8;
+
 //戦闘画面のスキルのリスト
 const WINDOW_BATTLESKILL_FONT_SIZE = 29;
 const WINDOW_BATTLESKILL_LINEHEIGHT = 37;
@@ -104,6 +106,8 @@ const SKILLTYPE_BARTENDER_ID = 16;
 const SKILLTYPE_RECEPTIONIST_ID = 17;
 const SKILLTYPE_TOILET_ID = 18;
 const SKILLTYPE_MASTURBATE_INBATTLE_ID = 19;
+const SKILLTYPE_STRIPPER_ID = 20;
+const SKILLTYPE_INTERMISSION_ID = 21;
 
 const STATE_DISARMED_ID = 4;
 const STATE_ACTOR_SLASH_STANCE_ID = 5;
@@ -265,6 +269,9 @@ const STATE_MINION_AMMO_FAT_ID = 191;
 const STATE_BEFOREEVAL_EJA_COUNTED_ID = 192;
 const STATE_COCKPET_TARGET_NOT_ERECT_ID = 193;
 const STATE_COCKPET_TARGET_ERECT_COUNTED_ID = 194;
+const STATE_JUST_GOKKUND_ID = 195;
+const STATE_DANCE_COMBO_COUNT_ID = 196;
+const STATE_STAGE_CONDOM_COUNTER_ID = 197;
 
 const BRACELET_ROPE_ID = 17;
 const BRACELET_STRING_ID = 18;
@@ -361,8 +368,9 @@ const JUST_SKILLTYPE_ENEMY_TOY_PLAY_ANAL = 57;
 const JUST_SKILLTYPE_WAITRESS_MOVING = 60;
 const JUST_SKILLTYPE_WAITRESS_DRINK = 61;
 const JUST_SKILLTYPE_WAITRESS_FLASH = 62;
-const JUST_SKILLTYPE_GLORY_LEFT_HOLE_SHOWED = 63;
-const JUST_SKILLTYPE_GLORY_RIGHT_HOLE_SHOWED = 64;
+const JUST_SKILLTYPE_WAITRESS_MUG_BUKKAKE = 63;
+const JUST_SKILLTYPE_GLORY_LEFT_HOLE_SHOWED = 64;
+const JUST_SKILLTYPE_GLORY_RIGHT_HOLE_SHOWED = 65;
 
 const JUST_SKILLTYPE_KARRYN_TOY_INSERT_CLIT = 70;
 const JUST_SKILLTYPE_KARRYN_TOY_INSERT_PUSSY = 71;
@@ -525,6 +533,9 @@ const SKILL_ENEMY_EJACULATE_BUTT_BOTTOM_RIGHT_ID = 1390;
 const SKILL_ENEMY_EJACULATE_BUTT_BOTTOM_LEFT_ID = 1391;
 const SKILL_ENEMY_EJACULATE_ONTO_DESK_ID = 1392;
 const SKILL_ENEMY_EJACULATE_ONTO_FLOOR_ID = 1393;
+const SKILL_ENEMY_EJACULATE_LEFTBOOB_ID = 1394;
+const SKILL_ENEMY_EJACULATE_RIGHTBOOB_ID = 1395;
+const SKILL_ENEMY_EJACULATE_INTO_CONDOM_ID = 1396;
 
 const SKILL_ENEMY_TALK_SELECTOR_RANDOM_ID = 1401;
 const SKILL_ENEMY_TALK_SELECTOR_RANDOM_JERKOFF_ID = 1402;
@@ -576,6 +587,16 @@ const SKILL_ENEMY_STARE_SKILL_BUKKAKED_FACE_JERKOFF_ID = 1478;
 const SKILL_ENEMY_STARE_SKILL_BUKKAKED_BOOBS_JERKOFF_ID = 1479;
 const SKILL_ENEMY_STARE_SKILL_BUKKAKED_BUTT_JERKOFF_ID = 1480;
 const SKILL_ENEMY_STARE_SKILL_MOUTH_SWALLOW_JERKOFF_ID = 1481;
+const SKILL_ENEMY_STARE_SKILL_MOUTH_BLOWJOB_ID = 1482;
+const SKILL_ENEMY_STARE_SKILL_BOOBS_PAIZURI_ID = 1483;
+const SKILL_ENEMY_STARE_SKILL_PUSSY_CUNNILINGUS_ID = 1484;
+const SKILL_ENEMY_STARE_SKILL_PUSSY_SEX_ID = 1485;
+const SKILL_ENEMY_STARE_SKILL_ANAL_SEX_ID = 1486;
+const SKILL_ENEMY_STARE_SKILL_MOUTH_BLOWJOB_JERKOFF_ID = 1487;
+const SKILL_ENEMY_STARE_SKILL_BOOBS_PAIZURI_JERKOFF_ID = 1488;
+const SKILL_ENEMY_STARE_SKILL_PUSSY_CUNNILINGUS_JERKOFF_ID = 1489;
+const SKILL_ENEMY_STARE_SKILL_PUSSY_SEX_JERKOFF_ID = 1490;
+const SKILL_ENEMY_STARE_SKILL_ANAL_SEX_JERKOFF_ID = 1491;
 
 const SKILL_ENEMY_PETTING_SELECTOR_RANDOM_ID = 1501;
 const SKILL_ENEMY_PETTING_SELECTOR_MOUTH_ID = 1502;
@@ -718,10 +739,15 @@ const SKILL_ENEMY_POSESKILL_SLIMEJOIN_MOUTH_ID = 1811;
 const SKILL_ENEMY_POSESKILL_SLIMEJOIN_PUSSY_ID = 1812;
 const SKILL_ENEMY_POSESWITCH_GOBLINCL_PUSSY_ID = 1813;
 
+const SKILL_STRIPPER_ENTER_INTERMISSION_ID = 1862;
+const SKILL_STRIPPER_EXIT_INTERMISSION_ID = 1866;
 
 const ACTION_SPEED_FAST_FIRST_PRIORITY = 9999;
 const ACTION_SPEED_FAST_SECOND_PRIORITY = 8888;
 const ACTION_SPEED_FAST_THIRD_PRIORITY = 7777;
+
+const SKILL_WARMUP_POTENTIAL_START_ID = 1151;
+const SKILL_WARMUP_POTENTIAL_END_ID = 1300;
 
 //////////////
 /////////////////
@@ -1501,6 +1527,8 @@ Game_Actor.prototype.afterEval_karrynCockKick = function(target) {
 	this.resetEndurePleasureStanceCost();
 	this.resetSexSkillConsUsage(false);
 	this.removeState(STATE_LIGHT_KICK_ID);
+	if(this.hasPassive(PASSIVE_KICK_COUNTER_SEX_COUNT_ONE_ID))
+		this.increaseLiquidPussyJuice(VAR_KARRYN_KICK_PUSSY_JUICE_INC);
 };
 
 ///////
@@ -1522,6 +1550,8 @@ Game_Actor.prototype.afterEval_karrynLightKick = function() {
 	this.addAttackSkillConsUsage();
 	this.resetEndurePleasureStanceCost();
 	this.resetSexSkillConsUsage(false);
+	if(this.hasPassive(PASSIVE_KICK_COUNTER_SEX_COUNT_ONE_ID))
+		this.increaseLiquidPussyJuice(VAR_KARRYN_KICK_PUSSY_JUICE_INC);
 };
 Game_Battler.prototype.skillCost_karrynLightKick = function() {
 	let staminaCost = this.skillAttack_staminaCost(30, 0.2, 0.2, 0.2);
@@ -1559,9 +1589,8 @@ Game_Battler.prototype.dmgFormula_karrynLightKick = function(target) {
 //Can Escape
 //Can Flee
 Game_Actor.prototype.canEscape = function() {
-	//if(Prison.hardMode()) return false;
-	//return (this.energy > 0 && !this.isInSexPose() && !this.isInDownPose() && !this._cantEscapeFlag);
-
+	if(Prison.hardMode()) return false;
+	
 	return (this.isInCombatPose() && !this.wantsToOnaniInBattle() && !this._cantEscapeFlag && this.getFatigueLevel() <= 3);
 };
 
@@ -1588,6 +1617,7 @@ Game_Actor.prototype.addFallenState = function() {
 // Off Balance
 
 Game_Actor.prototype.addOffBalanceState = function(offset, needsMessage) {
+	if(!offset) offset = 0;
 	if(!this.isOffBalance) {
 		this.addState(STATE_OFFBALANCE_ID);
 		this.increaseOffBalanceStateTurns(this.passiveOffBalanceStateAddTurns() + offset);
@@ -1783,6 +1813,8 @@ Game_Actor.prototype.counterattackDamageMultipler = function(target) {
 Game_Actor.prototype.afterEval_karrynKickAttack = function(target) {
 	this._playthroughRecordKickAttackUsage++;
 	this.removeState(STATE_LIGHT_KICK_ID);
+	if(this.hasPassive(PASSIVE_KICK_COUNTER_SEX_COUNT_ONE_ID))
+		this.increaseLiquidPussyJuice(VAR_KARRYN_KICK_PUSSY_JUICE_INC);
 };
 Game_Actor.prototype.afterEval_karrynCounterAttack = function(target) {
 	this.gainStaminaExp(15, target.enemyExperienceLvl());
@@ -1844,7 +1876,7 @@ Game_Action.prototype.itemCri = function(target) {
 			criException = true;
 	}
 	if(Karryn.hasPassive(PASSIVE_SIGHT_ORGASM_TWO_ID) && 
-		(itemId >= SKILL_ENEMY_STARE_SKILL_MOUTH_ID && itemId <= SKILL_ENEMY_STARE_SKILL_MOUTH_SWALLOW_JERKOFF_ID)) {
+		(itemId >= SKILL_ENEMY_STARE_SKILL_MOUTH_ID && itemId <= SKILL_ENEMY_STARE_SKILL_ANAL_SEX_JERKOFF_ID)) {
 			criException = true;
 	}
 	
@@ -1899,6 +1931,13 @@ Game_Action.prototype.numTargets = function() {
 /////////
 // Enemy Attacks
 /////////////
+
+Game_Battler.prototype.beforeEval_voicedCharge = function() {
+	BattleManager.playEnemyVoice_Skill(this);
+};
+Game_Battler.prototype.beforeEval_voicedAttack = function() {
+	BattleManager.playEnemyVoice_Skill(this);
+};
 
 Game_Battler.prototype.dmgFormula_thugRush = function(target) {
 	let elementType = this.getStance();
@@ -2036,23 +2075,19 @@ Game_Enemy.prototype.customReq_guardCharge = function() {
 	return Karryn.hasEdict(EDICT_ADVANCED_GUARD_TRAINING);
 };
 Game_Battler.prototype.customReq_guardDisarm = function(target) {
-	if(!this.canAttack(target) || !target.hasHalberd()) return false;
-	return true;
+	return this.canAttack(target) && target.hasHalberd() && this.isChargedUp();
 };
 Game_Battler.prototype.customReq_guardTrip = function(target) {
-	if(!this.canAttack(target)) return false;
-	if(Karryn.hasEdict(EDICT_ROGUE_TRAINING_FOR_GUARDS)) {
-		return true;
-	}
-	else {
-		return false;
-	}
+	return this.canAttack(target) && Karryn.hasEdict(EDICT_ROGUE_TRAINING_FOR_GUARDS) && this.isChargedUp();
 };
 
 
 Game_Battler.prototype.customReq_nerdExpose = function(target) {
 	return !target.hasWeaknessExposed() && !this.isAngry &&  
 	(Karryn.hasEdict(EDICT_PUBLISH_RESISTS) || Karryn.hasEdict(EDICT_PUBLISH_SENSITIVITIES) || Karryn.hasEdict(EDICT_THE_NERD_PROBLEM));
+};
+Game_Battler.prototype.afterEval_nerdExpose = function() {
+	BattleManager.playEnemyVoice_Skill(this);
 };
 
 Game_Battler.prototype.afterEval_cargillDebuff = function(target) {
@@ -2103,6 +2138,7 @@ Game_Battler.prototype.afterEval_aronTailSwipe = function(target) {
 //Call Lizardman
 Game_Battler.prototype.beforeEval_aronCallLizardman = function() {
 	this.addState(STATE_CHARGE_ID);
+	BattleManager.playEnemyVoice_Skill(this);
 };
 Game_Battler.prototype.afterEval_aronCallLizardman_normal = function() {
 	if($gameParty._aronCallLimit > 0) {
@@ -2167,6 +2203,9 @@ Game_Battler.prototype.customReq_aronCallLizardman_desperate = function() {
 
 Game_Battler.prototype.customReq_mobCallLizardman = function() {
 	return !this._enemyTempRecordUsedLizardmanSummon && Karryn.hasEdict(EDICT_THE_LIZARDMAN_PROBLEM) && !this.isAngry && $gameTroop.getAvailableFreeEnemySpace_normalBattle() > 0;
+};
+Game_Battler.prototype.beforeEval_mobCallLizardman = function() {
+	BattleManager.playEnemyVoice_Skill(this);
 };
 Game_Battler.prototype.afterEval_mobCallLizardman = function() {
 	this.removeState(STATE_CHARGE_ID);
@@ -2383,6 +2422,7 @@ Game_Troop.prototype.nextEnemySpotIsOccupied = function(enemy) {
 
 
 Game_Troop.prototype.addOrcDefensivePresenceToAllEnemies = function(castingEnemy) {
+	BattleManager.playEnemyVoice_Skill(castingEnemy);
 	for(let i = 0; i < this.aliveMembers().length; i++) {
 		if(this.aliveMembers()[i].name() != castingEnemy.name()) {
 			this.aliveMembers()[i].addState(STATE_ORC_DEFENSIVE_PRESENCE_ID);
@@ -2407,6 +2447,7 @@ Game_Troop.prototype.thereIsEnemyWithoutOrcDefensivePresence = function(castingE
 };
 
 Game_Troop.prototype.addOrcCommandingPresenceToAllEnemies = function(castingEnemy) {
+	BattleManager.playEnemyVoice_Skill(castingEnemy);
 	for(let i = 0; i < this.aliveMembers().length; i++) {
 		if(this.aliveMembers()[i].name() != castingEnemy.name()) {
 			this.aliveMembers()[i].addState(STATE_ORC_COMMANDING_PRESENCE_ID);
@@ -2516,7 +2557,7 @@ Window_ActorCommand.prototype.addSkillCommands = function() {
 					return;
 			}
 			
-			if(this._actor.isInReceptionistPose()) {
+			if($gameParty.isInReceptionistBattle) {
 				if(stypeId === SKILLTYPE_SEXUAL_ID || stypeId === SKILLTYPE_ENERGY_ID)
 					return;
 			}
@@ -2533,6 +2574,30 @@ Window_ActorCommand.prototype.addSkillCommands = function() {
 				if(stypeId === SKILLTYPE_TOILET_ID)
 					return;
 			}
+			
+			if($gameParty.isInStripperBattle) {
+				if(!this._actor.isInStripperSexPose()) {
+					if(stypeId === SKILLTYPE_ENERGY_ID || stypeId === SKILLTYPE_SEXUAL_ID)
+						return;
+					
+					if($gameParty.stripperBattle_intermissionPhase()) {
+						if(stypeId === SKILLTYPE_STRIPPER_ID)
+							return;
+					}
+					else {
+						if(stypeId === SKILLTYPE_INTERMISSION_ID)
+							return;
+					}
+				}
+				else {
+					if(stypeId === SKILLTYPE_STRIPPER_ID || stypeId === SKILLTYPE_INTERMISSION_ID)
+						return;
+				}
+			}
+			else {
+				if(stypeId === SKILLTYPE_STRIPPER_ID || stypeId === SKILLTYPE_INTERMISSION_ID)
+					return;
+			}
 		}
 		//Mental Phase
 		else {
@@ -2540,7 +2605,7 @@ Window_ActorCommand.prototype.addSkillCommands = function() {
 				return;
 			if(stypeId === SKILLTYPE_OFFBALANCE_ID || stypeId === SKILLTYPE_FALLEN_ID || stypeId === SKILLTYPE_DISARMED_ID)
 				return;
-			if(stypeId === SKILLTYPE_WAITRESS_ID || stypeId === SKILLTYPE_RECEPTIONIST_ID || stypeId === SKILLTYPE_BARTENDER_ID || stypeId === SKILLTYPE_TOILET_ID)
+			if(stypeId === SKILLTYPE_WAITRESS_ID || stypeId === SKILLTYPE_RECEPTIONIST_ID || stypeId === SKILLTYPE_BARTENDER_ID || stypeId === SKILLTYPE_TOILET_ID || stypeId === SKILLTYPE_STRIPPER_ID || stypeId === SKILLTYPE_INTERMISSION_ID)
 				return;
 		}
 		
@@ -2581,11 +2646,12 @@ Window_ActorCommand.prototype.addEscapeCommand = function() {
 };
 
 Window_ActorCommand.prototype.addBattleLogCommand = function() {
-	if(this._actor.isInWaitressServingPose() && !$gameTemp.isPlaytest()) {
-		return;
+	if(this._actor.isInWaitressServingPose()) {
+		if(!$gameTemp.isPlaytest() && (!Prison.easyMode() || (Prison.easyMode() && !ConfigManager.cheatWaitressLog)))
+			return;
 	}		
-	else
-		this.addCommand(TextManager.battleLog, 'battleLog', true);
+
+	this.addCommand(TextManager.battleLog, 'battleLog', true);
 };
 
 Window_ActorCommand.prototype.addStatusCommand = function() {

@@ -53,16 +53,18 @@ Window_SkillList.prototype.drawSoloItemCost = function(item, cost, wx, wy, dw, s
 		cost = this._actor.calculateWillSkillCost(cost, skill);
 	}
 	else if(item.id === ITEM_SECOND_COST_ID) {
-		if(this._actor.isDeadDrunk) cost += 5;
-		else if(this._actor.isDrunk) cost += 3;
-		else if(this._actor.isTipsy) cost += 1;
-		
-		if(this._actor.isAroused()) cost += 1;
-		if(this._actor.isWet) cost += 1;
-		if(this._actor.isHorny) cost += 1;
-		
-		if(this._actor.hasThisTitle(TITLE_ID_EXPERIENCED_WAITRESS)) cost -= 1;
-		if(this._actor.isUsingThisTitle(TITLE_ID_EXPERIENCED_WAITRESS)) cost -= 2;
+		if($gameParty.isInWaitressBattle) {
+			if(this._actor.isDeadDrunk) cost += 5;
+			else if(this._actor.isDrunk) cost += 3;
+			else if(this._actor.isTipsy) cost += 1;
+			
+			if(this._actor.isAroused()) cost += 1;
+			if(this._actor.isWet) cost += 1;
+			if(this._actor.isHorny) cost += 1;
+			
+			if(this._actor.hasThisTitle(TITLE_ID_EXPERIENCED_WAITRESS)) cost -= 1;
+			if(this._actor.isUsingThisTitle(TITLE_ID_EXPERIENCED_WAITRESS)) cost -= 2;
+		}
 	}
 	
     let amt1 = Yanfly.Util.toGroup(cost);
@@ -131,6 +133,7 @@ Game_Actor.prototype.enterMentalPhase = function() {
 	if(this.isMentalPhaseDisabled()) return;
 	this.clearWillSkillsUsedCount();
 	this._mentalPhase = true;
+	this.refreshPose(true);
 };
 
 //Enter Action Phase
@@ -142,12 +145,10 @@ Game_Actor.prototype.enterActionPhase = function() {
 		this.checkOnaniInBattleDesire();
 	}
 	
+
 	if(!this.isDontGainFatiguePerTurnPose()) {
 		if(this.isInCombatPose()) {
 			$gameParty.increaseFatigueGain(PRISON_FATIGUE_PER_TURN_COMBAT);
-		}
-		else if($gameParty.isInGloryBattle) {
-			this.gloryBattle_fatigueGainPerTurn();
 		}
 		else {
 			$gameParty.increaseFatigueGain(PRISON_FATIGUE_PER_TURN_OTHER);
@@ -159,6 +160,8 @@ Game_Actor.prototype.enterActionPhase = function() {
 	this._stateTurns[STATE_KARRYN_RESIST_ORGASM_ID] === 1) {
 		 this.removeState(STATE_KARRYN_RESIST_ORGASM_ID);
 	}
+	
+	this.refreshPose(true);
 };
 
 Game_Actor.prototype.disableMentalPhase = function() {
@@ -332,6 +335,15 @@ Game_Actor.prototype.calculateWillSkillCost = function(baseCost, skill) {
 	return Math.round(cost * this.wsc);
 };
 
+Game_Actor.prototype.advanceTimeBySeconds = function(second) {
+	if($gameParty.isInWaitressBattle)
+		$gameParty.waitressBattle_advanceTimeBySeconds(second);
+	else if($gameParty.isInReceptionistBattle)
+		$gameParty.receptionBattle_advanceTimeBySeconds(second);
+	else if($gameParty.isInStripperBattle)
+		$gameParty.stripperBattle_advanceTimeBySeconds(second);
+};
+
 /////////
 // Param 
 ////////////
@@ -469,7 +481,7 @@ Game_Actor.prototype.afterEval_suppressDesires = function(area) {
 	else if(area == AREA_BOOBS) return this.gainBoobsDesire(-baseValue * boobsMultipler, true, false);	
 	else if(area == AREA_PUSSY) return this.gainPussyDesire(-baseValue * pussyMultipler, true, false);	
 	else if(area == AREA_BUTT) return this.gainButtDesire(-baseValue * buttMultipler, true, false);	
-	else console.log('afterEval_suppressDesires area error');
+	else console.error('Error afterEval_suppressDesires area ' + area);
 	
 
 };
@@ -608,7 +620,7 @@ Game_Actor.prototype.afterEval_consciousDesires = function(area) {
 	else if(area == AREA_BOOBS) return this.gainBoobsDesire(baseValue, true, false);	
 	else if(area == AREA_PUSSY) return this.gainPussyDesire(baseValue, true, false);	
 	else if(area == AREA_BUTT) return this.gainButtDesire(baseValue, true, false);	
-	else console.log('afterEval_consciousDesires area error');
+	else console.error('Error afterEval_consciousDesires area ' + area);
 };
 
 ///////////////
@@ -904,6 +916,7 @@ Game_Actor.prototype.showEval_edgingControl = function() {
 	if(this.justOrgasmed()) return false;
 	if(!DEBUG_MODE) return false;
 	if(this.isInWaitressServingPose()) return false;
+	if($gameParty.isInStripperBattle && !this.isInStripperSexPose()) return false;
 	return this.hasEdict(EDICT_EDGING_CONTROL) && !this.isInDownPose();
 };
 Game_Actor.prototype.afterEval_edgingControl = function() {
@@ -933,6 +946,7 @@ Game_Actor.prototype.addEnemyEdgingControlStateToTarget = function(target) {
 
 Game_Actor.prototype.showEval_resistOrgasm = function() {
 	if(this.justOrgasmed()) return false;
+	if($gameParty.isInStripperBattle && !this.isInStripperSexPose()) return false;
 	return DEBUG_MODE && this.hasEdict(EDICT_RESIST_ORGASM);
 };
 Game_Actor.prototype.afterEval_resistOrgasm = function() {
@@ -942,11 +956,11 @@ Game_Actor.prototype.afterEval_resistOrgasm = function() {
 	this.addState(STATE_KARRYN_RESIST_ORGASM_ICON_ID);
 	
 	if(Karryn.isInReceptionistPose()) {
-		this.setStateTurns(STATE_KARRYN_RESIST_ORGASM_ID, RECEPTIONIST_MENTAL_PHASE_COOLDOWN);
+		this.setStateTurns(STATE_KARRYN_RESIST_ORGASM_ID, RECEPTIONIST_MENTAL_PHASE_COOLDOWN + 1);
 		this.setStateTurns(STATE_KARRYN_RESIST_ORGASM_ICON_ID, RECEPTIONIST_MENTAL_PHASE_COOLDOWN);
 	}
 	else if($gameParty.isInGloryBattle) {
-		this.setStateTurns(STATE_KARRYN_RESIST_ORGASM_ID, GLORY_MENTAL_PHASE_COOLDOWN);
+		this.setStateTurns(STATE_KARRYN_RESIST_ORGASM_ID, GLORY_MENTAL_PHASE_COOLDOWN + 1);
 		this.setStateTurns(STATE_KARRYN_RESIST_ORGASM_ICON_ID, GLORY_MENTAL_PHASE_COOLDOWN);
 	}
 };
@@ -1002,18 +1016,22 @@ Game_Actor.prototype.afterEval_restoreMind = function() {
 
 Game_Actor.prototype.showEval_denyExternalEjaculations = function() {
 	if(this.justOrgasmed()) return false;
+	if($gameParty.isInStripperBattle && !this.isInStripperSexPose()) return false;
 	return DEBUG_MODE && !this._denyingExternalEjaculations && this.hasPassive(PASSIVE_FLOOR_EJACULATION_COUNT_ONE_ID);
 };
 Game_Actor.prototype.showEval_acceptExternalEjaculations = function() {
 	if(this.justOrgasmed()) return false;
+	if($gameParty.isInStripperBattle && !this.isInStripperSexPose()) return false;
 	return DEBUG_MODE && this._denyingExternalEjaculations && this.hasPassive(PASSIVE_FLOOR_EJACULATION_COUNT_ONE_ID);
 };
 Game_Actor.prototype.showEval_denyInternalEjaculations = function() {
 	if(this.justOrgasmed()) return false;
+	if($gameParty.isInStripperBattle && !this.isInStripperSexPose()) return false;
 	return DEBUG_MODE && !this._denyingInternalEjaculations && this.hasPassive(PASSIVE_FLOOR_EJACULATION_COUNT_TWO_ID);
 };
 Game_Actor.prototype.showEval_acceptInternalEjaculations = function() {
 	if(this.justOrgasmed()) return false;
+	if($gameParty.isInStripperBattle && !this.isInStripperSexPose()) return false;
 	return DEBUG_MODE && this._denyingInternalEjaculations && this.hasPassive(PASSIVE_FLOOR_EJACULATION_COUNT_TWO_ID);
 };
 

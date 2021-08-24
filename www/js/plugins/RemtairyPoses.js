@@ -48,6 +48,15 @@ const POSE_TOILET_SIT_RIGHT = 'toilet_sit_right';
 const POSE_TOILET_STAND_LEFT = 'toilet_stand_left';
 const POSE_TOILET_STAND_RIGHT = 'toilet_stand_right';
 
+//Stripper
+const POSE_STRIPPER_INTERMISSION = 'stripper_intermission';
+const POSE_STRIPPER_STANDBY = 'stripper_standby';
+const POSE_STRIPPER_MOUTH = 'stripper_mouth';
+const POSE_STRIPPER_BOOBS = 'stripper_boobs';
+const POSE_STRIPPER_PUSSY = 'stripper_pussy';
+const POSE_STRIPPER_BUTT = 'stripper_butt';
+const POSE_STRIPPER_VIP = 'stripper_vip';
+
 //Defeated poses
 const POSE_DEFEATED_LEVEL1 = 'defeated_level1';
 const POSE_DEFEATED_LEVEL2 = 'defeated_level2';
@@ -101,6 +110,7 @@ Game_Actor.prototype.setPose = function (name, dontResetPose) {
 	this.setClitToyInsertablePose(true);
 	this.setPussyToyInsertablePose(true);
 	this.setAnalToyInsertablePose(true);
+	this.setPoseBattlebacks();
 	//this.setCacheChanged();
 };
 
@@ -153,6 +163,7 @@ Game_Actor.prototype.completeResetBodyParts = function () {
 	this.setTachieHatInFrontOfBody(true);
 	this.setTachieFrontInFrontOfFace(false);
 	this.setTachieSemenLeftArmInFrontOfFront(false);
+	this.setTachieSemenRightArmInFrontOfFront(false);
 	this.setTachiePantiesInFrontOfBoobs(false);
 	this.setTachieCockBoobsInFrontOfBoobs(true);
 	this.setTachieCockMouthInFrontOfFace(true);
@@ -366,6 +377,77 @@ Game_Actor.prototype.setPoseWeapon = function () {
 	}
 };
 
+Game_Actor.prototype.setChatfaceKarrynPoseItems = function () {
+	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
+	if(this.poseName === CHAT_FOLDER_KARRYN && this.tachieBodyExtension === 'warden_') {
+		let isAroused = actor.isAroused();
+		let isWearingGlovesAndHat = actor.isWearingGlovesAndHat();
+		let clothingStage = actor._clothingStage;
+		let chatfaceTachieBody = this.tachieBody;
+			
+		if(isWearingGlovesAndHat) {
+			this.setTachieHat(1);
+			if(chatfaceTachieBody != 3) {
+				this.setTachieRightArm('warden_' + chatfaceTachieBody);
+				this.setTachieLeftArm('warden_' + chatfaceTachieBody);
+			}
+		}
+		else {
+			this.resetTachieHat();
+			if(chatfaceTachieBody != 3) {
+				this.setTachieRightArm('warden_naked' + chatfaceTachieBody);
+				this.setTachieLeftArm('warden_naked' + chatfaceTachieBody);
+			}
+		}
+		
+		let pantiesName = actor.getPantiesType();
+		if(actor.isWearingPanties() && pantiesName && pantiesName !== REM_TACHIE_NULL) {
+			this.setTachiePanties(pantiesName);
+		}
+		else {
+			this.resetTachiePanties();
+		}
+		
+		if(chatfaceTachieBody == 5) {
+			this.setTachieWeapon(1);
+		}
+		else {
+			this.resetTachieWeapon();
+		}
+		
+		let boobsName = 'warden_';
+		if(chatfaceTachieBody == 3) {
+			if(!isWearingGlovesAndHat) {
+				boobsName += 'hold_naked';
+			}
+			else {
+				boobsName += 'hold_' + clothingStage;
+			}
+			this.resetTachieRightArm();
+			this.resetTachieLeftArm();
+		}
+		else {
+			if(!isWearingGlovesAndHat) {
+				boobsName += 'reg_naked';
+			}
+			else {
+				boobsName += 'reg_' + clothingStage;
+			}
+		}
+		
+		if(isAroused) boobsName += '_hard'
+		this.setTachieBoobs(boobsName);
+	}
+	else {
+		this.resetTachieBoobs();
+		this.resetTachieWeapon();
+		this.resetTachiePanties();
+		this.resetTachieRightArm();
+		this.resetTachieLeftArm();
+		this.resetTachieHat();
+	}
+};
+
 ///////////////
 // Tachie Arms
 // Set whether to draw tachie arms in front or behind tachie body
@@ -397,6 +479,13 @@ Game_Actor.prototype.setTachieFrontInFrontOfFace = function (status) {
 };
 Game_Actor.prototype.tachieFrontInFrontOfFace = function () {
 	return this._tachieFrontInFrontOfFace;
+};
+
+Game_Actor.prototype.setTachieSemenRightArmInFrontOfFront = function (status) {
+	this._tachieSemenRightArmInFrontOfFront = status;
+};
+Game_Actor.prototype.tachieSemenRightArmInFrontOfFront = function () {
+	return this._tachieSemenRightArmInFrontOfFront;
 };
 
 Game_Actor.prototype.setTachieSemenLeftArmInFrontOfFront = function (status) {
@@ -614,7 +703,7 @@ Game_Actor.prototype.isInMapPose = function() {
 Game_Actor.prototype.setWardenMapPose = function() {
 	this.setAllowTachieUpdate(false);
 	this.setPose(POSE_MAP);
-	this.resetTachieCutIn();
+	//this.resetTachieCutIn();
 	this.setTachieEyes('normal_mae1');
 	this.setTachieEyebrows('normal_kiri1');
 	this.setTachieMouth('normal_nico1');
@@ -667,7 +756,7 @@ Game_Actor.prototype.setWardenMapPose_Holding = function() {
 //Which is called in 51: Masturbation Battle and 105: Bed Sleep
 Game_Actor.prototype.setWardenMapPose_Naked = function() {
 	if(DEBUG_MODE) {
-		$gameSwitches.setValue(SWITCH_IS_NAKED_NO_CLOTHES_ID, true);
+		//$gameSwitches.setValue(SWITCH_IS_NAKED_NO_CLOTHES_ID, true);
 		this._hasNoClothesOn = true;
 		this.setTachieRightArm('naked1');
 		this.setTachieLeftArm('naked1');
@@ -676,6 +765,12 @@ Game_Actor.prototype.setWardenMapPose_Naked = function() {
 };
 
 Game_Actor.prototype.setWardenMapPoseExtensions = function() {
+	if(this.poseName !== POSE_MAP) {
+		console.error('Error setWardenMapPoseExtensions called during pose ' + this.poseName);
+		if($gameParty.isInWaitressBattle) this.setWaitressServingPose();
+		else this.setWardenMapPose();
+	}
+	
 	if(this.tachieHead === 'normal_1') {
 		this.setTachieSemenFaceExtension('head_normal_');
 		if(this.tachieHoppe == 'down_1') this.setTachieHoppe('normal_1');
@@ -701,11 +796,11 @@ Game_Actor.prototype.setWardenMapPoseExtensions = function() {
 		
 	}
 	else if(this.isInWaitressServingPose()){
-		$gameSwitches.setValue(SWITCH_IS_NAKED_NO_CLOTHES_ID, false);
+		//$gameSwitches.setValue(SWITCH_IS_NAKED_NO_CLOTHES_ID, false);
 		this.setPoseClothing();
 	}
 	else if((this._hasNoClothesOn || !this.isWearingGlovesAndHat()) && DEBUG_MODE) {
-		$gameSwitches.setValue(SWITCH_IS_NAKED_NO_CLOTHES_ID, true);
+		//$gameSwitches.setValue(SWITCH_IS_NAKED_NO_CLOTHES_ID, true);
 		let fileId = 'naked';
 		if(this._tachieBoobsType == 'hold') fileId += '_hold';
 		fileId += '_1';
@@ -713,7 +808,7 @@ Game_Actor.prototype.setWardenMapPoseExtensions = function() {
 		this.setTachieBoobs(fileId);
 	}
 	else {
-		$gameSwitches.setValue(SWITCH_IS_NAKED_NO_CLOTHES_ID, false);
+		//$gameSwitches.setValue(SWITCH_IS_NAKED_NO_CLOTHES_ID, false);
 		this.setPoseClothing();
 	}
 	
@@ -725,6 +820,7 @@ Game_Actor.prototype.setWardenMapPoseExtensions = function() {
 		this.setTachieSemenLeftArmExtension('boobs_hold_');
 		this.setTachieSemenRightArmExtension('boobs_hold_');
 		this.setTachieSemenBellyInFrontOfBoobs(false);
+		//this.setTachieRightArm('boobs_hold');
 		this.resetTachieRightArm();
 		this.resetTachieLeftArm();
 		this.resetTachieFrontA();
@@ -742,6 +838,12 @@ Game_Actor.prototype.setWardenMapPoseExtensions = function() {
 				this.setTachieLeftArm(3);
 			else if(this.tachieLeftArm == 'naked4')
 				this.setTachieLeftArm(4);
+			else if(this.tachieLeftArm == 'up1_naked')
+				this.setTachieLeftArm('up1');
+			else if(this.tachieLeftArm == 'boob1_naked')
+				this.setTachieLeftArm('boob1');
+			else if(this.tachieLeftArm == 'boob2_naked')
+				this.setTachieLeftArm('boob2');
 			
 			if(this.tachieRightArm == 'naked1')
 				this.setTachieRightArm(1);
@@ -753,6 +855,12 @@ Game_Actor.prototype.setWardenMapPoseExtensions = function() {
 				this.setTachieRightArm(4);
 			else if(this.tachieRightArm == 'naked5')
 				this.setTachieRightArm(5);
+			else if(this.tachieRightArm == 'naked7')
+				this.setTachieRightArm(7);
+			else if(this.tachieRightArm == 'naked8')
+				this.setTachieRightArm(8);
+			else if(this.tachieRightArm == 'up1_naked')
+				this.setTachieRightArm('up1');
 		}
 		else {
 			if(this.tachieLeftArm == 1)
@@ -763,7 +871,13 @@ Game_Actor.prototype.setWardenMapPoseExtensions = function() {
 				this.setTachieLeftArm('naked3');
 			else if(this.tachieLeftArm == 4)
 				this.setTachieLeftArm('naked4');
-			
+			else if(this.tachieLeftArm == 'up1')
+				this.setTachieLeftArm('up1_naked');
+			else if(this.tachieLeftArm == 'boob1')
+				this.setTachieLeftArm('boob1_naked');
+			else if(this.tachieLeftArm == 'boob2')
+				this.setTachieLeftArm('boob2_naked');
+		
 			if(this.tachieRightArm == 1)
 				this.setTachieRightArm('naked1');
 			else if(this.tachieRightArm == 2)
@@ -774,6 +888,12 @@ Game_Actor.prototype.setWardenMapPoseExtensions = function() {
 				this.setTachieRightArm('naked4');
 			else if(this.tachieRightArm == 5)
 				this.setTachieRightArm('naked5');
+			else if(this.tachieRightArm == 7)
+				this.setTachieRightArm('naked7');
+			else if(this.tachieRightArm == 8)
+				this.setTachieRightArm('naked8');
+			else if(this.tachieRightArm == 'up1')
+				this.setTachieRightArm('up1_naked');
 		}
 		
 		if(this.tachieLeftArm == 1 || this.tachieLeftArm == 'naked1')
@@ -783,7 +903,13 @@ Game_Actor.prototype.setWardenMapPoseExtensions = function() {
 		else if(this.tachieLeftArm == 3 || this.tachieLeftArm == 'naked3')
 			this.setTachieSemenLeftArmExtension('3_');
 		else if(this.tachieLeftArm == 4 || this.tachieLeftArm == 'naked4')
-			this.setMaxTachieSemenLeftArmId(0);
+			this.setTachieSemenLeftArmExtension('4_');
+		else if(this.tachieLeftArm == 'up1' || this.tachieLeftArm == 'up1_naked')
+			this.setTachieSemenLeftArmExtension('up1_');
+		else if(this.tachieLeftArm == 'boob1' || this.tachieLeftArm == 'boob1_naked')
+			this.setTachieSemenLeftArmExtension('boob1_');
+		else if(this.tachieLeftArm == 'boob2' || this.tachieLeftArm == 'boob2_naked')
+			this.setTachieSemenLeftArmExtension('boob2_');
 		else {
 			this.resetTachieSemenLeftArmExtension();
 			this.setMaxTachieSemenLeftArmId(0);
@@ -801,6 +927,14 @@ Game_Actor.prototype.setWardenMapPoseExtensions = function() {
 			this.setTachieSemenRightArmExtension('5_');
 			this.setMaxTachieSemenRightArmId(1);
 		}
+		else if(this.tachieRightArm == 7 || this.tachieRightArm == 'naked7')
+			this.setTachieSemenRightArmExtension('7_');
+		else if(this.tachieRightArm == 8 || this.tachieRightArm == 'naked8')
+			this.setTachieSemenRightArmExtension('8_');
+		else if(this.tachieRightArm == 'up1' || this.tachieRightArm == 'up1_naked')
+			this.setTachieSemenRightArmExtension('up1_');
+		else if(this.tachieRightArm == 'boob1')
+			this.setTachieSemenRightArmExtension('boob1_');
 		else {
 			this.resetTachieSemenRightArmExtension();
 			this.setMaxTachieSemenRightArmId(0);
@@ -816,6 +950,11 @@ Game_Actor.prototype.setWardenMapPoseExtensions = function() {
 			this.setTachieLeftArmInFrontOfBoobs(false);
 			this.setTachieSemenLeftArmInFrontOfFront(true);
 		}
+		else if(this.tachieLeftArm == 'up1' || this.tachieLeftArm == 'naked_up1') {
+			this.resetTachieFrontA();
+			this.setTachieLeftArmInFrontOfBoobs(true);
+			this.setTachieSemenLeftArmInFrontOfFront(false);
+		}
 		else {
 			this.resetTachieFrontA();
 			this.setTachieLeftArmInFrontOfBoobs(true);
@@ -823,16 +962,33 @@ Game_Actor.prototype.setWardenMapPoseExtensions = function() {
 		}
 		
 		if(this.tachieRightArm == 'zipper_1') {
+			this.resetTachieFrontB();
 			this.setTachieRightArmInFrontOfBody(true);
 			this.setTachieRightArmInFrontOfBoobs(true);
+			this.setTachieSemenRightArmInFrontOfFront(false);
 		}
-		else if(this.tachieRightArm == 'holdingtray_1') {
+		else if(this.tachieRightArm == 'up1' || this.tachieRightArm == 'naked_up1') {
+			this.resetTachieFrontB();
 			this.setTachieRightArmInFrontOfBody(true);
 			this.setTachieRightArmInFrontOfBoobs(false);
+			this.setTachieSemenRightArmInFrontOfFront(false);
 		}
-		else {
+		else if(this.tachieRightArm == 'boob1') {
+			if(this.isWearingGlovesAndHat() && this.isWearingWardenClothing()) {
+				this.setTachieFrontB('rightarm_boob1');
+			}
+			else {
+				this.setTachieFrontB('rightarm_boob1_naked');
+			}
 			this.setTachieRightArmInFrontOfBody(false);
 			this.setTachieRightArmInFrontOfBoobs(false);
+			this.setTachieSemenRightArmInFrontOfFront(true);
+		}
+		else {
+			this.resetTachieFrontB();
+			this.setTachieRightArmInFrontOfBody(false);
+			this.setTachieRightArmInFrontOfBoobs(false);
+			this.setTachieSemenRightArmInFrontOfFront(false);
 		}
 			
 	}
@@ -843,7 +999,9 @@ Game_Actor.prototype.setWardenMapPoseExtensions = function() {
 // Only for generic battles, special battles do not use combat poses
 ///////////////
 
+
 Game_Actor.prototype.setStandbyPose = function() {
+	this.setAllowTachieUpdate(false);
 	let pose = this.poseName;
 	let notAlreadyInSamePose = pose != POSE_STANDBY;
 	
@@ -874,10 +1032,13 @@ Game_Actor.prototype.setStandbyPose = function() {
 	
 	if(notAlreadyInSamePose)
 		this.emoteStandbyPose();
-	
+	this.setAllowTachieUpdate(true);
 	BattleManager.playNormalBgm();
 };
+
+
 Game_Actor.prototype.setAttackPose = function() {
+	this.setAllowTachieUpdate(false);
 	let pose = this.poseName;
 	let notAlreadyInSamePose = pose != POSE_ATTACK;
 	
@@ -920,8 +1081,11 @@ Game_Actor.prototype.setAttackPose = function() {
 	
 	if(notAlreadyInSamePose)
 		this.emoteAttackPose();
+	
+	this.setAllowTachieUpdate(true);
 };
 Game_Actor.prototype.setDefendPose = function() {
+	this.setAllowTachieUpdate(false);
 	let pose = this.poseName;
 	let notAlreadyInSamePose = pose != POSE_DEFEND;
 	
@@ -990,8 +1154,10 @@ Game_Actor.prototype.setDefendPose = function() {
 			this.setTachieSemenRightArmExtension('unarmed_');
 		}
 	}
+	this.setAllowTachieUpdate(true);
 };
 Game_Actor.prototype.setEvadePose = function() {
+	this.setAllowTachieUpdate(false);
 	let pose = this.poseName;
 	let notAlreadyInSamePose = pose != POSE_EVADE;
 	
@@ -1007,7 +1173,6 @@ Game_Actor.prototype.setEvadePose = function() {
 	
 	this.setMaxTachieSemenAnalId(3);
 	this.setMaxTachieSemenBackId(3);
-	this.setMaxTachieSemenBellyId(3);
 	this.setMaxTachieSemenBoobsId(3);
 	this.setMaxTachieSemenButtId(3);
 	this.setMaxTachieSemenCrotchId(3);
@@ -1022,6 +1187,8 @@ Game_Actor.prototype.setEvadePose = function() {
 	
 	if(notAlreadyInSamePose)
 		this.emoteEvadePose();
+	
+	this.setAllowTachieUpdate(true);
 };
 
 //////
@@ -1029,6 +1196,7 @@ Game_Actor.prototype.setEvadePose = function() {
 /////////
 
 Game_Actor.prototype.setUnarmedPose = function() {
+	this.setAllowTachieUpdate(false);
 	let pose = this.poseName;
 	let notAlreadyInSamePose = pose != POSE_UNARMED;
 	
@@ -1074,9 +1242,12 @@ Game_Actor.prototype.setUnarmedPose = function() {
 	
 	if(notAlreadyInSamePose)
 		this.emoteUnarmedPose();
+	
+	this.setAllowTachieUpdate(true);
 };
 
 Game_Actor.prototype.setKickPose = function() {
+	this.setAllowTachieUpdate(false);
 	let pose = this.poseName;
 	let notAlreadyInSamePose = pose != POSE_KICK;
 	
@@ -1131,27 +1302,37 @@ Game_Actor.prototype.setKickPose = function() {
 	BattleManager.playNormalBgm();
 	
 	this.emoteKickPose();
+	this.setAllowTachieUpdate(true);
 };
 
+Game_Actor.prototype.isInStandbyPose = function() {
+	return this.poseName == POSE_STANDBY;
+};
+Game_Actor.prototype.isInAttackPose = function() {
+	return this.poseName == POSE_ATTACK;
+};
+Game_Actor.prototype.isInDefendPose = function() {
+	return this.poseName == POSE_DEFEND;
+};
+Game_Actor.prototype.isInEvadePose = function() {
+	return this.poseName == POSE_EVADE;
+};
+Game_Actor.prototype.isInUnarmedPose = function() {
+	return this.poseName == POSE_UNARMED;
+};
+Game_Actor.prototype.isInKickPose = function() {
+	return this.poseName == POSE_KICK;
+};
 
 Game_Actor.prototype.isInCombatPose = function() {
-	let pose = this.poseName;
-	return ( pose == POSE_ATTACK || pose == POSE_DEFEND || pose == POSE_EVADE ||
-	pose == POSE_STANDBY || pose == POSE_UNARMED || pose == POSE_KICK );
+	return this.isInStandbyPose() || this.isInAttackPose() || this.isInDefendPose() ||
+	this.isInEvadePose() || this.isInUnarmedPose() || this.isInKickPose() ;
 };
 
-Game_Actor.prototype.isInUnarmedPose = function() {
-	let pose = this.poseName;
-	return ( pose == POSE_UNARMED );
-};
 
-Game_Actor.prototype.isInKickPose = function() {
-	let pose = this.poseName;
-	return pose == POSE_KICK;
-};
 
 Game_Actor.prototype.isInJobPose = function() {
-	return $gameParty.isInWaitressBattle || $gameParty.isInGloryBattle || this.isInReceptionistPose();
+	return $gameParty.isInWaitressBattle || $gameParty.isInReceptionistBattle || $gameParty.isInGloryBattle || $gameParty.isInStripperBattle;
 };
 
 Game_Actor.prototype.isAttackable = function() {
@@ -1229,20 +1410,22 @@ Game_Actor.prototype.setDownOrgasmPose = function() {
 	this.setPosePanties();
 	this.setSpankablePose(true);
 	this.setHasTachiePubic(true);
-	this.setTachieRightArmInFrontOfLeftArm(false);
-	this.setTachieRightArmInFrontOfBoobs(false);
-	this.setTachieLeftArmInFrontOfBoobs(false);
+	//this.setTachieRightArmInFrontOfLeftArm(false);
+	//this.setTachieRightArmInFrontOfBoobs(false);
+	//this.setTachieLeftArmInFrontOfBoobs(false);
 	
-	if(Karryn.isCensored())
-		this.setTachieBody('1_cen');
-	
+
 	if(!this.isWearingGlovesAndHat()) {
-		this.setTachieRightArm('naked_1');
-		this.setTachieLeftArm('naked_1');
+		if(Karryn.isCensored())
+			this.setTachieBody('naked_1_cen');
+		else
+			this.setTachieBody('naked_1');
 	}
 	else {
-		this.setTachieRightArm(1);
-		this.setTachieLeftArm(1);
+		if(Karryn.isCensored())
+			this.setTachieBody('1_cen');
+		else
+			this.setTachieBody('1');
 	}
 	
 	this.setSpriteBattlerPosData(POSE_DOWN_ORGASM);
@@ -1301,8 +1484,8 @@ Game_Actor.prototype.setDownFallDownPose = function() {
 	this.setSpriteBattlerPosData(POSE_DOWN_FALLDOWN);
 	this.removeAllPettedInsertExceptToy();
 	this.setAllBodySlotsFreeExceptToy();
-	this.setTachiePussyToyInFrontOfAnalToy(true);
-	this.setTachieClitToyInFrontOfMainToys(false);
+	//this.setTachiePussyToyInFrontOfAnalToy(true);
+	//this.setTachieClitToyInFrontOfMainToys(false);
 	this.setHasTachiePubic(true);
 	
 	this.setMaxTachieSemenAnalId(3);
@@ -1347,6 +1530,7 @@ Game_Actor.prototype.isInReadyPose = function() {
 };
 
 Game_Actor.prototype.isInSexPose = function() {
+	if($gameParty.isInStripperBattle && !this.isInStripperSexPose()) return false;
 	return !this.isInCombatPose() && !this.isInDownPose() && !this.isInMasturbationPose() && 
 	!this.isInWaitressServingPose() && !this.isInMapPose();
 };
@@ -1400,6 +1584,8 @@ Game_Actor.prototype.setThugGangbangSexPose = function() {
 	this.setHasTachiePubic(true);
 	
 	this.setTachieBoobs('empty');
+	this.setTachieSemenLeftArmExtension('empty_');
+	this.setTachieSemenRightArmExtension('empty_');
 	
 	this.setMaxTachieSemenBoobsId(1);
 	this.setMaxTachieSemenBellyId(1);
@@ -1449,11 +1635,7 @@ Game_Actor.prototype.setWerewolfBackPose = function(holeInserted) {
 	else {
 		this.setAllBodySlotsFreeExceptPettedInsert();
 	}
-	this.removePussyToy();
-	this.removeAnalToy();
 	this.setHasTachiePubic(false);
-	this.setPussyToyInsertablePose(false);
-	this.setAnalToyInsertablePose(false);
 	
 	if(!this.isWearingGlovesAndHat()) {
 		this.setTachieBody('naked_1');
@@ -1540,17 +1722,11 @@ Game_Actor.prototype.setGuardGangbangSexPose = function() {
 	this.setHasTachiePubic(false);
 
 	if(!this.isWearingGlovesAndHat()) {
-		if(Karryn.isCensored())
-			this.setTachieBody('naked_1_cen');
-		else
-			this.setTachieBody('naked_1');
+		this.setTachieBody('naked_1');
 		this.resetTachieHat();
 	}
 	else {
-		if(Karryn.isCensored())
-			this.setTachieBody('1_cen');
-		else
-			this.setTachieBody(1);
+		this.setTachieBody(1);
 		this.setTachieHat(1);
 	}
 	
@@ -1562,7 +1738,6 @@ Game_Actor.prototype.setGuardGangbangSexPose = function() {
 	this.setMaxTachieSemenFaceId(1);
 	this.setMaxTachieSemenRightArmId(1);
 	this.setMaxTachieWetId(1);
-	this.setMaxTachieSemenCockPussyId(1);
 
 	this.setBodyPartFree_PettingOnly(CLIT_ID);
 	this.setBodyPartFree_PettingOnly(BOOBS_ID);
@@ -1675,9 +1850,6 @@ Game_Actor.prototype.setLizardmanCowgirlSexPose = function() {
 	this.setHasTachiePubic(false);
 	this.setSpankablePose(true);
 	
-	if(Karryn.isCensored())
-		this.setTachieBody('1_cen');
-	
 	this.setTachieSemenRightArmExtension('normal_');
 	this.setTachieSemenFaceExtension('normal_');
 	this.resetTachieSemenMouthExtension();
@@ -1690,7 +1862,6 @@ Game_Actor.prototype.setLizardmanCowgirlSexPose = function() {
 	this.setMaxTachieSemenFaceId(1);
 	this.setMaxTachieSemenRightArmId(1);
 	this.setMaxTachieWetId(1);
-	this.setMaxTachieSemenCockPussyId(1);
 
 	this.setBodyPartFree_PettingOnly(BOOBS_ID);
 	this.setBodyPartFree_PettingOnly(NIPPLES_ID);
@@ -2107,30 +2278,28 @@ Game_Actor.prototype.setRimjobSexPose = function(karrynSkill) {
 	this.setSpankablePose(true);
 	this.setHasTachiePubic(true);
 	
-	this.setTachieEyes(1);
-	this.setTachieHoppe(1);
-	this.setTachieSweat(1);
-	this.setTachieBackA('rightleg_1');
 	this.setTachieHolesCocksToysInFrontOfBody(false);
 	this.setTachieFrontInFrontOfFace(true);
 	
 	if(!this.isWearingGlovesAndHat()) {
 		this.setTachieBody('naked_1');
-		this.setTachieFrontA('leftarm_naked_1');
+		this.setTachieFrontA('leftarm_naked');
+		this.resetTachieHat();
 	}
 	else {
 		this.setTachieHat(1);
-		this.setTachieFrontA('leftarm_1');
+		this.setTachieBody(1);
+		this.setTachieFrontA('leftarm');
 	}
 	
+	this.setMaxTachieSemenAnalId(1);
 	this.setMaxTachieSemenBellyId(1);
 	this.setMaxTachieSemenBoobsId(1);
 	this.setMaxTachieSemenButtId(1);
 	this.setMaxTachieSemenCrotchId(1);
-	this.setMaxTachieSemenFaceId(0);
+	this.setMaxTachieSemenFaceId(1);
 	this.setMaxTachieSemenLeftArmId(1);
 	this.setMaxTachieWetId(1);
-	this.setMaxTachieDroolMouthId(1);
 	
 	this.setBodyPartFree_PettingOnly(MOUTH_ID);
 	this.setBodyPartFree_PettingOnly(THIGHS_ID);
@@ -2180,17 +2349,25 @@ Game_Actor.prototype.setFootjobSexPose = function(karrynSkill) {
 	this.setSpankablePose(false);
 	this.setHasTachiePubic(false);
 	
-	this.setTachieLeftArmInFrontOfBody(false);
-	this.setTachieRightArmInFrontOfBody(false);
-	this.setTachieRightArmInFrontOfLeftArm(false);
-	this.setTachieToysInFrontOfEverything(true);
+	if(!this.isWearingGlovesAndHat()) {
+		this.setTachieBody('naked_1');
+		this.resetTachieHat();
+	}
+	else {
+		this.setTachieBody('1');
+		this.setTachieHat('close_1');
+	}
+	this.setTachieHead('close_1');
 	
+	this.setTachieSemenFaceExtension('close_');
+
 	this.setMaxTachieSemenBellyId(1);
 	this.setMaxTachieSemenBoobsId(1);
 	this.setMaxTachieSemenFaceId(1);
 	this.setMaxTachieWetId(1);
 	this.setMaxTachieSemenLeftLegId(1);
 	this.setMaxTachieSemenRightLegId(1);
+	this.setMaxTachieSemenCrotchId(1);
 	
 	this.setBodyPartFree_PettingOnly(BOOBS_ID);
 	this.setBodyPartFree_PettingOnly(NIPPLES_ID);
@@ -2238,20 +2415,15 @@ Game_Actor.prototype.setStandingHJSexPose = function(karrynSkill) {
 	}
 	this.setSpankablePose(true);
 	this.setHasTachiePubic(true);
-	this.setTachieLeftArmInFrontOfBody(true);
-	this.setTachieLeftArmInFrontOfBoobs(false);
-	this.setTachieRightArmInFrontOfBody(false);
-	this.setTachieBoobsErectionTrue();
 	
 	if(!this.isWearingGlovesAndHat()) {
 		this.setTachieBody('naked_1');
+		this.resetTachieHat();
 	}
-	
-	this.setTachieEyes(1);
-	this.setTachieHat(1);
-	this.setTachieHoppe(1);
-	this.setTachieSweat(1);
-	this.setTachieLeftArm('empty');
+	else {
+		this.setTachieBody('1');
+		this.setTachieHat('1');
+	}
 	
 	this.setMaxTachieSemenBellyId(1);
 	this.setMaxTachieSemenBoobsId(1);
@@ -2261,8 +2433,8 @@ Game_Actor.prototype.setStandingHJSexPose = function(karrynSkill) {
 	this.setMaxTachieSemenLeftArmId(1);
 	this.setMaxTachieSemenRightArmId(1);
 	this.setMaxTachieWetId(1);
-	this.setMaxTachieSemenCockRightArmId(1);
-	
+	this.setTachieSemenLeftArmExtension('normal_');
+
 
 	this.setBodyPartFree_PettingOnly(MOUTH_ID);
 	this.setBodyPartFree_PettingOnly(THIGHS_ID);
@@ -2312,18 +2484,38 @@ Game_Actor.prototype.setKneelingBJSexPose = function(karrynSkill) {
 		this.setAllBodySlotsFreeExceptPettedInsert();
 	}
 
+	this.setTachieSemenRightArmExtension('normal_');
+	this.setTachieSemenLeftArmExtension('normal_');
+	this.setHasTachiePubic(true);
+
 	if(!this.isWearingGlovesAndHat()) {
 		this.setTachieBody('naked_1');
+		this.resetTachieHat();
+		this.setTachieLeftArm('normal_naked');
+		
+		if(karrynSkill) {
+			this.setTachieRightArm('hj_naked');
+			this.setMaxTachieSemenRightArmId(0);
+		}
+		else {
+			this.setTachieRightArm('normal_naked');
+			this.setMaxTachieSemenRightArmId(1);
+		}
 	}
-
-	this.setTachieEyes('lookleft_1');
-	this.setTachieHat(1);
-	this.setTachieHoppe(1);
-	this.setTachieRightArm('empty');
-	this.setTachieRightArmInFrontOfBody(false);
-	this.setTachieSemenRightArmExtension('empty_');
-	this.setTachieFrontInFrontOfFace(true);
-	this.setHasTachiePubic(true);
+	else {
+		this.setTachieBody('1');
+		this.setTachieHat('1');
+		this.setTachieLeftArm('normal');
+		
+		if(karrynSkill) {
+			this.setTachieRightArm('hj');
+			this.setMaxTachieSemenRightArmId(0);
+		}
+		else {
+			this.setTachieRightArm('normal');
+			this.setMaxTachieSemenRightArmId(1);
+		}
+	}
 	
 	this.setMaxTachieSemenBellyId(1);
 	this.setMaxTachieSemenBoobsId(1);
@@ -2331,15 +2523,13 @@ Game_Actor.prototype.setKneelingBJSexPose = function(karrynSkill) {
 	this.setMaxTachieSemenCrotchId(1);
 	this.setMaxTachieSemenFaceId(1);
 	this.setMaxTachieSemenLeftArmId(1);
-	this.setMaxTachieSemenRightArmId(1);
-	this.setMaxTachieSemenCockMouthId(1);
 	this.setMaxTachieWetId(1);
 	
 	this.setBodyPartFree_PettingOnly(THIGHS_ID);
 	this.setBodyPartFree_PettingOnly(BOOBS_ID);
 	this.setBodyPartFree_PettingOnly(NIPPLES_ID);
 	this.setBodyPartFree_PettingOnly(CLIT_ID);
-	this.setBodyPartUnavailable(LEFT_HAND_ID);
+	this.setBodyPartUnavailable(RIGHT_HAND_ID);
 	this.setBodyPartUnavailable(BUTT_ID);
 	this.setBodyPartUnavailable(ANAL_ID);
 	this.setBodyPartUnavailable(PUSSY_ID);
@@ -2355,7 +2545,7 @@ Game_Actor.prototype.setKneelingBJSexPose = function(karrynSkill) {
 		BattleManager.upgradingPoseReinsertBody(this);
 	}
 	
-	this.emoteMasterManager();
+	this.emoteKneelingBlowjobPose();
 	this.setAllowTachieUpdate(true);
 };
 
@@ -2447,16 +2637,25 @@ Game_Actor.prototype.setSlimeAnalPiledriverPose = function() {
 
 	this.setTachieClitToyInFrontOfMainToys(false);
 	this.setTachieClitToyBehindCocks(true);
-
-	this.setTachieEyes(1);
-	this.setTachieHat(1);
-	this.setTachieMouth(1);
-	this.setTachieCockAnal('slime');
+	
 	this.setSpankablePose(true);
 	this.setHasTachiePubic(true);
 	
-	if(Karryn.isCensored())
-		this.setTachieBody('1_cen');
+	if(this.isWearingGlovesAndHat()) {
+		if(Karryn.isCensored())
+			this.setTachieBody('1_cen');
+		else
+			this.setTachieBody('1');
+		this.setTachieHat(1);
+	}
+	else {
+		if(Karryn.isCensored())
+			this.setTachieBody('naked_1_cen');
+		else
+			this.setTachieBody('naked_1');
+		this.resetTachieHat();
+	}
+	
 	
 	this.setMaxTachieSemenAnalId(1);
 	this.setMaxTachieSemenBellyId(1);
@@ -2986,6 +3185,173 @@ Game_Actor.prototype.setToiletStandRightPose = function() {
 	this.setAllowTachieUpdate(true);
 };
 
+////////
+// Stripper
+
+Game_Actor.prototype.setStripperIntermissionPose = function() {
+	this.setPose(POSE_STRIPPER_INTERMISSION, false);
+	this.setHasTachiePubic(false);
+};
+
+Game_Actor.prototype.isInStripperStandbyPose = function() {
+	return this.poseName == POSE_STRIPPER_STANDBY;
+};
+Game_Actor.prototype.setStripperStandbyPose = function() {
+	this.setAllowTachieUpdate(false);
+	let pose = this.poseName;
+	let notAlreadyInSamePose = pose != POSE_STRIPPER_STANDBY;
+	
+	if(notAlreadyInSamePose)
+		this.setPose(POSE_STRIPPER_STANDBY);
+	
+	this.setPosePanties();
+	this.setSpankablePose(false);
+	this.setHasTachiePubic(true);
+	
+	this.setSpriteBattlerPosData(POSE_STRIPPER_STANDBY);
+	this.setAllBodySlotsFree();
+	
+	//temp
+	this.setTachieBoobs(1)
+	this.setTachieRightArm(1)
+	this.setTachieLeftArm(1)
+	this.setTachieMouth(1)
+	this.setTachieEyebrows(1)
+	this.setTachieEyes(1)
+	this.setTachieRightArmInFrontOfLeftArm(false);
+	this.setTachieRightArmInFrontOfBody(false);
+	this.setTachieLeftArmInFrontOfBody(false);
+	this.setTachieRightArmInFrontOfBoobs(false);
+	this.setTachieLeftArmInFrontOfBoobs(false);
+	
+	this.emoteMasterManager_StripperBattle();
+	this.setAllowTachieUpdate(true);
+};
+
+Game_Actor.prototype.isInStripperMouthPose = function() {
+	return this.poseName == POSE_STRIPPER_MOUTH;
+};
+Game_Actor.prototype.setStripperMouthPose = function() {
+	this.setAllowTachieUpdate(false);
+	let pose = this.poseName;
+	let notAlreadyInSamePose = pose != POSE_STRIPPER_MOUTH;
+	
+	if(notAlreadyInSamePose)
+		this.setPose(POSE_STRIPPER_MOUTH);
+	
+	this.setPosePanties();
+	this.setSpankablePose(false);
+	this.setHasTachiePubic(false);
+	
+	this.setSpriteBattlerPosData(POSE_STRIPPER_MOUTH);
+	this.setAllBodySlotsFree();
+	
+	//temp
+	this.setTachieBoobs(1)
+	this.setTachieMouth(1)
+	this.setTachieEyes(1)
+	
+	if(notAlreadyInSamePose)
+		this.emoteMasterManager_StripperBattle();
+	this.setAllowTachieUpdate(true);
+};
+
+Game_Actor.prototype.isInStripperBoobsPose = function() {
+	return this.poseName == POSE_STRIPPER_BOOBS;
+};
+Game_Actor.prototype.setStripperBoobsPose = function() {
+	this.setAllowTachieUpdate(false);
+	let pose = this.poseName;
+	let notAlreadyInSamePose = pose != POSE_STRIPPER_BOOBS;
+	
+	if(notAlreadyInSamePose)
+		this.setPose(POSE_STRIPPER_BOOBS);
+	
+	this.setPosePanties();
+	this.setSpankablePose(false);
+	this.setHasTachiePubic(true);
+	
+	this.setSpriteBattlerPosData(POSE_STRIPPER_BOOBS);
+	this.setAllBodySlotsFree();
+	
+	//temp
+	this.setTachieBoobs(1)
+	this.setTachieRightArm(1)
+	this.setTachieLeftArm(1)
+	this.setTachieMouth(1)
+	this.setTachieEyes(1)
+	
+	if(notAlreadyInSamePose)
+		this.emoteMasterManager_StripperBattle();
+	this.setAllowTachieUpdate(true);
+};
+
+Game_Actor.prototype.isInStripperPussyPose = function() {
+	return this.poseName == POSE_STRIPPER_PUSSY;
+};
+Game_Actor.prototype.setStripperPussyPose = function() {
+	this.setAllowTachieUpdate(false);
+	let pose = this.poseName;
+	let notAlreadyInSamePose = pose != POSE_STRIPPER_PUSSY;
+	
+	if(notAlreadyInSamePose)
+		this.setPose(POSE_STRIPPER_PUSSY);
+	
+	this.setPosePanties();
+	this.setSpankablePose(false);
+	this.setHasTachiePubic(true);
+	
+	this.setSpriteBattlerPosData(POSE_STRIPPER_PUSSY);
+	this.setAllBodySlotsFree();
+	
+	//temp
+	this.setTachieBoobs(1)
+	this.setTachieMouth(1)
+	this.setTachieEyebrows(1)
+	this.setTachieEyes(1)
+	
+	if(notAlreadyInSamePose)
+		this.emoteMasterManager_StripperBattle();
+	this.setAllowTachieUpdate(true);
+};
+
+Game_Actor.prototype.isInStripperButtPose = function() {
+	return this.poseName == POSE_STRIPPER_BUTT;
+};
+Game_Actor.prototype.setStripperButtPose = function() {
+	this.setAllowTachieUpdate(false);
+	let pose = this.poseName;
+	let notAlreadyInSamePose = pose != POSE_STRIPPER_BUTT;
+	
+	if(notAlreadyInSamePose)
+		this.setPose(POSE_STRIPPER_BUTT);
+	
+	this.setPosePanties();
+	this.setSpankablePose(false);
+	this.setHasTachiePubic(false);
+	
+	this.setSpriteBattlerPosData(POSE_STRIPPER_BUTT);
+	this.setAllBodySlotsFree();
+	
+	//temp
+	this.setTachieBoobs(1)
+	this.setTachieMouth(1)
+	this.setTachieEyes(1)
+	
+	if(notAlreadyInSamePose)
+		this.emoteMasterManager_StripperBattle();
+	this.setAllowTachieUpdate(true);
+};
+
+Game_Actor.prototype.isInStripperSexPose = function() {
+	return this.poseName == POSE_STRIPPER_VIP;
+};
+Game_Actor.prototype.setStripperSexPose = function() {
+	
+	
+};
+
+
 //////
 // No Stamina Defeat Pose
 
@@ -3018,7 +3384,7 @@ Game_Actor.prototype.isInNeverDeadPose = function() {
 // No Ejaculation Stock does not mean it is over Pose
 
 Game_Actor.prototype.isInNoEjaculationStockStillContinuesPose = function() {
-	return this.isInWaitressSexPose() || $gameParty.isInGloryBattle;
+	return this.isInWaitressSexPose() || $gameParty.isInGloryBattle || ($gameParty.isInStripperBattle && !this.isInStripperSexPose());
 };
 
 ///////
@@ -3035,42 +3401,84 @@ Game_Actor.prototype.isDontGainFatiguePerTurnPose = function() {
 	return this.isInMasturbationCouchPose() || this.isInDefeatedPose() || this.isInJobPose();
 };
 
+//////
+// Battleback Setting Pose
+
+Game_Actor.prototype.isInDrawBattleBacks1CloseGroundPose = function() {
+	return this.isInThugGangbangPose();
+};
+Game_Actor.prototype.isInDrawBattleBacks1FarGroundPose = function() {
+	return this.isInDownOrgasmPose();
+};
+Game_Actor.prototype.isInDrawDefaultBattleBacks1Pose = function() {
+	return $dataMap.specifyBattleback && !this.isInDrawBattleBacks1CloseGroundPose() && !this.isInDrawBattleBacks1FarGroundPose() && !this.isInJobPose() && !this.isInDefeatedPose() && !this.isInMasturbationCouchPose() && !this.isInMapPose();
+};
+
+//Pose Battlebacks
+ 
+Game_Actor.prototype.setPoseBattlebacks = function() {
+	if(!BattleManager._spriteset) return;
+	let battleback1Name = '' + $dataMap.battleback1Name;
+	let battleback2Name = '' + $dataMap.battleback2Name;
+	
+	if(Prison.isNightBattle()) battleback2Name += '_night';
+	
+	if(this.isInDrawBattleBacks1CloseGroundPose()) {
+		$gameMap.changeBattleback(battleback1Name + '_close', battleback2Name);
+		BattleManager.changeBattleback(battleback1Name + '_close', battleback2Name);
+	}
+	else if(this.isInDrawBattleBacks1FarGroundPose()) {
+		$gameMap.changeBattleback(battleback1Name + '_far', battleback2Name);
+		BattleManager.changeBattleback(battleback1Name + '_far', battleback2Name);
+	}
+	else if(this.isInDrawDefaultBattleBacks1Pose()) {
+		$gameMap.changeBattleback(battleback1Name, battleback2Name);
+		BattleManager.changeBattleback(battleback1Name, battleback2Name);
+	} 
+	else return;
+};
+
+
 
 ///////
 // Show Enemy Name Only During Valid Selection Pose
 
 Game_Actor.prototype.isInShowEnemyNameOnlyDuringValidSelectionPose = function() {
-	return this.isInDefeatedPose() || this.isInWaitressSexPose();
+	return this.isInDefeatedPose() || this.isInWaitressSexPose() || this.isInStripperSexPose();
 };
 Game_Actor.prototype.isInDontShowEnemyNameEverPose = function() {
 	return $gameParty.isInGloryBattle;
 };
 Game_Actor.prototype.isInShowEnemyImageOnlyDuringValidSelectionPose = function() {
-	return this.isInMasturbationCouchPose() || this.isInDefeatedPose() || this.isInWaitressSexPose() || $gameParty.isInGloryBattle;
+	return this.isInMasturbationCouchPose() || this.isInDefeatedPose() || this.isInWaitressSexPose() || $gameParty.isInGloryBattle || this.isInStripperSexPose();
 };
 Game_Actor.prototype.isInShowEnemyGaugeOnlyDuringValidSelectionPose = function() {
-	return this.isInDefeatedPose() || this.isInWaitressSexPose();
+	return this.isInDefeatedPose() || this.isInWaitressSexPose() || this.isInStripperSexPose();
 };
-Game_Actor.prototype.isInDontShowEnemyGaugePose = function() {
-	return $gameParty.isInGloryBattle;
+Game_Actor.prototype.isInDontShowEnemyHealthGaugePose = function() {
+	return $gameParty.isInWaitressBattle || this.isInDefeatedPose() || $gameParty.isInGloryBattle || ($gameParty.isInStripperBattle && !this.isInStripperSexPose());
+};
+Game_Actor.prototype.isInDontShowEnemyPleasureGaugePose = function() {
+	return $gameParty.isInWaitressBattle || this.isInDefeatedPose() || $gameParty.isInGloryBattle;
 };
 Game_Actor.prototype.isInDontShowEnemyStateIconsPose = function() {
 	return $gameParty.isInGloryBattle;
 };
 Game_Actor.prototype.isInReorderEnemyImagesOnSelectionPose = function() {
-	return this.isInDefeatedPose() || this.isInWaitressSexPose() || $gameParty.isInGloryBattle;
+	return this.isInDefeatedPose() || this.isInWaitressSexPose() || $gameParty.isInGloryBattle || this.isInStripperSexPose();
 };
 Game_Actor.prototype.isInDrawEnemiesAtHalfWidthPose = function() {
-	return $gameParty.isInWaitressBattle || this.isInDefeatedPose();
+	//return false;
+	return $gameParty.isInWaitressBattle || this.isInDefeatedPose() || $gameParty.isInStripperBattle;
 };
 Game_Actor.prototype.isInEnemiesDontRegenPleasurePose = function() {
-	return this.isInWaitressServingPose();
+	return this.isInWaitressServingPose() || ($gameParty.isInStripperBattle && !this.isInStripperSexPose());
 };
 Game_Actor.prototype.isInEnemiesDontDrawSelectionPose = function() {
 	return $gameParty.isInGloryBattle;
 };
 Game_Actor.prototype.isInEnemiesJoinArousedAndStayArousedPose = function() {
-	return this.isInDefeatedPose() || this.isInWaitressSexPose();
+	return this.isInDefeatedPose() || this.isInWaitressSexPose() || this.isInStripperSexPose();
 };
 
 ////////
@@ -3093,12 +3501,15 @@ Game_Actor.prototype.setDefeatedLevel1Pose = function() {
 	this.setAllBodySlotsFreeExceptToy();
 	this.setHasTachiePubic(false);
 	
-	this.setTachieHat(1);
-	this.setTachieEyes(1);
-	this.setTachieMouth(1);
-	this.setTachieHoppe(1);
+	if(!this.isWearingGlovesAndHat()) {
+		this.setTachieBody('naked_1');
+		this.resetTachieHat();
+	}
+	else {
+		this.setTachieBody(1);
+		this.setTachieHat(1);
+	}
 
-	//this.setMaxTachieSemenBoobsId(1);
 	this.setMaxTachieSemenLeftArmId(1);
 	this.setMaxTachieSemenRightArmId(1);
 	this.setMaxTachieSemenLeftBoobId(1);
@@ -3115,7 +3526,7 @@ Game_Actor.prototype.setDefeatedLevel1Pose = function() {
 	this.setBodyPartUnavailable(FEET_ID);
 	this.setBodyPartUnavailable(THIGHS_ID);
 	
-	this.emoteDefeatedLevelOnePose();
+	this.emoteDefeatedLevelOnePose(false);
 };
 
 Game_Actor.prototype.isInDefeatedLevel2Pose = function() {
@@ -3353,7 +3764,7 @@ Game_Actor.prototype.performDamage = function() {
 		//Graze result
 		if(result.graze) {
 			this.gainStaminaExp(15, $gameTroop.getAverageEnemyExperienceLvl());
-			this.gainAgilityExp(60, $gameTroop.getAverageEnemyExperienceLvl());
+			this.gainAgilityExp(80, $gameTroop.getAverageEnemyExperienceLvl());
 			this.setEvadePose();
 			this.passiveEvadePoseEffect();
 			//this.setHp(this.hp - Math.round(this.agi/2));
@@ -3431,7 +3842,7 @@ Game_Actor.prototype.performAction = function(action) {
 ////////////
 
 //Gets called at the end of every action
-Game_Actor.prototype.refreshPose = function() {
+Game_Actor.prototype.refreshPose = function(onlyChangeIfDifferent) {
 	if(this.isInSexPose()) {
 		return;
 	}
@@ -3445,8 +3856,15 @@ Game_Actor.prototype.refreshPose = function() {
 	}
 	
 	if(this.justOrgasmed()) {
-		this.setDownOrgasmPose();
-		return;
+		if(onlyChangeIfDifferent) { 
+			if(!this.isInDownOrgasmPose()) 
+				this.setDownOrgasmPose();
+			return;
+		}
+		else if(!onlyChangeIfDifferent) {
+			this.setDownOrgasmPose();
+			return;
+		}
 	}
 	//In a down orgasm pose but state worn off
 	else if(this.isInDownOrgasmPose() && !this.justOrgasmed()) {
@@ -3455,15 +3873,28 @@ Game_Actor.prototype.refreshPose = function() {
 
 	if(this.hasNoStamina()) {
 		let notComingFromCombatPose = !this.isInCombatPose();
-		this.setDownStaminaPose(notComingFromCombatPose);
+		if(onlyChangeIfDifferent) {
+			if(!this.isInDownStaminaPose()) 
+				this.setDownStaminaPose(notComingFromCombatPose);
+		}
+		else if(!onlyChangeIfDifferent) {
+			this.setDownStaminaPose(notComingFromCombatPose); 
+		}
+		
 	}
 	//In a down stamina pose but now has stamina
 	else if(this.isInDownStaminaPose() && !this.hasNoStamina()) {
-		this.setStandbyPose();
+		this.setStandbyPose(); 
 	}
 	
 	if(this.isStateAffected(STATE_FALLEN_ID)) {
-		this.setDownFallDownPose();
+		if(onlyChangeIfDifferent) {
+			if(!this.isInDownFallDownPose()) 
+				this.setDownFallDownPose();
+		}
+		else if(!onlyChangeIfDifferent) {
+			this.setDownFallDownPose(); 
+		}
 	}
 	//In a down fall down pose but doesn't have state anymore
 	else if(this.isInDownFallDownPose()) {
@@ -3475,13 +3906,31 @@ Game_Actor.prototype.refreshPose = function() {
 			this.setDownStaminaPose(false);
 		}
 		else if(this.isGuarding) {
-			this.setDefendPose();
+			if(onlyChangeIfDifferent) { 
+				if(!this.isInDefendPose()) 
+					this.setDefendPose();
+			}
+			else if(!onlyChangeIfDifferent) {
+				this.setDefendPose();
+			}
 		}
 		else if(this.hasHalberd()) {
-			this.setStandbyPose();
+			if(onlyChangeIfDifferent) { 
+				if(!this.isInStandbyPose()) 
+					this.setStandbyPose();
+			}
+			else if(!onlyChangeIfDifferent) {
+				this.setStandbyPose();
+			}
 		}	
 		else {
-			this.setUnarmedPose();
+			if(onlyChangeIfDifferent) { 
+				if(!this.isInUnarmedPose()) 
+					this.setUnarmedPose();
+			}
+			else if(!onlyChangeIfDifferent) {
+				this.setUnarmedPose();
+			}
 		}
 	}
 	
@@ -3491,15 +3940,194 @@ Game_Actor.prototype.refreshPose = function() {
 // Preload Karryn Poses
 
 DKTools.PreloadManager.preloadKarrynPoses = function() {
-	//if(ConfigManager.remCutinsSmootherLoading) 
-	//{
-		if(DEBUG_MODE && !ConfigManager.remCutinsDisabled) {
-			DKTools.PreloadManager.preloadImage({ path: 'img/karryn/cutin/', hue: 0, caching: true });
+	if(DEBUG_MODE && ConfigManager.remCutinsSmootherLoading && ConfigManager.remCutinsFast) {
+		DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_bs1.png', hue: 0, caching: true });
+		DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_bs2.png', hue: 0, caching: true });
+		DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_bs3.png', hue: 0, caching: true });
+		DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_fg_sc_human.png', hue: 0, caching: true });
+		DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_flaunt1.png', hue: 0, caching: true });
+		DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ks1_e_human.png', hue: 0, caching: true });
+		DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ks2_e_human.png', hue: 0, caching: true });
+		DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ks1_k_human.png', hue: 0, caching: true });
+		DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ks2_k_human.png', hue: 0, caching: true });
+		DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_or1.png', hue: 0, caching: true });
+		DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_or2.png', hue: 0, caching: true });
+		DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_bb_human.png', hue: 0, caching: true });
+		DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_bt_goblin.png', hue: 0, caching: true });
+		DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_bt_human.png', hue: 0, caching: true });
+		DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_ns_human.png', hue: 0, caching: true });
+		
+		
+		if(false) { //todo replace with config
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_an_goblin_dark_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_an_goblin_normal_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_an_human_cut_black_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_an_human_cut_normal_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_an_human_cut_pale_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_an_human_half_black_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_an_human_half_normal_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_an_human_half_pale_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_an_human_skin_black_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_an_human_skin_normal_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_an_human_skin_pale_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_an_lizardman_dark_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_an_lizardman_normal_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_an_orc_dark_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_an_orc_normal_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_an_slime_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_an_werewolf_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_bk_goblin_dark_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_bk_goblin_normal_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_bk_human_cut_black_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_bk_human_cut_normal_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_bk_human_cut_pale_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_bk_human_half_black_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_bk_human_half_normal_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_bk_human_half_pale_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_bk_human_skin_black_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_bk_human_skin_normal_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_bk_human_skin_pale_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_bk_lizardman_dark_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_bk_lizardman_normal_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_bk_orc_dark_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_bk_orc_normal_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_bk_slime_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_bk_werewolf_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_bk_yeti_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_m_human_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_ps_goblin_dark_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_ps_goblin_normal_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_ps_human_cut_black_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_ps_human_cut_normal_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_ps_human_cut_pale_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_ps_human_half_black_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_ps_human_half_normal_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_ps_human_half_pale_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_ps_human_skin_black_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_ps_human_skin_normal_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_ps_human_skin_pale_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_ps_lizardman_dark_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_ps_lizardman_normal_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_ps_orc_dark_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_ps_orc_normal_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_ps_slime_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_ps_werewolf_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_an_human_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_ck_goblin_dark_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_ck_goblin_normal_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_ck_human_cut_black_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_ck_human_cut_normal_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_ck_human_cut_pale_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_ck_human_half_black_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_ck_human_half_normal_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_ck_human_half_pale_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_ck_human_skin_black_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_ck_human_skin_normal_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_ck_human_skin_pale_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_ck_lizardman_dark_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_ck_lizardman_normal_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_ck_orc_dark_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_ck_orc_normal_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_ck_slime_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_ck_werewolf_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_ck_yeti_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_ct_human_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_ps_human_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_toyA_1_in_human_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_toyA_1_play_human_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_toyC_1_in_human_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_toyC_1_play_human_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_toyP_1_in_human_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_toyP_1_play_human_cen.png', hue: 0, caching: true });
 		}
-	//}
+		else {
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_an_goblin_dark.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_an_goblin_normal.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_an_human_cut_black.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_an_human_cut_normal.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_an_human_cut_pale.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_an_human_half_black.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_an_human_half_normal.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_an_human_half_pale.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_an_human_skin_black.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_an_human_skin_normal.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_an_human_skin_pale.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_an_lizardman_dark.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_an_lizardman_normal.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_an_orc_dark.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_an_orc_normal.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_an_slime.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_an_werewolf.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_bk_goblin_dark.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_bk_goblin_normal.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_bk_human_cut_black.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_bk_human_cut_normal.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_bk_human_cut_pale.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_bk_human_half_black.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_bk_human_half_normal.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_bk_human_half_pale.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_bk_human_skin_black.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_bk_human_skin_normal.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_bk_human_skin_pale.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_bk_lizardman_dark.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_bk_lizardman_normal.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_bk_orc_dark.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_bk_orc_normal.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_bk_slime.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_bk_werewolf.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_bk_yeti.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_m_human.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_ps_goblin_dark.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_ps_goblin_normal.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_ps_human_cut_black.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_ps_human_cut_normal.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_ps_human_cut_pale.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_ps_human_half_black.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_ps_human_half_normal.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_ps_human_half_pale.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_ps_human_skin_black.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_ps_human_skin_normal.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_ps_human_skin_pale.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_ps_lizardman_dark.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_ps_lizardman_normal.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_ps_orc_dark.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_ps_orc_normal.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_ps_slime.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_ps_werewolf.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_an_human.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_ck_goblin_dark.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_ck_goblin_normal.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_ck_human_cut_black.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_ck_human_cut_normal.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_ck_human_cut_pale.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_ck_human_half_black.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_ck_human_half_normal.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_ck_human_half_pale.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_ck_human_skin_black.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_ck_human_skin_normal.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_ck_human_skin_pale.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_ck_lizardman_dark.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_ck_lizardman_normal.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_ck_orc_dark.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_ck_orc_normal.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_ck_slime.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_ck_werewolf.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_ck_yeti.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_ct_human.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_ps_human.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_toyA_1_in_human.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_toyA_1_play_human.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_toyC_1_in_human.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_toyC_1_play_human.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_toyP_1_in_human.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_toyP_1_play_human.png', hue: 0, caching: true });
+		}
+		
+		
+	}
+
 	
 	if(ConfigManager.remSmootherCGLoading) {
-	
 		DKTools.PreloadManager.preloadImage({ path: 'img/chatface/', hue: 0, caching: true });
 		DKTools.PreloadManager.preloadImage({ path: 'img/karryn/attack/', hue: 0, caching: true });
 		DKTools.PreloadManager.preloadImage({ path: 'img/karryn/defend/', hue: 0, caching: true });
@@ -3523,6 +4151,7 @@ DKTools.PreloadManager.preloadKarrynPoses = function() {
 			DKTools.PreloadManager.preloadImage({ path: 'img/karryn/defeated_level3/', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/karryn/defeated_level4/', hue: 0, caching: true });
 			//DKTools.PreloadManager.preloadImage({ path: 'img/karryn/defeated_level5/', hue: 0, caching: true });
+			//DKTools.PreloadManager.preloadImage({ path: 'img/karryn/down_dogeza/', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/karryn/down_org/', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/karryn/footj/', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/karryn/goblin_cl/', hue: 0, caching: true });

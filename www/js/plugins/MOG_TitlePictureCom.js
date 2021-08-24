@@ -291,11 +291,28 @@ Scene_Title.prototype.create_picture_commands = function() {
 	this._com_sprites = [];	
 	this._com_pictures_data = [];
 	for (i = 0; i < this._commandWindow._list.length; i++){
-		let imageName = "Command_" + i;
-		if(i === 3 && TextManager.isJapanese) imageName += '_JP';
-    	this._com_pictures.push(ImageManager.loadTitle2(imageName));
-		this._com_sprites.push(new Sprite(this._com_pictures[i]));
-	    this.addChild(this._com_sprites[i]);	
+		if(false && STEAM_MODE) {
+			let j = i;
+			if(i >= 3) {
+				j++;
+				if(j > 5) j = 5;
+			}
+			
+			let imageName = "Command_" + j;
+			this._com_pictures.push(ImageManager.loadTitle2(imageName));
+			this._com_sprites.push(new Sprite(this._com_pictures[i]));
+			this.addChild(this._com_sprites[i]);
+		}
+		else {
+			let imageName = "Command_" + i;
+			if(i === 3) {
+				if(STEAM_MODE) imageName += '_Steam';
+				else if(TextManager.isJapanese) imageName += '_JP';
+			}
+			this._com_pictures.push(ImageManager.loadTitle2(imageName));
+			this._com_sprites.push(new Sprite(this._com_pictures[i]));
+			this.addChild(this._com_sprites[i]);
+		}
 	};
 };
 
@@ -362,7 +379,16 @@ Scene_Title.prototype.createForeground = function() {
 Scene_Title.prototype.createTitleSprite = function() {
 	if (this._gameTitleSprite) {this.removeChild(this._gameTitleSprite)};
 	let titleName = 'Title_EN';
-	if(TextManager.isJapanese) titleName = 'Title_JP';
+	
+	if(STEAM_MODE) {
+		titleName = 'Title_Steam_EN';
+		if(TextManager.isJapanese) titleName = 'Title_Steam_JP';
+	}
+	else {
+		titleName = 'Title_EN';
+		if(TextManager.isJapanese) titleName = 'Title_JP';
+	}
+	
     this._gameTitleSprite = new Sprite(ImageManager.loadTitle2(titleName));
     this.addChild(this._gameTitleSprite);
 	this._gameTitleSprite.x = Moghunter.title_x;

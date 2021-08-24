@@ -58,7 +58,7 @@ const MAP_LEVEL_THREE_ANARCHY_BGM_NAME = 'Prison_Anarchy3';
 const MAP_LEVEL_THREE_ANARCHY_BGM_VOLUME = 75;
 
 //Level 3 is Subjugated BGM
-const MAP_LEVEL_THREE_SUBJUGATED_BGM_NAME = 'Prison_Subjugated1';
+const MAP_LEVEL_THREE_SUBJUGATED_BGM_NAME = 'Prison_Subjugated2';
 const MAP_LEVEL_THREE_SUBJUGATED_BGM_VOLUME = 80;
 
 //Level 3 is Rioting BGM
@@ -70,12 +70,20 @@ const MAP_LEVEL_FOUR_ANARCHY_BGM_NAME = 'Prison_Anarchy4';
 const MAP_LEVEL_FOUR_ANARCHY_BGM_VOLUME = 80;
 
 //Level 4 is Subjugated BGM
-const MAP_LEVEL_FOUR_SUBJUGATED_BGM_NAME = 'Prison_Subjugated1';
+const MAP_LEVEL_FOUR_SUBJUGATED_BGM_NAME = 'Prison_Subjugated2';
 const MAP_LEVEL_FOUR_SUBJUGATED_BGM_VOLUME = 80;
 
 //Level 4 is Rioting BGM
 const MAP_LEVEL_FOUR_RIOTING_BGM_NAME = 'Prison_Riot1';
 const MAP_LEVEL_FOUR_RIOTING_BGM_VOLUME = 80;
+
+//Night Mode BGM - Normal
+const MAP_NIGHT_MODE_NORMAL_BGM_NAME = 'Night1';
+const MAP_NIGHT_MODE_NORMAL_BGM_VOLUME = 90;
+
+//Night Mode BGM - Slutty
+const MAP_NIGHT_MODE_SLUTTY_BGM_NAME = 'Night2';
+const MAP_NIGHT_MODE_SLUTTY_BGM_VOLUME = 90;
 
 //Bar BGM
 const MAP_BAR_BGM_NAME = 'Bar1';
@@ -99,6 +107,13 @@ const MAP_BORDER_BACKGROUND_BASEMENT1 = "MapBorders_Bg_Basement1";
 const MAP_BORDER_BACKGROUND_BASEMENT2 = "MapBorders_Bg_Basement2";
 const MAP_BORDER_BACKGROUND_BASEMENT3 = "MapBorders_Bg_Basement3";
 const MAP_BORDER_BACKGROUND_BASEMENT4 = "MapBorders_Bg_Basement4";
+
+const MAP_BORDER_BACKGROUND_OUTSIDE_NIGHT = "MapBorders_Bg_Outside_Night";
+const MAP_BORDER_BACKGROUND_NIGHT = "MapBorders_Bg_Night";
+const MAP_BORDER_BACKGROUND_BASEMENT1_NIGHT = "MapBorders_Bg_Basement1_Night";
+const MAP_BORDER_BACKGROUND_BASEMENT2_NIGHT = "MapBorders_Bg_Basement2_Night";
+const MAP_BORDER_BACKGROUND_BASEMENT3_NIGHT = "MapBorders_Bg_Basement3_Night";
+const MAP_BORDER_BACKGROUND_BASEMENT4_NIGHT = "MapBorders_Bg_Basement4_Night";
 
 //Map Chat
 const MAP_CHAT_TEXT_WINDOW_X = 0;
@@ -355,23 +370,64 @@ Scene_Map.prototype.changeBGMOnTransfer = function() {
 	let bgmName = false;
 	let bgmVolume = MAP_EB_BGM_VOLUME;
 	let mapId = $gameMap._mapId;
+	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
+	let sluttyVersionBgm = actor.getMapReactionScore() >= VAR_DEF_RS_LV2_REQ;
 	
 	if(Prison.currentlyOutsidePrison()) {
 		if(mapId === MAP_ID_EB_HALLWAY) {
-			bgmName = MAP_EB_BGM_NAME;
-			bgmVolume = MAP_EB_BGM_VOLUME;
+			if($gameParty.isNightModeEBHallway()) {
+				if(sluttyVersionBgm) {
+					bgmName = MAP_NIGHT_MODE_SLUTTY_BGM_NAME;
+					bgmVolume = MAP_NIGHT_MODE_SLUTTY_BGM_VOLUME;
+				}
+				else {
+					bgmName = MAP_NIGHT_MODE_NORMAL_BGM_NAME;
+					bgmVolume = MAP_NIGHT_MODE_NORMAL_BGM_VOLUME;
+				}
+			}
+			else if($gameParty.isNightMode()) {
+				bgmName = false;
+			}
+			else {
+				bgmName = MAP_EB_BGM_NAME;
+				bgmVolume = MAP_EB_BGM_VOLUME;
+			}
 		}
 		else if(mapId === MAP_ID_OUTSIDE && $gameSwitches.value(SWITCH_PROLOGUE_ENDED)) {
-			bgmName = MAP_EB_BGM_NAME;
-			bgmVolume = MAP_EB_BGM_VOLUME;
+			if($gameParty.isNightMode()) {
+				if(sluttyVersionBgm) {
+					bgmName = MAP_NIGHT_MODE_SLUTTY_BGM_NAME;
+					bgmVolume = MAP_NIGHT_MODE_SLUTTY_BGM_VOLUME;
+				}
+				else {
+					bgmName = MAP_NIGHT_MODE_NORMAL_BGM_NAME;
+					bgmVolume = MAP_NIGHT_MODE_NORMAL_BGM_VOLUME;
+				}
+			}
+			else {
+				bgmName = MAP_EB_BGM_NAME;
+				bgmVolume = MAP_EB_BGM_VOLUME;
+			}
 		}
 		else if(mapId === MAP_ID_KARRYN_OFFICE || mapId === MAP_ID_EB_GUARD_QUARTERS) {
 			bgmName = MAP_OFFICE_BGM_NAME;
 			bgmVolume = MAP_OFFICE_BGM_VOLUME;
 		}
 		else if(mapId === MAP_ID_YARD) {
-			bgmName = MAP_YARD_BGM_NAME;
-			bgmVolume = MAP_YARD_BGM_VOLUME;
+			if($gameParty.isNightMode()) {
+				if(sluttyVersionBgm) {
+					bgmName = MAP_NIGHT_MODE_SLUTTY_BGM_NAME;
+					bgmVolume = MAP_NIGHT_MODE_SLUTTY_BGM_VOLUME;
+				}
+				else {
+					bgmName = MAP_NIGHT_MODE_NORMAL_BGM_NAME;
+					bgmVolume = MAP_NIGHT_MODE_NORMAL_BGM_VOLUME;
+				}
+			}
+			else {
+				bgmName = MAP_YARD_BGM_NAME;
+				bgmVolume = MAP_YARD_BGM_VOLUME;
+			}
 		}
 		else if(mapId === MAP_ID_EB_MESS_HALL) {
 			bgmName = MAP_MESS_HALL_BGM_NAME;
@@ -397,13 +453,23 @@ Scene_Map.prototype.changeBGMOnTransfer = function() {
 		else if(mapId === MAP_ID_LVL1_STAIRS_TO_LVL2 || mapId === MAP_ID_LVL1_STAIRS_TO_LVL3) {
 			bgmName = false;
 		}
-		else if(Prison.prisonLevelOneIsSubjugated()) {
-			bgmName = MAP_LEVEL_ONE_SUBJUGATED_BGM_NAME;
-			bgmVolume = MAP_LEVEL_ONE_SUBJUGATED_BGM_VOLUME;
-		}
 		else if(Prison.prisonLevelOneIsAnarchy()) {
 			bgmName = MAP_LEVEL_ONE_ANARCHY_BGM_NAME;
 			bgmVolume = MAP_LEVEL_ONE_ANARCHY_BGM_VOLUME;
+		}
+		else if((mapId === MAP_ID_LVL1_HALLWAY || mapId === MAP_ID_VISITOR_ROOM || mapId === MAP_ID_VISITOR_ROOM_BROKEN) && $gameParty.isNightMode()) {
+			if(sluttyVersionBgm) {
+				bgmName = MAP_NIGHT_MODE_SLUTTY_BGM_NAME;
+				bgmVolume = MAP_NIGHT_MODE_SLUTTY_BGM_VOLUME;
+			}
+			else {
+				bgmName = MAP_NIGHT_MODE_NORMAL_BGM_NAME;
+				bgmVolume = MAP_NIGHT_MODE_NORMAL_BGM_VOLUME;
+			}
+		}
+		else if(Prison.prisonLevelOneIsSubjugated()) {
+			bgmName = MAP_LEVEL_ONE_SUBJUGATED_BGM_NAME;
+			bgmVolume = MAP_LEVEL_ONE_SUBJUGATED_BGM_VOLUME;
 		}
 		else {
 			if(mapId === MAP_ID_WORKSHOP || mapId === MAP_ID_DISH_WASHING || mapId === MAP_ID_RECEPTION || mapId === MAP_ID_LAUNDRY || mapId === MAP_ID_LVL1_HALLWAY || mapId === MAP_ID_LVL1_GUARD_STATION) {
@@ -433,6 +499,16 @@ Scene_Map.prototype.changeBGMOnTransfer = function() {
 			bgmName = MAP_LEVEL_TWO_STORE_BGM_NAME;
 			bgmVolume = MAP_LEVEL_TWO_STORE_BGM_VOLUME;
 		}
+		else if(mapId === MAP_ID_LVL2_HALLWAY && $gameParty.isNightMode()) {
+			if(sluttyVersionBgm) {
+				bgmName = MAP_NIGHT_MODE_SLUTTY_BGM_NAME;
+				bgmVolume = MAP_NIGHT_MODE_SLUTTY_BGM_VOLUME;
+			}
+			else {
+				bgmName = MAP_NIGHT_MODE_NORMAL_BGM_NAME;
+				bgmVolume = MAP_NIGHT_MODE_NORMAL_BGM_VOLUME;
+			}
+		}
 		else if(Prison.prisonLevelTwoIsSubjugated()) {
 			bgmName = MAP_LEVEL_TWO_SUBJUGATED_BGM_NAME;
 			bgmVolume = MAP_LEVEL_TWO_SUBJUGATED_BGM_VOLUME;
@@ -457,6 +533,16 @@ Scene_Map.prototype.changeBGMOnTransfer = function() {
 			bgmName = MAP_LEVEL_THREE_ANARCHY_BGM_NAME;
 			bgmVolume = MAP_LEVEL_THREE_ANARCHY_BGM_VOLUME;
 		}
+		else if(mapId === MAP_ID_COMMON_AREA_SOUTH_EAST && $gameParty.isNightMode()) {
+			if(sluttyVersionBgm) {
+				bgmName = MAP_NIGHT_MODE_SLUTTY_BGM_NAME;
+				bgmVolume = MAP_NIGHT_MODE_SLUTTY_BGM_VOLUME;
+			}
+			else {
+				bgmName = MAP_NIGHT_MODE_NORMAL_BGM_NAME;
+				bgmVolume = MAP_NIGHT_MODE_NORMAL_BGM_VOLUME;
+			}
+		}
 		else if(Prison.prisonLevelThreeIsSubjugated()) {
 			bgmName = MAP_LEVEL_THREE_SUBJUGATED_BGM_NAME;
 			bgmVolume = MAP_LEVEL_THREE_SUBJUGATED_BGM_VOLUME;
@@ -480,13 +566,23 @@ Scene_Map.prototype.changeBGMOnTransfer = function() {
 			bgmName = MAP_LEVEL_FOUR_ANARCHY_BGM_NAME;
 			bgmVolume = MAP_LEVEL_FOUR_ANARCHY_BGM_VOLUME;
 		}
-		else if(Prison.prisonLevelFourIsSubjugated()) {
-			bgmName = MAP_LEVEL_FOUR_SUBJUGATED_BGM_NAME;
-			bgmVolume = MAP_LEVEL_FOUR_SUBJUGATED_BGM_VOLUME;
-		}
-		else {
+		else if(Prison.prisonLevelFourIsRioting) {
 			bgmName = MAP_LEVEL_FOUR_RIOTING_BGM_NAME;
 			bgmVolume = MAP_LEVEL_FOUR_RIOTING_BGM_VOLUME;
+		}
+		else if($gameParty.isNightMode()) {
+			if(sluttyVersionBgm) {
+				bgmName = MAP_NIGHT_MODE_SLUTTY_BGM_NAME;
+				bgmVolume = MAP_NIGHT_MODE_SLUTTY_BGM_VOLUME;
+			}
+			else {
+				bgmName = MAP_NIGHT_MODE_NORMAL_BGM_NAME;
+				bgmVolume = MAP_NIGHT_MODE_NORMAL_BGM_VOLUME;
+			}
+		}
+		else {
+			bgmName = MAP_LEVEL_FOUR_SUBJUGATED_BGM_NAME;
+			bgmVolume = MAP_LEVEL_FOUR_SUBJUGATED_BGM_VOLUME;
 		}
 	
 	}
@@ -623,6 +719,14 @@ Game_Screen.prototype.setMapBordersBackgroundOutside = function() {
 	this.setMapBordersBackgroundName(MAP_BORDER_BACKGROUND_OUTSIDE);
 	this._remLowerBordersRefreshNeeded = true;
 };
+Game_Screen.prototype.setMapBordersBackgroundOutsideNight = function() {
+	this.setMapBordersBackgroundName(MAP_BORDER_BACKGROUND_OUTSIDE_NIGHT);
+	this._remLowerBordersRefreshNeeded = true;
+};
+Game_Screen.prototype.setMapBordersBackgroundNight = function() {
+	this.setMapBordersBackgroundName(MAP_BORDER_BACKGROUND_NIGHT);
+	this._remLowerBordersRefreshNeeded = true;
+};
 Game_Screen.prototype.setMapBordersBackgroundBar = function() {
 	this.setMapBordersBackgroundName(MAP_BORDER_BACKGROUND_BAR);
 	this._remLowerBordersRefreshNeeded = true;
@@ -647,19 +751,80 @@ Game_Screen.prototype.setMapBordersBackgroundBasement4 = function() {
 	this.setMapBordersBackgroundName(MAP_BORDER_BACKGROUND_BASEMENT4);
 	this._remLowerBordersRefreshNeeded = true;
 };
+Game_Screen.prototype.setMapBordersBackgroundBasement1Night = function() {
+	this.setMapBordersBackgroundName(MAP_BORDER_BACKGROUND_BASEMENT1_NIGHT);
+	this._remLowerBordersRefreshNeeded = true;
+};
+Game_Screen.prototype.setMapBordersBackgroundBasement2Night = function() {
+	this.setMapBordersBackgroundName(MAP_BORDER_BACKGROUND_BASEMENT2_NIGHT);
+	this._remLowerBordersRefreshNeeded = true;
+};
+Game_Screen.prototype.setMapBordersBackgroundBasement3Night = function() {
+	this.setMapBordersBackgroundName(MAP_BORDER_BACKGROUND_BASEMENT3_NIGHT);
+	this._remLowerBordersRefreshNeeded = true;
+};
+Game_Screen.prototype.setMapBordersBackgroundBasement4Night = function() {
+	this.setMapBordersBackgroundName(MAP_BORDER_BACKGROUND_BASEMENT4_NIGHT);
+	this._remLowerBordersRefreshNeeded = true;
+};
 
 
 Game_Screen.prototype.changeMapBordersBackgroundOnTransfer = function() {
 	let mapId = $gameMap._mapId;
 	
     if(mapId === MAP_ID_OUTSIDE || mapId === MAP_ID_YARD) {
-		this.setMapBordersBackgroundOutside();
+		if(Prison.isNightMode())
+			this.setMapBordersBackgroundOutsideNight();
+		else
+			this.setMapBordersBackgroundOutside();
 	}
 	else if(mapId === MAP_ID_BAR || mapId === MAP_ID_BAR_BROKEN || mapId === MAP_ID_BAR_STORAGE) {
 		this.setMapBordersBackgroundBar();
 	}
-	else if(mapId === MAP_ID_KARRYN_OFFICE || mapId === MAP_ID_EB_HALLWAY || mapId === MAP_ID_EB_MESS_HALL || mapId === MAP_ID_EB_INFIRMARY || mapId === MAP_ID_EB_GUARD_QUARTERS ) {
+	else if(mapId === MAP_ID_KARRYN_OFFICE || mapId === MAP_ID_EB_MESS_HALL || mapId === MAP_ID_EB_INFIRMARY || mapId === MAP_ID_EB_GUARD_QUARTERS ) {
 		this.setMapBordersBackgroundEB();
+	}
+	else if(mapId === MAP_ID_EB_HALLWAY) {
+		if(Prison.isNightMode())
+			this.setMapBordersBackgroundNight();
+		else
+			this.setMapBordersBackgroundEB();
+	}
+	else if(mapId === MAP_ID_LVL1_HALLWAY || mapId === MAP_ID_VISITOR_ROOM || mapId === MAP_ID_VISITOR_ROOM_BROKEN) {
+		if(Prison.isNightMode() && !Prison.prisonLevelOneIsAnarchy())
+			this.setMapBordersBackgroundNight();
+		else
+			this.setMapBordersBackgroundDefault();
+	}
+	else if(mapId === MAP_ID_LVL2_HALLWAY) {
+		if(Prison.isNightMode())
+			this.setMapBordersBackgroundNight();
+		else
+			this.setMapBordersBackgroundDefault();
+	}
+	else if(mapId === MAP_ID_COMMON_AREA_SOUTH_EAST) {
+		if(Prison.isNightMode() && !Prison.prisonLevelThreeIsAnarchy())
+			this.setMapBordersBackgroundBasement1Night();
+		else
+			this.setMapBordersBackgroundBasement1();
+	}
+	else if(mapId === MAP_ID_LVL4_YETI_CAVERN) {
+		if(Prison.isNightMode() && !Prison.prisonLevelFourIsAnarchy() && !Prison.prisonLevelFourIsRioting())
+			this.setMapBordersBackgroundBasement3Night();
+		else
+			this.setMapBordersBackgroundBasement3();
+	}
+	else if(mapId === MAP_ID_LVL4_CHICKEN_PASTURE) {
+		if(Prison.isNightMode() && !Prison.prisonLevelFourIsAnarchy() && !Prison.prisonLevelFourIsRioting())
+			this.setMapBordersBackgroundBasement4Night();
+		else
+			this.setMapBordersBackgroundBasement4();
+	}
+	else if(mapId === MAP_ID_LVL4_MUSHROOM_FARM || mapId === MAP_ID_LVL4_UNDERGROUND_POOL || mapId === MAP_ID_LVL4_BASKETBALL_COURT) {
+		if(Prison.isNightMode() && !Prison.prisonLevelFourIsAnarchy() && !Prison.prisonLevelFourIsRioting())
+			this.setMapBordersBackgroundBasement2Night();
+		else
+			this.setMapBordersBackgroundBasement2();
 	}
 	else if(mapId === MAP_ID_LVL1_STAIRS_TO_LVL3 || mapId === MAP_ID_LVL1_STAIRS_TO_LVL2) {
 		this.setMapBordersBackgroundDefault();
@@ -670,13 +835,6 @@ Game_Screen.prototype.changeMapBordersBackgroundOnTransfer = function() {
 	else if(mapId === MAP_ID_LVL3_STAIRS_TO_LVL1_LVL4) {
 		this.setMapBordersBackgroundBasement1();
 	}
-	else if(mapId === MAP_ID_LVL4_YETI_CAVERN) {
-		this.setMapBordersBackgroundBasement3();
-	}
-	else if(mapId === MAP_ID_LVL4_CHICKEN_PASTURE) {
-		this.setMapBordersBackgroundBasement4();
-	}
-	
 	else if(Prison.currentlyPrisonLevelFour()) {
 		this.setMapBordersBackgroundBasement2();
 	}
@@ -955,6 +1113,8 @@ Window_MapInfo.prototype.redrawMapInfo = function() {
 	this.drawText(prisonOrder, orderX, MAP_INFO_BOTTOM_NUMBER_Y + MAP_INFO_Y_CONSTANT, 100);
 	
 	let prisonControl = Prison.orderChange;
+	if(Prison.funding === 0) prisonControl -= $gameParty.titlesBankruptcyOrder(true);
+	
 	let controlX = MAP_INFO_CONTROL_ORDER_X;
 	if(prisonControl < 0) {
 		if(prisonControl <= -100) controlX -= 10;
@@ -1150,4 +1310,53 @@ Remtairy.Map.Window_EventMiniLabel_showMiniLabel = Window_EventMiniLabel.prototy
 Window_EventMiniLabel.prototype.showMiniLabel = function() {
     if($gameScreen.isChatMode() || $gameScreen.isCinematicMode()) return false;
     return Remtairy.Map.Window_EventMiniLabel_showMiniLabel.call(this);
+};
+
+/////////////
+// Game Map
+//////////////
+
+Game_Map.prototype.ignoreForegroundScrollUp = function() {
+	let mapId = $gameMap._mapId;
+
+	if(mapId === MAP_ID_YARD) return true;
+	
+	return false;
+};
+
+/////////////////
+// Spriteset Battle
+////////////////
+
+Spriteset_Battle.prototype.battleback1Name = function() {
+    if (BattleManager.battleback1Name()) {
+      return BattleManager.battleback1Name();
+    } 
+	else if (BattleManager.isBattleTest()) {
+        return $dataSystem.battleback1Name;
+    } 
+	else if ($gameMap.battleback1Name()) {
+		let battleback1Name = '' + $gameMap.battleback1Name();
+        return battleback1Name;
+	}
+	else {
+        return '';
+    }
+};
+
+Spriteset_Battle.prototype.battleback2Name = function() {
+    if (BattleManager.battleback2Name()) {
+      return BattleManager.battleback2Name();
+    }
+	else if (BattleManager.isBattleTest()) {
+        return $dataSystem.battleback2Name;
+    } 
+	else if ($gameMap.battleback2Name()) {
+		let battleback2Name = '' + $gameMap.battleback2Name();
+		if(Prison.isNightBattle()) battleback2Name += '_night';
+        return battleback2Name;
+    }
+	else {
+        return '';
+    }
 };

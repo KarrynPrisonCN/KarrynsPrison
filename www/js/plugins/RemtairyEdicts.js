@@ -14,6 +14,11 @@ Remtairy.Edicts = Remtairy.Edicts || {};
  */
 //=============================================================================
 
+const EDICTS_LIST_START_ID = 300;
+const EDICTS_LIST_END_ID = 700;
+const EDICTS_LIST_TWO_START_ID = 1867;
+const EDICTS_LIST_TWO_END_ID = 2075;
+
 const EDICT_TREE_PERSONAL = 10;
 const EDICT_TREE_TRAINING = 11;
 const EDICT_TREE_SPECIALIZATION = 12;
@@ -693,6 +698,83 @@ Game_Actor.prototype.getStatTrainingEdictGoldRate = function() {
 	return rate;
 };
 
+/////
+// Lock Icon
+// Problem Edicts
+
+Game_Actor.prototype.drawPadlockIconForEdictID = function(id) {
+	if(id === EDICT_NO_THUG_LABOR) {
+		return this.hasEdict(EDICT_WEAKEN_THE_THUGS) || this.hasEdict(EDICT_THUGS_STRESS_RELIEF);
+	}
+	else if(id === EDICT_WEAKEN_THE_THUGS) {
+		return this.hasEdict(EDICT_NO_THUG_LABOR) || this.hasEdict(EDICT_THUGS_STRESS_RELIEF);
+	}
+	else if(id === EDICT_THUGS_STRESS_RELIEF) {
+		return this.hasEdict(EDICT_WEAKEN_THE_THUGS) || this.hasEdict(EDICT_NO_THUG_LABOR);
+	}
+	
+	else if(id === EDICT_ANTI_GOBLIN_SQUAD) {
+		return this.hasEdict(EDICT_DEMEAN_GOBLINS) || this.hasEdict(EDICT_BAIT_GOBLINS);
+	}
+	else if(id === EDICT_DEMEAN_GOBLINS) {
+		return this.hasEdict(EDICT_ANTI_GOBLIN_SQUAD) || this.hasEdict(EDICT_BAIT_GOBLINS);
+	}
+	else if(id === EDICT_BAIT_GOBLINS) {
+		return this.hasEdict(EDICT_DEMEAN_GOBLINS) || this.hasEdict(EDICT_ANTI_GOBLIN_SQUAD);
+	}
+	
+	else if(id === EDICT_PAY_NERD_BLACKMAIL) {
+		return this.hasEdict(EDICT_THREATEN_THE_NERDS) || this.hasEdict(EDICT_GIVE_IN_TO_NERD_BLACKMAIL);
+	}
+	else if(id === EDICT_THREATEN_THE_NERDS) {
+		return this.hasEdict(EDICT_PAY_NERD_BLACKMAIL) || this.hasEdict(EDICT_GIVE_IN_TO_NERD_BLACKMAIL);
+	}
+	else if(id === EDICT_GIVE_IN_TO_NERD_BLACKMAIL) {
+		return this.hasEdict(EDICT_THREATEN_THE_NERDS) || this.hasEdict(EDICT_PAY_NERD_BLACKMAIL);
+	}
+	
+	else if(id === EDICT_ROGUE_TRAINING_FOR_GUARDS) {
+		return this.hasEdict(EDICT_FORCE_ROGUES_INTO_LABOR) || this.hasEdict(EDICT_FIGHT_ROGUE_DISTRACTIONS_WITH_DISTRACTIONS);
+	}
+	else if(id === EDICT_FORCE_ROGUES_INTO_LABOR) {
+		return this.hasEdict(EDICT_ROGUE_TRAINING_FOR_GUARDS) || this.hasEdict(EDICT_FIGHT_ROGUE_DISTRACTIONS_WITH_DISTRACTIONS);
+	}
+	else if(id === EDICT_FIGHT_ROGUE_DISTRACTIONS_WITH_DISTRACTIONS) {
+		return this.hasEdict(EDICT_FORCE_ROGUES_INTO_LABOR) || this.hasEdict(EDICT_ROGUE_TRAINING_FOR_GUARDS);
+	}
+	
+	else if(id === EDICT_LIZARDMEN_FREE_DRINKS) {
+		return this.hasEdict(EDICT_SCIENCE_VERSUS_LIZARDMEN) || this.hasEdict(EDICT_APPEASE_THE_LIZARDMEN);
+	}
+	else if(id === EDICT_SCIENCE_VERSUS_LIZARDMEN) {
+		return this.hasEdict(EDICT_LIZARDMEN_FREE_DRINKS) || this.hasEdict(EDICT_APPEASE_THE_LIZARDMEN);
+	}
+	else if(id === EDICT_APPEASE_THE_LIZARDMEN) {
+		return this.hasEdict(EDICT_SCIENCE_VERSUS_LIZARDMEN) || this.hasEdict(EDICT_LIZARDMEN_FREE_DRINKS);
+	}
+	
+	else if(id === EDICT_ACCESSIBILITY_FOR_ORCS) {
+		return this.hasEdict(EDICT_REJECT_THE_ORCS) || this.hasEdict(EDICT_REACH_UNDERSTANDING_WITH_ORCS);
+	}
+	else if(id === EDICT_REJECT_THE_ORCS) {
+		return this.hasEdict(EDICT_ACCESSIBILITY_FOR_ORCS) || this.hasEdict(EDICT_REACH_UNDERSTANDING_WITH_ORCS);
+	}
+	else if(id === EDICT_REACH_UNDERSTANDING_WITH_ORCS) {
+		return this.hasEdict(EDICT_REJECT_THE_ORCS) || this.hasEdict(EDICT_ACCESSIBILITY_FOR_ORCS);
+	}
+	
+	else if(id === EDICT_RIOT_SUPPRESSING_TRAINING_FOR_GUARDS) {
+		return this.hasEdict(EDICT_HARSHER_PUNISHMENTS_FOR_RIOTERS) || this.hasEdict(EDICT_NEGOTIATE_WITH_SUBJUGATED_INMATES);
+	}
+	else if(id === EDICT_HARSHER_PUNISHMENTS_FOR_RIOTERS) {
+		return this.hasEdict(EDICT_RIOT_SUPPRESSING_TRAINING_FOR_GUARDS) || this.hasEdict(EDICT_NEGOTIATE_WITH_SUBJUGATED_INMATES);
+	}
+	else if(id === EDICT_NEGOTIATE_WITH_SUBJUGATED_INMATES) {
+		return this.hasEdict(EDICT_HARSHER_PUNISHMENTS_FOR_RIOTERS) || this.hasEdict(EDICT_RIOT_SUPPRESSING_TRAINING_FOR_GUARDS);
+	}
+	
+	return false;
+};
 
 //////////
 // Resting Fatigue
@@ -854,13 +936,13 @@ Game_Actor.prototype.edictsGlobalRiotChance = function() {
 	if(Karryn.hasEdict(EDICT_NEGOTIATE_WITH_SUBJUGATED_INMATES)) edictsRate += 1;
 	
 	//Hiring Edict
-	if(Karryn.hasEdict(EDICT_NO_HIRING_STANDARDS)) chance += 3 * edictsRate;
+	if(Karryn.hasEdict(EDICT_NO_HIRING_STANDARDS)) chance += 4 * edictsRate;
 	else if(Karryn.hasEdict(EDICT_HIRE_CURRENT_INMATES)) chance += 1.5 * edictsRate;	
 	else if(Karryn.hasEdict(EDICT_LAXER_HIRING_STANDARDS)) chance += 0.5;	
 	
 	//Kitchen Edicts
 	//Inmate Cooks
-	if(Karryn.hasEdict(EDICT_COOKING_TRAINING_PROGRAM)) chance += 2 * edictsRate;
+	if(Karryn.hasEdict(EDICT_COOKING_TRAINING_PROGRAM)) chance += 2.5 * edictsRate;
 	else if(Karryn.hasEdict(EDICT_USE_INMATE_COOKS)) chance += 1 * edictsRate;
 	
 	//Monetize Good Food
@@ -878,9 +960,9 @@ Game_Actor.prototype.edictsGlobalRiotChance = function() {
 	}
 	
 	//Visitor Center Edict
-	if(Karryn.hasEdict(EDICT_CHARGE_INMATES_FOR_VISITATION)) chance += 7 * edictsRate;
-	else if(Karryn.hasEdict(EDICT_CHARGE_VISITORS_FOR_EXPRESS)) chance += 2 * edictsRate;
-	else if(Karryn.hasEdict(EDICT_CHARGE_VISITORS_FOR_VISITATION)) chance -= 1 * edictsRate;
+	if(Karryn.hasEdict(EDICT_CHARGE_INMATES_FOR_VISITATION)) chance += 9 * edictsRate;
+	else if(Karryn.hasEdict(EDICT_CHARGE_VISITORS_FOR_EXPRESS)) chance += 3 * edictsRate;
+	else if(Karryn.hasEdict(EDICT_CHARGE_VISITORS_FOR_VISITATION)) chance += 1 * edictsRate;
 	if(Karryn.hasEdict(EDICT_REPAIR_VISITOR_CENTER)) chance -= 2 * edictsRate;
 	
 	//Reception Edict
@@ -938,7 +1020,7 @@ Game_Actor.prototype.edictsGlobalRiotChance = function() {
 	
 	//Research Edict
 	if(Karryn.hasEdict(EDICT_RESEARCH_NEW_LOCKS)) chance -= 1 * edictsRate;
-	if(Karryn.hasEdict(EDICT_RESEARCH_ISSUE_CURFEW_PASS)) chance -= 1 * edictsRate;
+	if(Karryn.hasEdict(EDICT_RESEARCH_ISSUE_CURFEW_PASS)) chance -= 2 * edictsRate;
 	if(Karryn.hasEdict(EDICT_RESEARCH_LAUNDRY_PRODUCT_CONTRACT)) chance -= 1 * edictsRate;
 	if(Karryn.hasEdict(EDICT_RESEARCH_REACH_COMMON_GROUND_WITH_INMATES)) chance -= 1 * edictsRate;
 	
@@ -2193,7 +2275,7 @@ Game_Enemy.prototype.enemyInitialPleasureEdicts = function() {
 		//All Inmates
 		if(Karryn.hasEdict(EDICT_APHRODISIACS_IN_INMATE_FOOD)) addedMulti += 1.5;
 		if(Karryn.hasEdict(EDICT_APHRODISIACS_DRUGS_FOR_INMATES)) addedMulti += 1.5;
-		if(Karryn.hasEdict(EDICT_SEX_ENDURANCE_DRUGS_FOR_INMATES)) addedMulti += 1;
+		if(Karryn.hasEdict(EDICT_SEX_ENDURANCE_DRUGS_FOR_INMATES)) addedMulti -= 1;
 		
 		if(this.isThugType) {
 			if(Karryn.hasEdict(EDICT_THUGS_STRESS_RELIEF)) addedMulti += 2;
@@ -2332,7 +2414,7 @@ Game_Enemy.prototype.prisonGuardEdictOrgasmPoint = function() {
 	let rate = 1;
 	
 	//Sex Endurance Drug
-	if(Karryn.hasEdict(EDICT_SEX_ENDURANCE_DRUGS_FOR_GUARDS)) rate += 0.2;
+	if(Karryn.hasEdict(EDICT_SEX_ENDURANCE_DRUGS_FOR_GUARDS)) rate += 0.25;
 	
 	return rate;
 };
@@ -2341,7 +2423,7 @@ Game_Enemy.prototype.inmateEdictOrgasmPoint = function() {
 	let rate = 1;
 	
 	//Sex Endurance Drug
-	if(Karryn.hasEdict(EDICT_SEX_ENDURANCE_DRUGS_FOR_INMATES)) rate += 0.2;
+	if(Karryn.hasEdict(EDICT_SEX_ENDURANCE_DRUGS_FOR_INMATES)) rate += 0.25;
 
 	
 	return rate;
@@ -2570,6 +2652,44 @@ Game_Enemy.prototype.enemyEdictSemenLvl = function() {
 	
 
 	return value;
+};
+
+
+
+/////////////////
+// Window SkillTree
+Window_SkillTree.prototype.setFrameColor = function(data) {
+	if(this._actor.isStsLearnedSkill(data.id)) {
+		return 0;
+	} 
+	else if(this.isLearnOk(data)) {
+		if(ConfigManager.edictsOutlineColorObtainable === EDICTS_OUTLINE_COLOR_OBTAINABLE_GREEN_ID)
+			return 29;
+		else
+			return 4;
+	} 
+	else if(!this.isReqSkillOk(data)) {
+		if(ConfigManager.edictsOutlineColorNoReq === EDICTS_OUTLINE_COLOR_NOREQ_GRAY_ID)
+			return 8;
+		else if(ConfigManager.edictsOutlineColorNoReq === EDICTS_OUTLINE_COLOR_NOREQ_BLACK_ID)
+			return 15;
+		else
+			return 10;
+	} 
+	else if(!this._actor.isReqParamOk(data.id)) {
+		if(ConfigManager.edictsOutlineColorNoReq === EDICTS_OUTLINE_COLOR_NOREQ_GRAY_ID)
+			return 7;
+		else if(ConfigManager.edictsOutlineColorNoReq === EDICTS_OUTLINE_COLOR_NOREQ_BLACK_ID)
+			return 15;
+		else
+			return 10;
+	} 
+	else {
+		if(ConfigManager.edictsOutlineColorMeetReq === EDICTS_OUTLINE_COLOR_METREQ_YELLOW_ID)
+			return 16;
+		else
+			return 31;
+	}
 };
 
 ///////////////

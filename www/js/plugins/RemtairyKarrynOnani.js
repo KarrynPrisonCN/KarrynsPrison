@@ -129,7 +129,7 @@ Game_Troop.prototype.setup_masturbationBattle = function(troopId) {
 			}
 		}, this);
 	}
-	else console.log('Error with troop setup_masturbationBattle');
+	else console.error('Error with troop setup_masturbationBattle');
 };
 
 ////////////////
@@ -246,6 +246,8 @@ Game_Actor.prototype.checkOnaniInBattleDesire = function() {
 			buildupValue += 4;
 		
 		if(this.hasPassive(PASSIVE_FACE_BUKKAKE_COUNT_ONE_ID) && this._liquidBukkakeFace > 0)
+			buildupValue += 4;
+		if(this.hasPassive(PASSIVE_FACE_BUKKAKE_COUNT_TWO_ID) && this._liquidBukkakeFace > 0)
 			buildupValue += 4;
 		
 		
@@ -601,7 +603,7 @@ Game_Actor.prototype.dmgFormula_masInBattleSkill = function(area, useRightHand, 
 		lickingHalberd = true;
 	}
 	
-	else console.log("Error dmgFormula masInBattleSkill area: " + area);
+	else console.error("Error dmgFormula masInBattleSkill area: " + area);
 	
 	let targetDesireGain = (baseDmg + enemySkillLvl) * targetPettingRate;
 	let targetPleasureGain = (targetDesireGain + this.dex * 1.3) * enemySkillRating * targetPettingRate * targetSensitivity;
@@ -961,7 +963,7 @@ Game_Actor.prototype.postDamage_femaleOrgasm_masturbationInBattle = function(org
 	
 	if(changeToCombatPose) {
 		this.setStandbyPose();
-		this.refreshPose();
+		this.refreshPose(true);
 	}
 };
 

@@ -1311,7 +1311,9 @@ Window_SaveInfo.prototype.drawControl = function(dx, dy, dw) {
     this.changeTextColor(this.systemColor());
     this.drawText(TextManager.orderChange + ":", dx, dy, dw, 'left');
     this.changeTextColor(this.normalColor());  
-	let value = this._saveContents.party.orderChange;
+	let value = this._saveContents.party._cacheOrderChange;
+	if(value === undefined) value = this._saveContents.party.orderChange;
+	if(this._saveContents.party.funding === 0) value -= this._saveContents.party.titlesBankruptcyOrder(true);
 
 	let text = '';
 	if(value > 0) text = '+';

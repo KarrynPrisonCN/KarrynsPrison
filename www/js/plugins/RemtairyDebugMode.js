@@ -23,8 +23,8 @@ const TESTING_ENEMY_ALL_CRIT = false;
 const TESTING_COCK_DESIRE = 125;
 const TESTING_BOOBS_DESIRE = 125;
 const TESTING_MOUTH_DESIRE = 125;
-const TESTING_PUSSY_DESIRE = 100;
-const TESTING_BUTT_DESIRE = 90;
+const TESTING_PUSSY_DESIRE = 125;
+const TESTING_BUTT_DESIRE = 125;
 const TESTING_LIQUID_ALL = true;
 const TESTING_LIQUID_VAR = 115;
 const TESTING_ALWAYS_FIRST = false;
@@ -64,9 +64,13 @@ SceneManager.debugCommand = function() {
 		//actor._recordPussyCreampieML = 150;
 		//actor._recordBukkakeTotalML = 100;
 		
-		actor.debugToggleGlovesAndHat();
-		actor.removeClothing();
+		//actor.debugToggleGlovesAndHat();
+		//actor.removeClothing();
 		actor.takeOffPanties();
+		actor._clothingWardenTemporaryLostDurability = actor.getClothingMaxDurability(true) * 0.5;
+		actor.restoreClothingDurability();
+		actor.refreshNightModeSettings();
+		actor.setKarrynWardenSprite();
 		
 		//actor.addDisarmedState();
 		//actor.changeEquip(EQUIP_SLOT_TITLE_ID, $dataArmors[TITLE_ID_EMPEROR_SECRETARY]);
@@ -81,10 +85,9 @@ SceneManager.debugCommand = function() {
 		
 		//console.log($gameParty.orderChange);
 
-		//	actor.setPleasure(0);
-
 		actor.setPleasureToArousalPoint();
 		actor.gainPleasure(35);
+		//actor.setPleasure(0);
 		//actor.removeState(STATE_HORNY_ID);
 		actor.increaseOnaniInBattleDesireBuildup(150);
 		
@@ -104,6 +107,7 @@ SceneManager.debugCommand = function() {
 		actor._liquidPussyJuice = LIQUID_PUSSY_WET_STAGE_TWO + 10;
 		//actor.setFatigue(0);
 		
+		//AudioManager.playMoan({name:'test', pan:0, pitch:100, pos:0, volume: 80});
 		
 		if(TESTING_ONPRESS_DESIRES) {
 			actor.setButtDesire(TESTING_BUTT_DESIRE, false);
@@ -139,12 +143,14 @@ SceneManager.debugCommand = function() {
 				
 			}
 		}
+		
 		//console.log($gameParty.getHeadcountOfWantedPerverts())
 		$gameParty.increaseReceptionistNotoriety(15);
 		$gameParty.increaseReceptionistFame(5);
 		$gameParty.increaseGloryReputation(10);
+		$gameParty.increaseStripClubReputation(10);
 		$gameParty.increaseGuardAggression(25);
-		$gameParty.setGloryReputation(10);
+		//$gameParty.setGloryReputation(10);
 		
 		actor.cacheDesireTooltips();
 		actor.calculateAllMaxDesires();
@@ -159,14 +165,20 @@ Game_Actor.prototype.debugLearnSkills = function() {
 	this.learnSkill(SKILL_DEBUG_SURRENDER_ID);
 	this.learnSkill(SKILL_DEBUG_DEFEAT_ALL_ID);
 	this.learnSkill(SKILL_DEBUG_STRIP_CLOTHES_ID);
+	this.learnSkill(SKILL_FEMALE_ORGASM_ONE_ID); 
+	this.learnSkill(SKILL_FEMALE_ORGASM_TWO_ID); 
 	
 	//all passives
 	if(TESTING_OBTAIN_ALL_PASSIVES) {
-		for(let i = PASSIVES_LIST_START_ID; i <= PASSIVES_LIST_END_ID; i++) {
+		for(let i = PASSIVES_LIST_ONE_START_ID; i <= PASSIVES_LIST_ONE_END_ID; i++) {
 			if(!this.hasPassive(i))
 				this.setCharacterCreatorPassive(i); 
 		}
 		for(let i = PASSIVES_LIST_TWO_START_ID; i <= PASSIVES_LIST_TWO_END_ID; i++) {
+			if(!this.hasPassive(i))
+				this.setCharacterCreatorPassive(i); 
+		}
+		for(let i = PASSIVES_LIST_THREE_START_ID; i <= PASSIVES_LIST_THREE_END_ID; i++) {
 			if(!this.hasPassive(i))
 				this.setCharacterCreatorPassive(i); 
 		}
@@ -176,10 +188,13 @@ Game_Actor.prototype.debugLearnSkills = function() {
 	
 	
 	if(TESTING_DELETE_ALL_PASSIVES) {
-		for(let i = PASSIVES_LIST_START_ID; i <= PASSIVES_LIST_END_ID; i++) {
+		for(let i = PASSIVES_LIST_ONE_START_ID; i <= PASSIVES_LIST_ONE_END_ID; i++) {
 			this.forgetSkill(i);
 		}
 		for(let i = PASSIVES_LIST_TWO_START_ID; i <= PASSIVES_LIST_TWO_END_ID; i++) {
+			this.forgetSkill(i);
+		}
+		for(let i = PASSIVES_LIST_THREE_START_ID; i <= PASSIVES_LIST_THREE_END_ID; i++) {
 			this.forgetSkill(i);
 		}
 		this.recalculateSlutLvl();
@@ -230,6 +245,10 @@ Game_Actor.prototype.debugLearnSkills = function() {
 		this.learnSkill(EDICT_OFFICE_BED_UPGRADE_ONE);
 		this.learnSkill(EDICT_OFFICE_BED_UPGRADE_TWO); 
 		this.learnSkill(EDICT_OFFICE_BED_UPGRADE_THREE); 
+		
+		this.learnSkill(EDICT_OFFICE_VOLUNTEER_GUARDS); 
+		this.learnSkill(EDICT_NO_HIRING_STANDARDS); 
+		
 		//this.learnSkill(EDICT_FREE_ITEM_IN_STORE_FOR_KARRYN); 
 		//this.learnSkill(EDICT_RESEARCH_APHRODISIAC_CONTRACT); 
 
@@ -252,6 +271,8 @@ Game_Actor.prototype.debugMaxAllLiquids = function() {
 		this._liquidCreampieAnal = num;
 		this._liquidBukkakeFace = num;
 		this._liquidBukkakeBoobs = num;
+		this._liquidBukkakeLeftBoob = num;
+		this._liquidBukkakeRightBoob = num;
 		this._liquidBukkakeButt = num;
 		this._liquidBukkakeButtTopRight = num;
 		this._liquidBukkakeButtTopLeft = num;
@@ -319,6 +340,14 @@ Game_Troop.prototype.debugMakeAllEnemiesDamaged = function() {
 	this.members().forEach(function(enemy) {
 		if(enemy.isAppeared()) {
 			enemy._hp = enemy.mhp * 0.3;
+		}
+	}, this);
+};
+
+Game_Troop.prototype.debugMakeAllEnemiesDefeated = function() {
+	this.members().forEach(function(enemy) {
+		if(enemy.isAppeared()) {
+			enemy._hp = 0;
 		}
 	}, this);
 };
@@ -398,7 +427,7 @@ DataManager.debugMissingRemLinesLocalization = function() {
 Game_Party.prototype.debug_clearMapEnemies = function() {
 	for(let eventId = 1; eventId < $gameMap._events.length; eventId++) {
 		let key = [$gameMap._mapId, eventId, "D"];
-		$gameSelfSwitches.setValue(key, true);
+		$gameSelfSwitches.setValue(key, false);
 	}
 };
 

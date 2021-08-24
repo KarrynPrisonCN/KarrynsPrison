@@ -42,7 +42,7 @@
 
         if(this._prevpattern != this.pattern() && !this.isInVehicle()){
             var id = $gameMap.terrainTag(this._x, this._y);
-			if($gameSwitches.value(SWITCH_FOOTSTEPS_SE_OFF_ID)) {
+			if($gameSwitches.value(SWITCH_FOOTSTEPS_SE_OFF_ID) || $gameActors.actor(ACTOR_KARRYN_ID).characterName() === 'C_Extra1') {
 				
 			}
             else if(this.pattern() != 1) {

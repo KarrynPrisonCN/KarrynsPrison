@@ -79,6 +79,13 @@ Game_BattlerBase.prototype.initMembers = function() {
 Object.defineProperty(Game_BattlerBase.prototype, "isKarryn", {
 	get: function () { return false; }, configurable: true
 });
+Object.defineProperty(Game_BattlerBase.prototype, "isChatface", {
+	get: function () { return false; }, configurable: true
+});
+Object.defineProperty(Game_BattlerBase.prototype, "isChatface_Karryn", {
+	get: function () { return false; }, configurable: true
+});
+
 Object.defineProperty(Game_BattlerBase.prototype, "isHorny", {
 	get: function () { return this.isStateAffected(STATE_HORNY_ID); }, configurable: true
 });
@@ -675,16 +682,17 @@ Game_BattlerBase.prototype.hasOverblowProtection = function() {
 
 Game_BattlerBase.prototype.useAISkill = function(skillId, target) {
 	if(!skillId) {
-		console.log('useAISkill error: no skillId');
+		console.error('useAISkill error: no skillId');
 		return;
 	}
 	if(!target) {
 		target = this._targetIndex;
 	}
 	if(!target) {
-		console.log('useAISkill error: skill: ' + skillId + ' target: ' + target);
+		console.error('useAISkill error: skill: ' + skillId + ' target: ' + target);
 		return;
 	}
+	//console.log('useAISkill ' + skillId);
 	BattleManager.queueForceAction(this, skillId, target);
 };
 
@@ -708,7 +716,7 @@ Game_BattlerBase.prototype.isAroused = function() {
 
 //Generic Battlerbase version
 Game_BattlerBase.prototype.setPleasure = function(value) { 
-	this.setTp(value); 
+	this.setTp(Math.round(value)); 
 };
 
 Game_BattlerBase.prototype.gainPleasure = function(value, dontAddToResults) {

@@ -4,7 +4,7 @@ Remtairy.TextManager = Remtairy.TextManager || {};
 var Imported = Imported || {};
 Imported.RemtairyTextManager = true;
 
-const RemVersionText = '8.m';
+const RemVersionText = '9A.n';
 
 //=============================================================================
  /*:
@@ -190,7 +190,7 @@ const PassiveCategoryNameEN = [
 " ├Clit",
 " ├Pussy",
 " ├Wet",
-" ├Cunninlingus",
+" ├Cunnilingus",
 " └Vaginal Sex",
 "\\I[60]\\C[1]Butt Desire",
 " ├Butt",
@@ -483,6 +483,9 @@ const RCMenuFrustratedLevelOneTextJP = "\\C[27]興奮状態：ムラムラして
 const RCMenuFrustratedLevelTwoTextEN = "\\C[5]Karryn is currently very sexually frustrated...\\C[0]";
 const RCMenuFrustratedLevelTwoTextJP = "\\C[5]興奮状態：かなりムラムラしている……。\\C[0]";
 
+const RCMenuNightModeTextEN = "\\C[27]Karryn's scandalous appearance is attracting extra attention...\\C[0]";
+const RCMenuNightModeTextJP = "\\C[27]淫らな姿で完全に男の注目を集めてしまっている……。\\C[0]";
+
 const RCMenuLostPantiesTextEN = "\\C[27]Karryn isn't wearing any panties right now.\\C[0]";
 const RCMenuLostPantiesTextJP = "\\C[27]ノーパンで巡回中。\\C[0]";
 
@@ -521,15 +524,15 @@ const RCMenuMealTenTextEN = "\\C[0]Karryn ate an artisanal meal: (\\C[27]Mouth &
 const RCMenuMealTenTextJP = "\\C[0]専属シェフの特別料理を食べた。 (\\C[27]クチ感度+50％ / アナル感度+50％\\C[0])";
 
 const RCMenuStoreItemOneTextEN = "\\C[0]Karryn is using store item: (\\C[11]Fatigue Gain -20% \\C[10]Stats -5%\\C[0])";
-const RCMenuStoreItemOneTextJP = "\\C[0]ショップのアイテムを使用。 (\\C[11]疲労蓄積-20％ / \\C[10]能力-5％\\C[0])";
+const RCMenuStoreItemOneTextJP = "\\C[0]ショップのアイテムを使用。 (\\C[11]疲労蓄積-20％ \\C[0]/ \\C[10]能力-5％\\C[0])";
 const RCMenuStoreItemTwoTextEN = "\\C[0]Karryn is using store item: (\\C[11]Halberd Crit Rate +25% \\C[10]Halberd Defense -10%\\C[0])";
-const RCMenuStoreItemTwoTextJP = "\\C[0]ショップのアイテムを使用。 (\\C[11]ハルバードクリティカル率+25％ / \\C[10]ハルバード防御力-10％\\C[0])";
+const RCMenuStoreItemTwoTextJP = "\\C[0]ショップのアイテムを使用。 (\\C[11]ハルバードクリティカル率+25％ \\C[0]/ \\C[10]ハルバード防御力-10％\\C[0])";
 const RCMenuStoreItemThreeTextEN = "\\C[0]Karryn is using store item: (\\C[11]Slash & Pierce & Blunt Resist +15% \\C[10]Stamina Regen -2%\\C[0])";
-const RCMenuStoreItemThreeTextJP = "\\C[0]ショップのアイテムを使用。 (\\C[11]斬撃耐性・突撃耐性・打撃耐性+15％ / \\C[10]体力回復量-2％\\C[0])";
-const RCMenuStoreItemFourTextEN = "\\C[0]Karryn is using store item: (\\C[11]Strip Resist +30% \\C[10]Charm (During Battle) -15%\\C[0])";
-const RCMenuStoreItemFourTextJP = "\\C[0]ショップのアイテムを使用。 (\\C[11]ストリップ耐性+30％ / \\C[10]]魅力-15％(戦闘中)\\C[0])";
+const RCMenuStoreItemThreeTextJP = "\\C[0]ショップのアイテムを使用。 (\\C[11]斬撃耐性・突撃耐性・打撃耐性+15％ \\C[0]/ \\C[10]体力回復量-2％\\C[0])";
+const RCMenuStoreItemFourTextEN = "\\C[0]Karryn is using store item: (\\C[11]Strip Resist +30％ \\C[10]Charm (During Battle) -15%\\C[0])";
+const RCMenuStoreItemFourTextJP = "\\C[0]ショップのアイテムを使用。 (\\C[11]ストリップ耐性+30％ \\C[0]/ \\C[10]魅力-15％(バトル中)\\C[0])";
 const RCMenuStoreItemFiveTextEN = "\\C[0]Karryn is using store item: (\\C[11]Charm (During Battle) +15% \\C[10]Talk & Strip Resist -15%\\C[0])";
-const RCMenuStoreItemFiveTextJP = "\\C[0]ショップのアイテムを使用。 (\\C[11]魅力+15％(戦闘中) / \\C[10]]猥談耐性・ストリップ耐性-15％\\C[0])";
+const RCMenuStoreItemFiveTextJP = "\\C[0]ショップのアイテムを使用。 (\\C[11]魅力+15％(バトル中) \\C[0]/ \\C[10]猥談耐性・ストリップ耐性-15％\\C[0])";
 
 const PrisonLevelNameEN = "Level";
 const PrisonLevelNameJP = "LEVEL";
@@ -911,11 +914,11 @@ const StatusBattleEffectIsWearingPantiesJP = "【パンティ：履いている�
 const StatusBattleEffectIsNotWearingPantiesEN = "Karryn is \\C[27]not wearing any panties\\C[0]! Her clothes only need to be moderately displaced\nbefore her nether regions are accessible.";
 const StatusBattleEffectIsNotWearingPantiesJP = "【パンティ：\\C[27]履いてない！\\C[0]】服を脱がされれば下半身への接触を許してしまう。";
 const StatusBattleEffectIsVirginPublishedEN = "Karryn is a \\C[27]known virgin\\C[0]! Her charm during battle is increased.";
-const StatusBattleEffectIsVirginPublishedJP = "【性体験の情報：\\C[27]処女だと知られてしまっている！\\C[0]】戦闘中は魅力アップ。";
+const StatusBattleEffectIsVirginPublishedJP = "【性体験の情報：\\C[27]処女だと知られてしまっている！\\C[0]】バトル中は魅力アップ。";
 const StatusBattleEffectIsVirginHighEN = "Karryn is a \\C[27]suspected virgin\\C[0]! Her charm during battle is increased.";
-const StatusBattleEffectIsVirginHighJP = "【性体験の情報：\\C[27]処女の噂が広がっている！\\C[0]】戦闘中は魅力アップ。";
+const StatusBattleEffectIsVirginHighJP = "【性体験の情報：\\C[27]処女の噂が広がっている！\\C[0]】バトル中は魅力アップ。";
 const StatusBattleEffectIsVirginMedEN = "Karryn is rumored to still be a \\C[27]virgin\\C[0]! Her charm during battle is slightly increased.";
-const StatusBattleEffectIsVirginMedJP = "【性体験の情報：\\C[27]処女疑惑を持たれ始めている！\\C[0]】戦闘中は魅力が少しアップ。";
+const StatusBattleEffectIsVirginMedJP = "【性体験の情報：\\C[27]処女疑惑を持たれ始めている！\\C[0]】バトル中は魅力が少しアップ。";
 const StatusBattleEffectIsVirginLowEN = "Karryn is actually still a \\C[27]virgin\\C[0] but no one thinks she is! Her charm during battle remains unaffected.";
 const StatusBattleEffectIsVirginLowJP = "【性体験の情報：\\C[27]まだ未経験だと誰にも知られていない\\C[0]】魅力に影響なし。";
 
@@ -957,6 +960,10 @@ const StatusBattleEffectSexComboOneEN = "Karryn has used her sexual skills \\C[2
 const StatusBattleEffectSexComboOneJP = "【SEXコンボ：\\C[2]%1連続目\\C[0]】次の攻撃時に性スキルの快楽ダメージとスキルコストがアップ【愛撫は除く】";
 const StatusBattleEffectSexComboTwoEN = "Consecutively using the same type of non-petting sexual skill on the same person will also greatly increase pleasure damage and cost.";
 const StatusBattleEffectSexComboTwoJP = "更に同じ相手に同じ性スキルを連続使用で、快楽ダメージとスキルコストが大幅アップ【愛撫は除く】";
+
+const StatusBattleEffectDanceComboEN = "Karryn has used her stripper skills \\C[2]%1 consecutive times\\C[0]! The pleasure damage and cost of her next stripper skill will be increased.";
+const StatusBattleEffectDanceComboJP = "";
+
 
 //Tooltipsは戦闘画面のステートTooltipに表示される
 const StateTooltipsRemainingTurnsSingularEN = "\\c[27](1 Turn Left)\\c[0]";
@@ -1030,7 +1037,7 @@ const StateTooltipsExposeWeaknessJP = "\\C[18]【弱点バレしている！】\
 const StateTooltipsStunnedEN = "%1 is \\C[18]stunned\\C[0]!\nTheir current turn will be skipped.";
 const StateTooltipsStunnedJP = "\\C[18]【スタン状態！】\\C[0]\nこのターンは行動不可";
 const StateTooltipsEnemyPoseMasterEN = "Karryn's current sexual position might reset after %1 ejaculates!";
-const StateTooltipsEnemyPoseMasterJP = "ヤリ主\\I[12]%1\n※射精で体位リセットの可能性あり";
+const StateTooltipsEnemyPoseMasterJP = "ヤリ主\\I[29]%1\n※射精で体位リセットの可能性あり";
 const StateTooltipsActorAttackComboEN = "Karryn has attacked \\C[2]%1 consecutive times\\C[0]!\nThe damage, accuracy and cost of her next attack will be increased.";
 const StateTooltipsActorAttackComboJP = "\\C[2]【アタックコンボ！%1連続攻撃】\\C[0]\n次の攻撃で：\n\\I[42]ダメージ アップ\n\\I[42]命中力 アップ\n\\I[42]スキルコスト アップ";
 const StateTooltipsActorAttackComboCockyEN = "Karryn has attacked \\C[2]%1 consecutive times\\C[0]!\nThe damage, accuracy and cost of her next attack will be increased.\nAttacking four times or more in a row will increase her \\C[30]cockiness\\C[0].";
@@ -1205,13 +1212,20 @@ const StateReceptionistVisitorLineJP = "並んで待機中";
 const StateReceptionistVisitorDeskEN = "%1 is standing in front of the desk.";
 const StateReceptionistVisitorDeskJP = "カリンの前に立っている";
 
+const StateStripperActorDanceComboEN = "Karryn has used her stripper skills \\C[2]%1 consecutive times\\C[0]!\nThe pleasure damage and cost of her next stripper skill will be increased.";
+const StateStripperActorDanceComboJP = "";
+const StateStripperStageCondomSingularEN = "There is a used condom on the stage.";
+const StateStripperStageCondomSingularJP = "";
+const StateStripperStageCondomPluralEN = "There are %1 used condoms on the stage.";
+const StateStripperStageCondomPluralJP = "";
+
 const DesireTooltipsMouthIntroEN = "Karryn's Mouth Desire represents her desire\nto have other men's body parts in her mouth\nand to taste their various bodily fluids.";
 const DesireTooltipsMouthIntroJP = "\\C[1]【口欲】\\C[0]\n\\C[27]カリンの性感帯の１つ、クチの欲求。\\C[0]\nその舌は男のカラダのあらゆる部分を感じ、\n分泌される汁を味わい尽くしてしまう。\n何度もしゃぶり、体液を飲まされる事で\n口内から全身に渡って性衝動が溢れていく。";
 const DesireTooltipsBoobsIntroEN = "Karryn's Boobs Desire represents her desire\nto have her perfect breasts be squeezed,\nto have her nipples be squeezed hard,\nand to have hard objects inbetween them.";
 const DesireTooltipsBoobsIntroJP = "\\C[1]【乳欲】\\C[0]\n\\C[27]カリンの性感帯の１つ、おっぱいの欲求。\\C[0]\n完璧に実った乳房は揉みしだかれる事を、\n硬く突起した乳首はイジり倒される事を望んでいる。\n胸への刺激は恋のようなドキドキを生み、\n強い性衝動へと駆られてしまう。";
 const DesireTooltipsPussyIntroEN = "Karryn's Pussy Desire represents her desire\nto have her clitoris be played with and\nto have increasingly bigger objects\ninserted into her pussy.";
 const DesireTooltipsPussyIntroJP = "\\C[1]【膣欲】\\C[0]\n\\C[27]カリンの性感帯の１つ、マンコの欲求。\\C[0]\n誠実な生き方を貫いてきた性器にとって、\nクリと穴への刺激は強烈な興奮材料になる。\nあらゆる手段で濡らしほぐされた膣は、\n腹の奥から性衝動を昂ぶらせていく。";
-const DesireTooltipsButtIntroEN = "Karryn's Butt Desire represents her desire\nto have her big butt be groped by others\nand to foreign objects be put up her ass.";
+const DesireTooltipsButtIntroEN = "Karryn's Butt Desire represents her desire\nto have her big butt be groped by others\nand to have foreign objects be put up her ass.";
 const DesireTooltipsButtIntroJP = "\\C[1]【尻欲】\\C[0]\n\\C[27]カリンの性感帯の１つ、ケツの欲求。\\C[0]\n誰もが振り返る自慢の巨尻は\n家畜のようにしつけられ、ホジられる事を望んでいる。\n呼び起こされたマゾヒズムは好奇心から\n性衝動を抑えられなくなってしまう。";
 const DesireTooltipsCockIntroEN = "Karryn's Cock Desire represents her desire\nto know everything there is know about\neveryone's cock through sight, hearing,\nsmell, taste and touch.";
 const DesireTooltipsCockIntroJP = "\\C[1]【棒欲】\\C[0]\n\\C[27]カリンの性感帯の１つ、チンポへの欲求。\\C[0]\n長らく持ち続けた勃起チンポへの興味は強く、\n五感を通してその全てを知りたがっている。\nチンポが持つ想像以上の魅力を知るたびに、\n性衝動のリミッターは完全に崩壊していく。";
@@ -1282,7 +1296,7 @@ const ReplayModeJP = "Replay Mode"; //currently unused
 const PixelMovementEN = "Pixel Movement"; //currently unused
 const PixelMovementJP = "Pixel Movement"; //currently unused
 const BattleLogEN = "History"; 
-const BattleLogJP = "ログ";
+const BattleLogJP = "バックログ";
 const BattleStatusEN = "Status"; 
 const BattleStatusJP = "ステータス";
 const EdictsEN = "Edicts";
@@ -1484,60 +1498,64 @@ const RemParamLevelGainedSingularJP = "\\C[16]%3%2レベルが %1 上がった�
 const RemParamLevelGainedPluralEN = "\\C[16]%3Gained %1 %2 Levels!!";
 const RemParamLevelGainedPluralJP = "\\C[16]%3%2レベルが %1 上がった！";
 
-const RemWardenLevelRequireSingularEN = "\\C[8]\\I[42]%1 more stat level until the next Warden Level!";
-const RemWardenLevelRequireSingularJP = "\\C[8]\\I[42]次の看守レベルまで、あと%1のステータスレベル！";
-const RemWardenLevelRequirePluralEN = "\\C[8]\\I[42]%1 more stat levels until the next Warden Level!";
-const RemWardenLevelRequirePluralJP = "\\C[8]\\I[42]次の看守レベルまで、あと%1のステータスレベル！";
+const RemWardenLevelRequireSingularEN = "\\C[8]\\I[25]%1 more stat level until the next Warden Level!";
+const RemWardenLevelRequireSingularJP = "\\C[8]\\I[25]次の看守レベルまで、あと%1のステータスレベル！";
+const RemWardenLevelRequirePluralEN = "\\C[8]\\I[25]%1 more stat levels until the next Warden Level!";
+const RemWardenLevelRequirePluralJP = "\\C[8]\\I[25]次の看守レベルまで、あと%1のステータスレベル！";
 const RemWardenLevelUpEN = "\\I[352]\\C[11]LEVEL UP!!! \\C[16]%1 has reached Warden Level %2!!";
 const RemWardenLevelUpJP = "\\I[352]\\C[11]レベルアップ！！\\C[16]%1は看守レベルが %2 になった！！";
 const RemWardenLevelLimitReachedEN = "\\I[353]\\C[8]%1 has reached the Warden Level Limit and will not gain any more stat levels.";
 const RemWardenLevelLimitReachedJP = "\\I[353]\\C[8]看守レベルが上限に達しているためこれ以上ステータスレベルを上げられません。";
 
 const RemResultsPassivesTitleEN = "New Passives Unlocked!!";
-const RemResultsPassivesTitleJP = "新パッシブ開放！！";
+const RemResultsPassivesTitleJP = "新パッシブ解放！！";
 
 const RemDailyReportDayCountEN = "\\#\\{\\{Day %1: Daily Report\\}\\}";
 const RemDailyReportDayCountJP = "\\#\\{\\{■ 報告書 ～%1日目～ ■\\}\\}";
 const RemDailyReportAnarchyNoLimitEN = "\\I[377]Day %2 of Level %1 being in \\C[7]Anarchy\\C[0].";
-const RemDailyReportAnarchyNoLimitJP = "\\I[377]監獄レベル%1は%2日間\\C[7]無法状態\\C[0]です。";
+const RemDailyReportAnarchyNoLimitJP = "\\I[377]監獄レベル%1のC[7]無法状態\\C[0]を%2日間継続\\";
 const RemDailyReportAnarchyLimitBefore_singularEN = "\\I[377]Day %2 of Level %1 being in \\C[7]Anarchy\\C[0]. Control might be further decreased starting tomorrow from unrest!";
-const RemDailyReportAnarchyLimitBefore_singularJP = "\\I[377]監獄レベル%1は%2日間\\C[7]無法状態\\C[0]です。そのため、明日には統制力が更に減少するおそれがあります！";
+const RemDailyReportAnarchyLimitBefore_singularJP = "\\I[377]監獄レベル%1の\\C[7]無法状態\\C[0]を%2日間継続 \\I[25]明日、統制力が更に減少するおそれあり";
 const RemDailyReportAnarchyLimitBefore_pluralEN = "\\I[377]Day %2 of Level %1 being in \\C[7]Anarchy\\C[0]. Control might further decrease in about %3 days from unrest!";
-const RemDailyReportAnarchyLimitBefore_pluralJP = "\\I[377]監獄レベル%1は%2日間\\C[7]無法状態\\C[0]です。そのため、%3日後には統制力が更に減少するかもしれません！";
+const RemDailyReportAnarchyLimitBefore_pluralJP = "\\I[377]監獄レベル%1の\\C[7]無法状態\\C[0]を%2日間継続 \\I[25]%3日後、統制力が更に減少する可能性あり";
 const RemDailyReportAnarchyPastLimitEN = "\\I[377]Day %2 of Level %1 being in Anarchy. Control is further decreased by \\C[18]-%3\\C[0] due to unrest!";
-const RemDailyReportAnarchyPastLimitJP = "\\I[377]監獄レベル%1は%2日間\\C[7]無法状態\\C[0]です。そのため統制力が\\C[18]%3\\C[0]減少しました！";
+const RemDailyReportAnarchyPastLimitJP = "\\I[377]監獄レベル%1の\\C[7]無法状態\\C[0]を%2日間継続 \\I[25]統制力：\\C[18]マイナス%3\\C[0]";
 const RemDailyReportRiot_NewEN = "\\I[407]Level %1 has started \\C[18]RIOTING\\C[0]!! Order has decreased by \\C[18]-%2\\C[0]!";
-const RemDailyReportRiot_NewJP = "\\I[407]監獄レベル%1で\\C[18]暴動が勃発\\C[0]！！秩序が\\C[18]%2\\C[0]減少しました！";
+const RemDailyReportRiot_NewJP = "\\I[407]監獄レベル%1で\\C[18]暴動勃発\\C[0]!! \\I[25]秩序：\\C[18]マイナス%2\\C[0]";
 const RemDailyReportRiot_OldEN = "\\I[407]Level %1 has been \\C[18]RIOTING\\C[0] for %2 days! Control is further decreased by \\C[18]-%3\\C[0]!";
-const RemDailyReportRiot_OldJP = "\\I[407]監獄レベル%1の\\C[18]暴動が%2日間継続中\\C[0]！統制力が更に\\C[18]%3\\C[0]減少しました！";
+const RemDailyReportRiot_OldJP = "\\I[407]監獄レベル%1で\\C[18]暴動勃発\\C[0]!! \\I[25]統制力：更に\\C[18]マイナス%3\\C[0]";
 const RemDailyReportOrderChange_PositiveEN = "\\I[408]Order has risen to %1.";
-const RemDailyReportOrderChange_PositiveJP = "\\I[408]秩序が上昇して%1になりました。";
+const RemDailyReportOrderChange_PositiveJP = "\\I[408]秩序：%1に上昇";
 const RemDailyReportOrderChange_NegativeEN = "\\I[409]Order has fallen to %1.";
-const RemDailyReportOrderChange_NegativeJP = "\\I[409]秩序が低下して%1になりました。";
+const RemDailyReportOrderChange_NegativeJP = "\\I[409]秩序：%1に下落";
 const RemDailyReportOrderChange_NeutralEN = "\\I[408]Order has remained the same at %1.";
-const RemDailyReportOrderChange_NeutralJP = "\\I[408]秩序は前日と変わらず%1を維持しています。";
+const RemDailyReportOrderChange_NeutralJP = "\\I[408]秩序：前日同様%1を維持";
 const RemDailyReportFundingChange_PositiveEN = "\\I[410]Funds have increased to \\C[11]$%1\\C[0].";
-const RemDailyReportFundingChange_PositiveJP = "\\I[410]資金は\\C[11]%1G\\C[0]まで増えました。";
+const RemDailyReportFundingChange_PositiveJP = "\\I[410]資金：\\C[11]プラス%1Ｇ\\C[0]";
 const RemDailyReportFundingChange_NegativeEN = "\\I[411]Funds have decreased to \\C[2]$%1\\C[0].";
-const RemDailyReportFundingChange_NegativeJP = "\\I[411]資金は\\C[2]%1G\\C[0]まで減りました。";
+const RemDailyReportFundingChange_NegativeJP = "\\I[411]資金：\\C[2]マイナス%1Ｇ\\C[0]";
 const RemDailyReportBankruptcyEN = "\\I[411]The prison is currently \\C[2]BANKRUPTED\\C[0]!!! Control is further decreased by \\C[18]-%1\\C[0]!";
-const RemDailyReportBankruptcyJP = "\\I[411]\\C[2]監獄は破産しました！！！\\C[0]統制力が更に\\C[18]%1\\C[0]減少！";
+const RemDailyReportBankruptcyJP = "\\I[411]資金：\\C[2]0Ｇ (破産) \\C[0]\\I[25]統制力：更に\\C[18]マイナス%1\\C[0]";
 const RemDailyReportEdictPoints_SingularEN = "\\I[364]%1 Edict Point is available today.";
 const RemDailyReportEdictPoints_SingularJP = "\\I[364]本日の使用可能な指令値：%1";
 const RemDailyReportEdictPoints_PluralEN = "\\I[364]%1 Edict Points are available today.";
 const RemDailyReportEdictPoints_PluralJP = "\\I[364]本日の使用可能な指令値：%1";
 const RemDailyReportBarRep_AlmostDecayEN = "\\I[188]Bar Reputation is about to \\C[8]decay\\C[0]. Work as a waitress today to prevent it.";
-const RemDailyReportBarRep_AlmostDecayJP = "\\I[188]酒場の評判が\\C[8]ガタ落ち\\C[0]しています。対策としてウェイトレスのバイトをオススメします。";
+const RemDailyReportBarRep_AlmostDecayJP = "\\I[188]酒場の評判：\\C[8]ガタ落ち\\C[0] \\I[24]ウェイトレスのバイトで対策可能";
 const RemDailyReportBarRep_DecayedEN = "\\I[188]\\C[8]Bar Reputation has decayed by -1.\\C[0]";
-const RemDailyReportBarRep_DecayedJP = "\\I[188]\\C[8]酒場の評判が1レベル低下しました。\\C[0]";
+const RemDailyReportBarRep_DecayedJP = "\\I[188]\\C[8]酒場の評判：マイナス1\\C[0]";
 const RemDailyReportVisitorRep_AlmostDecayEN = "\\I[159]Visitor Center Reputation is about to \\C[8]decay\\C[0]. Work as a receptionist today to prevent it.";
-const RemDailyReportVisitorRep_AlmostDecayJP = "\\I[159]面会人受付所の評判が\\C[8]ガタ落ち\\C[0]しています。対策として受付嬢のバイトをオススメします。";
+const RemDailyReportVisitorRep_AlmostDecayJP = "\\I[159]面会人受付所の評判：\\C[8]ガタ落ち\\C[0] \\I[24]受付嬢のバイトで対策可能";
 const RemDailyReportVisitorRep_DecayedEN = "\\I[159]\\C[8]Visitor Center Reputation has decayed by -1.\\C[0]";
-const RemDailyReportVisitorRep_DecayedJP = "\\I[159]\\C[8]面会人受付所の評判が1レベル低下しました。\\C[0]";
+const RemDailyReportVisitorRep_DecayedJP = "\\I[159]\\C[8]面会人受付所の評判：マイナス1\\C[0]";
 const RemDailyReportToiletRep_AlmostDecayEN = "\\I[234]Bathroom Reputation is about to \\C[8]decay\\C[0]. Rest at the toilet today to prevent it.";
-const RemDailyReportToiletRep_AlmostDecayJP = "\\I[234]トイレの評判が\\C[8]ガタ落ち\\C[0]しています。対策として真ん中の個室で休憩するのをオススメします。";
+const RemDailyReportToiletRep_AlmostDecayJP = "\\I[234]トイレの評判：\\C[8]ガタ落ち\\C[0] \\I[24]個室で休憩すると対策可能";
 const RemDailyReportToiletRep_DecayedEN = "\\I[234]\\C[8]Bathroom Reputation has decayed by -1.\\C[0]";
-const RemDailyReportToiletRep_DecayedJP = "\\I[234]\\C[8]トイレの評判が1レベル低下しました。\\C[0]";
+const RemDailyReportToiletRep_DecayedJP = "\\I[234]\\C[8]トイレの評判：マイナス1\\C[0]";
+const RemDailyReportStripClubRep_AlmostDecayEN = "\\I[]Strip Club Reputation is about to \\C[8]decay\\C[0]. Work as a stripper today to prevent it.";
+const RemDailyReportStripClubRep_AlmostDecayJP = "\\I[]ストリップクラブの評判：\\C[8]ガタ落ち\\C[0] \\I[24]ストリッパーのバイトで対策可能";
+const RemDailyReportStripClubRep_DecayedEN = "\\I[]\\C[8]Strip Club Reputation has decayed by -1.\\C[0]";
+const RemDailyReportStripClubRep_DecayedJP = "\\I[]\\C[8]ストリップクラブの評判：マイナス1\\C[0]";
 
 const RemParamGainedStrengthEN = "Strength increased by %1!"; //unused
 const RemParamGainedStrengthJP = "腕力が %1 上がった！"; //unused
@@ -1671,7 +1689,7 @@ const RemYanflyOptions_Language_Help_EN = "Set the game's language here.\nFor th
 const RemYanflyOptions_Language_Help_JP = "ゲームの言語を変更出来ます。\nまずはタイトルメニューでこの設定を確認してください。";
 const RemYanflyOptions_AlwaysDash_EN = "\\i[273]Always Dash";
 const RemYanflyOptions_AlwaysDash_JP = "\\i[273]常時ダッシュ";
-const RemYanflyOptions_AlwaysDash_Help_EN = "Player walks when OFF. Player dashes when ON.\nHolding SHIFT switches between walking and dashing.";
+const RemYanflyOptions_AlwaysDash_Help_EN = "Karryn will normally walk when this option is OFF.\nKarryn will normally dash when this option is ON.\nHolding the SHIFT key/button will switch between walking and dashing.";
 const RemYanflyOptions_AlwaysDash_Help_JP = "ON：常にダッシュのスピード\nOFF：歩行スピード\n※OFFの場合は、SHIFTキーを押し続けることでダッシュします。";
 const RemYanflyOptions_MessageSpeed_EN = "\\i[273]Message Speed";
 const RemYanflyOptions_MessageSpeed_JP = "\\i[273]メッセージ表示速度";
@@ -1736,7 +1754,11 @@ const RemYanflyOptions_KarrynLinesPrompt_Help_JP = "バトル中にカリンが�
 const RemYanflyOptions_Disable_Rimjobs_EN = "\\i[273]Disable Rimjobs";
 const RemYanflyOptions_Disable_Rimjobs_JP = "\\i[273]『ケツ舐め』プレイの非表示";
 const RemYanflyOptions_Disable_Rimjobs_Help_EN = "Prevents all rimjob content from occuring while this is option is on.\nNote that this game's progression and full content is designed with rimjobs in mind.\nOnly select this option if it'd otherwise keep you from wanting to play this game.";
-const RemYanflyOptions_Disable_Rimjobs_Help_JP = "ON：全てのアナル舐めシーンが発生しなくなります。\nOFF：カリンが男のアナルを舐めるシーンが発生するのでご注意下さい。\n※このフェチを閲覧したくない場合のみ選択して下さい。";
+const RemYanflyOptions_Disable_Rimjobs_Help_JP = "ON：アナル舐めシーンが一切発生しなくなります。\nOFF：カリンが男のアナルを舐めるシーンが発生します。\n※このフェチを閲覧したくない場合のみ選択して下さい。";
+const RemYanflyOptions_Disable_Smegma_EN = "\\i[273]Disable Smegma";
+const RemYanflyOptions_Disable_Smegma_JP = "\\i[273]チンカス描写の非表示";
+const RemYanflyOptions_Disable_Smegma_Help_EN = "Prevents all mentions and descriptions of smegma in battle dialogs.\nNote that while this doesn't affect gameplay, it would reduce the variance in dialog.\nOnly select this option if it'd otherwise keep you from wanting to play this game.";
+const RemYanflyOptions_Disable_Smegma_Help_JP = "ON：チンカスの描写が一切発生しなくなります。\nOFF：カリンがチンカスの匂いを嗅いだり、舐めたりするセリフが発生します。\n※このフェチを閲覧したくない場合のみ選択して下さい。";
 
 const RemYanflyOptions_DisplayPleasureAsPercent_EN = "\\i[273]Display Pleasure As Percentage";
 const RemYanflyOptions_DisplayPleasureAsPercent_JP = "\\i[273]快楽度を％で表示";
@@ -1745,7 +1767,7 @@ const RemYanflyOptions_DisplayPleasureAsPercent_Help_JP = "絶頂に必要な『
 
 const RemYanflyOptions_ShorterDefeatBattles_EN = "\\i[273]Shorter Defeated Battles";
 const RemYanflyOptions_ShorterDefeatBattles_JP = "\\i[273]敗北Ｈの短縮";
-const RemYanflyOptions_ShorterDefeatBattles_Help_EN = "Normally Defeated Battles (the battles after Karryn is defeated) are over only after all \nenemies are satisfied. Turning this option ON will allow the battle to also end after Karryn \nis exhausted. Prisoner Mode ignores this option, this is always OFF in Prisoner Mode."
+const RemYanflyOptions_ShorterDefeatBattles_Help_EN = "\\}Normally Defeated Battles (the battles after Karryn is defeated) are over only after all enemies are satisfied.\n\\{Turning this option ON will allow the battle to also end after Karryn is exhausted.\nPrisoner Mode ignores this option, this is always OFF in Prisoner Mode."
 const RemYanflyOptions_ShorterDefeatBattles_Help_JP = "通常の敗北Ｈは全ての敵が射精後に終了します。\nON：敵が射精し終わらなくても、カリンの体力が０になった時点で終了します。\nOFF：通常通り全員が射精するまで続きます。囚人コースでは常にOFFになります。";
 
 //Options Audio
@@ -1760,7 +1782,7 @@ const RemYanflyOptions_BGMVolume_Help_JP = "ゲーム内で流れる音楽のボ
 const RemYanflyOptions_BGSVolume_EN = "\\i[274]BGS Volume";
 const RemYanflyOptions_BGSVolume_JP = "\\i[274]ループ効果音";
 const RemYanflyOptions_BGSVolume_Help_EN = "Adjusts the volume of the background sound effects.";
-const RemYanflyOptions_BGSVolume_Help_JP = "あえぎ声や体液のボリュームを設定出来ます。";
+const RemYanflyOptions_BGSVolume_Help_JP = "背景効果音のボリュームを設定出来ます。";
 const RemYanflyOptions_MEVolume_EN = "\\i[274]ME Volume";
 const RemYanflyOptions_MEVolume_JP = "\\i[274]演出音";
 const RemYanflyOptions_MEVolume_Help_EN = "Adjusts the volume of the melody effects such as fanfares.";
@@ -1769,47 +1791,59 @@ const RemYanflyOptions_SEVolume_EN = "\\i[274]SE Volume";
 const RemYanflyOptions_SEVolume_JP = "\\i[274]SE";
 const RemYanflyOptions_SEVolume_Help_EN = "Adjusts the volume of the sound effects.";
 const RemYanflyOptions_SEVolume_Help_JP = "効果音のボリュームを設定出来ます。";
+const RemYanflyOptions_VoiceVolume_EN = "\\i[274]Voice Volume";
+const RemYanflyOptions_VoiceVolume_JP = "\\i[274]通常ボイス";
+const RemYanflyOptions_VoiceVolume_Help_EN = "Adjusts the volume of Karryn's spoken dialogue.";
+const RemYanflyOptions_VoiceVolume_Help_JP = "カリンのセリフのボリュームを設定出来ます。";
+const RemYanflyOptions_MoansVolume_EN = "\\i[274]Moans Volume";
+const RemYanflyOptions_MoansVolume_JP = "\\i[274]あえぎ声";
+const RemYanflyOptions_MoansVolume_Help_EN = "Adjusts the volume of Karryn's moans.";
+const RemYanflyOptions_MoansVolume_Help_JP = "カリンのあえぎ声のボリュームを設定出来ます。";
+const RemYanflyOptions_KeepVoicePlayback_EN = "\\i[274]Keep Voice Playback";
+const RemYanflyOptions_KeepVoicePlayback_JP = "\\i[274]メッセージ送り後もボイスを再生";
+const RemYanflyOptions_KeepVoicePlayback_Help_EN = "Normally any voice being played gets cut off after you hit the confirm key.\nTurning this option ON will have voices keep playing until a new voice is played."
+const RemYanflyOptions_KeepVoicePlayback_Help_JP = "ON：セリフを言い切るまでボイスが再生され続けます。\nOFF：決定キーでボイス再生は中断されます。";
 
 //Options Visual
 const RemYanflyOptions_WindowToneRed_EN = "\\i[277]Window Tone: Red";
 const RemYanflyOptions_WindowToneRed_JP = "\\i[277]ウィンドウトーン：RED";
-const RemYanflyOptions_WindowToneRed_Help_EN = "Changes the window tone's \\c[18]red\\c[0] value.\nHold SHIFT while pressing LEFT/RIGHT to adjust more.";
-const RemYanflyOptions_WindowToneRed_Help_JP = "ウィンドウ色彩の\\c[18]赤\\c[0]を変更出来ます。\nSHIFTキーを押しながら左右に動かすことで大きく変更出来ます。";
+const RemYanflyOptions_WindowToneRed_Help_EN = "Changes the window tone's \\c[18]red\\c[0] value.\nHold SHIFT while pressing LEFT/RIGHT to adjust more.\nNote: This setting is save file specific and can not be changed in the title screen.";
+const RemYanflyOptions_WindowToneRed_Help_JP = "ウィンドウ色彩の\\c[18]赤\\c[0]を変更出来ます。\nSHIFTキーを押しながら左右に動かすことで大きく変更出来ます。\n※セーブデータに依存するのでタイトル画面では変更出来ません。";
 const RemYanflyOptions_WindowToneGreen_EN = "\\i[278]Window Tone: Green";
 const RemYanflyOptions_WindowToneGreen_JP = "\\i[278]ウィンドウトーン：GREEN";
-const RemYanflyOptions_WindowToneGreen_Help_EN = "Changes the window tone's \\c[29]green\\c[0] value.\nHold SHIFT while pressing LEFT/RIGHT to adjust more.";
-const RemYanflyOptions_WindowToneGreen_Help_JP = "ウィンドウ色彩の\\c[29]緑\\c[0]を変更出来ます。\nSHIFTキーを押しながら左右に動かすことで大きく変更出来ます。";
+const RemYanflyOptions_WindowToneGreen_Help_EN = "Changes the window tone's \\c[29]green\\c[0] value.\nHold SHIFT while pressing LEFT/RIGHT to adjust more.\nNote: Note: This setting is save file specific and can not be changed in the title screen.";
+const RemYanflyOptions_WindowToneGreen_Help_JP = "ウィンドウ色彩の\\c[29]緑\\c[0]を変更出来ます。\nSHIFTキーを押しながら左右に動かすことで大きく変更出来ます。\n※セーブデータに依存するのでタイトル画面では変更出来ません。";
 const RemYanflyOptions_WindowToneBlue_EN = "\\i[279]Window Tone: Blue";
 const RemYanflyOptions_WindowToneBlue_JP = "\\i[279]ウィンドウトーン：BLUE";
-const RemYanflyOptions_WindowToneBlue_Help_EN = "Changes the window tone's \\c[14]blue\\c[0] value.\nHold SHIFT while pressing LEFT/RIGHT to adjust more.";
-const RemYanflyOptions_WindowToneBlue_Help_JP = "ウィンドウ色彩の\\c[14]青\\c[0]を変更出来ます。\nSHIFTキーを押しながら左右に動かすことで大きく変更出来ます。";
+const RemYanflyOptions_WindowToneBlue_Help_EN = "Changes the window tone's \\c[14]blue\\c[0] value.\nHold SHIFT while pressing LEFT/RIGHT to adjust more.\nNote: Note: This setting is save file specific and can not be changed in the title screen.";
+const RemYanflyOptions_WindowToneBlue_Help_JP = "ウィンドウ色彩の\\c[14]青\\c[0]を変更出来ます。\nSHIFTキーを押しながら左右に動かすことで大きく変更出来ます。\n※セーブデータに依存するのでタイトル画面では変更出来ません。";
 const RemYanflyOptions_FasterBattleDialogue_EN = "\\i[276]Fast Battle Dialogues";
 const RemYanflyOptions_FasterBattleDialogue_JP = "\\i[276]バトルメッセージ倍速化";
 const RemYanflyOptions_FasterBattleDialogue_Help_EN = "Turning this option ON will make battle dialogue go faster.";
 const RemYanflyOptions_FasterBattleDialogue_Help_JP = "バトル中に表示されるメッセージが速くなります。";
 const RemYanflyOptions_FasterBattleCutins_EN = "\\i[276]Fast Battle Cut-ins";
 const RemYanflyOptions_FasterBattleCutins_JP = "\\i[276]カットインを簡略化";
-const RemYanflyOptions_FasterBattleCutins_Help_EN = "Turning this option ON will make battle cut-ins go faster and turn off the cut-in animations.\nTurn this option ON if you're experiencing slowdown during cut-ins.";
+const RemYanflyOptions_FasterBattleCutins_Help_EN = "Turning this option ON will make battle cut-ins go faster and turn off the cut-in animations.\nTurn this option ON if you're experiencing heavy slowdown during cut-ins.";
 const RemYanflyOptions_FasterBattleCutins_Help_JP = "ON：バトル中のカットインが速くなり、アニメなしの静止画が表示されます。\nOFF：カットインは通常速度で、アニメ再生もされます。\n※カットイン中にゲームが重くなる場合はONにして下さい。";
 const RemYanflyOptions_SmootherBattleCutinLoading_EN = "\\i[276]Smoother Battle Cut-in Loading";
 const RemYanflyOptions_SmootherBattleCutinLoading_JP = "\\i[276]カットインのスムーズ化";
-const RemYanflyOptions_SmootherBattleCutinLoading_Help_EN = "\\}This is an experimental option for stronger PCs that might make battle cut-ins load in smoother.\n\\{Please turn this option off if you experience slowdowns in your game.\nThis option has no effect when Fast Battle Cut-ins is turned on.";
-const RemYanflyOptions_SmootherBattleCutinLoading_Help_JP = "バトル中のカットインアニメのロードをスムーズにするオプションです。\n注意１：ゲームが重くなる場合はOFFにしてください。\n注意２：「カットイン簡略化」がONの場合は無効になります。";
+const RemYanflyOptions_SmootherBattleCutinLoading_Help_EN = "\\}\\}This is an option for stronger PCs that will make battle cut-ins load in smoother at the cost of much longer initial boot up time for the game.\n\\{\\{Please keep this option OFF if your initial boot up time is already longer than twenty seconds or if your game often crashes.\nPlease restart your game for this option to take effect.";
+const RemYanflyOptions_SmootherBattleCutinLoading_Help_JP = "起動時のロード時間が長くなる代わりに、バトル中のカットイン表示で発生する遅延をかなり抑制します。\n注意１：起動時間が20秒を超える、または頻繁にフリーズする場合はOFFにして下さい。\n注意２：ONにした後、ゲームを再起動することで設定が有効になります。";
 const RemYanflyOptions_DisableBattleCutins_EN = "\\i[276]Disable Battle Cut-ins";
 const RemYanflyOptions_DisableBattleCutins_JP = "\\i[276]カットインの非表示";
 const RemYanflyOptions_DisableBattleCutins_Help_EN = "Turning this option ON will completely disable battle cut-ins.\nThe intended visual experience is to play and enjoy the game with battle cut-ins appearing.\nThis option should only be used as a last resort if cut-ins are causing serious FPS issues.";
 const RemYanflyOptions_DisableBattleCutins_Help_JP = "ON：バトル中のカットインは全て表示されません。\nOFF：バトル中のカットインが表示されます。\n※カットインの影響で処理落ちする場合のみ、最終手段としてご使用下さい。";
 const RemYanflyOptions_SmootherCGLoading_EN = "\\i[276]Smoother CG Loading";
 const RemYanflyOptions_SmootherCGLoading_JP = "\\i[276]CG表示のスムーズ化";
-const RemYanflyOptions_SmootherCGLoading_Help_EN = "\\}\\}This is an option for stronger PCs that will make CGs load in smoother at the cost of much longer initial boot up time for the game.\nPlease keep this option off if your initial boot up time is already longer than twenty seconds or if your game often crashes.\n\\{Please restart your game for this option to take effect.";
+const RemYanflyOptions_SmootherCGLoading_Help_EN = "\\}\\}This is an option for stronger PCs that will make CGs load in smoother at the cost of much longer initial boot up time for the game.\nPlease keep this option OFF if your initial boot up time is already longer than twenty seconds or if your game often crashes.\n\\{Please restart your game for this option to take effect.";
 const RemYanflyOptions_SmootherCGLoading_Help_JP = "起動時のロード時間が長くなる代わりに、CG表示で発生する遅延をかなり抑制します。\n注意１：起動時間が20秒を超える、または頻繁にフリーズする場合はOFFにして下さい。\n注意２：ONにした後、ゲームを再起動することで設定が有効になります。";
 const RemYanflyOptions_SortPassivesAscending_EN = "\\i[276]Sort Passives Ascending";
 const RemYanflyOptions_SortPassivesAscending_JP = "\\i[276]パッシブの並び順を変更";
 const RemYanflyOptions_SortPassivesAscending_Help_EN = "Passives are visually sorted in the Passives screen by the date they were obtained.\nON: They will be sorted with the oldest ones on top.\nOFF: They will sorted with the newest ones on top.";
 const RemYanflyOptions_SortPassivesAscending_Help_JP = "パッシブの並べ替えをします。\nON：初日から現在までに取得した順列で表示されます。\nOFF：最新取得から過去までの順列で表示されます。";
-const RemYanflyOptions_SynchFPS_EN = "\\i[276]Synch Monitor FPS";
-const RemYanflyOptions_SynchFPS_JP = "\\i[276]FPSの同期処理";
-const RemYanflyOptions_SynchFPS_Help_EN = "Keep option turned ON if your monitor runs above 60 FPS so the game will cap at 60 FPS.\nTurn this option off if your game is running way below 60 FPS.\nPressing F2 will show the game's current FPS.";
+const RemYanflyOptions_SynchFPS_EN = "\\i[273]Force 60 FPS";
+const RemYanflyOptions_SynchFPS_JP = "\\i[273]FPSの同期処理";
+const RemYanflyOptions_SynchFPS_Help_EN = "\\}Please keep this option turned ON if your monitor is above 60Hz so that the game will properly cap at 60 FPS.\n\\{Turn this option OFF if your game is running way below 60 FPS or your monitor is 60Hz or less.\nPressing F2 will display the game's current FPS.";
 const RemYanflyOptions_SynchFPS_Help_JP = "モニターが60FPSを超えて動作している場合、ONにしてください。\n60FPSで動作するようにゲーム同期を変更出来ます。\n※F2キーで現在のFPSを確認出来ます。";
 const RemYanflyOptions_LightingEffects_EN = "\\i[276]Map Lighting Effects";
 const RemYanflyOptions_LightingEffects_JP = "\\i[276]フラッシュ演出";
@@ -1822,12 +1856,39 @@ const RemYanflyOptions_MapEffects_Help_JP = "マップのミストや雲など�
 const RemYanflyOptions_DisplayPubicHair_EN = "\\i[276]Toggle Pubic Hair";
 const RemYanflyOptions_DisplayPubicHair_JP = "\\i[276]アンダーヘアの処理";
 const RemYanflyOptions_DisplayPubicHair_Help_EN = "Turn this option ON for Karryn to have pubic hair.\nTurn this option OFF for Karryn's groin to be smooth and hairless.";
-const RemYanflyOptions_DisplayPubicHair_Help_JP = "アンダーヘアの生え方を変更します。\nON：カリンの股間には丁寧に整えられた陰毛があります。\nOFF：カリンがパイパンになります。";
+const RemYanflyOptions_DisplayPubicHair_Help_JP = "アンダーヘアの生え方が変更出来ます。\nON：カリンの股間には丁寧に整えられた陰毛があります。\nOFF：カリンがパイパンになります。";
 const RemYanflyOptions_ShowSexualDamagePopup_EN = "\\i[276]Toggle Karryn Sexual Damage Popup";
 const RemYanflyOptions_ShowSexualDamagePopup_JP = "\\i[276]性ダメージのポップアップ";
 const RemYanflyOptions_ShowSexualDamagePopup_Help_EN = "\\}Turn this option ON to have damage numbers from sexual attacks popup over Karryn's body.\nTurn this option OFF to hide the damage numbers from sexual attacks over Karryn's body.\nInformation about sexual attacks will still appear in the battle log.";
 const RemYanflyOptions_ShowSexualDamagePopup_Help_JP = "バトル中の性ダメージの表示を変更出来ます。\nON：カリンの上に性ダメージ数が表示されます。\nOFF：性ダメージはテキストログのみでの表示になります。";
 
+const RemYanflyOptions_EdictsOutlineColor_Obtainable_EN = "\\i[276]Edicts Outline Color: Obtainable";
+const RemYanflyOptions_EdictsOutlineColor_Obtainable_JP = "\\i[276]指令のアウトラインカラー：実行可能な場合";
+const RemYanflyOptions_EdictsOutlineColor_Obtainable_Help_EN = "This option changes the color of the outlines in the Edicts screen\nfor the Edicts that Karryn can enact right now.";
+const RemYanflyOptions_EdictsOutlineColor_Obtainable_Help_JP = "現時点で実行可能な『指令』の枠の色を変更出来ます。";
+const RemYanflyOptions_EdictsOutlineColor_MeetReq_EN = "\\i[276]Edicts Outline Color: Met Req";
+const RemYanflyOptions_EdictsOutlineColor_MeetReq_JP = "\\i[276]指令のアウトラインカラー：条件を満たしている場合";
+const RemYanflyOptions_EdictsOutlineColor_MeetReq_Help_EN = "This option changes the color of the outlines in the Edicts screen\nfor the Edicts that Karryn meet the requirements for but can not enact right now.";
+const RemYanflyOptions_EdictsOutlineColor_MeetReq_Help_JP = "条件を満たしていても現時点では実行不可な『指令』の枠の色を変更出来ます。";
+const RemYanflyOptions_EdictsOutlineColor_NoReq_EN = "\\i[276]Edicts Outline Color: No Req";
+const RemYanflyOptions_EdictsOutlineColor_NoReq_JP = "\\i[276]指令のアウトラインカラー：実行不可な場合";
+const RemYanflyOptions_EdictsOutlineColor_NoReq_Help_EN = "This option changes the color of the outlines in the Edicts screen\nfor the Edicts that Karryn does not meet the requirements for.";
+const RemYanflyOptions_EdictsOutlineColor_NoReq_Help_JP = "条件を満たしていない『指令』の枠の色を変更出来ます。";
+
+const RemYanflyOptions_EdictsOutlineColorName_Green_EN = "Green";
+const RemYanflyOptions_EdictsOutlineColorName_Green_JP = "グリーン";
+const RemYanflyOptions_EdictsOutlineColorName_LightBlue_EN = "Light Blue";
+const RemYanflyOptions_EdictsOutlineColorName_LightBlue_JP = "ライトブルー";
+const RemYanflyOptions_EdictsOutlineColorName_Yellow_EN = "Yellow";
+const RemYanflyOptions_EdictsOutlineColorName_Yellow_JP = "イエロー";
+const RemYanflyOptions_EdictsOutlineColorName_Purple_EN = "Purple";
+const RemYanflyOptions_EdictsOutlineColorName_Purple_JP = "パープル";
+const RemYanflyOptions_EdictsOutlineColorName_Gray_EN = "Gray";
+const RemYanflyOptions_EdictsOutlineColorName_Gray_JP = "グレイ";
+const RemYanflyOptions_EdictsOutlineColorName_Black_EN = "Black";
+const RemYanflyOptions_EdictsOutlineColorName_Black_JP = "ブラック";
+const RemYanflyOptions_EdictsOutlineColorName_Red_EN = "Red";
+const RemYanflyOptions_EdictsOutlineColorName_Red_JP = "レッド";
 
 //Options Controls
 const RemYanflyOptions_GamepadControl_EN = "\\i[281]Gamepad Config";
@@ -1941,70 +2002,78 @@ const RemYanflyKeyboardDownTextJP = "↓方向";
 
 
 //Options Cheats
+const RemYanflyOptions_Cheats_ActorDoublePassiveGain_EN = "\\i[182]\\C[27]Hot Coffee";
+const RemYanflyOptions_Cheats_ActorDoublePassiveGain_JP = "\\i[182]\\C[27]パッシブ解放２倍速";
+const RemYanflyOptions_Cheats_ActorDoublePassiveGain_Help_EN = "Karryn unlocks new Passives twice as fast.\nFor people who want to see Karryn turn into a slut faster.\nNote: Cheats only work in Secretary Mode.";
+const RemYanflyOptions_Cheats_ActorDoublePassiveGain_Help_JP = "新しいパッシブの解放が２倍速くなります。\n★ビッチなカリンを早く見たい人向け。\n※秘書モードでのみ有効";
 const RemYanflyOptions_Cheats_EnemyDoublePhysicalDamage_EN = "\\i[429]\\C[14]WhosYourDaddy";
 const RemYanflyOptions_Cheats_EnemyDoublePhysicalDamage_JP = "\\i[429]\\C[14]体力ダメージ２倍";
-const RemYanflyOptions_Cheats_EnemyDoublePhysicalDamage_Help_EN = "Enemies deal double the amount of stamina damage to Karryn.\nFor people who want to see Karryn be less invincible.";
-const RemYanflyOptions_Cheats_EnemyDoublePhysicalDamage_Help_JP = "敵からの物理ダメージが２倍になります。\n★カリンの無敵っぷりを解除したい人向け。";
+const RemYanflyOptions_Cheats_EnemyDoublePhysicalDamage_Help_EN = "Enemies deal double the amount of stamina damage to Karryn.\nFor people who want to see Karryn be less invincible.\nNote: Cheats only work in Secretary Mode.";
+const RemYanflyOptions_Cheats_EnemyDoublePhysicalDamage_Help_JP = "敵からの物理ダメージが２倍になります。\n★カリンの無敵っぷりを解除したい人向け。\n※秘書モードでのみ有効";
 const RemYanflyOptions_Cheats_EnemyTriplePhysicalDamage_EN = "\\i[429]\\C[14]iddqd";
 const RemYanflyOptions_Cheats_EnemyTriplePhysicalDamage_JP = "\\i[429]\\C[14]体力ダメージ３倍";
-const RemYanflyOptions_Cheats_EnemyTriplePhysicalDamage_Help_EN = "Enemies deal triple the amount of stamina damage to Karryn.\nFor people who want to see Karryn fall down from a few hits.";
-const RemYanflyOptions_Cheats_EnemyTriplePhysicalDamage_Help_JP = "敵からの物理ダメージが３倍になります。\n★手っ取り早くカリンに倒れて欲しい人向け。";
+const RemYanflyOptions_Cheats_EnemyTriplePhysicalDamage_Help_EN = "Enemies deal triple the amount of stamina damage to Karryn.\nFor people who want to see Karryn fall down from a few hits.\nNote: Cheats only work in Secretary Mode.";
+const RemYanflyOptions_Cheats_EnemyTriplePhysicalDamage_Help_JP = "敵からの物理ダメージが３倍になります。\n★手っ取り早くカリンに倒れて欲しい人向け。\n※秘書モードでのみ有効";
 const RemYanflyOptions_Cheats_EnemyDoubleSexualDamage_EN = "\\i[387]\\C[1]BigDaddy";
 const RemYanflyOptions_Cheats_EnemyDoubleSexualDamage_JP = "\\i[387]\\C[1]快楽ダメージ２倍";
-const RemYanflyOptions_Cheats_EnemyDoubleSexualDamage_Help_EN = "Enemies deal double the amount of pleasure damage to Karryn.\nFor people who want to see Karryn succumb to pleasure faster.";
-const RemYanflyOptions_Cheats_EnemyDoubleSexualDamage_Help_JP = "敵からの快楽ダメージが２倍になります。\n★快楽堕ちを早く見たい人向け。";
+const RemYanflyOptions_Cheats_EnemyDoubleSexualDamage_Help_EN = "Enemies deal double the amount of pleasure damage to Karryn.\nFor people who want to see Karryn succumb to pleasure faster.\nNote: Cheats only work in Secretary Mode.";
+const RemYanflyOptions_Cheats_EnemyDoubleSexualDamage_Help_JP = "敵からの快楽ダメージが２倍になります。\n★快楽堕ちを早く見たい人向け。\n※秘書モードでのみ有効";
 const RemYanflyOptions_Cheats_EnemyTripleSexualDamage_EN = "\\i[387]\\C[1]there is no cow level";
 const RemYanflyOptions_Cheats_EnemyTripleSexualDamage_JP = "\\i[387]\\C[1]快楽ダメージ３倍";
-const RemYanflyOptions_Cheats_EnemyTripleSexualDamage_Help_EN = "Enemies deal triple the amount of pleasure damage to Karryn.\nFor people who want to turn Karryn into a puddle.";
-const RemYanflyOptions_Cheats_EnemyTripleSexualDamage_Help_JP = "敵からの快楽ダメージが３倍になります。\n★即イキ濡れ濡れ状態で楽しみたい人向け。";
+const RemYanflyOptions_Cheats_EnemyTripleSexualDamage_Help_EN = "Enemies deal triple the amount of pleasure damage to Karryn.\nFor people who want to turn Karryn into a puddle.\nNote: Cheats only work in Secretary Mode.";
+const RemYanflyOptions_Cheats_EnemyTripleSexualDamage_Help_JP = "敵からの快楽ダメージが３倍になります。\n★即イキ濡れ濡れ状態で楽しみたい人向け。\n※秘書モードでのみ有効";
 const RemYanflyOptions_Cheats_EnemyAlwaysAct_EN = "\\i[385]\\C[2]godmode";
 const RemYanflyOptions_Cheats_EnemyAlwaysAct_JP = "\\i[385]\\C[2]敵が必ず行動";
-const RemYanflyOptions_Cheats_EnemyAlwaysAct_Help_EN = "Enemies will always act every turn.\nFor people who don't want enemies to skip their turn.";
-const RemYanflyOptions_Cheats_EnemyAlwaysAct_Help_JP = "敵が必ず毎ターン行動するようになります。\n★敵のターンをスキップさせたくない人向け。";
+const RemYanflyOptions_Cheats_EnemyAlwaysAct_Help_EN = "Enemies will always act every turn.\nFor people who don't want enemies to skip their turn.\nNote: Cheats only work in Secretary Mode.";
+const RemYanflyOptions_Cheats_EnemyAlwaysAct_Help_JP = "敵が必ず毎ターン行動するようになります。\n★敵のターンをスキップさせたくない人向け。\n※秘書モードでのみ有効";
 const RemYanflyOptions_Cheats_ActorHalfStaminaRegen_EN = "\\i[473]\\C[29]pepperoni pizza";
 const RemYanflyOptions_Cheats_ActorHalfStaminaRegen_JP = "\\i[473]\\C[29]回復半減";
-const RemYanflyOptions_Cheats_ActorHalfStaminaRegen_Help_EN = "Karryn only regenerates half as much stamina.\nFor people who want to see Karryn get gradually worn down.";
-const RemYanflyOptions_Cheats_ActorHalfStaminaRegen_Help_JP = "カリンの体力回復が半減します。\n★じわじわと追い詰められるのを見たい人向け。";
+const RemYanflyOptions_Cheats_ActorHalfStaminaRegen_Help_EN = "Karryn only regenerates half as much stamina.\nFor people who want to see Karryn get gradually worn down.\nNote: Cheats only work in Secretary Mode.";
+const RemYanflyOptions_Cheats_ActorHalfStaminaRegen_Help_JP = "カリンの体力回復が半減します。\n★じわじわと追い詰められるのを見たい人向け。\n※秘書モードでのみ有効";
 const RemYanflyOptions_Cheats_ActorThirdStaminaRegen_EN = "\\i[473]\\C[29]Thereisnospoon";
-const RemYanflyOptions_Cheats_ActorThirdStaminaRegen_JP = "\\i[0473]\\C[29]回復３分の１";
-const RemYanflyOptions_Cheats_ActorThirdStaminaRegen_Help_EN = "Karryn only regenerates one-third as much stamina.\nFor people who want Karryn to regenerate much less.";
-const RemYanflyOptions_Cheats_ActorThirdStaminaRegen_Help_JP = "カリンの体力回復が３分の１になります。\n★回復量を大幅に減らしたい人向け。";
+const RemYanflyOptions_Cheats_ActorThirdStaminaRegen_JP = "\\i[473]\\C[29]回復３分の１";
+const RemYanflyOptions_Cheats_ActorThirdStaminaRegen_Help_EN = "Karryn only regenerates one-third as much stamina.\nFor people who want Karryn to regenerate much less.\nNote: Cheats only work in Secretary Mode.";
+const RemYanflyOptions_Cheats_ActorThirdStaminaRegen_Help_JP = "カリンの体力回復が３分の１になります。\n★回復量を大幅に減らしたい人向け。\n※秘書モードでのみ有効";
 const RemYanflyOptions_Cheats_ActorNoEvasion_EN = "\\i[427]\\C[30]Jack be nimble";
 const RemYanflyOptions_Cheats_ActorNoEvasion_JP = "\\i[427]\\C[30]フルボッコ\\C[30]";
-const RemYanflyOptions_Cheats_ActorNoEvasion_Help_EN = "Karryn can no longer evade.\nFor people who want Karryn to take every attack head on.";
-const RemYanflyOptions_Cheats_ActorNoEvasion_Help_JP = "カリンは一切回避しなくなります。\n★攻撃を全部受けさせたい人向け。";
+const RemYanflyOptions_Cheats_ActorNoEvasion_Help_EN = "Karryn can no longer evade.\nFor people who want Karryn to take every attack head on.\nNote: Cheats only work in Secretary Mode.";
+const RemYanflyOptions_Cheats_ActorNoEvasion_Help_JP = "カリンは一切回避しなくなります。\n★攻撃を全部受けさせたい人向け。\n※秘書モードでのみ有効";
 const RemYanflyOptions_Cheats_ActorHalfExpRate_EN = "\\i[361]\\C[30]hoyohoyo";
 const RemYanflyOptions_Cheats_ActorHalfExpRate_JP = "\\i[361]\\C[30]経験値半減";
-const RemYanflyOptions_Cheats_ActorHalfExpRate_Help_EN = "Karryn's experience rate is cut in half.\nFor people who want Karryn to take longer to level up.";
-const RemYanflyOptions_Cheats_ActorHalfExpRate_Help_JP = "カリンの取得経験値が半減します。\n★レベルアップにもっと時間をかけたい人向け。";
+const RemYanflyOptions_Cheats_ActorHalfExpRate_Help_EN = "Karryn's experience rate is cut in half.\nFor people who want Karryn to take longer to level up.\nNote: Cheats only work in Secretary Mode.";
+const RemYanflyOptions_Cheats_ActorHalfExpRate_Help_JP = "カリンの取得経験値が半減します。\n★レベルアップにもっと時間をかけたい人向け。\n※秘書モードでのみ有効";
 const RemYanflyOptions_Cheats_LessControlFive_EN = "\\i[377]\\C[10]ROSEBUD";
 const RemYanflyOptions_Cheats_LessControlFive_JP = "\\i[377]\\C[10]統制力が-5";
-const RemYanflyOptions_Cheats_LessControlFive_Help_EN = "Lowers the prison's Control by 5.\nFor people who want to see more lower Order stuff.";
-const RemYanflyOptions_Cheats_LessControlFive_Help_JP = "監獄の統制力が５下がります。\n★より低い秩序でプレイしたい人向け。";
+const RemYanflyOptions_Cheats_LessControlFive_Help_EN = "Lowers the prison's Control by 5.\nFor people who want to see more lower Order stuff.\nNote: Cheats only work in Secretary Mode.";
+const RemYanflyOptions_Cheats_LessControlFive_Help_JP = "監獄の統制力が５下がります。\n★より低い秩序でプレイしたい人向け。\n※秘書モードでのみ有効";
 const RemYanflyOptions_Cheats_LessControlTen_EN = "\\i[377]\\C[10]showracemenu";
 const RemYanflyOptions_Cheats_LessControlTen_JP = "\\i[377]\\C[10]統制が-10";
-const RemYanflyOptions_Cheats_LessControlTen_Help_EN = "Lowers the prison's Control by 10.\nFor people who want to quickly drop the prison's Order.";
-const RemYanflyOptions_Cheats_LessControlTen_Help_JP = "監獄の統制力が１０下がります。\n★手っ取り早く秩序を落としたい人向け。";
+const RemYanflyOptions_Cheats_LessControlTen_Help_EN = "Lowers the prison's Control by 10.\nFor people who want to quickly drop the prison's Order.\nNote: Cheats only work in Secretary Mode.";
+const RemYanflyOptions_Cheats_LessControlTen_Help_JP = "監獄の統制力が１０下がります。\n★手っ取り早く秩序を落としたい人向け。\n※秘書モードでのみ有効";
 const RemYanflyOptions_Cheats_InstantRiotsOne_EN = "\\i[407]\\C[7]Greedisgood";
 const RemYanflyOptions_Cheats_InstantRiotsOne_JP = "\\i[407]\\C[7]レベル１で暴動多発";
-const RemYanflyOptions_Cheats_InstantRiotsOne_Help_EN = "Prison Level One is pretty much going to riot every three days.\nFor people who want to re-experience a certain level's contents.";
-const RemYanflyOptions_Cheats_InstantRiotsOne_Help_JP = "監獄レベル１でほぼ３日に１回暴動が発生するようになります。\n★特定の監獄レベルで再戦したい人向け。";
+const RemYanflyOptions_Cheats_InstantRiotsOne_Help_EN = "Prison Level One is pretty much going to riot every three days.\nFor people who want to re-experience a certain level's contents.\nNote: Cheats only work in Secretary Mode.";
+const RemYanflyOptions_Cheats_InstantRiotsOne_Help_JP = "監獄レベル１でほぼ３日に１回暴動が発生するようになります。\n★特定の監獄レベルで再戦したい人向け。\n※秘書モードでのみ有効";
 const RemYanflyOptions_Cheats_InstantRiotsTwo_EN = "\\i[407]\\C[7]black sheep wall";
 const RemYanflyOptions_Cheats_InstantRiotsTwo_JP = "\\i[407]\\C[7]レベル２で暴動多発";
-const RemYanflyOptions_Cheats_InstantRiotsTwo_Help_EN = "Prison Level Two is pretty much going to riot every three days.\nFor people who want to re-experience a certain level's contents.";
-const RemYanflyOptions_Cheats_InstantRiotsTwo_Help_JP = "監獄レベル２でほぼ３日に１回暴動が発生するようになります。\n★特定の監獄レベルで再戦したい人向け。";
+const RemYanflyOptions_Cheats_InstantRiotsTwo_Help_EN = "Prison Level Two is pretty much going to riot every three days.\nFor people who want to re-experience a certain level's contents.\nNote: Cheats only work in Secretary Mode.";
+const RemYanflyOptions_Cheats_InstantRiotsTwo_Help_JP = "監獄レベル２でほぼ３日に１回暴動が発生するようになります。\n★特定の監獄レベルで再戦したい人向け。\n※秘書モードでのみ有効";
 const RemYanflyOptions_Cheats_InstantRiotsThree_EN = "\\i[407]\\C[7]lumberjack";
 const RemYanflyOptions_Cheats_InstantRiotsThree_JP = "\\i[407]\\C[7]レベル３で暴動多発";
-const RemYanflyOptions_Cheats_InstantRiotsThree_Help_EN = "Prison Level Three is pretty much going to riot every three days.\nFor people who want to re-experience a certain level's contents.";
-const RemYanflyOptions_Cheats_InstantRiotsThree_Help_JP = "監獄レベル３でほぼ３日に１回暴動が発生するようになります。\n★特定の監獄レベルで再戦したい人向け。";
+const RemYanflyOptions_Cheats_InstantRiotsThree_Help_EN = "Prison Level Three is pretty much going to riot every three days.\nFor people who want to re-experience a certain level's contents.\nNote: Cheats only work in Secretary Mode.";
+const RemYanflyOptions_Cheats_InstantRiotsThree_Help_JP = "監獄レベル３でほぼ３日に１回暴動が発生するようになります。\n★特定の監獄レベルで再戦したい人向け。\n※秘書モードでのみ有効";
 const RemYanflyOptions_Cheats_InstantRiotsFour_EN = "\\i[407]\\C[7]allyourbasearebelongtous";
 const RemYanflyOptions_Cheats_InstantRiotsFour_JP = "\\i[407]\\C[7]レベル４で暴動多発";
-const RemYanflyOptions_Cheats_InstantRiotsFour_Help_EN = "Prison Level Four is pretty much going to riot every three days.\nFor people who want to re-experience a certain level's contents.";
-const RemYanflyOptions_Cheats_InstantRiotsFour_Help_JP = "監獄レベル４でほぼ３日に１回暴動が発生するようになります。\n★特定の監獄レベルで再戦したい人向け。";
+const RemYanflyOptions_Cheats_InstantRiotsFour_Help_EN = "Prison Level Four is pretty much going to riot every three days.\nFor people who want to re-experience a certain level's contents.\nNote: Cheats only work in Secretary Mode.";
+const RemYanflyOptions_Cheats_InstantRiotsFour_Help_JP = "監獄レベル４でほぼ３日に１回暴動が発生するようになります。\n★特定の監獄レベルで再戦したい人向け。\n※秘書モードでのみ有効";
+const RemYanflyOptions_Cheats_WaitressLog_EN = "\\i[282]\\C[17]KeyserSoze";
+const RemYanflyOptions_Cheats_WaitressLog_JP = "\\i[282]\\C[17]らくらくウェイトレス";
+const RemYanflyOptions_Cheats_WaitressLog_Help_EN = "Enables access to the History log during the Waitress side job.\nFor people who don't want to memorize orders.\nNote: Cheats only work in Secretary Mode.";
+const RemYanflyOptions_Cheats_WaitressLog_Help_JP = "ウェイトレス中にバックログを表示出来るようになります。\n★注文を暗記したくない人向け。\n※秘書モードでのみ有効";
 const RemYanflyOptions_Cheats_NoAutoSave_EN = "\\i[282]The \\C[18]K*n*mi\\C[0] Code";
 const RemYanflyOptions_Cheats_NoAutoSave_JP = "\\i[282]\\C[18]オートセーブ解除";
-const RemYanflyOptions_Cheats_NoAutoSave_Help_EN = "Disables autosave.\nJust make sure to save often!";
-const RemYanflyOptions_Cheats_NoAutoSave_Help_JP = "オートセーブを無効化します。\n※こまめなセーブをお忘れなく！";
+const RemYanflyOptions_Cheats_NoAutoSave_Help_EN = "Disables autosave.\nJust make sure to save often!\nNote: Cheats only work in Secretary Mode.";
+const RemYanflyOptions_Cheats_NoAutoSave_Help_JP = "オートセーブを無効化します。\n※こまめなセーブをお忘れなく！\n※秘書モードでのみ有効";
 
 //Save
 const RemYanflySaveYesEN = "Yes";
@@ -2126,7 +2195,9 @@ const RemSkillTypesEN = ["",
 "Bartender",
 "Receptionist",
 "Toilet",
-"Masturbate"
+"Masturbate",
+"Stripper",
+"Intermission"
 ];
 
 const RemSkillTypesJP = ["",
@@ -2148,7 +2219,9 @@ const RemSkillTypesJP = ["",
 "バーテンダー",
 "受付嬢",
 "トイレ",
-"オナニー"
+"オナニー",
+"Stripper",
+"Intermission"
 ];
 
 //Enemy Types
@@ -2195,6 +2268,11 @@ const RemBossAronJP = "アルファリザードマン";
 const RemBossNoinimEN = "Great Yeti";
 const RemBossNoinimJP = "グレートイエティ";
 
+//Disable Smegma Text
+const RemDisableSmegmaSkill815NameEN = "Dick Cleaning Machine";
+const RemDisableSmegmaSkill815NameJP = "勃起に目がないチンポ掃除機";
+
+
 //Skills
 const RemRestoreMindPartialSuccessEN = "%1 succeeds in restoring a bit of her mind.";
 const RemRestoreMindPartialSuccessJP = "%1の絶頂はわずかに収まった。";
@@ -2202,6 +2280,60 @@ const RemRestoreMindFullSuccessEN = "%1 succeeds in regaining her mind!";
 const RemRestoreMindFullSuccessJP = "%1の絶頂は完全に収まった！";
 const RemRestoreMindFailureEN = "%1 wasn't able to restore her mind...";
 const RemRestoreMindFailureJP = "%1の絶頂は収まらなかった…。";
+
+//Orgasm Skill Message
+const RemOrgasmSkillMessageKarrynKissEN = " from kissing";
+const RemOrgasmSkillMessageKarrynKissJP = "キスで気持ち良くなり過ぎて、";
+const RemOrgasmSkillMessageKarrynPettingEN = " from rubbing a cock";
+const RemOrgasmSkillMessageKarrynPettingJP = "チンポを愛撫する喜びのあまり、";
+const RemOrgasmSkillMessageKarrynHandjobEN = " from jerking off a cock";
+const RemOrgasmSkillMessageKarrynHandjobJP = "チンポをシゴく快感で";
+const RemOrgasmSkillMessageKarrynBlowjobEN = " from sucking dick";
+const RemOrgasmSkillMessageKarrynBlowjobJP = "チンポしゃぶりに興奮して";
+const RemOrgasmSkillMessageKarrynTittyFuckEN = " from fucking a cock with her tits";
+const RemOrgasmSkillMessageKarrynTittyFuckJP = "パイズリをする快感で";
+const RemOrgasmSkillMessageKarrynPussySexEN = " from fucking a cock with her pussy";
+const RemOrgasmSkillMessageKarrynPussySexJP = "マンコに押し寄せる快感によって、";
+const RemOrgasmSkillMessageKarrynAnalSexEN = " from fucking a cock with her ass";
+const RemOrgasmSkillMessageKarrynAnalSexJP = "アナルに与えられる快感で、";
+const RemOrgasmSkillMessageEnemyKissEN = " from being kissed";
+const RemOrgasmSkillMessageEnemyKissJP = "キスの気持ち良さで";
+const RemOrgasmSkillMessageEnemyPettingEN = " from being petted";
+const RemOrgasmSkillMessageEnemyPettingJP = "愛撫の快感で";
+const RemOrgasmSkillMessageEnemyHandjobEN = " from being hand fucked";
+const RemOrgasmSkillMessageEnemyHandjobJP = "手コキの興奮で";
+const RemOrgasmSkillMessageEnemyBlowjobEN = " from being mouth fucked";
+const RemOrgasmSkillMessageEnemyBlowjobJP = "フェラをしながら";
+const RemOrgasmSkillMessageEnemyTittyFuckEN = " from being titty fucked";
+const RemOrgasmSkillMessageEnemyTittyFuckJP = "パイズリをしながら";
+const RemOrgasmSkillMessageEnemyPussySexEN = " from being fucked";
+const RemOrgasmSkillMessageEnemyPussySexJP = "マンコを犯されながら";
+const RemOrgasmSkillMessageEnemyAnalSexEN = " from being ass fucked";
+const RemOrgasmSkillMessageEnemyAnalSexJP = "ケツ穴ファックされながら";
+const RemOrgasmSkillMessageEnemyCunnilingusEN = " from receiving cunnilingus";
+const RemOrgasmSkillMessageEnemyCunnilingusJP = "クンニの刺激で";
+const RemOrgasmSkillMessageBukkakeEN = " from being cummed on";
+const RemOrgasmSkillMessageBukkakeJP = "ぶっかけられて";
+const RemOrgasmSkillMessageSwallowEN = " from swallowing cum";
+const RemOrgasmSkillMessageSwallowJP = "ザーメンを飲んで";
+const RemOrgasmSkillMessagePussyCreampieEN = " from being creampied in her pussy";
+const RemOrgasmSkillMessagePussyCreampieJP = "マンコに中出しされて";
+const RemOrgasmSkillMessageAnalCreampieEN = " from being creampied in her ass";
+const RemOrgasmSkillMessageAnalCreampieJP = "ケツ奥に中出しされて";
+const RemOrgasmSkillMessageMasochismEN = " from being masochistic";
+const RemOrgasmSkillMessageMasochismJP = "Ｍの感情が高ぶるあまり、";
+const RemOrgasmSkillMessageSadismEN = " from being sadistic";
+const RemOrgasmSkillMessageSadismJP = "Ｓの快感に酔いしれて";
+const RemOrgasmSkillMessageMasturbateEN = " from masturbating";
+const RemOrgasmSkillMessageMasturbateJP = "オナニーの快感で";
+const RemOrgasmSkillMessageSpankEN = " from being spanked";
+const RemOrgasmSkillMessageSpankJP = "スパンキングの刺激で";
+const RemOrgasmSkillMessageTalkEN = " from being talked down to";
+const RemOrgasmSkillMessageTalkJP = "卑猥なトークにムラムラし過ぎて、";
+const RemOrgasmSkillMessageSightEN = " from being looked at";
+const RemOrgasmSkillMessageSightJP = "男の視線に興奮して";
+const RemOrgasmSkillMessageToyEN = " from the toys";
+const RemOrgasmSkillMessageToyJP = "オモチャの刺激で";
 
 //Waitress
 const RemAlcoholTypeWaterEN = "glass of water";
@@ -2274,11 +2406,11 @@ const RemWaitressBrawlJoinJP = "\\C[18]%1が喧嘩に参加した！";
 const RemWaitressBarDamageEN = "\\C[3]The bar takes %1 gold worth of damage!";
 const RemWaitressBarDamageJP = "\\C[3]酒場は%1Ｇの損害！";
 const RemWaitressEnemyTellsJokeEN = "%1 starts telling a joke.";
-const RemWaitressEnemyTellsJokeJP = "%1はクダを巻き始めた。";
+const RemWaitressEnemyTellsJokeJP = "%1はジョークを言い出した。";
 const RemWaitressEnemyContinuesJokeEN = "%1 continues to share his joke.";
-const RemWaitressEnemyContinuesJokeJP = "%1はまだクダを巻いている。";
+const RemWaitressEnemyContinuesJokeJP = "%1はまだジョーク話を続けている。";
 const RemWaitressEnemyHearsJokeEN = "%1 listens to %2's joke.";
-const RemWaitressEnemyHearsJokeJP = "%1は%2の冗談に付き合っている。";
+const RemWaitressEnemyHearsJokeJP = "%1は%2のジョーク話に付き合っている。";
 const RemWaitressEnemyLaughsJokeEN = "%1 laughs at %2's joke.";
 const RemWaitressEnemyLaughsJokeJP = "%1は%2のジョークにウケている。";
 const RemWaitressEnemyChugsDrinkEN = "%1 starts chugging his drink.";
@@ -3163,6 +3295,13 @@ Object.defineProperties(TextManager, {
 			else if(this.isEnglish) return RCMenuLostPantiesTextEN;
 		}, configurable: true
 	},
+	RCMenuNightModeText: { 
+		get: function() { 
+			if(this.isJapanese) return RCMenuNightModeTextJP;
+			else if(this.isEnglish) return RCMenuNightModeTextEN;
+		}, configurable: true
+	},
+	
 	RCMenuDefiledHalberdText: { 
 		get: function() { 
 			if(this.isJapanese) return RCMenuDefiledHalberdTextJP;
@@ -4391,6 +4530,14 @@ Object.defineProperties(TextManager, {
 		}, configurable: true
 	},
 	
+	StatusBattleEffectDanceCombo: { 
+		get: function() { 
+			if(this.isJapanese) return StatusBattleEffectDanceComboJP;
+			else if(this.isEnglish) return StatusBattleEffectDanceComboEN;
+		}, configurable: true
+	},
+	
+	
 	StateTooltipsRemainingTurnsSingular: { 
 		get: function() { 
 			if(this.isJapanese) return StateTooltipsRemainingTurnsSingularJP;
@@ -5110,6 +5257,25 @@ Object.defineProperties(TextManager, {
 		}, configurable: true
 	},
 	
+	StateStripperActorDanceCombo: { 
+		get: function() { 
+			if(this.isJapanese) return StateStripperActorDanceComboJP;
+			else if(this.isEnglish) return StateStripperActorDanceComboEN;
+		}, configurable: true
+	},
+	StateStripperStageCondomSingular: { 
+		get: function() { 
+			if(this.isJapanese) return StateStripperStageCondomSingularJP;
+			else if(this.isEnglish) return StateStripperStageCondomSingularEN;
+		}, configurable: true
+	},
+	StateStripperStageCondomPlural: { 
+		get: function() { 
+			if(this.isJapanese) return StateStripperStageCondomPluralJP;
+			else if(this.isEnglish) return StateStripperStageCondomPluralEN;
+		}, configurable: true
+	},
+	
 	DesireTooltipsMouthIntro: { 
 		get: function() { 
 			if(this.isJapanese) return DesireTooltipsMouthIntroJP;
@@ -5629,6 +5795,18 @@ Object.defineProperties(TextManager, {
 		get: function() { 
 			if(this.isJapanese) return RemDailyReportToiletRep_DecayedJP;
 			else if(this.isEnglish) return RemDailyReportToiletRep_DecayedEN;
+		}, configurable: true
+	},
+	RemDailyReportStripClubRep_AlmostDecay: { 
+		get: function() { 
+			if(this.isJapanese) return RemDailyReportStripClubRep_AlmostDecayJP;
+			else if(this.isEnglish) return RemDailyReportStripClubRep_AlmostDecayEN;
+		}, configurable: true
+	},
+	RemDailyReportStripClubRep_Decayed: { 
+		get: function() { 
+			if(this.isJapanese) return RemDailyReportStripClubRep_DecayedJP;
+			else if(this.isEnglish) return RemDailyReportStripClubRep_DecayedEN;
 		}, configurable: true
 	},
 
@@ -6240,6 +6418,18 @@ Object.defineProperties(TextManager, {
 			else if(this.isEnglish) return RemYanflyOptions_Disable_Rimjobs_Help_EN;
 		}, configurable: true
 	},
+	yanflyOptionsDisableSmegma: { 
+		get: function() { 
+			if(this.isJapanese) return RemYanflyOptions_Disable_Smegma_JP;
+			else if(this.isEnglish) return RemYanflyOptions_Disable_Smegma_EN;
+		}, configurable: true
+	},
+	yanflyOptionsDisableSmegmaHelp: { 
+		get: function() { 
+			if(this.isJapanese) return RemYanflyOptions_Disable_Smegma_Help_JP;
+			else if(this.isEnglish) return RemYanflyOptions_Disable_Smegma_Help_EN;
+		}, configurable: true
+	},
 	
 	yanflyOptionsDisplayPleasureAsPercent: { 
 		get: function() { 
@@ -6330,6 +6520,45 @@ Object.defineProperties(TextManager, {
 			else if(this.isEnglish) return RemYanflyOptions_SEVolume_Help_EN;
 		}, configurable: true
 	},
+	yanflyOptionsVoiceVolume: { 
+		get: function() { 
+			if(this.isJapanese) return RemYanflyOptions_VoiceVolume_JP;
+			else if(this.isEnglish) return RemYanflyOptions_VoiceVolume_EN;
+		}, configurable: true
+	},
+	yanflyOptionsVoiceVolumeHelp: { 
+		get: function() { 
+			if(this.isJapanese) return RemYanflyOptions_VoiceVolume_Help_JP;
+			else if(this.isEnglish) return RemYanflyOptions_VoiceVolume_Help_EN;
+		}, configurable: true
+	},
+	yanflyOptionsMoansVolume: { 
+		get: function() { 
+			if(this.isJapanese) return RemYanflyOptions_MoansVolume_JP;
+			else if(this.isEnglish) return RemYanflyOptions_MoansVolume_EN;
+		}, configurable: true
+	},
+	yanflyOptionsMoansVolumeHelp: { 
+		get: function() { 
+			if(this.isJapanese) return RemYanflyOptions_MoansVolume_Help_JP;
+			else if(this.isEnglish) return RemYanflyOptions_MoansVolume_Help_EN;
+		}, configurable: true
+	},
+	yanflyOptionsKeepVoicePlayback: { 
+		get: function() { 
+			if(this.isJapanese) return RemYanflyOptions_KeepVoicePlayback_JP;
+			else if(this.isEnglish) return RemYanflyOptions_KeepVoicePlayback_EN;
+		}, configurable: true
+	},
+	yanflyOptionsKeepVoicePlaybackHelp: { 
+		get: function() { 
+			if(this.isJapanese) return RemYanflyOptions_KeepVoicePlayback_Help_JP;
+			else if(this.isEnglish) return RemYanflyOptions_KeepVoicePlayback_Help_EN;
+		}, configurable: true
+	},
+	
+	
+	
 	yanflyOptionsWindowToneRed: { 
 		get: function() { 
 			if(this.isJapanese) return RemYanflyOptions_WindowToneRed_JP;
@@ -6425,6 +6654,43 @@ Object.defineProperties(TextManager, {
 		get: function() { 
 			if(this.isJapanese) return RemYanflyOptions_ShowSexualDamagePopup_Help_JP;
 			else if(this.isEnglish) return RemYanflyOptions_ShowSexualDamagePopup_Help_EN;
+		}, configurable: true
+	},
+	
+	yanflyOptionsEdictsOutlineColorObtainable: { 
+		get: function() { 
+			if(this.isJapanese) return RemYanflyOptions_EdictsOutlineColor_Obtainable_JP;
+			else if(this.isEnglish) return RemYanflyOptions_EdictsOutlineColor_Obtainable_EN;
+		}, configurable: true
+	},
+	yanflyOptionsEdictsOutlineColorObtainableHelp: { 
+		get: function() { 
+			if(this.isJapanese) return RemYanflyOptions_EdictsOutlineColor_Obtainable_Help_JP;
+			else if(this.isEnglish) return RemYanflyOptions_EdictsOutlineColor_Obtainable_Help_EN;
+		}, configurable: true
+	},
+	yanflyOptionsEdictsOutlineColorMeetReq: { 
+		get: function() { 
+			if(this.isJapanese) return RemYanflyOptions_EdictsOutlineColor_MeetReq_JP;
+			else if(this.isEnglish) return RemYanflyOptions_EdictsOutlineColor_MeetReq_EN;
+		}, configurable: true
+	},
+	yanflyOptionsEdictsOutlineColorMeetReqHelp: { 
+		get: function() { 
+			if(this.isJapanese) return RemYanflyOptions_EdictsOutlineColor_MeetReq_Help_JP;
+			else if(this.isEnglish) return RemYanflyOptions_EdictsOutlineColor_MeetReq_Help_EN;
+		}, configurable: true
+	},
+	yanflyOptionsEdictsOutlineColorNoReq: { 
+		get: function() { 
+			if(this.isJapanese) return RemYanflyOptions_EdictsOutlineColor_NoReq_JP;
+			else if(this.isEnglish) return RemYanflyOptions_EdictsOutlineColor_NoReq_EN;
+		}, configurable: true
+	},
+	yanflyOptionsEdictsOutlineColorNoReqHelp: { 
+		get: function() { 
+			if(this.isJapanese) return RemYanflyOptions_EdictsOutlineColor_NoReq_Help_JP;
+			else if(this.isEnglish) return RemYanflyOptions_EdictsOutlineColor_NoReq_Help_EN;
 		}, configurable: true
 	},
 	
@@ -6736,6 +7002,19 @@ Object.defineProperties(TextManager, {
 		}, configurable: true
 	},
 	
+
+	RemYanflyOptions_Cheats_ActorDoublePassiveGain: { 
+		get: function() { 
+			if(this.isJapanese) return RemYanflyOptions_Cheats_ActorDoublePassiveGain_JP;
+			else if(this.isEnglish) return RemYanflyOptions_Cheats_ActorDoublePassiveGain_EN;
+		}, configurable: true
+	},
+	RemYanflyOptions_Cheats_ActorDoublePassiveGain_Help: { 
+		get: function() { 
+			if(this.isJapanese) return RemYanflyOptions_Cheats_ActorDoublePassiveGain_Help_JP;
+			else if(this.isEnglish) return RemYanflyOptions_Cheats_ActorDoublePassiveGain_Help_EN;
+		}, configurable: true
+	},
 	RemYanflyOptions_Cheats_EnemyDoublePhysicalDamage: { 
 		get: function() { 
 			if(this.isJapanese) return RemYanflyOptions_Cheats_EnemyDoublePhysicalDamage_JP;
@@ -6914,6 +7193,18 @@ Object.defineProperties(TextManager, {
 		get: function() { 
 			if(this.isJapanese) return RemYanflyOptions_Cheats_InstantRiotsFour_Help_JP;
 			else if(this.isEnglish) return RemYanflyOptions_Cheats_InstantRiotsFour_Help_EN;
+		}, configurable: true
+	},
+	RemYanflyOptions_Cheats_WaitressLog: { 
+		get: function() { 
+			if(this.isJapanese) return RemYanflyOptions_Cheats_WaitressLog_JP;
+			else if(this.isEnglish) return RemYanflyOptions_Cheats_WaitressLog_EN;
+		}, configurable: true
+	},
+	RemYanflyOptions_Cheats_WaitressLog_Help: { 
+		get: function() { 
+			if(this.isJapanese) return RemYanflyOptions_Cheats_WaitressLog_Help_JP;
+			else if(this.isEnglish) return RemYanflyOptions_Cheats_WaitressLog_Help_EN;
 		}, configurable: true
 	},
 	RemYanflyOptions_Cheats_NoAutoSave: { 
@@ -7331,6 +7622,12 @@ Object.defineProperties(TextManager, {
 		}, configurable: true
 	},	
 	
+	RemDisableSmegmaSkill815Name: { 
+		get: function() { 
+			if(this.isJapanese) return RemDisableSmegmaSkill815NameJP;
+			else if(this.isEnglish) return RemDisableSmegmaSkill815NameEN;
+		}, configurable: true
+	},
 	
 	restoreMindPartialSuccess: { 
 		get: function() { 
@@ -8649,6 +8946,289 @@ TextManager.edictsDesc = function(skillId) {
 	return '';
 };
 
+TextManager.disabledSmegmaSkillName = function(skillId, originalName) {
+	switch (skillId) {
+	case PASSIVE_BJ_USAGE_TWO_ID:
+		if(this.isJapanese) {
+			return TextManager.RemDisableSmegmaSkill815Name;
+		}
+		else if(this.isEnglish) {
+			return TextManager.RemDisableSmegmaSkill815Name;
+		}
+		break;
+	}
+	
+	return originalName;
+};
+
+TextManager.smegmaDesc = function(skillId) {
+	switch (skillId) {
+	case PASSIVE_BJ_USAGE_THREE_ID:
+		if(this.isJapanese) {
+			if(ConfigManager.disableSmegma)
+				return "チンポ";
+			else
+				return "チンカス";
+		}
+		else if(this.isEnglish) {
+			if(ConfigManager.disableSmegma)
+				return "dicks";
+			else
+				return "dick cheese";
+		}
+		break;
+	
+	
+	}
+	
+	return '';
+};
+
+TextManager.karrynOrgasmNameType = function(actor) {
+	let orgasmTypeId = actor._justGotHitBySkillType;
+
+	switch (orgasmTypeId) {
+		case JUST_SKILLTYPE_KARRYN_KISSING:
+			if(this.isJapanese)
+				return RemOrgasmSkillMessageKarrynKissJP;
+			else if(this.isEnglish)
+				return RemOrgasmSkillMessageKarrynKissEN;
+			break;
+		case JUST_SKILLTYPE_KARRYN_PETTING:
+			if(this.isJapanese)
+				return RemOrgasmSkillMessageKarrynPettingJP;
+			else if(this.isEnglish)
+				return RemOrgasmSkillMessageKarrynPettingEN;
+			break;
+		case JUST_SKILLTYPE_KARRYN_SADISM:
+			if(this.isJapanese)
+				return RemOrgasmSkillMessageSadismJP;
+			else if(this.isEnglish)
+				return RemOrgasmSkillMessageSadismEN;
+			break;	
+		case JUST_SKILLTYPE_KARRYN_MASOCHISM:
+			if(this.isJapanese)
+				return RemOrgasmSkillMessageMasochismJP;
+			else if(this.isEnglish)
+				return RemOrgasmSkillMessageMasochismEN;
+			break;		
+		case JUST_SKILLTYPE_KARRYN_MASTURBATE:
+			if(this.isJapanese)
+				return RemOrgasmSkillMessageMasturbateJP;
+			else if(this.isEnglish)
+				return RemOrgasmSkillMessageMasturbateEN;
+			break;		
+		case JUST_SKILLTYPE_KARRYN_PUSSY_SEX:
+			if(this.isJapanese)
+				return RemOrgasmSkillMessageKarrynPussySexJP;
+			else if(this.isEnglish)
+				return RemOrgasmSkillMessageKarrynPussySexEN;
+			break;	
+		case JUST_SKILLTYPE_KARRYN_ANAL_SEX:
+			if(this.isJapanese)
+				return RemOrgasmSkillMessageKarrynAnalSexJP;
+			else if(this.isEnglish)
+				return RemOrgasmSkillMessageKarrynAnalSexEN;
+			break;	
+		case JUST_SKILLTYPE_KARRYN_HANDJOB:
+			if(this.isJapanese)
+				return RemOrgasmSkillMessageKarrynHandjobJP;
+			else if(this.isEnglish)
+				return RemOrgasmSkillMessageKarrynHandjobEN;
+			break;
+		case JUST_SKILLTYPE_KARRYN_BLOWJOB:
+			if(this.isJapanese)
+				return RemOrgasmSkillMessageKarrynBlowjobJP;
+			else if(this.isEnglish)
+				return RemOrgasmSkillMessageKarrynBlowjobEN;
+			break;
+		case JUST_SKILLTYPE_KARRYN_TITTYFUCK:
+			if(this.isJapanese)
+				return RemOrgasmSkillMessageKarrynTittyFuckJP;
+			else if(this.isEnglish)
+				return RemOrgasmSkillMessageKarrynTittyFuckEN;
+			break;
+		case JUST_SKILLTYPE_ENEMY_KISS:
+			if(this.isJapanese)
+				return RemOrgasmSkillMessageEnemyKissJP;
+			else if(this.isEnglish)
+				return RemOrgasmSkillMessageEnemyKissEN;
+			break;	
+		case JUST_SKILLTYPE_ENEMY_PETTING:
+			if(this.isJapanese)
+				return RemOrgasmSkillMessageEnemyPettingJP;
+			else if(this.isEnglish)
+				return RemOrgasmSkillMessageEnemyPettingEN;
+			break;
+		case JUST_SKILLTYPE_ENEMY_PUSSY_SEX:
+			if(this.isJapanese)
+				return RemOrgasmSkillMessageEnemyPussySexJP;
+			else if(this.isEnglish)
+				return RemOrgasmSkillMessageEnemyPussySexEN;
+			break;	
+		case JUST_SKILLTYPE_ENEMY_ANAL_SEX:
+			if(this.isJapanese)
+				return RemOrgasmSkillMessageEnemyAnalSexJP;
+			else if(this.isEnglish)
+				return RemOrgasmSkillMessageEnemyAnalSexEN;
+			break;
+		case JUST_SKILLTYPE_ENEMY_HANDJOB:
+			if(this.isJapanese)
+				return RemOrgasmSkillMessageEnemyHandjobJP;
+			else if(this.isEnglish)
+				return RemOrgasmSkillMessageEnemyHandjobEN;
+			break;
+		case JUST_SKILLTYPE_ENEMY_BLOWJOB:
+			if(this.isJapanese)
+				return RemOrgasmSkillMessageEnemyBlowjobJP;
+			else if(this.isEnglish)
+				return RemOrgasmSkillMessageEnemyBlowjobEN;
+			break;
+		case JUST_SKILLTYPE_ENEMY_TITTYFUCK:
+			if(this.isJapanese)
+				return RemOrgasmSkillMessageEnemyTittyFuckJP;
+			else if(this.isEnglish)
+				return RemOrgasmSkillMessageEnemyTittyFuckEN;
+			break;
+		case JUST_SKILLTYPE_ENEMY_CUNNILINGUS:
+			if(this.isJapanese)
+				return RemOrgasmSkillMessageEnemyCunnilingusJP;
+			else if(this.isEnglish)
+				return RemOrgasmSkillMessageEnemyCunnilingusEN;
+			break;
+		case JUST_SKILLTYPE_ENEMY_BUKKAKE:
+			if(this.isJapanese)
+				return RemOrgasmSkillMessageBukkakeJP;
+			else if(this.isEnglish)
+				return RemOrgasmSkillMessageBukkakeEN;
+			break;
+		case JUST_SKILLTYPE_ENEMY_CUM_SWALLOW:
+			if(this.isJapanese)
+				return RemOrgasmSkillMessageSwallowJP;
+			else if(this.isEnglish)
+				return RemOrgasmSkillMessageSwallowEN;
+			break;
+		case JUST_SKILLTYPE_ENEMY_PUSSY_CREAMPIE:
+			if(this.isJapanese)
+				return RemOrgasmSkillMessagePussyCreampieJP;
+			else if(this.isEnglish)
+				return RemOrgasmSkillMessagePussyCreampieEN;
+			break;
+		case JUST_SKILLTYPE_ENEMY_ANAL_CREAMPIE:
+			if(this.isJapanese)
+				return RemOrgasmSkillMessageAnalCreampieJP;
+			else if(this.isEnglish)
+				return RemOrgasmSkillMessageAnalCreampieEN;
+			break;
+		case JUST_SKILLTYPE_ENEMY_TALK:
+			if(this.isJapanese)
+				return RemOrgasmSkillMessageTalkJP;
+			else if(this.isEnglish)
+				return RemOrgasmSkillMessageTalkEN;
+			break;
+		case JUST_SKILLTYPE_ENEMY_SIGHT:
+			if(this.isJapanese)
+				return RemOrgasmSkillMessageSightJP;
+			else if(this.isEnglish)
+				return RemOrgasmSkillMessageSightEN;
+			break;
+		case JUST_SKILLTYPE_ENEMY_SPANKING:
+			if(this.isJapanese)
+				return RemOrgasmSkillMessageSpankJP;
+			else if(this.isEnglish)
+				return RemOrgasmSkillMessageSpankEN;
+			break;
+		case JUST_SKILLTYPE_ENEMY_MASOCHISM:
+			if(this.isJapanese)
+				return RemOrgasmSkillMessageSadismJP;
+			else if(this.isEnglish)
+				return RemOrgasmSkillMessageSadismEN;
+			break;
+		case JUST_SKILLTYPE_ENEMY_SADISM:
+			if(this.isJapanese)
+				return RemOrgasmSkillMessageMasochismJP;
+			else if(this.isEnglish)
+				return RemOrgasmSkillMessageMasochismEN;
+			break;
+		case JUST_SKILLTYPE_PASSIVE_SIGHT:
+			if(this.isJapanese)
+				return RemOrgasmSkillMessageSightJP;
+			else if(this.isEnglish)
+				return RemOrgasmSkillMessageSightEN;
+			break;
+		case JUST_SKILLTYPE_PASSIVE_TOY:
+			if(this.isJapanese)
+				return RemOrgasmSkillMessageToyJP;
+			else if(this.isEnglish)
+				return RemOrgasmSkillMessageToyEN;
+			break;
+		case JUST_SKILLTYPE_ENEMY_TOY_PLAY:
+			if(this.isJapanese)
+				return RemOrgasmSkillMessageToyJP;
+			else if(this.isEnglish)
+				return RemOrgasmSkillMessageToyEN;
+			break;
+		case JUST_SKILLTYPE_ENEMY_TOY_PLAY_CLIT:
+			if(this.isJapanese)
+				return RemOrgasmSkillMessageToyJP;
+			else if(this.isEnglish)
+				return RemOrgasmSkillMessageToyEN;
+			break;
+		case JUST_SKILLTYPE_ENEMY_TOY_PLAY_PUSSY:
+			if(this.isJapanese)
+				return RemOrgasmSkillMessageToyJP;
+			else if(this.isEnglish)
+				return RemOrgasmSkillMessageToyEN;
+			break;
+		case JUST_SKILLTYPE_ENEMY_TOY_PLAY_ANAL:
+			if(this.isJapanese)
+				return RemOrgasmSkillMessageToyJP;
+			else if(this.isEnglish)
+				return RemOrgasmSkillMessageToyEN;
+			break;
+		case JUST_SKILLTYPE_KARRYN_TOY_INSERT_CLIT:
+			if(this.isJapanese)
+				return RemOrgasmSkillMessageToyJP;
+			else if(this.isEnglish)
+				return RemOrgasmSkillMessageToyEN;
+			break;
+		case JUST_SKILLTYPE_KARRYN_TOY_INSERT_PUSSY:
+			if(this.isJapanese)
+				return RemOrgasmSkillMessageToyJP;
+			else if(this.isEnglish)
+				return RemOrgasmSkillMessageToyEN;
+			break;
+		case JUST_SKILLTYPE_KARRYN_TOY_INSERT_ANAL:
+			if(this.isJapanese)
+				return RemOrgasmSkillMessageToyJP;
+			else if(this.isEnglish)
+				return RemOrgasmSkillMessageToyEN;
+			break;
+		case JUST_SKILLTYPE_KARRYN_TOY_PLAY_CLIT:
+			if(this.isJapanese)
+				return RemOrgasmSkillMessageToyJP;
+			else if(this.isEnglish)
+				return RemOrgasmSkillMessageToyEN;
+			break;	
+		case JUST_SKILLTYPE_KARRYN_TOY_PLAY_PUSSY:
+			if(this.isJapanese)
+				return RemOrgasmSkillMessageToyJP;
+			else if(this.isEnglish)
+				return RemOrgasmSkillMessageToyEN;
+			break;
+		case JUST_SKILLTYPE_KARRYN_TOY_PLAY_ANAL:
+			if(this.isJapanese)
+				return RemOrgasmSkillMessageToyJP;
+			else if(this.isEnglish)
+				return RemOrgasmSkillMessageToyEN;
+			break;	
+			
+	}
+	
+	return '';
+	
+};
+
 TextManager.pluralText_JustPeople = function(value) {
 	if(value === 1) {
 		return TextManager.statusRecordJustPeopleSingular;
@@ -8656,6 +9236,65 @@ TextManager.pluralText_JustPeople = function(value) {
 	else {
 		return TextManager.statusRecordJustPeoplePlural;
 	}
+};
+
+TextManager.edictsOutlineColorOption = function(symbol, value) {
+	if(symbol === 'edictsOutlineColorObtainable') {
+		switch (value) {
+		case EDICTS_OUTLINE_COLOR_OBTAINABLE_GREEN_ID:
+			if(this.isJapanese)
+				return RemYanflyOptions_EdictsOutlineColorName_Green_JP;
+			else if(this.isEnglish)
+				return RemYanflyOptions_EdictsOutlineColorName_Green_EN;
+			break;
+		case EDICTS_OUTLINE_COLOR_OBTAINABLE_LIGHTBLUE_ID:
+			if(this.isJapanese)
+				return RemYanflyOptions_EdictsOutlineColorName_LightBlue_JP;
+			else if(this.isEnglish)
+				return RemYanflyOptions_EdictsOutlineColorName_LightBlue_EN;
+			break;
+		}
+	}
+	else if(symbol === 'edictsOutlineColorMeetReq') {
+		switch (value) {
+		case EDICTS_OUTLINE_COLOR_METREQ_YELLOW_ID:
+			if(this.isJapanese)
+				return RemYanflyOptions_EdictsOutlineColorName_Yellow_JP;
+			else if(this.isEnglish)
+				return RemYanflyOptions_EdictsOutlineColorName_Yellow_EN;
+			break;
+		case EDICTS_OUTLINE_COLOR_METREQ_PURPLE_ID:
+			if(this.isJapanese)
+				return RemYanflyOptions_EdictsOutlineColorName_Purple_JP;
+			else if(this.isEnglish)
+				return RemYanflyOptions_EdictsOutlineColorName_Purple_EN;
+			break;
+		}
+	}
+	else if(symbol === 'edictsOutlineColorNoReq') {
+		switch (value) {
+		case EDICTS_OUTLINE_COLOR_NOREQ_GRAY_ID:
+			if(this.isJapanese)
+				return RemYanflyOptions_EdictsOutlineColorName_Gray_JP;
+			else if(this.isEnglish)
+				return RemYanflyOptions_EdictsOutlineColorName_Gray_EN;
+			break;
+		case EDICTS_OUTLINE_COLOR_NOREQ_BLACK_ID:
+			if(this.isJapanese)
+				return RemYanflyOptions_EdictsOutlineColorName_Black_JP;
+			else if(this.isEnglish)
+				return RemYanflyOptions_EdictsOutlineColorName_Black_EN;
+			break;
+		case EDICTS_OUTLINE_COLOR_NOREQ_RED_ID:
+			if(this.isJapanese)
+				return RemYanflyOptions_EdictsOutlineColorName_Red_JP;
+			else if(this.isEnglish)
+				return RemYanflyOptions_EdictsOutlineColorName_Red_EN;
+			break;
+		}
+	}
+	
+	return '';
 };
 
 TextManager.battlelogDurationOption = function(value) {

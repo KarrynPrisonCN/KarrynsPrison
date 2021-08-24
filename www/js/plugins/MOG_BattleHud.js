@@ -2175,7 +2175,7 @@ Scene_Battle.prototype.updateLayoutWindow = function() {
 				this._skill_layout_energy.visible = true;
 				this._skill_layout_energy.opacity = this._skillWindow.contentsOpacity;
 			}
-			else if(stypeId === SKILLTYPE_OFFBALANCE_ID || stypeId === SKILLTYPE_FALLEN_ID || stypeId === SKILLTYPE_DISARMED_ID || stypeId === SKILLTYPE_WAITRESS_ID || stypeId === SKILLTYPE_BARTENDER_ID || stypeId === SKILLTYPE_RECEPTIONIST_ID) {
+			else if(stypeId === SKILLTYPE_OFFBALANCE_ID || stypeId === SKILLTYPE_FALLEN_ID || stypeId === SKILLTYPE_DISARMED_ID || stypeId === SKILLTYPE_WAITRESS_ID || stypeId === SKILLTYPE_BARTENDER_ID || stypeId === SKILLTYPE_RECEPTIONIST_ID || stypeId === SKILLTYPE_STRIPPER_ID || stypeId === SKILLTYPE_INTERMISSION_ID) {
 				this._skill_layout_special.visible = true;
 				this._skill_layout_special.opacity = this._skillWindow.contentsOpacity;
 			}

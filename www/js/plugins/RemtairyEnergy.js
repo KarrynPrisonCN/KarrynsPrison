@@ -104,7 +104,7 @@ Game_Actor.prototype.skillCost_fixClothes = function(dontApplyEscAndRounding) {
 };
 
 Game_Actor.prototype.showEval_fixClothes = function() {
-	return !this.isClothingMaxDamaged() && !this.isClothingNotDamaged() && this.isInCombatPose();
+	return !this.isClothingMaxDamaged() && !this.isClothingAtMaxFixable() && this.isInCombatPose();
 };
 
 Game_Actor.prototype.afterEval_fixClothes = function() {
@@ -368,7 +368,7 @@ Game_Actor.prototype.showEval_karrynFlaunt = function() {
 		(this.isInDownFallDownPose() && this.hasPassive(PASSIVE_FALLEN_COUNT_TWO_ID));
 	}
 	else {
-		if(this.isBodySlotPenis(MOUTH_ID) || this.isBodySlotPenis(BOOBS_ID)) return false;
+		if(this.isBodySlotPenis(MOUTH_ID) || this.isBodySlotPenis(BOOBS_ID) || this.isBodySlotAnus(MOUTH_ID)) return false;
 		if(this.isBodySlotPenis(RIGHT_HAND_ID) && this.isBodySlotPenis(LEFT_HAND_ID)) return false;
 
 		return true;
@@ -390,7 +390,7 @@ Game_Actor.prototype.customExecution_karrynFlaunt = function() {
 	this.gainEnergyExp(10, $gameTroop.getAverageEnemyExperienceLvl());
 	this.addToActorFlauntCountRecord(); 
 	BattleManager._logWindow.push('addText', TextManager.karrynFlauntMessage);
-	this.setTachieCutIn(CUTIN_KARRYN_FLAUNT_NAME);
+	this.setTachieCutIn(CUTIN_KARRYN_FLAUNT_ONE_ID);
 	BattleManager.actionRemLines(KARRYN_LINE_KARRYN_FLAUNT);
 	
 	if(this.hasPassive(PASSIVE_FLAUNT_COUNT_TWO_ID)) {
@@ -405,7 +405,7 @@ Game_Actor.prototype.afterEval_karrynFlaunt = function(target) {
 	if(!target._thisTurnFlaunted) {
 		target._thisTurnFlaunted = true;
 		target.addToEnemyFlauntedCountRecord(this);
-		//this.setTachieCutIn(CUTIN_KARRYN_FLAUNT_NAME);
+		//this.setTachieCutIn(CUTIN_KARRYN_FLAUNT_ONE_ID);
 		
 		let hornyChance = 0.2;
 		if(this.hasPassive(PASSIVE_FLAUNT_COUNT_ONE_ID)) {

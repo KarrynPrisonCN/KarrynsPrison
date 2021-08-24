@@ -140,28 +140,64 @@ const LAYER_TYPE_RIGHT_HOLE = 208; //hole_right_
 Game_Actor.prototype.getCustomTachieLayerLoadout = function() {
 	let pose = this.poseName;
 	
-	if(pose == POSE_DEFEATED_LEVEL2)
-		return this.getLayerLoadout_DefeatedLv2();
-	else if(pose == POSE_DEFEATED_LEVEL3)
-		return this.getLayerLoadout_DefeatedLv3();
-	else if(pose == POSE_DEFEATED_LEVEL4)
-		return this.getLayerLoadout_DefeatedLv4();
+	if(this.isInDefeatedPose()) {
+		if(pose == POSE_DEFEATED_LEVEL1)
+			return this.getLayerLoadout_DefeatedLv1();
+		else if(pose == POSE_DEFEATED_LEVEL2)
+			return this.getLayerLoadout_DefeatedLv2();
+		else if(pose == POSE_DEFEATED_LEVEL3)
+			return this.getLayerLoadout_DefeatedLv3();
+		else if(pose == POSE_DEFEATED_LEVEL4)
+			return this.getLayerLoadout_DefeatedLv4();
+		else if(pose == POSE_DEFEATED_LEVEL5)
+			return this.getLayerLoadout_DefeatedLv5();
+		else if(pose == POSE_DEFEATED_GUARD)
+			return this.getLayerLoadout_DefeatedGuard();
+		else return false;
+	}
+	else if(this.isInJobPose()) {
+		if(pose == POSE_RECEPTIONIST)
+			return this.getLayerLoadout_Receptionist();
+		else if(pose == POSE_WAITRESS_SEX)
+			return this.getLayerLoadout_WaitressSex();
+		else if(pose == POSE_TOILET_SITTING)
+			return this.getLayerLoadout_ToiletSitting();
+		else if(pose == POSE_TOILET_SIT_LEFT)
+			return this.getLayerLoadout_ToiletSitLeft();
+		else if(pose == POSE_TOILET_SIT_RIGHT)
+			return this.getLayerLoadout_ToiletSitRight();
+		else if(pose == POSE_TOILET_STAND_LEFT)
+			return this.getLayerLoadout_ToiletStandLeft();
+		else if(pose == POSE_TOILET_STAND_RIGHT)
+			return this.getLayerLoadout_ToiletStandRight();
+		else if(pose == POSE_STRIPPER_INTERMISSION)
+			return [false];
+		
+		else return false;
+	}
+	
+	else if(pose == POSE_DOWN_ORGASM)
+		return this.getLayerLoadout_DownOrgasm();
+	else if(pose == POSE_DOWN_FALLDOWN)
+		return this.getLayerLoadout_DownFalldown();
+	else if(pose == POSE_BJ_KNEELING)
+		return this.getLayerLoadout_BjKneeling();
+	else if(pose == POSE_HJ_STANDING)
+		return this.getLayerLoadout_HjStanding();
 	else if(pose == POSE_KICKCOUNTER)
 		return this.getLayerLoadout_KickCounter();
 	else if(pose == POSE_GUARDGANGBANG)
 		return this.getLayerLoadout_GuardGangbang();
-	else if(pose == POSE_DEFEATED_GUARD)
-		return this.getLayerLoadout_DefeatedGuard();
-	else if(pose == POSE_RECEPTIONIST)
-		return this.getLayerLoadout_Receptionist();
-	else if(pose == POSE_WAITRESS_SEX)
-		return this.getLayerLoadout_WaitressSex();
+	else if(pose == POSE_THUGGANGBANG)
+		return this.getLayerLoadout_ThugGangbang();
 	else if(pose == POSE_REVERSE_COWGIRL)
 		return this.getLayerLoadout_ReverseCowgirl();
 	else if(pose == POSE_KARRYN_COWGIRL)
 		return this.getLayerLoadout_KarrynCowgirl();
 	else if(pose == POSE_LIZARDMAN_COWGIRL)
 		return this.getLayerLoadout_LizardmanCowgirl();
+	else if(pose == POSE_ORC_PAIZURI)
+		return this.getLayerLoadout_OrcPaizuri();
 	else if(pose == POSE_PAIZURI_LAYING)
 		return this.getLayerLoadout_PaizuriLaying();
 	else if(pose == POSE_WEREWOLF_BACK)
@@ -169,21 +205,18 @@ Game_Actor.prototype.getCustomTachieLayerLoadout = function() {
 	else if(pose == POSE_YETI_PAIZURI)
 		return this.getLayerLoadout_YetiPaizuri();	
 	else if(pose == POSE_YETI_CARRY)
-		return this.getLayerLoadout_YetiCarry();	
+		return this.getLayerLoadout_YetiCarry();
+	else if(pose == POSE_FOOTJOB)
+		return this.getLayerLoadout_Footjob();	
+	else if(pose == POSE_RIMJOB)
+		return this.getLayerLoadout_Rimjob();
+	else if(pose == POSE_SLIME_PILEDRIVER_ANAL)
+		return this.getLayerLoadout_SlimePiledriver();		
 		
 	else if(pose == POSE_MASTURBATE_INBATTLE)
 		return this.getLayerLoadout_MasturbateInBattle();
 	
-	else if(pose == POSE_TOILET_SITTING)
-		return this.getLayerLoadout_ToiletSitting();
-	else if(pose == POSE_TOILET_SIT_LEFT)
-		return this.getLayerLoadout_ToiletSitLeft();
-	else if(pose == POSE_TOILET_SIT_RIGHT)
-		return this.getLayerLoadout_ToiletSitRight();
-	else if(pose == POSE_TOILET_STAND_LEFT)
-		return this.getLayerLoadout_ToiletStandLeft();
-	else if(pose == POSE_TOILET_STAND_RIGHT)
-		return this.getLayerLoadout_ToiletStandRight();
+	
 	
 	return false;
 };
@@ -191,26 +224,168 @@ Game_Actor.prototype.getCustomTachieLayerLoadout = function() {
 //Chatface
 Game_Actor.prototype.getCustomTachieLayerLoadout_Chatface = function() {
 	let layerArray = [];
+	let tempArray = [];	
 	let chatface = this.poseName;
+	let tachieBody = this.tachieBody;
 	
-	if(chatface === CHAT_FOLDER_ARON) {
+	let mergedLeftArmArray = false;
+	let leftArmArray = [ LAYER_TYPE_LEFT_ARM ];
+	
+	let mergedRightArmArray = false;
+	let rightArmArray = [ LAYER_TYPE_RIGHT_ARM ];
+	
+	if(chatface === CHAT_FOLDER_KARRYN) {
 		layerArray = [
-			LAYER_TYPE_HOPPE,
-			LAYER_TYPE_SWEAT,
-			LAYER_TYPE_FACE,
-			LAYER_TYPE_BODY,
-		]
-	}
-	else {
-		layerArray = [
+			LAYER_TYPE_SEMEN_FACE,
+			LAYER_TYPE_SEMEN_RIGHT_ARM,
+			LAYER_TYPE_SEMEN_LEFT_ARM,
+		
 			LAYER_TYPE_GLASSES,
 			LAYER_TYPE_FACE,
 			LAYER_TYPE_HOPPE,
 			LAYER_TYPE_SWEAT,
 			LAYER_TYPE_HAT,
-			LAYER_TYPE_BODY,
+			
+			LAYER_TYPE_WEAPON
+		]
+		
+		if(!mergedLeftArmArray && (tachieBody === '1' || tachieBody === '2' || tachieBody === '5')) {
+			layerArray = layerArray.concat(leftArmArray);
+			mergedLeftArmArray = true;
+		}
+		
+		tempArray = [	
+			LAYER_TYPE_SEMEN_BOOBS,
+			LAYER_TYPE_SEMEN_BELLY,
+			LAYER_TYPE_SEMEN_BUTT,
+			LAYER_TYPE_BOOBS,
+		]
+		layerArray = layerArray.concat(tempArray);
+		
+		if(!mergedLeftArmArray) {
+			layerArray = layerArray.concat(leftArmArray);
+			mergedLeftArmArray = true;
+		}
+		
+		tempArray = [		
+			LAYER_TYPE_PANTIES,
+			LAYER_TYPE_BODY
+		]
+		layerArray = layerArray.concat(tempArray);
+		
+		if(!mergedRightArmArray) {
+			layerArray = layerArray.concat(rightArmArray);
+			mergedRightArmArray = true;
+		}
+	}
+	else if(chatface === CHAT_FOLDER_ARON) {
+		layerArray = [
+			LAYER_TYPE_HOPPE,
+			LAYER_TYPE_SWEAT,
+			LAYER_TYPE_FACE,
+			LAYER_TYPE_BODY
 		]
 	}
+	else {
+		layerArray = [
+			LAYER_TYPE_HAT,
+			LAYER_TYPE_FACE,
+			LAYER_TYPE_HOPPE,
+			LAYER_TYPE_SWEAT,
+			LAYER_TYPE_BODY
+		]
+	}
+	
+	return layerArray;
+};
+
+//defeated_level1
+Game_Actor.prototype.getLayerLoadout_DefeatedLv1 = function() {
+	let layerArray = [];
+	let tempArray = [];	
+	
+	let mergedSemenLeftArmArray = false;
+	let semenLeftArmArray = [ LAYER_TYPE_SEMEN_LEFT_ARM ];
+	let mergedSemenRightArmArray = false;
+	let semenRightArmArray = [ LAYER_TYPE_SEMEN_RIGHT_ARM ];
+	let mergedSemenLeftBoobsArray = false;
+	let semenLeftBoobArray = [ LAYER_TYPE_SEMEN_LEFT_BOOB ];
+	let mergedSemenRightBoobsArray = false;
+	let semenRightBoobArray = [ LAYER_TYPE_SEMEN_RIGHT_BOOB ];
+	
+	
+	layerArray = [
+		LAYER_TYPE_SEMEN_FRONT_D,
+		LAYER_TYPE_SEMEN_FRONT_C,
+		LAYER_TYPE_SEMEN_FRONT_B,
+		LAYER_TYPE_SEMEN_FRONT_A,
+		
+		LAYER_TYPE_FRONT_D,
+		LAYER_TYPE_FRONT_C,
+		LAYER_TYPE_FRONT_B,
+		LAYER_TYPE_FRONT_A,
+		
+		LAYER_TYPE_SEMEN_FACE,
+		LAYER_TYPE_EYEBROWS,
+		LAYER_TYPE_EYES,
+		LAYER_TYPE_SWEAT,
+		LAYER_TYPE_HOPPE,
+		LAYER_TYPE_MOUTH,
+		
+		LAYER_TYPE_SEMEN_COCK_MOUTH,
+		LAYER_TYPE_COCK_MOUTH,
+		
+		LAYER_TYPE_SEMEN_COCK_LEFT_ARM,
+		LAYER_TYPE_SEMEN_COCK_RIGHT_ARM,
+
+		LAYER_TYPE_COCK_LEFT_ARM,
+		LAYER_TYPE_COCK_RIGHT_ARM
+	]
+
+	
+	if(!mergedSemenLeftArmArray && this.isBodySlotPenis(LEFT_HAND_ID)) {
+		layerArray = layerArray.concat(semenLeftArmArray);
+		mergedSemenLeftArmArray = true;
+	}
+	if(!mergedSemenRightArmArray && this.isBodySlotPenis(RIGHT_HAND_ID)) {
+		layerArray = layerArray.concat(semenRightArmArray);
+		mergedSemenRightArmArray = true;
+	}
+	if(!mergedSemenLeftBoobsArray && this.isBodySlotPenis(LEFT_HAND_ID)) {
+		layerArray = layerArray.concat(semenLeftBoobArray);
+		mergedSemenLeftBoobsArray = true;
+	}
+	if(!mergedSemenRightBoobsArray && this.isBodySlotPenis(RIGHT_HAND_ID)) {
+		layerArray = layerArray.concat(semenRightBoobArray);
+		mergedSemenRightBoobsArray = true;
+	}
+	
+	if(!mergedSemenLeftBoobsArray) {
+		layerArray = layerArray.concat(semenLeftBoobArray);
+		mergedSemenLeftBoobsArray = true;
+	}
+	if(!mergedSemenRightBoobsArray) {
+		layerArray = layerArray.concat(semenRightBoobArray);
+		mergedSemenRightBoobsArray = true;
+	}
+	if(!mergedSemenRightArmArray) {
+		layerArray = layerArray.concat(semenRightArmArray);
+		mergedSemenRightArmArray = true;
+	}
+	if(!mergedSemenLeftArmArray) {
+		layerArray = layerArray.concat(semenLeftArmArray);
+		mergedSemenLeftArmArray = true;
+	}
+	
+	tempArray = [	
+		LAYER_TYPE_LEFT_BOOB,
+		LAYER_TYPE_RIGHT_BOOB,
+
+		LAYER_TYPE_HAT,
+		LAYER_TYPE_BODY
+	]
+	layerArray = layerArray.concat(tempArray);
+	
 	
 	return layerArray;
 };
@@ -222,11 +397,6 @@ Game_Actor.prototype.getLayerLoadout_DefeatedLv2 = function() {
 	layerArray = [
 		LAYER_TYPE_SEMEN_COCK_ANAL,
 		LAYER_TYPE_SEMEN_COCK_PUSSY,
-
-		LAYER_TYPE_COCK_ANAL,
-		LAYER_TYPE_TOY_ANAL,
-		LAYER_TYPE_COCK_PUSSY,
-		LAYER_TYPE_TOY_PUSSY,
 
 		LAYER_TYPE_SEMEN_FRONT_A,
 		LAYER_TYPE_SEMEN_FRONT_B,
@@ -245,6 +415,10 @@ Game_Actor.prototype.getLayerLoadout_DefeatedLv2 = function() {
 		LAYER_TYPE_EYES,
 		LAYER_TYPE_HOPPE,
 
+		LAYER_TYPE_COCK_ANAL,
+		LAYER_TYPE_COCK_PUSSY,
+		LAYER_TYPE_TOY_ANAL,
+		LAYER_TYPE_TOY_PUSSY,
 		LAYER_TYPE_TOY_CLIT,
 
 		LAYER_TYPE_WET,
@@ -272,9 +446,14 @@ Game_Actor.prototype.getLayerLoadout_DefeatedLv2 = function() {
 //defeated_level3
 Game_Actor.prototype.getLayerLoadout_DefeatedLv3 = function() {
 	let layerArray = [];
+	let tempArray = [];	
 	
 	let mergedTieArray = false;
 	let tieArray = [ LAYER_TYPE_TIE ];
+	
+	let mergedHoppeArray = false;
+	let hoppeArray = [ LAYER_TYPE_HOPPE ];
+	
 	
 	layerArray = [
 		LAYER_TYPE_TOY_CLIT,
@@ -285,7 +464,6 @@ Game_Actor.prototype.getLayerLoadout_DefeatedLv3 = function() {
 		LAYER_TYPE_SEMEN_COCK_ANAL,
 		LAYER_TYPE_SEMEN_COCK_PUSSY,
 		
-		LAYER_TYPE_COCK_MOUTH,
 		LAYER_TYPE_COCK_ANAL,
 		LAYER_TYPE_COCK_PUSSY,
 		
@@ -321,12 +499,30 @@ Game_Actor.prototype.getLayerLoadout_DefeatedLv3 = function() {
 		LAYER_TYPE_SEMEN_ANAL,
 		LAYER_TYPE_WET,
 
-		LAYER_TYPE_MOUTH,
 		LAYER_TYPE_EYEBROWS,
 		LAYER_TYPE_EYES,
-		LAYER_TYPE_SWEAT,
-		LAYER_TYPE_HOPPE,
-
+		LAYER_TYPE_SWEAT
+	]
+	layerArray = layerArray.concat(tempArray);
+		
+		
+	if(!mergedHoppeArray && this.tachieHoppe.includes('fera')) {
+		layerArray = layerArray.concat(hoppeArray);
+		mergedHoppeArray = true;
+	}
+		
+	tempArray = [	
+		LAYER_TYPE_MOUTH,
+		LAYER_TYPE_COCK_MOUTH
+	]
+	layerArray = layerArray.concat(tempArray);	
+		
+	if(!mergedHoppeArray) {
+		layerArray = layerArray.concat(hoppeArray);
+		mergedHoppeArray = true;
+	}	
+		
+	tempArray = [
 		LAYER_TYPE_HAT,
 		
 		LAYER_TYPE_BACK_A,
@@ -411,6 +607,240 @@ Game_Actor.prototype.getLayerLoadout_DefeatedLv4 = function() {
 	return layerArray;
 };
 
+//defeated_level5
+Game_Actor.prototype.getLayerLoadout_DefeatedLv5 = function() {
+	let layerArray = [];
+	
+	return layerArray;
+};
+
+//down orgasm
+Game_Actor.prototype.getLayerLoadout_DownOrgasm = function() {
+	let layerArray = [];
+	let tempArray = [];
+
+	let mergedPubicArray = false;
+	let pubicArray = [ LAYER_TYPE_PUBIC ];
+
+	layerArray = [
+		LAYER_TYPE_HAT,
+		
+		LAYER_TYPE_SEMEN_LEFT_ARM,
+		LAYER_TYPE_SEMEN_RIGHT_ARM,
+		LAYER_TYPE_SEMEN_BACK,
+		LAYER_TYPE_SEMEN_BOOBS,
+		LAYER_TYPE_SEMEN_ANAL,
+		LAYER_TYPE_SEMEN_BUTT,
+		LAYER_TYPE_SEMEN_PUSSY,
+		LAYER_TYPE_SEMEN_PUSSY_PANTIES,
+		LAYER_TYPE_WET,
+		LAYER_TYPE_WET_PANTIES,
+		
+		LAYER_TYPE_TOY_ANAL,
+		LAYER_TYPE_TOY_PUSSY,
+		LAYER_TYPE_TOY_CLIT,
+		
+		
+		LAYER_TYPE_BOOBS,
+		LAYER_TYPE_PANTIES
+	]
+
+	if(!mergedPubicArray && !this.isWearingPanties()) {
+		layerArray = layerArray.concat(pubicArray);
+		mergedPubicArray = true;
+	}
+		
+
+	tempArray = [	
+		LAYER_TYPE_BODY
+	]
+	layerArray = layerArray.concat(tempArray);
+
+	return layerArray;
+};
+
+
+//down falldown
+Game_Actor.prototype.getLayerLoadout_DownFalldown = function() {
+	let layerArray = [];
+	let tempArray = [];
+
+	let mergedPubicArray = false;
+	let pubicArray = [ LAYER_TYPE_PUBIC ];
+
+	layerArray = [
+		LAYER_TYPE_HAT,
+		
+		LAYER_TYPE_SEMEN_LEFT_ARM,
+		LAYER_TYPE_SEMEN_RIGHT_ARM,
+		LAYER_TYPE_SEMEN_BELLY,
+		LAYER_TYPE_SEMEN_FACE,
+		LAYER_TYPE_SEMEN_BOOBS,
+		LAYER_TYPE_SEMEN_ANAL,
+		LAYER_TYPE_SEMEN_PUSSY,
+		LAYER_TYPE_WET,
+		
+		LAYER_TYPE_EYEBROWS,
+		LAYER_TYPE_EYES,
+		LAYER_TYPE_MOUTH,
+		LAYER_TYPE_SWEAT,
+		LAYER_TYPE_HOPPE,
+		
+		LAYER_TYPE_TOY_PUSSY,
+		LAYER_TYPE_TOY_ANAL,
+		LAYER_TYPE_TOY_CLIT,
+		
+		LAYER_TYPE_BOOBS,
+		LAYER_TYPE_PANTIES
+	]
+
+	if(!mergedPubicArray && !this.isWearingPanties()) {
+		layerArray = layerArray.concat(pubicArray);
+		mergedPubicArray = true;
+	}
+		
+
+	tempArray = [	
+		LAYER_TYPE_BODY
+	]
+	layerArray = layerArray.concat(tempArray);
+
+	return layerArray;
+};
+
+Game_Actor.prototype.getLayerLoadout_HjStanding = function() {
+	let layerArray = [];
+	
+	layerArray = [
+		LAYER_TYPE_FRONT_A,
+		
+		LAYER_TYPE_TOY_ANAL,
+		LAYER_TYPE_TOY_CLIT,
+		LAYER_TYPE_TOY_PUSSY,
+		
+		LAYER_TYPE_SEMEN_COCK_LEFT_ARM,
+		LAYER_TYPE_SEMEN_LEFT_ARM,
+		LAYER_TYPE_SEMEN_FACE,
+		LAYER_TYPE_SEMEN_BUTT,
+		LAYER_TYPE_SEMEN_BELLY,
+		LAYER_TYPE_SEMEN_COCK_RIGHT_ARM,
+		LAYER_TYPE_SEMEN_RIGHT_ARM,
+		LAYER_TYPE_SEMEN_BOOBS,
+		LAYER_TYPE_SEMEN_PUSSY,
+		LAYER_TYPE_WET,
+		
+		LAYER_TYPE_COCK_RIGHT_ARM,
+		LAYER_TYPE_RIGHT_ARM,
+		
+		LAYER_TYPE_COCK_LEFT_ARM,
+		LAYER_TYPE_LEFT_ARM,
+		
+		LAYER_TYPE_EYEBROWS,
+		LAYER_TYPE_EYES,
+		LAYER_TYPE_MOUTH,
+		LAYER_TYPE_SWEAT,
+		LAYER_TYPE_HOPPE,
+		
+		LAYER_TYPE_HAT,
+		LAYER_TYPE_PUBIC,
+		LAYER_TYPE_BODY
+	]
+
+	return layerArray;
+};
+
+Game_Actor.prototype.getLayerLoadout_BjKneeling = function() {
+	let layerArray = [];
+	let tempArray = [];
+	
+	let mergedSemenLeftArmArray = false;
+	let semenLeftArmArray = [ LAYER_TYPE_SEMEN_LEFT_ARM ];
+	let mergedSemenRightArmArray = false;
+	let semenRightArmArray = [ LAYER_TYPE_SEMEN_RIGHT_ARM ];
+	
+	let mergedLeftArmArray = false;
+	let leftArmArray = [ LAYER_TYPE_LEFT_ARM ];
+	let mergedRightArmArray = false;
+	let rightArmArray = [ LAYER_TYPE_RIGHT_ARM ];
+	
+	let leftArmIsHj = this.tachieLeftArm.includes('hj');
+	let rightArmIsHj = this.tachieRightArm.includes('hj');
+	
+	layerArray = [
+		LAYER_TYPE_FRONT_A,
+		LAYER_TYPE_TOY_PUSSY,
+		LAYER_TYPE_TOY_CLIT,
+		
+		LAYER_TYPE_SEMEN_COCK_MOUTH,
+		LAYER_TYPE_SEMEN_COCK_LEFT_ARM
+	]
+	
+	if(!mergedSemenRightArmArray && rightArmIsHj) {
+		layerArray = layerArray.concat(semenRightArmArray);
+		mergedSemenRightArmArray = true;
+	}
+	
+	if(!mergedSemenLeftArmArray && leftArmIsHj) {
+		layerArray = layerArray.concat(semenLeftArmArray);
+		mergedSemenLeftArmArray = true;
+	}	
+	
+	if(!mergedSemenRightArmArray) {
+		layerArray = layerArray.concat(semenRightArmArray);
+		mergedSemenRightArmArray = true;
+	}
+	
+	if(!mergedSemenLeftArmArray) {
+		layerArray = layerArray.concat(semenLeftArmArray);
+		mergedSemenLeftArmArray = true;
+	}	
+	
+	tempArray = [	
+		LAYER_TYPE_SEMEN_FACE,
+		LAYER_TYPE_SEMEN_BOOBS,
+		LAYER_TYPE_SEMEN_BELLY,
+		LAYER_TYPE_SEMEN_BUTT,
+		LAYER_TYPE_SEMEN_PUSSY,
+		LAYER_TYPE_WET,
+		
+		LAYER_TYPE_HAT,
+		
+		LAYER_TYPE_EYEBROWS,
+		LAYER_TYPE_EYES,
+		LAYER_TYPE_SWEAT,
+		LAYER_TYPE_HOPPE,
+		LAYER_TYPE_MOUTH,
+	]
+	layerArray = layerArray.concat(tempArray);
+	
+	if(!mergedRightArmArray && rightArmIsHj) {
+		layerArray = layerArray.concat(rightArmArray);
+		mergedRightArmArray = true;
+	}	
+	
+	tempArray = [	
+		LAYER_TYPE_COCK_MOUTH
+	]
+	layerArray = layerArray.concat(tempArray);
+	
+	if(!mergedRightArmArray) {
+		layerArray = layerArray.concat(rightArmArray);
+		mergedRightArmArray = true;
+	}
+	
+	tempArray = [	
+		LAYER_TYPE_PUBIC,
+		LAYER_TYPE_BODY,
+		
+		LAYER_TYPE_LEFT_ARM,
+		LAYER_TYPE_COCK_LEFT_ARM
+	]
+	layerArray = layerArray.concat(tempArray);
+	
+	
+	return layerArray;
+};
+
 //kick counter
 Game_Actor.prototype.getLayerLoadout_KickCounter = function() {
 	let layerArray = [];
@@ -424,6 +854,8 @@ Game_Actor.prototype.getLayerLoadout_KickCounter = function() {
 		LAYER_TYPE_SEMEN_BELLY,
 		LAYER_TYPE_SEMEN_BOOBS,
 		LAYER_TYPE_SEMEN_FACE,
+		LAYER_TYPE_SEMEN_COCK_ANAL,
+		LAYER_TYPE_SEMEN_COCK_PUSSY,
 		LAYER_TYPE_SEMEN_PUSSY,
 		LAYER_TYPE_WET,
 		
@@ -439,9 +871,9 @@ Game_Actor.prototype.getLayerLoadout_KickCounter = function() {
 		LAYER_TYPE_BODY,
 		
 		LAYER_TYPE_COCK_ANAL,
+		LAYER_TYPE_BACK_C,
 		LAYER_TYPE_TOY_CLIT,
 		LAYER_TYPE_TOY_ANAL,
-		LAYER_TYPE_BACK_C,
 		
 		LAYER_TYPE_PUBIC,
 		LAYER_TYPE_BACK_D
@@ -451,9 +883,101 @@ Game_Actor.prototype.getLayerLoadout_KickCounter = function() {
 	return layerArray;
 };
 
+//thug gangbang
+Game_Actor.prototype.getLayerLoadout_ThugGangbang = function() {
+	let layerArray = [];
+	let tempArray = [];	
+	
+	let mergedHoppeArray = false;
+	let hoppeArray = [ LAYER_TYPE_HOPPE ];
+	
+	let mergedBoobsArray = false;
+	let boobsArray = [ LAYER_TYPE_BOOBS ];
+	
+	
+	layerArray = [
+		LAYER_TYPE_SEMEN_COCK_MOUTH,
+		LAYER_TYPE_SEMEN_COCK_BOOBS,
+		
+		LAYER_TYPE_COCK_BOOBS,
+		
+		LAYER_TYPE_SEMEN_BOOBS,
+		LAYER_TYPE_SEMEN_FACE,
+		
+		LAYER_TYPE_FRONT_B
+	]
+	
+	if(!mergedBoobsArray && this.tachieBoobs.includes('zuri')) {
+		layerArray = layerArray.concat(boobsArray);
+		mergedBoobsArray = true;
+	}	
+	
+	tempArray = [	
+		LAYER_TYPE_EYEBROWS,
+		LAYER_TYPE_EYES,
+		LAYER_TYPE_SWEAT
+	]
+	layerArray = layerArray.concat(tempArray);
+	
+	if(!mergedHoppeArray && this.tachieHoppe.includes('fera')) {
+		layerArray = layerArray.concat(hoppeArray);
+		mergedHoppeArray = true;
+	}
+	
+	tempArray = [	
+		LAYER_TYPE_MOUTH
+	]
+	layerArray = layerArray.concat(tempArray);
+	
+	if(!mergedHoppeArray) {
+		layerArray = layerArray.concat(hoppeArray);
+		mergedHoppeArray = true;
+	}
+	
+	tempArray = [	
+		LAYER_TYPE_COCK_MOUTH,
+		
+		LAYER_TYPE_HAT
+	]
+	layerArray = layerArray.concat(tempArray);
+	
+	if(!mergedBoobsArray) {
+		layerArray = layerArray.concat(boobsArray);
+		mergedBoobsArray = true;
+	}
+	
+	tempArray = [	
+		LAYER_TYPE_SEMEN_COCK_LEFT_ARM,
+		LAYER_TYPE_SEMEN_RIGHT_ARM,
+		LAYER_TYPE_SEMEN_LEFT_ARM,
+		LAYER_TYPE_SEMEN_BELLY,
+		LAYER_TYPE_SEMEN_PUSSY,
+		LAYER_TYPE_WET,
+		
+		LAYER_TYPE_RIGHT_ARM,
+		
+		LAYER_TYPE_TOY_CLIT,
+		LAYER_TYPE_COCK_PUSSY,
+		LAYER_TYPE_FRONT_A,
+		
+		LAYER_TYPE_PUBIC,
+		LAYER_TYPE_BODY,
+		
+		LAYER_TYPE_COCK_LEFT_ARM,
+		LAYER_TYPE_LEFT_ARM
+	]
+	layerArray = layerArray.concat(tempArray);
+
+	return layerArray;
+};
+
 //guard gangbang
 Game_Actor.prototype.getLayerLoadout_GuardGangbang = function() {
 	let layerArray = [];
+	let tempArray = [];	
+	
+	let mergedHoppeArray = false;
+	let hoppeArray = [ LAYER_TYPE_HOPPE ];
 	
 	layerArray = [
 		LAYER_TYPE_SEMEN_COCK_ANAL,
@@ -473,16 +997,34 @@ Game_Actor.prototype.getLayerLoadout_GuardGangbang = function() {
 		
 		LAYER_TYPE_HOLE_ANUS,
 		
-		LAYER_TYPE_COCK_MOUTH,
-		LAYER_TYPE_MOUTH,
 		LAYER_TYPE_EYEBROWS,
 		LAYER_TYPE_EYES,
-		LAYER_TYPE_SWEAT,
-		LAYER_TYPE_HOPPE,
-		LAYER_TYPE_HAT,
-		LAYER_TYPE_BODY
-		
+		LAYER_TYPE_SWEAT
 	]
+		
+	if(!mergedHoppeArray && this.tachieHoppe.includes('fera')) {
+		layerArray = layerArray.concat(hoppeArray);
+		mergedHoppeArray = true;
+	}	
+		
+	tempArray = [	
+		LAYER_TYPE_MOUTH
+	]
+	layerArray = layerArray.concat(tempArray);
+		
+	if(!mergedHoppeArray) {
+		layerArray = layerArray.concat(hoppeArray);
+		mergedHoppeArray = true;
+	}	
+		
+	tempArray = [	
+		LAYER_TYPE_COCK_MOUTH,
+		
+		LAYER_TYPE_HAT,
+		LAYER_TYPE_FRONT_A,
+		LAYER_TYPE_BODY
+	]
+	layerArray = layerArray.concat(tempArray);
 	
 	return layerArray;
 };
@@ -490,6 +1032,10 @@ Game_Actor.prototype.getLayerLoadout_GuardGangbang = function() {
 //Werewolf Back
 Game_Actor.prototype.getLayerLoadout_WerewolfBack = function() {
 	let layerArray = [];
+	let tempArray = [];	
+	
+	let mergedHoppeArray = false;
+	let hoppeArray = [ LAYER_TYPE_HOPPE ];
 	
 	layerArray = [
 		LAYER_TYPE_SEMEN_COCK_MOUTH,
@@ -507,48 +1053,141 @@ Game_Actor.prototype.getLayerLoadout_WerewolfBack = function() {
 		
 		LAYER_TYPE_EYEBROWS,
 		LAYER_TYPE_EYES,
-		
-		LAYER_TYPE_MOUTH,
-		LAYER_TYPE_COCK_MOUTH,
-		
 		LAYER_TYPE_SWEAT,
-		LAYER_TYPE_HOPPE,
+	]
+		
+	if(!mergedHoppeArray && this.tachieHoppe.includes('fera')) {
+		layerArray = layerArray.concat(hoppeArray);
+		mergedHoppeArray = true;
+	}	
+		
+	tempArray = [	
+		LAYER_TYPE_MOUTH
+	]
+	layerArray = layerArray.concat(tempArray);
+
+	
+	if(!mergedHoppeArray) {
+		layerArray = layerArray.concat(hoppeArray);
+		mergedHoppeArray = true;
+	}	
+		
+	tempArray = [	
+		LAYER_TYPE_COCK_MOUTH,
 		
 		LAYER_TYPE_BODY,
 		LAYER_TYPE_BUTT
 	]
+	layerArray = layerArray.concat(tempArray);
 	
 	return layerArray;
 };
 
+//Orc Paizuri
+Game_Actor.prototype.getLayerLoadout_OrcPaizuri = function() {
+	let layerArray = [];
+	let tempArray = [];	
+	
+	let mergedHoppeArray = false;
+	let hoppeArray = [ LAYER_TYPE_HOPPE ];
+	
+	layerArray = [
+		LAYER_TYPE_SEMEN_COCK_MOUTH,
+		LAYER_TYPE_SEMEN_COCK_RIGHT_ARM,
+		LAYER_TYPE_SEMEN_COCK_LEFT_ARM,
+		LAYER_TYPE_SEMEN_RIGHT_ARM,
+		LAYER_TYPE_SEMEN_LEFT_ARM,
+		LAYER_TYPE_SEMEN_COCK_BOOBS,
+		LAYER_TYPE_SEMEN_BOOBS,
+		LAYER_TYPE_SEMEN_RIGHT_ARM,
+		LAYER_TYPE_SEMEN_LEFT_ARM,
+		LAYER_TYPE_SEMEN_FACE,
+
+		LAYER_TYPE_HAT,
+		LAYER_TYPE_EYEBROWS,
+		LAYER_TYPE_EYES,
+		LAYER_TYPE_SWEAT
+	]
+		
+	if(!mergedHoppeArray && this.tachieHoppe.includes('fera')) {
+		layerArray = layerArray.concat(hoppeArray);
+		mergedHoppeArray = true;
+	}	
+		
+	tempArray = [	
+		LAYER_TYPE_MOUTH,
+		LAYER_TYPE_COCK_MOUTH
+	]
+	layerArray = layerArray.concat(tempArray);
+		
+	if(!mergedHoppeArray) {
+		layerArray = layerArray.concat(hoppeArray);
+		mergedHoppeArray = true;
+	}	
+		
+	tempArray = [		
+		LAYER_TYPE_COCK_LEFT_ARM,
+		LAYER_TYPE_COCK_RIGHT_ARM,
+		LAYER_TYPE_LEFT_ARM,
+		LAYER_TYPE_RIGHT_ARM,
+		LAYER_TYPE_FRONT_A,
+
+		LAYER_TYPE_BODY
+	]
+	layerArray = layerArray.concat(tempArray);
+	
+	return layerArray;
+};
+
+
 //Paizuri Laying
 Game_Actor.prototype.getLayerLoadout_PaizuriLaying = function() {
 	let layerArray = [];
+	let tempArray = [];	
+	
+	let mergedHoppeArray = false;
+	let hoppeArray = [ LAYER_TYPE_HOPPE ];
 	
 	layerArray = [
-		LAYER_TYPE_SEMEN_FACE,
-		LAYER_TYPE_SEMEN_BOOBS,
-		LAYER_TYPE_SEMEN_LEFT_ARM,
-		LAYER_TYPE_SEMEN_RIGHT_ARM,
 		LAYER_TYPE_SEMEN_BUTT,
 		LAYER_TYPE_SEMEN_COCK_MOUTH,
 		LAYER_TYPE_SEMEN_COCK_RIGHT_ARM,
 		LAYER_TYPE_SEMEN_COCK_BOOBS,
 		LAYER_TYPE_SEMEN_COCK_PUSSY,
 		LAYER_TYPE_SEMEN_COCK_ANAL,
+		LAYER_TYPE_SEMEN_RIGHT_ARM,
+		LAYER_TYPE_SEMEN_FACE,
 		
 		LAYER_TYPE_EYEBROWS,
 		LAYER_TYPE_EYES,
-		LAYER_TYPE_SWEAT,
-		LAYER_TYPE_HOPPE,
-		LAYER_TYPE_MOUTH,
-		LAYER_TYPE_HEAD,
+		LAYER_TYPE_SWEAT
+	]
+		
+	if(!mergedHoppeArray && this.tachieHoppe.includes('fera')) {
+		layerArray = layerArray.concat(hoppeArray);
+		mergedHoppeArray = true;
+	}	
+	
+	tempArray = [	
+		LAYER_TYPE_MOUTH
+	]
+	layerArray = layerArray.concat(tempArray);
+		
+	if(!mergedHoppeArray) {
+		layerArray = layerArray.concat(hoppeArray);
+		mergedHoppeArray = true;
+	}	
+		
+	tempArray = [
 		LAYER_TYPE_COCK_MOUTH,
 		
 		LAYER_TYPE_HAT,
 		
 		LAYER_TYPE_FRONT_B,
 		LAYER_TYPE_FRONT_A,
+		
+		LAYER_TYPE_SEMEN_BOOBS,
+		LAYER_TYPE_SEMEN_LEFT_ARM,
 		
 		LAYER_TYPE_COCK_BOOBS,
 		LAYER_TYPE_COCK_RIGHT_ARM,
@@ -562,6 +1201,7 @@ Game_Actor.prototype.getLayerLoadout_PaizuriLaying = function() {
 		LAYER_TYPE_COCK_ANAL,
 		LAYER_TYPE_COCK_PUSSY
 	]
+	layerArray = layerArray.concat(tempArray);
 	
 	return layerArray;
 };
@@ -610,7 +1250,6 @@ Game_Actor.prototype.getLayerLoadout_YetiPaizuri = function() {
 //Yeti Carry
 Game_Actor.prototype.getLayerLoadout_YetiCarry = function() {
 	let layerArray = [];
-	let tempArray = [];
 	
 	layerArray = [
 		LAYER_TYPE_SEMEN_COCK_ANAL,
@@ -646,10 +1285,182 @@ Game_Actor.prototype.getLayerLoadout_YetiCarry = function() {
 	return layerArray;
 };
 
+//Rimjob
+Game_Actor.prototype.getLayerLoadout_Rimjob = function() {
+	let layerArray = [];
+	
+	layerArray = [
+		LAYER_TYPE_SEMEN_LEFT_ARM,
+		LAYER_TYPE_FRONT_A,
+		LAYER_TYPE_FRONT_B,
+		
+		LAYER_TYPE_SEMEN_PUSSY,
+		LAYER_TYPE_SEMEN_ANAL,
+		
+		LAYER_TYPE_EYEBROWS,
+		LAYER_TYPE_EYES,
+		LAYER_TYPE_MOUTH,
+		LAYER_TYPE_SWEAT,
+		LAYER_TYPE_HOPPE,
+		
+		LAYER_TYPE_HAT,
+		LAYER_TYPE_TOY_CLIT,
+		
+		LAYER_TYPE_SEMEN_COCK_PUSSY,
+		LAYER_TYPE_SEMEN_COCK_ANAL,
+		LAYER_TYPE_SEMEN_FACE,
+		LAYER_TYPE_SEMEN_BUTT,
+		LAYER_TYPE_SEMEN_BELLY,
+		LAYER_TYPE_SEMEN_BOOBS,
+		LAYER_TYPE_WET,
+		
+		LAYER_TYPE_PUBIC,
+		LAYER_TYPE_BODY,
+		
+		LAYER_TYPE_TOY_ANAL,
+		LAYER_TYPE_TOY_PUSSY,
+		
+		LAYER_TYPE_COCK_ANAL,
+		LAYER_TYPE_COCK_PUSSY
+	]
+	
+	return layerArray;
+};
+
+//Slime Piledriver
+Game_Actor.prototype.getLayerLoadout_SlimePiledriver = function() {
+	let layerArray = [];
+	let tempArray = [];	
+	
+	let mergedHoppeArray = false;
+	let hoppeArray = [ LAYER_TYPE_HOPPE ];
+	
+	layerArray = [
+		LAYER_TYPE_SEMEN_COCK_MOUTH,
+		LAYER_TYPE_SEMEN_FACE,
+		
+		LAYER_TYPE_EYEBROWS,
+		LAYER_TYPE_EYES,
+		LAYER_TYPE_SWEAT
+	]
+	
+		
+	if(!mergedHoppeArray && this.tachieHoppe.includes('fera')) {
+		layerArray = layerArray.concat(hoppeArray);
+		mergedHoppeArray = true;
+	}
+		
+	tempArray = [	
+		LAYER_TYPE_MOUTH,
+		LAYER_TYPE_COCK_MOUTH
+	]
+	layerArray = layerArray.concat(tempArray);
+	
+	if(!mergedHoppeArray) {
+		layerArray = layerArray.concat(hoppeArray);
+		mergedHoppeArray = true;
+	}
+	
+	tempArray = [	
+		LAYER_TYPE_SEMEN_LEFT_ARM,
+		LAYER_TYPE_SEMEN_RIGHT_ARM,
+		LAYER_TYPE_SEMEN_ANAL,
+		LAYER_TYPE_SEMEN_COCK_PUSSY,
+		LAYER_TYPE_SEMEN_BELLY,
+		LAYER_TYPE_SEMEN_BOOBS,
+		
+		LAYER_TYPE_COCK_PUSSY,
+		LAYER_TYPE_TOY_PUSSY,
+		LAYER_TYPE_TOY_CLIT,
+		
+		LAYER_TYPE_SEMEN_PUSSY,
+		
+		LAYER_TYPE_COCK_ANAL,
+		
+		LAYER_TYPE_SEMEN_BUTT,
+		LAYER_TYPE_WET,
+		
+		LAYER_TYPE_HOLE_PUSSY,
+		
+		LAYER_TYPE_HAT,
+		LAYER_TYPE_PUBIC,
+		LAYER_TYPE_BODY
+	]
+	layerArray = layerArray.concat(tempArray);
+	
+	return layerArray;
+};
+
+
+//Footjob
+Game_Actor.prototype.getLayerLoadout_Footjob = function() {
+	let layerArray = [];
+	let tempArray = [];	
+	
+	layerArray = [
+		LAYER_TYPE_FRONT_A,
+		
+		LAYER_TYPE_SEMEN_COCK_MOUTH,
+		LAYER_TYPE_SEMEN_FACE,
+		LAYER_TYPE_SEMEN_BELLY,
+		LAYER_TYPE_SEMEN_BOOBS,
+		LAYER_TYPE_SEMEN_COCK_LEFT_ARM,
+		LAYER_TYPE_SEMEN_LEFT_ARM,
+		LAYER_TYPE_SEMEN_RIGHT_LEG,
+		LAYER_TYPE_SEMEN_LEFT_LEG,
+		LAYER_TYPE_SEMEN_COCK_FEET,
+		LAYER_TYPE_SEMEN_PUSSY,
+		LAYER_TYPE_WET,
+		
+		LAYER_TYPE_COCK_FEET,
+		LAYER_TYPE_TOY_CLIT
+	]	
+	
+	if(this.tachieHead.includes('far')) {
+		tempArray = [
+			LAYER_TYPE_EYEBROWS,
+			LAYER_TYPE_EYES,
+			LAYER_TYPE_SWEAT,
+			LAYER_TYPE_HOPPE,
+			LAYER_TYPE_MOUTH
+		]
+		layerArray = layerArray.concat(tempArray);	
+	}
+	
+	tempArray = [
+		LAYER_TYPE_COCK_MOUTH,
+	]
+	layerArray = layerArray.concat(tempArray);
+
+	if(this.tachieHead.includes('close')) {
+		tempArray = [
+			LAYER_TYPE_EYEBROWS,
+			LAYER_TYPE_EYES,
+			LAYER_TYPE_MOUTH,
+			LAYER_TYPE_SWEAT,
+			LAYER_TYPE_HOPPE
+		]
+		layerArray = layerArray.concat(tempArray);	
+	}
+		
+	tempArray = [
+		LAYER_TYPE_HAT,
+		LAYER_TYPE_HEAD,
+		LAYER_TYPE_BODY,
+		
+		LAYER_TYPE_COCK_LEFT_ARM,
+		LAYER_TYPE_LEFT_ARM
+	]
+	layerArray = layerArray.concat(tempArray);	
+	
+	return layerArray;
+};
+
 //Lizardman Cowgirl
 Game_Actor.prototype.getLayerLoadout_LizardmanCowgirl = function() {
 	let layerArray = [];
-	let tempArray = [];
+	let tempArray = [];	
+	let givingBJ = this.isBodySlotPenis(MOUTH_ID);
 
 	layerArray = [
 		LAYER_TYPE_SEMEN_COCK_RIGHT_ARM,
@@ -674,18 +1485,40 @@ Game_Actor.prototype.getLayerLoadout_LizardmanCowgirl = function() {
 		LAYER_TYPE_WET,
 		
 		LAYER_TYPE_HOLE_ANUS,
+		LAYER_TYPE_COCK_PUSSY,
 		LAYER_TYPE_BODY,
-		LAYER_TYPE_HAT,
+		LAYER_TYPE_HAT
+	]	
 		
-		LAYER_TYPE_EYEBROWS,
-		LAYER_TYPE_EYES,
-		LAYER_TYPE_MOUTH,
-		LAYER_TYPE_SWEAT,
-		LAYER_TYPE_HOPPE,
+	if(givingBJ) {
+		tempArray = [	
+			LAYER_TYPE_EYEBROWS,
+			LAYER_TYPE_EYES,
+			LAYER_TYPE_SWEAT,
+			LAYER_TYPE_HOPPE,
+			LAYER_TYPE_MOUTH
+		]
+		layerArray = layerArray.concat(tempArray);
+	}
+	else {
+		tempArray = [	
+			LAYER_TYPE_EYEBROWS,
+			LAYER_TYPE_EYES,
+			LAYER_TYPE_MOUTH,
+			LAYER_TYPE_SWEAT,
+			LAYER_TYPE_HOPPE
+		]
+		layerArray = layerArray.concat(tempArray);
+	}
+		
 
+	tempArray = [	
 		LAYER_TYPE_COCK_MOUTH,
-		LAYER_TYPE_HEAD
+		LAYER_TYPE_HEAD,
+		
+		LAYER_TYPE_BACK_A
 	]
+	layerArray = layerArray.concat(tempArray);
 
 	return layerArray;
 };
@@ -694,6 +1527,10 @@ Game_Actor.prototype.getLayerLoadout_LizardmanCowgirl = function() {
 Game_Actor.prototype.getLayerLoadout_KarrynCowgirl = function() {
 	let layerArray = [];
 	let tempArray = [];
+	
+	let mergedHoppeArray = false;
+	let hoppeArray = [ LAYER_TYPE_HOPPE ];
+	
 
 	layerArray = [
 		LAYER_TYPE_TOY_CLIT,
@@ -709,19 +1546,34 @@ Game_Actor.prototype.getLayerLoadout_KarrynCowgirl = function() {
 		LAYER_TYPE_SEMEN_PUSSY,
 		LAYER_TYPE_COCK_PUSSY,
 		LAYER_TYPE_WET,
+
+		LAYER_TYPE_EYEBROWS,
+		LAYER_TYPE_EYES
+	]
 		
+	if(!mergedHoppeArray && this.tachieHoppe.includes('fera')) {
+		layerArray = layerArray.concat(hoppeArray);
+		mergedHoppeArray = true;
+	}
+	
+	tempArray = [	
+		LAYER_TYPE_MOUTH,
 		
 		LAYER_TYPE_COCK_MOUTH,
-		LAYER_TYPE_COCK_BOOBS,
-		LAYER_TYPE_EYEBROWS,
-		LAYER_TYPE_MOUTH,
-		LAYER_TYPE_EYES,
-		LAYER_TYPE_SWEAT,
-		LAYER_TYPE_HOPPE,
+		LAYER_TYPE_SWEAT
+	]
+	layerArray = layerArray.concat(tempArray);
+	
+	if(!mergedHoppeArray) {
+		layerArray = layerArray.concat(hoppeArray);
+		mergedHoppeArray = true;
+	}
 		
+	tempArray = [		
 		LAYER_TYPE_HAT,
 		
 		LAYER_TYPE_FRONT_A,
+		LAYER_TYPE_COCK_BOOBS,
 		
 		LAYER_TYPE_BODY,
 		
@@ -729,8 +1581,8 @@ Game_Actor.prototype.getLayerLoadout_KarrynCowgirl = function() {
 		LAYER_TYPE_LEGS,
 		
 		LAYER_TYPE_BACK_A
-		
 	]
+	layerArray = layerArray.concat(tempArray);
 
 	return layerArray;
 };
@@ -1156,7 +2008,8 @@ Game_Actor.prototype.getLayerLoadout_DefeatedGuard = function() {
 	tempArray = [
 		LAYER_TYPE_SEMEN_COCK_MOUTH,
 		LAYER_TYPE_SEMEN_COCK_PUSSY,
-		LAYER_TYPE_SEMEN_COCK_ANAL
+		LAYER_TYPE_SEMEN_COCK_ANAL,
+		LAYER_TYPE_COCK_MOUTH
 	]
 	layerArray = layerArray.concat(tempArray);
 	
@@ -1176,7 +2029,6 @@ Game_Actor.prototype.getLayerLoadout_DefeatedGuard = function() {
 	}
 	
 	tempArray = [
-		LAYER_TYPE_COCK_MOUTH,
 		LAYER_TYPE_TOY_PUSSY,
 		LAYER_TYPE_TOY_ANAL,
 		LAYER_TYPE_COCK_ANAL,
@@ -1263,47 +2115,68 @@ Game_Actor.prototype.getLayerLoadout_DefeatedGuard = function() {
 //Waitress Sex
 Game_Actor.prototype.getLayerLoadout_WaitressSex = function() {
 	let layerArray = [];
-	let tempArray = [];
+	let tempArray = [];	
+	
+	let mergedHoppeArray = false;
+	let hoppeArray = [ LAYER_TYPE_HOPPE ];
 	
 	layerArray = [
 		LAYER_TYPE_SEMEN_FRONT_A,
 		LAYER_TYPE_FRONT_A,
 		
 		LAYER_TYPE_SEMEN_COCK_MOUTH,
-		LAYER_TYPE_SEMEN_BUTT,
-		LAYER_TYPE_SEMEN_COCK_PUSSY,
-		LAYER_TYPE_SEMEN_COCK_ANAL,
 		LAYER_TYPE_SEMEN_FACE,
-		LAYER_TYPE_SEMEN_RIGHT_ARM,
 		LAYER_TYPE_SEMEN_COCK_RIGHT_ARM,
-		
+		LAYER_TYPE_SEMEN_RIGHT_ARM,
 		LAYER_TYPE_SEMEN_BACK,
 		LAYER_TYPE_SEMEN_BELLY,
+		LAYER_TYPE_SEMEN_BUTT,
 		LAYER_TYPE_SEMEN_PUSSY,
 		LAYER_TYPE_WET,
 		
-		LAYER_TYPE_COCK_MOUTH,
 		LAYER_TYPE_EYEBROWS,
 		LAYER_TYPE_EYES,
-		LAYER_TYPE_STRAW,
-		LAYER_TYPE_MOUTH,
 		LAYER_TYPE_SWEAT,
-		LAYER_TYPE_HOPPE,
-		
+	]
+	layerArray = layerArray.concat(tempArray);
+	
+	if(!mergedHoppeArray && this.tachieHoppe.includes('fera')) {
+		layerArray = layerArray.concat(hoppeArray);
+		mergedHoppeArray = true;
+	}
+	
+	tempArray = [	
+		LAYER_TYPE_MOUTH
+	]
+	layerArray = layerArray.concat(tempArray);
+	
+	if(!mergedHoppeArray) {
+		layerArray = layerArray.concat(hoppeArray);
+		mergedHoppeArray = true;
+	}
+	
+	tempArray = [		
+		LAYER_TYPE_STRAW,
+		LAYER_TYPE_COCK_MOUTH,
 		LAYER_TYPE_COCK_RIGHT_ARM,
-		LAYER_TYPE_RIGHT_ARM,
-		LAYER_TYPE_SEMEN_BOOBS,
-		LAYER_TYPE_MUG,
 		
+		LAYER_TYPE_RIGHT_ARM,
+		
+		LAYER_TYPE_SEMEN_BOOBS,
+		
+		LAYER_TYPE_MUG,
 		LAYER_TYPE_BODY,
 		
-		LAYER_TYPE_TOY_PUSSY,
+		LAYER_TYPE_TOY_CLIT,
 		LAYER_TYPE_TOY_ANAL,
+		LAYER_TYPE_TOY_PUSSY,
 		
+		LAYER_TYPE_SEMEN_COCK_PUSSY,
+		LAYER_TYPE_SEMEN_COCK_ANAL,
 		LAYER_TYPE_COCK_ANAL,
 		LAYER_TYPE_COCK_PUSSY
 	]
-	
+	layerArray = layerArray.concat(tempArray);
 
 	return layerArray;
 };	
@@ -1316,6 +2189,19 @@ Game_Actor.prototype.getLayerLoadout_Receptionist = function() {
 	let mergedSemenNakaArray = false;
 	let semenNakaArray = [ LAYER_TYPE_SEMEN_ANAL, LAYER_TYPE_SEMEN_PUSSY, LAYER_TYPE_WET ];
 	
+	let mergedCockNormalArray = false;
+	let cockNormalArray = [ LAYER_TYPE_COCK_NORMAL ];
+	let mergedSemenCockNormalArray = false;
+	let semenCockNormalArray = [ LAYER_TYPE_SEMEN_COCK_NORMAL ];
+	let mergedVisitorAArray = false;
+	let visitorAArray = [ LAYER_TYPE_VISITOR_A ];
+	
+	let thereIsPervertedGoblinFront = $gameTroop.receptionistBattle_thereIsVisitorAtDesk() && $gameTroop.receptionistBattle_visitorAtDesk()._visitor_isGoblin && $gameTroop.receptionistBattle_visitorAtDesk()._visitor_isPervert && ($gameTroop.receptionistBattle_visitorAtDesk()._visitor_isIdentified || $gameTroop.receptionistBattle_visitorAtDesk().isWanted);
+	let receptionistIsKissing = this.receptionistBattle_isKissing();
+	let receptionistIsGettingBoobsRubbed = this.receptionistBattle_gettingBoobsRubbed();
+	let receptionistIsGivingBJ = this.receptionistBattle_isGivingBlowjob();
+	let receptionistIsGivingHJ = this.receptionistBattle_isGivingHandjob();
+	
 	layerArray = [
 		LAYER_TYPE_COCK_ANAL,
 		LAYER_TYPE_COCK_PUSSY,
@@ -1325,6 +2211,9 @@ Game_Actor.prototype.getLayerLoadout_Receptionist = function() {
 		LAYER_TYPE_FRONT_C,
 		LAYER_TYPE_FRONT_D,
 		
+		LAYER_TYPE_SEMEN_COCK_ANAL,
+		LAYER_TYPE_SEMEN_COCK_PUSSY,
+		LAYER_TYPE_FRONT_E,
 		
 		LAYER_TYPE_SWEAT,
 		LAYER_TYPE_GLASSES,
@@ -1343,7 +2232,6 @@ Game_Actor.prototype.getLayerLoadout_Receptionist = function() {
 		layerArray = layerArray.concat(semenNakaArray);
 		mergedSemenNakaArray = true;
 	}		
-		
 		
 	tempArray = [		
 		LAYER_TYPE_CLOTHES,
@@ -1367,18 +2255,68 @@ Game_Actor.prototype.getLayerLoadout_Receptionist = function() {
 		LAYER_TYPE_BOOBS,
 		LAYER_TYPE_RIGHT_ARM,
 		
-
 		LAYER_TYPE_BACK_A,
 		LAYER_TYPE_BACK_B,
 		LAYER_TYPE_BACK_C,
 		LAYER_TYPE_BACK_D,
-		LAYER_TYPE_BACK_E,
+		LAYER_TYPE_BACK_E
+	]
+	layerArray = layerArray.concat(tempArray);
 		
-		LAYER_TYPE_SEMEN_DESK,
-		LAYER_TYPE_SEMEN_COCK_NORMAL,
-		LAYER_TYPE_COCK_NORMAL,
+	if(!mergedSemenCockNormalArray && thereIsPervertedGoblinFront) {
+		layerArray = layerArray.concat(semenCockNormalArray);
+		mergedSemenCockNormalArray = true;
+	}	
+	
+	if(!mergedCockNormalArray && thereIsPervertedGoblinFront && receptionistIsGettingBoobsRubbed) {
+		layerArray = layerArray.concat(cockNormalArray);
+		mergedCockNormalArray = true;
+	}
+	if(!mergedVisitorAArray && thereIsPervertedGoblinFront && receptionistIsGettingBoobsRubbed) {
+		layerArray = layerArray.concat(visitorAArray);
+		mergedVisitorAArray = true;
+	}	
+	
+	if(!mergedCockNormalArray && thereIsPervertedGoblinFront && !receptionistIsGivingBJ) {
+		layerArray = layerArray.concat(cockNormalArray);
+		mergedCockNormalArray = true;
+	}
+	if(!mergedVisitorAArray && thereIsPervertedGoblinFront && !receptionistIsGivingBJ) {
+		layerArray = layerArray.concat(visitorAArray);
+		mergedVisitorAArray = true;
+	}	
 
-		LAYER_TYPE_VISITOR_A,
+		
+	tempArray = [
+		LAYER_TYPE_SEMEN_DESK
+	]
+	layerArray = layerArray.concat(tempArray);	
+		
+	if(!mergedCockNormalArray && thereIsPervertedGoblinFront && receptionistIsGivingBJ) {
+		layerArray = layerArray.concat(cockNormalArray);
+		mergedCockNormalArray = true;
+	}
+	if(!mergedVisitorAArray && thereIsPervertedGoblinFront && receptionistIsGivingBJ) {
+		layerArray = layerArray.concat(visitorAArray);
+		mergedVisitorAArray = true;
+	}	
+	
+	if(!mergedSemenCockNormalArray) {
+		layerArray = layerArray.concat(semenCockNormalArray);
+		mergedSemenCockNormalArray = true;
+	}	
+	if(!mergedCockNormalArray) {
+		layerArray = layerArray.concat(cockNormalArray);
+		mergedCockNormalArray = true;
+	}
+	
+	
+	if(!mergedVisitorAArray) {
+		layerArray = layerArray.concat(visitorAArray);
+		mergedVisitorAArray = true;
+	}
+		
+	tempArray = [
 		LAYER_TYPE_VISITOR_B,
 		LAYER_TYPE_VISITOR_C,
 		LAYER_TYPE_VISITOR_D
@@ -1626,7 +2564,7 @@ Game_Actor.prototype.getLayerLoadout_ToiletSitting = function() {
 	
 	
 	tempArray = [
-		LAYER_TYPE_FRONT_A,
+		LAYER_TYPE_FRONT_A
 	]
 	layerArray = layerArray.concat(tempArray);	
 
@@ -1731,6 +2669,21 @@ Game_Actor.prototype.getLayerLoadout_ToiletSitting = function() {
 		mergedSemenRightArmArray = true;
 	}
 	
+	if(!mergedLeftArmArray && this.tachieLeftArm.includes('pet') && !this.tachieRightHole.includes('pet')) {
+		layerArray = layerArray.concat(leftArmArray);
+		mergedLeftArmArray = true;
+	}
+	if(!mergedRightArmArray && this.tachieRightArm.includes('pet') && !this.tachieLeftHole.includes('pet')) {
+		layerArray = layerArray.concat(rightArmArray);
+		mergedRightArmArray = true;
+	}
+	
+	tempArray = [
+		LAYER_TYPE_LEFT_HOLE,
+		LAYER_TYPE_RIGHT_HOLE
+	]
+	layerArray = layerArray.concat(tempArray);
+	
 	if(!mergedLeftArmArray) {
 		layerArray = layerArray.concat(leftArmArray);
 		mergedLeftArmArray = true;
@@ -1741,9 +2694,6 @@ Game_Actor.prototype.getLayerLoadout_ToiletSitting = function() {
 	}	
 	
 	tempArray = [
-		LAYER_TYPE_LEFT_HOLE,
-		LAYER_TYPE_RIGHT_HOLE,
-		
 		LAYER_TYPE_GLORY_SEMEN_TOILET_LEFT,
 		LAYER_TYPE_GLORY_SEMEN_WALL_LEFT,
 		LAYER_TYPE_GLORY_SEMEN_HOLE_LEFT,
@@ -2065,6 +3015,7 @@ Game_Actor.prototype.getLayerLoadout_ToiletStandLeft = function() {
 	}	
 	
 	tempArray = [	
+		LAYER_TYPE_FRONT_A,
 		LAYER_TYPE_HEAD,
 		
 		LAYER_TYPE_TOY_CLIT
@@ -2169,6 +3120,7 @@ Game_Actor.prototype.getLayerLoadout_ToiletStandRight = function() {
 	}
 		
 	tempArray = [	
+		LAYER_TYPE_FRONT_A,
 		LAYER_TYPE_HEAD,
 		
 		LAYER_TYPE_TOY_CLIT

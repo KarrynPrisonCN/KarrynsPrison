@@ -99,9 +99,30 @@ const VAR_MIN_RECEPTIONIST_NOTORIETY = 0;
 
 const WANTED_DAYS_ADDED_TO_DEFEATED_AFTER_REJECT = 1;
 
+const ENEMY_ID_MALE_VISITOR_NORMAL = 162;
+const ENEMY_ID_FEMALE_VISITOR_NORMAL = 163;
+const ENEMY_ID_MALE_VISITOR_SLOW = 164;
+const ENEMY_ID_FEMALE_VISITOR_SLOW = 165;
+const ENEMY_ID_MALE_VISITOR_FAST = 166;
+const ENEMY_ID_FEMALE_VISITOR_FAST = 167;
+const ENEMY_ID_MALE_VISITOR_FAN = 168;
+const ENEMY_ID_FEMALE_VISITOR_FAN = 169;
+const ENEMY_ID_MALE_VISITOR_PERV_SLOW = 170;
+const ENEMY_ID_MALE_VISITOR_PERV_NORMAL = 171;
+const ENEMY_ID_MALE_VISITOR_PERV_FAST = 172;
+const ENEMY_ID_MALE_VISITOR_GOBLIN = 173;
+const ENEMY_ID_MALE_VISITOR_PERV_GOBLIN = 174;
+
 //////////
 // Game Party
 ///////////
+
+Object.defineProperty(Game_Party.prototype, "isInReceptionistBattle", {
+	get: function () { return this._isInReceptionistBattle; }, configurable: true
+});
+Game_Party.prototype.setIsInReceptionistBattleFlag = function(status) {
+	this._isInReceptionistBattle = status;
+};
 
 Game_Party.prototype.initializeReceptionistSettings = function() {
 	this.setVisitorNumberOrder(0);
@@ -176,7 +197,7 @@ Game_Party.prototype.receptionistBattle_getCurrentTimeInSeconds = function() {
 	return this._receptionistBattle_currentTimeInSeconds;
 };
 Game_Party.prototype.receptionBattle_getTimeMinutesNumber = function() {
-	let timeLimit = this._receptionistBattle_timeLimit - this._receptionistBattle_currentTimeInSeconds;
+	let timeLimit = this._receptionistBattle_timeLimit - this.receptionistBattle_getCurrentTimeInSeconds();
 	let minutes = Math.floor(timeLimit / 60);
 	let seconds = timeLimit - minutes * 60;
 	return minutes;
@@ -184,8 +205,8 @@ Game_Party.prototype.receptionBattle_getTimeMinutesNumber = function() {
 Game_Party.prototype.receptionBattle_getTimeSecondsNumber = function() {
 	if($gameParty.receptionistBattle_getCurrentTimeInSeconds() >= $gameParty._receptionistBattle_timeLimit)
 		return 0;
-	let minutes = Math.floor(this._receptionistBattle_currentTimeInSeconds / 60);
-	let seconds = this._receptionistBattle_currentTimeInSeconds - minutes * 60;
+	let minutes = Math.floor(this.receptionistBattle_getCurrentTimeInSeconds() / 60);
+	let seconds = this.receptionistBattle_getCurrentTimeInSeconds() - minutes * 60;
 	if(seconds > 0) seconds = 60 - seconds;
 	return seconds;
 };
@@ -287,6 +308,7 @@ Game_Party.prototype.getAvailableReceptionistBattleTimeLimitChoice = function() 
 Game_Party.prototype.preReceptionistBattleSetup = function() {
 	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
 	BattleManager.setEnemySneakAttackBattle();
+	this.setIsInReceptionistBattleFlag(true);
 	this.preBattleSetup();
 	$gameMap.changeBattleback(BATTLEBACK1_VISITOR_RECEPTIONIST_NAME, null);
 	this._showTopRightTimeNumberFlag = true;
@@ -310,6 +332,7 @@ Game_Party.prototype.preReceptionistBattleSetup = function() {
 
 
 Game_Party.prototype.postReceptionistBattleCleanup  = function() {
+	this.setIsInReceptionistBattleFlag(false);
 	this._showTopRightTimeNumberFlag = false;
 	$gameSwitches.setValue(SWITCH_TODAY_RECEPTIONIST_BATTLE_ID, true);
 	
@@ -528,8 +551,8 @@ Game_Actor.prototype.preReceptionistBattleSetup = function() {
 	this.changeToReceptionistClothing();
 	this.setReceptionistPose();
 	
+	this.setupLiquids();
 	this.setupDesires();
-	this.cleanUpLiquids();
 	this._recordVisitorReceptionistBattleCount++;
 	this._playthroughRecordVisitorReceptionistBattleCount++;
 	this.removeState(STATE_CONFIDENT_ID);
@@ -559,10 +582,13 @@ Game_Actor.prototype.receptionistXParamRate = function(id) {
 		else if(id === XPARAM_HIT_ID || id === XPARAM_CRIT_ID) {
 			passiveRate = 0.8;
 		}
+		else if(id === XPARAM_EN_REGEN_ID) {
+			passiveRate = 0.25;
+		}
 		else if(id === XPARAM_STA_REGEN_ID) {
 			if(this.isUsingThisTitle(TITLE_ID_RECEPTIONIST_THIRTY_SHIFTS)) {
 				if(this.isStateAffected(STATE_RECEPTIONIST_REST_ID)) {
-					passiveRate = 2;
+					passiveRate = 2.5;
 				}
 				else {
 					passiveRate = 0.25;
@@ -570,7 +596,7 @@ Game_Actor.prototype.receptionistXParamRate = function(id) {
 			}
 			else {
 				if(this.isStateAffected(STATE_RECEPTIONIST_REST_ID)) {
-					passiveRate = 1.2;
+					passiveRate = 1.5;
 				}
 				else {
 					passiveRate = 0.15;
@@ -721,43 +747,100 @@ Game_Actor.prototype.updateReceptionistBattleVisitorQueueTachie = function() {
 		let visitorA = $gameTroop._deskQueue[0];
 		let enemyCock = visitorA.enemyCock();
 		
+		//VisitorA Tachie
 		if(visitorA.isVisitorMaleType) {
 			if(visitorA._visitor_isPervert && visitorA._visitor_isIdentified && 
 			(!visitorA._visitor_isVisiting || visitorA._perv_waitingForRequestResponse || visitorA._perv_currentlyGettingRequestFulfilled)) {
-				visitorATachie += 'ero_';
+				visitorATachie += 'ero';
 				
-				if(visitorA._perv_gettingBJ)
-					visitorATachie += 'normal';
-				else if(visitorA._perv_kissing) {
-					if(visitorA._perv_touchingBoobs)
-						visitorATachie += 'kissmomi';
+				//Goblins
+				if(visitorA._visitor_isGoblin) {
+					visitorATachie += '_goblin';
+					
+					if(enemyCock.includes('dark'))
+						visitorATachie += '_dark';
 					else
-						visitorATachie += 'kiss';
+						visitorATachie += '_normal';
+					
+					if(visitorA._perv_gettingBJ)
+						visitorATachie += '_fera';
+					else if(visitorA._perv_touchingBoobs) {
+						if(visitorA._perv_kissing)
+							visitorATachie += '_kiss';
+						else
+							visitorATachie += '_boobs';
+					}
+					else
+						visitorATachie += '_free';
 				}
-				else if(visitorA._perv_touchingBoobs)
-						visitorATachie += 'boobs';
-				else
-					visitorATachie += 'normal';
+				//Non Goblins
+				else {
+					if(enemyCock.includes('human')) {
+						visitorATachie += '_human';
+						
+						if(enemyCock.includes('pale'))
+							visitorATachie += '_pale';
+						else if(enemyCock.includes('black'))
+							visitorATachie += '_black';
+						else
+							visitorATachie += '_normal';
+					}
+					else
+						visitorATachie += '_human_normal';
+					
+					if(visitorA._perv_gettingBJ)
+						visitorATachie += '_free';
+					else if(visitorA._perv_kissing) {
+						if(visitorA._perv_touchingBoobs)
+							visitorATachie += '_kissmomi';
+						else
+							visitorATachie += '_kiss';
+					}
+					else if(visitorA._perv_touchingBoobs)
+							visitorATachie += '_boobs';
+					else
+						visitorATachie += '_free';
+				}
 				
-				//tachie cock
-				if(visitorA._perv_gettingBJ) {
+				//Tachie Cock
+				//Goblins
+				if(visitorA._visitor_isGoblin) {
+					let tachieCockName = '' + enemyCock;
+					
+					if(visitorA._perv_gettingBJ) {
+						this.setTachieSemenCockNormalExtension('goblin_fera_');
+						tachieCockName = 'mouth_' + enemyCock;
+					}
+					else if(visitorA._perv_touchingBoobs) {
+						this.setTachieSemenCockNormalExtension('goblin_boobs_');
+						tachieCockName += '_boobs';
+					}
+					else {
+						this.setTachieSemenCockNormalExtension('goblin_free_');
+						tachieCockName += '_free';
+					}
+					
+					if(Karryn.isCensored())
+						tachieCockName += '_cen';
+					this.setTachieCock(tachieCockName);
+				}
+				//Non Goblins
+				else if(visitorA._perv_gettingBJ) {
 					let tachieCockName = 'mouth_';
-					if(visitorA._perv_gettingHJ)
-						tachieCockName += 'hj_';
 					tachieCockName += visitorA.enemyCock();
 					if(Karryn.isCensored())
 						tachieCockName += '_cen';
 					this.setTachieCock(tachieCockName);
-					this.setTachieSemenCockNormalExtension('mouth_');
+					this.setTachieSemenCockNormalExtension('human_mouth_');
 				}
 				else if(visitorA._perv_gettingHJ) {
 					let tachieCockName = 'leftarm_';
 					if(visitorA._perv_kissing) {
 						tachieCockName += 'kiss_';
-						this.setTachieSemenCockNormalExtension('leftarm_kiss_');
+						this.setTachieSemenCockNormalExtension('human_leftarm_kiss_');
 					}
 					else {
-						this.setTachieSemenCockNormalExtension('leftarm_');
+						this.setTachieSemenCockNormalExtension('human_leftarm_');
 					}
 					tachieCockName += visitorA.enemyCock();
 					if(Karryn.isCensored())
@@ -769,10 +852,10 @@ Game_Actor.prototype.updateReceptionistBattleVisitorQueueTachie = function() {
 					
 					if(visitorA._perv_kissing) {
 						tachieCockName += 'kiss_';
-						this.setTachieSemenCockNormalExtension('free_kiss_');
+						this.setTachieSemenCockNormalExtension('human_free_kiss_');
 					}
 					else {
-						this.setTachieSemenCockNormalExtension('free_');
+						this.setTachieSemenCockNormalExtension('human_free_');
 					}
 					
 					tachieCockName += visitorA.enemyCock();
@@ -784,9 +867,17 @@ Game_Actor.prototype.updateReceptionistBattleVisitorQueueTachie = function() {
 				this._cockNormalTarget = visitorA;
 				this.setMaxTachieSemenCockNormalId(1);
 			}
+			//Non Ero Visitor A
 			else {
-				visitorATachie += 'male_';
-				visitorATachie += visitorA._visitor_tachieNum;
+				if(visitorA._visitor_isGoblin) {
+					visitorATachie += 'goblin_';
+					if(this.receptionistBattle_isShakingHands()) visitorATachie += 'handshake_';
+					visitorATachie += visitorA._visitor_tachieNum;
+				}
+				else {
+					visitorATachie += 'male_';
+					visitorATachie += visitorA._visitor_tachieNum;
+				}
 			}
 		}
 		else if(visitorA.isVisitorFemaleType) {
@@ -796,27 +887,39 @@ Game_Actor.prototype.updateReceptionistBattleVisitorQueueTachie = function() {
 		
 		this.setTachieVisitorA(visitorATachie);
 		
+		let backATachie = 'visitorA';
 		if(visitorA._visitor_isPervert && visitorA._visitor_isIdentified) {
 			this.resetTachieBackA();
 		}
 		else if(visitorA._visitor_isAngry) {
-			this.setTachieBackA('visitorA_angry');
+			if(visitorA._visitor_isGoblin) backATachie += '_goblin';
+			backATachie += '_angry';
+			this.setTachieBackA(backATachie);
 		}
 		else if(visitorA._visitor_isPervert && !visitorA._perv_requestRejected) {
-			this.setTachieBackA('visitorA_blush');
+			if(visitorA._visitor_isGoblin) backATachie += '_goblin';
+			backATachie += '_blush';
+			this.setTachieBackA(backATachie);
 		}
 		else if(visitorA._visitor_spottedNaughtyAct) {
-			this.setTachieBackA('visitorA_spotted');
+			if(visitorA._visitor_isGoblin) backATachie += '_goblin';
+			backATachie += '_spotted';
+			this.setTachieBackA(backATachie);
 		}
 		else if(visitorA._visitor_isFan && !visitorA._fan_requestRejected) {
-			this.setTachieBackA('visitorA_kira');
+			if(visitorA._visitor_isGoblin) backATachie += '_goblin';
+			backATachie += '_kira';
+			this.setTachieBackA(backATachie);
 		}
 		else {
 			this.resetTachieBackA();
 		}
 		
 		if(this.receptionistBattle_isShakingHands()) {
-			if(visitorA.isVisitorMaleType) {
+			if(visitorA._visitor_isGoblin) {
+				this.resetTachieBackE();
+			}
+			else if(visitorA.isVisitorMaleType) {
 				this.setTachieBackE('male_handshake');
 			}
 			else if(visitorA.isVisitorFemaleType) {
@@ -832,26 +935,40 @@ Game_Actor.prototype.updateReceptionistBattleVisitorQueueTachie = function() {
 		if(queueLength > 1) {
 			let visitorBTachie = '';
 			let visitorB = $gameTroop._deskQueue[1];
-			if(visitorB.isVisitorMaleType) {
+			if(visitorB._visitor_isGoblin) {
+				visitorBTachie += 'goblin_';
+				visitorBTachie += visitorB._visitor_tachieNum;
+			}
+			else if(visitorB.isVisitorMaleType) {
 				visitorBTachie += 'male_';
+				visitorBTachie += visitorB._visitor_tachieNum;
 			}
 			else if(visitorB.isVisitorFemaleType) {
 				visitorBTachie += 'female_';
+				visitorBTachie += visitorB._visitor_tachieNum;
 			}
-			visitorBTachie += visitorB._visitor_tachieNum;
 			this.setTachieVisitorB(visitorBTachie);
 			
+			let backBTachie = 'visitorB';
 			if(visitorB._visitor_isAngry) {
-				this.setTachieBackB('visitorB_angry');
+				if(visitorB._visitor_isGoblin) backBTachie += '_goblin';
+				backBTachie += '_angry';
+				this.setTachieBackB(backBTachie);
 			}
 			else if(visitorB._visitor_isPervert && !visitorB._perv_requestRejected) {
-				this.setTachieBackB('visitorB_blush');
+				if(visitorB._visitor_isGoblin) backBTachie += '_goblin';
+				backBTachie += '_blush';
+				this.setTachieBackB(backBTachie);
 			}
 			else if(visitorB._visitor_spottedNaughtyAct) {
-				this.setTachieBackB('visitorB_spotted');
+				if(visitorB._visitor_isGoblin) backBTachie += '_goblin';
+				backBTachie += '_spotted';
+				this.setTachieBackB(backBTachie);
 			}
 			else if(visitorB._visitor_isFan && !visitorB._fan_requestRejected) {
-				this.setTachieBackB('visitorB_kira');
+				if(visitorB._visitor_isGoblin) backBTachie += '_goblin';
+				backBTachie += '_kira';
+				this.setTachieBackB(backBTachie);
 			}
 			else {
 				this.resetTachieBackB();
@@ -865,26 +982,40 @@ Game_Actor.prototype.updateReceptionistBattleVisitorQueueTachie = function() {
 		if(queueLength > 2) {
 			let visitorCTachie = '';
 			let visitorC = $gameTroop._deskQueue[2];
-			if(visitorC.isVisitorMaleType) {
+			if(visitorC._visitor_isGoblin) {
+				visitorCTachie += 'goblin_';
+				visitorCTachie += visitorC._visitor_tachieNum;
+			}
+			else if(visitorC.isVisitorMaleType) {
 				visitorCTachie += 'male_';
+				visitorCTachie += visitorC._visitor_tachieNum;
 			}
 			else if(visitorC.isVisitorFemaleType) {
 				visitorCTachie += 'female_';
+				visitorCTachie += visitorC._visitor_tachieNum;
 			}
-			visitorCTachie += visitorC._visitor_tachieNum;
 			this.setTachieVisitorC(visitorCTachie);
 			
+			let backCTachie = 'visitorC';
 			if(visitorC._visitor_isAngry) {
-				this.setTachieBackC('visitorC_angry');
+				if(visitorC._visitor_isGoblin) backCTachie += '_goblin';
+				backCTachie += '_angry';
+				this.setTachieBackC(backCTachie);
 			}
 			else if(visitorC._visitor_isPervert && !visitorC._perv_requestRejected) {
-				this.setTachieBackC('visitorC_blush');
+				if(visitorC._visitor_isGoblin) backCTachie += '_goblin';
+				backCTachie += '_blush';
+				this.setTachieBackC(backCTachie);
 			}
 			else if(visitorC._visitor_spottedNaughtyAct) {
-				this.setTachieBackC('visitorC_spotted');
+				if(visitorC._visitor_isGoblin) backCTachie += '_goblin';
+				backCTachie += '_spotted';
+				this.setTachieBackC(backCTachie);
 			}
 			else if(visitorC._visitor_isFan && !visitorC._fan_requestRejected) {
-				this.setTachieBackC('visitorC_kira');
+				if(visitorC._visitor_isGoblin) backCTachie += '_goblin';
+				backCTachie += '_kira';
+				this.setTachieBackC(backCTachie);
 			}
 			else {
 				this.resetTachieBackC();
@@ -898,26 +1029,40 @@ Game_Actor.prototype.updateReceptionistBattleVisitorQueueTachie = function() {
 		if(queueLength > 3) {
 			let visitorDTachie = '';
 			let visitorD = $gameTroop._deskQueue[3];
-			if(visitorD.isVisitorMaleType) {
+			if(visitorD._visitor_isGoblin) {
+				visitorDTachie += 'goblin_';
+				visitorDTachie += visitorD._visitor_tachieNum;
+			}
+			else if(visitorD.isVisitorMaleType) {
 				visitorDTachie += 'male_';
+				visitorDTachie += visitorD._visitor_tachieNum;
 			}
 			else if(visitorD.isVisitorFemaleType) {
 				visitorDTachie += 'female_';
+				visitorDTachie += visitorD._visitor_tachieNum;
 			}
-			visitorDTachie += visitorD._visitor_tachieNum;
 			this.setTachieVisitorD(visitorDTachie);
 			
+			let backDTachie = 'visitorD';
 			if(visitorD._visitor_isAngry) {
-				this.setTachieBackD('visitorD_angry');
+				if(visitorD._visitor_isGoblin) backDTachie += '_goblin';
+				backDTachie += '_angry';
+				this.setTachieBackD(backDTachie);
 			}
 			else if(visitorD._visitor_isPervert && !visitorD._perv_requestRejected) {
-				this.setTachieBackD('visitorD_blush');
+				if(visitorD._visitor_isGoblin) backDTachie += '_goblin';
+				backDTachie += '_blush';
+				this.setTachieBackD(backDTachie);
 			}
 			else if(visitorD._visitor_spottedNaughtyAct) {
-				this.setTachieBackD('visitorD_spotted');
+				if(visitorD._visitor_isGoblin) backDTachie += '_goblin';
+				backDTachie += '_spotted';
+				this.setTachieBackD(backDTachie);
 			}
 			else if(visitorD._visitor_isFan && !visitorD._fan_requestRejected) {
-				this.setTachieBackD('visitorD_kira');
+				if(visitorD._visitor_isGoblin) backDTachie += '_goblin';
+				backDTachie += '_kira';
+				this.setTachieBackD(backDTachie);
 			}
 			else {
 				this.resetTachieBackD();
@@ -945,65 +1090,112 @@ Game_Actor.prototype.updateReceptionistBattleVisitorQueueTachie = function() {
 Game_Actor.prototype.updateReceptionistBattleGoblinTachie = function() {
 	if($gameTroop._goblins_distanceSlot) {
 		if($gameTroop._goblins_distanceSlot[GOBLIN_DISTANCE_FARTHEST]) {
-			if($gameTroop._goblins_distanceSlot[GOBLIN_DISTANCE_FARTHEST].isErect || $gameTroop._goblins_distanceSlot[GOBLIN_DISTANCE_FARTHEST].isHorny)
-				this.setTachieFrontA('goblin_blush');
+			let frontName = 'goblin';
+			
+			if($gameTroop._goblins_distanceSlot[GOBLIN_DISTANCE_FARTHEST].enemyCock().includes('dark'))
+				frontName += '_dark';
 			else
-				this.setTachieFrontA('goblin_normal');
+				frontName += '_normal';
+			
+			if($gameTroop._goblins_distanceSlot[GOBLIN_DISTANCE_FARTHEST].isErect || $gameTroop._goblins_distanceSlot[GOBLIN_DISTANCE_FARTHEST].isHorny)
+				frontName += '_blush';
+			else
+				frontName += '_free';
+			
+			this.setTachieFrontA(frontName);
 		}
 		else {
 			this.resetTachieFrontA();
 		}
 		
 		if($gameTroop._goblins_distanceSlot[GOBLIN_DISTANCE_FAR]) {
-			if($gameTroop._goblins_distanceSlot[GOBLIN_DISTANCE_FAR].isErect || $gameTroop._goblins_distanceSlot[GOBLIN_DISTANCE_FAR].isHorny)
-				this.setTachieFrontB('goblin_blush');
+			let frontName = 'goblin';
+			
+			if($gameTroop._goblins_distanceSlot[GOBLIN_DISTANCE_FAR].enemyCock().includes('dark'))
+				frontName += '_dark';
 			else
-				this.setTachieFrontB('goblin_normal');
+				frontName += '_normal';
+			
+			if($gameTroop._goblins_distanceSlot[GOBLIN_DISTANCE_FAR].isErect || $gameTroop._goblins_distanceSlot[GOBLIN_DISTANCE_FAR].isHorny)
+				frontName += '_blush';
+			else
+				frontName += '_free';
+			
+			this.setTachieFrontB(frontName);
 		}
 		else {
 			this.resetTachieFrontB();
 		}
 		
 		if($gameTroop._goblins_distanceSlot[GOBLIN_DISTANCE_MEDIUM]) {
-			if($gameTroop._goblins_distanceSlot[GOBLIN_DISTANCE_MEDIUM].isErect || $gameTroop._goblins_distanceSlot[GOBLIN_DISTANCE_MEDIUM].isHorny)
-				this.setTachieFrontC('goblin_blush');
+			let frontName = 'goblin';
+			
+			if($gameTroop._goblins_distanceSlot[GOBLIN_DISTANCE_MEDIUM].enemyCock().includes('dark'))
+				frontName += '_dark';
 			else
-				this.setTachieFrontC('goblin_normal');
+				frontName += '_normal';
+			
+			if($gameTroop._goblins_distanceSlot[GOBLIN_DISTANCE_MEDIUM].isErect || $gameTroop._goblins_distanceSlot[GOBLIN_DISTANCE_MEDIUM].isHorny)
+				frontName += '_blush';
+			else
+				frontName += '_free';
+			
+			this.setTachieFrontC(frontName);
 		}
 		else {
 			this.resetTachieFrontC();
 		}
 		
 		if($gameTroop._goblins_distanceSlot[GOBLIN_DISTANCE_CLOSE]) {
-			let tachieFrontDName = 'goblin_';
+			let tachieFrontDName = 'goblin';
+			
+			if($gameTroop._goblins_distanceSlot[GOBLIN_DISTANCE_CLOSE].enemyCock().includes('dark'))
+				tachieFrontDName += '_dark';
+			else
+				tachieFrontDName += '_normal';
+			
 			if(this.isBodySlotPenis(PUSSY_ID)) {
-				tachieFrontDName += 'manko';
-				if(Karryn.isCensored())
-					tachieFrontDName += '_cen';
+				tachieFrontDName += '_manko';
+				
+				let frontEName = 'chin_' + $gameTroop._goblins_distanceSlot[GOBLIN_DISTANCE_CLOSE].enemyCock();
+				frontEName += '_manko';
+				if(Karryn.isCensored()) frontEName += '_cen';
+				this.setTachieFrontE(frontEName);
 			}
 			else if(this.isBodySlotTongue(PUSSY_ID)) {
-				tachieFrontDName += 'cl';
+				tachieFrontDName += '_cl';
+				this.resetTachieFrontE();
 			}
 			else if(this.isBodySlotPenis(ANAL_ID)) {
-				tachieFrontDName += 'anaru';
-				if(Karryn.isCensored())
-					tachieFrontDName += '_cen';
+				tachieFrontDName += '_anaru';
+				
+				let frontEName = 'chin_' + $gameTroop._goblins_distanceSlot[GOBLIN_DISTANCE_CLOSE].enemyCock();
+				frontEName += '_anaru';
+				if(Karryn.isCensored()) frontEName += '_cen';
+				this.setTachieFrontE(frontEName);
 			}
 			else if($gameTroop._goblins_distanceSlot[GOBLIN_DISTANCE_CLOSE].isErect || $gameTroop._goblins_distanceSlot[GOBLIN_DISTANCE_CLOSE].isHorny) {
-				tachieFrontDName += 'blush';
-				if(Karryn.isCensored())
-					tachieFrontDName += '_cen';
+				tachieFrontDName += '_blush';
+				
+				let frontEName = 'chin_' + $gameTroop._goblins_distanceSlot[GOBLIN_DISTANCE_CLOSE].enemyCock();
+				frontEName += '_blush';
+				if(Karryn.isCensored()) frontEName += '_cen';
+				this.setTachieFrontE(frontEName);
 			}
 			else {
-				tachieFrontDName += 'normal';
-				if(Karryn.isCensored())
-					tachieFrontDName += '_cen';
+				tachieFrontDName += '_free';
+				
+				let frontEName = 'chin_' + $gameTroop._goblins_distanceSlot[GOBLIN_DISTANCE_CLOSE].enemyCock();
+				frontEName += '_free';
+				if(Karryn.isCensored()) frontEName += '_cen';
+				this.setTachieFrontE(frontEName);
 			}
 			
 			this.setTachieFrontD(tachieFrontDName);
 		}
 		else {
 			this.resetTachieFrontD();
+			this.resetTachieFrontE();
 		}
 	}
 };
@@ -1184,6 +1376,8 @@ Game_Actor.prototype.receptionistBattle_greetVisitor_response = function() {
 		target._perv_waitingForRequestResponse = true;
 		target._visitor_isIdentified = true;
 		
+		BattleManager.playEnemyVoice_SideJob(target);
+		
 		let isAlsoFan = target._visitor_isFan;
 		let requestId = target._visitor_requestID;
 		
@@ -1212,7 +1406,7 @@ Game_Actor.prototype.receptionistBattle_greetVisitor_response = function() {
 				BattleManager.actionRemLines(ENEMY_LINE_PERV_GREET_BLOWJOB);
 		}
 		
-		AudioManager.playSe({name:'+Voice_Enemy_a', pan:0, pitch:100, volume:80});
+		//AudioManager.playSe({name:'+Voice_Enemy_a', pan:0, pitch:100, volume:80});
 		this.emoteReceptionistPose();
 	}
 	// Fan
@@ -1683,7 +1877,7 @@ Game_Actor.prototype.customReq_receptionistBattle_Breather = function() {
 	return true;
 };
 Game_Actor.prototype.dmgFormula_receptionistBattle_Breather = function() {
-	let percent = Math.max(0.15, this.hrg * 8);
+	let percent = Math.max(0.12, this.hrg * 9);
 	let dmg = this.maxstamina * percent;
 	return Math.round(dmg);
 };
@@ -1716,7 +1910,7 @@ Game_Actor.prototype.showEval_receptionistBattle_fixClothes = function() {
 };
 Game_Actor.prototype.customReq_receptionistBattle_fixClothes = function() {
 	if(this.justOrgasmed()) return false;
-	return !this.isClothingMaxDamaged() && !this.isClothingNotDamaged() && !this.receptionistBattle_isHavingSexBehind() && !this.receptionistBattle_isLayingOnDesk();
+	return !this.isClothingMaxDamaged() && !this.isClothingAtMaxFixable() && !this.receptionistBattle_isHavingSexBehind() && !this.receptionistBattle_isLayingOnDesk();
 };
 Game_Actor.prototype.afterEval_receptionistBattle_fixClothes = function() {
 	this.restoreClothingDurability();
@@ -1902,7 +2096,7 @@ Game_Troop.prototype.setup_receptionistBattle_visitor = function(enemyId) {
 	this._visitorSeats[seatId] = enemy;
 	enemy._visitorPerformedCollapseAlready = false;
 	this._enemies.push(enemy);
-	enemy.setupForReceptionistBattle_visitor(wanted);
+	enemy.setupForReceptionistBattle_visitor(enemyId, wanted);
 	
 	return enemy;
 };
@@ -1945,68 +2139,80 @@ Game_Troop.prototype.receptionistBattle_validVisitorId = function() {
 	let validEnemyTypes = [];
 	
 	if(Math.randomInt(100) < $gameParty.setReceptionistSatisfaction * 5 - 40) {
-		validEnemyTypes.push(162);
-		validEnemyTypes.push(163);
+		validEnemyTypes.push(ENEMY_ID_MALE_VISITOR_NORMAL);
+		validEnemyTypes.push(ENEMY_ID_FEMALE_VISITOR_NORMAL);
+	}
+	
+	if(Math.randomInt(100) < $gameParty.setReceptionistSatisfaction * 5 - 40) {
+		validEnemyTypes.push(ENEMY_ID_MALE_VISITOR_GOBLIN);
+		validEnemyTypes.push(ENEMY_ID_MALE_VISITOR_GOBLIN);
 	}
 	
 	if(Math.randomInt(100) < $gameParty.setReceptionistSatisfaction * 5 - 30) {
-		validEnemyTypes.push(164);
-		validEnemyTypes.push(165);
+		validEnemyTypes.push(ENEMY_ID_MALE_VISITOR_SLOW);
+		validEnemyTypes.push(ENEMY_ID_FEMALE_VISITOR_SLOW);
 	}
 	
 	if(Math.randomInt(100) < $gameParty.setReceptionistSatisfaction * 5 - 50) {
-		validEnemyTypes.push(166);
-		validEnemyTypes.push(167);
+		validEnemyTypes.push(ENEMY_ID_MALE_VISITOR_FAST);
+		validEnemyTypes.push(ENEMY_ID_FEMALE_VISITOR_FAST);
 	}
 	
 	if(Math.randomInt(100) < $gameParty._receptionistFame * 5 - 20) {
-		validEnemyTypes.push(168);
-		validEnemyTypes.push(169);
+		validEnemyTypes.push(ENEMY_ID_MALE_VISITOR_FAN);
+		validEnemyTypes.push(ENEMY_ID_FEMALE_VISITOR_FAN);
 	}
 	
 	if(Math.randomInt(100) < $gameParty._receptionistFame * 5 - 30) {
-		validEnemyTypes.push(168);
-		validEnemyTypes.push(169);
+		validEnemyTypes.push(ENEMY_ID_MALE_VISITOR_FAN);
+		validEnemyTypes.push(ENEMY_ID_FEMALE_VISITOR_FAN);
 	}
 	
 	if(Math.randomInt(100) < $gameParty._receptionistNotoriety * 5 - 20) {
-		validEnemyTypes.push(170);
-		validEnemyTypes.push(171);
-		validEnemyTypes.push(172);
+		validEnemyTypes.push(ENEMY_ID_MALE_VISITOR_PERV_SLOW);
+		validEnemyTypes.push(ENEMY_ID_MALE_VISITOR_PERV_NORMAL);
+		validEnemyTypes.push(ENEMY_ID_MALE_VISITOR_PERV_FAST);
+		validEnemyTypes.push(ENEMY_ID_MALE_VISITOR_PERV_GOBLIN);
 	}
 	
 	if(Math.randomInt(100) < $gameParty._receptionistNotoriety * 5 - 30) {
-		validEnemyTypes.push(170);
-		validEnemyTypes.push(171);
-		validEnemyTypes.push(172);
+		validEnemyTypes.push(ENEMY_ID_MALE_VISITOR_PERV_SLOW);
+		validEnemyTypes.push(ENEMY_ID_MALE_VISITOR_PERV_NORMAL);
+		validEnemyTypes.push(ENEMY_ID_MALE_VISITOR_PERV_FAST);
+		validEnemyTypes.push(ENEMY_ID_MALE_VISITOR_PERV_GOBLIN);
 	}
 	
 	if($gameParty._receptionistNotoriety > 6 || $gameParty._receptionistFame > 6) {
 		if(Math.randomInt(100) > $gameParty._receptionistNotoriety * 5 + $gameParty._receptionistFame * 3) {
-			validEnemyTypes.push(162);
-			validEnemyTypes.push(162);
-			validEnemyTypes.push(163);
-			validEnemyTypes.push(163);
-			validEnemyTypes.push(164);
-			validEnemyTypes.push(165);
-			validEnemyTypes.push(166);
-			validEnemyTypes.push(167);
+			validEnemyTypes.push(ENEMY_ID_MALE_VISITOR_NORMAL);
+			validEnemyTypes.push(ENEMY_ID_MALE_VISITOR_NORMAL);
+			validEnemyTypes.push(ENEMY_ID_FEMALE_VISITOR_NORMAL);
+			validEnemyTypes.push(ENEMY_ID_FEMALE_VISITOR_NORMAL);
+			validEnemyTypes.push(ENEMY_ID_MALE_VISITOR_SLOW);
+			validEnemyTypes.push(ENEMY_ID_FEMALE_VISITOR_SLOW);
+			validEnemyTypes.push(ENEMY_ID_MALE_VISITOR_FAST);
+			validEnemyTypes.push(ENEMY_ID_FEMALE_VISITOR_FAST);
+			validEnemyTypes.push(ENEMY_ID_MALE_VISITOR_GOBLIN);
+			validEnemyTypes.push(ENEMY_ID_MALE_VISITOR_GOBLIN);
 		}
 		else {
-			validEnemyTypes.push(162);
-			validEnemyTypes.push(163);
-			validEnemyTypes.push(164);
+			validEnemyTypes.push(ENEMY_ID_MALE_VISITOR_NORMAL);
+			validEnemyTypes.push(ENEMY_ID_FEMALE_VISITOR_NORMAL);
+			validEnemyTypes.push(ENEMY_ID_MALE_VISITOR_SLOW);
+			validEnemyTypes.push(ENEMY_ID_MALE_VISITOR_GOBLIN);
 		}
 	}
 	else {
-		validEnemyTypes.push(162);
-		validEnemyTypes.push(162);
-		validEnemyTypes.push(163);
-		validEnemyTypes.push(163);
-		validEnemyTypes.push(164);
-		validEnemyTypes.push(165);
-		validEnemyTypes.push(166);
-		validEnemyTypes.push(167);
+		validEnemyTypes.push(ENEMY_ID_MALE_VISITOR_NORMAL);
+		validEnemyTypes.push(ENEMY_ID_MALE_VISITOR_NORMAL);
+		validEnemyTypes.push(ENEMY_ID_FEMALE_VISITOR_NORMAL);
+		validEnemyTypes.push(ENEMY_ID_FEMALE_VISITOR_NORMAL);
+		validEnemyTypes.push(ENEMY_ID_MALE_VISITOR_SLOW);
+		validEnemyTypes.push(ENEMY_ID_FEMALE_VISITOR_SLOW);
+		validEnemyTypes.push(ENEMY_ID_MALE_VISITOR_FAST);
+		validEnemyTypes.push(ENEMY_ID_FEMALE_VISITOR_FAST);
+		validEnemyTypes.push(ENEMY_ID_MALE_VISITOR_GOBLIN);
+		validEnemyTypes.push(ENEMY_ID_MALE_VISITOR_GOBLIN);
 	}
 	
 	//debugging: force certain types
@@ -2423,7 +2629,7 @@ Game_Troop.prototype.onTurnEndSpecial_receptionistBattle = function(forceSpawn) 
 /////////
 // Setup
 /////////
-Game_Enemy.prototype.setupForReceptionistBattle_visitor = function(wanted) {
+Game_Enemy.prototype.setupForReceptionistBattle_visitor = function(enemyId, wanted) {
 	this._visitor_number = $gameParty.getVisitorNumberOrderForNewVisitor();
 	this._visitor_isStarter = false;
 	this._visitor_isIdentified = false;
@@ -2436,11 +2642,14 @@ Game_Enemy.prototype.setupForReceptionistBattle_visitor = function(wanted) {
 	this._visitor_gotAngryCount = 0;
 	this._visitor_spottedNaughtyAct = false;
 	
+	this._visitor_isGoblin = false;
+	if(enemyId === ENEMY_ID_MALE_VISITOR_GOBLIN || enemyId === ENEMY_ID_MALE_VISITOR_PERV_GOBLIN) {
+		this._visitor_isGoblin = true;
+	}
+	
 	this._visitor_startingWritingPapers = false;
 	this._visitor_finishedWritingPapers = false;
 	this._visitor_handedOverPapers = false;
-	
-	
 	
 	this._visitor_status = STATE_VISITOR_STATUS_UNKNOWN_ID;
 	this._visitor_location = STATE_VISITOR_LOCATION_SITTING_ID;
@@ -2469,10 +2678,11 @@ Game_Enemy.prototype.setupForReceptionistBattle_visitor = function(wanted) {
 		this._visitor_dissatisfactionMultipler = Math.round(this.enemy().dataVisitorDissatisfaction - Math.randomInt(this.enemy().dataVisitorDissatisfaction * 0.1) + Math.randomInt(this.enemy().dataVisitorDissatisfaction * 0.1));
 		this._visitor_dissatisfactionMultipler *= 0.1;
 		
-		let array = this.enemy().dataVisitorTachie.slice(0);
-		let ranNum = Math.randomInt(array.length);
-		this._visitor_tachieNum = array[ranNum];
+		let dataVisitorTachieArray = this.enemy().dataVisitorTachie.slice(0);
+		let ranNum = Math.randomInt(dataVisitorTachieArray.length);
+		this._visitor_tachieNum = dataVisitorTachieArray[ranNum];
 		if(this._visitor_tachieNum < 10) this._visitor_tachieNum = '' + '0' + this._visitor_tachieNum;
+		
 		
 		if(this.enemy().dataVisitorAlwaysFan == 1) 
 			this._visitor_isFan = true;
@@ -2504,7 +2714,6 @@ Game_Enemy.prototype.setupForReceptionistBattle_visitor = function(wanted) {
 		this._visitor_isFan = wanted._visitor_isFan;
 		this._visitor_isPervert = wanted._visitor_isPervert;
 		this._visitor_pervPromoteChance = wanted._visitor_pervPromoteChance;
-		
 	}
 	
 	this._visitor_finishWalkingToDeskTime = -1;
@@ -2583,7 +2792,10 @@ Game_Enemy.prototype.setupForReceptionistBattle_pervert = function() {
 		this._visitor_requestID = VISITOR_REQUEST_HANDJOB_ID;
 	}
 	else if(desire >= 15) {
-		this._visitor_requestID = VISITOR_REQUEST_KISS_ID;
+		if(this._visitor_isGoblin)
+			this._visitor_requestID = VISITOR_REQUEST_BOOBS_SHAKE_ID;
+		else
+			this._visitor_requestID = VISITOR_REQUEST_KISS_ID;
 	}
 	else {
 		this._visitor_requestID = VISITOR_REQUEST_BOOBS_SHAKE_ID;
@@ -2591,6 +2803,7 @@ Game_Enemy.prototype.setupForReceptionistBattle_pervert = function() {
 	
 	let chanceToRequestHigher = Math.randomInt($gameParty._receptionistNotoriety + $gameParty._receptionistFame);
 	if(this._visitor_isFan) chanceToRequestHigher += Math.randomInt($gameParty._receptionistFame * 0.5)
+	if(this._visitor_isGoblin) chanceToRequestHigher += Math.randomInt($gameParty._receptionistNotoriety * 0.5)
 		
 	//debugging: test for 2nd request or force certain request
 	//this._visitor_requestID = VISITOR_REQUEST_BLOWJOB_ID; //testing
@@ -2611,7 +2824,10 @@ Game_Enemy.prototype.setupForReceptionistBattle_pervert = function() {
 		if(this._visitor_isFan) requestArray.push(VISITOR_REQUEST_HANDJOB_ID)
 	}
 	else if(this._visitor_requestID === VISITOR_REQUEST_HANDJOB_ID) {
-		requestArray = [VISITOR_REQUEST_KISS_ID, VISITOR_REQUEST_BOOBS_SHAKE_ID, VISITOR_REQUEST_BLOWJOB_ID, VISITOR_REQUEST_BLOWJOB_ID];
+		if(this._visitor_isGoblin)
+			requestArray = [VISITOR_REQUEST_BOOBS_SHAKE_ID, VISITOR_REQUEST_BLOWJOB_ID, VISITOR_REQUEST_BLOWJOB_ID];
+		else
+			requestArray = [VISITOR_REQUEST_KISS_ID, VISITOR_REQUEST_BOOBS_SHAKE_ID, VISITOR_REQUEST_BLOWJOB_ID, VISITOR_REQUEST_BLOWJOB_ID];
 		if(this._visitor_isFan) requestArray.push(VISITOR_REQUEST_BLOWJOB_ID)
 	}
 	else if(this._visitor_requestID === VISITOR_REQUEST_BLOWJOB_ID) {
@@ -2690,7 +2906,23 @@ Game_Enemy.prototype.displayName_receptionistBattle = function() {
 Game_Enemy.prototype.battlerName_receptionistBattle = function() {
 	if(this.isWanted) {
 		if(this.isVisitorMaleType && !this._visitor_isVisiting && this.visitorLocationIsDesk() && this._visitor_pervPromoteChance >= 100) {
-			return 'visitorm_99';
+			let name = 'visitorm_99_';
+			let enemyCock = this.enemyCock();
+			if(enemyCock.includes('goblin')) {
+				if(enemyCock.includes('dark'))
+					name += 'goblin_dark';
+				else
+					name += 'goblin_normal';
+			} 
+			else {
+				if(enemyCock.includes('pale'))
+					name += 'human_pale';
+				else if(enemyCock.includes('black'))
+					name += 'human_black';
+				else
+					name += 'human_normal';
+			}
+			return name;
 		}
 		else {
 			return this._wantedBattlerName;
@@ -3087,7 +3319,7 @@ Game_Enemy.prototype.enemyBattleAIReceptionist_visitor = function(target) {
 		else if(this._perv_currentlyGettingRequestFulfilled) {
 			let requestId = this._visitor_requestID;
 
-			if(this._perv_turnsUntilRequestFinished <= 0 || this._ejaculationStock <= 0) {
+			if(this._perv_turnsUntilRequestFinished <= 0 || !this.hasEjaculationStock()) {
 				this._perv_requestWasFulfilled = true;
 				this._perv_currentlyGettingRequestFulfilled = false;
 				this._perv_kissing = false;
@@ -3121,6 +3353,8 @@ Game_Enemy.prototype.enemyBattleAIReceptionist_visitor = function(target) {
 			else if(this._perv_hasSecondRequest && this._perv_turnsUntilSecondRequest === 0 && !this._perv_waitingForSecondRequestResponse && !this._perv_secondRequestRejected && !this._perv_secondRequestAccepted) {
 				this._perv_waitingForSecondRequestResponse = true;
 				
+				BattleManager.playEnemyVoice_SideJob(this);
+				
 				if(this._perv_secondRequestID === VISITOR_REQUEST_BOOBS_SHAKE_ID) {
 					BattleManager.actionRemLines(ENEMY_LINE_PERV_SECOND_BOOBSHAKE);
 				}
@@ -3133,7 +3367,6 @@ Game_Enemy.prototype.enemyBattleAIReceptionist_visitor = function(target) {
 				else if(this._perv_secondRequestID === VISITOR_REQUEST_BLOWJOB_ID) {
 					BattleManager.actionRemLines(ENEMY_LINE_PERV_SECOND_BLOWJOB);
 				}
-				
 			}
 			else {
 				if(this._perv_skillCooldown <= 0) {
@@ -3239,10 +3472,9 @@ Game_Enemy.prototype.enemyBattleAIReceptionist_goblin = function(target) {
 				skillArray.push(SKILL_ENEMY_POSEJOIN_RECEPTIONIST_PUSSY_ID);
 				skillArray.push(SKILL_ENEMY_POSEJOIN_RECEPTIONIST_PUSSY_ID);
 				skillArray.push(SKILL_ENEMY_POSEJOIN_RECEPTIONIST_PUSSY_ID);
-				if(target._recordSexPose_GoblinCunnilingusCount > 0) {
-					skillArray.push(SKILL_ENEMY_POSEJOIN_RECEPTIONIST_CUNNI_ID);
-					skillArray.push(SKILL_ENEMY_POSEJOIN_RECEPTIONIST_CUNNI_ID);
-				}
+				skillArray.push(SKILL_ENEMY_POSEJOIN_RECEPTIONIST_PUSSY_ID);
+				skillArray.push(SKILL_ENEMY_POSEJOIN_RECEPTIONIST_CUNNI_ID);
+				skillArray.push(SKILL_ENEMY_POSEJOIN_RECEPTIONIST_CUNNI_ID);
 			}
 			if(targetAnalNotInUse) {
 				if(Karryn.hasEdict(EDICT_DEMEAN_GOBLINS)) {

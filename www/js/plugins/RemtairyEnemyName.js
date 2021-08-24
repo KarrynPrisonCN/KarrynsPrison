@@ -79,7 +79,8 @@ const ENEMY_NAMES_GOBLIN_JP = [
 	"ゴブース", "ゴブミドリ", "ゴブ旦那", "ゴブイク", "ゴブンブル", "ゴブピー", "ゴブッス", "ゴブワズ", "ゴブナウ", "ゴブーカー", "ゴブイキ",
 	"ゴブナマ", "ゴブレム",
 
-	"御米" //January Ci-ens
+	"御米", //January Ci-ens
+	"大根御" //August 2021 Ci-ens
 ];
 
 const ENEMY_NAMES_NERD_EN = [
@@ -167,7 +168,7 @@ const ENEMY_NAMES_LIZARDMAN_EN = [
 	"Sheep", "Maynard", "Girthzio", //July Patreons
 	
 	"Bengor", "Slippy", "Jakozski", "Sir Serpento", "Spine Tail", "Zig Zig", "Shasha", "Prayut", 
-	"Ome Likyu", "Krocodile ", "Lizard Wizard", "Sexasaur", "Ed", "Chun Ai", "Biol Lante", "Sixsheep", 
+	"Ome Likyu", "Krocodile", "Lizard Wizard", "Sexasaur", "Ed", "Chun Ai", "Biol Lante", "Sixsheep", 
 	"Boa Rectum", "Lifts Tail", "Jaree-Ra", "Luckzor", "Jeffrey", "Witval", "Horatio"
 	//July Patreons
 ];
@@ -981,6 +982,9 @@ Game_Troop.prototype.makePrefix = function(enemy) {
 	if($gameParty.isRiotBattle()) {
 		availablePrefixSet.push(ENEMY_PREFIX_ANGRY, ENEMY_PREFIX_GOOD);
 	}
+	else if($gameParty.isNightBattle() && Karryn.hasPassive(PASSIVE_NIGHT_BATTLE_COUNT_ONE_ID)) {
+		availablePrefixSet.push(ENEMY_PREFIX_SIGHT, ENEMY_PREFIX_SIGHT, ENEMY_PREFIX_SIGHT, ENEMY_PREFIX_SIGHT, ENEMY_PREFIX_HORNY, ENEMY_PREFIX_HORNY);
+	}
 	
 	//Titles
 	if(Karryn.hasThisTitle(TITLE_ID_STOLE_ANAL_VIRGINS)) {
@@ -1184,6 +1188,7 @@ Game_Enemy.prototype.makeUniqueNames = function() {
 		}
 		enemy.setupRandomBattlerNameNum();
 	}
+	this.setupEnemyCock();
 };
 
 //Prefix Chance
@@ -1234,7 +1239,7 @@ Game_Enemy.prototype.name = function() {
 	if(this.isUnique)
 		return this.originalName() + (this._plural ? this._letter : '');
 	else {
-		if(Karryn.isInReceptionistPose() && this.isVisitorType) {
+		if($gameParty.isInReceptionistBattle && this.isVisitorType) {
 			return this.name_receptionistBattle();
 		}
 		
@@ -2056,7 +2061,9 @@ Window_RemEnemyName.prototype.updateWindowPosition = function() {
 		this.x += this._battler.spritePosX();
 		this.y += this._battler.spritePosY();
 		this.y -= 28;
-		this.x = this.x.clamp(this._minX, this._maxX);
+		if($gameParty.isInStripperBattle) {}
+		else
+			this.x = this.x.clamp(this._minX, this._maxX);
 		this.y = this.y.clamp(this._minY, this._maxY);
 	}
 	else if(Karryn.isInReceptionistPose()) {

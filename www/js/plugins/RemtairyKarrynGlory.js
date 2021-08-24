@@ -34,7 +34,8 @@ const GLORY_SKILL_START = 1634;
 const GLORY_SKILL_END = 1664;
 
 const GLORY_HOLE_REP_DECAY_DAYS = 4;
-const GLORY_HOLE_RIOT_BUILDUP_REDUCE = 2;
+const GLORY_HOLE_LEVEL_ONE_RIOT_BUILDUP_REDUCE = 1;
+const GLORY_HOLE_LEVEL_TWO_RIOT_BUILDUP_REDUCE = 2;
 
 const GLORY_CHANCE_OF_GUEST_IN_STALL_HEARING = 10;
 const GLORY_CHANCE_OF_GUEST_AT_STALL_QUEUE_HEARING = 6;
@@ -87,6 +88,7 @@ Game_Party.prototype.setIsInGloryBattleFlag = function(status) {
 Game_Party.prototype.preGloryBattleSetup = function() {
 	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
 	BattleManager.setEnemySneakAttackBattle();
+	this.setIsInGloryBattleFlag(true);
 	this.preBattleSetup();
 	
 	let gloryRep = $gameParty._gloryReputation;
@@ -103,7 +105,6 @@ Game_Party.prototype.preGloryBattleSetup = function() {
 	
 	actor._gloryBattle_safeExit = false;
 	actor._gloryBattle_badExit = false;
-	this.setIsInGloryBattleFlag(true);
 	
 	this.increaseFatigueGain(GLORY_FATIGUE_RECOVER_BASE * -1 * actor.fatigueRecoveryRate(), true)
 
@@ -426,8 +427,9 @@ Game_Actor.prototype.gloryXParamRate = function(id) {
 					passiveRate *= 4;
 			}
 		}
-		
-		
+		else if(id === XPARAM_EN_REGEN_ID) {
+			passiveRate = 0.33;
+		}
 	}
 
 	return passiveRate;
@@ -474,12 +476,6 @@ Game_Actor.prototype.gloryBattle_bodySlotsWithPenis = function() {
 	
 	return count;
 	
-};
-
-Game_Actor.prototype.gloryBattle_fatigueGainPerTurn = function() {
-	if(!this.isInToiletSittingPose()) {
-		$gameParty.increaseFatigueGain(PRISON_FATIGUE_PER_TURN_OTHER);
-	}
 };
 
 //Post sex acts
@@ -598,7 +594,7 @@ Game_Actor.prototype.postDamage_ejaculation_gloryBattle = function(target, area,
 						this.increaseGloryCumOnRightToilet(Math.randomInt(semen) * 0.66, gloryAreaArray[Math.randomInt(gloryAreaArray.length)]);
 					}
 				}
-				else if(area == CUM_BUKKAKE_BOOBS || CUM_BUKKAKE_LEFTARM || CUM_BUKKAKE_RIGHTARM) {
+				else if(area == CUM_BUKKAKE_BOOBS || area == CUM_BUKKAKE_LEFTARM || area == CUM_BUKKAKE_RIGHTARM) {
 					if(Math.random() < 0.7) {
 						let gloryAreaArray = [ 0, 1, 2, 6, 7 ];
 						this.increaseGloryCumOnRightWall(Math.randomInt(semen) * 0.66, gloryAreaArray[Math.randomInt(gloryAreaArray.length)]);
@@ -608,7 +604,7 @@ Game_Actor.prototype.postDamage_ejaculation_gloryBattle = function(target, area,
 						this.increaseGloryCumOnLeftToilet(Math.randomInt(semen) * 0.66, gloryAreaArray[Math.randomInt(gloryAreaArray.length)]);
 					}
 				}
-				else if(area == CUM_BUKKAKE_BUTT || CUM_BUKKAKE_LEFTLEG || CUM_BUKKAKE_RIGHTLEG) {
+				else if(area == CUM_BUKKAKE_BUTT || area == CUM_BUKKAKE_LEFTLEG || area == CUM_BUKKAKE_RIGHTLEG) {
 					if(Math.random() < 0.7) {
 						let gloryAreaArray = [ 8, 5, 4, 2, 3 ];
 						this.increaseGloryCumOnRightWall(Math.randomInt(semen) * 0.66, gloryAreaArray[Math.randomInt(gloryAreaArray.length)]);
@@ -630,7 +626,7 @@ Game_Actor.prototype.postDamage_ejaculation_gloryBattle = function(target, area,
 						this.increaseGloryCumOnLeftToilet(Math.randomInt(semen) * 0.66, gloryAreaArray[Math.randomInt(gloryAreaArray.length)]);
 					}
 				}
-				else if(area == CUM_BUKKAKE_BOOBS || CUM_BUKKAKE_LEFTARM || CUM_BUKKAKE_RIGHTARM) {
+				else if(area == CUM_BUKKAKE_BOOBS || area == CUM_BUKKAKE_LEFTARM || area == CUM_BUKKAKE_RIGHTARM) {
 					if(Math.random() < 0.7) {
 						let gloryAreaArray = [ 0, 1, 2, 5, 6, 7 ];
 						this.increaseGloryCumOnLeftWall(Math.randomInt(semen) * 0.66, gloryAreaArray[Math.randomInt(gloryAreaArray.length)]);
@@ -640,7 +636,7 @@ Game_Actor.prototype.postDamage_ejaculation_gloryBattle = function(target, area,
 						this.increaseGloryCumOnRightToilet(Math.randomInt(semen) * 0.66, gloryAreaArray[Math.randomInt(gloryAreaArray.length)]);
 					}
 				}
-				else if(area == CUM_BUKKAKE_BUTT || CUM_BUKKAKE_LEFTLEG || CUM_BUKKAKE_RIGHTLEG) {
+				else if(area == CUM_BUKKAKE_BUTT || area == CUM_BUKKAKE_LEFTLEG || area == CUM_BUKKAKE_RIGHTLEG) {
 					if(Math.random() < 0.7) {
 						let gloryAreaArray = [ 2, 3, 4, 8, 6, 7 ];
 						this.increaseGloryCumOnLeftWall(Math.randomInt(semen) * 0.66, gloryAreaArray[Math.randomInt(gloryAreaArray.length)]);
@@ -1012,7 +1008,7 @@ Game_Actor.prototype.showEval_gloryMbPussyToy = function(isLeftHand, isRightHand
 	let hasPussyToy = this.isStateAffected(STATE_GLORY_PENIS_DILDO_ID) || this.isWearingPussyToy();
 	if(this.isVirgin())
 		return false;
-	if(!hasPussyToy || this.pussyDesire < this.pussyToyPussyDesireRequirement())
+	if(!hasPussyToy || this.pussyDesire < this.pussyToyPussyDesireRequirement() || !this.isWet)
 		return false;
 	if(this.justOrgasmed())
 		return false;
@@ -1110,7 +1106,7 @@ Game_Actor.prototype.dmgFormula_gloryMasturbateSkill = function(area, useLeftHan
 		BattleManager.actionRemLines(LINE_KARRYN_MAS_SUCK_FINGERS);
 	}
 	
-	else console.log("Error dmgFormula gloryMasturbateSkill area: " + area);
+	else console.error("Error dmgFormula gloryMasturbateSkill area: " + area);
 	
 	let targetDesireGain = (baseDmg + enemySkillLvl) * targetPettingRate;
 	let targetPleasureGain = (targetDesireGain + this.dex * 1.3) * enemySkillRating * targetPettingRate * targetSensitivity;
@@ -2804,6 +2800,18 @@ Game_Troop.prototype.gloryBattle_validGuestId = function() {
 			}
 		}
 		
+		if(Karryn.hasEdict(EDICT_LEVEL_FOUR_SUBJUGATED) && !Prison.prisonLevelFourIsRioting()) {
+			//Werewolf
+			if(Karryn.hasPassive(PASSIVE_SEXUAL_PARTNERS_WEREWOLF_THREE_ID)) {
+				validEnemyTypes.push(221);
+				validEnemyTypes.push(222);
+				validEnemyTypes.push(222);
+			}
+			else if(Karryn.hasPassive(PASSIVE_SEXUAL_PARTNERS_WEREWOLF_ONE_ID)) {
+				validEnemyTypes.push(222);
+			}
+		}
+		
 		//Guards
 		if(Karryn.hasPassive(PASSIVE_SEXUAL_PARTNERS_GUARD_TWO_ID)) {
 			let guardAggr = Prison.guardAggression;
@@ -2983,13 +2991,12 @@ Game_Enemy.prototype.gloryBattle_pollSatisfaction = function(endOfBattle) {
 			
 			if(notRiotingLevelsArray.length > 0) {
 				let levelToReduce = notRiotingLevelsArray[Math.randomInt(notRiotingLevelsArray.length)];
-				let buildupReduced = GLORY_HOLE_RIOT_BUILDUP_REDUCE;
 				
 				if(levelToReduce === SWITCH_LEVEL_ONE_IS_SUBJUGATED_ID) {
-					$gameParty._prisonLevelOneRiotBuildup -= buildupReduced;
+					$gameParty._prisonLevelOneRiotBuildup -= GLORY_HOLE_LEVEL_ONE_RIOT_BUILDUP_REDUCE;
 				}
 				else if(levelToReduce === SWITCH_LEVEL_TWO_IS_SUBJUGATED_ID) {
-					$gameParty._prisonLevelTwoRiotBuildup -= buildupReduced;
+					$gameParty._prisonLevelTwoRiotBuildup -= GLORY_HOLE_LEVEL_TWO_RIOT_BUILDUP_REDUCE;
 				}
 			}
 			
@@ -3360,7 +3367,7 @@ Game_Enemy.prototype.enemyBattleAIGloryHole = function(target) {
 		}
 	}
 	
-	if(this._ejaculationStock < 1 || this.energy < 1) {
+	if(this.hasNoMoreEjaculationStockOrEnergy()) {
 		BattleManager.pullOutEnemy(this);
 		target.gloryBattle_postEnemyPullout();
 		if(this._guest_atStall === GLORY_LEFT_STALL_ID) {

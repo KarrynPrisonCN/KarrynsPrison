@@ -3702,6 +3702,9 @@ function Scene_STS() {
       if (actor.isStsLearnedSkill(skill.id) && !actor.isStsLearnedOk(skill.id)) {
         this.drawIconCustom(FTKR.STS.skillLearnedIcon, scx, scy, rate);
       }
+	  else if(actor.drawPadlockIconForEdictID(skill.id)) {
+        this.drawIconCustom(251, scx, scy, rate);
+      }
     };
 
     //スキル間の派生線を表示
@@ -4555,7 +4558,7 @@ function Scene_STS() {
 		var wx = cw.x;
 		var wy = cw.y + cw.height;
 		var ww = cw.width;
-		var wh = this._stsActorStatusWindow.fittingHeight(5);
+		var wh = this._stsActorStatusWindow.fittingHeight(7);
 		this._stsPreskillWindow = new Window_StsPreskill(wx, wy, ww, wh);
 		var window = this._stsPreskillWindow;
 		this._stsTreeTypeWindow.setPreskillWindow(window);

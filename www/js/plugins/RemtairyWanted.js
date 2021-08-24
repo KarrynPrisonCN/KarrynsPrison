@@ -191,7 +191,7 @@ Game_Enemy.prototype.setupWanted = function(wantedStatus) {
 		this._wantedLvl = wantedStatus._wantedLvl;
 		this._wantedBattlerName = wantedStatus._battlerName;
 		this._enemyType = wantedStatus._enemyType;
-		this._enemyCock = wantedStatus._enemyCock;
+		//this._enemyCock = wantedStatus._enemyCock;
 		this._randomEnemyName = wantedStatus._enemyName
 		this._hasEnemyNamePrefix = wantedStatus._hasPrefix;
 		this._enemyNamePrefix = wantedStatus._enemyPrefixName;
@@ -373,6 +373,7 @@ Game_Enemy.prototype.setupEnemyTempRecords = function() {
 	this._enemyTempRecordSawPussyCount = 0;
 	this._enemyTempRecordSawButtCount = 0;
 	this._enemyTempRecordOrgasmPresenceCount = 0;
+	this._enemyTempRecordJerkoffCount = 0;
 	
 	this._enemyTempRecordKissedCount = 0;
 	this._enemyTempRecordHandjobCount = 0;
@@ -446,8 +447,9 @@ Game_Enemy.prototype.setAsActorSexualPartner = function(actor) {
 	
 	if(this.isGuardType) {
 		if($gameParty.isInWaitressBattle) actor._todayServedGuardInBar++;
-		else if(actor.isInDefeatedGuardPose()) actor._todayServedGuardInGuardDefeat++;
 		else if($gameParty.isInGloryBattle) actor._todayServedGuardInToiletBattle++;
+		else if($gameParty.isInStripperBattle) actor._todayServedGuardInStripClub++;
+		else if(actor.isInDefeatedGuardPose()) actor._todayServedGuardInGuardDefeat++;
 		else if($gameParty.isInGuardBattle()) actor._todayServedGuardInGuardBattle++;
 	}
 };
@@ -1166,6 +1168,7 @@ Game_Enemy.prototype.addToEnemySawButtRecord = function(actor) {
 
 Game_Enemy.prototype.addToEnemyJerkOffCountRecord = function(actor) {
 	this._enemyRecordJerkoffCount++;
+	this._enemyTempRecordJerkoffCount++;
 	if(this.isWanted) {
 		let wantedStatus = Prison.getWantedEnemyById(this.getWantedId());
 		wantedStatus._enemyRecordJerkoffCount = this._enemyRecordJerkoffCount;
@@ -1174,7 +1177,11 @@ Game_Enemy.prototype.addToEnemyJerkOffCountRecord = function(actor) {
     if(this._enemyRecordJerkoffCount == 1) {
 		firstCount = true;
 	}
-	actor.addToActorSawJerkOffRecord(firstCount);
+	let firstCountTemp = false;
+	if(this._enemyTempRecordJerkoffCount == 1) {
+		firstCountTemp = true;
+	}
+	actor.addToActorSawJerkOffRecord(firstCount, firstCountTemp);
 };
 Game_Enemy.prototype.addToEnemyTauntedCountRecord = function(actor) {
 	this._enemyRecordTauntedCount++;
@@ -1516,6 +1523,10 @@ Game_Party.prototype.findAvailableWantedIds = function(enemy, maxPrisonerMorphHe
 			return availableWantedIds;
 		}
 		else return [];
+	}
+	
+	if(!Karryn.isInDefeatedPose() && !Karryn.isInJobPose()) {
+		maxPrisonerMorphHeight = Math.min(maxPrisonerMorphHeight, $gameTroop.getAvailableFreeEnemySpace_normalBattle());
 	}
 	
 	for(let i = 0; i < this._wantedEnemies.length; i++) {

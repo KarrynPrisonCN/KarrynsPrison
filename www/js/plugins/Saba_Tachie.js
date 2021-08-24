@@ -7,8 +7,8 @@ const TACHIE_TONE_CHANGE_DURATION = 4;
 
 const TACHIE_REM_CUSTOM_WIDTH = 0;
 const TACHIE_REM_CUSTOM_HEIGHT = 90;
-const TACHIE_LEFT_PIC_ID = 11;
-const TACHIE_RIGHT_PIC_ID = 12;
+const PICTURE_TACHIE_LEFT_ID = 11;
+const PICTURE_TACHIE_RIGHT_ID = 12;
 
 var Saba;
 //var Saba = Saba || {}; 
@@ -378,8 +378,8 @@ var Saba;
         var enableOuterMainLayer = parameters['enableOuterMainLayer'] === 'true';
         var enableOuterFrontLayer = parameters['enableOuterFrontLayer'] === 'true';
         var useTextureAtlas = parameters['useTextureAtlas'] === 'true';
-        Tachie.DEFAULT_PICTURE_ID1 = TACHIE_LEFT_PIC_ID; // 左
-        Tachie.DEFAULT_PICTURE_ID2 = TACHIE_RIGHT_PIC_ID; // 右
+        Tachie.DEFAULT_PICTURE_ID1 = PICTURE_TACHIE_LEFT_ID; // 左
+        Tachie.DEFAULT_PICTURE_ID2 = PICTURE_TACHIE_RIGHT_ID; // 右
         Tachie.DEFAULT_PICTURE_ID3 = 13; // センター
 		Tachie.DEFAULT_PICTURE_ID4 = 14; // センター
 		Tachie.DEFAULT_PICTURE_ID5 = 15; // センター
@@ -1323,7 +1323,6 @@ var Saba;
 				this._tachieHat = REM_TACHIE_NULL;
 				this._tachieGlasses = REM_TACHIE_NULL;
 				this._tachieTie = REM_TACHIE_NULL;
-				
 				this._tachieWeapon = REM_TACHIE_NULL;
 				this._tachieLeftArm = REM_TACHIE_NULL;
 				this._tachieRightArm = REM_TACHIE_NULL;
@@ -1370,6 +1369,7 @@ var Saba;
 				this._tachieFrontC = REM_TACHIE_NULL;
 				this._tachieFrontD = REM_TACHIE_NULL;
 				this._tachieFrontE = REM_TACHIE_NULL;
+				/*
                 this._castOffInnerTop = false;
                 this._castOffInnerBottom = false;
                 this._castOffOuter = false;
@@ -1379,12 +1379,13 @@ var Saba;
 				this._tachieCutInGoalY = 0;
 				this._tachieCutInDirectionX = 0;
 				this._tachieCutInDirectionY = 0;
+				*/
             };
             _Game_Actor.prototype.isDirty = function () {
                 return this._dirty;
             };
             _Game_Actor.prototype.setDirty = function () {
-				if(!this.allowTachieUpdate() || !BattleManager.isTachieUpdateAllowed()) return;
+				if(!this.allowTachieUpdate() || !this.allowTachieEmoteUpdate() || !BattleManager.isTachieUpdateAllowed()) return;
                 this._dirty = true;
             };
             _Game_Actor.prototype.clearDirty = function () {
@@ -1394,7 +1395,7 @@ var Saba;
                 return this._cacheChanged;
             };
             _Game_Actor.prototype.setCacheChanged = function () {
-				if(!this.allowTachieUpdate() || !BattleManager.isTachieUpdateAllowed()) return;
+				if(!this.allowTachieUpdate() || !this.allowTachieEmoteUpdate() || !BattleManager.isTachieUpdateAllowed()) return;
                 this._cacheChanged = true;
                 this.setDirty();
                 $gamePlayer.refresh();
@@ -1402,6 +1403,7 @@ var Saba;
             _Game_Actor.prototype.clearCacheChanged = function () {
                 this._cacheChanged = false;
             };
+			/*
             _Game_Actor.prototype.castOffOuter = function () {
                 if (this._castOffOuter) {
                     return;
@@ -1432,6 +1434,7 @@ var Saba;
             _Game_Actor.prototype.isCastOffInnerBottom = function () {
                 return this._castOffInnerBottom;
             };
+			*/
 			
 			_Game_Actor.prototype.hasTachieBody = function () {
                 return this.tachieBody != REM_TACHIE_NULL;
@@ -1450,6 +1453,8 @@ var Saba;
                 }
                 this._tachieFace = '' + n;
                 this.setDirty();
+				if(this.isChatface)
+					this.setCacheChanged();
             };
 			_Game_Actor.prototype.resetTachieFace = function () {
                 this._tachieFace = 0;
@@ -1461,6 +1466,8 @@ var Saba;
                 }
                 this._tachieHoppe = '' + n;
                 this.setDirty();
+				if(this.isChatface)
+					this.setCacheChanged();
             };
 			_Game_Actor.prototype.resetTachieHoppe = function () {
                 this._tachieHoppe = REM_TACHIE_NULL;
@@ -1472,6 +1479,8 @@ var Saba;
                 }
                 this._tachieSweat = '' + n;
                 this.setDirty();
+				if(this.isChatface)
+					this.setCacheChanged();
             };
 			_Game_Actor.prototype.resetTachieSweat = function () {
                 this._tachieSweat = REM_TACHIE_NULL;
@@ -1541,6 +1550,7 @@ var Saba;
                     return;
                 }
                 this._tachieBody = '' + n;
+				if(this.isChatface_Karryn) this.setChatfaceKarrynPoseItems();
                 this.setCacheChanged();
             };	
 			_Game_Actor.prototype.resetTachieBody = function () {
@@ -2080,16 +2090,17 @@ var Saba;
 					folder += 'karryn/';
 					folder += this.poseName + '/';
 				}
-				else {
+				else if(this.isChatface) {
 					folder += 'chatface/';
 					folder += this.poseName + '/';
 				}
+				else console.error('Error getTachieFolderName')
 				return folder;
             };		
 			_Game_Actor.prototype.getTachieCutinFolderName = function () {
                 var folder = 'img/';
 				if(this.isKarryn) folder += 'karryn/';
-				else console.log("getTachieCutinFolderName error, not Karryn");
+				else console.error("getTachieCutinFolderName Error, not Karryn");
 				folder += 'cutin/';
 				return folder;
             };
@@ -2159,7 +2170,7 @@ var Saba;
 				this.doPreloadTachie(this.tachieClitToyFile());
 				this.doPreloadTachie(this.tachiePussyToyFile());
 				this.doPreloadTachie(this.tachieAnalToyFile());
-				this.doPreloadTachieCutin(this.tachieCutInFile());
+				//this.doPreloadTachieCutin(this.tachieCutInFile());
 				this.doPreloadTachie(this.tachieSpankMarkLeftButtFile());
 				this.doPreloadTachie(this.tachieSpankMarkRightButtFile());
                 this.doPreloadTachie(this.tachieSemenWetFile());
@@ -2235,7 +2246,7 @@ var Saba;
                 }
                 ImageManager.loadTachie(file, this.getTachieFolderName());
             };
-			_Game_Actor.prototype.doPreloadTachieCutin = function (file) {
+			_Game_Actor.prototype.doPreloadTachieCutin = function (file) { //unused
                 if (!file) {
                     return;
                 }
@@ -2294,7 +2305,8 @@ var Saba;
                 return this.tachieBaseId + 'hat_' + this.tachieHat;
             };	
 			_Game_Actor.prototype.tachiePantiesFile = function () {
-				if(this.tachiePanties == REM_TACHIE_NULL || this.tachiePanties == REM_TACHIE_ZERO || !this.isWearingPanties()) return null;
+				if(this.tachiePanties == REM_TACHIE_NULL || this.tachiePanties == REM_TACHIE_ZERO) return null;
+				if(!this.isWearingPanties() && !this.isChatface_Karryn) return null;
                 return this.tachieBaseId + 'panties_' + this.tachiePanties;
             };	
 			_Game_Actor.prototype.tachieHolePussyFile = function () {
@@ -2986,8 +2998,8 @@ var Saba;
 				
 				let customLayers = actor.getCustomTachieLayerLoadout();
 				
-				//if(actor.actorId() === ACTOR_CHAT_FACE_ID) 
-				//	customLayers = actor.getCustomTachieLayerLoadout_Chatface();
+				if(actor.actorId() === ACTOR_CHAT_FACE_ID) 
+					customLayers = actor.getCustomTachieLayerLoadout_Chatface();
 				
 				if(customLayers && customLayers.length > 0) {
 					if(actor.isCacheChanged()) {
@@ -3223,7 +3235,7 @@ var Saba;
 					var tempBitmap = $gameTemp.tachieTmpBitmap;
 					this.drawTachieCache(actor, cache, bitmap, x, y, rect, scale);
 					tempBitmap.clear();
-					this.drawTachieCutIn(actor, tempBitmap);
+					//this.drawTachieCutIn(actor, tempBitmap);
 					this.drawTachieCache(actor, tempBitmap, bitmap, x, y, rect, scale);
 					this.lastDrawnActorId = actor.actorId();
 					this.lastDrawnPoseName = actor.poseName;
@@ -3300,7 +3312,7 @@ var Saba;
 						this.drawTachieRightBoob(actor, cache);	
 						if(actor.tachieLeftBoobInFrontOfRightBoob()) this.drawTachieLeftBoob(actor, cache);	
 						
-						this.drawTachieBoobsErection(actor, cache);
+						//this.drawTachieBoobsErection(actor, cache);
 						
 						
 						if(actor.tachieSemenBellyInFrontOfBoobs()) {
@@ -3345,7 +3357,7 @@ var Saba;
 						this.drawTachieSemenCockPussy(actor, cache);
 						this.drawTachieSemenCockAnal(actor, cache);
 						
-						this.drawTachieSemenCockFeet(actor, cache);
+						//this.drawTachieSemenCockFeet(actor, cache);
 						
 						//Toys
 						if(!actor.tachieToysInFrontOfEverything() && !actor.tachieToysInBehindOfEverything()) {
@@ -3388,7 +3400,7 @@ var Saba;
 						this.drawTachieSemenCockPussy(actor, cache);
 						this.drawTachieSemenCockAnal(actor, cache);
 						
-						this.drawTachieSemenCockFeet(actor, cache);
+						//this.drawTachieSemenCockFeet(actor, cache);
 						
 						//Toys
 						if(!actor.tachieToysInFrontOfEverything() && !actor.tachieToysInBehindOfEverything()) {
@@ -3411,8 +3423,8 @@ var Saba;
 					
 					if(!actor.tachiePantiesInFrontOfBoobs()) {
 						this.drawTachiePanties(actor, cache);	
-						this.drawTachieWetPanties(actor, cache);		
-						this.drawTachieSemenCrotchPanties(actor, cache);
+						//this.drawTachieWetPanties(actor, cache);		
+						//this.drawTachieSemenCrotchPanties(actor, cache);
 					}
 					
 					if(actor.tachieRightArmInFrontOfLeftArm() && actor.tachieRightArmInFrontOfBody() && !actor.tachieRightArmInFrontOfBoobs() && !actor.tachieRightArmInFrontOfHeadAndBehindBody()) {
@@ -3453,7 +3465,7 @@ var Saba;
 						this.drawTachieRightBoob(actor, cache);	
 						if(actor.tachieLeftBoobInFrontOfRightBoob()) this.drawTachieLeftBoob(actor, cache);	
 						
-						this.drawTachieBoobsErection(actor, cache);
+						//this.drawTachieBoobsErection(actor, cache);
 						
 						if(actor.tachieSemenBellyInFrontOfBoobs()) {
 							this.drawTachieSemenBelly(actor, cache);
@@ -3474,8 +3486,8 @@ var Saba;
 					
 					if(actor.tachiePantiesInFrontOfBoobs()) {
 						this.drawTachiePanties(actor, cache);	
-						this.drawTachieWetPanties(actor, cache);		
-						this.drawTachieSemenCrotchPanties(actor, cache);
+						//this.drawTachieWetPanties(actor, cache);		
+						//this.drawTachieSemenCrotchPanties(actor, cache);
 					}
 					
 					if(actor.tachieRightArmInFrontOfLeftArm() && actor.tachieRightArmInFrontOfBody() && actor.tachieRightArmInFrontOfBoobs()) {
@@ -3499,9 +3511,11 @@ var Saba;
 					
 					//this.drawTachieDroolFingers(actor, cache);
 					
-					this.drawTachieSemenRightArm(actor, cache);	
+					if(!actor.tachieSemenRightArmInFrontOfFront()) 
+						this.drawTachieSemenRightArm(actor, cache);	
 					if(!actor.tachieSemenLeftArmInFrontOfFront()) 
-						this.drawTachieSemenLeftArm(actor, cache);		
+						this.drawTachieSemenLeftArm(actor, cache);	
+				
 					this.drawTachieSemenCockRightArm(actor, cache);	
 					this.drawTachieSemenCockLeftArm(actor, cache);	
 					
@@ -3536,12 +3550,15 @@ var Saba;
 					if(actor.tachieAnalToyInFrontOfEverything())
 						this.drawTachieAnalToy(actor, cache);
 					
-					this.drawTachieCockFeet(actor, cache);
+					//this.drawTachieCockFeet(actor, cache);
 					
 					if(!actor.tachieFrontInFrontOfFace()) {
 						this.drawTachieFront(actor, cache);
 						if(actor.tachieSemenLeftArmInFrontOfFront()) 
 							this.drawTachieSemenLeftArm(actor, cache);
+						if(actor.tachieSemenRightArmInFrontOfFront()) 
+							this.drawTachieSemenRightArm(actor, cache);
+						
 					}
                 }
                 if (!$gameTemp.tachieTmpBitmap) {
@@ -3567,7 +3584,7 @@ var Saba;
 				
 				this.drawTachieGlasses(actor, tempBitmap);
 				
-				this.drawTachieDroolMouth(actor, tempBitmap);
+				//this.drawTachieDroolMouth(actor, tempBitmap);
 				this.drawTachieSemenFace(actor, tempBitmap);
 				this.drawTachieSemenMouth(actor, tempBitmap);
 				
@@ -3580,9 +3597,11 @@ var Saba;
 					this.drawTachieFront(actor, tempBitmap);
 					if(actor.tachieSemenLeftArmInFrontOfFront()) 
 						this.drawTachieSemenLeftArm(actor, tempBitmap);
+					if(actor.tachieSemenRightArmInFrontOfFront()) 
+						this.drawTachieSemenRightArm(actor, tempBitmap);
 				}
 				
-				this.drawTachieCutIn(actor, tempBitmap);
+				//this.drawTachieCutIn(actor, tempBitmap);
                 this.drawTachieCache(actor, tempBitmap, bitmap, x, y, rect, scale);
                 this.lastDrawnActorId = actor.actorId();
 				this.lastDrawnPoseName = actor.poseName;
@@ -3671,6 +3690,7 @@ var Saba;
                 
             };
 			this.drawTachieCutInFile = function (file, bitmap, actor, x, y, rect, scale) {
+				return;
 				if (!file) {
                     return;
                 }
@@ -4132,7 +4152,8 @@ var Saba;
             };
 			
 			this.drawTachieCutIn = function (actor, bitmap) {
-                this.drawTachieCutInFile(actor.tachieCutInFile(), bitmap, actor);
+				return;
+                //this.drawTachieCutInFile(actor.tachieCutInFile(), bitmap, actor);
             };
 			
             this.drawTachieFace = function (actor, bitmap, tachieFace) {
@@ -4142,7 +4163,7 @@ var Saba;
 				if(tachieFace == 0) {
 					return;
 				}
-                var file = actor.tachieBaseId + 'face_' + tachieFace;
+                let file = actor.tachieBaseId + 'face_' + tachieFace;
                 this.drawTachieFile(file, bitmap, actor);
             };
         };

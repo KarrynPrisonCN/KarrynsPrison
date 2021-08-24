@@ -1,7 +1,7 @@
 ﻿var Remtairy = Remtairy || {};
 Remtairy.SpriteBattlerPos = Remtairy.SpriteBattlerPos || {};
 
-const SBP_ENEMY_DAMAGE_OFFSET_X = 96; //敵のダメージ数字の位置X
+const SBP_ENEMY_DAMAGE_OFFSET_X = 101; //敵のダメージ数字の位置X
 const SBP_ENEMY_DAMAGE_OFFSET_Y = 28;　//敵のダメージ数字の位置Y
 
 const REM_SPANK_LV1_ANIME_OFFSET_X = 435;	//Spank Lv1のCut-inと同時に出るMVアニメ　X　＋　この数字
@@ -99,8 +99,8 @@ Game_Actor.prototype.setSpriteBattlerPosData = function(poseName) {
 		this._sbp_current_x = 920;
 		this._sbp_current_y = -175;
 	} else if(poseName == POSE_DEFEATED_GUARD) {
-		this._sbp_current_x = 900;
-		this._sbp_current_y = -230;		
+		this._sbp_current_x = 870;
+		this._sbp_current_y = -240;		
 	} else if(poseName == POSE_THUGGANGBANG) {
 		this._sbp_current_x = 960;
 		this._sbp_current_y = -150;
@@ -117,8 +117,8 @@ Game_Actor.prototype.setSpriteBattlerPosData = function(poseName) {
 		this._sbp_current_x = 1065;
 		this._sbp_current_y = -70;	
 	} else if(poseName == POSE_BJ_KNEELING) {
-		this._sbp_current_x = 970;
-		this._sbp_current_y = -60;	
+		this._sbp_current_x = 1150;
+		this._sbp_current_y = -100;	
 	} else if(poseName == POSE_MAP && $gameParty.isInWaitressBattle) {
 		this._sbp_current_x = 1230;
 		this._sbp_current_y = -90;
@@ -132,8 +132,8 @@ Game_Actor.prototype.setSpriteBattlerPosData = function(poseName) {
 		this._sbp_current_x = 1000;
 		this._sbp_current_y = -60;
 	} else if(poseName == POSE_REVERSE_COWGIRL) {
-		this._sbp_current_x = 1005;
-		this._sbp_current_y = -280;	
+		this._sbp_current_x = 1035;
+		this._sbp_current_y = -240;	
 	} else if(poseName == POSE_KARRYN_COWGIRL) {
 		this._sbp_current_x = 1025;
 		this._sbp_current_y = -135;	
@@ -212,7 +212,7 @@ Sprite_Actor.prototype.damageOffsetX = function() {
 		offset = 10;
 	}
 	else if(poseName == POSE_DEFEATED_GUARD) {
-		offset = -32;
+		offset = 0;
 	}
 	else if(poseName == POSE_SLIME_PILEDRIVER_ANAL) {
 		offset = -10; 
@@ -265,7 +265,7 @@ Sprite_Actor.prototype.damageOffsetY = function() {
 		offset = 70;
 	}
 	else if(poseName == POSE_DEFEATED_GUARD) {
-		offset = 47;
+		offset = 37;
 	}
 	else if(poseName == POSE_GUARDGANGBANG) {
 		offset = 45;
@@ -279,6 +279,9 @@ Sprite_Actor.prototype.damageOffsetY = function() {
 	else if(poseName == POSE_ORC_PAIZURI) {
 		offset = 60;
 	}
+	else if(poseName == POSE_BJ_KNEELING) {
+		offset = 50;
+	}
 	else if(poseName == POSE_FOOTJOB) {
 		offset = 50; 
 	}
@@ -286,7 +289,7 @@ Sprite_Actor.prototype.damageOffsetY = function() {
 		offset = 50; 
 	}
 	else if(poseName == POSE_REVERSE_COWGIRL) {
-		offset = 50; 
+		offset = 60; 
 	}
 	else if(poseName == POSE_LIZARDMAN_COWGIRL) {
 		offset = 90; 
@@ -390,6 +393,7 @@ Sprite_Battler.prototype.remSpriteBattlerPosY = function() {
 
 BattleManager.actionClearBattleLog = function() {
     //this._logWindow.clear();
-	$gameActors.actor(ACTOR_KARRYN_ID).resetTachieCutIn();
+	//$gameActors.actor(ACTOR_KARRYN_ID).resetTachieCutIn();
+	$gameActors.actor(ACTOR_KARRYN_ID).resetCutIn();
     return false;
 };

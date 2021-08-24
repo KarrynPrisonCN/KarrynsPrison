@@ -14,7 +14,8 @@ Remtairy.Version = Remtairy.Version || {};
  */
 //=============================================================================
 
-const KARRYN_PRISON_GAME_VERSION = 65;
+const KARRYN_PRISON_GAME_VERSION = 69;
+const KARRYN_PRISON_GAME_IS_DEMO = false;
 
 ///////////
 // Game Party
@@ -24,19 +25,24 @@ const KARRYN_PRISON_GAME_VERSION = 65;
 Game_Party.prototype.getGameVersion = function() {
 	return this._karrynPrisonVersion;
 };
+Game_Party.prototype.getDemoStatus = function() {
+	return this._karrynPrisonDemoStatus;
+};
 
 //Called at start of game in Common Event 2:Initialization
 Game_Party.prototype.setCurrentGameVersion = function() {
 	this._karrynPrisonVersion = KARRYN_PRISON_GAME_VERSION;
+	this._karrynPrisonDemoStatus = KARRYN_PRISON_GAME_IS_DEMO;
 	this._karrynPrisonVersion36_TachieUpdated = true;
 }; 
 
 //Called when loading game by Common Event 3:Load Game
 Game_Party.prototype.updateGameVersion = function() {
+	let saveFileGameVersion = this.getGameVersion();
 	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
 	actor._emoteMasterManagerIsRunning = false;
 	
-	if(this._karrynPrisonVersion < 2) {
+	if(saveFileGameVersion < 2) {
 		actor.resetParamExp();
 		actor._paramExp[PARAM_MAXSTAMINA_ID] = Math.round(actor._paramExp[PARAM_MAXSTAMINA_ID] * 0.6);
 		actor._paramExp[PARAM_MIND_ID] = Math.round(actor._paramExp[PARAM_MIND_ID] * 1.2);
@@ -45,18 +51,18 @@ Game_Party.prototype.updateGameVersion = function() {
 		actor.clearParamExp();
 	}
 	
-	if(this._karrynPrisonVersion < 3) {
+	if(saveFileGameVersion < 3) {
 		actor._firstAnalSexBeforePussySex = false;
 	}
 	
-	if(this._karrynPrisonVersion < 5) {
+	if(saveFileGameVersion < 5) {
 		$gameParty.increaseCorruption(actor.totalAccessoriesOwnedCount());
 		$gameSelfSwitches.setValue([MAP_ID_MODE_SELECT, 7, "A"], false);
 		$gameSelfSwitches.setValue([MAP_ID_MODE_SELECT, 7, "B"], false);
 		actor._flagNeverUnequippedDisappointmentTitle = true;
 	}
 	
-	if(this._karrynPrisonVersion < 6) {
+	if(saveFileGameVersion < 6) {
 		if(actor._clothingType === CLOTHING_ID_NAKED && actor._clothingMaxStage === 1) {
 			actor.changeToWardenClothing();
 			actor.restoreClothingDurability();
@@ -68,7 +74,7 @@ Game_Party.prototype.updateGameVersion = function() {
 		}
 	}
 	
-	if(this._karrynPrisonVersion < 7) {
+	if(saveFileGameVersion < 7) {
 		let disTitle = $dataArmors[TITLE_ID_DISAPPOINTMENT];
 		let numOfExtraDT = $gameParty.numItems(disTitle) - 1;
 		if(numOfExtraDT > 0) {
@@ -76,7 +82,7 @@ Game_Party.prototype.updateGameVersion = function() {
 		}
 	}
 	
-	if(this._karrynPrisonVersion < 14) {
+	if(saveFileGameVersion < 14) {
 		this.setMapForceCenter(false);
 		actor.removeAllToys();
 		actor._firstPussySexWasToy = false;
@@ -85,7 +91,7 @@ Game_Party.prototype.updateGameVersion = function() {
 		actor.recalculateSkillLvls();
 		actor.recalculateBodySensitivities();
 		actor.resetArtisanMeal();
-		actor.cleanUpLiquids();
+		actor.setupLiquids();
 		
 		this._playthroughRecordGuardBattleCount = this._recordGuardBattleCount;
 		this.setBarReputation(0);
@@ -247,7 +253,7 @@ Game_Party.prototype.updateGameVersion = function() {
 		
 	}
 	
-	if(this._karrynPrisonVersion < 15) {
+	if(saveFileGameVersion < 15) {
 		this._wantedEnemies.unshift(new Wanted_Enemy(false));
 		
 		if(this._wantedId_Tonkin === -1 || this._wantedId_Tonkin === undefined) {
@@ -282,14 +288,14 @@ Game_Party.prototype.updateGameVersion = function() {
 		}	
 	}
 	
-	if(this._karrynPrisonVersion < 16) {
+	if(saveFileGameVersion < 16) {
 		for(let i = 1; i < this._wantedEnemies.length; i++) {
 			let wantedEnemy = this._wantedEnemies[i];
 			wantedEnemy._wantedId += 1;
 		}
 	}
 	
-	if(this._karrynPrisonVersion < 17) {
+	if(saveFileGameVersion < 17) {
 		actor._recordSeenAnalCount = 0;
 		if($gameVariables.value(VARIABLE_BEAT_LEVEL_ID) === 1 && $gameSwitches.value(SWITCH_WON_BOSS_BATTLE_LV1_ID)) {
 			$gameSelfSwitches.setValue([MAP_ID_RECEPTION, 32, "A"], true);
@@ -300,30 +306,30 @@ Game_Party.prototype.updateGameVersion = function() {
 		
 	}
 	
-	if(this._karrynPrisonVersion < 18) {
+	if(saveFileGameVersion < 18) {
 		actor.learnSkill(SKILL_GIVE_UP_ID);
 		actor.learnSkill(SKILL_SURRENDER_ID);
 	}
 	
-	if(this._karrynPrisonVersion < 18) {
+	if(saveFileGameVersion < 18) {
 		actor.learnSkill(SKILL_GIVE_UP_ID);
 		actor.learnSkill(SKILL_SURRENDER_ID);
 	}
 	
-	if(this._karrynPrisonVersion < 19) {
+	if(saveFileGameVersion < 19) {
 		for(let i = 1; i < this._wantedEnemies.length; i++) {
 			let wantedEnemy = this._wantedEnemies[i];
 			if(!wantedEnemy._enemyType) wantedEnemy._disabled = true;
 		}
 	}
 	
-	if(this._karrynPrisonVersion < 21) {
+	if(saveFileGameVersion < 21) {
 		if(this.order === null) {
 			this.setOrder(50);
 		}
 	}
 	
-	if(this._karrynPrisonVersion < 22) {
+	if(saveFileGameVersion < 22) {
 		this._prisonLevelOne_riotingDays = 0;
 		this._prisonLevelTwo_riotingDays = 0;
 		this._prisonLevelThree_riotingDays = 0;
@@ -331,21 +337,21 @@ Game_Party.prototype.updateGameVersion = function() {
 		this._prisonLevelFive_riotingDays = 0;
 	}
 
-	if(this._karrynPrisonVersion < 23) {
+	if(saveFileGameVersion < 23) {
 		actor.resetTachieCockAnal();
 		actor._dontResetSexPose = false;
 	}
 	
-	if(this._karrynPrisonVersion < 24) {
+	if(saveFileGameVersion < 24) {
 		
 		$gameSelfSwitches.setValue([MAP_ID_OFFICE_FLOODED, 12, "A"], true);
 	}
 	
-	if(this._karrynPrisonVersion < 25) {
-		actor.cleanUpLiquids();
+	if(saveFileGameVersion < 25) {
+		actor.setupLiquids();
 	}
 	
-	if(this._karrynPrisonVersion < 26) {
+	if(saveFileGameVersion < 26) {
 		if($gameSwitches.value(SWITCH_GIFT_EMPEROR_LV2_ID)) {
 			$gameSelfSwitches.setValue([MAP_ID_OFFICE_FLOODED, 12, "A"], true);
 			$gameSwitches.setValue(SWITCH_WON_BOSS_BATTLE_LV2_ID, true);
@@ -357,11 +363,11 @@ Game_Party.prototype.updateGameVersion = function() {
 
 	}
 	
-	if(this._karrynPrisonVersion < 27) {
+	if(saveFileGameVersion < 27) {
 		$gameSystem.setAutosave(true);
 	}
 	
-	if(this._karrynPrisonVersion < 28) {
+	if(saveFileGameVersion < 28) {
 		if(Karryn.hasEdict(EDICT_THE_GOBLIN_PROBLEM))
 			this.increaseOrderChangePerDay(-2);
 		if(Karryn.hasEdict(EDICT_ANTI_GOBLIN_SQUAD))
@@ -370,30 +376,30 @@ Game_Party.prototype.updateGameVersion = function() {
 			this.increaseOrderChangePerDay(2);
 	}
 	
-	if(this._karrynPrisonVersion < 29) {
+	if(saveFileGameVersion < 29) {
 		actor._firstPussySexWasToyWantedID = -1;
 		actor._firstPussySexWasToyDate = false;
 		actor._firstPussySexWasToyName = false;
 		actor._firstPussySexWasToyMapID = -1;
 	}
 	
-	if(this._karrynPrisonVersion < 30) {
+	if(saveFileGameVersion < 30) {
 		if(Karryn.hasEdict(EDICT_REPAIR_KITCHEN_AND_MESS_HALL))
 			this.increaseOrderChangePerDay(2);
 	}
 	
-	if(this._karrynPrisonVersion < 31) {
+	if(saveFileGameVersion < 31) {
 		this._daysWithoutDoingWaitressBar = 0;
 		actor.calculateMainLvlsGained();
 		actor.clearParamExp();
 		this.fix_setActorPassivesObtainedOnArray_missingCharacterCreators();
 	}
 	
-	if(this._karrynPrisonVersion < 32) {
+	if(saveFileGameVersion < 32) {
 		actor._hasTachiePubic = true;
 	}
 	
-	if(this._karrynPrisonVersion < 33) {
+	if(saveFileGameVersion < 33) {
 		if(actor._obtainedTitles) {
 			if(!$gameParty.hasItem($dataArmors[TITLE_ID_CC_SKILLED_MANAGER], true) && actor._obtainedTitles[TITLE_ID_CC_SKILLED_MANAGER]) 
 				actor._obtainedTitles[TITLE_ID_CC_SKILLED_MANAGER] = false;
@@ -411,7 +417,7 @@ Game_Party.prototype.updateGameVersion = function() {
 	}
 	
 	
-	if(this._karrynPrisonVersion < 34) {
+	if(saveFileGameVersion < 34) {
 		actor._liquidBukkakeButtTopRight = 0;
 		actor._liquidBukkakeButtTopLeft = 0;
 		actor._liquidBukkakeButtBottomRight = 0;
@@ -429,7 +435,7 @@ Game_Party.prototype.updateGameVersion = function() {
 		this.recalculateBaseIncomeAndExpense();
 	}
 	
-	if(this._karrynPrisonVersion < 35) {
+	if(saveFileGameVersion < 35) {
 		actor.resetTachieClothes();
 		actor.resetTachieSkirt();
 		actor._toyValue_clitToy = 0;
@@ -484,7 +490,7 @@ Game_Party.prototype.updateGameVersion = function() {
 		}
 	}
 	
-	if(this._karrynPrisonVersion < 36) {
+	if(saveFileGameVersion < 36) {
 		actor.recalculateBodySensitivities();
 		actor.recalculateSkillLvls();
 		actor.setHalberdAsDefiled(false);
@@ -518,7 +524,7 @@ Game_Party.prototype.updateGameVersion = function() {
 		this._karrynPrisonVersion36_TachieUpdated = true;
 	}
 	
-	if(this._karrynPrisonVersion < 37) {
+	if(saveFileGameVersion < 37) {
 		actor.learnSkill(1579); 
 		actor.learnSkill(SKILL_RESTORE_MIND_ID);
 		if(this._dayCount % 2 === 1) {
@@ -534,25 +540,25 @@ Game_Party.prototype.updateGameVersion = function() {
 		
 	}
 	
-	if(this._karrynPrisonVersion < 38) {
+	if(saveFileGameVersion < 38) {
 		actor.learnSkill(SKILL_SKEWER_2_ID); 
 		actor.learnSkill(SKILL_SLAM_2_ID); 
 		actor._flagEquippedRadioOrgasmTitleForWholeDay = false;
 		
 	}
 	
-	if(this._karrynPrisonVersion < 39) {
+	if(saveFileGameVersion < 39) {
 		if(Karryn.isInReceptionistPose()) {
 			actor.setWardenMapPose();
 			actor.setKarrynWardenSprite();
 		}
 	}
 	
-	if(this._karrynPrisonVersion < 40) {
+	if(saveFileGameVersion < 40) {
 		actor._flagEquippedJadeNecklaceForWholeDay = false;
 	}
 	
-	if(this._karrynPrisonVersion < 41) {
+	if(saveFileGameVersion < 41) {
 		actor.resetTachieTie();
 		actor.resetTachieLeftHole();
 		actor.resetTachieRightHole();
@@ -632,30 +638,30 @@ Game_Party.prototype.updateGameVersion = function() {
 		}
 	}
 	
-	if(this._karrynPrisonVersion < 42) {
+	if(saveFileGameVersion < 42) {
 		if(Prison.prisonLevelTwoIsRioting()) {
 			this.setPrisonLevelTwoSubjugated();
 			this._prisonLevelTwo_riotingDays = 0;
 		}
 	}
 	
-	if(this._karrynPrisonVersion < 43) {
+	if(saveFileGameVersion < 43) {
 		if(Karryn.hasEdict(EDICT_SPEC_CLEAVE_POWER) && Karryn.hasEdict(EDICT_SPEC_CLEAVE_TECH)) {
 			actor.forgetSkill(EDICT_SPEC_CLEAVE_POWER);
 			actor.forgetSkill(EDICT_SPEC_CLEAVE_TECH);
 		}
 	}
 	
-	if(this._karrynPrisonVersion < 44) {
+	if(saveFileGameVersion < 44) {
 		actor.setMaxTachieSemenMouthId(0);
 	}
 	
-	if(this._karrynPrisonVersion < 45) {
+	if(saveFileGameVersion < 45) {
 		actor.forgetPassive(241);
 		actor.forgetPassive(243);
 	}
 
-	if(this._karrynPrisonVersion < 46) {
+	if(saveFileGameVersion < 46) {
 		$gameParty.riotingRoomsCheck();
 		this._prisonLevelOne_anarchyDays = 0;
 		this._prisonLevelTwo_anarchyDays = 0;
@@ -664,12 +670,12 @@ Game_Party.prototype.updateGameVersion = function() {
 		this._prisonLevelFive_anarchyDays = 0;
 	}
 	
-	if(this._karrynPrisonVersion < 47) {
+	if(saveFileGameVersion < 47) {
 		if(Karryn.hasEdict(EDICT_RESEARCH_LAUNDRY_PRODUCT_CONTRACT))
 			$gameSwitches.setValue(82, true);
 	}
 	
-	if(this._karrynPrisonVersion < 48) {
+	if(saveFileGameVersion < 48) {
 		actor.forgetPassive(241);
 		actor.forgetPassive(243);
 		actor.forgetPassive(844);
@@ -685,11 +691,11 @@ Game_Party.prototype.updateGameVersion = function() {
 		this.recalculateBaseOrderChange();
 	}
 	
-	if(this._karrynPrisonVersion < 49) {
+	if(saveFileGameVersion < 49) {
 		this.recalculateBaseOrderChange();
 	}
 	
-	if(this._karrynPrisonVersion < 50) {
+	if(saveFileGameVersion < 50) {
 		delete actor._recordSeeEnemyTalkCockCount;
 		delete actor._recordSeenPeople;
 		delete actor._recordSeenMouthCount;
@@ -951,7 +957,7 @@ Game_Party.prototype.updateGameVersion = function() {
 		actor.recalculateSlutLvl();
 	}
 	
-	if(this._karrynPrisonVersion < 51) {
+	if(saveFileGameVersion < 51) {
 		actor._recordSubduedEnemiesWithAttack = 0;
 		actor._todaySubduedEnemiesWithAttack = 0;
 		actor.resetDesires();
@@ -960,20 +966,20 @@ Game_Party.prototype.updateGameVersion = function() {
 			actor.setupDesires();
 	}
 	
-	if(this._karrynPrisonVersion < 52) {
+	if(saveFileGameVersion < 52) {
 		this.update_addToAllWanted_Records_v52();
 	}
 	
-	if(this._karrynPrisonVersion < 53) {
+	if(saveFileGameVersion < 53) {
 		actor.forgetPassive(PASSIVE_SADISM_ORGASM_TWO_ID);
 		actor.forgetPassive(PASSIVE_MASOCHISM_ORGASM_TWO_ID);
 	}
 	
-	if(this._karrynPrisonVersion < 54) {
+	if(saveFileGameVersion < 54) {
 		actor._uncommittedCharmExp = 0;
 	}
 	
-	if(this._karrynPrisonVersion < 55) {
+	if(saveFileGameVersion < 55) {
 		actor._recordBoobsPettedOnaniCount = 0;
 		actor._recordNipplesPettedOnaniCount = 0;
 		actor._recordButtPettedOnaniCount = 0;
@@ -983,7 +989,7 @@ Game_Party.prototype.updateGameVersion = function() {
 		actor._recordFingersSuckedOnaniCount = 0;
 	}
 	
-	if(this._karrynPrisonVersion < 56) {
+	if(saveFileGameVersion < 56) {
 		actor.setupPassiveReqBaseArray();
 		actor.setupPassiveReqExtraArray();
 		actor.setupPassiveReqMultiArray();
@@ -1028,7 +1034,7 @@ Game_Party.prototype.updateGameVersion = function() {
 	
 	}
 	
-	if(this._karrynPrisonVersion < 57) {
+	if(saveFileGameVersion < 57) {
 		if(typeof actor.tachieBody === "number")
 			actor._tachieBody = '' + actor.tachieBody;
 		if(typeof actor.tachieMouth === "number")
@@ -1047,7 +1053,7 @@ Game_Party.prototype.updateGameVersion = function() {
 			actor._tachieLegs = '' + actor.tachieLegs;
 	}
 	
-	if(this._karrynPrisonVersion < 58) {
+	if(saveFileGameVersion < 58) {
 		if(actor._tachieRightBoob === '0')
 			actor._tachieRightBoob = '';
 		if(actor._tachieLeftBoob === '0')
@@ -1056,11 +1062,11 @@ Game_Party.prototype.updateGameVersion = function() {
 			actor._tachieLegs = '';
 	}
 	
-	if(this._karrynPrisonVersion < 60) {
+	if(saveFileGameVersion < 60) {
 		actor._titlesEquippedOnceRegister[TITLE_ID_VISITOR_FIRST_KISS] = false;
 	}
 	
-	if(this._karrynPrisonVersion < 61) {
+	if(saveFileGameVersion < 61) {
 		if($gameSwitches.value(SWITCH_WON_BOSS_BATTLE_LV2_ID) && Prison.prisonLevelTwoIsAnarchy()) {
 			Prison.firstSubjugationPrisonLevelTwo();
 		}
@@ -1160,7 +1166,7 @@ Game_Party.prototype.updateGameVersion = function() {
 		this.setupNoinimReinforcementVariables();
 		this.resetMinionThrowVariables();
 	}
-	if(this._karrynPrisonVersion < 62) {
+	if(saveFileGameVersion < 62) {
 		actor.setupPassiveReqBaseArray();
 		this.update_addToAllWanted_Records_v62();
 		
@@ -1324,12 +1330,12 @@ Game_Party.prototype.updateGameVersion = function() {
 		if(actor.meetsPassiveReq(PASSIVE_TRIPLE_PEN_COUNT_THREE_ID, actor._recordTriplePenetrationCount))
 			actor.addToPassiveReqExtra(PASSIVE_TRIPLE_PEN_COUNT_THREE_ID, actor._recordTriplePenetrationCount);
 	}
-	if(this._karrynPrisonVersion < 63) {
+	if(saveFileGameVersion < 63) {
 		if(!$gameSwitches.value(SWITCH_WON_BOSS_BATTLE_LV4_ID)) {
 			$gameSelfSwitches.setValue([MAP_ID_LVL4_STAIRS_TO_LVL5, 3, "A"], false);
 		}
 	}
-	if(this._karrynPrisonVersion < 64) {
+	if(saveFileGameVersion < 64) {
 		this._lastDefeatedLevelOneDate = -1;
 		this._lastDefeatedLevelTwoDate = -1;
 		this._lastDefeatedLevelThreeDate = -1;
@@ -1339,24 +1345,113 @@ Game_Party.prototype.updateGameVersion = function() {
 		
 		this.fixWantedHoboLevelPlus80();
 	}
-	if(this._karrynPrisonVersion < 65) {
+	if(saveFileGameVersion < 65) {
 		if(actor.meetsPassiveReq(PASSIVE_RIMJOB_PEOPLE_TWO_ID, actor._recordRimjobPeople))
 			actor.addToPassiveReqExtra(PASSIVE_RIMJOB_PEOPLE_TWO_ID, actor._recordRimjobPeople);
 		if(actor.meetsPassiveReq(PASSIVE_RIMJOB_PEOPLE_THREE_ID, actor._recordRimjobPeople))
 			actor.addToPassiveReqExtra(PASSIVE_RIMJOB_PEOPLE_THREE_ID, actor._recordRimjobPeople);
 		if(actor.meetsPassiveReq(PASSIVE_RIMJOB_USAGE_THREE_ID, actor._recordRimjobUsageCount))
 			actor.addToPassiveReqExtra(PASSIVE_RIMJOB_USAGE_THREE_ID, actor._recordRimjobUsageCount);
-
-	
-	
 	}
-	if(this._karrynPrisonVersion < 66) {
+	if(saveFileGameVersion < 66) {
+		actor.setupPassiveReqBaseArray();
+		actor.setupLiquids();
+		actor.setAllowTachieEmoteUpdate(true);
+		$gameActors.actor(ACTOR_CHAT_FACE_ID).setAllowTachieEmoteUpdate(true);
+		$gameSwitches.setValue(11, false);
+		$gameSwitches.setValue(12, false);
+		actor.restoreWardenClothingLostTemporaryDurability();
+		actor.setTachieSemenRightArmInFrontOfFront(false);
+		delete actor._tachieSemenBellyAndBoobsInFrontOfBoobs;
+		actor.setTachieSemenBoobsInFrontOfBoobs(true);
+		
+		for(let i = STRIPPER_SKILL_START; i <= STRIPPER_SKILL_END; i++) {
+			actor.learnSkill(i); 
+		}
+		
+		if(actor.meetsPassiveReq(PASSIVE_BUKKAKE_COUNT_THREE_ID, actor._recordBukkakeTotalCount))
+			actor.addToPassiveReqExtra(PASSIVE_BUKKAKE_COUNT_THREE_ID, actor._recordBukkakeTotalCount);
+		if(actor.meetsPassiveReq(PASSIVE_BUKKAKE_COUNT_FOUR_ID, actor._recordBukkakeTotalCount))
+			actor.addToPassiveReqExtra(PASSIVE_BUKKAKE_COUNT_FOUR_ID, actor._recordBukkakeTotalCount);
+		if(actor.meetsPassiveReq(PASSIVE_FACE_BUKKAKE_COUNT_TWO_ID, actor._recordBukkakeFaceCount))
+			actor.addToPassiveReqExtra(PASSIVE_FACE_BUKKAKE_COUNT_TWO_ID, actor._recordBukkakeFaceCount);
+		if(actor.meetsPassiveReq(PASSIVE_PUSSY_CREAMPIE_ML_FOUR_ID, actor._recordPussyCreampieML))
+			actor.addToPassiveReqExtra(PASSIVE_PUSSY_CREAMPIE_ML_FOUR_ID, actor._recordPussyCreampieML);
+		if(actor.meetsPassiveReq(PASSIVE_ANAL_CREAMPIE_ML_FOUR_ID, actor._recordAnalCreampieML))
+			actor.addToPassiveReqExtra(PASSIVE_ANAL_CREAMPIE_ML_FOUR_ID, actor._recordAnalCreampieML);
+		
+		this.setStripClubReputation(0);
+		this.setIsInStripperBattleFlag(false);
+		this._daysWithoutDoingStripClub = 0;
+		this._todayStripClubRepDecayed = false;
+		this._stripperBattle_intermissionPhase = false;
+		
+		actor._recordStripClubStripperBattleCount = 0;
+		actor._recordStripClubStripperSexCount = 0;
+		actor._recordStripClubStripperMaxDanceCombo = 0;
+		actor._recordStripClubCondomEjaculationCount = 0;
+		actor._recordStripClubCondomWornCount = 0;
+		
+		actor._playthroughRecordStripClubStripperBattleCount = 0;
+		actor._playthroughRecordStripClubStripperOrgasmOnStageCount = 0;
+		actor._playthroughRecordStripClubCondomEjaculationCount = 0;
+		actor._playthroughRecordStripClubCondomWornCount = 0;
+		
+		actor._todayServedGuardInStripClub = 0;
+		
+		this._nightBattle = false;
+		this._nightBattleVariableCounted = false;
+		this._gainNoOrderFlag = false;
+		this.respawnNightBattleEnemies();
+		
+		actor._recordNightBattleCompletedCount = 0;
+		actor._recordNightBattleCompletedPostFirstDefeatCount = 0;
+		actor._passiveRequirement_base[PASSIVE_NIGHT_BATTLE_COUNT_ONE_ID] = 1;
+		actor._passiveRequirement_base[PASSIVE_NIGHT_BATTLE_COUNT_TWO_ID] = 10;
+		actor._passiveRequirement_base[PASSIVE_NIGHT_BATTLE_COUNT_THREE_ID] = 30;
+		
+		if(Karryn.hasEdict(EDICT_LAXER_HIRING_STANDARDS))
+			$gameSwitches.setValue(SWITCH_EDICT_GUARD_LAXER_HIRING_STANDARDS, true);
+		else
+			$gameSwitches.setValue(SWITCH_EDICT_GUARD_LAXER_HIRING_STANDARDS, false);
+			
+		if(Karryn.hasEdict(EDICT_HIRE_CURRENT_INMATES))
+			$gameSwitches.setValue(SWITCH_EDICT_GUARD_HIRE_CURRENT_INMATES, true);
+		else
+			$gameSwitches.setValue(SWITCH_EDICT_GUARD_HIRE_CURRENT_INMATES, false);
 	
-	
-	
-	
+		if(Karryn.hasEdict(EDICT_NO_HIRING_STANDARDS))
+			$gameSwitches.setValue(SWITCH_EDICT_GUARD_NO_HIRING_STANDARDS, true);
+		else
+			$gameSwitches.setValue(SWITCH_EDICT_GUARD_NO_HIRING_STANDARDS, false);
+		
+		$gameSwitches.setValue(SWITCH_V9_FPSSYNC_PROMPT_ID, true);
+	}
+	if(saveFileGameVersion < 67) {
+		$gameParty.recalculateBaseIncomeAndExpense();
+		
+	}
+	if(saveFileGameVersion < 68) {
+		$gameParty.recalculateBaseOrderChange();
+		if(actor.isInDownPose() && !$gameParty.inBattle()) {
+			actor.setWardenMapPose();
+		}
+		if($gameMap._mapId === MAP_ID_EB_HALLWAY && !Prison.currentlyOutsidePrison()) {
+			Prison.changeCurrentPrisonLevelToOutside();
+		}
+	}
+	if(saveFileGameVersion < 69) {
+		$gameSystem.setWindowTone(null);
 	}
 	
+	
+	
+	//demo update
+	if(this.getDemoStatus() === true && !KARRYN_PRISON_GAME_IS_DEMO) {
+		if($gameSwitches.value(SWITCH_WON_BOSS_BATTLE_LV2_ID) && Prison.prisonLevelTwoIsAnarchy()) {
+			Prison.firstSubjugationPrisonLevelTwo();
+		}
+	}
 	
 	actor.cacheDesireTooltips();
 	this.setCurrentGameVersion();
@@ -1365,7 +1460,7 @@ Game_Party.prototype.updateGameVersion = function() {
 //Called when loading game 
 Game_Party.prototype.emergencyGameVersionFix = function() {
 	
-	if(this._karrynPrisonVersion < 43) {
+	if(this.getGameVersion() < 43) {
 		if(Karryn.hasEdict(EDICT_OFFICE_BED_UPGRADE_THREE)) {
 			let mapId = $gameMap._mapId;
 			if(mapId === MAP_ID_KARRYN_OFFICE && $gameSwitches.value(SWITCH_WON_BOSS_BATTLE_LV3_ID) && !$gameSwitches.value(SWITCH_GIFT_EMPEROR_LV3_ID)) {
@@ -1582,7 +1677,7 @@ Game_Party.prototype.update_setActorPassivesObtainedOnArray = function() {
 	actor._passivesObtainedOn_keyDate_valueSkillID[date] = [];
 	actor._passivesObtainedOn_keySkillID_valueDate = [];
 	
-	for(let i = PASSIVES_LIST_START_ID; i <= PASSIVES_LIST_END_ID; i++) {
+	for(let i = PASSIVES_LIST_ONE_START_ID; i <= PASSIVES_LIST_ONE_END_ID; i++) {
 		if(actor.hasPassive(i)) {
 			actor._passivesObtainedOn_keySkillID_valueDate[i] = date;
 			actor._passivesObtainedOn_keyDate_valueSkillID[date].push(i);
@@ -1590,6 +1685,12 @@ Game_Party.prototype.update_setActorPassivesObtainedOnArray = function() {
 		
 	}
 	for(let i = PASSIVES_LIST_TWO_START_ID; i <= PASSIVES_LIST_TWO_END_ID; i++) {
+		if(actor.hasPassive(i)) {
+			actor._passivesObtainedOn_keySkillID_valueDate[i] = date;
+			actor._passivesObtainedOn_keyDate_valueSkillID[date].push(i);
+		}
+	}
+	for(let i = PASSIVES_LIST_THREE_START_ID; i <= PASSIVES_LIST_THREE_END_ID; i++) {
 		if(actor.hasPassive(i)) {
 			actor._passivesObtainedOn_keySkillID_valueDate[i] = date;
 			actor._passivesObtainedOn_keyDate_valueSkillID[date].push(i);

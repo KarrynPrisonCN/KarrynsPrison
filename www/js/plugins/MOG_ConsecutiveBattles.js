@@ -719,8 +719,10 @@ WaveNumber.prototype.refreshWaveNumber = function() {
 };
 
 TimeNumber.prototype.refreshTimeNumber = function() {
+	console.log('refreshTimeNumber a')
 	let showTopRightTimer = $gameParty._showTopRightTimeNumberFlag;
 	if(this._minuteValue === 0 && this._secondValue == '00') {return};
+	console.log('refreshTimeNumber b')
 	if(!showTopRightTimer) {
 		this.removeChild(this._layout);
 		this._number.bitmap.clear();
@@ -729,6 +731,7 @@ TimeNumber.prototype.refreshTimeNumber = function() {
 		this._secondValue = '00';
 		return;
 	}
+	console.log('refreshTimeNumber c')
 	if(showTopRightTimer)
 		this._number.bitmap.clear();	
 	this._minuteValue = $gameParty.getTimeMinutesNumber();
@@ -749,6 +752,7 @@ WaveNumber.prototype.needRefreshWaveNumber = function() {
 };
 
 TimeNumber.prototype.needRefreshTimeNumber = function() {
+	console.log(this._secondValue + ' ' + $gameParty.getTimeSecondsNumber())
     if (this._minuteValue != $gameParty.getTimeMinutesNumber()) {return true};
 	if (this._secondValue != $gameParty.getTimeSecondsNumber()) {return true};
     return false;

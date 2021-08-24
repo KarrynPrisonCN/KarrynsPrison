@@ -1188,8 +1188,10 @@ Window_StatusInfo.prototype.drawEffects = function() {
 			lineSize = 1;
 			if(actor.isWearingPanties())
 				effectText = TextManager.statusBattleEffectIsWearingPanties;
-			else
+			else {
+				lineSize = 1.8;
 				effectText = TextManager.statusBattleEffectIsNotWearingPanties;
+			}
 		}
 		else if(i === 6) {
 			lineSize = 1;
@@ -1240,6 +1242,9 @@ Window_StatusInfo.prototype.drawEffects = function() {
 				effectText += '\n' + TextManager.StatusBattleEffectAttackComboCocky;
 			}
 			
+			if(actor._stripper_danceCombo >= 2) {
+				effectText = TextManager.StatusBattleEffectDanceCombo.format(actor._stripper_danceCombo);
+			}
 		}
 
 		else if(i === 13) {
@@ -2196,9 +2201,9 @@ Window_Base.prototype.remDailyReportText = function(id) {
 				if(Prison.easyMode()) {
 					showAnarchyNoLimitText = true;
 				}
-				else if(anarchyDays + $gameParty._levelOneBonusGracePeriod > levelAnarchyGracePeriod) {
+				else if(anarchyDays > levelAnarchyGracePeriod + $gameParty._levelOneBonusGracePeriod) {
 					showAnarchyPastLimitText = true;
-					decreasedAnarchyControl = Math.ceil((anarchyDays + $gameParty._levelOneBonusGracePeriod - levelAnarchyGracePeriod)/anarchyDecreaseDivider);
+					decreasedAnarchyControl = Math.ceil((anarchyDays - $gameParty._levelOneBonusGracePeriod - levelAnarchyGracePeriod)/anarchyDecreaseDivider);
 				}
 				else {
 					showAnarchyBeforeLimitText = true;
@@ -2215,9 +2220,9 @@ Window_Base.prototype.remDailyReportText = function(id) {
 				if(Prison.easyMode()) {
 					showAnarchyNoLimitText = true;
 				}
-				else if(anarchyDays + $gameParty._levelTwoBonusGracePeriod > levelAnarchyGracePeriod) {
+				else if(anarchyDays > levelAnarchyGracePeriod + $gameParty._levelTwoBonusGracePeriod) {
 					showAnarchyPastLimitText = true;
-					decreasedAnarchyControl = Math.ceil((anarchyDays + $gameParty._levelTwoBonusGracePeriod - levelAnarchyGracePeriod)/anarchyDecreaseDivider);
+					decreasedAnarchyControl = Math.ceil((anarchyDays - $gameParty._levelTwoBonusGracePeriod - levelAnarchyGracePeriod)/anarchyDecreaseDivider);
 				}
 				else {
 					showAnarchyBeforeLimitText = true;
@@ -2233,9 +2238,9 @@ Window_Base.prototype.remDailyReportText = function(id) {
 				if(Prison.easyMode()) {
 					showAnarchyNoLimitText = true;
 				}
-				else if(anarchyDays + $gameParty._levelThreeBonusGracePeriod > levelAnarchyGracePeriod) {
+				else if(anarchyDays > levelAnarchyGracePeriod + $gameParty._levelThreeBonusGracePeriod) {
 					showAnarchyPastLimitText = true;
-					decreasedAnarchyControl = Math.ceil((anarchyDays + $gameParty._levelThreeBonusGracePeriod - levelAnarchyGracePeriod)/anarchyDecreaseDivider);
+					decreasedAnarchyControl = Math.ceil((anarchyDays - $gameParty._levelThreeBonusGracePeriod - levelAnarchyGracePeriod)/anarchyDecreaseDivider);
 				}
 				else {
 					showAnarchyBeforeLimitText = true;
@@ -2383,7 +2388,7 @@ Window_Base.prototype.remDailyReportText = function(id) {
 		if(Prison.orderChange > 0) {
 			text += TextManager.RemDailyReportOrderChange_Positive.format(orderText);
 		}
-		else if(Prison.orderChange < 0) {
+		else if(Prison.orderChange < 0 && !$gameSwitches.value(SWITCH_BOSS_CLEAR_BONUS_ID)) {
 			text += TextManager.RemDailyReportOrderChange_Negative.format(orderText);
 		}
 		else {
@@ -2453,7 +2458,17 @@ Window_Base.prototype.remDailyReportText = function(id) {
 			}
 		}
 		
-		
+		//Strip Club Rep
+		if(Karryn.hasEdict(EDICT_BUILD_STRIP_CLUB) && $gameParty._stripClubReputation > $gameParty.getMinimumStripClubReputation()) {
+			if($gameParty._daysWithoutDoingStripClub === STRIP_CLUB_REP_DECAY_DAYS - 1) {
+				text += TextManager.RemDailyReportStripClubRep_AlmostDecay;
+				text += '\n';
+			}
+			else if($gameParty._todayStripClubRepDecayed) {
+				text += TextManager.RemDailyReportStripClubRep_Decayed;
+				text += '\n';
+			}
+		}
 	}
 	
 	return text;
@@ -2797,9 +2812,14 @@ Window_MenuStatus.prototype.drawKarrynStatus = function() {
 		line += statusLineChange;
 	}
 	
-	
+	//Night Mode
+	if($gameParty.isNightMode()) {
+		let nightModeText = TextManager.RCMenuNightModeText;
+		this.drawTextEx(nightModeText, x, line * lh, true);
+		line += statusLineChange;
+	}	
 	//Panties
-	if(!actor.isWearingPanties()) {
+	else if(!actor.isWearingPanties()) {
 		let lostPantiesText = TextManager.RCMenuLostPantiesText;
 		this.drawTextEx(lostPantiesText, x, line * lh, true);
 		line += statusLineChange;

@@ -29,9 +29,11 @@ const LINEARRAY_IS_MALE = 1;
 const LINEARRAY_IS_VOICED = 2;
 
 const LINE_MALE_SHOW_CHANCE = 80; //unused
+const LINE_MALE_SHOW_CHANCE_ZERO = 0;
 const LINE_MALE_SHOW_CHANCE_ONE = 25;
 const LINE_MALE_SHOW_CHANCE_TWO = 50;
 const LINE_MALE_SHOW_CHANCE_THREE = 75;
+const LINE_MALE_SHOW_CHANCE_FOUR = 100;
 
 //Enemy lines
 const ENEMY_LINE_TALK_RANDOM = 1; //unused
@@ -183,6 +185,7 @@ const KARRYN_LINE_ENEMY_BUKKAKE_LEGS = 138;
 const KARRYN_LINE_ENEMY_CUM_INTO_MUG = 139;
 const KARRYN_LINE_ENEMY_CUM_ONTO_DESK = 140;
 const KARRYN_LINE_ENEMY_CUM_ONTO_FLOOR = 141;
+const KARRYN_LINE_ENEMY_CUM_INTO_CONDOM = 142;
 
 //Enemy's line for ejaculation
 const ENEMY_LINE_ENEMY_SWALLOW = 101;
@@ -196,6 +199,7 @@ const ENEMY_LINE_ENEMY_BUKKAKE_LEGS = 108;
 const ENEMY_LINE_ENEMY_CUM_INTO_MUG = 109;
 const ENEMY_LINE_ENEMY_CUM_ONTO_DESK = 110;
 const ENEMY_LINE_ENEMY_CUM_ONTO_FLOOR = 111;
+const ENEMY_LINE_ENEMY_CUM_INTO_CONDOM = 112;
 
 const KARRYN_LINE_ENEMY_START_THUG_GANGBANG = 1601;
 const KARRYN_LINE_ENEMY_START_GOBLIN_CUNNI = 1602;
@@ -319,6 +323,8 @@ const KARRYN_LINE_GLORY_BATTLE_START = 7300;
 const KARRYN_LINE_GLORY_HOLE_APPEAR_FIRST = 7301;
 const KARRYN_LINE_GLORY_HOLE_APPEAR_MID = 7302;
 
+const KARRYN_LINE_STRIPPER_BATTLE_START = 7400;
+
 var $remLines = null;
 var $remLinesCH = null;
 
@@ -439,40 +445,57 @@ Rem_Lines.prototype.getLineArray = function() {
 		lineArray = this.enemyline_Talk_Random(lineArray);
 	}
 	else if(this._lineType === KARRYN_LINE_SIGHT_BUKKAKE) {
-		lineArray = this.karrynline_Sight_Bukkake(lineArray);
-		lineArray = this.karrynline_Sight_Bukkake(lineArray);
-		lineArray = this.karrynline_Sight_Random(lineArray);
+		if($gameParty.isInStripperBattle && !Karryn.isInStripperSexPose()) {}
+		else {
+			lineArray = this.karrynline_Sight_Bukkake(lineArray);
+			lineArray = this.karrynline_Sight_Bukkake(lineArray);
+			lineArray = this.karrynline_Sight_Random(lineArray);
+		}
 	}
 	else if(this._lineType === KARRYN_LINE_SIGHT_MOUTH) {
-		lineArray = this.karrynline_Sight_Mouth(lineArray);
-		lineArray = this.karrynline_Sight_Mouth(lineArray);
-		lineArray = this.karrynline_Sight_Random(lineArray);
+		if($gameParty.isInStripperBattle && !Karryn.isInStripperSexPose()) {}
+		else {
+			lineArray = this.karrynline_Sight_Mouth(lineArray);
+			lineArray = this.karrynline_Sight_Mouth(lineArray);
+			lineArray = this.karrynline_Sight_Random(lineArray);
+		}
 	}
 	else if(this._lineType === KARRYN_LINE_SIGHT_BOOBS) {
-		lineArray = this.karrynline_Sight_Boobs(lineArray);
-		lineArray = this.karrynline_Sight_Boobs(lineArray);
-		lineArray = this.karrynline_Sight_Random(lineArray);
+		if($gameParty.isInStripperBattle && !Karryn.isInStripperSexPose()) {}
+		else {
+			lineArray = this.karrynline_Sight_Boobs(lineArray);
+			lineArray = this.karrynline_Sight_Boobs(lineArray);
+			lineArray = this.karrynline_Sight_Random(lineArray);
+		}
 	}
 	else if(this._lineType === KARRYN_LINE_SIGHT_NIPPLES) {
-		lineArray = this.karrynline_Sight_Boobs(lineArray);
-		lineArray = this.karrynline_Sight_Nipples(lineArray);
-		lineArray = this.karrynline_Sight_Nipples(lineArray);
-		lineArray = this.karrynline_Sight_Random(lineArray);
+		if($gameParty.isInStripperBattle && !Karryn.isInStripperSexPose()) {}
+		else {
+			lineArray = this.karrynline_Sight_Boobs(lineArray);
+			lineArray = this.karrynline_Sight_Nipples(lineArray);
+			lineArray = this.karrynline_Sight_Nipples(lineArray);
+			lineArray = this.karrynline_Sight_Random(lineArray);
+		}
 	}
 	else if(this._lineType === KARRYN_LINE_SIGHT_PUSSY) {
-		lineArray = this.karrynline_Sight_Pussy(lineArray);
-		lineArray = this.karrynline_Sight_Pussy(lineArray);
-		lineArray = this.karrynline_Sight_Random(lineArray);
+		if($gameParty.isInStripperBattle && !Karryn.isInStripperSexPose()) {}
+		else {
+			lineArray = this.karrynline_Sight_Pussy(lineArray);
+			lineArray = this.karrynline_Sight_Pussy(lineArray);
+			lineArray = this.karrynline_Sight_Random(lineArray);
+		}
 	}
 	else if(this._lineType === KARRYN_LINE_SIGHT_BUTT) {
-		lineArray = this.karrynline_Sight_Butt(lineArray);
-		lineArray = this.karrynline_Sight_Butt(lineArray);
-		lineArray = this.karrynline_Sight_Random(lineArray);
+		if($gameParty.isInStripperBattle && !Karryn.isInStripperSexPose()) {}
+		else {
+			lineArray = this.karrynline_Sight_Butt(lineArray);
+			lineArray = this.karrynline_Sight_Butt(lineArray);
+			lineArray = this.karrynline_Sight_Random(lineArray);
+		}
 	}
 	else if(this._lineType === KARRYN_LINE_SIGHT_ORGASM) {
 		lineArray = this.karrynline_Sight_Orgasm(lineArray);
 		lineArray = this.karrynline_Sight_Orgasm(lineArray);
-		lineArray = this.karrynline_Sight_Random(lineArray);
 	}
 	
 	else if(this._lineType === KARRYN_LINE_ENEMY_POSESKILL_BJ) {
@@ -741,7 +764,11 @@ Rem_Lines.prototype.getLineArray = function() {
 
 	
 	else if(this._lineType === KARRYN_LINE_KARRYN_ORGASM) {
-		lineArray = this.karrynline_karrynOrgasm(lineArray);
+		lineArray = this.karrynline_karrynGenericOrgasm(lineArray);
+		lineArray = this.karrynline_karrynSpecificOrgasm(lineArray);
+		lineArray = this.karrynline_karrynSpecificOrgasm(lineArray);
+		lineArray = this.karrynline_karrynSpecificOrgasm(lineArray);
+		lineArray = this.karrynline_karrynSpecificOrgasm(lineArray);
 	}
 	else if(this._lineType === KARRYN_LINE_ENEMY_BUKKAKE_FACE) {
 		if(!this._visitor_isFan && !this._visitor_isPervert) {
@@ -1256,13 +1283,20 @@ Rem_Lines.prototype.getLineArray = function() {
 	
 	
 	else if(this._lineType === LINE_TESTING) {
-		lineArray = [["testing", false, false]];
+		enemyLineAlwaysShow = true;
+		lineArray = [["testing", true, false]];
 	}
 	
 	if(lineArray.length === 0) return false;
 
 	let selectedRandomLine = Math.randomInt(lineArray.length);
 	let lineId = lineArray[selectedRandomLine][LINEARRAY_LINE_ID];
+	if(lineArray.length > 1) {
+		while(lineId === BattleManager._lastRemLineId) {
+			selectedRandomLine = Math.randomInt(lineArray.length);
+			lineId = lineArray[selectedRandomLine][LINEARRAY_LINE_ID];
+		}
+	}
 	
 	console.log('rem_lines lineId: ' + lineId);
 
@@ -1277,7 +1311,7 @@ Rem_Lines.prototype.getLineArray = function() {
 				else if($gameParty._gloryReputation <= 15) 
 					maleLineShowChance *= ($gameParty._gloryReputation - 5) * 0.1;
 			}
-			if(Math.randomInt(100) < maleLineShowChance) 
+			if(Math.randomInt(100) > maleLineShowChance) 
 				return false;
 		}
 	}
@@ -1532,7 +1566,8 @@ Rem_Lines.prototype.enemyline_Talk_Mouth = function(lineArray) {
 		else if(reactionScore >= VAR_DEF_RS_LV3_REQ && publishedSexStatus) {
 			lineArray.push(['nerd_talk_mouth_exp3_1', true, false]);
 			lineArray.push(['nerd_talk_mouth_exp3_2', true, false]);
-			lineArray.push(['nerd_talk_mouth_exp3_3', true, false]);
+			if(!ConfigManager.disableSmegma)
+				lineArray.push(['nerd_talk_mouth_exp3_3', true, false]);
 			lineArray.push(['nerd_talk_mouth_exp3_4', true, false]);
 		}
 		else if(reactionScore >= VAR_DEF_RS_LV2_REQ && publishedSexStatus) {
@@ -1934,7 +1969,8 @@ Rem_Lines.prototype.enemyline_Talk_Cock = function(lineArray) {
 			lineArray.push(['homeless_talk_cock_exp2_5', true, false]);
 		}
 		else if(reactionScore >= VAR_DEF_RS_LV1_REQ) {
-			lineArray.push(['homeless_talk_cock_exp1_1', true, false]);
+			if(!ConfigManager.disableSmegma)
+				lineArray.push(['homeless_talk_cock_exp1_1', true, false]);
 			lineArray.push(['homeless_talk_cock_exp1_2', true, false]);
 			lineArray.push(['homeless_talk_cock_exp1_3', true, false]);
 			lineArray.push(['homeless_talk_cock_exp1_4', true, false]);
@@ -1970,7 +2006,8 @@ Rem_Lines.prototype.karrynline_Sight_Random = function(lineArray) {
 	}
 	
 	if(isInDownOrgasmPose) {
-		lineArray = this.karrynline_Sight_Orgasm(lineArray);
+		return lineArray;
+		//lineArray = this.karrynline_Sight_Orgasm(lineArray);
 	}
 	else if(reactionScore >= VAR_DEF_RS_LV3_REQ) {
 		lineArray.push(['karryn_sight_exp3_1', false, false]);
@@ -2017,7 +2054,8 @@ Rem_Lines.prototype.karrynline_Sight_Bukkake = function(lineArray) {
 	}
 	
 	if(isInDownOrgasmPose) {
-		lineArray = this.karrynline_Sight_Orgasm(lineArray);
+		return lineArray;
+		//lineArray = this.karrynline_Sight_Orgasm(lineArray);
 	}
 	
 	if(reactionScore >= VAR_DEF_RS_LV3_REQ) {
@@ -2062,7 +2100,8 @@ Rem_Lines.prototype.karrynline_Sight_Mouth = function(lineArray) {
 	}
 	
 	if(isInDownOrgasmPose) {
-		lineArray = this.karrynline_Sight_Orgasm(lineArray);
+		return lineArray;
+		//lineArray = this.karrynline_Sight_Orgasm(lineArray);
 	}
 	else if(reactionScore >= VAR_DEF_RS_LV3_REQ && hasKissPassive && hasBlowjobPassive && hasSwallowPassive) {
 		lineArray.push(['karryn_sight_mouth_exp3_1', false, false]);
@@ -2855,7 +2894,8 @@ Rem_Lines.prototype.karrynline_karrynPoseSkill_Blowjob = function(lineArray) {
 	let sexSkillReactionScore = actor.reactionScore_blowjobPassive();
 	
 	if(sexSkillReactionScore >= VAR_FP_SEX_RS_LV3_REQ) {
-		lineArray.push(['karryn_poseskill_fera_exp3_1', false, false]);
+		if(!ConfigManager.disableSmegma)
+			lineArray.push(['karryn_poseskill_fera_exp3_1', false, false]);
 		lineArray.push(['karryn_poseskill_fera_exp3_2', false, false]);
 		lineArray.push(['karryn_poseskill_fera_exp3_3', false, false]);
 		lineArray.push(['karryn_poseskill_fera_exp3_4', false, false]);
@@ -2890,7 +2930,8 @@ Rem_Lines.prototype.karrynline_karrynPoseSkill_Blowjob_gloryBattle = function(li
 			lineArray.push(['karryn_toilet_poseskill_hardfera_exp3_2', false, false]);
 			lineArray.push(['karryn_toilet_poseskill_hardfera_exp3_3', false, false]);
 			lineArray.push(['karryn_toilet_poseskill_hardfera_exp3_4', false, false]);
-			lineArray.push(['karryn_toilet_poseskill_hardfera_exp3_5', false, false]);
+			if(!ConfigManager.disableSmegma)
+				lineArray.push(['karryn_toilet_poseskill_hardfera_exp3_5', false, false]);
 		}
 		else if(sexSkillReactionScore >= VAR_FP_SEX_RS_LV2_REQ) {
 			lineArray.push(['karryn_toilet_poseskill_hardfera_exp2_1', false, false]);
@@ -2910,7 +2951,8 @@ Rem_Lines.prototype.karrynline_karrynPoseSkill_Blowjob_gloryBattle = function(li
 	else {
 		if(sexSkillReactionScore >= VAR_FP_SEX_RS_LV3_REQ) {
 			lineArray.push(['karryn_toilet_poseskill_softfera_exp3_1', false, false]);
-			lineArray.push(['karryn_toilet_poseskill_softfera_exp3_2', false, false]);
+			if(!ConfigManager.disableSmegma)
+				lineArray.push(['karryn_toilet_poseskill_softfera_exp3_2', false, false]);
 			lineArray.push(['karryn_toilet_poseskill_softfera_exp3_3', false, false]);
 			lineArray.push(['karryn_toilet_poseskill_softfera_exp3_4', false, false]);
 			lineArray.push(['karryn_toilet_poseskill_softfera_exp3_5', false, false]);
@@ -3103,7 +3145,8 @@ Rem_Lines.prototype.karrynline_karrynPoseInvite_Blowjob = function(lineArray) {
 	let reactionScore = actor.getReactionScore();
 	
 	if(reactionScore >= VAR_DEF_RS_LV3_REQ) {
-		lineArray.push(['karryn_poseinvite_fera_exp3_1', false, false]);
+		if(!ConfigManager.disableSmegma)
+			lineArray.push(['karryn_poseinvite_fera_exp3_1', false, false]);
 		lineArray.push(['karryn_poseinvite_fera_exp3_2', false, false]);
 		lineArray.push(['karryn_poseinvite_fera_exp3_3', false, false]);
 		lineArray.push(['karryn_poseinvite_fera_exp3_4', false, false]);
@@ -3412,7 +3455,8 @@ Rem_Lines.prototype.karrynline_karrynCockStare_LvlOne = function(lineArray) {
 		lineArray.push(['karryn_cock_stare_exp3_6', false, false]);
 		lineArray.push(['karryn_cock_stare_exp3_7', false, false]);
 		lineArray.push(['karryn_cock_stare_exp3_8', false, false]);
-		lineArray.push(['karryn_cock_stare_exp3_9', false, false]);
+		if(!ConfigManager.disableSmegma)
+			lineArray.push(['karryn_cock_stare_exp3_9', false, false]);
 		lineArray.push(['karryn_cock_stare_exp3_10', false, false]);
 	}
 	else if(cockStareReactionScore >= VAR_DEF_RS_LV2_REQ) {
@@ -3462,7 +3506,8 @@ Rem_Lines.prototype.karrynline_karrynCockStare_gloryBattle = function(lineArray)
 			lineArray.push(['karryn_toilet_hardcock_stare_exp3_3', false, false]);
 			lineArray.push(['karryn_toilet_hardcock_stare_exp3_4', false, false]);
 			lineArray.push(['karryn_toilet_hardcock_stare_exp3_5', false, false]);
-			lineArray.push(['karryn_toilet_hardcock_stare_exp3_6', false, false]);
+			if(!ConfigManager.disableSmegma)
+				lineArray.push(['karryn_toilet_hardcock_stare_exp3_6', false, false]);
 			lineArray.push(['karryn_toilet_hardcock_stare_exp3_7', false, false]);
 		}
 		else if(cockStareReactionScore >= VAR_DEF_RS_LV2_REQ) {
@@ -5182,14 +5227,111 @@ Rem_Lines.prototype.enemyline_enemyPoseJoin_AnalSex = function(lineArray) {
 ////////////
 // Karryn Orgasm & Ejaculation
 
-Rem_Lines.prototype.karrynline_karrynOrgasm = function(lineArray) {
+Rem_Lines.prototype.karrynline_karrynGenericOrgasm = function(lineArray) {
 	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
 	let orgasmReactionScore = actor.getOrgasmReactionScore();
-	let lastHitMouth = this._gotOrgasmFromSkillType === JUST_SKILLTYPE_ENEMY_KISS || this._gotOrgasmFromSkillType === JUST_SKILLTYPE_KARRYN_KISSING || this._gotOrgasmFromSkillType === JUST_SKILLTYPE_ENEMY_BLOWJOB || this._gotOrgasmFromSkillType === JUST_SKILLTYPE_KARRYN_BLOWJOB || this._gotOrgasmFromSkillType === JUST_SKILLTYPE_ENEMY_CUM_SWALLOW;
-	let lastHitButt = this._gotOrgasmFromSkillType === JUST_SKILLTYPE_ENEMY_ANAL_SEX || this._gotOrgasmFromSkillType === JUST_SKILLTYPE_ENEMY_ANAL_CREAMPIE || this._gotOrgasmFromSkillType === JUST_SKILLTYPE_KARRYN_ANAL_SEX;
+	let orgasmTypeId = actor._gotOrgasmFromSkillType;
+	let isFirstOrgasm = actor._recordOrgasmCount <= 1;
 	
-	if(lastHitMouth) {
-		if(orgasmReactionScore >= VAR_DEF_RS_LV3_REQ) {
+	if(isFirstOrgasm) {
+		lineArray.push(['karryn_orgasm_exp0_1', false, false]);
+	}
+	else if(orgasmReactionScore >= VAR_DEF_RS_LV3_REQ) {
+		lineArray.push(['karryn_orgasm_exp3_1', false, false]);
+		lineArray.push(['karryn_orgasm_exp3_2', false, false]);
+		lineArray.push(['karryn_orgasm_exp3_3', false, false]);
+		lineArray.push(['karryn_orgasm_exp3_4', false, false]);
+		lineArray.push(['karryn_orgasm_exp3_5', false, false]);
+		lineArray.push(['karryn_orgasm_exp3_6', false, false]);
+		lineArray.push(['karryn_orgasm_exp3_7', false, false]);
+		lineArray.push(['karryn_orgasm_exp3_8', false, false]);
+		lineArray.push(['karryn_orgasm_exp3_9', false, false]);
+	}
+	else if(orgasmReactionScore >= VAR_DEF_RS_LV2_REQ) {
+		lineArray.push(['karryn_orgasm_exp2_1', false, false]);
+		lineArray.push(['karryn_orgasm_exp2_2', false, false]);
+		lineArray.push(['karryn_orgasm_exp2_3', false, false]);
+		lineArray.push(['karryn_orgasm_exp2_4', false, false]);
+		lineArray.push(['karryn_orgasm_exp2_5', false, false]);
+		lineArray.push(['karryn_orgasm_exp2_6', false, false]);
+		lineArray.push(['karryn_orgasm_exp2_7', false, false]);
+		lineArray.push(['karryn_orgasm_exp2_8', false, false]);
+		lineArray.push(['karryn_orgasm_exp2_9', false, false]);
+	}
+	else {
+		lineArray.push(['karryn_orgasm_exp1_1', false, false]);
+		lineArray.push(['karryn_orgasm_exp1_2', false, false]);
+		lineArray.push(['karryn_orgasm_exp1_3', false, false]);
+		lineArray.push(['karryn_orgasm_exp1_4', false, false]);
+		lineArray.push(['karryn_orgasm_exp1_5', false, false]);
+		lineArray.push(['karryn_orgasm_exp1_6', false, false]);
+	}
+
+	
+	return lineArray;
+};
+Rem_Lines.prototype.karrynline_karrynSpecificOrgasm = function(lineArray) {
+	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
+	let orgasmReactionScore = actor.getOrgasmReactionScore();
+	let orgasmTypeId = actor._gotOrgasmFromSkillType;
+	let isFirstOrgasm = false;
+	
+	if(orgasmTypeId === JUST_SKILLTYPE_ENEMY_SIGHT || orgasmTypeId === JUST_SKILLTYPE_PASSIVE_SIGHT) {
+		isFirstOrgasm = actor._recordOrgasmFromSightCount <= 1;
+		
+		if(isFirstOrgasm) {
+			lineArray.push(['karryn_orgasm_sight_exp0_1', false, false]);
+		}
+		else if(orgasmReactionScore >= VAR_DEF_RS_LV3_REQ) {
+			lineArray.push(['karryn_orgasm_sight_exp3_1', false, false]);
+			lineArray.push(['karryn_orgasm_sight_exp3_2', false, false]);
+			lineArray.push(['karryn_orgasm_sight_exp3_3', false, false]);
+			lineArray.push(['karryn_orgasm_sight_exp3_4', false, false]);
+		}
+		else if(orgasmReactionScore >= VAR_DEF_RS_LV2_REQ) {
+			lineArray.push(['karryn_orgasm_sight_exp2_1', false, false]);
+			lineArray.push(['karryn_orgasm_sight_exp2_2', false, false]);
+			lineArray.push(['karryn_orgasm_sight_exp2_3', false, false]);
+		}
+		else {
+			lineArray.push(['karryn_orgasm_sight_exp1_1', false, false]);
+			lineArray.push(['karryn_orgasm_sight_exp1_2', false, false]);
+			lineArray.push(['karryn_orgasm_sight_exp1_3', false, false]);
+		}
+	}
+	else if(orgasmTypeId === JUST_SKILLTYPE_ENEMY_TALK) {
+		isFirstOrgasm = actor._recordOrgasmFromTalkCount <= 1;
+		
+		if(isFirstOrgasm) {
+			lineArray.push(['karryn_orgasm_talk_exp0_1', false, false]);
+		}
+		else if(orgasmReactionScore >= VAR_DEF_RS_LV3_REQ) {
+			lineArray.push(['karryn_orgasm_talk_exp3_1', false, false]);
+			lineArray.push(['karryn_orgasm_talk_exp3_2', false, false]);
+			lineArray.push(['karryn_orgasm_talk_exp3_3', false, false]);
+			lineArray.push(['karryn_orgasm_talk_exp3_4', false, false]);
+		}
+		else if(orgasmReactionScore >= VAR_DEF_RS_LV2_REQ) {
+			lineArray.push(['karryn_orgasm_talk_exp2_1', false, false]);
+			lineArray.push(['karryn_orgasm_talk_exp2_2', false, false]);
+			lineArray.push(['karryn_orgasm_talk_exp2_3', false, false]);
+		}
+		else {
+			lineArray.push(['karryn_orgasm_talk_exp1_1', false, false]);
+			lineArray.push(['karryn_orgasm_talk_exp1_2', false, false]);
+			lineArray.push(['karryn_orgasm_talk_exp1_3', false, false]);
+		}
+	}
+	else if(orgasmTypeId === JUST_SKILLTYPE_KARRYN_KISSING || orgasmTypeId === JUST_SKILLTYPE_KARRYN_BLOWJOB || orgasmTypeId === JUST_SKILLTYPE_ENEMY_KISS || orgasmTypeId === JUST_SKILLTYPE_ENEMY_BLOWJOB) {
+		if(orgasmTypeId === JUST_SKILLTYPE_KARRYN_KISSING || orgasmTypeId === JUST_SKILLTYPE_ENEMY_KISS)
+			isFirstOrgasm = actor._recordOrgasmFromKissCount <= 1 && actor._recordOrgasmFromBlowjobCount == 0;
+		else if(orgasmTypeId === JUST_SKILLTYPE_KARRYN_BLOWJOB || orgasmTypeId === JUST_SKILLTYPE_ENEMY_BLOWJOB)
+			isFirstOrgasm = actor._recordOrgasmFromBlowjobCount <= 1 && actor._recordOrgasmFromKissCount == 0;
+		
+		if(isFirstOrgasm) {
+			lineArray.push(['karryn_orgasm_mouth_exp0_1', false, false]);
+		}
+		else if(orgasmReactionScore >= VAR_DEF_RS_LV3_REQ) {
 			lineArray.push(['karryn_orgasm_mouth_exp3_1', false, false]);
 			lineArray.push(['karryn_orgasm_mouth_exp3_2', false, false]);
 			lineArray.push(['karryn_orgasm_mouth_exp3_3', false, false]);
@@ -5199,18 +5341,181 @@ Rem_Lines.prototype.karrynline_karrynOrgasm = function(lineArray) {
 			lineArray.push(['karryn_orgasm_mouth_exp2_1', false, false]);
 			lineArray.push(['karryn_orgasm_mouth_exp2_2', false, false]);
 			lineArray.push(['karryn_orgasm_mouth_exp2_3', false, false]);
+			lineArray.push(['karryn_orgasm_mouth_exp2_4', false, false]);
 		}
-		else if(orgasmReactionScore >= VAR_DEF_RS_LV1_REQ) {
+		else {
 			lineArray.push(['karryn_orgasm_mouth_exp1_1', false, false]);
 			lineArray.push(['karryn_orgasm_mouth_exp1_2', false, false]);
 			lineArray.push(['karryn_orgasm_mouth_exp1_3', false, false]);
-		}
-		else {
-			lineArray.push(['karryn_orgasm_mouth_exp0_1', false, false]);
+			lineArray.push(['karryn_orgasm_mouth_exp1_4', false, false]);
 		}
 	}
-	else if(lastHitButt) {
-		if(orgasmReactionScore >= VAR_DEF_RS_LV3_REQ) {
+	else if(orgasmTypeId === JUST_SKILLTYPE_ENEMY_CUM_SWALLOW) {
+		isFirstOrgasm = actor._recordOrgasmFromCumSwallowCount <= 1;
+		
+		if(isFirstOrgasm) {
+			lineArray.push(['karryn_orgasm_swallow_exp0_1', false, false]);
+		}
+		else if(orgasmReactionScore >= VAR_DEF_RS_LV3_REQ) {
+			lineArray.push(['karryn_orgasm_swallow_exp3_1', false, false]);
+			lineArray.push(['karryn_orgasm_swallow_exp3_2', false, false]);
+			lineArray.push(['karryn_orgasm_swallow_exp3_3', false, false]);
+			lineArray.push(['karryn_orgasm_swallow_exp3_4', false, false]);
+		}
+		else if(orgasmReactionScore >= VAR_DEF_RS_LV2_REQ) {
+			lineArray.push(['karryn_orgasm_swallow_exp2_1', false, false]);
+			lineArray.push(['karryn_orgasm_swallow_exp2_2', false, false]);
+			lineArray.push(['karryn_orgasm_swallow_exp2_3', false, false]);
+		}
+		else {
+			lineArray.push(['karryn_orgasm_swallow_exp1_1', false, false]);
+			lineArray.push(['karryn_orgasm_swallow_exp1_2', false, false]);
+			lineArray.push(['karryn_orgasm_swallow_exp1_3', false, false]);
+		}
+	}
+	else if(orgasmTypeId === JUST_SKILLTYPE_ENEMY_PETTING) {
+		isFirstOrgasm = actor._recordOrgasmFromPettingCount <= 1;
+		
+		if(isFirstOrgasm) {
+			lineArray.push(['karryn_orgasm_petting_exp0_1', false, false]);
+		}
+		else if(orgasmReactionScore >= VAR_DEF_RS_LV3_REQ) {
+			lineArray.push(['karryn_orgasm_petting_exp3_1', false, false]);
+			lineArray.push(['karryn_orgasm_petting_exp3_2', false, false]);
+			lineArray.push(['karryn_orgasm_petting_exp3_3', false, false]);
+			lineArray.push(['karryn_orgasm_petting_exp3_4', false, false]);
+		}
+		else if(orgasmReactionScore >= VAR_DEF_RS_LV2_REQ) {
+			lineArray.push(['karryn_orgasm_petting_exp2_1', false, false]);
+			lineArray.push(['karryn_orgasm_petting_exp2_2', false, false]);
+			lineArray.push(['karryn_orgasm_petting_exp2_3', false, false]);
+			lineArray.push(['karryn_orgasm_petting_exp2_4', false, false]);
+		}
+		else {
+			lineArray.push(['karryn_orgasm_petting_exp1_1', false, false]);
+			lineArray.push(['karryn_orgasm_petting_exp1_2', false, false]);
+			lineArray.push(['karryn_orgasm_petting_exp1_3', false, false]);
+			lineArray.push(['karryn_orgasm_petting_exp1_4', false, false]);
+		}
+	}
+	else if(orgasmTypeId === JUST_SKILLTYPE_ENEMY_TITTYFUCK || orgasmTypeId === JUST_SKILLTYPE_KARRYN_TITTYFUCK) {
+		isFirstOrgasm = actor._recordOrgasmFromTittyFuckCount <= 1;
+		
+		if(isFirstOrgasm) {
+			lineArray.push(['karryn_orgasm_paizuri_exp0_1', false, false]);
+		}
+		else if(orgasmReactionScore >= VAR_DEF_RS_LV3_REQ) {
+			lineArray.push(['karryn_orgasm_paizuri_exp3_1', false, false]);
+			lineArray.push(['karryn_orgasm_paizuri_exp3_2', false, false]);
+			lineArray.push(['karryn_orgasm_paizuri_exp3_3', false, false]);
+			lineArray.push(['karryn_orgasm_paizuri_exp3_4', false, false]);
+		}
+		else if(orgasmReactionScore >= VAR_DEF_RS_LV2_REQ) {
+			lineArray.push(['karryn_orgasm_paizuri_exp2_1', false, false]);
+			lineArray.push(['karryn_orgasm_paizuri_exp2_2', false, false]);
+			lineArray.push(['karryn_orgasm_paizuri_exp2_3', false, false]);
+		}
+		else {
+			lineArray.push(['karryn_orgasm_paizuri_exp1_1', false, false]);
+			lineArray.push(['karryn_orgasm_paizuri_exp1_2', false, false]);
+			lineArray.push(['karryn_orgasm_paizuri_exp1_3', false, false]);
+		}
+	}
+	else if(orgasmTypeId === JUST_SKILLTYPE_ENEMY_BUKKAKE) {
+		isFirstOrgasm = actor._recordOrgasmFromBukkakeCount <= 1;
+		
+		if(isFirstOrgasm) {
+			lineArray.push(['karryn_orgasm_bukkake_exp0_1', false, false]);
+		}
+		else if(orgasmReactionScore >= VAR_DEF_RS_LV3_REQ) {
+			lineArray.push(['karryn_orgasm_bukkake_exp3_1', false, false]);
+			lineArray.push(['karryn_orgasm_bukkake_exp3_2', false, false]);
+			lineArray.push(['karryn_orgasm_bukkake_exp3_3', false, false]);
+			lineArray.push(['karryn_orgasm_bukkake_exp3_4', false, false]);
+		}
+		else if(orgasmReactionScore >= VAR_DEF_RS_LV2_REQ) {
+			lineArray.push(['karryn_orgasm_bukkake_exp2_1', false, false]);
+			lineArray.push(['karryn_orgasm_bukkake_exp2_2', false, false]);
+			lineArray.push(['karryn_orgasm_bukkake_exp2_3', false, false]);
+		}
+		else {
+			lineArray.push(['karryn_orgasm_bukkake_exp1_1', false, false]);
+			lineArray.push(['karryn_orgasm_bukkake_exp1_2', false, false]);
+			lineArray.push(['karryn_orgasm_bukkake_exp1_3', false, false]);
+		}
+	}
+	else if(orgasmTypeId === JUST_SKILLTYPE_ENEMY_CUNNILINGUS) {
+		isFirstOrgasm = actor._recordOrgasmFromCunnilingusCount <= 1;
+		
+		if(isFirstOrgasm) {
+			lineArray.push(['karryn_orgasm_cunnilingus_exp0_1', false, false]);
+		}
+		else if(orgasmReactionScore >= VAR_DEF_RS_LV3_REQ) {
+			lineArray.push(['karryn_orgasm_cunnilingus_exp3_1', false, false]);
+			lineArray.push(['karryn_orgasm_cunnilingus_exp3_2', false, false]);
+		}
+		else if(orgasmReactionScore >= VAR_DEF_RS_LV2_REQ) {
+			lineArray.push(['karryn_orgasm_cunnilingus_exp2_1', false, false]);
+			lineArray.push(['karryn_orgasm_cunnilingus_exp2_2', false, false]);
+		}
+		else {
+			lineArray.push(['karryn_orgasm_cunnilingus_exp1_1', false, false]);
+			lineArray.push(['karryn_orgasm_cunnilingus_exp1_2', false, false]);
+		}
+	}
+	else if(orgasmTypeId === JUST_SKILLTYPE_KARRYN_PUSSY_SEX || orgasmTypeId === JUST_SKILLTYPE_ENEMY_PUSSY_SEX) {
+		isFirstOrgasm = actor._recordOrgasmFromPussySexCount <= 1;
+		
+		if(isFirstOrgasm) {
+			lineArray.push(['karryn_orgasm_pussy_exp0_1', false, false]);
+		}
+		else if(orgasmReactionScore >= VAR_DEF_RS_LV3_REQ) {
+			lineArray.push(['karryn_orgasm_pussy_exp3_1', false, false]);
+			lineArray.push(['karryn_orgasm_pussy_exp3_2', false, false]);
+			lineArray.push(['karryn_orgasm_pussy_exp3_3', false, false]);
+			lineArray.push(['karryn_orgasm_pussy_exp3_4', false, false]);
+		}
+		else if(orgasmReactionScore >= VAR_DEF_RS_LV2_REQ) {
+			lineArray.push(['karryn_orgasm_pussy_exp2_1', false, false]);
+			lineArray.push(['karryn_orgasm_pussy_exp2_2', false, false]);
+			lineArray.push(['karryn_orgasm_pussy_exp2_3', false, false]);
+		}
+		else {
+			lineArray.push(['karryn_orgasm_pussy_exp1_1', false, false]);
+			lineArray.push(['karryn_orgasm_pussy_exp1_2', false, false]);
+			lineArray.push(['karryn_orgasm_pussy_exp1_3', false, false]);
+		}
+	}
+	else if(orgasmTypeId === JUST_SKILLTYPE_ENEMY_PUSSY_CREAMPIE) {
+		isFirstOrgasm = actor._recordOrgasmFromPussyCreampieCount <= 1;
+		
+		if(isFirstOrgasm) {
+			lineArray.push(['karryn_orgasm_pussycreampie_exp0_1', false, false]);
+		}
+		else if(orgasmReactionScore >= VAR_DEF_RS_LV3_REQ) {
+			lineArray.push(['karryn_orgasm_pussycreampie_exp3_1', false, false]);
+			lineArray.push(['karryn_orgasm_pussycreampie_exp3_2', false, false]);
+			lineArray.push(['karryn_orgasm_pussycreampie_exp3_3', false, false]);
+			lineArray.push(['karryn_orgasm_pussycreampie_exp3_4', false, false]);
+		}
+		else if(orgasmReactionScore >= VAR_DEF_RS_LV2_REQ) {
+			lineArray.push(['karryn_orgasm_pussycreampie_exp2_1', false, false]);
+			lineArray.push(['karryn_orgasm_pussycreampie_exp2_2', false, false]);
+			lineArray.push(['karryn_orgasm_pussycreampie_exp2_3', false, false]);
+		}
+		else {
+			lineArray.push(['karryn_orgasm_pussycreampie_exp1_1', false, false]);
+			lineArray.push(['karryn_orgasm_pussycreampie_exp1_2', false, false]);
+			lineArray.push(['karryn_orgasm_pussycreampie_exp1_3', false, false]);
+		}
+	}
+	else if(orgasmTypeId === JUST_SKILLTYPE_KARRYN_ANAL_SEX || orgasmTypeId === JUST_SKILLTYPE_ENEMY_ANAL_SEX) {
+		isFirstOrgasm = actor._recordOrgasmFromAnalSexCount <= 1;
+		
+		if(isFirstOrgasm) {
+			lineArray.push(['karryn_orgasm_butt_exp0_1', false, false]);
+		}
+		else if(orgasmReactionScore >= VAR_DEF_RS_LV3_REQ) {
 			lineArray.push(['karryn_orgasm_butt_exp3_1', false, false]);
 			lineArray.push(['karryn_orgasm_butt_exp3_2', false, false]);
 			lineArray.push(['karryn_orgasm_butt_exp3_3', false, false]);
@@ -5221,37 +5526,83 @@ Rem_Lines.prototype.karrynline_karrynOrgasm = function(lineArray) {
 			lineArray.push(['karryn_orgasm_butt_exp2_2', false, false]);
 			lineArray.push(['karryn_orgasm_butt_exp2_3', false, false]);
 		}
-		else if(orgasmReactionScore >= VAR_DEF_RS_LV1_REQ) {
+		else {
 			lineArray.push(['karryn_orgasm_butt_exp1_1', false, false]);
 			lineArray.push(['karryn_orgasm_butt_exp1_2', false, false]);
 			lineArray.push(['karryn_orgasm_butt_exp1_3', false, false]);
 		}
-		else {
-			lineArray.push(['karryn_orgasm_butt_exp0_1', false, false]);
-		}
 	}
-	else {
-		if(orgasmReactionScore >= VAR_DEF_RS_LV3_REQ) {
-			lineArray.push(['karryn_orgasm_exp3_1', false, false]);
-			lineArray.push(['karryn_orgasm_exp3_2', false, false]);
-			lineArray.push(['karryn_orgasm_exp3_3', false, false]);
+	else if(orgasmTypeId === JUST_SKILLTYPE_ENEMY_ANAL_CREAMPIE) {
+		isFirstOrgasm = actor._recordOrgasmFromAnalCreampieCount <= 1;
+		
+		if(isFirstOrgasm) {
+			lineArray.push(['karryn_orgasm_analcreampie_exp0_1', false, false]);
+		}
+		else if(orgasmReactionScore >= VAR_DEF_RS_LV3_REQ) {
+			lineArray.push(['karryn_orgasm_analcreampie_exp3_1', false, false]);
+			lineArray.push(['karryn_orgasm_analcreampie_exp3_2', false, false]);
+			lineArray.push(['karryn_orgasm_analcreampie_exp3_3', false, false]);
 		}
 		else if(orgasmReactionScore >= VAR_DEF_RS_LV2_REQ) {
-			lineArray.push(['karryn_orgasm_exp2_1', false, false]);
-			lineArray.push(['karryn_orgasm_exp2_2', false, false]);
-			lineArray.push(['karryn_orgasm_exp2_3', false, false]);
-		}
-		else if(orgasmReactionScore >= VAR_DEF_RS_LV1_REQ) {
-			lineArray.push(['karryn_orgasm_exp1_1', false, false]);
-			lineArray.push(['karryn_orgasm_exp1_2', false, false]);
+			lineArray.push(['karryn_orgasm_analcreampie_exp2_1', false, false]);
+			lineArray.push(['karryn_orgasm_analcreampie_exp2_2', false, false]);
+			lineArray.push(['karryn_orgasm_analcreampie_exp2_3', false, false]);
 		}
 		else {
-			lineArray.push(['karryn_orgasm_exp0_1', false, false]);
+			lineArray.push(['karryn_orgasm_analcreampie_exp1_1', false, false]);
+			lineArray.push(['karryn_orgasm_analcreampie_exp1_2', false, false]);
+			lineArray.push(['karryn_orgasm_analcreampie_exp1_3', false, false]);
+		}
+	}
+	else if(orgasmTypeId === JUST_SKILLTYPE_ENEMY_SPANKING || orgasmTypeId === JUST_SKILLTYPE_ENEMY_SADISM || orgasmTypeId === JUST_SKILLTYPE_KARRYN_MASOCHISM) {
+		isFirstOrgasm = actor._recordOrgasmFromMasochismCount <= 1;
+		
+		if(isFirstOrgasm) {
+			lineArray.push(['karryn_orgasm_maso_exp0_1', false, false]);
+		}
+		else if(orgasmReactionScore >= VAR_DEF_RS_LV3_REQ) {
+			lineArray.push(['karryn_orgasm_maso_exp3_1', false, false]);
+			lineArray.push(['karryn_orgasm_maso_exp3_2', false, false]);
+			lineArray.push(['karryn_orgasm_maso_exp3_3', false, false]);
+		}
+		else if(orgasmReactionScore >= VAR_DEF_RS_LV2_REQ) {
+			lineArray.push(['karryn_orgasm_maso_exp2_1', false, false]);
+			lineArray.push(['karryn_orgasm_maso_exp2_2', false, false]);
+			lineArray.push(['karryn_orgasm_maso_exp2_3', false, false]);
+		}
+		else {
+			lineArray.push(['karryn_orgasm_maso_exp1_1', false, false]);
+			lineArray.push(['karryn_orgasm_maso_exp1_2', false, false]);
+			lineArray.push(['karryn_orgasm_maso_exp1_3', false, false]);
+		}
+	}
+	else if(orgasmTypeId === JUST_SKILLTYPE_ENEMY_MASOCHISM || orgasmTypeId === JUST_SKILLTYPE_KARRYN_SADISM) {
+		isFirstOrgasm = actor._recordOrgasmFromSadismCount <= 1;
+		
+		if(isFirstOrgasm) {
+			lineArray.push(['karryn_orgasm_sado_exp0_1', false, false]);
+		}
+		else if(orgasmReactionScore >= VAR_DEF_RS_LV3_REQ) {
+			lineArray.push(['karryn_orgasm_sado_exp3_1', false, false]);
+			lineArray.push(['karryn_orgasm_sado_exp3_2', false, false]);
+			lineArray.push(['karryn_orgasm_sado_exp3_3', false, false]);
+		}
+		else if(orgasmReactionScore >= VAR_DEF_RS_LV2_REQ) {
+			lineArray.push(['karryn_orgasm_sado_exp2_1', false, false]);
+			lineArray.push(['karryn_orgasm_sado_exp2_2', false, false]);
+			lineArray.push(['karryn_orgasm_sado_exp2_3', false, false]);
+		}
+		else {
+			lineArray.push(['karryn_orgasm_sado_exp1_1', false, false]);
+			lineArray.push(['karryn_orgasm_sado_exp1_2', false, false]);
+			lineArray.push(['karryn_orgasm_sado_exp1_3', false, false]);
 		}
 	}
 	
 	return lineArray;
 };
+
+
 Rem_Lines.prototype.karrynline_enemyEjaculates = function(lineArray) {
 	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
 	let bukkakeReactionScore = actor.getBukkakeReactionScore();
@@ -5695,7 +6046,8 @@ Rem_Lines.prototype.enemyline_enemyEjaculates = function(lineArray) {
 		else if(reactionScore >= VAR_DEF_RS_LV2_REQ) {
 			lineArray.push(['homeless_ejaculate_random_exp2_1', true, false]);
 			lineArray.push(['homeless_ejaculate_random_exp2_2', true, false]);
-			lineArray.push(['homeless_ejaculate_random_exp2_3', true, false]);
+			if(!ConfigManager.disableSmegma)
+				lineArray.push(['homeless_ejaculate_random_exp2_3', true, false]);
 			lineArray.push(['homeless_ejaculate_random_exp2_4', true, false]);
 			lineArray.push(['homeless_ejaculate_random_exp2_5', true, false]);
 		}
@@ -5899,51 +6251,90 @@ Rem_Lines.prototype.enemyline_enemyBukkake_Face = function(lineArray) {
 	}
 	else if(this._enemyType == ENEMYTYPE_VISITOR_MALE_TAG) {
 		enemyTypeReactionScore = actor.reactionScore_enemyVisitorPassive(); 
+		let deskVisitorIsGoblin = $gameTroop.receptionistBattle_thereIsVisitorAtDesk() && $gameTroop.receptionistBattle_visitorAtDesk()._visitor_isGoblin;
 	
 		if(this._visitor_isFan) {
 			if(enemyTypeReactionScore >= VAR_TYPE_RS_LV3_REQ) {
-				lineArray.push(['visitor_fan_ejaculate_face_exp3_1', true, false]);
-				lineArray.push(['visitor_fan_ejaculate_face_exp3_2', true, false]);
-				lineArray.push(['visitor_fan_ejaculate_face_exp3_3', true, false]);
-				lineArray.push(['visitor_fan_ejaculate_face_exp3_4', true, false]);
-				lineArray.push(['visitor_fan_ejaculate_face_exp3_5', true, false]);
+				if(deskVisitorIsGoblin) {
+					lineArray.push(['visitor_fan_ejaculate_face_goblin_exp3_1', true, false]);
+					lineArray.push(['visitor_fan_ejaculate_face_goblin_exp3_2', true, false]);
+					lineArray.push(['visitor_fan_ejaculate_face_goblin_exp3_3', true, false]);
+				}
+				else {
+					lineArray.push(['visitor_fan_ejaculate_face_exp3_1', true, false]);
+					lineArray.push(['visitor_fan_ejaculate_face_exp3_2', true, false]);
+					lineArray.push(['visitor_fan_ejaculate_face_exp3_3', true, false]);
+					lineArray.push(['visitor_fan_ejaculate_face_exp3_4', true, false]);
+					lineArray.push(['visitor_fan_ejaculate_face_exp3_5', true, false]);
+				}
 			}
 			else if(enemyTypeReactionScore >= VAR_TYPE_RS_LV2_REQ) {
-				lineArray.push(['visitor_fan_ejaculate_face_exp2_1', true, false]);
-				lineArray.push(['visitor_fan_ejaculate_face_exp2_2', true, false]);
-				lineArray.push(['visitor_fan_ejaculate_face_exp2_3', true, false]);
-				lineArray.push(['visitor_fan_ejaculate_face_exp2_4', true, false]);
-				lineArray.push(['visitor_fan_ejaculate_face_exp2_5', true, false]);
+				if(deskVisitorIsGoblin) {
+					lineArray.push(['visitor_fan_ejaculate_face_goblin_exp2_1', true, false]);
+					lineArray.push(['visitor_fan_ejaculate_face_goblin_exp2_2', true, false]);
+				}
+				else {
+					lineArray.push(['visitor_fan_ejaculate_face_exp2_1', true, false]);
+					lineArray.push(['visitor_fan_ejaculate_face_exp2_2', true, false]);
+					lineArray.push(['visitor_fan_ejaculate_face_exp2_3', true, false]);
+					lineArray.push(['visitor_fan_ejaculate_face_exp2_4', true, false]);
+					lineArray.push(['visitor_fan_ejaculate_face_exp2_5', true, false]);
+				}
 			}
 			else {
-				lineArray.push(['visitor_fan_ejaculate_face_exp1_1', true, false]);
-				lineArray.push(['visitor_fan_ejaculate_face_exp1_2', true, false]);
-				lineArray.push(['visitor_fan_ejaculate_face_exp1_3', true, false]);
-				lineArray.push(['visitor_fan_ejaculate_face_exp1_4', true, false]);
-				lineArray.push(['visitor_fan_ejaculate_face_exp1_5', true, false]);
+				if(deskVisitorIsGoblin) {
+					lineArray.push(['visitor_fan_ejaculate_face_goblin_exp1_1', true, false]);
+					lineArray.push(['visitor_fan_ejaculate_face_goblin_exp1_2', true, false]);
+				}
+				else {
+					lineArray.push(['visitor_fan_ejaculate_face_exp1_1', true, false]);
+					lineArray.push(['visitor_fan_ejaculate_face_exp1_2', true, false]);
+					lineArray.push(['visitor_fan_ejaculate_face_exp1_3', true, false]);
+					lineArray.push(['visitor_fan_ejaculate_face_exp1_4', true, false]);
+					lineArray.push(['visitor_fan_ejaculate_face_exp1_5', true, false]);
+				}
 			}	
 		}
 		else if(this._visitor_isPervert) {
 			if(enemyTypeReactionScore >= VAR_TYPE_RS_LV3_REQ) {
-				lineArray.push(['visitor_perv_ejaculate_face_exp3_1', true, false]);
-				lineArray.push(['visitor_perv_ejaculate_face_exp3_2', true, false]);
-				lineArray.push(['visitor_perv_ejaculate_face_exp3_3', true, false]);
-				lineArray.push(['visitor_perv_ejaculate_face_exp3_4', true, false]);
-				lineArray.push(['visitor_perv_ejaculate_face_exp3_5', true, false]);
+				if(deskVisitorIsGoblin) {
+					lineArray.push(['visitor_perv_ejaculate_face_goblin_exp3_1', true, false]);
+					lineArray.push(['visitor_perv_ejaculate_face_goblin_exp3_2', true, false]);
+					lineArray.push(['visitor_perv_ejaculate_face_goblin_exp3_3', true, false]);
+				}
+				else {
+					lineArray.push(['visitor_perv_ejaculate_face_exp3_1', true, false]);
+					lineArray.push(['visitor_perv_ejaculate_face_exp3_2', true, false]);
+					lineArray.push(['visitor_perv_ejaculate_face_exp3_3', true, false]);
+					lineArray.push(['visitor_perv_ejaculate_face_exp3_4', true, false]);
+					lineArray.push(['visitor_perv_ejaculate_face_exp3_5', true, false]);
+				}
 			}
 			else if(enemyTypeReactionScore >= VAR_TYPE_RS_LV2_REQ) {
-				lineArray.push(['visitor_perv_ejaculate_face_exp2_1', true, false]);
-				lineArray.push(['visitor_perv_ejaculate_face_exp2_2', true, false]);
-				lineArray.push(['visitor_perv_ejaculate_face_exp2_3', true, false]);
-				lineArray.push(['visitor_perv_ejaculate_face_exp2_4', true, false]);
-				lineArray.push(['visitor_perv_ejaculate_face_exp2_5', true, false]);
+				if(deskVisitorIsGoblin) {
+					lineArray.push(['visitor_perv_ejaculate_face_goblin_exp2_1', true, false]);
+					lineArray.push(['visitor_perv_ejaculate_face_goblin_exp2_2', true, false]);
+				}
+				else {
+					lineArray.push(['visitor_perv_ejaculate_face_exp2_1', true, false]);
+					lineArray.push(['visitor_perv_ejaculate_face_exp2_2', true, false]);
+					lineArray.push(['visitor_perv_ejaculate_face_exp2_3', true, false]);
+					lineArray.push(['visitor_perv_ejaculate_face_exp2_4', true, false]);
+					lineArray.push(['visitor_perv_ejaculate_face_exp2_5', true, false]);
+				}
 			}
 			else {
-				lineArray.push(['visitor_perv_ejaculate_face_exp1_1', true, false]);
-				lineArray.push(['visitor_perv_ejaculate_face_exp1_2', true, false]);
-				lineArray.push(['visitor_perv_ejaculate_face_exp1_3', true, false]);
-				lineArray.push(['visitor_perv_ejaculate_face_exp1_4', true, false]);
-				lineArray.push(['visitor_perv_ejaculate_face_exp1_5', true, false]);
+				if(deskVisitorIsGoblin) {
+					lineArray.push(['visitor_perv_ejaculate_face_goblin_exp1_1', true, false]);
+					lineArray.push(['visitor_perv_ejaculate_face_goblin_exp1_2', true, false]);
+				}
+				else {
+					lineArray.push(['visitor_perv_ejaculate_face_exp1_1', true, false]);
+					lineArray.push(['visitor_perv_ejaculate_face_exp1_2', true, false]);
+					lineArray.push(['visitor_perv_ejaculate_face_exp1_3', true, false]);
+					lineArray.push(['visitor_perv_ejaculate_face_exp1_4', true, false]);
+					lineArray.push(['visitor_perv_ejaculate_face_exp1_5', true, false]);
+				}
 			}	
 		}	
 	}
@@ -5967,52 +6358,91 @@ Rem_Lines.prototype.enemyline_enemyBukkake_Boobs = function(lineArray) {
 		
 	}
 	else if(this._enemyType == ENEMYTYPE_VISITOR_MALE_TAG) {
-		enemyTypeReactionScore = actor.reactionScore_enemyVisitorPassive(); 
+		enemyTypeReactionScore = actor.reactionScore_enemyVisitorPassive();
+		let deskVisitorIsGoblin = $gameTroop.receptionistBattle_thereIsVisitorAtDesk() && $gameTroop.receptionistBattle_visitorAtDesk()._visitor_isGoblin;		
 	
 		if(this._visitor_isFan) {
 			if(enemyTypeReactionScore >= VAR_TYPE_RS_LV3_REQ) {
-				lineArray.push(['visitor_fan_ejaculate_boobs_exp3_1', true, false]);
-				lineArray.push(['visitor_fan_ejaculate_boobs_exp3_2', true, false]);
-				lineArray.push(['visitor_fan_ejaculate_boobs_exp3_3', true, false]);
-				lineArray.push(['visitor_fan_ejaculate_boobs_exp3_4', true, false]);
-				lineArray.push(['visitor_fan_ejaculate_boobs_exp3_5', true, false]);
+				if(deskVisitorIsGoblin) {
+					lineArray.push(['visitor_fan_ejaculate_boobs_goblin_exp3_1', true, false]);
+					lineArray.push(['visitor_fan_ejaculate_boobs_goblin_exp3_2', true, false]);
+					lineArray.push(['visitor_fan_ejaculate_boobs_goblin_exp3_3', true, false]);
+				}
+				else {
+					lineArray.push(['visitor_fan_ejaculate_boobs_exp3_1', true, false]);
+					lineArray.push(['visitor_fan_ejaculate_boobs_exp3_2', true, false]);
+					lineArray.push(['visitor_fan_ejaculate_boobs_exp3_3', true, false]);
+					lineArray.push(['visitor_fan_ejaculate_boobs_exp3_4', true, false]);
+					lineArray.push(['visitor_fan_ejaculate_boobs_exp3_5', true, false]);
+				}
 			}
 			else if(enemyTypeReactionScore >= VAR_TYPE_RS_LV2_REQ) {
-				lineArray.push(['visitor_fan_ejaculate_boobs_exp2_1', true, false]);
-				lineArray.push(['visitor_fan_ejaculate_boobs_exp2_2', true, false]);
-				lineArray.push(['visitor_fan_ejaculate_boobs_exp2_3', true, false]);
-				lineArray.push(['visitor_fan_ejaculate_boobs_exp2_4', true, false]);
-				lineArray.push(['visitor_fan_ejaculate_boobs_exp2_5', true, false]);
+				if(deskVisitorIsGoblin) {
+					lineArray.push(['visitor_fan_ejaculate_boobs_goblin_exp2_1', true, false]);
+					lineArray.push(['visitor_fan_ejaculate_boobs_goblin_exp2_2', true, false]);
+				}
+				else {
+					lineArray.push(['visitor_fan_ejaculate_boobs_exp2_1', true, false]);
+					lineArray.push(['visitor_fan_ejaculate_boobs_exp2_2', true, false]);
+					lineArray.push(['visitor_fan_ejaculate_boobs_exp2_3', true, false]);
+					lineArray.push(['visitor_fan_ejaculate_boobs_exp2_4', true, false]);
+					lineArray.push(['visitor_fan_ejaculate_boobs_exp2_5', true, false]);
+				}
 			}
 			else {
-				lineArray.push(['visitor_fan_ejaculate_boobs_exp1_1', true, false]);
-				lineArray.push(['visitor_fan_ejaculate_boobs_exp1_2', true, false]);
-				lineArray.push(['visitor_fan_ejaculate_boobs_exp1_3', true, false]);
-				lineArray.push(['visitor_fan_ejaculate_boobs_exp1_4', true, false]);
-				lineArray.push(['visitor_fan_ejaculate_boobs_exp1_5', true, false]);
+				if(deskVisitorIsGoblin) {
+					lineArray.push(['visitor_fan_ejaculate_boobs_goblin_exp1_1', true, false]);
+					lineArray.push(['visitor_fan_ejaculate_boobs_goblin_exp1_2', true, false]);
+				}
+				else {
+					lineArray.push(['visitor_fan_ejaculate_boobs_exp1_1', true, false]);
+					lineArray.push(['visitor_fan_ejaculate_boobs_exp1_2', true, false]);
+					lineArray.push(['visitor_fan_ejaculate_boobs_exp1_3', true, false]);
+					lineArray.push(['visitor_fan_ejaculate_boobs_exp1_4', true, false]);
+					lineArray.push(['visitor_fan_ejaculate_boobs_exp1_5', true, false]);
+				}
 			}	
 		}
 		else if(this._visitor_isPervert) {
 			if(enemyTypeReactionScore >= VAR_TYPE_RS_LV3_REQ) {
-				lineArray.push(['visitor_perv_ejaculate_boobs_exp3_1', true, false]);
-				lineArray.push(['visitor_perv_ejaculate_boobs_exp3_2', true, false]);
-				lineArray.push(['visitor_perv_ejaculate_boobs_exp3_3', true, false]);
-				lineArray.push(['visitor_perv_ejaculate_boobs_exp3_4', true, false]);
-				lineArray.push(['visitor_perv_ejaculate_boobs_exp3_5', true, false]);
+				if(deskVisitorIsGoblin) {
+					lineArray.push(['visitor_perv_ejaculate_boobs_goblin_exp3_1', true, false]);
+					lineArray.push(['visitor_perv_ejaculate_boobs_goblin_exp3_2', true, false]);
+					lineArray.push(['visitor_perv_ejaculate_boobs_goblin_exp3_3', true, false]);
+				}
+				else {
+					lineArray.push(['visitor_perv_ejaculate_boobs_exp3_1', true, false]);
+					lineArray.push(['visitor_perv_ejaculate_boobs_exp3_2', true, false]);
+					lineArray.push(['visitor_perv_ejaculate_boobs_exp3_3', true, false]);
+					lineArray.push(['visitor_perv_ejaculate_boobs_exp3_4', true, false]);
+					lineArray.push(['visitor_perv_ejaculate_boobs_exp3_5', true, false]);
+				}
 			}
 			else if(enemyTypeReactionScore >= VAR_TYPE_RS_LV2_REQ) {
-				lineArray.push(['visitor_perv_ejaculate_boobs_exp2_1', true, false]);
-				lineArray.push(['visitor_perv_ejaculate_boobs_exp2_2', true, false]);
-				lineArray.push(['visitor_perv_ejaculate_boobs_exp2_3', true, false]);
-				lineArray.push(['visitor_perv_ejaculate_boobs_exp2_4', true, false]);
-				lineArray.push(['visitor_perv_ejaculate_boobs_exp2_5', true, false]);
+				if(deskVisitorIsGoblin) {
+					lineArray.push(['visitor_perv_ejaculate_boobs_goblin_exp2_1', true, false]);
+					lineArray.push(['visitor_perv_ejaculate_boobs_goblin_exp2_2', true, false]);
+				}
+				else {
+					lineArray.push(['visitor_perv_ejaculate_boobs_exp2_1', true, false]);
+					lineArray.push(['visitor_perv_ejaculate_boobs_exp2_2', true, false]);
+					lineArray.push(['visitor_perv_ejaculate_boobs_exp2_3', true, false]);
+					lineArray.push(['visitor_perv_ejaculate_boobs_exp2_4', true, false]);
+					lineArray.push(['visitor_perv_ejaculate_boobs_exp2_5', true, false]);
+				}
 			}
 			else {
-				lineArray.push(['visitor_perv_ejaculate_boobs_exp1_1', true, false]);
-				lineArray.push(['visitor_perv_ejaculate_boobs_exp1_2', true, false]);
-				lineArray.push(['visitor_perv_ejaculate_boobs_exp1_3', true, false]);
-				lineArray.push(['visitor_perv_ejaculate_boobs_exp1_4', true, false]);
-				lineArray.push(['visitor_perv_ejaculate_boobs_exp1_5', true, false]);
+				if(deskVisitorIsGoblin) {
+					lineArray.push(['visitor_perv_ejaculate_boobs_goblin_exp1_1', true, false]);
+					lineArray.push(['visitor_perv_ejaculate_boobs_goblin_exp1_2', true, false]);
+				}
+				else {
+					lineArray.push(['visitor_perv_ejaculate_boobs_exp1_1', true, false]);
+					lineArray.push(['visitor_perv_ejaculate_boobs_exp1_2', true, false]);
+					lineArray.push(['visitor_perv_ejaculate_boobs_exp1_3', true, false]);
+					lineArray.push(['visitor_perv_ejaculate_boobs_exp1_4', true, false]);
+					lineArray.push(['visitor_perv_ejaculate_boobs_exp1_5', true, false]);
+				}
 			}	
 		}	
 	}
@@ -6080,51 +6510,89 @@ Rem_Lines.prototype.enemyline_enemyCumIntoMug = function(lineArray) {
 Rem_Lines.prototype.enemyline_enemyCumOntoDesk = function(lineArray) {
 	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
 	let enemyTypeReactionScore = actor.reactionScore_enemyVisitorPassive(); 
+	let deskVisitorIsGoblin = $gameTroop.receptionistBattle_thereIsVisitorAtDesk() && $gameTroop.receptionistBattle_visitorAtDesk()._visitor_isGoblin;
 	
 	if(this._visitor_isFan) {
 		if(enemyTypeReactionScore >= VAR_TYPE_RS_LV3_REQ) {
-			lineArray.push(['visitor_fan_ejaculate_desk_exp3_1', true, false]);
-			lineArray.push(['visitor_fan_ejaculate_desk_exp3_2', true, false]);
-			lineArray.push(['visitor_fan_ejaculate_desk_exp3_3', true, false]);
-			lineArray.push(['visitor_fan_ejaculate_desk_exp3_4', true, false]);
-			lineArray.push(['visitor_fan_ejaculate_desk_exp3_5', true, false]);
+			if(deskVisitorIsGoblin) {
+				lineArray.push(['visitor_fan_ejaculate_desk_goblin_exp3_1', true, false]);
+				lineArray.push(['visitor_fan_ejaculate_desk_goblin_exp3_2', true, false]);
+				lineArray.push(['visitor_fan_ejaculate_desk_goblin_exp3_3', true, false]);
+			}
+			else {
+				lineArray.push(['visitor_fan_ejaculate_desk_exp3_1', true, false]);
+				lineArray.push(['visitor_fan_ejaculate_desk_exp3_2', true, false]);
+				lineArray.push(['visitor_fan_ejaculate_desk_exp3_3', true, false]);
+				lineArray.push(['visitor_fan_ejaculate_desk_exp3_4', true, false]);
+				lineArray.push(['visitor_fan_ejaculate_desk_exp3_5', true, false]);
+			}
 		}
 		else if(enemyTypeReactionScore >= VAR_TYPE_RS_LV2_REQ) {
-			lineArray.push(['visitor_fan_ejaculate_desk_exp2_1', true, false]);
-			lineArray.push(['visitor_fan_ejaculate_desk_exp2_2', true, false]);
-			lineArray.push(['visitor_fan_ejaculate_desk_exp2_3', true, false]);
-			lineArray.push(['visitor_fan_ejaculate_desk_exp2_4', true, false]);
-			lineArray.push(['visitor_fan_ejaculate_desk_exp2_5', true, false]);
+			if(deskVisitorIsGoblin) {
+				lineArray.push(['visitor_fan_ejaculate_desk_goblin_exp2_1', true, false]);
+				lineArray.push(['visitor_fan_ejaculate_desk_goblin_exp2_2', true, false]);
+			}
+			else {
+				lineArray.push(['visitor_fan_ejaculate_desk_exp2_1', true, false]);
+				lineArray.push(['visitor_fan_ejaculate_desk_exp2_2', true, false]);
+				lineArray.push(['visitor_fan_ejaculate_desk_exp2_3', true, false]);
+				lineArray.push(['visitor_fan_ejaculate_desk_exp2_4', true, false]);
+				lineArray.push(['visitor_fan_ejaculate_desk_exp2_5', true, false]);
+			}
 		}
 		else {
-			lineArray.push(['visitor_fan_ejaculate_desk_exp1_1', true, false]);
-			lineArray.push(['visitor_fan_ejaculate_desk_exp1_2', true, false]);
-			lineArray.push(['visitor_fan_ejaculate_desk_exp1_3', true, false]);
-			lineArray.push(['visitor_fan_ejaculate_desk_exp1_4', true, false]);
-			lineArray.push(['visitor_fan_ejaculate_desk_exp1_5', true, false]);
+			if(deskVisitorIsGoblin) {
+				lineArray.push(['visitor_fan_ejaculate_desk_goblin_exp1_1', true, false]);
+				lineArray.push(['visitor_fan_ejaculate_desk_goblin_exp1_2', true, false]);
+			}
+			else {
+				lineArray.push(['visitor_fan_ejaculate_desk_exp1_1', true, false]);
+				lineArray.push(['visitor_fan_ejaculate_desk_exp1_2', true, false]);
+				lineArray.push(['visitor_fan_ejaculate_desk_exp1_3', true, false]);
+				lineArray.push(['visitor_fan_ejaculate_desk_exp1_4', true, false]);
+				lineArray.push(['visitor_fan_ejaculate_desk_exp1_5', true, false]);
+			}
 		}	
 	}
 	else if(this._visitor_isPervert) {
 		if(enemyTypeReactionScore >= VAR_TYPE_RS_LV3_REQ) {
-			lineArray.push(['visitor_perv_ejaculate_desk_exp3_1', true, false]);
-			lineArray.push(['visitor_perv_ejaculate_desk_exp3_2', true, false]);
-			lineArray.push(['visitor_perv_ejaculate_desk_exp3_3', true, false]);
-			lineArray.push(['visitor_perv_ejaculate_desk_exp3_4', true, false]);
-			lineArray.push(['visitor_perv_ejaculate_desk_exp3_5', true, false]);
+			if(deskVisitorIsGoblin) {
+				lineArray.push(['visitor_perv_ejaculate_desk_goblin_exp3_1', true, false]);
+				lineArray.push(['visitor_perv_ejaculate_desk_goblin_exp3_2', true, false]);
+			}
+			else {
+				lineArray.push(['visitor_perv_ejaculate_desk_exp3_1', true, false]);
+				lineArray.push(['visitor_perv_ejaculate_desk_exp3_2', true, false]);
+				lineArray.push(['visitor_perv_ejaculate_desk_exp3_3', true, false]);
+				lineArray.push(['visitor_perv_ejaculate_desk_exp3_4', true, false]);
+				lineArray.push(['visitor_perv_ejaculate_desk_exp3_5', true, false]);
+			}
 		}
 		else if(enemyTypeReactionScore >= VAR_TYPE_RS_LV2_REQ) {
-			lineArray.push(['visitor_perv_ejaculate_desk_exp2_1', true, false]);
-			lineArray.push(['visitor_perv_ejaculate_desk_exp2_2', true, false]);
-			lineArray.push(['visitor_perv_ejaculate_desk_exp2_3', true, false]);
-			lineArray.push(['visitor_perv_ejaculate_desk_exp2_4', true, false]);
-			lineArray.push(['visitor_perv_ejaculate_desk_exp2_5', true, false]);
+			if(deskVisitorIsGoblin) {
+				lineArray.push(['visitor_perv_ejaculate_desk_goblin_exp2_1', true, false]);
+				lineArray.push(['visitor_perv_ejaculate_desk_goblin_exp2_2', true, false]);
+			}
+			else {
+				lineArray.push(['visitor_perv_ejaculate_desk_exp2_1', true, false]);
+				lineArray.push(['visitor_perv_ejaculate_desk_exp2_2', true, false]);
+				lineArray.push(['visitor_perv_ejaculate_desk_exp2_3', true, false]);
+				lineArray.push(['visitor_perv_ejaculate_desk_exp2_4', true, false]);
+				lineArray.push(['visitor_perv_ejaculate_desk_exp2_5', true, false]);
+			}
 		}
 		else {
-			lineArray.push(['visitor_perv_ejaculate_desk_exp1_1', true, false]);
-			lineArray.push(['visitor_perv_ejaculate_desk_exp1_2', true, false]);
-			lineArray.push(['visitor_perv_ejaculate_desk_exp1_3', true, false]);
-			lineArray.push(['visitor_perv_ejaculate_desk_exp1_4', true, false]);
-			lineArray.push(['visitor_perv_ejaculate_desk_exp1_5', true, false]);
+			if(deskVisitorIsGoblin) {
+				lineArray.push(['visitor_perv_ejaculate_desk_goblin_exp1_1', true, false]);
+				lineArray.push(['visitor_perv_ejaculate_desk_goblin_exp1_2', true, false]);
+			}
+			else {
+				lineArray.push(['visitor_perv_ejaculate_desk_exp1_1', true, false]);
+				lineArray.push(['visitor_perv_ejaculate_desk_exp1_2', true, false]);
+				lineArray.push(['visitor_perv_ejaculate_desk_exp1_3', true, false]);
+				lineArray.push(['visitor_perv_ejaculate_desk_exp1_4', true, false]);
+				lineArray.push(['visitor_perv_ejaculate_desk_exp1_5', true, false]);
+			}
 		}	
 	}	
 
@@ -6218,51 +6686,91 @@ Rem_Lines.prototype.enemyline_karrynSwallows = function(lineArray) {
 	}
 	else if(this._enemyType == ENEMYTYPE_VISITOR_MALE_TAG) {
 		enemyTypeReactionScore = actor.reactionScore_enemyVisitorPassive(); 
+		let deskVisitorIsGoblin = $gameTroop.receptionistBattle_thereIsVisitorAtDesk() && $gameTroop.receptionistBattle_visitorAtDesk()._visitor_isGoblin;
 	
 		if(this._visitor_isFan) {
 			if(enemyTypeReactionScore >= VAR_TYPE_RS_LV3_REQ) {
-				lineArray.push(['visitor_fan_ejaculate_swallow_exp3_1', true, false]);
-				lineArray.push(['visitor_fan_ejaculate_swallow_exp3_2', true, false]);
-				lineArray.push(['visitor_fan_ejaculate_swallow_exp3_3', true, false]);
-				lineArray.push(['visitor_fan_ejaculate_swallow_exp3_4', true, false]);
-				lineArray.push(['visitor_fan_ejaculate_swallow_exp3_5', true, false]);
+				if(deskVisitorIsGoblin) {
+					lineArray.push(['visitor_fan_ejaculate_swallow_goblin_exp3_1', true, false]);
+					lineArray.push(['visitor_fan_ejaculate_swallow_goblin_exp3_2', true, false]);
+					lineArray.push(['visitor_fan_ejaculate_swallow_goblin_exp3_3', true, false]);
+				}
+				else {
+					lineArray.push(['visitor_fan_ejaculate_swallow_exp3_1', true, false]);
+					lineArray.push(['visitor_fan_ejaculate_swallow_exp3_2', true, false]);
+					lineArray.push(['visitor_fan_ejaculate_swallow_exp3_3', true, false]);
+					lineArray.push(['visitor_fan_ejaculate_swallow_exp3_4', true, false]);
+					lineArray.push(['visitor_fan_ejaculate_swallow_exp3_5', true, false]);
+				}
 			}
 			else if(enemyTypeReactionScore >= VAR_TYPE_RS_LV2_REQ) {
-				lineArray.push(['visitor_fan_ejaculate_swallow_exp2_1', true, false]);
-				lineArray.push(['visitor_fan_ejaculate_swallow_exp2_2', true, false]);
-				lineArray.push(['visitor_fan_ejaculate_swallow_exp2_3', true, false]);
-				lineArray.push(['visitor_fan_ejaculate_swallow_exp2_4', true, false]);
-				lineArray.push(['visitor_fan_ejaculate_swallow_exp2_5', true, false]);
+				if(deskVisitorIsGoblin) {
+					lineArray.push(['visitor_fan_ejaculate_swallow_goblin_exp2_1', true, false]);
+					lineArray.push(['visitor_fan_ejaculate_swallow_goblin_exp2_2', true, false]);
+				}
+				else {
+					lineArray.push(['visitor_fan_ejaculate_swallow_exp2_1', true, false]);
+					lineArray.push(['visitor_fan_ejaculate_swallow_exp2_2', true, false]);
+					lineArray.push(['visitor_fan_ejaculate_swallow_exp2_3', true, false]);
+					lineArray.push(['visitor_fan_ejaculate_swallow_exp2_4', true, false]);
+					lineArray.push(['visitor_fan_ejaculate_swallow_exp2_5', true, false]);
+				}
 			}
 			else {
-				lineArray.push(['visitor_fan_ejaculate_swallow_exp1_1', true, false]);
-				lineArray.push(['visitor_fan_ejaculate_swallow_exp1_2', true, false]);
-				lineArray.push(['visitor_fan_ejaculate_swallow_exp1_3', true, false]);
-				lineArray.push(['visitor_fan_ejaculate_swallow_exp1_4', true, false]);
-				lineArray.push(['visitor_fan_ejaculate_swallow_exp1_5', true, false]);
+				if(deskVisitorIsGoblin) {
+					lineArray.push(['visitor_fan_ejaculate_swallow_goblin_exp1_1', true, false]);
+					lineArray.push(['visitor_fan_ejaculate_swallow_goblin_exp1_2', true, false]);
+				}
+				else {
+					lineArray.push(['visitor_fan_ejaculate_swallow_exp1_1', true, false]);
+					lineArray.push(['visitor_fan_ejaculate_swallow_exp1_2', true, false]);
+					lineArray.push(['visitor_fan_ejaculate_swallow_exp1_3', true, false]);
+					lineArray.push(['visitor_fan_ejaculate_swallow_exp1_4', true, false]);
+					lineArray.push(['visitor_fan_ejaculate_swallow_exp1_5', true, false]);
+				}
 			}	
 		}
 		else if(this._visitor_isPervert) {
 			if(enemyTypeReactionScore >= VAR_TYPE_RS_LV3_REQ) {
-				lineArray.push(['visitor_perv_ejaculate_swallow_exp3_1', true, false]);
-				lineArray.push(['visitor_perv_ejaculate_swallow_exp3_2', true, false]);
-				lineArray.push(['visitor_perv_ejaculate_swallow_exp3_3', true, false]);
-				lineArray.push(['visitor_perv_ejaculate_swallow_exp3_4', true, false]);
-				lineArray.push(['visitor_perv_ejaculate_swallow_exp3_5', true, false]);
+				if(deskVisitorIsGoblin) {
+					lineArray.push(['visitor_perv_ejaculate_swallow_goblin_exp3_1', true, false]);
+					lineArray.push(['visitor_perv_ejaculate_swallow_goblin_exp3_2', true, false]);
+					lineArray.push(['visitor_perv_ejaculate_swallow_goblin_exp3_3', true, false]);
+				}
+				else {
+					lineArray.push(['visitor_perv_ejaculate_swallow_exp3_1', true, false]);
+					lineArray.push(['visitor_perv_ejaculate_swallow_exp3_2', true, false]);
+					if(!ConfigManager.disableSmegma)
+						lineArray.push(['visitor_perv_ejaculate_swallow_exp3_3', true, false]);
+					lineArray.push(['visitor_perv_ejaculate_swallow_exp3_4', true, false]);
+					lineArray.push(['visitor_perv_ejaculate_swallow_exp3_5', true, false]);
+				}
 			}
 			else if(enemyTypeReactionScore >= VAR_TYPE_RS_LV2_REQ) {
-				lineArray.push(['visitor_perv_ejaculate_swallow_exp2_1', true, false]);
-				lineArray.push(['visitor_perv_ejaculate_swallow_exp2_2', true, false]);
-				lineArray.push(['visitor_perv_ejaculate_swallow_exp2_3', true, false]);
-				lineArray.push(['visitor_perv_ejaculate_swallow_exp2_4', true, false]);
-				lineArray.push(['visitor_perv_ejaculate_swallow_exp2_5', true, false]);
+				if(deskVisitorIsGoblin) {
+					lineArray.push(['visitor_perv_ejaculate_swallow_goblin_exp2_1', true, false]);
+					lineArray.push(['visitor_perv_ejaculate_swallow_goblin_exp2_2', true, false]);
+				}
+				else {
+					lineArray.push(['visitor_perv_ejaculate_swallow_exp2_1', true, false]);
+					lineArray.push(['visitor_perv_ejaculate_swallow_exp2_2', true, false]);
+					lineArray.push(['visitor_perv_ejaculate_swallow_exp2_3', true, false]);
+					lineArray.push(['visitor_perv_ejaculate_swallow_exp2_4', true, false]);
+					lineArray.push(['visitor_perv_ejaculate_swallow_exp2_5', true, false]);
+				}
 			}
 			else {
-				lineArray.push(['visitor_perv_ejaculate_swallow_exp1_1', true, false]);
-				lineArray.push(['visitor_perv_ejaculate_swallow_exp1_2', true, false]);
-				lineArray.push(['visitor_perv_ejaculate_swallow_exp1_3', true, false]);
-				lineArray.push(['visitor_perv_ejaculate_swallow_exp1_4', true, false]);
-				lineArray.push(['visitor_perv_ejaculate_swallow_exp1_5', true, false]);
+				if(deskVisitorIsGoblin) {
+					lineArray.push(['visitor_perv_ejaculate_swallow_goblin_exp1_1', true, false]);
+					lineArray.push(['visitor_perv_ejaculate_swallow_goblin_exp1_2', true, false]);
+				}
+				else {
+					lineArray.push(['visitor_perv_ejaculate_swallow_exp1_1', true, false]);
+					lineArray.push(['visitor_perv_ejaculate_swallow_exp1_2', true, false]);
+					lineArray.push(['visitor_perv_ejaculate_swallow_exp1_3', true, false]);
+					lineArray.push(['visitor_perv_ejaculate_swallow_exp1_4', true, false]);
+					lineArray.push(['visitor_perv_ejaculate_swallow_exp1_5', true, false]);
+				}
 			}	
 		}	
 	}
@@ -7235,7 +7743,8 @@ Rem_Lines.prototype.enemyline_enemyPoseStart_ReverseCowgirl = function(lineArray
 			lineArray.push(['homeless_posestart_cowgirl_exp3_1', true, false]);
 			lineArray.push(['homeless_posestart_cowgirl_exp3_2', true, false]);
 			lineArray.push(['homeless_posestart_cowgirl_exp3_3', true, false]);
-			lineArray.push(['homeless_posestart_cowgirl_exp3_4', true, false]);
+			if(!ConfigManager.disableSmegma)
+				lineArray.push(['homeless_posestart_cowgirl_exp3_4', true, false]);
 			lineArray.push(['homeless_posestart_cowgirl_exp3_5', true, false]);
 		}
 		else if(reactionScore  >= VAR_DEF_RS_LV2_REQ) {
@@ -7504,7 +8013,8 @@ Rem_Lines.prototype.karrynline_karrynPoseStart_ToiletBlowjob = function(lineArra
 		if(reactionScore >= VAR_DEF_RS_LV3_REQ) {
 			lineArray.push(['karryn_toilet_posestart_hardfera_exp3_1', false, false]);
 			lineArray.push(['karryn_toilet_posestart_hardfera_exp3_2', false, false]);
-			lineArray.push(['karryn_toilet_posestart_hardfera_exp3_3', false, false]);
+			if(!ConfigManager.disableSmegma)
+				lineArray.push(['karryn_toilet_posestart_hardfera_exp3_3', false, false]);
 			lineArray.push(['karryn_toilet_posestart_hardfera_exp3_4', false, false]);
 			lineArray.push(['karryn_toilet_posestart_hardfera_exp3_5', false, false]);
 		}
@@ -8989,39 +9499,66 @@ Rem_Lines.prototype.karrynline_receptionist_rejectRequestSexual = function(lineA
 Rem_Lines.prototype.enemyline_fan_handshake_finished = function(lineArray) {
 	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
 	let enemyTypeReactionScore = actor.reactionScore_enemyVisitorPassive(); 
-	
-	lineArray.push(['visitor_fan_handshake_finished_exp1_1', true, false]);
-	lineArray.push(['visitor_fan_handshake_finished_exp1_2', true, false]);
-	lineArray.push(['visitor_fan_handshake_finished_exp1_3', true, false]);
-	lineArray.push(['visitor_fan_handshake_finished_exp1_4', true, false]);
-	lineArray.push(['visitor_fan_handshake_finished_exp1_5', true, false]);
+	let deskVisitorIsGoblin = $gameTroop.receptionistBattle_thereIsVisitorAtDesk() && $gameTroop.receptionistBattle_visitorAtDesk()._visitor_isGoblin;
+
+	if(deskVisitorIsGoblin) {
+		lineArray.push(['visitor_fan_handshake_finished_goblin_exp1_1', true, false]);
+		lineArray.push(['visitor_fan_handshake_finished_goblin_exp1_2', true, false]);
+	}
+	else {
+		lineArray.push(['visitor_fan_handshake_finished_exp1_1', true, false]);
+		lineArray.push(['visitor_fan_handshake_finished_exp1_2', true, false]);
+		lineArray.push(['visitor_fan_handshake_finished_exp1_3', true, false]);
+		lineArray.push(['visitor_fan_handshake_finished_exp1_4', true, false]);
+		lineArray.push(['visitor_fan_handshake_finished_exp1_5', true, false]);
+	}
 	
 	return lineArray;
 };
 Rem_Lines.prototype.enemyline_perv_finished = function(lineArray) {
 	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
 	let enemyTypeReactionScore = actor.reactionScore_enemyVisitorPassive(); 
-	
+	let deskVisitorIsGoblin = $gameTroop.receptionistBattle_thereIsVisitorAtDesk() && $gameTroop.receptionistBattle_visitorAtDesk()._visitor_isGoblin;
+
 	if(enemyTypeReactionScore >= VAR_TYPE_RS_LV3_REQ) {
-		lineArray.push(['visitor_perv_finished_exp3_1', true, false]);
-		lineArray.push(['visitor_perv_finished_exp3_2', true, false]);
-		lineArray.push(['visitor_perv_finished_exp3_3', true, false]);
-		lineArray.push(['visitor_perv_finished_exp3_4', true, false]);
-		lineArray.push(['visitor_perv_finished_exp3_5', true, false]);
+		if(deskVisitorIsGoblin) {
+			lineArray.push(['visitor_perv_finished_goblin_exp3_1', true, false]);
+			lineArray.push(['visitor_perv_finished_goblin_exp3_2', true, false]);
+			lineArray.push(['visitor_perv_finished_goblin_exp3_3', true, false]);
+		}
+		else {
+			lineArray.push(['visitor_perv_finished_exp3_1', true, false]);
+			lineArray.push(['visitor_perv_finished_exp3_2', true, false]);
+			lineArray.push(['visitor_perv_finished_exp3_3', true, false]);
+			lineArray.push(['visitor_perv_finished_exp3_4', true, false]);
+			lineArray.push(['visitor_perv_finished_exp3_5', true, false]);
+		}
 	}
 	else if(enemyTypeReactionScore >= VAR_TYPE_RS_LV2_REQ) {
-		lineArray.push(['visitor_perv_finished_exp2_1', true, false]);
-		lineArray.push(['visitor_perv_finished_exp2_2', true, false]);
-		lineArray.push(['visitor_perv_finished_exp2_3', true, false]);
-		lineArray.push(['visitor_perv_finished_exp2_4', true, false]);
-		lineArray.push(['visitor_perv_finished_exp2_5', true, false]);
+		if(deskVisitorIsGoblin) {
+			lineArray.push(['visitor_perv_finished_goblin_exp2_1', true, false]);
+			lineArray.push(['visitor_perv_finished_goblin_exp2_2', true, false]);
+		}
+		else {
+			lineArray.push(['visitor_perv_finished_exp2_1', true, false]);
+			lineArray.push(['visitor_perv_finished_exp2_2', true, false]);
+			lineArray.push(['visitor_perv_finished_exp2_3', true, false]);
+			lineArray.push(['visitor_perv_finished_exp2_4', true, false]);
+			lineArray.push(['visitor_perv_finished_exp2_5', true, false]);
+		}
 	}
 	else {
-		lineArray.push(['visitor_perv_finished_exp1_1', true, false]);
-		lineArray.push(['visitor_perv_finished_exp1_2', true, false]);
-		lineArray.push(['visitor_perv_finished_exp1_3', true, false]);
-		lineArray.push(['visitor_perv_finished_exp1_4', true, false]);
-		lineArray.push(['visitor_perv_finished_exp1_5', true, false]);
+		if(deskVisitorIsGoblin) {
+			lineArray.push(['visitor_perv_finished_goblin_exp1_1', true, false]);
+			lineArray.push(['visitor_perv_finished_goblin_exp1_2', true, false]);
+		}
+		else {
+			lineArray.push(['visitor_perv_finished_exp1_1', true, false]);
+			lineArray.push(['visitor_perv_finished_exp1_2', true, false]);
+			lineArray.push(['visitor_perv_finished_exp1_3', true, false]);
+			lineArray.push(['visitor_perv_finished_exp1_4', true, false]);
+			lineArray.push(['visitor_perv_finished_exp1_5', true, false]);
+		}
 	}	
 
 	
@@ -9031,39 +9568,67 @@ Rem_Lines.prototype.enemyline_perv_finished = function(lineArray) {
 Rem_Lines.prototype.enemyline_fan_greet_handshake = function(lineArray) {
 	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
 	let enemyTypeReactionScore = actor.reactionScore_enemyVisitorPassive(); 
+	let deskVisitorIsGoblin = $gameTroop.receptionistBattle_thereIsVisitorAtDesk() && $gameTroop.receptionistBattle_visitorAtDesk()._visitor_isGoblin;
 	
-	lineArray.push(['visitor_fan_greet_handshake_exp1_1', true, false]);
-	lineArray.push(['visitor_fan_greet_handshake_exp1_2', true, false]);
-	lineArray.push(['visitor_fan_greet_handshake_exp1_3', true, false]);
-	lineArray.push(['visitor_fan_greet_handshake_exp1_4', true, false]);
-	lineArray.push(['visitor_fan_greet_handshake_exp1_5', true, false]);
+	if(deskVisitorIsGoblin) {
+		lineArray.push(['visitor_fan_greet_handshake_goblin_exp1_1', true, false]);
+		lineArray.push(['visitor_fan_greet_handshake_goblin_exp1_2', true, false]);
+	}
+	else {
+		lineArray.push(['visitor_fan_greet_handshake_exp1_1', true, false]);
+		lineArray.push(['visitor_fan_greet_handshake_exp1_2', true, false]);
+		lineArray.push(['visitor_fan_greet_handshake_exp1_3', true, false]);
+		lineArray.push(['visitor_fan_greet_handshake_exp1_4', true, false]);
+		lineArray.push(['visitor_fan_greet_handshake_exp1_5', true, false]);
+	}
 	
 	return lineArray;
 };
 Rem_Lines.prototype.enemyline_fan_greet_boobshake = function(lineArray) {
 	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
 	let enemyTypeReactionScore = actor.reactionScore_enemyVisitorPassive(); 
+	let deskVisitorIsGoblin = $gameTroop.receptionistBattle_thereIsVisitorAtDesk() && $gameTroop.receptionistBattle_visitorAtDesk()._visitor_isGoblin;
 	
 	if(enemyTypeReactionScore >= VAR_TYPE_RS_LV3_REQ) {
-		lineArray.push(['visitor_fan_greet_boobshake_exp3_1', true, false]);
-		lineArray.push(['visitor_fan_greet_boobshake_exp3_2', true, false]);
-		lineArray.push(['visitor_fan_greet_boobshake_exp3_3', true, false]);
-		lineArray.push(['visitor_fan_greet_boobshake_exp3_4', true, false]);
-		lineArray.push(['visitor_fan_greet_boobshake_exp3_5', true, false]);
+		if(deskVisitorIsGoblin) {
+			lineArray.push(['visitor_fan_greet_boobshake_goblin_exp3_1', true, false]);
+			lineArray.push(['visitor_fan_greet_boobshake_goblin_exp3_2', true, false]);
+			lineArray.push(['visitor_fan_greet_boobshake_goblin_exp3_3', true, false]);
+		}
+		else {
+			lineArray.push(['visitor_fan_greet_boobshake_exp3_1', true, false]);
+			lineArray.push(['visitor_fan_greet_boobshake_exp3_2', true, false]);
+			lineArray.push(['visitor_fan_greet_boobshake_exp3_3', true, false]);
+			lineArray.push(['visitor_fan_greet_boobshake_exp3_4', true, false]);
+			lineArray.push(['visitor_fan_greet_boobshake_exp3_5', true, false]);
+		}
 	}
 	else if(enemyTypeReactionScore >= VAR_TYPE_RS_LV2_REQ) {
-		lineArray.push(['visitor_fan_greet_boobshake_exp2_1', true, false]);
-		lineArray.push(['visitor_fan_greet_boobshake_exp2_2', true, false]);
-		lineArray.push(['visitor_fan_greet_boobshake_exp2_3', true, false]);
-		lineArray.push(['visitor_fan_greet_boobshake_exp2_4', true, false]);
-		lineArray.push(['visitor_fan_greet_boobshake_exp2_5', true, false]);
+		if(deskVisitorIsGoblin) {
+			lineArray.push(['visitor_fan_greet_boobshake_goblin_exp2_1', true, false]);
+			lineArray.push(['visitor_fan_greet_boobshake_goblin_exp2_2', true, false]);
+			lineArray.push(['visitor_fan_greet_boobshake_goblin_exp2_3', true, false]);
+		}
+		else {
+			lineArray.push(['visitor_fan_greet_boobshake_exp2_1', true, false]);
+			lineArray.push(['visitor_fan_greet_boobshake_exp2_2', true, false]);
+			lineArray.push(['visitor_fan_greet_boobshake_exp2_3', true, false]);
+			lineArray.push(['visitor_fan_greet_boobshake_exp2_4', true, false]);
+			lineArray.push(['visitor_fan_greet_boobshake_exp2_5', true, false]);
+		}
 	}
 	else {
-		lineArray.push(['visitor_fan_greet_boobshake_exp1_1', true, false]);
-		lineArray.push(['visitor_fan_greet_boobshake_exp1_2', true, false]);
-		lineArray.push(['visitor_fan_greet_boobshake_exp1_3', true, false]);
-		lineArray.push(['visitor_fan_greet_boobshake_exp1_4', true, false]);
-		lineArray.push(['visitor_fan_greet_boobshake_exp1_5', true, false]);
+		if(deskVisitorIsGoblin) {
+			lineArray.push(['visitor_fan_greet_boobshake_goblin_exp1_1', true, false]);
+			lineArray.push(['visitor_fan_greet_boobshake_goblin_exp1_2', true, false]);
+		}
+		else {
+			lineArray.push(['visitor_fan_greet_boobshake_exp1_1', true, false]);
+			lineArray.push(['visitor_fan_greet_boobshake_exp1_2', true, false]);
+			lineArray.push(['visitor_fan_greet_boobshake_exp1_3', true, false]);
+			lineArray.push(['visitor_fan_greet_boobshake_exp1_4', true, false]);
+			lineArray.push(['visitor_fan_greet_boobshake_exp1_5', true, false]);
+		}
 	}	
 	
 	return lineArray;
@@ -9071,27 +9636,48 @@ Rem_Lines.prototype.enemyline_fan_greet_boobshake = function(lineArray) {
 Rem_Lines.prototype.enemyline_fan_greet_kiss = function(lineArray) {
 	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
 	let enemyTypeReactionScore = actor.reactionScore_enemyVisitorPassive(); 
+	let deskVisitorIsGoblin = $gameTroop.receptionistBattle_thereIsVisitorAtDesk() && $gameTroop.receptionistBattle_visitorAtDesk()._visitor_isGoblin;
+	
 	
 	if(enemyTypeReactionScore >= VAR_TYPE_RS_LV3_REQ) {
-		lineArray.push(['visitor_fan_greet_kiss_exp3_1', true, false]);
-		lineArray.push(['visitor_fan_greet_kiss_exp3_2', true, false]);
-		lineArray.push(['visitor_fan_greet_kiss_exp3_3', true, false]);
-		lineArray.push(['visitor_fan_greet_kiss_exp3_4', true, false]);
-		lineArray.push(['visitor_fan_greet_kiss_exp3_5', true, false]);
+		if(deskVisitorIsGoblin) {
+			lineArray.push(['visitor_fan_greet_kiss_goblin_exp3_1', true, false]);
+			lineArray.push(['visitor_fan_greet_kiss_goblin_exp3_2', true, false]);
+			lineArray.push(['visitor_fan_greet_kiss_goblin_exp3_3', true, false]);
+		}
+		else {
+			lineArray.push(['visitor_fan_greet_kiss_exp3_1', true, false]);
+			lineArray.push(['visitor_fan_greet_kiss_exp3_2', true, false]);
+			lineArray.push(['visitor_fan_greet_kiss_exp3_3', true, false]);
+			lineArray.push(['visitor_fan_greet_kiss_exp3_4', true, false]);
+			lineArray.push(['visitor_fan_greet_kiss_exp3_5', true, false]);
+		}
 	}
 	else if(enemyTypeReactionScore >= VAR_TYPE_RS_LV2_REQ) {
-		lineArray.push(['visitor_fan_greet_kiss_exp2_1', true, false]);
-		lineArray.push(['visitor_fan_greet_kiss_exp2_2', true, false]);
-		lineArray.push(['visitor_fan_greet_kiss_exp2_3', true, false]);
-		lineArray.push(['visitor_fan_greet_kiss_exp2_4', true, false]);
-		lineArray.push(['visitor_fan_greet_kiss_exp2_5', true, false]);
+		if(deskVisitorIsGoblin) {
+			lineArray.push(['visitor_fan_greet_kiss_goblin_exp2_1', true, false]);
+			lineArray.push(['visitor_fan_greet_kiss_goblin_exp2_2', true, false]);
+		}
+		else {
+			lineArray.push(['visitor_fan_greet_kiss_exp2_1', true, false]);
+			lineArray.push(['visitor_fan_greet_kiss_exp2_2', true, false]);
+			lineArray.push(['visitor_fan_greet_kiss_exp2_3', true, false]);
+			lineArray.push(['visitor_fan_greet_kiss_exp2_4', true, false]);
+			lineArray.push(['visitor_fan_greet_kiss_exp2_5', true, false]);
+		}
 	}
 	else {
-		lineArray.push(['visitor_fan_greet_kiss_exp1_1', true, false]);
-		lineArray.push(['visitor_fan_greet_kiss_exp1_2', true, false]);
-		lineArray.push(['visitor_fan_greet_kiss_exp1_3', true, false]);
-		lineArray.push(['visitor_fan_greet_kiss_exp1_4', true, false]);
-		lineArray.push(['visitor_fan_greet_kiss_exp1_5', true, false]);
+		if(deskVisitorIsGoblin) {
+			lineArray.push(['visitor_fan_greet_kiss_goblin_exp1_1', true, false]);
+			lineArray.push(['visitor_fan_greet_kiss_goblin_exp1_2', true, false]);
+		}
+		else {
+			lineArray.push(['visitor_fan_greet_kiss_exp1_1', true, false]);
+			lineArray.push(['visitor_fan_greet_kiss_exp1_2', true, false]);
+			lineArray.push(['visitor_fan_greet_kiss_exp1_3', true, false]);
+			lineArray.push(['visitor_fan_greet_kiss_exp1_4', true, false]);
+			lineArray.push(['visitor_fan_greet_kiss_exp1_5', true, false]);
+		}
 	}
 	
 	return lineArray;
@@ -9099,27 +9685,48 @@ Rem_Lines.prototype.enemyline_fan_greet_kiss = function(lineArray) {
 Rem_Lines.prototype.enemyline_fan_greet_handjob = function(lineArray) {
 	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
 	let enemyTypeReactionScore = actor.reactionScore_enemyVisitorPassive(); 
-	
+	let deskVisitorIsGoblin = $gameTroop.receptionistBattle_thereIsVisitorAtDesk() && $gameTroop.receptionistBattle_visitorAtDesk()._visitor_isGoblin;
+
 	if(enemyTypeReactionScore >= VAR_TYPE_RS_LV3_REQ) {
-		lineArray.push(['visitor_fan_greet_handjob_exp3_1', true, false]);
-		lineArray.push(['visitor_fan_greet_handjob_exp3_2', true, false]);
-		lineArray.push(['visitor_fan_greet_handjob_exp3_3', true, false]);
-		lineArray.push(['visitor_fan_greet_handjob_exp3_4', true, false]);
-		lineArray.push(['visitor_fan_greet_handjob_exp3_5', true, false]);
+		if(deskVisitorIsGoblin) {
+			lineArray.push(['visitor_fan_greet_handjob_goblin_exp3_1', true, false]);
+			lineArray.push(['visitor_fan_greet_handjob_goblin_exp3_2', true, false]);
+			lineArray.push(['visitor_fan_greet_handjob_goblin_exp3_3', true, false]);
+		}
+		else {
+			lineArray.push(['visitor_fan_greet_handjob_exp3_1', true, false]);
+			lineArray.push(['visitor_fan_greet_handjob_exp3_2', true, false]);
+			lineArray.push(['visitor_fan_greet_handjob_exp3_3', true, false]);
+			lineArray.push(['visitor_fan_greet_handjob_exp3_4', true, false]);
+			lineArray.push(['visitor_fan_greet_handjob_exp3_5', true, false]);
+		}
 	}
 	else if(enemyTypeReactionScore >= VAR_TYPE_RS_LV2_REQ) {
-		lineArray.push(['visitor_fan_greet_handjob_exp2_1', true, false]);
-		lineArray.push(['visitor_fan_greet_handjob_exp2_2', true, false]);
-		lineArray.push(['visitor_fan_greet_handjob_exp2_3', true, false]);
-		lineArray.push(['visitor_fan_greet_handjob_exp2_4', true, false]);
-		lineArray.push(['visitor_fan_greet_handjob_exp2_5', true, false]);
+		if(deskVisitorIsGoblin) {
+			lineArray.push(['visitor_fan_greet_handjob_goblin_exp2_1', true, false]);
+			lineArray.push(['visitor_fan_greet_handjob_goblin_exp2_2', true, false]);
+			lineArray.push(['visitor_fan_greet_handjob_goblin_exp2_3', true, false]);
+		}
+		else {
+			lineArray.push(['visitor_fan_greet_handjob_exp2_1', true, false]);
+			lineArray.push(['visitor_fan_greet_handjob_exp2_2', true, false]);
+			lineArray.push(['visitor_fan_greet_handjob_exp2_3', true, false]);
+			lineArray.push(['visitor_fan_greet_handjob_exp2_4', true, false]);
+			lineArray.push(['visitor_fan_greet_handjob_exp2_5', true, false]);
+		}
 	}
 	else {
-		lineArray.push(['visitor_fan_greet_handjob_exp1_1', true, false]);
-		lineArray.push(['visitor_fan_greet_handjob_exp1_2', true, false]);
-		lineArray.push(['visitor_fan_greet_handjob_exp1_3', true, false]);
-		lineArray.push(['visitor_fan_greet_handjob_exp1_4', true, false]);
-		lineArray.push(['visitor_fan_greet_handjob_exp1_5', true, false]);
+		if(deskVisitorIsGoblin) {
+			lineArray.push(['visitor_fan_greet_handjob_goblin_exp1_1', true, false]);
+			lineArray.push(['visitor_fan_greet_handjob_goblin_exp1_2', true, false]);
+		}
+		else {
+			lineArray.push(['visitor_fan_greet_handjob_exp1_1', true, false]);
+			lineArray.push(['visitor_fan_greet_handjob_exp1_2', true, false]);
+			lineArray.push(['visitor_fan_greet_handjob_exp1_3', true, false]);
+			lineArray.push(['visitor_fan_greet_handjob_exp1_4', true, false]);
+			lineArray.push(['visitor_fan_greet_handjob_exp1_5', true, false]);
+		}
 	}
 	
 	return lineArray;
@@ -9127,27 +9734,48 @@ Rem_Lines.prototype.enemyline_fan_greet_handjob = function(lineArray) {
 Rem_Lines.prototype.enemyline_fan_greet_blowjob = function(lineArray) {
 	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
 	let enemyTypeReactionScore = actor.reactionScore_enemyVisitorPassive(); 
-	
+	let deskVisitorIsGoblin = $gameTroop.receptionistBattle_thereIsVisitorAtDesk() && $gameTroop.receptionistBattle_visitorAtDesk()._visitor_isGoblin;
+
 	if(enemyTypeReactionScore >= VAR_TYPE_RS_LV3_REQ) {
-		lineArray.push(['visitor_fan_greet_blowjob_exp3_1', true, false]);
-		lineArray.push(['visitor_fan_greet_blowjob_exp3_2', true, false]);
-		lineArray.push(['visitor_fan_greet_blowjob_exp3_3', true, false]);
-		lineArray.push(['visitor_fan_greet_blowjob_exp3_4', true, false]);
-		lineArray.push(['visitor_fan_greet_blowjob_exp3_5', true, false]);
+		if(deskVisitorIsGoblin) {
+			lineArray.push(['visitor_fan_greet_blowjob_goblin_exp3_1', true, false]);
+			lineArray.push(['visitor_fan_greet_blowjob_goblin_exp3_2', true, false]);
+			lineArray.push(['visitor_fan_greet_blowjob_goblin_exp3_3', true, false]);
+		}
+		else {
+			lineArray.push(['visitor_fan_greet_blowjob_exp3_1', true, false]);
+			lineArray.push(['visitor_fan_greet_blowjob_exp3_2', true, false]);
+			lineArray.push(['visitor_fan_greet_blowjob_exp3_3', true, false]);
+			lineArray.push(['visitor_fan_greet_blowjob_exp3_4', true, false]);
+			lineArray.push(['visitor_fan_greet_blowjob_exp3_5', true, false]);
+		}
 	}
 	else if(enemyTypeReactionScore >= VAR_TYPE_RS_LV2_REQ) {
-		lineArray.push(['visitor_fan_greet_blowjob_exp2_1', true, false]);
-		lineArray.push(['visitor_fan_greet_blowjob_exp2_2', true, false]);
-		lineArray.push(['visitor_fan_greet_blowjob_exp2_3', true, false]);
-		lineArray.push(['visitor_fan_greet_blowjob_exp2_4', true, false]);
-		lineArray.push(['visitor_fan_greet_blowjob_exp2_5', true, false]);
+		if(deskVisitorIsGoblin) {
+			lineArray.push(['visitor_fan_greet_blowjob_goblin_exp2_1', true, false]);
+			lineArray.push(['visitor_fan_greet_blowjob_goblin_exp2_2', true, false]);
+			lineArray.push(['visitor_fan_greet_blowjob_goblin_exp2_3', true, false]);
+		}
+		else {
+			lineArray.push(['visitor_fan_greet_blowjob_exp2_1', true, false]);
+			lineArray.push(['visitor_fan_greet_blowjob_exp2_2', true, false]);
+			lineArray.push(['visitor_fan_greet_blowjob_exp2_3', true, false]);
+			lineArray.push(['visitor_fan_greet_blowjob_exp2_4', true, false]);
+			lineArray.push(['visitor_fan_greet_blowjob_exp2_5', true, false]);
+		}
 	}
 	else {
-		lineArray.push(['visitor_fan_greet_blowjob_exp1_1', true, false]);
-		lineArray.push(['visitor_fan_greet_blowjob_exp1_2', true, false]);
-		lineArray.push(['visitor_fan_greet_blowjob_exp1_3', true, false]);
-		lineArray.push(['visitor_fan_greet_blowjob_exp1_4', true, false]);
-		lineArray.push(['visitor_fan_greet_blowjob_exp1_5', true, false]);
+		if(deskVisitorIsGoblin) {
+			lineArray.push(['visitor_fan_greet_blowjob_goblin_exp1_1', true, false]);
+			lineArray.push(['visitor_fan_greet_blowjob_goblin_exp1_2', true, false]);
+		}
+		else {
+			lineArray.push(['visitor_fan_greet_blowjob_exp1_1', true, false]);
+			lineArray.push(['visitor_fan_greet_blowjob_exp1_2', true, false]);
+			lineArray.push(['visitor_fan_greet_blowjob_exp1_3', true, false]);
+			lineArray.push(['visitor_fan_greet_blowjob_exp1_4', true, false]);
+			lineArray.push(['visitor_fan_greet_blowjob_exp1_5', true, false]);
+		}
 	}
 	
 	return lineArray;
@@ -9156,27 +9784,48 @@ Rem_Lines.prototype.enemyline_fan_greet_blowjob = function(lineArray) {
 Rem_Lines.prototype.enemyline_perv_greet_boobshake = function(lineArray) {
 	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
 	let enemyTypeReactionScore = actor.reactionScore_enemyVisitorPassive(); 
+	let deskVisitorIsGoblin = $gameTroop.receptionistBattle_thereIsVisitorAtDesk() && $gameTroop.receptionistBattle_visitorAtDesk()._visitor_isGoblin;
+
 	
 	if(enemyTypeReactionScore >= VAR_TYPE_RS_LV3_REQ) {
-		lineArray.push(['visitor_perv_greet_boobshake_exp3_1', true, false]);
-		lineArray.push(['visitor_perv_greet_boobshake_exp3_2', true, false]);
-		lineArray.push(['visitor_perv_greet_boobshake_exp3_3', true, false]);
-		lineArray.push(['visitor_perv_greet_boobshake_exp3_4', true, false]);
-		lineArray.push(['visitor_perv_greet_boobshake_exp3_5', true, false]);
+		if(deskVisitorIsGoblin) {
+			lineArray.push(['visitor_perv_greet_boobshake_goblin_exp3_1', true, false]);
+			lineArray.push(['visitor_perv_greet_boobshake_goblin_exp3_2', true, false]);
+			lineArray.push(['visitor_perv_greet_boobshake_goblin_exp3_3', true, false]);
+		}
+		else {
+			lineArray.push(['visitor_perv_greet_boobshake_exp3_1', true, false]);
+			lineArray.push(['visitor_perv_greet_boobshake_exp3_2', true, false]);
+			lineArray.push(['visitor_perv_greet_boobshake_exp3_3', true, false]);
+			lineArray.push(['visitor_perv_greet_boobshake_exp3_4', true, false]);
+			lineArray.push(['visitor_perv_greet_boobshake_exp3_5', true, false]);
+		}
 	}
 	else if(enemyTypeReactionScore >= VAR_TYPE_RS_LV2_REQ) {
-		lineArray.push(['visitor_perv_greet_boobshake_exp2_1', true, false]);
-		lineArray.push(['visitor_perv_greet_boobshake_exp2_2', true, false]);
-		lineArray.push(['visitor_perv_greet_boobshake_exp2_3', true, false]);
-		lineArray.push(['visitor_perv_greet_boobshake_exp2_4', true, false]);
-		lineArray.push(['visitor_perv_greet_boobshake_exp2_5', true, false]);
+		if(deskVisitorIsGoblin) {
+			lineArray.push(['visitor_perv_greet_boobshake_goblin_exp2_1', true, false]);
+			lineArray.push(['visitor_perv_greet_boobshake_goblin_exp2_2', true, false]);
+		}
+		else {
+			lineArray.push(['visitor_perv_greet_boobshake_exp2_1', true, false]);
+			lineArray.push(['visitor_perv_greet_boobshake_exp2_2', true, false]);
+			lineArray.push(['visitor_perv_greet_boobshake_exp2_3', true, false]);
+			lineArray.push(['visitor_perv_greet_boobshake_exp2_4', true, false]);
+			lineArray.push(['visitor_perv_greet_boobshake_exp2_5', true, false]);
+		}
 	}
 	else {
-		lineArray.push(['visitor_perv_greet_boobshake_exp1_1', true, false]);
-		lineArray.push(['visitor_perv_greet_boobshake_exp1_2', true, false]);
-		lineArray.push(['visitor_perv_greet_boobshake_exp1_3', true, false]);
-		lineArray.push(['visitor_perv_greet_boobshake_exp1_4', true, false]);
-		lineArray.push(['visitor_perv_greet_boobshake_exp1_5', true, false]);
+		if(deskVisitorIsGoblin) {
+			lineArray.push(['visitor_perv_greet_boobshake_goblin_exp1_1', true, false]);
+			lineArray.push(['visitor_perv_greet_boobshake_goblin_exp1_2', true, false]);
+		}
+		else {
+			lineArray.push(['visitor_perv_greet_boobshake_exp1_1', true, false]);
+			lineArray.push(['visitor_perv_greet_boobshake_exp1_2', true, false]);
+			lineArray.push(['visitor_perv_greet_boobshake_exp1_3', true, false]);
+			lineArray.push(['visitor_perv_greet_boobshake_exp1_4', true, false]);
+			lineArray.push(['visitor_perv_greet_boobshake_exp1_5', true, false]);
+		}
 	}
 	
 	return lineArray;
@@ -9184,27 +9833,47 @@ Rem_Lines.prototype.enemyline_perv_greet_boobshake = function(lineArray) {
 Rem_Lines.prototype.enemyline_perv_greet_kiss = function(lineArray) {
 	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
 	let enemyTypeReactionScore = actor.reactionScore_enemyVisitorPassive(); 
-	
+	let deskVisitorIsGoblin = $gameTroop.receptionistBattle_thereIsVisitorAtDesk() && $gameTroop.receptionistBattle_visitorAtDesk()._visitor_isGoblin;
+
 	if(enemyTypeReactionScore >= VAR_TYPE_RS_LV3_REQ) {
-		lineArray.push(['visitor_perv_greet_kiss_exp3_1', true, false]);
-		lineArray.push(['visitor_perv_greet_kiss_exp3_2', true, false]);
-		lineArray.push(['visitor_perv_greet_kiss_exp3_3', true, false]);
-		lineArray.push(['visitor_perv_greet_kiss_exp3_4', true, false]);
-		lineArray.push(['visitor_perv_greet_kiss_exp3_5', true, false]);
+		if(deskVisitorIsGoblin) {
+			lineArray.push(['visitor_perv_greet_kiss_goblin_exp3_1', true, false]);
+			lineArray.push(['visitor_perv_greet_kiss_goblin_exp3_2', true, false]);
+			lineArray.push(['visitor_perv_greet_kiss_goblin_exp3_3', true, false]);
+		}
+		else {
+			lineArray.push(['visitor_perv_greet_kiss_exp3_1', true, false]);
+			lineArray.push(['visitor_perv_greet_kiss_exp3_2', true, false]);
+			lineArray.push(['visitor_perv_greet_kiss_exp3_3', true, false]);
+			lineArray.push(['visitor_perv_greet_kiss_exp3_4', true, false]);
+			lineArray.push(['visitor_perv_greet_kiss_exp3_5', true, false]);
+		}
 	}
 	else if(enemyTypeReactionScore >= VAR_TYPE_RS_LV2_REQ) {
-		lineArray.push(['visitor_perv_greet_kiss_exp2_1', true, false]);
-		lineArray.push(['visitor_perv_greet_kiss_exp2_2', true, false]);
-		lineArray.push(['visitor_perv_greet_kiss_exp2_3', true, false]);
-		lineArray.push(['visitor_perv_greet_kiss_exp2_4', true, false]);
-		lineArray.push(['visitor_perv_greet_kiss_exp2_5', true, false]);
+		if(deskVisitorIsGoblin) {
+			lineArray.push(['visitor_perv_greet_kiss_goblin_exp2_1', true, false]);
+			lineArray.push(['visitor_perv_greet_kiss_goblin_exp2_2', true, false]);
+		}
+		else {
+			lineArray.push(['visitor_perv_greet_kiss_exp2_1', true, false]);
+			lineArray.push(['visitor_perv_greet_kiss_exp2_2', true, false]);
+			lineArray.push(['visitor_perv_greet_kiss_exp2_3', true, false]);
+			lineArray.push(['visitor_perv_greet_kiss_exp2_4', true, false]);
+			lineArray.push(['visitor_perv_greet_kiss_exp2_5', true, false]);
+		}
 	}
 	else {
-		lineArray.push(['visitor_perv_greet_kiss_exp1_1', true, false]);
-		lineArray.push(['visitor_perv_greet_kiss_exp1_2', true, false]);
-		lineArray.push(['visitor_perv_greet_kiss_exp1_3', true, false]);
-		lineArray.push(['visitor_perv_greet_kiss_exp1_4', true, false]);
-		lineArray.push(['visitor_perv_greet_kiss_exp1_5', true, false]);
+		if(deskVisitorIsGoblin) {
+			lineArray.push(['visitor_perv_greet_kiss_goblin_exp1_1', true, false]);
+			lineArray.push(['visitor_perv_greet_kiss_goblin_exp1_2', true, false]);
+		}
+		else {
+			lineArray.push(['visitor_perv_greet_kiss_exp1_1', true, false]);
+			lineArray.push(['visitor_perv_greet_kiss_exp1_2', true, false]);
+			lineArray.push(['visitor_perv_greet_kiss_exp1_3', true, false]);
+			lineArray.push(['visitor_perv_greet_kiss_exp1_4', true, false]);
+			lineArray.push(['visitor_perv_greet_kiss_exp1_5', true, false]);
+		}
 	}
 	
 	return lineArray;
@@ -9212,27 +9881,47 @@ Rem_Lines.prototype.enemyline_perv_greet_kiss = function(lineArray) {
 Rem_Lines.prototype.enemyline_perv_greet_handjob = function(lineArray) {
 	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
 	let enemyTypeReactionScore = actor.reactionScore_enemyVisitorPassive(); 
+	let deskVisitorIsGoblin = $gameTroop.receptionistBattle_thereIsVisitorAtDesk() && $gameTroop.receptionistBattle_visitorAtDesk()._visitor_isGoblin;
 	
 	if(enemyTypeReactionScore >= VAR_TYPE_RS_LV3_REQ) {
-		lineArray.push(['visitor_perv_greet_handjob_exp3_1', true, false]);
-		lineArray.push(['visitor_perv_greet_handjob_exp3_2', true, false]);
-		lineArray.push(['visitor_perv_greet_handjob_exp3_3', true, false]);
-		lineArray.push(['visitor_perv_greet_handjob_exp3_4', true, false]);
-		lineArray.push(['visitor_perv_greet_handjob_exp3_5', true, false]);
+		if(deskVisitorIsGoblin) {
+			lineArray.push(['visitor_perv_greet_handjob_goblin_exp3_1', true, false]);
+			lineArray.push(['visitor_perv_greet_handjob_goblin_exp3_2', true, false]);
+			lineArray.push(['visitor_perv_greet_handjob_goblin_exp3_3', true, false]);
+		}
+		else {
+			lineArray.push(['visitor_perv_greet_handjob_exp3_1', true, false]);
+			lineArray.push(['visitor_perv_greet_handjob_exp3_2', true, false]);
+			lineArray.push(['visitor_perv_greet_handjob_exp3_3', true, false]);
+			lineArray.push(['visitor_perv_greet_handjob_exp3_4', true, false]);
+			lineArray.push(['visitor_perv_greet_handjob_exp3_5', true, false]);
+		}
 	}
 	else if(enemyTypeReactionScore >= VAR_TYPE_RS_LV2_REQ) {
-		lineArray.push(['visitor_perv_greet_handjob_exp2_1', true, false]);
-		lineArray.push(['visitor_perv_greet_handjob_exp2_2', true, false]);
-		lineArray.push(['visitor_perv_greet_handjob_exp2_3', true, false]);
-		lineArray.push(['visitor_perv_greet_handjob_exp2_4', true, false]);
-		lineArray.push(['visitor_perv_greet_handjob_exp2_5', true, false]);
+		if(deskVisitorIsGoblin) {
+			lineArray.push(['visitor_perv_greet_handjob_goblin_exp2_1', true, false]);
+			lineArray.push(['visitor_perv_greet_handjob_goblin_exp2_2', true, false]);
+		}
+		else {
+			lineArray.push(['visitor_perv_greet_handjob_exp2_1', true, false]);
+			lineArray.push(['visitor_perv_greet_handjob_exp2_2', true, false]);
+			lineArray.push(['visitor_perv_greet_handjob_exp2_3', true, false]);
+			lineArray.push(['visitor_perv_greet_handjob_exp2_4', true, false]);
+			lineArray.push(['visitor_perv_greet_handjob_exp2_5', true, false]);
+		}
 	}
 	else {
-		lineArray.push(['visitor_perv_greet_handjob_exp1_1', true, false]);
-		lineArray.push(['visitor_perv_greet_handjob_exp1_2', true, false]);
-		lineArray.push(['visitor_perv_greet_handjob_exp1_3', true, false]);
-		lineArray.push(['visitor_perv_greet_handjob_exp1_4', true, false]);
-		lineArray.push(['visitor_perv_greet_handjob_exp1_5', true, false]);
+		if(deskVisitorIsGoblin) {
+			lineArray.push(['visitor_perv_greet_handjob_goblin_exp1_1', true, false]);
+			lineArray.push(['visitor_perv_greet_handjob_goblin_exp1_2', true, false]);
+		}
+		else {
+			lineArray.push(['visitor_perv_greet_handjob_exp1_1', true, false]);
+			lineArray.push(['visitor_perv_greet_handjob_exp1_2', true, false]);
+			lineArray.push(['visitor_perv_greet_handjob_exp1_3', true, false]);
+			lineArray.push(['visitor_perv_greet_handjob_exp1_4', true, false]);
+			lineArray.push(['visitor_perv_greet_handjob_exp1_5', true, false]);
+		}
 	}
 	
 	return lineArray;
@@ -9240,27 +9929,48 @@ Rem_Lines.prototype.enemyline_perv_greet_handjob = function(lineArray) {
 Rem_Lines.prototype.enemyline_perv_greet_blowjob = function(lineArray) {
 	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
 	let enemyTypeReactionScore = actor.reactionScore_enemyVisitorPassive(); 
-	
+	let deskVisitorIsGoblin = $gameTroop.receptionistBattle_thereIsVisitorAtDesk() && $gameTroop.receptionistBattle_visitorAtDesk()._visitor_isGoblin;
+
 	if(enemyTypeReactionScore >= VAR_TYPE_RS_LV3_REQ) {
-		lineArray.push(['visitor_perv_greet_blowjob_exp3_1', true, false]);
-		lineArray.push(['visitor_perv_greet_blowjob_exp3_2', true, false]);
-		lineArray.push(['visitor_perv_greet_blowjob_exp3_3', true, false]);
-		lineArray.push(['visitor_perv_greet_blowjob_exp3_4', true, false]);
-		lineArray.push(['visitor_perv_greet_blowjob_exp3_5', true, false]);
+		if(deskVisitorIsGoblin) {
+			lineArray.push(['visitor_perv_greet_blowjob_goblin_exp3_1', true, false]);
+			lineArray.push(['visitor_perv_greet_blowjob_goblin_exp3_2', true, false]);
+			lineArray.push(['visitor_perv_greet_blowjob_goblin_exp3_3', true, false]);
+		}
+		else {
+			lineArray.push(['visitor_perv_greet_blowjob_exp3_1', true, false]);
+			if(!ConfigManager.disableSmegma)
+				lineArray.push(['visitor_perv_greet_blowjob_exp3_2', true, false]);
+			lineArray.push(['visitor_perv_greet_blowjob_exp3_3', true, false]);
+			lineArray.push(['visitor_perv_greet_blowjob_exp3_4', true, false]);
+			lineArray.push(['visitor_perv_greet_blowjob_exp3_5', true, false]);
+		}
 	}
 	else if(enemyTypeReactionScore >= VAR_TYPE_RS_LV2_REQ) {
-		lineArray.push(['visitor_perv_greet_blowjob_exp2_1', true, false]);
-		lineArray.push(['visitor_perv_greet_blowjob_exp2_2', true, false]);
-		lineArray.push(['visitor_perv_greet_blowjob_exp2_3', true, false]);
-		lineArray.push(['visitor_perv_greet_blowjob_exp2_4', true, false]);
-		lineArray.push(['visitor_perv_greet_blowjob_exp2_5', true, false]);
+		if(deskVisitorIsGoblin) {
+			lineArray.push(['visitor_perv_greet_blowjob_goblin_exp2_1', true, false]);
+			lineArray.push(['visitor_perv_greet_blowjob_goblin_exp2_2', true, false]);
+		}
+		else {
+			lineArray.push(['visitor_perv_greet_blowjob_exp2_1', true, false]);
+			lineArray.push(['visitor_perv_greet_blowjob_exp2_2', true, false]);
+			lineArray.push(['visitor_perv_greet_blowjob_exp2_3', true, false]);
+			lineArray.push(['visitor_perv_greet_blowjob_exp2_4', true, false]);
+			lineArray.push(['visitor_perv_greet_blowjob_exp2_5', true, false]);
+		}
 	}
 	else {
-		lineArray.push(['visitor_perv_greet_blowjob_exp1_1', true, false]);
-		lineArray.push(['visitor_perv_greet_blowjob_exp1_2', true, false]);
-		lineArray.push(['visitor_perv_greet_blowjob_exp1_3', true, false]);
-		lineArray.push(['visitor_perv_greet_blowjob_exp1_4', true, false]);
-		lineArray.push(['visitor_perv_greet_blowjob_exp1_5', true, false]);
+		if(deskVisitorIsGoblin) {
+			lineArray.push(['visitor_perv_greet_blowjob_goblin_exp1_1', true, false]);
+			lineArray.push(['visitor_perv_greet_blowjob_goblin_exp1_2', true, false]);
+		}
+		else {
+			lineArray.push(['visitor_perv_greet_blowjob_exp1_1', true, false]);
+			lineArray.push(['visitor_perv_greet_blowjob_exp1_2', true, false]);
+			lineArray.push(['visitor_perv_greet_blowjob_exp1_3', true, false]);
+			lineArray.push(['visitor_perv_greet_blowjob_exp1_4', true, false]);
+			lineArray.push(['visitor_perv_greet_blowjob_exp1_5', true, false]);
+		}
 	}
 	
 	return lineArray;
@@ -9269,27 +9979,46 @@ Rem_Lines.prototype.enemyline_perv_greet_blowjob = function(lineArray) {
 Rem_Lines.prototype.enemyline_perv_second_boobshake = function(lineArray) {
 	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
 	let enemyTypeReactionScore = actor.reactionScore_enemyVisitorPassive(); 
+	let deskVisitorIsGoblin = $gameTroop.receptionistBattle_thereIsVisitorAtDesk() && $gameTroop.receptionistBattle_visitorAtDesk()._visitor_isGoblin;
 	
 	if(enemyTypeReactionScore >= VAR_TYPE_RS_LV3_REQ) {
-		lineArray.push(['visitor_perv_second_boobshake_exp3_1', true, false]);
-		lineArray.push(['visitor_perv_second_boobshake_exp3_2', true, false]);
-		lineArray.push(['visitor_perv_second_boobshake_exp3_3', true, false]);
-		lineArray.push(['visitor_perv_second_boobshake_exp3_4', true, false]);
-		lineArray.push(['visitor_perv_second_boobshake_exp3_5', true, false]);
+		if(deskVisitorIsGoblin) {
+			lineArray.push(['visitor_perv_second_boobshake_goblin_exp3_1', true, false]);
+			lineArray.push(['visitor_perv_second_boobshake_goblin_exp3_2', true, false]);
+		}
+		else {
+			lineArray.push(['visitor_perv_second_boobshake_exp3_1', true, false]);
+			lineArray.push(['visitor_perv_second_boobshake_exp3_2', true, false]);
+			lineArray.push(['visitor_perv_second_boobshake_exp3_3', true, false]);
+			lineArray.push(['visitor_perv_second_boobshake_exp3_4', true, false]);
+			lineArray.push(['visitor_perv_second_boobshake_exp3_5', true, false]);
+		}
 	}
 	else if(enemyTypeReactionScore >= VAR_TYPE_RS_LV2_REQ) {
-		lineArray.push(['visitor_perv_second_boobshake_exp2_1', true, false]);
-		lineArray.push(['visitor_perv_second_boobshake_exp2_2', true, false]);
-		lineArray.push(['visitor_perv_second_boobshake_exp2_3', true, false]);
-		lineArray.push(['visitor_perv_second_boobshake_exp2_4', true, false]);
-		lineArray.push(['visitor_perv_second_boobshake_exp2_5', true, false]);
+		if(deskVisitorIsGoblin) {
+			lineArray.push(['visitor_perv_second_boobshake_goblin_exp2_1', true, false]);
+			lineArray.push(['visitor_perv_second_boobshake_goblin_exp2_2', true, false]);
+		}
+		else {
+			lineArray.push(['visitor_perv_second_boobshake_exp2_1', true, false]);
+			lineArray.push(['visitor_perv_second_boobshake_exp2_2', true, false]);
+			lineArray.push(['visitor_perv_second_boobshake_exp2_3', true, false]);
+			lineArray.push(['visitor_perv_second_boobshake_exp2_4', true, false]);
+			lineArray.push(['visitor_perv_second_boobshake_exp2_5', true, false]);
+		}
 	}
 	else {
-		lineArray.push(['visitor_perv_second_boobshake_exp1_1', true, false]);
-		lineArray.push(['visitor_perv_second_boobshake_exp1_2', true, false]);
-		lineArray.push(['visitor_perv_second_boobshake_exp1_3', true, false]);
-		lineArray.push(['visitor_perv_second_boobshake_exp1_4', true, false]);
-		lineArray.push(['visitor_perv_second_boobshake_exp1_5', true, false]);
+		if(deskVisitorIsGoblin) {
+			lineArray.push(['visitor_perv_second_boobshake_goblin_exp1_1', true, false]);
+			lineArray.push(['visitor_perv_second_boobshake_goblin_exp1_2', true, false]);
+		}
+		else {
+			lineArray.push(['visitor_perv_second_boobshake_exp1_1', true, false]);
+			lineArray.push(['visitor_perv_second_boobshake_exp1_2', true, false]);
+			lineArray.push(['visitor_perv_second_boobshake_exp1_3', true, false]);
+			lineArray.push(['visitor_perv_second_boobshake_exp1_4', true, false]);
+			lineArray.push(['visitor_perv_second_boobshake_exp1_5', true, false]);
+		}
 	}
 	
 	return lineArray;
@@ -9297,27 +10026,46 @@ Rem_Lines.prototype.enemyline_perv_second_boobshake = function(lineArray) {
 Rem_Lines.prototype.enemyline_perv_second_kiss = function(lineArray) {
 	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
 	let enemyTypeReactionScore = actor.reactionScore_enemyVisitorPassive(); 
-	
+	let deskVisitorIsGoblin = $gameTroop.receptionistBattle_thereIsVisitorAtDesk() && $gameTroop.receptionistBattle_visitorAtDesk()._visitor_isGoblin;
+
 	if(enemyTypeReactionScore >= VAR_TYPE_RS_LV3_REQ) {
-		lineArray.push(['visitor_perv_second_kiss_exp3_1', true, false]);
-		lineArray.push(['visitor_perv_second_kiss_exp3_2', true, false]);
-		lineArray.push(['visitor_perv_second_kiss_exp3_3', true, false]);
-		lineArray.push(['visitor_perv_second_kiss_exp3_4', true, false]);
-		lineArray.push(['visitor_perv_second_kiss_exp3_5', true, false]);
+		if(deskVisitorIsGoblin) {
+			lineArray.push(['visitor_perv_second_kiss_goblin_exp3_1', true, false]);
+			lineArray.push(['visitor_perv_second_kiss_goblin_exp3_2', true, false]);
+		}
+		else {
+			lineArray.push(['visitor_perv_second_kiss_exp3_1', true, false]);
+			lineArray.push(['visitor_perv_second_kiss_exp3_2', true, false]);
+			lineArray.push(['visitor_perv_second_kiss_exp3_3', true, false]);
+			lineArray.push(['visitor_perv_second_kiss_exp3_4', true, false]);
+			lineArray.push(['visitor_perv_second_kiss_exp3_5', true, false]);
+		}
 	}
 	else if(enemyTypeReactionScore >= VAR_TYPE_RS_LV2_REQ) {
-		lineArray.push(['visitor_perv_second_kiss_exp2_1', true, false]);
-		lineArray.push(['visitor_perv_second_kiss_exp2_2', true, false]);
-		lineArray.push(['visitor_perv_second_kiss_exp2_3', true, false]);
-		lineArray.push(['visitor_perv_second_kiss_exp2_4', true, false]);
-		lineArray.push(['visitor_perv_second_kiss_exp2_5', true, false]);
+		if(deskVisitorIsGoblin) {
+			lineArray.push(['visitor_perv_second_kiss_goblin_exp2_1', true, false]);
+			lineArray.push(['visitor_perv_second_kiss_goblin_exp2_2', true, false]);
+		}
+		else {
+			lineArray.push(['visitor_perv_second_kiss_exp2_1', true, false]);
+			lineArray.push(['visitor_perv_second_kiss_exp2_2', true, false]);
+			lineArray.push(['visitor_perv_second_kiss_exp2_3', true, false]);
+			lineArray.push(['visitor_perv_second_kiss_exp2_4', true, false]);
+			lineArray.push(['visitor_perv_second_kiss_exp2_5', true, false]);
+		}
 	}
 	else {
-		lineArray.push(['visitor_perv_second_kiss_exp1_1', true, false]);
-		lineArray.push(['visitor_perv_second_kiss_exp1_2', true, false]);
-		lineArray.push(['visitor_perv_second_kiss_exp1_3', true, false]);
-		lineArray.push(['visitor_perv_second_kiss_exp1_4', true, false]);
-		lineArray.push(['visitor_perv_second_kiss_exp1_5', true, false]);
+		if(deskVisitorIsGoblin) {
+			lineArray.push(['visitor_perv_second_kiss_goblin_exp1_1', true, false]);
+			lineArray.push(['visitor_perv_second_kiss_goblin_exp1_2', true, false]);
+		}
+		else {
+			lineArray.push(['visitor_perv_second_kiss_exp1_1', true, false]);
+			lineArray.push(['visitor_perv_second_kiss_exp1_2', true, false]);
+			lineArray.push(['visitor_perv_second_kiss_exp1_3', true, false]);
+			lineArray.push(['visitor_perv_second_kiss_exp1_4', true, false]);
+			lineArray.push(['visitor_perv_second_kiss_exp1_5', true, false]);
+		}
 	}
 	
 	return lineArray;
@@ -9325,27 +10073,46 @@ Rem_Lines.prototype.enemyline_perv_second_kiss = function(lineArray) {
 Rem_Lines.prototype.enemyline_perv_second_handjob = function(lineArray) {
 	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
 	let enemyTypeReactionScore = actor.reactionScore_enemyVisitorPassive(); 
-	
+	let deskVisitorIsGoblin = $gameTroop.receptionistBattle_thereIsVisitorAtDesk() && $gameTroop.receptionistBattle_visitorAtDesk()._visitor_isGoblin;
+
 	if(enemyTypeReactionScore >= VAR_TYPE_RS_LV3_REQ) {
-		lineArray.push(['visitor_perv_second_handjob_exp3_1', true, false]);
-		lineArray.push(['visitor_perv_second_handjob_exp3_2', true, false]);
-		lineArray.push(['visitor_perv_second_handjob_exp3_3', true, false]);
-		lineArray.push(['visitor_perv_second_handjob_exp3_4', true, false]);
-		lineArray.push(['visitor_perv_second_handjob_exp3_5', true, false]);
+		if(deskVisitorIsGoblin) {
+			lineArray.push(['visitor_perv_second_handjob_goblin_exp3_1', true, false]);
+			lineArray.push(['visitor_perv_second_handjob_goblin_exp3_2', true, false]);
+		}
+		else {
+			lineArray.push(['visitor_perv_second_handjob_exp3_1', true, false]);
+			lineArray.push(['visitor_perv_second_handjob_exp3_2', true, false]);
+			lineArray.push(['visitor_perv_second_handjob_exp3_3', true, false]);
+			lineArray.push(['visitor_perv_second_handjob_exp3_4', true, false]);
+			lineArray.push(['visitor_perv_second_handjob_exp3_5', true, false]);
+		}
 	}
 	else if(enemyTypeReactionScore >= VAR_TYPE_RS_LV2_REQ) {
-		lineArray.push(['visitor_perv_second_handjob_exp2_1', true, false]);
-		lineArray.push(['visitor_perv_second_handjob_exp2_2', true, false]);
-		lineArray.push(['visitor_perv_second_handjob_exp2_3', true, false]);
-		lineArray.push(['visitor_perv_second_handjob_exp2_4', true, false]);
-		lineArray.push(['visitor_perv_second_handjob_exp2_5', true, false]);
+		if(deskVisitorIsGoblin) {
+			lineArray.push(['visitor_perv_second_handjob_goblin_exp2_1', true, false]);
+			lineArray.push(['visitor_perv_second_handjob_goblin_exp2_2', true, false]);
+		}
+		else {
+			lineArray.push(['visitor_perv_second_handjob_exp2_1', true, false]);
+			lineArray.push(['visitor_perv_second_handjob_exp2_2', true, false]);
+			lineArray.push(['visitor_perv_second_handjob_exp2_3', true, false]);
+			lineArray.push(['visitor_perv_second_handjob_exp2_4', true, false]);
+			lineArray.push(['visitor_perv_second_handjob_exp2_5', true, false]);
+		}
 	}
 	else {
-		lineArray.push(['visitor_perv_second_handjob_exp1_1', true, false]);
-		lineArray.push(['visitor_perv_second_handjob_exp1_2', true, false]);
-		lineArray.push(['visitor_perv_second_handjob_exp1_3', true, false]);
-		lineArray.push(['visitor_perv_second_handjob_exp1_4', true, false]);
-		lineArray.push(['visitor_perv_second_handjob_exp1_5', true, false]);
+		if(deskVisitorIsGoblin) {
+			lineArray.push(['visitor_perv_second_handjob_goblin_exp1_1', true, false]);
+			lineArray.push(['visitor_perv_second_handjob_goblin_exp1_2', true, false]);
+		}
+		else {
+			lineArray.push(['visitor_perv_second_handjob_exp1_1', true, false]);
+			lineArray.push(['visitor_perv_second_handjob_exp1_2', true, false]);
+			lineArray.push(['visitor_perv_second_handjob_exp1_3', true, false]);
+			lineArray.push(['visitor_perv_second_handjob_exp1_4', true, false]);
+			lineArray.push(['visitor_perv_second_handjob_exp1_5', true, false]);
+		}
 	}
 	
 	return lineArray;
@@ -9353,27 +10120,46 @@ Rem_Lines.prototype.enemyline_perv_second_handjob = function(lineArray) {
 Rem_Lines.prototype.enemyline_perv_second_blowjob = function(lineArray) {
 	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
 	let enemyTypeReactionScore = actor.reactionScore_enemyVisitorPassive(); 
-	
+	let deskVisitorIsGoblin = $gameTroop.receptionistBattle_thereIsVisitorAtDesk() && $gameTroop.receptionistBattle_visitorAtDesk()._visitor_isGoblin;
+
 	if(enemyTypeReactionScore >= VAR_TYPE_RS_LV3_REQ) {
-		lineArray.push(['visitor_perv_second_blowjob_exp3_1', true, false]);
-		lineArray.push(['visitor_perv_second_blowjob_exp3_2', true, false]);
-		lineArray.push(['visitor_perv_second_blowjob_exp3_3', true, false]);
-		lineArray.push(['visitor_perv_second_blowjob_exp3_4', true, false]);
-		lineArray.push(['visitor_perv_second_blowjob_exp3_5', true, false]);
+		if(deskVisitorIsGoblin) {
+			lineArray.push(['visitor_perv_second_blowjob_goblin_exp3_1', true, false]);
+			lineArray.push(['visitor_perv_second_blowjob_goblin_exp3_2', true, false]);
+		}
+		else {
+			lineArray.push(['visitor_perv_second_blowjob_exp3_1', true, false]);
+			lineArray.push(['visitor_perv_second_blowjob_exp3_2', true, false]);
+			lineArray.push(['visitor_perv_second_blowjob_exp3_3', true, false]);
+			lineArray.push(['visitor_perv_second_blowjob_exp3_4', true, false]);
+			lineArray.push(['visitor_perv_second_blowjob_exp3_5', true, false]);
+		}
 	}
 	else if(enemyTypeReactionScore >= VAR_TYPE_RS_LV2_REQ) {
-		lineArray.push(['visitor_perv_second_blowjob_exp2_1', true, false]);
-		lineArray.push(['visitor_perv_second_blowjob_exp2_2', true, false]);
-		lineArray.push(['visitor_perv_second_blowjob_exp2_3', true, false]);
-		lineArray.push(['visitor_perv_second_blowjob_exp2_4', true, false]);
-		lineArray.push(['visitor_perv_second_blowjob_exp2_5', true, false]);
+		if(deskVisitorIsGoblin) {
+			lineArray.push(['visitor_perv_second_blowjob_goblin_exp2_1', true, false]);
+			lineArray.push(['visitor_perv_second_blowjob_goblin_exp2_2', true, false]);
+		}
+		else {
+			lineArray.push(['visitor_perv_second_blowjob_exp2_1', true, false]);
+			lineArray.push(['visitor_perv_second_blowjob_exp2_2', true, false]);
+			lineArray.push(['visitor_perv_second_blowjob_exp2_3', true, false]);
+			lineArray.push(['visitor_perv_second_blowjob_exp2_4', true, false]);
+			lineArray.push(['visitor_perv_second_blowjob_exp2_5', true, false]);
+		}
 	}
 	else {
-		lineArray.push(['visitor_perv_second_blowjob_exp1_1', true, false]);
-		lineArray.push(['visitor_perv_second_blowjob_exp1_2', true, false]);
-		lineArray.push(['visitor_perv_second_blowjob_exp1_3', true, false]);
-		lineArray.push(['visitor_perv_second_blowjob_exp1_4', true, false]);
-		lineArray.push(['visitor_perv_second_blowjob_exp1_5', true, false]);
+		if(deskVisitorIsGoblin) {
+			lineArray.push(['visitor_perv_second_blowjob_goblin_exp1_1', true, false]);
+			lineArray.push(['visitor_perv_second_blowjob_goblin_exp1_2', true, false]);
+		}
+		else {
+			lineArray.push(['visitor_perv_second_blowjob_exp1_1', true, false]);
+			lineArray.push(['visitor_perv_second_blowjob_exp1_2', true, false]);
+			lineArray.push(['visitor_perv_second_blowjob_exp1_3', true, false]);
+			lineArray.push(['visitor_perv_second_blowjob_exp1_4', true, false]);
+			lineArray.push(['visitor_perv_second_blowjob_exp1_5', true, false]);
+		}
 	}
 	
 	return lineArray;
@@ -9435,6 +10221,10 @@ BattleManager.actionRemLines = function(lineType) {
 	BattleManager._lastRemLineIsVoiced = lineIsVoiced;
 	
 	for(let i = 0; i < linesText.length; i++) {
+		
+
+		//AudioManager.playVoice({name:'test', pan:0, pitch:100, pos:0, volume: 80});
+		
 		this._logWindow.displayRemLine(linesText[i]);
 	}
 	if(!lineIsMale && ConfigManager.karrynLinesPrompt && !$gameTroop.isAllDead()) {
@@ -9485,7 +10275,7 @@ Window_BattleLog.prototype.cutinWait = function(num) {
 Game_Temp.prototype.getMaleBattleDialogueChance = function() {
 	switch (ConfigManager.remMaleDialogueAppear) {
 	case 0:
-		return 0;
+		return LINE_MALE_SHOW_CHANCE_ZERO;
 	case 1:
 		return LINE_MALE_SHOW_CHANCE_ONE;
 	case 2:
@@ -9493,7 +10283,7 @@ Game_Temp.prototype.getMaleBattleDialogueChance = function() {
 	case 3:
 		return LINE_MALE_SHOW_CHANCE_THREE;
 	case 4:
-		return 100;		
+		return LINE_MALE_SHOW_CHANCE_FOUR;		
 	}
 	
 	return LINE_MALE_SHOW_CHANCE_THREE;

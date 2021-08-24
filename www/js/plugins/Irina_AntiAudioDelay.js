@@ -214,6 +214,14 @@ AudioManager.createBuffer = function(e, a) {
             this._audioCacheBgs = this._audioCacheBgs || {};
             var i = this._audioCacheBgs;
             break;
+		case "voice":
+            this._audioCacheVoice = this._audioCacheVoice || {};
+            var i = this._audioCacheVoice;
+            break;
+		case "moan":
+            this._audioCacheMoan = this._audioCacheMoan || {};
+            var i = this._audioCacheMoan;
+            break;
         case "me":
             this._audioCacheMe = this._audioCacheMe || {};
             var i = this._audioCacheMe;
@@ -221,6 +229,10 @@ AudioManager.createBuffer = function(e, a) {
         case "se":
             this._audioCacheSe = this._audioCacheSe || {};
             var i = this._audioCacheSe;
+            break;
+		case "enemy":
+            this._audioCacheEnemy = this._audioCacheEnemy || {};
+            var i = this._audioCacheEnemy;
             break;
         default:
             return Imported.Irina_AntiAudioDelay.AudioManager_createBuffer.call(this)
@@ -235,8 +247,14 @@ AudioManager.flushAudioCache = function(e) {
         this._audioCacheBgm = {}
     } else if (e === "bgs") {
         this._audioCacheBgs = {}
+	} else if (e === "voice") {
+        this._audioCacheVoice = {}
+	} else if (e === "moan") {
+        this._audioCacheMoan = {}
     } else if (e === "me") {
         this._audioCacheMe = {}
+	} else if (e === "enemy") {
+        this._audioCacheEnemy = {}
     } else if (e === "se") {
         this._audioCacheSe = {}
     }
@@ -370,18 +388,27 @@ Game_Interpreter.prototype.pluginCommand = function(e, a) {
     if (e.match(/FlushAudioCache/i)) {
         var i = a[0];
         if (i.match(/bgm/i)) {
-            AudioManager.flushAudioCache("bgm")
+            AudioManager.flushAudioCache("bgm");
         } else if (i.match(/bgs/i)) {
-            AudioManager.flushAudioCache("bgs")
+            AudioManager.flushAudioCache("bgs");
         } else if (i.match(/me/i)) {
-            AudioManager.flushAudioCache("me")
+            AudioManager.flushAudioCache("me");
         } else if (i.match(/se/i)) {
-            AudioManager.flushAudioCache("se")
+            AudioManager.flushAudioCache("se");
+		} else if (i.match(/enemy/i)) {
+            AudioManager.flushAudioCache("enemy");
+		} else if (i.match(/voice/i)) {
+            AudioManager.flushAudioCache("voice");
+		} else if (i.match(/moan/i)) {
+            AudioManager.flushAudioCache("moan");
         } else if (i.match(/all/i)) {
             AudioManager.flushAudioCache("bgm");
             AudioManager.flushAudioCache("bgs");
             AudioManager.flushAudioCache("me");
-            AudioManager.flushAudioCache("se")
+            AudioManager.flushAudioCache("se");
+			AudioManager.flushAudioCache("enemy");
+			AudioManager.flushAudioCache("voice");
+			AudioManager.flushAudioCache("moan");
         }
     }
 };

@@ -65,9 +65,13 @@ Game_Actor.prototype.getTachieWetPantiesId = function() {
 }; 
 
 Game_Actor.prototype.getTachieSemenRightArmId = function() {
+	let isKarrynChatface = this.isChatface_Karryn;
+	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
 	let maxId = this._maxTachieSemenRightArmId;
+	if(isKarrynChatface) maxId = actor._maxTachieSemenRightArmId;
 	if(maxId == 0) return false;
 	let liquid = this._liquidBukkakeRightArm;
+	if(isKarrynChatface) liquid = actor._liquidBukkakeRightArm;
 	if(liquid >= 35) {
 		id = 3;
 	}
@@ -80,14 +84,21 @@ Game_Actor.prototype.getTachieSemenRightArmId = function() {
 	else return false;
 	
 	id = Math.min(id, maxId);
-	if(this._hasTachieSemenRightArmExtension) id = '' + this._tachieSemenRightArmExtension + id;
+	if(isKarrynChatface) {
+		id = '' + this.tachieBody + '_' + id;
+	}
+	else if(this._hasTachieSemenRightArmExtension) id = '' + this._tachieSemenRightArmExtension + id;
 	return id;
 }; 
 
 Game_Actor.prototype.getTachieSemenLeftArmId = function() {
+	let isKarrynChatface = this.isChatface_Karryn;
+	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
 	let maxId = this._maxTachieSemenLeftArmId;
+	if(isKarrynChatface) maxId = actor._maxTachieSemenLeftArmId;
 	if(maxId == 0) return false;
 	let liquid = this._liquidBukkakeLeftArm;
+	if(isKarrynChatface) liquid = actor._liquidBukkakeLeftArm;
 	if(liquid >= 35) {
 		id = 3;
 	}
@@ -100,7 +111,10 @@ Game_Actor.prototype.getTachieSemenLeftArmId = function() {
 	else return false;
 	
 	id = Math.min(id, maxId);
-	if(this._hasTachieSemenLeftArmExtension) id = '' + this._tachieSemenLeftArmExtension + id;
+	if(isKarrynChatface) {
+		id = '' + this.tachieBody + '_' + id;
+	}
+	else if(this._hasTachieSemenLeftArmExtension) id = '' + this._tachieSemenLeftArmExtension + id;
 	return id;
 }; 
 
@@ -144,9 +158,13 @@ Game_Actor.prototype.getTachieSemenLeftLegId = function() {
 }; 
 
 Game_Actor.prototype.getTachieSemenBellyId = function() {
+	let isKarrynChatface = this.isChatface_Karryn;
+	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
 	let maxId = this._maxTachieSemenBellyId;
+	if(isKarrynChatface) maxId = actor._maxTachieSemenBellyId;
 	if(maxId == 0) return false;
 	let liquid = this._liquidBukkakeBoobs;
+	if(isKarrynChatface) liquid = actor._liquidBukkakeBoobs;
 	if(liquid >= 85) {
 		id = 3;
 	}
@@ -164,9 +182,13 @@ Game_Actor.prototype.getTachieSemenBellyId = function() {
 }; 
 
 Game_Actor.prototype.getTachieSemenBoobsId = function() {
+	let isKarrynChatface = this.isChatface_Karryn;
+	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
 	let maxId = this._maxTachieSemenBoobsId;
+	if(isKarrynChatface) maxId = actor._maxTachieSemenBoobsId;
 	if(maxId == 0) return false;
 	let liquid = this._liquidBukkakeBoobs;
+	if(isKarrynChatface) liquid = actor._liquidBukkakeBoobs;
 	if(liquid >= 70) {
 		id = 3;
 	}
@@ -179,7 +201,11 @@ Game_Actor.prototype.getTachieSemenBoobsId = function() {
 	else return false;
 	
 	id = Math.min(id, maxId);
-	if(this._hasTachieSemenBoobsExtension) id = '' + this._tachieSemenBoobsExtension + id;
+	if(isKarrynChatface) {
+		if(this.tachieBody == 3) id = 'hold_' + id;
+		else id = '' + id;
+	}
+	else if(this._hasTachieSemenBoobsExtension) id = '' + this._tachieSemenBoobsExtension + id;
 	return id;
 }; 
 
@@ -187,6 +213,7 @@ Game_Actor.prototype.getTachieSemenRightBoobId = function() {
 	let maxId = this._maxTachieSemenRightBoobId;
 	if(maxId == 0) return false;
 	let liquid = this._liquidBukkakeBoobs;
+	if(this.isInDefeatedLevel1Pose()) liquid = this._liquidBukkakeRightBoob;
 	if(liquid >= 70)
 		id = 3;
 	else if(liquid >= 30)
@@ -202,6 +229,7 @@ Game_Actor.prototype.getTachieSemenLeftBoobId = function() {
 	let maxId = this._maxTachieSemenLeftBoobId;
 	if(maxId == 0) return false;
 	let liquid = this._liquidBukkakeBoobs;
+	if(this.isInDefeatedLevel1Pose()) liquid = this._liquidBukkakeLeftBoob;
 	if(liquid >= 70)
 		id = 3;
 	else if(liquid >= 30)
@@ -215,9 +243,13 @@ Game_Actor.prototype.getTachieSemenLeftBoobId = function() {
 }; 
 
 Game_Actor.prototype.getTachieSemenButtId = function() {
+	let isKarrynChatface = this.isChatface_Karryn;
+	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
 	let maxId = this._maxTachieSemenButtId;
+	if(isKarrynChatface) maxId = actor._maxTachieSemenButtId;
 	if(maxId == 0) return false;
 	let liquid = this._liquidBukkakeButt;
+	if(isKarrynChatface) liquid = actor._liquidBukkakeButt;
 	if(liquid >= 90) {
 		id = 3;
 	}
@@ -542,9 +574,13 @@ Game_Actor.prototype.getTachieGlorySemenRightToiletId = function(index) {
 };
 
 Game_Actor.prototype.getTachieSemenFaceId = function() {
+	let isKarrynChatface = this.isChatface_Karryn;
+	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
 	let maxId = this._maxTachieSemenFaceId;
+	if(isKarrynChatface) maxId = actor._maxTachieSemenFaceId;
 	if(maxId == 0) return false;
 	let liquid = this._liquidBukkakeFace;
+	if(isKarrynChatface) liquid = actor._liquidBukkakeFace;
 	if(liquid >= 60) {
 		id = 3;
 	}
@@ -557,7 +593,8 @@ Game_Actor.prototype.getTachieSemenFaceId = function() {
 	else return false;
 	
 	id = Math.min(id, maxId);
-	if(this._hasTachieSemenFaceExtension) id = '' + this._tachieSemenFaceExtension + id;
+	if(isKarrynChatface) {}
+	else if(this._hasTachieSemenFaceExtension) id = '' + this._tachieSemenFaceExtension + id;
 	return id;
 }; 
 
@@ -1204,13 +1241,15 @@ Game_Actor.prototype.resetTachieSemenFrontEExtension = function(value) { this._h
 // Semen
 ////////////
 
-Game_Actor.prototype.cleanUpLiquids = function() {
+Game_Actor.prototype.setupLiquids = function() {
 	this._liquidPussyJuice = 0;
 	this._liquidSwallow = 0;
 	this._liquidCreampiePussy = 0;
 	this._liquidCreampieAnal = 0;
 	this._liquidBukkakeFace = 0;
 	this._liquidBukkakeBoobs = 0;
+	this._liquidBukkakeLeftBoob = 0;
+	this._liquidBukkakeRightBoob = 0;
 	this._liquidBukkakeButt = 0;
 	this._liquidBukkakeButtTopRight = 0;
 	this._liquidBukkakeButtTopLeft = 0;
@@ -1239,8 +1278,155 @@ Game_Actor.prototype.cleanUpLiquids = function() {
 	this._liquidGloryCumOnRightWall = [0, 0, 0, 0, 0 , 0, 0, 0, 0];
 	this._liquidGloryCumOnRightHole = [0, 0];
 	this._liquidGloryCumOnRightToilet = [0, 0, 0, 0];
+	
+	//Minimum
+	this._minimumLiquidBukkakeFace = 0;
+	this._minimumLiquidBukkakeBoobs = 0;
+	this._minimumLiquidBukkakeButt = 0;
+	this._minimumLiquidBukkakeLeftArm = 0;
+	this._minimumLiquidBukkakeRightArm = 0;
+	this._minimumLiquidBukkakeLeftLeg = 0;
+	this._minimumLiquidBukkakeRightLeg = 0;
+	this._minimumLiquidCreampiePussy = 0;
+	this._minimumLiquidCreampieAnal = 0;
 	this.setCacheChanged();
 }; 
+
+Game_Actor.prototype.resetLiquidsExceptPussyJuice = function() {
+	let pussyJuice = this._liquidPussyJuice;
+	this.setupLiquids();
+	this._liquidPussyJuice = pussyJuice;
+	this.setCacheChanged();
+};
+
+//Clean Up Liquids
+Game_Actor.prototype.cleanUpLiquids = function() {
+	if(this.hasPassive(PASSIVE_FACE_BUKKAKE_COUNT_TWO_ID)) {
+		let multiValue = 0.5;
+		let flatMinusValue = 0.15;
+		
+		this._minimumLiquidBukkakeFace = Math.round(Math.max(this._liquidBukkakeFace * ((Math.random() * multiValue) - flatMinusValue), this._minimumLiquidBukkakeFace));
+		this._liquidBukkakeFace = Math.min(this._liquidBukkakeFace, this._minimumLiquidBukkakeFace);
+	}
+	else {
+		this._liquidBukkakeFace = 0;
+		this._minimumLiquidBukkakeFace = 0;
+	}
+	
+	if(this.hasPassive(PASSIVE_BUKKAKE_COUNT_THREE_ID)) {
+		let multiValue = 0.4;
+		let flatMinusValue = 0.25;
+		
+		if(this.hasPassive(PASSIVE_BUKKAKE_COUNT_FIVE_ID)) {
+			multiValue = 0.6;
+			flatMinusValue = 0.1;
+		}
+		else if(this.hasPassive(PASSIVE_BUKKAKE_COUNT_FOUR_ID)) {
+			multiValue = 0.5;
+			flatMinusValue = 0.15;
+		}
+		
+		this._liquidBukkakeBoobs += this._liquidBukkakeLeftBoob + this._liquidBukkakeRightBoob;
+		this._minimumLiquidBukkakeBoobs = Math.round(Math.max(this._liquidBukkakeBoobs * ((Math.random() * multiValue) - flatMinusValue), this._minimumLiquidBukkakeBoobs));
+		this._liquidBukkakeBoobs = Math.min(this._liquidBukkakeBoobs, this._minimumLiquidBukkakeBoobs);
+		
+		this._liquidBukkakeButt += this._liquidBukkakeButtTopRight + this._liquidBukkakeButtTopLeft + this._liquidBukkakeButtBottomRight + this._liquidBukkakeButtBottomLeft + this._liquidBukkakeButtRight + this._liquidBukkakeButtLeft;
+		this._minimumLiquidBukkakeButt = Math.round(Math.max(this._liquidBukkakeButt * ((Math.random() * multiValue) - flatMinusValue), this._minimumLiquidBukkakeButt));
+		this._liquidBukkakeButt = Math.min(this._liquidBukkakeButt, this._minimumLiquidBukkakeButt);
+		
+		this._minimumLiquidBukkakeLeftArm = Math.round(Math.max(this._liquidBukkakeLeftArm * ((Math.random() * multiValue) - flatMinusValue), this._minimumLiquidBukkakeLeftArm));
+		this._liquidBukkakeLeftArm = Math.min(this._liquidBukkakeLeftArm, this._minimumLiquidBukkakeLeftArm);
+		
+		this._minimumLiquidBukkakeRightArm = Math.round(Math.max(this._liquidBukkakeRightArm * ((Math.random() * multiValue) - flatMinusValue), this._minimumLiquidBukkakeRightArm));
+		this._liquidBukkakeRightArm = Math.min(this._liquidBukkakeRightArm, this._minimumLiquidBukkakeRightArm);
+		
+		this._minimumLiquidBukkakeLeftLeg = Math.round(Math.max(this._liquidBukkakeLeftLeg * ((Math.random() * multiValue) - flatMinusValue), this._minimumLiquidBukkakeLeftLeg));
+		this._liquidBukkakeLeftLeg = Math.min(this._liquidBukkakeLeftLeg, this._minimumLiquidBukkakeLeftLeg);
+		
+		this._minimumLiquidBukkakeRightLeg = Math.round(Math.max(this._liquidBukkakeRightLeg * ((Math.random() * multiValue) - flatMinusValue), this._minimumLiquidBukkakeRightLeg));
+		this._liquidBukkakeRightLeg = Math.min(this._liquidBukkakeRightLeg, this._minimumLiquidBukkakeRightLeg);
+	}
+	else {
+		this._liquidBukkakeBoobs = 0;
+		this._liquidBukkakeButt = 0;
+		this._liquidBukkakeLeftArm = 0;
+		this._liquidBukkakeRightArm = 0;
+		this._liquidBukkakeLeftLeg = 0;
+		this._liquidBukkakeRightLeg = 0;
+		this._minimumLiquidBukkakeBoobs = 0;
+		this._minimumLiquidBukkakeButt = 0;
+		this._minimumLiquidBukkakeLeftArm = 0;
+		this._minimumLiquidBukkakeRightArm = 0;
+		this._minimumLiquidBukkakeLeftLeg = 0;
+		this._minimumLiquidBukkakeRightLeg = 0;
+	}
+	
+	if(this.hasPassive(PASSIVE_PUSSY_CREAMPIE_ML_THREE_ID)) {
+		let multiValue = 0.4;
+		let flatMinusValue = 0.25;
+		
+		if(this.hasPassive(PASSIVE_PUSSY_CREAMPIE_ML_FIVE_ID)) {
+			multiValue = 0.5;
+			flatMinusValue = 0.15;
+		}
+	
+		this._minimumLiquidCreampiePussy = Math.round(Math.max(this._liquidCreampiePussy * ((Math.random() * multiValue) - flatMinusValue), this._minimumLiquidCreampiePussy));
+		this._liquidCreampiePussy = Math.min(this._liquidCreampiePussy, this._minimumLiquidCreampiePussy);
+	}
+	else {
+		this._liquidCreampiePussy = 0;
+		this._minimumLiquidCreampiePussy = 0;
+	}
+	
+	if(this.hasPassive(PASSIVE_ANAL_CREAMPIE_ML_THREE_ID)) {
+		let multiValue = 0.4;
+		let flatMinusValue = 0.25;
+		
+		if(this.hasPassive(PASSIVE_ANAL_CREAMPIE_ML_FIVE_ID)) {
+			multiValue = 0.5;
+			flatMinusValue = 0.15;
+		}
+	
+		this._minimumLiquidCreampieAnal = Math.round(Math.max(this._liquidCreampieAnal * ((Math.random() * multiValue) - flatMinusValue), this._minimumLiquidCreampieAnal));
+		this._liquidCreampieAnal = Math.min(this._liquidCreampieAnal, this._minimumLiquidCreampieAnal);
+	}
+	else {
+		this._liquidCreampieAnal = 0;
+		this._minimumLiquidCreampieAnal = 0;
+	}
+	
+	/////////
+	//Always
+	this._liquidPussyJuice = 0;
+	this._liquidSwallow = 0;
+	this._liquidBukkakeLeftBoob = 0;
+	this._liquidBukkakeRightBoob = 0;
+	this._liquidBukkakeButtTopRight = 0;
+	this._liquidBukkakeButtTopLeft = 0;
+	this._liquidBukkakeButtBottomRight = 0;
+	this._liquidBukkakeButtBottomLeft = 0;
+	this._liquidBukkakeButtRight = 0;
+	this._liquidBukkakeButtLeft = 0;
+	this._liquidDroolMouth = 0;
+	this._liquidDroolFingers = 0;
+	this._liquidDroolNipples = 0;
+	this._liquidOnFloor = 0;
+	
+	//Receptionist
+	this._liquidOnDesk = 0;
+	
+	//Glory
+	this._liquidCumOnToiletSeat = 0;
+	this._liquidJuiceOnToiletSeat = 0;
+	this._liquidGloryCumOnLeftWall = [0, 0, 0, 0, 0 , 0, 0, 0, 0];
+	this._liquidGloryCumOnLeftHole = [0, 0];
+	this._liquidGloryCumOnLeftToilet = [0, 0];
+	this._liquidGloryCumOnRightWall = [0, 0, 0, 0, 0 , 0, 0, 0, 0];
+	this._liquidGloryCumOnRightHole = [0, 0];
+	this._liquidGloryCumOnRightToilet = [0, 0, 0, 0];
+	this.setCacheChanged();
+}; 
+
 
 Game_Actor.prototype.increaseLiquidPussyJuice = function(liquid) {
 	this._liquidPussyJuice += liquid;
@@ -1273,6 +1459,14 @@ Game_Actor.prototype.increaseLiquidBukkakeFace = function(semen) {
 }; 
 Game_Actor.prototype.increaseLiquidBukkakeBoobs = function(semen) {
 	this._liquidBukkakeBoobs += semen;
+	//this.setCacheChanged();
+}; 
+Game_Actor.prototype.increaseLiquidBukkakeLeftBoob = function(semen) {
+	this._liquidBukkakeLeftBoob += semen;
+	//this.setCacheChanged();
+}; 
+Game_Actor.prototype.increaseLiquidBukkakeRightBoob = function(semen) {
+	this._liquidBukkakeRightBoob += semen;
 	//this.setCacheChanged();
 }; 
 Game_Actor.prototype.increaseLiquidBukkakeButt = function(semen) {
@@ -1358,7 +1552,7 @@ Game_Actor.prototype.increaseGloryCumOnRightToilet = function(semen, index) {
 }; 
 
 Game_Actor.prototype.getCurrentBukkakeTotal = function() {
-	let total = this._liquidBukkakeFace + this._liquidBukkakeBoobs + this._liquidBukkakeLeftArm + this._liquidBukkakeRightArm + this._liquidBukkakeLeftLeg + this._liquidBukkakeRightLeg + this._liquidBukkakeButt;
+	let total = this._liquidBukkakeFace + this._liquidBukkakeBoobs + this._liquidBukkakeLeftBoob + this._liquidBukkakeRightBoob + this._liquidBukkakeLeftArm + this._liquidBukkakeRightArm + this._liquidBukkakeLeftLeg + this._liquidBukkakeRightLeg + this._liquidBukkakeButt;
 	
 	if(this.isInDefeatedLevel2Pose()) {
 		total += this._liquidBukkakeButtTopRight + this._liquidBukkakeButtTopLeft + this._liquidBukkakeButtBottomRight + this._liquidBukkakeButtBottomLeft;

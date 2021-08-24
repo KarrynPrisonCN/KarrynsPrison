@@ -15,10 +15,19 @@ Remtairy.CM = Remtairy.CM || {};
  */
 //=============================================================================
 
+const EDICTS_OUTLINE_COLOR_OBTAINABLE_GREEN_ID = 0;
+const EDICTS_OUTLINE_COLOR_OBTAINABLE_LIGHTBLUE_ID = 1;
+const EDICTS_OUTLINE_COLOR_METREQ_YELLOW_ID = 0;
+const EDICTS_OUTLINE_COLOR_METREQ_PURPLE_ID = 1;
+const EDICTS_OUTLINE_COLOR_NOREQ_BLACK_ID = 0;
+const EDICTS_OUTLINE_COLOR_NOREQ_GRAY_ID = 1;
+const EDICTS_OUTLINE_COLOR_NOREQ_RED_ID = 2;
+
 ///////////
 // ConfigManager
 ////////////////
 
+ConfigManager.synchFps = false;
 ConfigManager.safeMode = false;
 ConfigManager.replayMode = false;
 ConfigManager.pixelMovement = true;
@@ -31,21 +40,29 @@ ConfigManager.remSmootherCGLoading = false;
 ConfigManager.remCutinsDisabled = false;
 ConfigManager.remShowSexualDamagePopup = true;
 ConfigManager.disableRimjobs = false;
+ConfigManager.disableSmegma = false;
+ConfigManager.keepVoicePlayback = false;
 ConfigManager.remBattlelogDuration = 2;
 ConfigManager.remBattlelogFontSize = 2;
 ConfigManager.remMaleDialogueAppear = 3;
 ConfigManager.sortPassivesAscending = false;
 ConfigManager.cancelSkipMentalPhase = false;
 ConfigManager.remLanguage = RemLanguageEN;
-ConfigManager.displayPubic = false;
+ConfigManager.displayPubic = true;
 ConfigManager.displayPleasureAsPercent = true;
 ConfigManager.shorterDefeatBattles = false;
+ConfigManager.masterVolume = 80;
+
+ConfigManager.edictsOutlineColorObtainable = 0;
+ConfigManager.edictsOutlineColorMeetReq = 0;
+ConfigManager.edictsOutlineColorNoReq = 0;
 
 ConfigManager.cheatEnemyDoublePhysicalDamage = false;
 ConfigManager.cheatEnemyTriplePhysicalDamage = false;
 ConfigManager.cheatEnemyDoubleSexualDamage = false;
 ConfigManager.cheatEnemyTripleSexualDamage = false;
 ConfigManager.cheatEnemyAlwaysAct = false;
+ConfigManager.cheatActorDoublePassiveGain = false;
 ConfigManager.cheatActorHalfStaminaRegen = false;
 ConfigManager.cheatActorThirdStaminaRegen = false;
 ConfigManager.cheatActorHalfExpRate = false;
@@ -56,7 +73,29 @@ ConfigManager.cheatInstantRiotsOne = false;
 ConfigManager.cheatInstantRiotsTwo = false;
 ConfigManager.cheatInstantRiotsThree = false;
 ConfigManager.cheatInstantRiotsFour = false;
+ConfigManager.cheatWaitressLog = false;
 ConfigManager.cheatDisableAutosave = false;
+
+Object.defineProperty(ConfigManager, 'voiceVolume', {
+    get: function() {
+        return AudioManager.voiceVolume;
+    },
+    set: function(value) {
+        AudioManager.voiceVolume = value;
+    },
+    configurable: true
+});
+
+Object.defineProperty(ConfigManager, 'moanVolume', {
+    get: function() {
+        return AudioManager.moanVolume;
+    },
+    set: function(value) {
+        AudioManager.moanVolume = value;
+    },
+    configurable: true
+});
+
 
 Remtairy.CM.ConfigManager_applyData = ConfigManager.applyData;
 ConfigManager.applyData = function(config) {
@@ -66,6 +105,7 @@ ConfigManager.applyData = function(config) {
 	if(this.remLanguage !== RemLanguageJP && this.remLanguage !== RemLanguageEN)
 		this.remLanguage = KARRYN_PRISON_LANGUAGE;
 	
+	this.synchFps = this.readRemConfig(config, 'synchFps');
 	this.safeMode = config['safeMode'];
 	this.replayMode = config['replayMode'];
 	this.pixelMovement = this.readRemConfig(config, 'pixelMovement');
@@ -80,33 +120,47 @@ ConfigManager.applyData = function(config) {
 	this.remShowSexualDamagePopup = this.readRemConfig(config, 'remShowSexualDamagePopup');
 	
 	this.disableRimjobs = this.readRemConfig(config, 'disableRimjobs');
+	this.disableSmegma = this.readRemConfig(config, 'disableSmegma');
+	
+	this.keepVoicePlayback = this.readRemConfig(config, 'keepVoicePlayback');
+	
 	this.remBattlelogDuration = this.readRemConfig(config, 'remBattlelogDuration');
 	this.remBattlelogFontSize = this.readRemConfig(config, 'remBattlelogFontSize');
 	this.remMaleDialogueAppear = this.readRemConfig(config, 'remMaleDialogueAppear');
 	this.displayPleasureAsPercent = this.readRemConfig(config, 'displayPleasureAsPercent');
 	
+	this.voiceVolume = this.readVolume(config, 'voiceVolume');
+    this.moanVolume = this.readVolume(config, 'moanVolume');
+	this.masterVolume = this.readRemConfig(config, 'masterVolume');
 	
 	this.sortPassivesAscending = this.readRemConfig(config, 'sortPassivesAscending');
-	this.cancelSkipMentalPhase = config['cancelSkipMentalPhase'];
-	this.displayPubic = config['displayPubic'];
-	this.shorterDefeatBattles = config['shorterDefeatBattles'];
+	this.cancelSkipMentalPhase = this.readRemConfig(config, 'cancelSkipMentalPhase');
+	this.displayPubic = this.readRemConfig(config, 'displayPubic');
+	this.shorterDefeatBattles = this.readRemConfig(config, 'shorterDefeatBattles');
 	
-	this.cheatEnemyDoublePhysicalDamage = config['cheatEnemyDoublePhysicalDamage'];
-	this.cheatEnemyTriplePhysicalDamage = config['cheatEnemyTriplePhysicalDamage'];
-	this.cheatEnemyDoubleSexualDamage = config['cheatEnemyDoubleSexualDamage'];
-	this.cheatEnemyTripleSexualDamage = config['cheatEnemyTripleSexualDamage'];
-	this.cheatEnemyAlwaysAct = config['cheatEnemyAlwaysAct'];
-	this.cheatActorHalfStaminaRegen = config['cheatActorHalfStaminaRegen'];
-	this.cheatActorThirdStaminaRegen = config['cheatActorThirdStaminaRegen'];
-	this.cheatActorHalfExpRate = config['cheatActorHalfExpRate'];
-	this.cheatActorNoEvasion = config['cheatActorNoEvasion'];
-	this.cheatLessControlFive = config['cheatLessControlFive'];
-	this.cheatLessControlTen = config['cheatLessControlTen'];
-	this.cheatInstantRiotsOne = config['cheatInstantRiotsOne'];
-	this.cheatInstantRiotsTwo = config['cheatInstantRiotsTwo'];
-	this.cheatInstantRiotsThree = config['cheatInstantRiotsThree'];
-	this.cheatInstantRiotsFour = config['cheatInstantRiotsFour'];
-	this.cheatDisableAutosave = config['cheatDisableAutosave'];
+	this.edictsOutlineColorObtainable = this.readRemConfig(config, 'edictsOutlineColorObtainable');
+	this.edictsOutlineColorMeetReq = this.readRemConfig(config, 'edictsOutlineColorMeetReq');
+	this.edictsOutlineColorNoReq = this.readRemConfig(config, 'edictsOutlineColorNoReq');
+	
+	this.cheatEnemyDoublePhysicalDamage = this.readRemConfig(config, 'cheatEnemyDoublePhysicalDamage');
+	this.cheatEnemyTriplePhysicalDamage = this.readRemConfig(config, 'cheatEnemyTriplePhysicalDamage');
+	this.cheatEnemyDoubleSexualDamage = this.readRemConfig(config, 'cheatEnemyDoubleSexualDamage');
+	this.cheatEnemyTripleSexualDamage = this.readRemConfig(config, 'cheatEnemyTripleSexualDamage');
+	this.cheatEnemyAlwaysAct = this.readRemConfig(config, 'cheatEnemyAlwaysAct');
+	
+	this.cheatActorDoublePassiveGain = this.readRemConfig(config, 'cheatActorDoublePassiveGain');
+	this.cheatActorHalfStaminaRegen = this.readRemConfig(config, 'cheatActorHalfStaminaRegen');
+	this.cheatActorThirdStaminaRegen = this.readRemConfig(config, 'cheatActorThirdStaminaRegen');
+	this.cheatActorHalfExpRate = this.readRemConfig(config, 'cheatActorHalfExpRate');
+	this.cheatActorNoEvasion = this.readRemConfig(config, 'cheatActorNoEvasion');
+	this.cheatLessControlFive = this.readRemConfig(config, 'cheatLessControlFive');
+	this.cheatLessControlTen = this.readRemConfig(config, 'cheatLessControlTen');
+	this.cheatInstantRiotsOne = this.readRemConfig(config, 'cheatInstantRiotsOne');
+	this.cheatInstantRiotsTwo = this.readRemConfig(config, 'cheatInstantRiotsTwo');
+	this.cheatInstantRiotsThree = this.readRemConfig(config, 'cheatInstantRiotsThree');
+	this.cheatInstantRiotsFour = this.readRemConfig(config, 'cheatInstantRiotsFour');
+	this.cheatWaitressLog = this.readRemConfig(config, 'cheatWaitressLog');
+	this.cheatDisableAutosave = this.readRemConfig(config, 'cheatDisableAutosave');
 
 };
 
@@ -116,9 +170,12 @@ ConfigManager.makeData = function() {
 	config.remBattlelogDuration = this.remBattlelogDuration;
 	config.remBattlelogFontSize = this.remBattlelogFontSize;
 	config.remMaleDialogueAppear = this.remMaleDialogueAppear;
-	
+	config.synchFps = this.synchFps;
+	config.voiceVolume = this.voiceVolume;
+    config.moanVolume = this.moanVolume;
 	return config;
 };
+
 
 ConfigManager.readRemConfig = function(config, name) {
 	let value = config[name];
@@ -131,6 +188,9 @@ ConfigManager.readRemConfig = function(config, name) {
 			return 2;
 		else if(name == 'remMaleDialogueAppear')
 			return 3;
+		else if(name == 'masterVolume')
+			return 80;
+		
 		else if(name == 'pixelMovement')
 			return true;
 		else if(name == 'remMapEffect')
@@ -149,6 +209,20 @@ ConfigManager.readRemConfig = function(config, name) {
 			return true;
 		else if(name == 'disableRimjobs')
 			return false;
+		else if(name == 'disableSmegma')
+			return false;
+		else if(name == 'keepVoicePlayback')
+			return false;
+		else if(name == 'synchFps')
+			return false;
+		
+		else if(name == 'edictsOutlineColorObtainable')
+			return EDICTS_OUTLINE_COLOR_OBTAINABLE_GREEN_ID;
+		else if(name == 'edictsOutlineColorMeetReq')
+			return EDICTS_OUTLINE_COLOR_METREQ_YELLOW_ID;
+		else if(name == 'edictsOutlineColorNoReq')
+			return EDICTS_OUTLINE_COLOR_NOREQ_GRAY_ID;
+
 		
 		else if(name == 'cheatEnemyDoublePhysicalDamage')
 			return false;
@@ -159,6 +233,9 @@ ConfigManager.readRemConfig = function(config, name) {
 		else if(name == 'cheatEnemyTripleSexualDamage')
 			return false;
 		else if(name == 'cheatEnemyAlwaysAct')
+			return false;
+		
+		else if(name == 'cheatActorDoublePassiveGain')
 			return false;
 		else if(name == 'cheatActorHalfStaminaRegen')
 			return false;
@@ -180,6 +257,8 @@ ConfigManager.readRemConfig = function(config, name) {
 			return false;
 		else if(name == 'cheatInstantRiotsFour')
 			return false;
+		else if(name == 'cheatWaitressLog')
+			return false;
 		else if(name == 'cheatDisableAutosave')
 			return false;
 		
@@ -188,9 +267,19 @@ ConfigManager.readRemConfig = function(config, name) {
 		else if(name == 'shorterDefeatBattles')
 			return false;
 		else if(name == 'displayPubic')
-			return false;
+			return true;
 		else if(name == 'remLanguage')
 			return KARRYN_PRISON_LANGUAGE;
+		else return false;
+	}
+};
+
+ConfigManager.readConfigMessageSpeed = function(config, name) {
+	let value = config[name];
+	if(value !== undefined) {
+		return value;
+	} else {
+		return 9;
 	}
 };
 
@@ -214,6 +303,11 @@ Window_Options.prototype.addRemOptions = function() {
 	
 	
 	this.addCommand(TextManager.yanflyOptionsDisableRimjob, 'disableRimjobs');
+	this.addCommand(TextManager.yanflyOptionsDisableSmegma, 'disableSmegma');
+	
+	this.addCommand(TextManager.yanflyOptionsKeepVoicePlayback, 'keepVoicePlayback');
+	
+	
 	this.addCommand(TextManager.yanflyOptionsDisplayPleasureAsPercent, 'displayPleasureAsPercent');
 	
 	
@@ -243,7 +337,7 @@ Remtairy.CM.Window_Options_statusText = Window_Options.prototype.statusText;
 Window_Options.prototype.statusText = function(index) {
 	let symbol = this.commandSymbol(index);
 	let value = this.getConfigValue(symbol);
-	if (symbol === 'remLanguage') {
+	if(symbol === 'remLanguage') {
 		if(value == RemLanguageJP) 
 			return "日本語";
 		else if(value == RemLanguageEN) 
@@ -257,17 +351,26 @@ Window_Options.prototype.statusText = function(index) {
 		else
 			return "error";
 	} 
-	else if (symbol === 'remBattlelogDuration') {
+	else if(symbol === 'edictsOutlineColorObtainable' || symbol === 'edictsOutlineColorMeetReq' || symbol === 'edictsOutlineColorNoReq') {
+		return TextManager.edictsOutlineColorOption(symbol, value);
+	}
+	else if(symbol === 'remBattlelogDuration') {
 		return TextManager.battlelogDurationOption(value);
 	} 
-	else if (symbol === 'remBattlelogFontSize') {
+	else if(symbol === 'remBattlelogFontSize') {
 		return TextManager.battlelogFontSizeOption(value);
 	} 
 	
-	else if (symbol === 'remMaleDialogueAppear') {
+	else if(symbol === 'remMaleDialogueAppear') {
 		return TextManager.maleDialogueAppearOption(value);
 	} 
 	else {
 		return Remtairy.CM.Window_Options_statusText.call(this, index);
 	}
+};
+
+
+Window_Options.prototype.changePaintOpacity = function(enabled) {
+	this.contents.fontBold = enabled;
+    this.contents.paintOpacity = enabled ? 255 : this.translucentOpacity();
 };

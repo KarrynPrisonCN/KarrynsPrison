@@ -3949,7 +3949,7 @@ function Sprite() {
 Sprite.prototype = Object.create(PIXI.Sprite.prototype);
 Sprite.prototype.constructor = Sprite;
 
-Sprite.voidFilter = new PIXI.filters.VoidFilter();
+Sprite.voidFilter = new PIXI.filters.AlphaFilter();
 
 Sprite.prototype.initialize = function(bitmap) {
     var texture = new PIXI.Texture(new PIXI.BaseTexture());
@@ -6974,7 +6974,7 @@ WindowLayer.prototype.onRemoveAsAChild = function() {
     this.removeChildren();
 }
 
-WindowLayer.voidFilter = new PIXI.filters.VoidFilter();
+WindowLayer.voidFilter = new PIXI.filters.AlphaFilter();
 
 /**
  * The width of the window layer in pixels.

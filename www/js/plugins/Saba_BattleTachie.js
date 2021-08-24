@@ -46,13 +46,14 @@ var Saba;
         //    _Scene_Battle_createActorCommandWindow.call(this);
         //    this._tachieSprite.setActorCommandWindow(this._actorCommandWindow);
         //};
+		/*
         var _Scene_Battle_create = Scene_Battle.prototype.create;
         Scene_Battle.prototype.create = function () {
             _Scene_Battle_create.call(this);
             for (var i = 0, actors = $gameParty.battleMembers(); i < actors.length; i++) {
                 actors[i].preloadTachie();
 				if(actors[i].actorId()===ACTOR_KARRYN_ID) {
-					this._tachieSprite = new TachieSprite();
+					this._tachieSprite = new TachieSprite(); 
 					if($gameSystem.drawEnemiesAboveBattleTachie()) { 
 						this._spriteset._battleField.addChild(this._tachieSprite);
 					}
@@ -66,6 +67,17 @@ var Saba;
 				this._spriteset.createEnemies();
 			}
         };
+		*/
+		var _Spriteset_Battle_createActors = Spriteset_Battle.prototype.createActors;
+		Spriteset_Battle.prototype.createActors = function() {
+			_Spriteset_Battle_createActors.call(this);
+
+			let actor = $gameActors.actor(ACTOR_KARRYN_ID);
+			actor.preloadTachie();
+			this._tachieSprite = new TachieSprite(); 
+			this._battleField.addChild(this._tachieSprite);
+			this._tachieSprite.setActorRemId(ACTOR_KARRYN_ID);
+		};
         var TachieSprite = (function (_super) {
             __extends(TachieSprite, _super);
             function TachieSprite() {
@@ -136,15 +148,22 @@ var Saba;
 					}
 				}
 				//else if ($gameActors.actor(id).isDirty() || !this._drawnOnce || $gameActors.actor(id)._tachieCutInPosX > REM_CUT_IN_MAX_X){
-				else if ($gameActors.actor(id).isDirty() || !this._drawnOnce || 
-				$gameActors.actor(id)._tachieCutIn) {
+				//else if ($gameActors.actor(id).isDirty() || !this._drawnOnce || $gameActors.actor(id)._tachieCutIn) {
 				//($gameActors.actor(id)._tachieCutInDirectionX > 0 && $gameActors.actor(id)._tachieCutInPosX < $gameActors.actor(id)._tachieCutInGoalX) || 
 				//($gameActors.actor(id)._tachieCutInDirectionX < 0 && $gameActors.actor(id)._tachieCutInPosX > $gameActors.actor(id)._tachieCutInGoalX) ||
 				//($gameActors.actor(id)._tachieCutInDirectionY > 0 && $gameActors.actor(id)._tachieCutInPosY < $gameActors.actor(id)._tachieCutInGoalY) || 
 				//($gameActors.actor(id)._tachieCutInDirectionY < 0 && $gameActors.actor(id)._tachieCutInPosY > $gameActors.actor(id)._tachieCutInGoalY)){
 					//id = this._actorRemId;
+				else if($gameActors.actor(id).isDirty() || !this._drawnOnce) {
+					if(!$gameActors.actor(id).allowTachieUpdate() || !$gameActors.actor(id).allowTachieEmoteUpdate() || !BattleManager.isTachieUpdateAllowed()) 
+						return;
+					
+					$gameActors.actor(id).preloadTachie();
+					while(!ImageManager.isReady()) {
+						return;
+					}
 					this.bitmap.clear();
-					$gameActors.actor(id).setDirty();
+					//$gameActors.actor(id).setDirty();
 					this.drawTachie(id, this.bitmap);
 					this._drawnOnce = true;
 					//let offsetArray = $gameActors.actor(id).getBattlePoseOffetArray();

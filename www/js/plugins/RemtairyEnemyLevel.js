@@ -35,8 +35,9 @@ const ENEMY_LVL_PRISON_LEVEL_FOUR_PLUS_THREE = 6;
 const ENEMY_LVL_PRISON_LEVEL_FOUR_PLUS_FOUR = 9;
 
 const ENEMY_LVL_PRISON_LEVEL_FIVE_EASY = 31;
-const ENEMY_LVL_PRISON_LEVEL_FIVE_NORMAL = 35;
-const ENEMY_LVL_PRISON_LEVEL_FIVE_HARD = 37;
+const ENEMY_LVL_PRISON_LEVEL_FIVE_NORMAL = 36;
+const ENEMY_LVL_PRISON_LEVEL_FIVE_HARD = 40;
+const ENEMY_LVL_PRISON_LEVEL_FIVE_ANARCHY_ALL_BOOST = 4;
 
 //Number of days until enemy lvl increases
 const ENEMY_LVL_INCREASE_DAY_EASY = 14; 
@@ -186,7 +187,7 @@ const GROWTH_TYPE_VISITOR = [
 	[10, 0.004], //Stamina
 	[0.2, 0.01], //Energy
 	[0.5, 0.01], //Strength
-	[0.9, 0.01], //Endurance
+	[1.2, 0.01], //Endurance
 	[0.9, 0.015], //Dexterity
 	[0.3, 0.01], //Mind
 	[0.3, 0.015], //Agility
@@ -315,7 +316,8 @@ Game_Enemy.prototype.enemyLvl_difficultyBase = function() {
 		return this.enemyLvl_difficultyBase_PrisonLevelFour();
 	else if(Prison.currentlyPrisonLevelFive()) 
 		return this.enemyLvl_difficultyBase_PrisonLevelFive();
-	else return this.enemy().dataBaseEnemyLevel;
+	else 
+		return this.enemyLvl_difficultyBase_PrisonLevelOutside();
 	
 };
 
@@ -325,9 +327,11 @@ Game_Enemy.prototype.enemyLvl_difficultyBase_PrisonLevelOne = function() {
 	else if(Prison.normalMode()) lvl += ENEMY_LVL_PRISON_LEVEL_ONE_NORMAL;
 	else if(Prison.hardMode()) lvl += ENEMY_LVL_PRISON_LEVEL_ONE_HARD;
 	
+	if(!Prison.prisonLevelFiveIsUnknown) lvl += ENEMY_LVL_PRISON_LEVEL_FIVE_ANARCHY_ALL_BOOST;
+	
 	let mapId = $gameMap._mapId;
 	
-	if($gameParty.isRiotBattle() || mapId === MAP_ID_RECEPTION || mapId === MAP_ID_LVL1_GUARD_STATION || mapId === MAP_ID_BAR || mapId === MAP_ID_BAR_STORAGE)
+	if($gameParty.isRiotBattle() || $gameParty.isNightBattle() || $gameParty.isInWaitressBattle || $gameParty.isInReceptionistBattle || mapId === MAP_ID_RECEPTION || mapId === MAP_ID_LVL1_GUARD_STATION || mapId === MAP_ID_BAR || mapId === MAP_ID_BAR_STORAGE)
 		lvl += ENEMY_LVL_PRISON_LEVEL_ONE_PLUS_TWO;
 	else if(mapId === MAP_ID_LAUNDRY || mapId === MAP_ID_DISH_WASHING || mapId === MAP_ID_WORKSHOP || mapId === MAP_ID_BAR_BROKEN)
 		lvl += ENEMY_LVL_PRISON_LEVEL_ONE_PLUS_ONE;
@@ -341,9 +345,11 @@ Game_Enemy.prototype.enemyLvl_difficultyBase_PrisonLevelTwo = function() {
 	else if(Prison.normalMode()) lvl += ENEMY_LVL_PRISON_LEVEL_TWO_NORMAL;
 	else if(Prison.hardMode()) lvl += ENEMY_LVL_PRISON_LEVEL_TWO_HARD;
 	
+	if(!Prison.prisonLevelFiveIsUnknown) lvl += ENEMY_LVL_PRISON_LEVEL_FIVE_ANARCHY_ALL_BOOST;
+	
 	let mapId = $gameMap._mapId;
 	
-	if($gameParty.isRiotBattle() || mapId === MAP_ID_STAFF_LOUNGE || mapId === MAP_ID_OFFICE_FLOODED || mapId === MAP_ID_LVL2_GUARD_STATION || mapId === MAP_ID_BATHROOM_BROKEN || mapId === MAP_ID_BATHROOM_FIXED)
+	if($gameParty.isRiotBattle() || $gameParty.isNightBattle() || $gameParty.isInGloryBattle || mapId === MAP_ID_STAFF_LOUNGE || mapId === MAP_ID_OFFICE_FLOODED || mapId === MAP_ID_LVL2_GUARD_STATION || mapId === MAP_ID_BATHROOM_BROKEN || mapId === MAP_ID_BATHROOM_FIXED)
 		lvl += ENEMY_LVL_PRISON_LEVEL_TWO_PLUS_THREE;
 	else if(mapId === MAP_ID_RESEARCH || mapId === MAP_ID_MEETING_ROOM)
 		lvl += ENEMY_LVL_PRISON_LEVEL_TWO_PLUS_TWO;
@@ -359,9 +365,11 @@ Game_Enemy.prototype.enemyLvl_difficultyBase_PrisonLevelThree = function() {
 	else if(Prison.normalMode()) lvl += ENEMY_LVL_PRISON_LEVEL_THREE_NORMAL;
 	else if(Prison.hardMode()) lvl += ENEMY_LVL_PRISON_LEVEL_THREE_HARD;
 	
+	if(!Prison.prisonLevelFiveIsUnknown) lvl += ENEMY_LVL_PRISON_LEVEL_FIVE_ANARCHY_ALL_BOOST;
+	
 	let mapId = $gameMap._mapId;
 	
-	if($gameParty.isRiotBattle() || mapId === MAP_ID_LVL3_DEFEAT_SOLITARY_CELL || mapId === MAP_ID_COMMON_AREA_NORTH_EAST)
+	if($gameParty.isRiotBattle() || $gameParty.isNightBattle() || mapId === MAP_ID_LVL3_DEFEAT_SOLITARY_CELL || mapId === MAP_ID_COMMON_AREA_NORTH_EAST)
 		lvl += ENEMY_LVL_PRISON_LEVEL_THREE_PLUS_FOUR;
 	else if(mapId === MAP_ID_CELL_BLOCK_NORTH_EAST || mapId === MAP_ID_GYM || mapId === MAP_ID_LVL3_GUARD_STATION)
 		lvl += ENEMY_LVL_PRISON_LEVEL_THREE_PLUS_THREE;
@@ -378,6 +386,8 @@ Game_Enemy.prototype.enemyLvl_difficultyBase_PrisonLevelFour = function() {
 	if(Prison.easyMode()) lvl += ENEMY_LVL_PRISON_LEVEL_FOUR_EASY;
 	else if(Prison.normalMode()) lvl += ENEMY_LVL_PRISON_LEVEL_FOUR_NORMAL;
 	else if(Prison.hardMode()) lvl += ENEMY_LVL_PRISON_LEVEL_FOUR_HARD;
+	
+	if(!Prison.prisonLevelFiveIsUnknown) lvl += ENEMY_LVL_PRISON_LEVEL_FIVE_ANARCHY_ALL_BOOST;
 	
 	let mapId = $gameMap._mapId;
 	
@@ -401,6 +411,24 @@ Game_Enemy.prototype.enemyLvl_difficultyBase_PrisonLevelFive = function() {
 	
 	let mapId = $gameMap._mapId;
 	
+	
+	return lvl;
+};
+
+Game_Enemy.prototype.enemyLvl_difficultyBase_PrisonLevelOutside = function() {
+	let lvl = this.enemy().dataBaseEnemyLevel;
+	if(Prison.easyMode()) lvl += ENEMY_LVL_PRISON_LEVEL_ONE_EASY;
+	else if(Prison.normalMode()) lvl += ENEMY_LVL_PRISON_LEVEL_ONE_NORMAL;
+	else if(Prison.hardMode()) lvl += ENEMY_LVL_PRISON_LEVEL_ONE_HARD;
+	
+	if(Karryn.showLevelFourSubjugatedEdicts())
+		lvl += ENEMY_LVL_PRISON_LEVEL_FOUR_PLUS_FOUR;
+	else if(Karryn.showLevelThreeSubjugatedEdicts())
+		lvl += ENEMY_LVL_PRISON_LEVEL_THREE_PLUS_FOUR;
+	else if(Karryn.showLevelTwoSubjugatedEdicts())
+		lvl += ENEMY_LVL_PRISON_LEVEL_TWO_PLUS_THREE;
+	else if(Karryn.showLevelOneSubjugatedEdicts())
+		lvl += ENEMY_LVL_PRISON_LEVEL_ONE_PLUS_TWO;
 	
 	return lvl;
 };
@@ -435,18 +463,18 @@ Game_Enemy.prototype.enemyLvl_difficultyDays = function() {
 Game_Enemy.prototype.enemyLvl_specialCases = function() {
 	let lvl = 0;
 	
-	if($gameParty.isInWaitressBattle || Karryn.isInReceptionistPose()) {
+	if($gameParty.isInWaitressBattle || $gameParty.isInReceptionistBattle) {
 		if(!Prison.prisonLevelFourIsUnknown && !Prison.prisonLevelFourIsAnarchy) {
-			lvl += ENEMY_LVL_PRISON_LEVEL_FOUR_NORMAL;
+			lvl += ENEMY_LVL_PRISON_LEVEL_FOUR_EASY;
 		}
 		else if(!Prison.prisonLevelThreeIsUnknown && !Prison.prisonLevelThreeIsAnarchy) {
-			lvl += ENEMY_LVL_PRISON_LEVEL_THREE_NORMAL;
+			lvl += ENEMY_LVL_PRISON_LEVEL_THREE_EASY;
 		}
 		else if(!Prison.prisonLevelTwoIsUnknown && !Prison.prisonLevelTwoIsAnarchy) {
-			lvl += ENEMY_LVL_PRISON_LEVEL_TWO_NORMAL;
+			lvl += ENEMY_LVL_PRISON_LEVEL_TWO_EASY;
 		}
 		else {
-			lvl += ENEMY_LVL_PRISON_LEVEL_ONE_NORMAL;
+			lvl += ENEMY_LVL_PRISON_LEVEL_ONE_PLUS_ONE;
 		}
 		
 	}
@@ -455,12 +483,21 @@ Game_Enemy.prototype.enemyLvl_specialCases = function() {
 			lvl += ENEMY_LVL_PRISON_LEVEL_THREE_NORMAL;
 		}
 		else if(!Prison.prisonLevelThreeIsUnknown && !Prison.prisonLevelThreeIsAnarchy) {
-			lvl += ENEMY_LVL_PRISON_LEVEL_TWO_NORMAL;
+			lvl += ENEMY_LVL_PRISON_LEVEL_THREE_PLUS_THREE;
 		}
 		else {
-			lvl += ENEMY_LVL_PRISON_LEVEL_ONE_NORMAL;
+			lvl += ENEMY_LVL_PRISON_LEVEL_TWO_PLUS_ONE;
 		}
 	}
+	else if($gameParty.isInStripperBattle) {
+		if(!Prison.prisonLevelFourIsUnknown && !Prison.prisonLevelFourIsAnarchy) {
+			lvl += ENEMY_LVL_PRISON_LEVEL_THREE_PLUS_FOUR;
+		}
+		else {
+			lvl += ENEMY_LVL_PRISON_LEVEL_THREE_PLUS_ONE;
+		}
+	}
+	
 	
 	return lvl;
 };

@@ -607,10 +607,10 @@ Game_Enemy.prototype.passiveStatesRaw = function() {
     if (this._passiveStatesRaw !== undefined) return this._passiveStatesRaw;
     var array = Game_BattlerBase.prototype.passiveStatesRaw.call(this);
     array = array.concat(this.getPassiveStateData(this.enemy()));
-    for (var i = 0; i < this.skills().length; ++i) {
-      var skill = this.skills()[i];
-      array = array.concat(this.getPassiveStateData(skill));
-    }
+    //for (var i = 0; i < this.skills().length; ++i) {
+    //  var skill = this.skills()[i];
+    //  array = array.concat(this.getPassiveStateData(skill));
+    //}
     this._passiveStatesRaw = array.filter(Yanfly.Util.onlyUnique)
     return this._passiveStatesRaw;
 };

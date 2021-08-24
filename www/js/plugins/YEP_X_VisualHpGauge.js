@@ -280,7 +280,7 @@ DataManager.processVHGNotetags = function(group) {
 		var obj = group[n];
 		var notedata = obj.note.split(/[\r\n]+/);
 
-    obj.hideHpGauge = false;
+		obj.hideHpGauge = false;
 		obj.showHpGauge = false;
 		obj.hpGaugeWidth = 0;
 		obj.hpGaugeHeight = Yanfly.Param.VHGGaugeHeight;
@@ -470,7 +470,10 @@ Game_Enemy.prototype.hpGaugeColor2 = function() {
 Yanfly.VHG.Sprite_Battler_update = Sprite_Battler.prototype.update;
 Sprite_Battler.prototype.update = function() {
     Yanfly.VHG.Sprite_Battler_update.call(this);
-    this.createVisualHpGaugeWindow();
+	if(this._battler) {
+		this.createVisualHpGaugeWindow();
+		this.createVisualPleasureGaugeWindow();
+	}
 };
 
 Sprite_Battler.prototype.createVisualHpGaugeWindow = function() {

@@ -31,7 +31,7 @@ Game_Troop.prototype.setup = function(troopId) {
 		return;
 	}
 	
-	if(Karryn.isInReceptionistPose()) {
+	if($gameParty.isInReceptionistBattle) {
 		this.setupReceptionistBattle(troopId);
 		return;
 	}
@@ -41,6 +41,10 @@ Game_Troop.prototype.setup = function(troopId) {
 	}
 	if($gameParty.isInGloryBattle) {
 		this.setupGloryBattle(troopId);
+		return;
+	}
+	if($gameParty.isInStripperBattle) {
+		this.setupStripperBattle(troopId);
 		return;
 	}
 	if(troopId === TROOP_GUARD_ID) {
@@ -73,6 +77,10 @@ Game_Troop.prototype.setup = function(troopId) {
 	}
 	if(troopId === TROOP_DEFEATED_GUARD_ID) {
 		this.setupDefeatedGuardBattle(troopId);
+		return;
+	}
+	if(troopId === TROOP_NIGHT_ID) {
+		this.setupNightBattle(troopId);
 		return;
 	}
 	
@@ -410,7 +418,7 @@ Window_BattleLog.prototype.makeTpDamageText = function(target) {
 			fmt = isActor ? TextManager.actorGainPleasure : TextManager.enemyGainPleasureValue;
 		}
 		
-		if(!isActor && (target._ejaculationStock < 1 || target.energy < 1)) {
+		if(!isActor && (target.hasNoMoreEjaculationStockOrEnergy())) {
 			return '';
 		}
 
@@ -432,7 +440,7 @@ Window_BattleLog.prototype.makePleasureFeedbackText = function(subject, target) 
 		pleasureValueText += damage;
 			
 	if(isActor) {
-		if(subject._ejaculationStock < 1 || subject.energy < 1) {
+		if(subject.hasNoMoreEjaculationStockOrEnergy()) {
 			return '';
 		}
 		
