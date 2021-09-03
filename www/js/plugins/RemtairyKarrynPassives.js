@@ -767,9 +767,9 @@ Game_Actor.prototype.setupPassiveReqBaseArray = function() {
 	this._passiveRequirement_base[PASSIVE_SIGHT_ORGASM_ONE_ID] = 1;
 	this._passiveRequirement_base[PASSIVE_SIGHT_ORGASM_TWO_ID] = 10;
 	
-	this._passiveRequirement_base[PASSIVE_SEE_JERKOFF_COUNT_ONE_ID] = 10;
-	this._passiveRequirement_base[PASSIVE_SEE_JERKOFF_COUNT_TWO_ID] = 42;
-	this._passiveRequirement_base[PASSIVE_SEE_JERKOFF_COUNT_THREE_ID] = 100;
+	this._passiveRequirement_base[PASSIVE_SEE_JERKOFF_COUNT_ONE_ID] = 5;
+	this._passiveRequirement_base[PASSIVE_SEE_JERKOFF_COUNT_TWO_ID] = 25;
+	this._passiveRequirement_base[PASSIVE_SEE_JERKOFF_COUNT_THREE_ID] = 70;
 	this._passiveRequirement_base[PASSIVE_MASTURBATED_COUCH_COUNT_ONE_ID] = 1;
 	this._passiveRequirement_base[PASSIVE_MASTURBATED_COUCH_COUNT_TWO_ID] = 10;
 	this._passiveRequirement_base[PASSIVE_MASTURBATED_COUCH_COUNT_THREE_ID] = 20;
@@ -799,7 +799,7 @@ Game_Actor.prototype.setupPassiveReqBaseArray = function() {
 	this._passiveRequirement_base[PASSIVE_NIGHT_BATTLE_COUNT_TWO_ID] = 10;
 	this._passiveRequirement_base[PASSIVE_NIGHT_BATTLE_COUNT_THREE_ID] = 30;
 	
-	this._passiveRequirement_base[PASSIVE_KARRYN_STARE_COCK_ONE_ID] = 30;
+	this._passiveRequirement_base[PASSIVE_KARRYN_STARE_COCK_ONE_ID] = 15;
 	this._passiveRequirement_base[PASSIVE_KARRYN_STARE_COCK_TWO_ID] = 5;
 	this._passiveRequirement_base[PASSIVE_KARRYN_STARE_COCK_THREE_ID] = 10;
 	this._passiveRequirement_base[PASSIVE_KARRYN_STARE_COCK_FOUR_ID] = 30;

@@ -14,7 +14,7 @@ Remtairy.Version = Remtairy.Version || {};
  */
 //=============================================================================
 
-const KARRYN_PRISON_GAME_VERSION = 69;
+const KARRYN_PRISON_GAME_VERSION = 72;
 const KARRYN_PRISON_GAME_IS_DEMO = false;
 
 ///////////
@@ -27,6 +27,9 @@ Game_Party.prototype.getGameVersion = function() {
 };
 Game_Party.prototype.getDemoStatus = function() {
 	return this._karrynPrisonDemoStatus;
+};
+Game_Party.prototype.isDemoVersion = function() {
+	return this._karrynPrisonDemoStatus === true;
 };
 
 //Called at start of game in Common Event 2:Initialization
@@ -1444,13 +1447,42 @@ Game_Party.prototype.updateGameVersion = function() {
 		$gameSystem.setWindowTone(null);
 	}
 	
+	if(saveFileGameVersion < 70) {
+		actor.setupPassiveReqBaseArray();
+	}
 	
+	if(saveFileGameVersion < 71) {
+		actor.setupEquipSets();
+	}
+	
+	if(saveFileGameVersion < 72) {
+		for(let skillId = 16; skillId < 443; ++skillId) {
+			let skill = $dataSkills[skillId];
+			
+			if(skill.hasTag(TAG_ACCESSORY_EDICT)) {
+				if(!actor.hasEdict(skillId)) {
+					this.gainItem($dataArmors[skillId], -1 * (this.maxItems($dataArmors[skillId]) + 1), true);
+				}
+				else if(actor.isEquippingThisAccessory(skillId)) {
+					if(this.numItems($dataArmors[skillId], true) > 0)
+						this.gainItem($dataArmors[skillId], -1 * this.maxItems($dataArmors[skillId]), false);
+				}
+				else if(this.numItems($dataArmors[skillId], true) > 1) {
+					this.gainItem($dataArmors[skillId], -1 * (this.numItems($dataArmors[skillId] - 1), false));
+				}
+			}
+			
+		}
+		
+		
+	}
 	
 	//demo update
-	if(this.getDemoStatus() === true && !KARRYN_PRISON_GAME_IS_DEMO) {
+	if(this.isDemoVersion() && !KARRYN_PRISON_GAME_IS_DEMO) {
 		if($gameSwitches.value(SWITCH_WON_BOSS_BATTLE_LV2_ID) && Prison.prisonLevelTwoIsAnarchy()) {
 			Prison.firstSubjugationPrisonLevelTwo();
 		}
+		$gameSwitches.setValue(58, false);
 	}
 	
 	actor.cacheDesireTooltips();

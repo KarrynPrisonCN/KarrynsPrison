@@ -120,11 +120,40 @@ const EQUIP_SLOT_WEAPON_ID = 0;
 const EQUIP_SLOT_ACCESSORY_START_ID = 1;
 const EQUIP_SLOT_ACCESSORY_END_ID = 5;
 const EQUIP_SLOT_TITLE_ID = 6;
+const EQUIP_SLOT_LOAD_SET_ID = 7;
+const EQUIP_SLOT_SAVE_SET_ID = 8;
 
 const ACCESSORY_ID_START_ONE = 17;
 const ACCESSORY_ID_END_ONE = 48;
 const ACCESSORY_ID_START_TWO = 430;
 const ACCESSORY_ID_END_TWO = 443;
+
+const SAVE_EQUIP_SET_1_ID = 410;
+const SAVE_EQUIP_SET_2_ID = 411;
+const SAVE_EQUIP_SET_3_ID = 412;
+const SAVE_EQUIP_SET_4_ID = 413;
+const SAVE_EQUIP_SET_5_ID = 414;
+const SAVE_EQUIP_SET_6_ID = 415;
+const SAVE_EQUIP_SET_7_ID = 416;
+const SAVE_EQUIP_SET_8_ID = 417;
+
+const LOAD_EQUIP_SET_1_ID = 420;
+const LOAD_EQUIP_SET_2_ID = 421;
+const LOAD_EQUIP_SET_3_ID = 422;
+const LOAD_EQUIP_SET_4_ID = 423;
+const LOAD_EQUIP_SET_5_ID = 424;
+const LOAD_EQUIP_SET_6_ID = 425;
+const LOAD_EQUIP_SET_7_ID = 426;
+const LOAD_EQUIP_SET_8_ID = 427;
+
+const EQUIP_SET_1_ID = 1;
+const EQUIP_SET_2_ID = 2;
+const EQUIP_SET_3_ID = 3;
+const EQUIP_SET_4_ID = 4;
+const EQUIP_SET_5_ID = 5;
+const EQUIP_SET_6_ID = 6;
+const EQUIP_SET_7_ID = 7;
+const EQUIP_SET_8_ID = 8;
 
 const CLOTHING_ID_WARDEN = 1;
 const CLOTHING_ID_NAKED = 2;
@@ -1335,6 +1364,8 @@ Game_Actor.prototype.setUpAsKarryn = function() {
 	this.setPantiesType(PANTIES_STARTER_ID);
 	this.putOnPanties();
 	this.setupLiquids();
+	this.resetNightModeSettings();
+	this.setupEquipSets();
 	
 	//Tachie
 	this._dontResetSexPose = false;
@@ -1376,6 +1407,7 @@ Game_Actor.prototype.setUpAsKarryn_newGamePlusContinue = function() {
 	this.setPantiesType(PANTIES_STARTER_ID);
 	this.putOnPanties();
 	this.setupLiquids();
+	this.resetNightModeSettings();
 
 	//Tachie
 	this._dontResetSexPose = false;
@@ -3767,7 +3799,7 @@ Game_Actor.prototype.stripOffClothing = function() {
 			tempDamageMultipler = 0.05;
 		}
 		
-		this.decreaseWardenClothingLostTemporaryDurability(this.getClothingMaxDurability(true) * tempDamageMultipler);
+		this.decreaseWardenClothingLostTemporaryDurability(this._clothingBaseDurability * tempDamageMultipler);
 	}
 };
 
@@ -3975,7 +4007,7 @@ Game_Actor.prototype.refreshNightModeSettings = function() {
 		if(this._clothingStage >= CLOTHES_STAGE_SEE_ONE_BOOB)
 			points += 5;
 		
-		if(this.isAroused)
+		if(this.isAroused())
 			points += 1;
 		
 		if(this._clothingStage >= CLOTHES_STAGE_SLIGHTLY_MOVED) {
@@ -4052,11 +4084,17 @@ Game_Actor.prototype.refreshNightModeSettings = function() {
 		else {
 			$gameSwitches.setValue(SWITCH_NIGHT_MODE_EB_HALLWAY_ID, false);
 		}	
+		
+		if($gameVariables.value(VARIABLE_FIRST_EXHIB_PROGRESS_ID) === 0) 
+			$gameVariables.setValue(VARIABLE_FIRST_EXHIB_PROGRESS_ID, 1);
 	}
 	else {
-		$gameSwitches.setValue(SWITCH_NIGHT_MODE_ID, false);
-		$gameSwitches.setValue(SWITCH_NIGHT_MODE_EB_HALLWAY_ID, false);
+		this.resetNightModeSettings();
 	}
+};
+Game_Actor.prototype.resetNightModeSettings = function() { 
+	$gameSwitches.setValue(SWITCH_NIGHT_MODE_ID, false);
+	$gameSwitches.setValue(SWITCH_NIGHT_MODE_EB_HALLWAY_ID, false);
 };
 
 Game_Actor.prototype.stepsForTurn = function() {
@@ -4275,6 +4313,133 @@ Game_Actor.prototype.clearAccessorySlots = function() {
 		}
 	}
 	this.setAccessoryBonus();
+};
+
+//Equip Sets
+Game_Actor.prototype.setupEquipSets = function() {
+    this._equipSetAccessories = [false, false, false, false, false, false, false];
+	this._equipSetTitle = [false, TITLE_ID_EMPEROR_SECRETARY, TITLE_ID_EMPEROR_SECRETARY, TITLE_ID_EMPEROR_SECRETARY, TITLE_ID_EMPEROR_SECRETARY, TITLE_ID_EMPEROR_SECRETARY, TITLE_ID_EMPEROR_SECRETARY, TITLE_ID_EMPEROR_SECRETARY, TITLE_ID_EMPEROR_SECRETARY];
+	
+	$gameParty.gainItem($dataArmors[SAVE_EQUIP_SET_1_ID], 1, false);
+	$gameParty.gainItem($dataArmors[SAVE_EQUIP_SET_2_ID], 1, false);
+	$gameParty.gainItem($dataArmors[SAVE_EQUIP_SET_3_ID], 1, false);
+	$gameParty.gainItem($dataArmors[SAVE_EQUIP_SET_4_ID], 1, false);
+	$gameParty.gainItem($dataArmors[SAVE_EQUIP_SET_5_ID], 1, false);
+	$gameParty.gainItem($dataArmors[SAVE_EQUIP_SET_6_ID], 1, false);
+	$gameParty.gainItem($dataArmors[SAVE_EQUIP_SET_7_ID], 1, false);
+	$gameParty.gainItem($dataArmors[SAVE_EQUIP_SET_8_ID], 1, false);
+	
+	$gameParty.gainItem($dataArmors[LOAD_EQUIP_SET_1_ID], 1, false);
+	$gameParty.gainItem($dataArmors[LOAD_EQUIP_SET_2_ID], 1, false);
+	$gameParty.gainItem($dataArmors[LOAD_EQUIP_SET_3_ID], 1, false);
+	$gameParty.gainItem($dataArmors[LOAD_EQUIP_SET_4_ID], 1, false);
+	$gameParty.gainItem($dataArmors[LOAD_EQUIP_SET_5_ID], 1, false);
+	$gameParty.gainItem($dataArmors[LOAD_EQUIP_SET_6_ID], 1, false);
+	$gameParty.gainItem($dataArmors[LOAD_EQUIP_SET_7_ID], 1, false);
+	$gameParty.gainItem($dataArmors[LOAD_EQUIP_SET_8_ID], 1, false);
+};
+
+Game_Actor.prototype.loadEquipSet = function(itemId) {
+	let setId = this.getEquipSetId(itemId);
+	
+	if(setId) {
+		if($gameParty.hasItem($dataArmors[this._equipSetTitle[setId]]))
+			this.changeEquip(EQUIP_SLOT_TITLE_ID, $dataArmors[this._equipSetTitle[setId]]);
+		for(let i = EQUIP_SLOT_ACCESSORY_START_ID; i <= EQUIP_SLOT_ACCESSORY_END_ID; ++i) {
+			if(this.equips()[i]) {
+				this.changeEquip(i, null);
+			}
+		}
+		if(this._equipSetAccessories[setId]) {
+			for(let i = 0; i < this._equipSetAccessories[setId].length; ++i) {
+				if(this._equipSetAccessories[setId][i]) {
+					let itemId = this._equipSetAccessories[setId][i];
+					if($gameParty.hasItem($dataArmors[itemId])) {
+						if(this.meetAllEquipRequirements($dataArmors[itemId])) {
+							this.changeEquip(EQUIP_SLOT_ACCESSORY_START_ID + i, $dataArmors[itemId]);
+						}
+					}
+				}
+			}
+		}
+	}
+};
+
+
+Game_Actor.prototype.saveEquipSet = function(itemId) {
+	let setId = this.getEquipSetId(itemId);
+
+	if(setId) {
+		this._equipSetTitle[setId] = this.equips()[EQUIP_SLOT_TITLE_ID].id;
+		this._equipSetAccessories[setId] = [];
+		for(let i = EQUIP_SLOT_ACCESSORY_START_ID; i <= EQUIP_SLOT_ACCESSORY_END_ID; ++i) {
+			if(this.equips()[i]) {
+				this._equipSetAccessories[setId].push(this.equips()[i].id);
+			}
+			else {
+				this._equipSetAccessories[setId].push(false);
+			}
+		}
+	}
+};
+
+Game_Actor.prototype.getEquipSetId = function(itemId) {
+	let setId = false;
+	
+	switch (itemId) {
+	case SAVE_EQUIP_SET_1_ID:
+		setId = EQUIP_SET_1_ID;
+		break;
+	case SAVE_EQUIP_SET_2_ID:
+		setId = EQUIP_SET_2_ID;
+		break;
+	case SAVE_EQUIP_SET_3_ID:
+		setId = EQUIP_SET_3_ID;
+		break;
+	case SAVE_EQUIP_SET_4_ID:
+		setId = EQUIP_SET_4_ID;
+		break;
+	case SAVE_EQUIP_SET_5_ID:
+		setId = EQUIP_SET_5_ID;
+		break;
+	case SAVE_EQUIP_SET_6_ID:
+		setId = EQUIP_SET_6_ID;
+		break;
+	case SAVE_EQUIP_SET_7_ID:
+		setId = EQUIP_SET_7_ID;
+		break;
+	case SAVE_EQUIP_SET_8_ID:
+		setId = EQUIP_SET_8_ID;
+		break;
+	
+	case LOAD_EQUIP_SET_1_ID:
+		setId = EQUIP_SET_1_ID;
+		break;
+	case LOAD_EQUIP_SET_2_ID:
+		setId = EQUIP_SET_2_ID;
+		break;
+	case LOAD_EQUIP_SET_3_ID:
+		setId = EQUIP_SET_3_ID;
+		break;
+	case LOAD_EQUIP_SET_4_ID:
+		setId = EQUIP_SET_4_ID;
+		break;
+	case LOAD_EQUIP_SET_5_ID:
+		setId = EQUIP_SET_5_ID;
+		break;
+	case LOAD_EQUIP_SET_6_ID:
+		setId = EQUIP_SET_6_ID;
+		break;
+	case LOAD_EQUIP_SET_7_ID:
+		setId = EQUIP_SET_7_ID;
+		break;
+	case LOAD_EQUIP_SET_8_ID:
+		setId = EQUIP_SET_8_ID;
+		break;
+	
+	}
+	
+	return setId;
 };
 
 ///////////

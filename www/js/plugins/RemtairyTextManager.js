@@ -4,7 +4,7 @@ Remtairy.TextManager = Remtairy.TextManager || {};
 var Imported = Imported || {};
 Imported.RemtairyTextManager = true;
 
-const RemVersionText = '9A.n';
+const RemVersionText = '9A.p2';
 
 //=============================================================================
  /*:
@@ -826,67 +826,125 @@ const StatusRecordDifferentPeopleSingularJP = "人";
 const StatusRecordDifferentPeoplePluralEN = "different people";
 const StatusRecordDifferentPeoplePluralJP = "人";
 
-const StatusRecordDateEN = "Spent %1 total days in the prison.";
+const StatusRecordDateEN = "Spent a total of %1 days in the prison.";
 const StatusRecordDateJP = "私が監獄に着任してから%1日が経過した。";
+const StatusRecordDateSlutEN = "Spent %1 wonderful days in Fort Ganon.♥";
+const StatusRecordDateSlutJP = "私がガナンで暮らしてから%1日も経っちゃった♥";
 const StatusRecordFightEN = "Subdued %1 people and lost %2 times.";
 const StatusRecordFightJP = "戦闘で%1人を撃退したが、%2回は敗北してしまった。";
+const StatusRecordFightSlutEN = "Subdued %1 people and only 'lost' %2 times.♥";
+const StatusRecordFightSlutJP = "バトルで%1人もやっつけて来たけど、%2回は負けちゃった♥";
 const StatusRecordFightSubduedOnlyEN = "Subdued %1 people.";
 const StatusRecordFightSubduedOnlyJP = "戦闘で%1人を撃退した。";
 const StatusRecordStripEN = "Got my clothes stripped off %1 times and panties taken off %2 times by other people.";
 const StatusRecordStripJP = "服を%1回脱がされた。その内、パンティは%2回脱がされた。";
+const StatusRecordStripSlutEN = "Let my clothes get stripped off %1 times and panties taken off %2 times by other people.♥";
+const StatusRecordStripSlutJP = "みんなの前で%1回脱いで、%2回はノーパンになっちゃった♥";
 const StatusRecordKissEN = "Got kissed %1 times by %2 different people.";
 const StatusRecordKissJP = "キスを%2人の男と交わした。合計で%1回キスをしている。";
+const StatusRecordKissSlutEN = "Kissed %1 times with %2 different people.♥";
+const StatusRecordKissSlutJP = "私とベロチューしたオトコは%2人♥全部で%1回もチュッチュしちゃってる♥";
 const StatusRecordBoobsPettedEN = "Got my boobs squeezed %1 times by %2 different people.";
 const StatusRecordBoobsPettedJP = "私の胸を%2人の男に揉まれた。合計で%1回おっぱいを揉まれている。";
+const StatusRecordBoobsPettedSlutEN = "Let my boobs get squeezed %1 times by %2 different people.♥";
+const StatusRecordBoobsPettedSlutJP = "私のエロ乳を揉みしだいたオトコは%2人♥全部で%1回も揉んで貰ってるわね♥";
 const StatusRecordNipplesPettedEN = "Got my nipples pinched %1 times by %2 different people.";
 const StatusRecordNipplesPettedJP = "私の乳首を%2人の男につままれた。合計で%1回乳首をつままれている。";
+const StatusRecordNipplesPettedSlutEN = "Let my nipples get pinched %1 times by %2 different people.♥";
+const StatusRecordNipplesPettedSlutJP = "私のスケベな乳首をつまんだオトコは%2人♥全部で%1回も弄ばれてるのね♥";
 const StatusRecordClitPettedEN = "Got my clit touched %1 times by %2 different people.";
 const StatusRecordClitPettedJP = "私のクリトリスを%2人の男にイジられた。合計で%1回クリをイジられている。";
+const StatusRecordClitPettedSlutEN = "Let my clit get touched %1 times by %2 different people.♥";
+const StatusRecordClitPettedSlutJP = "私のクリちゃんをシコったオトコは%2人♥全部で%1回もイジってくれてるわ♥";
 const StatusRecordPussyPettedEN = "Got my pussy fingered %1 times by %2 different people.";
 const StatusRecordPussyPettedJP = "私のマンコを%2人の男にイジられた。合計で%1回マンコをイジられている。";
+const StatusRecordPussyPettedSlutEN = "Let my pussy get fingered %1 times by %2 different people.♥";
+const StatusRecordPussyPettedSlutJP = "私のドスケベマンコをイジったオトコは%2人♥全部で%1回もマンコイジりを味わったのね♥";
 const StatusRecordButtPettedEN = "Got my butt felt up %1 times by %2 different people.";
 const StatusRecordButtPettedJP = "私のお尻を%2人の男に鷲掴みにされた。合計で%1回尻を鷲掴みされている。";
+const StatusRecordButtPettedSlutEN = "Let my butt get felt up %1 times by %2 different people.♥";
+const StatusRecordButtPettedSlutJP = "私のデカケツにセクハラしたオトコは%2人♥全部で%1回もケツハラしてくれてるわ♥";
 const StatusRecordAnalPettedEN = "Got my butthole fingered %1 times by %2 different people.";
 const StatusRecordAnalPettedJP = "私のアナルを%2人の男に指でほじられた。合計で%1回アナルをほじられている。";
+const StatusRecordAnalPettedSlutEN = "Let my butthole get fingered %1 times by %2 different people.♥";
+const StatusRecordAnalPettedSlutJP = "私のケツ穴をホジくりまくったオトコは%2人♥全部で%1回もアナホジして貰えてるの♥";
 const StatusRecordMasturbateEN = "Masturbated %1 times and saw other people masturbate %2 times.";
-const StatusRecordMasturbateJP = "私は%1回オナニーをした。男たちにオナニーを目撃されたのは%2回目。";
+const StatusRecordMasturbateJP = "私は%1回オナニーをした。男達にオナニーを目撃されたのは%2回目。";
+const StatusRecordMasturbateSlutEN = "Masturbated only %1 times and saw other people jerk off %2 times.♥";
+const StatusRecordMasturbateSlutJP = "色んな場所で%1回もオナって来たわ♥その内の%2回はオトコ達にちゃんと見て貰ったの♥";
 const StatusRecordSexPartnersEN = "Had %1 different sexual partners.";
 const StatusRecordSexPartnersJP = "私と性的な関係がある男は%1人。";
+const StatusRecordSexPartnersSlutEN = "Only had %1 different sexual partners.♥";
+const StatusRecordSexPartnersSlutJP = "私とエロいコトした男は全部で%1人もいるのよ♥";
 const StatusRecordHandjobEN = "Gave %1 handjobs to %2 different people.";
-const StatusRecordHandjobJP = "私がシコったチンポは%2本。合計で%1回手コキをした。";
+const StatusRecordHandjobJP = "私が手コキしたチンポは%2本。合計で%1回手コキした。";
+const StatusRecordHandjobSlutEN = "Gave only %1 handjobs to %2 different people.♥";
+const StatusRecordHandjobSlutJP = "私がシコったチンポは%2本♥全部で%1回もチンコキしてあげちゃった♥";
 const StatusRecordBlowjobEN = "Gave %1 blowjobs to %2 different people.";
 const StatusRecordBlowjobJP = "私がしゃぶったチンポは%2本。合計で%1回フェラチオをした。";
+const StatusRecordBlowjobSlutEN = "Gave only %1 blowjobs to %2 different people.♥";
+const StatusRecordBlowjobSlutJP = "私がしゃぶり尽くしたチンポは%2本♥全部で%1回もチンしゃぶを味わってるわ♥";
 const StatusRecordTittyFuckEN = "Got titty fucked %1 times by %2 different people.";
 const StatusRecordTittyFuckJP = "私がおっぱいで挟んだチンポは%2本。合計で%1回パイズリをした。";
+const StatusRecordTittyFuckSlutEN = "Gave only %1 titty fucks to %2 different people.♥";
+const StatusRecordTittyFuckSlutJP = "私の淫乱おっぱいで気持ち良くしてあげたチンポは%2本♥全部で%1回もパイコキして来たのね♥";
 const StatusRecordFootjobEN = "Gave %1 footjobs to %2 different people.";
 const StatusRecordFootjobJP = "私が足でシゴいたチンポは%2本。合計で%1回足コキをした。";
-const StatusRecordRimjobEN = "Gave %1 rimjobs to %2 different people.";
+const StatusRecordFootjobSlutEN = "Gave only %1 footjobs to %2 different people.♥";
+const StatusRecordFootjobSlutJP = "私に足でシコられたチンポは%2本♥全部で%1回もチンポを踏みまくってやったわ♥";
+const StatusRecordRimjobEN = "Gave only %1 rimjobs to %2 different people.";
 const StatusRecordRimjobJP = "私がアナルを舐めた男は%2人。合計で%1回ケツ舐めをした。";
+const StatusRecordRimjobSlutEN = "Gave %1 rimjobs to %2 different people.♥";
+const StatusRecordRimjobSlutJP = "私にケツ穴を舐めさせてくれた殿方は%2人♥全部で%1回もケツフェラさせて頂いたわ♥";
 const StatusRecordCunniEN = "Received cunnilingus %1 times from %2 different people.";
 const StatusRecordCunniJP = "私をクンニした男は%2人。合計で%1回マンコを舐められている。";
+const StatusRecordCunniSlutEN = "Received cunnilingus only %1 times from %2 different people.♥";
+const StatusRecordCunniSlutJP = "私のエロエロ欲求不マンコを舐めたオトコは%2人♥全部で%1回も私のマン汁を味わってくれたのね♥";
 const StatusRecordSpankedEN = "Got spanked %1 times by %2 different people.";
 const StatusRecordSpankedJP = "私をスパンキングした男は%2人。合計で%1回ケツを叩かれている。";
+const StatusRecordSpankedSlutEN = "Got spanked only %1 times by %2 different people.♥";
+const StatusRecordSpankedSlutJP = "私のエロケツを叩いてくれた紳士は%2人♥全部で%1回もケツにお仕置きして貰ってるの♥";
 const StatusRecordPussySexEN = "Got fucked in my pussy %1 times by %2 different people.";
 const StatusRecordPussySexJP = "私とセックスした男は%2人。合計%1回マンコファックしている。";
+const StatusRecordPussySexSlutEN = "Got fucked in my pussy only %1 times by %2 different people.♥";
+const StatusRecordPussySexSlutJP = "私の淫乱マンコにチンポをハメたオトコは%2人♥全部で%1回もマン奥で勃起チンポを楽しんで来たのね♥♥";
 const StatusRecordAnalSexEN = "Got fucked in my butt %1 times by %2 different people.";
 const StatusRecordAnalSexJP = "私とアナルセックスした男は%2人。合計%1回アナルファックしている。";
+const StatusRecordAnalSexSlutEN = "Got fucked in my butt only %1 times by %2 different people.♥";
+const StatusRecordAnalSexSlutJP = "私の変態ケツマンコとパコッたオトコは%2人♥全部で%1回もケツ穴にチンポを出し挿れして喜んじゃった♥♥";
 const StatusRecordGangbangEN = "Got double penetrated %1 times and gangbanged %2 times.";
-const StatusRecordGangbangJP = "私と男たちとの二穴ファックは%1回目で、輪姦セックスは%2回目。";
+const StatusRecordGangbangJP = "私と男達との二穴ファックは%1回で、輪姦セックスは%2回目。";
+const StatusRecordGangbangSlutEN = "Got double penetrated only %1 times and gangbanged only %2 times.♥";
+const StatusRecordGangbangSlutJP = "２つのエロ穴にチンポをハメて来てかれこれ%1回目♥複数のオトコとの乱交で数えるともう%2回目になるわね♥♥";
 const StatusRecordOrgasmEN = "Came %1 times in front of %2 different people, squirting %3 ml of fluids.";
 const StatusRecordOrgasmJP = "私がイカせた男は%2人。全部で%1回チンポを射精させている。その合計ザーメン量は%3ml。";
+const StatusRecordOrgasmSlutEN = "Came %1 whole times in front of %2 different people, squirting %3 ml of fluids.♥";
+const StatusRecordOrgasmSlutJP = "私でイッちゃったオトコは%2人♥勃起チンポで数えると全部で%1本♥ザーメンはトータル%3mlで大量ね♥♥";
 const StatusRecordSwallowEN = "Swallowed cum %1 times for a total of %3 ml of cum from %2 different people.";
 const StatusRecordSwallowJP = "私がザーメンを飲んだチンポは%2本。全部で%1回精飲している。その合計ごっくん量は%3ml。";
+const StatusRecordSwallowSlutEN = "Swallowed cum only %1 times for a total of %3 ml of cum from %2 different people.♥";
+const StatusRecordSwallowSlutJP = "チンポミルクを飲み干したチンポは%2本♥%1回ごっくんした内、トータルで%3mlも美味しく味わって来たのね♥♥";
 const StatusRecordPussyCreampieEN = "Got creampied in my pussy %1 times for a total of %3 ml of cum from %2 different people.";
 const StatusRecordPussyCreampieJP = "私のマンコに中出しした男は%2人。全部で%1回膣内射精されている。合計%3mlのザーメンが膣を満たした。";
+const StatusRecordPussyCreampieSlutEN = "Got creampied in my pussy only %1 times for a total of %3 ml of cum from %2 different people.♥";
+const StatusRecordPussyCreampieSlutJP = "私の欲情マンコに中出ししたオトコは%2人♥膣奥に%1回も排泄されたチンポ汁は全部で%3mlになるわ♥♥♥";
 const StatusRecordAnalCreampieEN = "Got creampied in my butt %1 times for a total of %3 ml of cum from %2 different people.";
 const StatusRecordAnalCreampieJP = "私のアナルに中出しした男は%2人。全部で%1回腸内射精されている。合計%3mlのザーメンがお腹を満たした。";
+const StatusRecordAnalCreampieSlutEN = "Got creampied in my butt only %1 times for a total of %3 ml of cum from %2 different people.♥";
+const StatusRecordAnalCreampieSlutJP = "私のチンコキ専用アナルで中出ししたオトコは%2人♥♥%1回も腸奥に放出されて、気が付けばもう%3mlね♥♥♥";
 
 const StatusRecordFingersSuckedEN = "Sucked %2 different people's fingers %1 times.";
 const StatusRecordFingersSuckedJP = "私が指をしゃぶった男は%2人。合計%1回おしゃぶりしている。";
+const StatusRecordFingersSuckedSlutEN = "Sucked %2 different people's fingers only %1 times.♥";
+const StatusRecordFingersSuckedSlutJP = "私に指をしゃぶらせてくれたオトコは%2人♥全部で%1回もチンポみたいに舐め回してるの♥";
 const StatusRecordBukkakeEN = "Got bukkaked %1 times for a total of %3 ml of cum from %2 different people.";
 const StatusRecordBukkakeJP = "私にぶっかけた男は%2人。全部で%1回ぶっかけられている。その合計ザーメン量は%3ml。";
+const StatusRecordBukkakeSlutEN = "Got bukkaked only %1 times for a total of %3 ml of cum from %2 different people.♥";
+const StatusRecordBukkakeSlutJP = "私をトイレみたいにぶっかけてくれたオトコは%2人♥%1回も浴びて来たザーメンシャワーは全部で%3mlよ♥";
 const StatusRecordFaceBukkakeEN = "Got facialed %1 times for a total of %3 ml of cum from %2 different people.";
 const StatusRecordFaceBukkakeJP = "私の顔にぶっかけした男は%2人。全部で%1回顔射されている。その合計ザーメン量は%3ml。";
+const StatusRecordFaceBukkakeSlutEN = "Got facialed only %1 times for a total of %3 ml of cum from %2 different people.♥";
+const StatusRecordFaceBukkakeSlutJP = "私のお顔めがけてチンポ射精してくれたオトコは%2人♥%1回も顔面便器になって浴びた汁は全部で%3mlなの♥";
 
 //StatusBattleEffectはステータスメニューの「状態」に書いてる
 const StatusBattleEffectOrgasmEN = "Karryn \\C[5]just orgasmed\\C[0]! She's a mess right now and can not do anything!";
@@ -1513,7 +1571,7 @@ const RemResultsPassivesTitleJP = "新パッシブ解放！！";
 const RemDailyReportDayCountEN = "\\#\\{\\{Day %1: Daily Report\\}\\}";
 const RemDailyReportDayCountJP = "\\#\\{\\{■ 報告書 ～%1日目～ ■\\}\\}";
 const RemDailyReportAnarchyNoLimitEN = "\\I[377]Day %2 of Level %1 being in \\C[7]Anarchy\\C[0].";
-const RemDailyReportAnarchyNoLimitJP = "\\I[377]監獄レベル%1のC[7]無法状態\\C[0]を%2日間継続\\";
+const RemDailyReportAnarchyNoLimitJP = "\\I[377]監獄レベル%1の\\C[7]無法状態\\C[0]を%2日間継続\\";
 const RemDailyReportAnarchyLimitBefore_singularEN = "\\I[377]Day %2 of Level %1 being in \\C[7]Anarchy\\C[0]. Control might be further decreased starting tomorrow from unrest!";
 const RemDailyReportAnarchyLimitBefore_singularJP = "\\I[377]監獄レベル%1の\\C[7]無法状態\\C[0]を%2日間継続 \\I[25]明日、統制力が更に減少するおそれあり";
 const RemDailyReportAnarchyLimitBefore_pluralEN = "\\I[377]Day %2 of Level %1 being in \\C[7]Anarchy\\C[0]. Control might further decrease in about %3 days from unrest!";
@@ -2173,8 +2231,8 @@ const RemGlossaryHelpJP = "jp To select a note to read, use the up and down arro
 const RemErrorMessageEN = "If your error message says 'Array buffer allocation failed' or 'Out of memory', then your game has run out of memory so please close all other programs, ESPECIALLY BROWSER WINDOWS, before running Karryn's Prison. For all other errors, if your game files or save file haven't been modified, please take a screenshot of this screen and report it to the #kp-bug-reports channel on our Discord! Please also tell us what version of the game you are running, as well as many details of what happened before your error occurred! (v." + RemVersionText + ")";
 const RemErrorMessageJP = "申し訳ありません。エラーが発生しました！メッセージ「Array buffer allocation failed」「Out of memory」が表示される場合、PCのメモリが不足しています。ゲームを起動する前に他のソフトウェア、特にブラウザソフトを全て閉じて下さい。その他エラーの場合は現在のバージョン、エラー発生時の状態、そしてこのエラー画面のスクリーンショットをRemtairyのDiscordにある「#バグ報告」チャンネルに添付していただければ、迅速に対応させていただきます。エラー発生前後の具体的な状況もお知らせ頂くと幸いです。お手数おかけして申し訳ございませんが、どうぞよろしくお願い致します！ (v."  + RemVersionText + ")";
 
-const RemEquipTypesEN = ["","Weapon","Accessory","Title"];
-const RemEquipTypesJP = ["","武器"," ｱｸｾｻﾘｰ ","称号"];
+const RemEquipTypesEN = ["","Weapon","Accessory","Title","Load Equip Set", "Save Equip Set"];
+const RemEquipTypesJP = ["","武器"," ｱｸｾｻﾘｰ ","称号","装備セットをロード", "装備セットをセーブ"];
 
 const RemSkillTypesEN = ["",
 "Attack",
@@ -4139,10 +4197,22 @@ Object.defineProperties(TextManager, {
 			else if(this.isEnglish) return StatusRecordDateEN;
 		}, configurable: true
 	},
+	statusRecordDateSlut: { 
+		get: function() { 
+			if(this.isJapanese) return StatusRecordDateSlutJP;
+			else if(this.isEnglish) return StatusRecordDateSlutEN;
+		}, configurable: true
+	},
 	statusRecordFight: { 
 		get: function() { 
 			if(this.isJapanese) return StatusRecordFightJP;
 			else if(this.isEnglish) return StatusRecordFightEN;
+		}, configurable: true
+	},
+	statusRecordFightSlut: { 
+		get: function() { 
+			if(this.isJapanese) return StatusRecordFightSlutJP;
+			else if(this.isEnglish) return StatusRecordFightSlutEN;
 		}, configurable: true
 	},
 	statusRecordFightSubduedOnly: { 
@@ -4157,10 +4227,22 @@ Object.defineProperties(TextManager, {
 			else if(this.isEnglish) return StatusRecordStripEN;
 		}, configurable: true
 	},
+	statusRecordStripSlut: { 
+		get: function() { 
+			if(this.isJapanese) return StatusRecordStripSlutJP;
+			else if(this.isEnglish) return StatusRecordStripSlutEN;
+		}, configurable: true
+	},
 	statusRecordKiss: { 
 		get: function() { 
 			if(this.isJapanese) return StatusRecordKissJP;
 			else if(this.isEnglish) return StatusRecordKissEN;
+		}, configurable: true
+	},
+	statusRecordKissSlut: { 
+		get: function() { 
+			if(this.isJapanese) return StatusRecordKissSlutJP;
+			else if(this.isEnglish) return StatusRecordKissSlutEN;
 		}, configurable: true
 	},
 	statusRecordBoobsPetted: { 
@@ -4169,10 +4251,22 @@ Object.defineProperties(TextManager, {
 			else if(this.isEnglish) return StatusRecordBoobsPettedEN;
 		}, configurable: true
 	},
+	statusRecordBoobsPettedSlut: { 
+		get: function() { 
+			if(this.isJapanese) return StatusRecordBoobsPettedSlutJP;
+			else if(this.isEnglish) return StatusRecordBoobsPettedSlutEN;
+		}, configurable: true
+	},
 	statusRecordNipplesPetted: { 
 		get: function() { 
 			if(this.isJapanese) return StatusRecordNipplesPettedJP;
 			else if(this.isEnglish) return StatusRecordNipplesPettedEN;
+		}, configurable: true
+	},
+	statusRecordNipplesPettedSlut: { 
+		get: function() { 
+			if(this.isJapanese) return StatusRecordNipplesPettedSlutJP;
+			else if(this.isEnglish) return StatusRecordNipplesPettedSlutEN;
 		}, configurable: true
 	},
 	statusRecordClitPetted: { 
@@ -4181,10 +4275,22 @@ Object.defineProperties(TextManager, {
 			else if(this.isEnglish) return StatusRecordClitPettedEN;
 		}, configurable: true
 	},
+	statusRecordClitPettedSlut: { 
+		get: function() { 
+			if(this.isJapanese) return StatusRecordClitPettedSlutJP;
+			else if(this.isEnglish) return StatusRecordClitPettedSlutEN;
+		}, configurable: true
+	},
 	statusRecordPussyPetted: { 
 		get: function() { 
 			if(this.isJapanese) return StatusRecordPussyPettedJP;
 			else if(this.isEnglish) return StatusRecordPussyPettedEN;
+		}, configurable: true
+	},
+	statusRecordPussyPettedSlut: { 
+		get: function() { 
+			if(this.isJapanese) return StatusRecordPussyPettedSlutJP;
+			else if(this.isEnglish) return StatusRecordPussyPettedSlutEN;
 		}, configurable: true
 	},
 	statusRecordButtPetted: { 
@@ -4193,10 +4299,22 @@ Object.defineProperties(TextManager, {
 			else if(this.isEnglish) return StatusRecordButtPettedEN;
 		}, configurable: true
 	},
+	statusRecordButtPettedSlut: { 
+		get: function() { 
+			if(this.isJapanese) return StatusRecordButtPettedSlutJP;
+			else if(this.isEnglish) return StatusRecordButtPettedSlutEN;
+		}, configurable: true
+	},
 	statusRecordAnalPetted: { 
 		get: function() { 
 			if(this.isJapanese) return StatusRecordAnalPettedJP;
 			else if(this.isEnglish) return StatusRecordAnalPettedEN;
+		}, configurable: true
+	},
+	statusRecordAnalPettedSlut: { 
+		get: function() { 
+			if(this.isJapanese) return StatusRecordAnalPettedSlutJP;
+			else if(this.isEnglish) return StatusRecordAnalPettedSlutEN;
 		}, configurable: true
 	},
 	statusRecordMasturbate: { 
@@ -4205,10 +4323,22 @@ Object.defineProperties(TextManager, {
 			else if(this.isEnglish) return StatusRecordMasturbateEN;
 		}, configurable: true
 	},
+	statusRecordMasturbateSlut: { 
+		get: function() { 
+			if(this.isJapanese) return StatusRecordMasturbateSlutJP;
+			else if(this.isEnglish) return StatusRecordMasturbateSlutEN;
+		}, configurable: true
+	},
 	statusRecordSexPartners: { 
 		get: function() { 
 			if(this.isJapanese) return StatusRecordSexPartnersJP;
 			else if(this.isEnglish) return StatusRecordSexPartnersEN;
+		}, configurable: true
+	},
+	statusRecordSexPartnersSlut: { 
+		get: function() { 
+			if(this.isJapanese) return StatusRecordSexPartnersSlutJP;
+			else if(this.isEnglish) return StatusRecordSexPartnersSlutEN;
 		}, configurable: true
 	},
 	statusRecordHandjob: { 
@@ -4217,10 +4347,22 @@ Object.defineProperties(TextManager, {
 			else if(this.isEnglish) return StatusRecordHandjobEN;
 		}, configurable: true
 	},
+	statusRecordHandjobSlut: { 
+		get: function() { 
+			if(this.isJapanese) return StatusRecordHandjobSlutJP;
+			else if(this.isEnglish) return StatusRecordHandjobSlutEN;
+		}, configurable: true
+	},
 	statusRecordBlowjob: { 
 		get: function() { 
 			if(this.isJapanese) return StatusRecordBlowjobJP;
 			else if(this.isEnglish) return StatusRecordBlowjobEN;
+		}, configurable: true
+	},
+	statusRecordBlowjobSlut: { 
+		get: function() { 
+			if(this.isJapanese) return StatusRecordBlowjobSlutJP;
+			else if(this.isEnglish) return StatusRecordBlowjobSlutEN;
 		}, configurable: true
 	},
 	statusRecordTittyFuck: { 
@@ -4229,10 +4371,22 @@ Object.defineProperties(TextManager, {
 			else if(this.isEnglish) return StatusRecordTittyFuckEN;
 		}, configurable: true
 	},
+	statusRecordTittyFuckSlut: { 
+		get: function() { 
+			if(this.isJapanese) return StatusRecordTittyFuckSlutJP;
+			else if(this.isEnglish) return StatusRecordTittyFuckSlutEN;
+		}, configurable: true
+	},
 	statusRecordFootjob: { 
 		get: function() { 
 			if(this.isJapanese) return StatusRecordFootjobJP;
 			else if(this.isEnglish) return StatusRecordFootjobEN;
+		}, configurable: true
+	},
+	statusRecordFootjobSlut: { 
+		get: function() { 
+			if(this.isJapanese) return StatusRecordFootjobSlutJP;
+			else if(this.isEnglish) return StatusRecordFootjobSlutEN;
 		}, configurable: true
 	},
 	statusRecordRimjob: { 
@@ -4241,10 +4395,22 @@ Object.defineProperties(TextManager, {
 			else if(this.isEnglish) return StatusRecordRimjobEN;
 		}, configurable: true
 	},
+	statusRecordRimjobSlut: { 
+		get: function() { 
+			if(this.isJapanese) return StatusRecordRimjobSlutJP;
+			else if(this.isEnglish) return StatusRecordRimjobSlutEN;
+		}, configurable: true
+	},
 	statusRecordCunni: { 
 		get: function() { 
 			if(this.isJapanese) return StatusRecordCunniJP;
 			else if(this.isEnglish) return StatusRecordCunniEN;
+		}, configurable: true
+	},
+	statusRecordCunniSlut: { 
+		get: function() { 
+			if(this.isJapanese) return StatusRecordCunniSlutJP;
+			else if(this.isEnglish) return StatusRecordCunniSlutEN;
 		}, configurable: true
 	},
 	statusRecordSpanked: { 
@@ -4253,10 +4419,22 @@ Object.defineProperties(TextManager, {
 			else if(this.isEnglish) return StatusRecordSpankedEN;
 		}, configurable: true
 	},
+	statusRecordSpankedSlut: { 
+		get: function() { 
+			if(this.isJapanese) return StatusRecordSpankedSlutJP;
+			else if(this.isEnglish) return StatusRecordSpankedSlutEN;
+		}, configurable: true
+	},
 	statusRecordPussySex: { 
 		get: function() { 
 			if(this.isJapanese) return StatusRecordPussySexJP;
 			else if(this.isEnglish) return StatusRecordPussySexEN;
+		}, configurable: true
+	},
+	statusRecordPussySexSlut: { 
+		get: function() { 
+			if(this.isJapanese) return StatusRecordPussySexSlutJP;
+			else if(this.isEnglish) return StatusRecordPussySexSlutEN;
 		}, configurable: true
 	},
 	statusRecordAnalSex: { 
@@ -4265,10 +4443,22 @@ Object.defineProperties(TextManager, {
 			else if(this.isEnglish) return StatusRecordAnalSexEN;
 		}, configurable: true
 	},
+	statusRecordAnalSexSlut: { 
+		get: function() { 
+			if(this.isJapanese) return StatusRecordAnalSexSlutJP;
+			else if(this.isEnglish) return StatusRecordAnalSexSlutEN;
+		}, configurable: true
+	},
 	statusRecordGangbang: { 
 		get: function() { 
 			if(this.isJapanese) return StatusRecordGangbangJP;
 			else if(this.isEnglish) return StatusRecordGangbangEN;
+		}, configurable: true
+	},
+	statusRecordGangbangSlut: { 
+		get: function() { 
+			if(this.isJapanese) return StatusRecordGangbangSlutJP;
+			else if(this.isEnglish) return StatusRecordGangbangSlutEN;
 		}, configurable: true
 	},
 
@@ -4278,10 +4468,22 @@ Object.defineProperties(TextManager, {
 			else if(this.isEnglish) return StatusRecordOrgasmEN;
 		}, configurable: true
 	},
+	statusRecordOrgasmSlut: { 
+		get: function() { 
+			if(this.isJapanese) return StatusRecordOrgasmSlutJP;
+			else if(this.isEnglish) return StatusRecordOrgasmSlutEN;
+		}, configurable: true
+	},
 	statusRecordSwallow: { 
 		get: function() { 
 			if(this.isJapanese) return StatusRecordSwallowJP;
 			else if(this.isEnglish) return StatusRecordSwallowEN;
+		}, configurable: true
+	},
+	statusRecordSwallowSlut: { 
+		get: function() { 
+			if(this.isJapanese) return StatusRecordSwallowSlutJP;
+			else if(this.isEnglish) return StatusRecordSwallowSlutEN;
 		}, configurable: true
 	},
 	statusRecordPussyCreampie: { 
@@ -4290,10 +4492,22 @@ Object.defineProperties(TextManager, {
 			else if(this.isEnglish) return StatusRecordPussyCreampieEN;
 		}, configurable: true
 	},
+	statusRecordPussyCreampieSlut: { 
+		get: function() { 
+			if(this.isJapanese) return StatusRecordPussyCreampieSlutJP;
+			else if(this.isEnglish) return StatusRecordPussyCreampieSlutEN;
+		}, configurable: true
+	},
 	statusRecordAnalCreampie: { 
 		get: function() { 
 			if(this.isJapanese) return StatusRecordAnalCreampieJP;
 			else if(this.isEnglish) return StatusRecordAnalCreampieEN;
+		}, configurable: true
+	},
+	statusRecordAnalCreampieSlut: { 
+		get: function() { 
+			if(this.isJapanese) return StatusRecordAnalCreampieSlutJP;
+			else if(this.isEnglish) return StatusRecordAnalCreampieSlutEN;
 		}, configurable: true
 	},
 	
@@ -4303,16 +4517,34 @@ Object.defineProperties(TextManager, {
 			else if(this.isEnglish) return StatusRecordFingersSuckedEN;
 		}, configurable: true
 	},
+	statusRecordFingersSuckedSlut: { 
+		get: function() { 
+			if(this.isJapanese) return StatusRecordFingersSuckedSlutJP;
+			else if(this.isEnglish) return StatusRecordFingersSuckedSlutEN;
+		}, configurable: true
+	},
 	statusRecordBukkake: { 
 		get: function() { 
 			if(this.isJapanese) return StatusRecordBukkakeJP;
 			else if(this.isEnglish) return StatusRecordBukkakeEN;
 		}, configurable: true
 	},
+	statusRecordBukkakeSlut: { 
+		get: function() { 
+			if(this.isJapanese) return StatusRecordBukkakeSlutJP;
+			else if(this.isEnglish) return StatusRecordBukkakeSlutEN;
+		}, configurable: true
+	},
 	statusRecordFaceBukkake: { 
 		get: function() { 
 			if(this.isJapanese) return StatusRecordFaceBukkakeJP;
 			else if(this.isEnglish) return StatusRecordFaceBukkakeEN;
+		}, configurable: true
+	},
+	statusRecordFaceBukkakeSlut: { 
+		get: function() { 
+			if(this.isJapanese) return StatusRecordFaceBukkakeSlutJP;
+			else if(this.isEnglish) return StatusRecordFaceBukkakeSlutEN;
 		}, configurable: true
 	},
 	
@@ -8708,7 +8940,7 @@ TextManager.message = function(messageId) {
 };
 
 TextManager.equipTypes = function(index) {
-    var text = false;
+    let text = false;
 	if(TextManager.isJapanese) {
 		if(index <= RemEquipTypesJP.length && index > 0)
 			text = RemEquipTypesJP[index];

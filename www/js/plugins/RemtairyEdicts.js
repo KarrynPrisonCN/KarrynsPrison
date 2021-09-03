@@ -1892,6 +1892,8 @@ Game_Actor.prototype.getInvasionChance_LevelTwo = function() {
 };
 
 Game_Actor.prototype.getInvasionChance_LevelThree = function() {
+	if($gameParty.isDemoVersion()) return 0;
+	
 	let chance = 55;
 	
 	if(this.hasEdict(EDICT_RESEARCH_NEW_LOCKS)) chance -= 15;
@@ -1904,6 +1906,8 @@ Game_Actor.prototype.getInvasionChance_LevelThree = function() {
 };
 
 Game_Actor.prototype.getInvasionChance_LevelFour = function() {
+	if($gameParty.isDemoVersion()) return 0;
+	
 	let chance = 75;
 	
 	if(this.hasEdict(EDICT_RESEARCH_NEW_LOCKS)) chance -= 15;

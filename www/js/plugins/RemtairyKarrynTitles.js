@@ -442,7 +442,6 @@ Game_Party.prototype.checkForNewTitle = function() {
 	}
 	if(!actor.hasThisTitle(TITLE_ID_BLUNT_THREE) && actor._playthroughRecordActiveAttackUsage > 300 && actor.level > 35 && actor._playthroughRecordBluntAttackUsage >= (actor._playthroughRecordPierceAttackUsage + actor._playthroughRecordSlashAttackUsage)) {
 		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_BLUNT_THREE]);
-		if(!actor.hasEdict(EDICT_STRIKE_TRAINING_TWO)) actor.learnSkill(EDICT_STRIKE_TRAINING_TWO);
 	}
 	
 	//Pierce Titles
@@ -454,7 +453,6 @@ Game_Party.prototype.checkForNewTitle = function() {
 	}
 	if(!actor.hasThisTitle(TITLE_ID_PIERCE_THREE) && actor._playthroughRecordActiveAttackUsage > 300 && actor.level > 35 && actor._playthroughRecordPierceAttackUsage >= (actor._playthroughRecordBluntAttackUsage + actor._playthroughRecordSlashAttackUsage)) {
 		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_PIERCE_THREE]);
-		if(!actor.hasEdict(EDICT_THRUST_TRAINING_TWO)) actor.learnSkill(EDICT_THRUST_TRAINING_TWO);
 	}
 	
 	//Slash Titles
@@ -466,7 +464,6 @@ Game_Party.prototype.checkForNewTitle = function() {
 	}
 	if(!actor.hasThisTitle(TITLE_ID_SLASH_THREE) && actor._playthroughRecordActiveAttackUsage > 300 && actor.level > 35 && actor._playthroughRecordSlashAttackUsage >= (actor._playthroughRecordBluntAttackUsage + actor._playthroughRecordPierceAttackUsage)) {
 		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_SLASH_THREE]);
-		if(!actor.hasEdict(EDICT_SLASH_TRAINING_TWO)) actor.learnSkill(EDICT_SLASH_TRAINING_TWO);
 	}
 	
 	//Kick Titles

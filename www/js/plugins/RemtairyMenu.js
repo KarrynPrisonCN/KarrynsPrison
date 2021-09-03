@@ -1624,6 +1624,7 @@ Window_StatusInfo.prototype.drawProfile = function() {
 Window_StatusInfo.prototype.drawRecords = function() {
 	if(!this._actor) return;
 	let actor = this._actor;
+	let useSlutVersion = (actor.isAroused() || $gameParty.isNightMode()) && actor.getMapReactionScore() >= VAR_DEF_RS_LV3_REQ;
 	let firstColumnX = WINDOW_STATUS_FIRST_X;
 	let firstTextPaddingX = firstColumnX + this.textPadding();
 	let textPaddingY = -6;
@@ -1648,11 +1649,13 @@ Window_StatusInfo.prototype.drawRecords = function() {
 	
 		if(i === 0) {
 			let fmt = TextManager.statusRecordDate;
+			if(useSlutVersion) fmt = TextManager.statusRecordDateSlut;
 			let value1 = Prison.date;
 			recordText = fmt.format(Yanfly.Util.toGroup(value1));
 		}
 		else if(i === 1) {
 			let fmt = TextManager.statusRecordFight;
+			if(useSlutVersion) fmt = TextManager.statusRecordFightSlut;
 			let value1 = actor._recordSubduedTotal;
 			let value2 = actor._recordDefeatedTotal;
 			if(value1 === 0) { }
@@ -1665,6 +1668,7 @@ Window_StatusInfo.prototype.drawRecords = function() {
 		}
 		else if(i === 2) {
 			let fmt = TextManager.statusRecordStrip;
+			if(useSlutVersion) fmt = TextManager.statusRecordStripSlut;
 			let value1 = actor._recordClothesStrippedCount;
 			let value2 = actor._recordPantiesStrippedCount;
 			if(value1 && value2)
@@ -1672,6 +1676,7 @@ Window_StatusInfo.prototype.drawRecords = function() {
 		}
 		else if(i === 3) {
 			let fmt = TextManager.statusRecordKiss;
+			if(useSlutVersion) fmt = TextManager.statusRecordKissSlut;
 			let value1 = actor._recordKissedCount;
 			let value2 = actor._recordKissedPeople;
 			if(value1)
@@ -1679,6 +1684,7 @@ Window_StatusInfo.prototype.drawRecords = function() {
 		}
 		else if(i === 4) {
 			let fmt = TextManager.statusRecordFingersSucked;
+			if(useSlutVersion) fmt = TextManager.statusRecordFingersSuckedSlut;
 			let value1 = actor._recordFingersSuckedCount - actor._recordFingersSuckedOnaniCount;
 			let value2 = actor._recordFingersSuckedPeople;
 			if(value1 && value2 && value2 > 1)
@@ -1686,6 +1692,7 @@ Window_StatusInfo.prototype.drawRecords = function() {
 		}
 		else if(i === 5) {
 			let fmt = TextManager.statusRecordBoobsPetted;
+			if(useSlutVersion) fmt = TextManager.statusRecordBoobsPettedSlut;
 			let value1 = actor._recordBoobsPettedCount - actor._recordBoobsPettedOnaniCount;
 			let value2 = actor._recordBoobsPettedPeople;
 			if(value1 && value2 && value2 > 1)
@@ -1693,6 +1700,7 @@ Window_StatusInfo.prototype.drawRecords = function() {
 		}
 		else if(i === 6) {
 			let fmt = TextManager.statusRecordNipplesPetted;
+			if(useSlutVersion) fmt = TextManager.statusRecordNipplesPettedSlut;
 			let value1 = actor._recordNipplesPettedCount - actor._recordNipplesPettedOnaniCount;
 			let value2 = actor._recordNipplesPettedPeople;
 			if(value1 && value2 && value2 > 1)
@@ -1700,6 +1708,7 @@ Window_StatusInfo.prototype.drawRecords = function() {
 		}
 		else if(i === 7) {
 			let fmt = TextManager.statusRecordClitPetted;
+			if(useSlutVersion) fmt = TextManager.statusRecordClitPettedSlut;
 			let value1 = actor._recordClitPettedCount - actor._recordClitPettedOnaniCount;
 			let value2 = actor._recordClitPettedPeople;
 			if(value1 && value2 && value2 > 1)
@@ -1707,6 +1716,7 @@ Window_StatusInfo.prototype.drawRecords = function() {
 		}
 		else if(i === 8) {
 			let fmt = TextManager.statusRecordPussyPetted;
+			if(useSlutVersion) fmt = TextManager.statusRecordPussyPettedSlut;
 			let value1 = actor._recordPussyPettedCount - actor._recordPussyPettedOnaniCount;
 			let value2 = actor._recordPussyPettedPeople;
 			if(value1 && value2 && value2 > 1)
@@ -1714,6 +1724,7 @@ Window_StatusInfo.prototype.drawRecords = function() {
 		}
 		else if(i === 9) {
 			let fmt = TextManager.statusRecordButtPetted;
+			if(useSlutVersion) fmt = TextManager.statusRecordButtPettedSlut;
 			let value1 = actor._recordButtPettedCount - actor._recordButtPettedOnaniCount;
 			let value2 = actor._recordButtPettedPeople;
 			if(value1 && value2 && value2 > 1)
@@ -1721,6 +1732,7 @@ Window_StatusInfo.prototype.drawRecords = function() {
 		}
 		else if(i === 10) {
 			let fmt = TextManager.statusRecordAnalPetted;
+			if(useSlutVersion) fmt = TextManager.statusRecordAnalPettedSlut;
 			let value1 = actor._recordAnalPettedCount - actor._recordAnalPettedOnaniCount;
 			let value2 = actor._recordAnalPettedPeople;
 			if(value1 && value2 && value2 > 1)
@@ -1728,6 +1740,7 @@ Window_StatusInfo.prototype.drawRecords = function() {
 		}
 		else if(i === 11) {
 			let fmt = TextManager.statusRecordMasturbate;
+			if(useSlutVersion) fmt = TextManager.statusRecordMasturbateSlut;
 			let value1 = actor._recordMasturbatedTotalCount;
 			let value2 = actor._recordSeeJerkOffCount;
 			if(value1 && value2)
@@ -1735,12 +1748,14 @@ Window_StatusInfo.prototype.drawRecords = function() {
 		}
 		else if(i === 12) {
 			let fmt = TextManager.statusRecordSexPartners;
+			if(useSlutVersion) fmt = TextManager.statusRecordSexPartnersSlut;
 			let value1 = actor._recordSexualPartnersTotal;
 			if(value1)
 				recordText = fmt.format(Yanfly.Util.toGroup(value1));
 		}
 		else if(i === 13) {
 			let fmt = TextManager.statusRecordHandjob;
+			if(useSlutVersion) fmt = TextManager.statusRecordHandjobSlut;
 			let value1 = actor._recordHandjobCount;
 			let value2 = actor._recordHandjobPeople;
 			if(value1)
@@ -1748,6 +1763,7 @@ Window_StatusInfo.prototype.drawRecords = function() {
 		}
 		else if(i === 14) {
 			let fmt = TextManager.statusRecordBlowjob;
+			if(useSlutVersion) fmt = TextManager.statusRecordBlowjobSlut;
 			let value1 = actor._recordBlowjobCount;
 			let value2 = actor._recordBlowjobPeople;
 			if(value1)
@@ -1755,6 +1771,7 @@ Window_StatusInfo.prototype.drawRecords = function() {
 		}
 		else if(i === 15) {
 			let fmt = TextManager.statusRecordTittyFuck;
+			if(useSlutVersion) fmt = TextManager.statusRecordTittyFuckSlut;
 			let value1 = actor._recordTittyFuckCount;
 			let value2 = actor._recordTittyFuckPeople;
 			if(value1)
@@ -1762,6 +1779,7 @@ Window_StatusInfo.prototype.drawRecords = function() {
 		}
 		else if(i === 16) {
 			let fmt = TextManager.statusRecordFootjob;
+			if(useSlutVersion) fmt = TextManager.statusRecordFootjobSlut;
 			let value1 = actor._recordFootjobCount;
 			let value2 = actor._recordFootjobPeople;
 			if(value1)
@@ -1769,6 +1787,7 @@ Window_StatusInfo.prototype.drawRecords = function() {
 		}
 		else if(i === 17) {
 			let fmt = TextManager.statusRecordRimjob;
+			if(useSlutVersion) fmt = TextManager.statusRecordRimjobSlut;
 			let value1 = actor._recordRimjobCount;
 			let value2 = actor._recordRimjobPeople;
 			if(value1)
@@ -1776,6 +1795,7 @@ Window_StatusInfo.prototype.drawRecords = function() {
 		}
 		else if(i === 18) {
 			let fmt = TextManager.statusRecordCunni;
+			if(useSlutVersion) fmt = TextManager.statusRecordCunniSlut;
 			let value1 = actor._recordCunnilingusCount;
 			let value2 = actor._recordCunnilingusPeople;
 			if(value1)
@@ -1783,6 +1803,7 @@ Window_StatusInfo.prototype.drawRecords = function() {
 		}
 		else if(i === 19) {
 			let fmt = TextManager.statusRecordSpanked;
+			if(useSlutVersion) fmt = TextManager.statusRecordSpankedSlut;
 			let value1 = actor._recordButtSpankedCount;
 			let value2 = actor._recordButtSpankedPeople;
 			if(value1)
@@ -1790,6 +1811,7 @@ Window_StatusInfo.prototype.drawRecords = function() {
 		}
 		else if(i === 20) {
 			let fmt = TextManager.statusRecordPussySex;
+			if(useSlutVersion) fmt = TextManager.statusRecordPussySexSlut;
 			let value1 = actor._recordPussyFuckedCount;
 			let value2 = actor._recordPussyFuckedPeople;
 			if(value1)
@@ -1797,6 +1819,7 @@ Window_StatusInfo.prototype.drawRecords = function() {
 		}
 		else if(i === 21) {
 			let fmt = TextManager.statusRecordAnalSex;
+			if(useSlutVersion) fmt = TextManager.statusRecordAnalSexSlut;
 			let value1 = actor._recordAnalFuckedCount;
 			let value2 = actor._recordAnalFuckedPeople;
 			if(value1)
@@ -1804,6 +1827,7 @@ Window_StatusInfo.prototype.drawRecords = function() {
 		}
 		else if(i === 22) {
 			let fmt = TextManager.statusRecordGangbang;
+			if(useSlutVersion) fmt = TextManager.statusRecordGangbangSlut;
 			let value1 = actor._recordDoublePenetrationCount;
 			let value2 = actor._recordTriplePenetrationCount;
 			if(value1 && value2)
@@ -1811,6 +1835,7 @@ Window_StatusInfo.prototype.drawRecords = function() {
 		}
 		else if(i === 23) {
 			let fmt = TextManager.statusRecordOrgasm;
+			if(useSlutVersion) fmt = TextManager.statusRecordOrgasmSlut;
 			let value1 = actor._recordOrgasmCount;
 			let value2 = actor._recordOrgasmPresencePeople;
 			let value3 = actor._recordOrgasmML;
@@ -1819,6 +1844,7 @@ Window_StatusInfo.prototype.drawRecords = function() {
 		}
 		else if(i === 24) {
 			let fmt = TextManager.statusRecordBukkake;
+			if(useSlutVersion) fmt = TextManager.statusRecordBukkakeSlut;
 			let value1 = actor._recordBukkakeTotalCount;
 			let value2 = actor._recordBukkakePeople;
 			let value3 = actor._recordBukkakeTotalML;
@@ -1827,6 +1853,7 @@ Window_StatusInfo.prototype.drawRecords = function() {
 		}
 		else if(i === 25) {
 			let fmt = TextManager.statusRecordFaceBukkake;
+			if(useSlutVersion) fmt = TextManager.statusRecordFaceBukkakeSlut;
 			let value1 = actor._recordBukkakeFaceCount;
 			let value2 = actor._recordFaceBukkakePeople;
 			let value3 = actor._recordBukkakeFaceML;
@@ -1835,6 +1862,7 @@ Window_StatusInfo.prototype.drawRecords = function() {
 		}
 		else if(i === 26) {
 			let fmt = TextManager.statusRecordSwallow;
+			if(useSlutVersion) fmt = TextManager.statusRecordSwallowSlut;
 			let value1 = actor._recordSwallowCount;
 			let value2 = actor._recordSwallowPeople;
 			let value3 = actor._recordSwallowML;
@@ -1843,6 +1871,7 @@ Window_StatusInfo.prototype.drawRecords = function() {
 		}
 		else if(i === 27) {
 			let fmt = TextManager.statusRecordPussyCreampie;
+			if(useSlutVersion) fmt = TextManager.statusRecordPussyCreampieSlut;
 			let value1 = actor._recordPussyCreampieCount;
 			let value2 = actor._recordPussyCreampiePeople;
 			let value3 = actor._recordPussyCreampieML;
@@ -1851,6 +1880,7 @@ Window_StatusInfo.prototype.drawRecords = function() {
 		}
 		else if(i === 28) {
 			let fmt = TextManager.statusRecordAnalCreampie;
+			if(useSlutVersion) fmt = TextManager.statusRecordAnalCreampieSlut;
 			let value1 = actor._recordAnalCreampieCount;
 			let value2 = actor._recordAnalCreampiePeople;
 			let value3 = actor._recordAnalCreampieML;

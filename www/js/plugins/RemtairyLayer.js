@@ -846,6 +846,8 @@ Game_Actor.prototype.getLayerLoadout_KickCounter = function() {
 	let layerArray = [];
 	
 	layerArray = [
+		LAYER_TYPE_BACK_A,
+		
 		LAYER_TYPE_SEMEN_ANAL,
 		LAYER_TYPE_SEMEN_BUTT,
 		LAYER_TYPE_SEMEN_RIGHT_ARM,
@@ -859,7 +861,6 @@ Game_Actor.prototype.getLayerLoadout_KickCounter = function() {
 		LAYER_TYPE_SEMEN_PUSSY,
 		LAYER_TYPE_WET,
 		
-		LAYER_TYPE_BACK_A,
 		LAYER_TYPE_BACK_B,
 		
 		LAYER_TYPE_HAT,

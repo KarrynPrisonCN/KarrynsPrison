@@ -10158,11 +10158,13 @@ Game_Actor.prototype.emoteFootjobPose = function() {
 		if(this.isWearingGlovesAndHat())
 			this.setTachieHat('far_1');
 		this.setTachieHead('far_1');
+		this.setTachieSemenFaceExtension('far_');
 	}
 	else {
 		if(this.isWearingGlovesAndHat())
 			this.setTachieHat('close_1');
 		this.setTachieHead('close_1');
+		this.setTachieSemenFaceExtension('close_');
 	}
 	
 	if(!this.isWearingGlovesAndHat()) {

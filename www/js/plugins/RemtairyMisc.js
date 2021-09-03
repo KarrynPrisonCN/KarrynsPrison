@@ -574,6 +574,21 @@ Scene_Battle.prototype.cancelActorCommandWindowCommand = function() {
 // Scene Equip
 ///////////////
 
+Remtairy.Misc.Scene_Equip_onItemOk = Scene_Equip.prototype.onItemOk;
+Scene_Equip.prototype.onItemOk = function() {
+	let slotIndex = this._slotWindow.index();
+	if(slotIndex === EQUIP_SLOT_LOAD_SET_ID) { //Load Equip Set
+		this.actor().loadEquipSet(this._itemWindow.item().id);
+	}
+	else if(slotIndex === EQUIP_SLOT_SAVE_SET_ID) { //Save Equip Set
+		this.actor().saveEquipSet(this._itemWindow.item().id);
+	}
+    Remtairy.Misc.Scene_Equip_onItemOk.call(this);
+	if(slotIndex === EQUIP_SLOT_LOAD_SET_ID || slotIndex === EQUIP_SLOT_SAVE_SET_ID) { 
+		this.actor().changeEquip(slotIndex, null);
+	}
+};
+
 //Auto jump to equip command
 Scene_Equip.prototype.createCommandWindow = function() {
     var wy = this._helpWindow.height;
@@ -615,10 +630,12 @@ Scene_Equip.prototype.createSlotWindow = function() {
     this._slotWindow.setHelpWindow(this._helpWindow);
     this._slotWindow.setHandler('ok',       this.onSlotOk.bind(this));
     this._slotWindow.setHandler('cancel',   this.popScene.bind(this));
+	/*
 	if (!$gameTemp._cbeBattle) {
 		this._slotWindow.setHandler('pagedown', this.slotToNextActor.bind(this));
 		this._slotWindow.setHandler('pageup',   this.slotToPreviousActor.bind(this));
 	}
+	*/
     this.addWindow(this._slotWindow);
 };
 
@@ -759,11 +776,46 @@ Window_EquipSlot.prototype.drawAllItems = function() {
 //Edited to allow actor name
 Window_EquipSlot.prototype.setTopRow = function(row) {
 	//var scrollY = row.clamp(0, this.maxTopRow()) * this.itemHeight();
-    var scrollY = row.clamp(0, this.maxTopRow()) * this.itemHeight() - this.itemHeight();
-    if (this._scrollY !== scrollY) {
+    let scrollY = row.clamp(0, this.maxTopRow()) * this.itemHeight() - this.itemHeight();
+    if(this._scrollY !== scrollY) {
         this._scrollY = scrollY;
         this.refresh();
         this.updateCursor();
+    }
+};
+
+Window_EquipSlot.prototype.drawItem = function(index) {
+    if (!this._actor) return;
+    let rect = this.itemRectForText(index);
+    this.changeTextColor(this.systemColor());
+    this.changePaintOpacity(this.isEnabled(index));
+    let ww1 = this._nameWidth;
+	
+	if(index < EQUIP_SLOT_LOAD_SET_ID) {
+		this.drawText(this.slotName(index), rect.x, rect.y, ww1);
+	}
+	else {
+		this.drawText(this.slotName(index), rect.x, rect.y, rect.width);
+	}
+	
+    let ww2 = rect.width - ww1;
+    let item = this._actor.equips()[index];
+	if(index < EQUIP_SLOT_LOAD_SET_ID) {
+		if (item) {
+		  this.drawItemName(item, rect.x + ww1, rect.y, ww2);
+		} else {
+		  this.drawEmptySlot(rect.x + ww1, rect.y, ww2);
+		}
+	}
+    this.changePaintOpacity(true);
+};
+
+Window_EquipSlot.prototype.setSlotNameWidth = function(actor) {
+    if (!actor) return;
+    this._nameWidth = 0;
+    for(let i = 0; i < actor.equipSlots().length && i < EQUIP_SLOT_LOAD_SET_ID; ++i) {
+		let text = $dataSystem.equipTypes[actor.equipSlots()[i]] + ' ';
+		this._nameWidth = Math.max(this._nameWidth, this.textWidth(text));
     }
 };
 
@@ -820,14 +872,14 @@ Window_EquipItem.prototype.drawRemoveEquip = function(index) {
     this.resetTextColor();
     this.drawIcon(Yanfly.Icon.RemoveEquip, rect.x + 10, rect.y + REM_Y_ICON_PADDING);
 	var text = TextManager.yanflyRemove;
-    this.drawText(text, rect.x+10 + ibw, rect.y, rect.width - ibw);
+    this.drawText(text, rect.x + 10 + ibw, rect.y, rect.width - ibw);
 };
 
 //TextManager
 Window_EquipSlot.prototype.slotName = function(index) {
-    var slots = this._actor.equipSlots();
+    let slots = this._actor.equipSlots();
 	if(TextManager.isJapanese || TextManager.isEnglish) {
-		var text = TextManager.equipTypes(slots[index]);
+		let text = TextManager.equipTypes(slots[index]);
 		if(!text) text = this._actor ? $dataSystem.equipTypes[slots[index]] : '';
 		return text; 
 	}
@@ -855,9 +907,11 @@ Window_EquipItem.prototype.isEnabled = function(item) {
     return true;
 };
 
+
 Window_EquipItem.prototype.drawItemNumber = function(item, x, y, width) {
     return;
 };
+
 
 ///////
 // Window BattleLog
@@ -886,10 +940,15 @@ Window_BattleLog.prototype.drawTextEx = function(text, x, y) {
 Window_StatCompare.prototype.refresh = function() {
     this.contents.clear();
 	this.resetFontSettings();
-    if (!this._actor) return;
+    if(!this._actor) return;
 
-	if (this._tempActor) {
-		this.drawDifference();
+	if(this._tempActor) {
+		if(this._tempActor.equips()[EQUIP_SLOT_LOAD_SET_ID] || this._tempActor.equips()[EQUIP_SLOT_SAVE_SET_ID]) {
+			this.drawEquipSet();
+		}
+		else {
+			this.drawDifference();
+		}
 	}
 	else {
 		this.drawCurrentParam();
@@ -1530,6 +1589,79 @@ Window_StatCompare.prototype.drawElementRem = function(elementId, x, y) {
       text = ' (+' + text + ')';
     }
     this.drawText(text, x, y, this._bonusValueWidth, 'left');
+};
+
+Window_StatCompare.prototype.drawEquipSet = function() {
+	let accessoryArray = false;
+	let titleId = false;
+	let armorId = false;
+	let setId = false;
+	
+	if(this._tempActor.equips()[EQUIP_SLOT_LOAD_SET_ID]) {
+		armorId = this._tempActor.equips()[EQUIP_SLOT_LOAD_SET_ID].id;
+	}
+	else {
+		armorId = this._tempActor.equips()[EQUIP_SLOT_SAVE_SET_ID].id;
+	}
+	
+	setId = this._tempActor.getEquipSetId(armorId);
+	
+	accessoryArray = [false, false, false, false, false];
+	if(this._tempActor._equipSetAccessories[setId])
+		accessoryArray = this._tempActor._equipSetAccessories[setId].slice();
+	titleId = this._tempActor._equipSetTitle[setId];
+	
+	
+	for(let i = 0; i < 6; ++i) {
+		let itemId = false;
+		if(i === 5)
+			itemId = titleId;
+		else {
+			itemId = accessoryArray[i];
+		}
+		
+		let item = false;
+		if(itemId)
+			item = $dataArmors[itemId];
+		let text = '';
+		
+		if(item) {
+			if(TextManager.isEnglish && item.hasRemNameEN) text = item.remNameEN;
+			else if(TextManager.isJapanese && item.hasRemNameJP) text = item.remNameJP;
+			else if(TextManager.isSChinese && item.hasRemNameSCH) text = item.remNameSCH;
+			else if(TextManager.isTChinese && item.hasRemNameTCH) text = item.remNameTCH;
+			else if(TextManager.isKorean && item.hasRemNameKR) text = item.remNameKR;
+			else text = item.name;
+		}
+		else {
+			text = TextManager.yanflySaveEmpty;
+		}
+		
+		if(!item) {
+			this.changeTextColor(this.textColor(8));
+		}
+		else if(!$gameParty.hasItem($dataArmors[itemId], true)) {
+			this.changeTextColor(this.textColor(10));
+		}
+		else {
+			this.resetTextColor();
+		}
+		
+		let x = this.textPadding();
+		let y = i * this.lineHeight();
+		let ibw = Window_Base._iconWidth + 8;
+		
+		if(!item) {
+			this.drawIcon(Yanfly.Icon.EmptyEquip, x, y + REM_Y_ICON_PADDING);
+		}
+		else {
+			this.drawIcon(item.iconIndex, x, y + REM_Y_ICON_PADDING);
+		}
+		
+		this.drawText(text, x + ibw, y, this.contents.width - (ibw + this.textPadding()));
+	}
+	
+	return;
 };
 
 Window_StatCompare.prototype.createWidths = function() {
@@ -3210,16 +3342,34 @@ Graphics.render = function(stage) {
 Scene_Map.prototype.start = function() {
     Scene_Base.prototype.start.call(this);
     SceneManager.clearStack();
-    if (this._transfer) {
+    if(this._transfer) {
         this.fadeInForTransfer();
 		if(!this._spriteset || !this._mapNameWindow) 
 			this.createDisplayObjects();
         this._mapNameWindow.open();
         $gameMap.autoplay();
-    } else if (this.needsFadeIn()) {
+    } 
+	else if(this.needsFadeIn()) {
         this.startFadeIn(this.fadeSpeed(), false);
     }
     this.menuCalling = false;
+};
+
+Scene_Map.prototype.stop = function() {
+    Scene_Base.prototype.stop.call(this);
+    $gamePlayer.straighten();
+	if(!this._mapNameWindow) 
+		this.createDisplayObjects();
+    this._mapNameWindow.close();
+    if(this.needsSlowFadeOut()) {
+        this.startFadeOut(this.slowFadeSpeed(), false);
+    } 
+	else if (SceneManager.isNextScene(Scene_Map)) {
+        this.fadeOutForTransfer();
+    } 
+	else if (SceneManager.isNextScene(Scene_Battle)) {
+        this.launchBattle();
+    }
 };
 
 Scene_Map.prototype.performAutosave = function() {

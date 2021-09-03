@@ -660,7 +660,7 @@ Game_Enemy.prototype.beforeEval_start_rimjob_mouth = function(target) {
 	this.setValidTargetForRimjob();
 	this.setPoseSkillTarget(target);
 	this.setPoseSkills([SKILL_ENEMY_POSESKILL_RIMJOB_ID]);
-	this.setOrgasmSkills([SKILL_ENEMY_EJACULATE_ONTO_FLOOR_ID]);
+	this.setOrgasmSkills([SKILL_ENEMY_EJACULATE_BOOBS_ID, SKILL_ENEMY_EJACULATE_LEFTARM_ID]);
 	this.setCanBeKissed(false);
 	
 	this.addToEnemyRimmedCountRecord(target);
@@ -2183,6 +2183,14 @@ Game_Enemy.prototype.dmgFormula_basicSight = function(target, sightType, jerking
 	this.addToEnemySawCountRecord(target);
 	if(targetPleasureGain > 0) target.addToActorSightPleasureRecord(targetPleasureGain);
 	
+	if(!Karryn.isInShowEnemyImageOnlyDuringValidSelectionPose()) {
+		if(Karryn.isInDrawEnemiesAtHalfWidthPose())
+			this.startAnimation(261, false, 0);
+		else
+			this.startAnimation(262, false, 0);
+	}
+		
+	
 	//target.emoteMasterManager();
 	
 	return 0;
@@ -2201,6 +2209,9 @@ Game_Enemy.prototype.dmgFormula_basicPetting = function(target, area) {
 	let baseDmg = 0;
 	let targetDesire = 0;
 	let targetSensitivity = 0;
+	
+	let cutInId = false;
+	let enemyCock = this.enemyCock();
 	
 	if(area == AREA_BOOBS) {
 		baseDmg = BASEDMG_PETTING_BOOBS;
@@ -2248,14 +2259,30 @@ Game_Enemy.prototype.dmgFormula_basicPetting = function(target, area) {
 		targetDesire = target.buttDesire;
 		targetSensitivity = target.analSensitivity();
 		this.addToEnemyAnalPettedCountRecord(target);
-		target.setTachieCutIn(CUTIN_PETTING_ANAL_HUMAN_DEFAULT_ID);
+		if(enemyCock.includes('normal')) 
+			cutInId = CUTIN_PETTING_ANAL_HUMAN_NORMAL_ID;
+		else if(enemyCock.includes('pale')) 
+			cutInId = CUTIN_PETTING_ANAL_HUMAN_PALE_ID;
+		else if(enemyCock.includes('black')) 
+			cutInId = CUTIN_PETTING_ANAL_HUMAN_BLACK_ID;
+		else
+			cutInId = CUTIN_PETTING_ANAL_HUMAN_NORMAL_ID;
+		target.setTachieCutIn(cutInId);
 	}
 	else if(area == AREA_FINGERS) {
 		baseDmg = BASEDMG_SUCKING_FINGERS;
 		targetDesire = target.mouthDesire;
 		targetSensitivity = target.mouthSensitivity();
 		this.addToEnemyFingerSuckedCountRecord(target);
-		target.setTachieCutIn(CUTIN_SUCKING_FINGERS_ENEMY_HUMAN_DEFAULT_ID);
+		if(enemyCock.includes('normal')) 
+			cutInId = CUTIN_SUCKING_FINGERS_ENEMY_HUMAN_NORMAL_ID;
+		else if(enemyCock.includes('pale')) 
+			cutInId = CUTIN_SUCKING_FINGERS_ENEMY_HUMAN_PALE_ID;
+		else if(enemyCock.includes('black')) 
+			cutInId = CUTIN_SUCKING_FINGERS_ENEMY_HUMAN_BLACK_ID;
+		else
+			cutInId = CUTIN_SUCKING_FINGERS_ENEMY_HUMAN_NORMAL_ID;
+		target.setTachieCutIn(cutInId);
 	}
 	else if(area == AREA_HANDSHAKE) {
 		baseDmg = BASEDMG_VISITOR_HANDSHAKE;
@@ -2323,6 +2350,13 @@ Game_Enemy.prototype.dmgFormula_basicPetting = function(target, area) {
 	
 	target.justGotHitBySkillType(JUST_SKILLTYPE_ENEMY_PETTING);
 	
+	if(!Karryn.isInShowEnemyImageOnlyDuringValidSelectionPose()) {
+		if(Karryn.isInDrawEnemiesAtHalfWidthPose())
+			this.startAnimation(261, false, 0);
+		else
+			this.startAnimation(262, false, 0);
+	}
+	
 	//target.emoteMasterManager();
 	
 	return 0;
@@ -2344,13 +2378,32 @@ Game_Enemy.prototype.dmgFormula_enemyKiss = function(target, lvl) {
 	let kissLvlDmg = 1;
 	let targetPassiveEffect = target.passiveKissSkillRate(this);
 	
+	let cutInId = false;
+	let enemyCock = this.enemyCock();
+	
 	if(lvl == KISS_LVL_ONE) {
-		target.setTachieCutIn(CUTIN_ENEMY_KISS_ONE_HUMAN_DEFAULT_ID);
+		if(enemyCock.includes('normal')) 
+			cutInId = CUTIN_ENEMY_KISS_ONE_HUMAN_NORMAL_ID;
+		else if(enemyCock.includes('pale')) 
+			cutInId = CUTIN_ENEMY_KISS_ONE_HUMAN_PALE_ID;
+		else if(enemyCock.includes('black')) 
+			cutInId = CUTIN_ENEMY_KISS_ONE_HUMAN_BLACK_ID;
+		else
+			cutInId = CUTIN_ENEMY_KISS_ONE_HUMAN_NORMAL_ID;
+		target.setTachieCutIn(cutInId);
 	}
 	if(lvl == KISS_LVL_TWO) {
 		baseDmg = BASEDMG_KISS_LVLTWO;
 		kissLvlDmg = 1.2;
-		target.setTachieCutIn(CUTIN_ENEMY_KISS_TWO_HUMAN_DEFAULT_ID);
+		if(enemyCock.includes('normal')) 
+			cutInId = CUTIN_ENEMY_KISS_TWO_HUMAN_NORMAL_ID;
+		else if(enemyCock.includes('pale')) 
+			cutInId = CUTIN_ENEMY_KISS_TWO_HUMAN_PALE_ID;
+		else if(enemyCock.includes('black')) 
+			cutInId = CUTIN_ENEMY_KISS_TWO_HUMAN_BLACK_ID;
+		else
+			cutInId = CUTIN_ENEMY_KISS_TWO_HUMAN_NORMAL_ID;
+		target.setTachieCutIn(cutInId);
 	}
 	
 	let targetDesireGain = (baseDmg + enemySkillLvl) * targetPettingRate;
@@ -2414,6 +2467,13 @@ Game_Enemy.prototype.dmgFormula_enemyKiss = function(target, lvl) {
 	if(targetPleasureGain > 0) target.addToActorMouthPleasureRecord(targetPleasureGain);
 	target.justGotHitBySkillType(JUST_SKILLTYPE_ENEMY_KISS);
 	this.addToEnemyKissedCountRecord(target);
+	
+	if(!Karryn.isInShowEnemyImageOnlyDuringValidSelectionPose()) {
+		if(Karryn.isInDrawEnemiesAtHalfWidthPose())
+			this.startAnimation(261, false, 0);
+		else
+			this.startAnimation(262, false, 0);
+	}
 	
 	return 0;
 };
@@ -2522,6 +2582,9 @@ Game_Enemy.prototype.dmgFormula_toyPlay = function(target, toy, insertion) {
 	let targetSensitivity = 0;
 	let toySensitivity = target.calculateToySensitivityRating(toy);
 	
+	let cutInId = false;
+	let enemyCock = this.enemyCock();
+	
 	if(toy == TOY_PINK_ROTOR) {
 		baseDmg = BASEDMG_TOY_PINK_ROTOR;
 		desireTarget = AREA_CLIT;
@@ -2566,11 +2629,27 @@ Game_Enemy.prototype.dmgFormula_toyPlay = function(target, toy, insertion) {
 			target.stripOffPanties();
 			target.addToAnalToyInsertedRecord(this);
 			target.setToyInserted_AnalToy_AnalBeads(true);
-			target.setTachieCutIn(CUTIN_TOY_ANAL_BEADS_INSERT_HUMAN_DEFAULT_ID);
+			if(enemyCock.includes('normal')) 
+				cutInId = CUTIN_TOY_ANAL_BEADS_INSERT_HUMAN_NORMAL_ID;
+			else if(enemyCock.includes('pale')) 
+				cutInId = CUTIN_TOY_ANAL_BEADS_INSERT_HUMAN_PALE_ID;
+			else if(enemyCock.includes('black')) 
+				cutInId = CUTIN_TOY_ANAL_BEADS_INSERT_HUMAN_BLACK_ID;
+			else
+				cutInId = CUTIN_TOY_ANAL_BEADS_INSERT_HUMAN_NORMAL_ID;
+			target.setTachieCutIn(cutInId);
 		}
 		else {
 			target.addToAnalToyUsedByEnemyRecord(this);
-			target.setTachieCutIn(CUTIN_TOY_ANAL_BEADS_PLAY_HUMAN_DEFAULT_ID);
+			if(enemyCock.includes('normal')) 
+				cutInId = CUTIN_TOY_ANAL_BEADS_PLAY_HUMAN_NORMAL_ID;
+			else if(enemyCock.includes('pale')) 
+				cutInId = CUTIN_TOY_ANAL_BEADS_PLAY_HUMAN_PALE_ID;
+			else if(enemyCock.includes('black')) 
+				cutInId = CUTIN_TOY_ANAL_BEADS_PLAY_HUMAN_BLACK_ID;
+			else
+				cutInId = CUTIN_TOY_ANAL_BEADS_PLAY_HUMAN_NORMAL_ID;
+			target.setTachieCutIn(cutInId);
 		}
 		target.justGotHitBySkillType(JUST_SKILLTYPE_ENEMY_TOY_PLAY_ANAL);
 	}
@@ -3085,7 +3164,10 @@ Game_Enemy.prototype.dmgFormula_creampie = function(target, area) {
 			else
 				cutInId = CUTIN_EJACULATE_PUSSYCREAMPIE_REG_YETI_NORMAL_ID;
 			*/
-			cutInId = false;
+			if(useMirrorCutin)
+				cutInId = CUTIN_EJACULATE_PUSSYCREAMPIE_MIRROR_HUMAN_CUT_NORMAL_ID;
+			else
+				cutInId = CUTIN_EJACULATE_PUSSYCREAMPIE_REG_HUMAN_CUT_NORMAL_ID;
 		}
 		
 		if(cutInId) target.setTachieCutIn(cutInId);
@@ -3242,7 +3324,11 @@ Game_Enemy.prototype.dmgFormula_creampie = function(target, area) {
 			else
 				cutInId = CUTIN_EJACULATE_ANALCREAMPIE_REG_YETI_NORMAL_ID;
 			*/
-			cutInId = false;
+			if(useMirrorCutin)
+				cutInId = CUTIN_EJACULATE_ANALCREAMPIE_MIRROR_HUMAN_CUT_NORMAL_ID;
+			else
+				cutInId = CUTIN_EJACULATE_ANALCREAMPIE_REG_HUMAN_CUT_NORMAL_ID;
+
 		}
 		
 		if(cutInId) target.setTachieCutIn(cutInId);
@@ -3344,9 +3430,20 @@ Game_Enemy.prototype.dmgFormula_swallow = function(target, area) {
 	if(targetPleasureGain > 0) target.addToActorSwallowPleasureRecord(targetPleasureGain);
 	this.addToEnemySwallowCountRecord(target);
 
+	let cutInId = CUTIN_EJACULATE_MOUTH_HUMAN_NORMAL_ID;
+	let enemyCock = this.enemyCock();
+
 	if($gameParty.isInGloryBattle) { }
 	else {
-		target.setTachieCutIn(CUTIN_EJACULATE_MOUTH_HUMAN_DEFAULT_ID);
+		if(enemyCock.includes('normal')) 
+			cutInId = CUTIN_EJACULATE_MOUTH_HUMAN_NORMAL_ID;
+		else if(enemyCock.includes('pale')) 
+			cutInId = CUTIN_EJACULATE_MOUTH_HUMAN_PALE_ID;
+		else if(enemyCock.includes('black')) 
+			cutInId = CUTIN_EJACULATE_MOUTH_HUMAN_BLACK_ID;
+		else
+			cutInId = CUTIN_EJACULATE_MOUTH_HUMAN_NORMAL_ID;
+		target.setTachieCutIn(cutInId);
 	}
 	target.justGotHitBySkillType(JUST_SKILLTYPE_ENEMY_CUM_SWALLOW);
 	

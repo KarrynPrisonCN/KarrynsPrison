@@ -957,11 +957,11 @@ Game_Actor.prototype.afterEval_resistOrgasm = function() {
 	
 	if(Karryn.isInReceptionistPose()) {
 		this.setStateTurns(STATE_KARRYN_RESIST_ORGASM_ID, RECEPTIONIST_MENTAL_PHASE_COOLDOWN + 1);
-		this.setStateTurns(STATE_KARRYN_RESIST_ORGASM_ICON_ID, RECEPTIONIST_MENTAL_PHASE_COOLDOWN);
+		this.setStateTurns(STATE_KARRYN_RESIST_ORGASM_ICON_ID, RECEPTIONIST_MENTAL_PHASE_COOLDOWN + 1);
 	}
 	else if($gameParty.isInGloryBattle) {
 		this.setStateTurns(STATE_KARRYN_RESIST_ORGASM_ID, GLORY_MENTAL_PHASE_COOLDOWN + 1);
-		this.setStateTurns(STATE_KARRYN_RESIST_ORGASM_ICON_ID, GLORY_MENTAL_PHASE_COOLDOWN);
+		this.setStateTurns(STATE_KARRYN_RESIST_ORGASM_ICON_ID, GLORY_MENTAL_PHASE_COOLDOWN + 1);
 	}
 };
 Game_Actor.prototype.willpowerResistOrgasmEffect = function() {

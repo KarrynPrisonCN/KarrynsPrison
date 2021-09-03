@@ -42,8 +42,8 @@ const REM_BHD_BC_WAITRESS_SERVE_Y = 40;
 const REM_BHD_BC_WAITRESS_SEX_X = 560;
 const REM_BHD_BC_WAITRESS_SEX_Y = -290;
 
-const REM_BHD_BC_THUG_GANGBANG_SEX_X = -145;
-const REM_BHD_BC_THUG_GANGBANG_SEX_Y = 78;
+const REM_BHD_BC_THUG_GANGBANG_SEX_X = -105;
+const REM_BHD_BC_THUG_GANGBANG_SEX_Y = 70;
 
 const REM_BHD_BC_GOBLIN_CL_X = 490;
 const REM_BHD_BC_GOBLIN_CL_Y = -250;
@@ -63,14 +63,17 @@ const REM_BHD_BC_UNARMED_Y = 65;
 const REM_BHD_BC_DOWN_FALL_X = 10;
 const REM_BHD_BC_DOWN_FALL_Y = -280;
 
-const REM_BHD_BC_DOWN_ORG_X = 480;
-const REM_BHD_BC_DOWN_ORG_Y = -180;
+const REM_BHD_BC_DOWN_ORG_X = 490;
+const REM_BHD_BC_DOWN_ORG_Y = -280;
 
 const REM_BHD_BC_DOWN_STAMINA_X = -95;
 const REM_BHD_BC_DOWN_STAMINA_Y = 15;
 
 const REM_BHD_BC_FOOTJ_X = -110;
 const REM_BHD_BC_FOOTJ_Y = 70;
+
+const REM_BHD_BC_RIMMING_X = -90;
+const REM_BHD_BC_RIMMING_Y = 60;
 
 const REM_BHD_BC_HJ_STANDING_X = -110;
 const REM_BHD_BC_HJ_STANDING_Y = 60;
@@ -81,11 +84,11 @@ const REM_BHD_BC_BJ_KNEELING_Y = 60;
 const REM_BHD_BC_PAIZURI_LAYING_X = 570;
 const REM_BHD_BC_PAIZURI_LAYING_Y = -290;
 
-const REM_BHD_BC_SLIME_PILEDRIVER_X = 610;
-const REM_BHD_BC_SLIME_PILEDRIVER_Y = -340;
+const REM_BHD_BC_SLIME_PILEDRIVER_X = -100;
+const REM_BHD_BC_SLIME_PILEDRIVER_Y = 30;
 
-const REM_BHD_BC_RECEPTIONIST_X = 550;
-const REM_BHD_BC_RECEPTIONIST_Y = -170;
+const REM_BHD_BC_RECEPTIONIST_X = 610;
+const REM_BHD_BC_RECEPTIONIST_Y = -190;
 
 const REM_BHD_BC_REVERSE_COWGIRL_X = 570;
 const REM_BHD_BC_REVERSE_COWGIRL_Y = -265;
@@ -99,7 +102,7 @@ const REM_BHD_BC_LIZARDMAN_COWGIRL_Y = -250;
 const REM_BHD_BC_WEREWOLF_BACK_X = 605;
 const REM_BHD_BC_WEREWOLF_BACK_Y = 70;
 
-const REM_BHD_BC_YETI_PAIZURI_X = 45;
+const REM_BHD_BC_YETI_PAIZURI_X = -85;
 const REM_BHD_BC_YETI_PAIZURI_Y = 40;
 
 const REM_BHD_BC_YETI_CARRY_X = -100;
@@ -599,6 +602,10 @@ Window_ActorCommand.prototype.create_layout = function() {
 		this._layout.x += REM_BHD_BC_FOOTJ_X;
 		this._layout.y += REM_BHD_BC_FOOTJ_Y;
 	}
+	else if(Karryn.isInRimjobSexPose()) {
+		this._layout.x += REM_BHD_BC_RIMMING_X;
+		this._layout.y += REM_BHD_BC_RIMMING_Y;
+	}
 	else if(Karryn.isInKneelingBJSexPose()) {
 		this._layout.x += REM_BHD_BC_BJ_KNEELING_X;
 		this._layout.y += REM_BHD_BC_BJ_KNEELING_Y;
@@ -844,6 +851,10 @@ Window_ActorCommand.prototype.create_com_name = function() {
 		this._com_name.x += REM_BHD_BC_FOOTJ_X;
 		this._com_name.y += REM_BHD_BC_FOOTJ_Y; 
 	}
+	else if(Karryn.isInRimjobSexPose()) {
+		this._com_name.x += REM_BHD_BC_RIMMING_X;
+		this._com_name.y += REM_BHD_BC_RIMMING_Y; 
+	}
 	else if(Karryn.isInKneelingBJSexPose()) {
 		this._com_name.x += REM_BHD_BC_BJ_KNEELING_X;
 		this._com_name.y += REM_BHD_BC_BJ_KNEELING_Y; 
@@ -1044,6 +1055,10 @@ Window_ActorCommand.prototype.refresh_bitmap_com = function() {
 		else if(Karryn.isInFootjobSexPose()) {
 			this._com_sprites[i].x += REM_BHD_BC_FOOTJ_X;
 			this._com_sprites[i].y += REM_BHD_BC_FOOTJ_Y;
+		}
+		else if(Karryn.isInRimjobSexPose()) {
+			this._com_sprites[i].x += REM_BHD_BC_RIMMING_X;
+			this._com_sprites[i].y += REM_BHD_BC_RIMMING_Y;
 		}
 		else if(Karryn.isInKneelingBJSexPose()) {
 			this._com_sprites[i].x += REM_BHD_BC_BJ_KNEELING_X;
@@ -1506,6 +1521,10 @@ Window_ActorCommand.prototype.refresh_ring_command = function() {
 			this._com_sprites[i].x += REM_BHD_BC_FOOTJ_X;
 			this._com_sprites[i].y += REM_BHD_BC_FOOTJ_Y;
 		}
+		else if(Karryn.isInRimjobSexPose()) {
+			this._com_sprites[i].x += REM_BHD_BC_RIMMING_X;
+			this._com_sprites[i].y += REM_BHD_BC_RIMMING_Y;
+		}
 		else if(Karryn.isInKneelingBJSexPose()) {
 			this._com_sprites[i].x += REM_BHD_BC_BJ_KNEELING_X;
 			this._com_sprites[i].y += REM_BHD_BC_BJ_KNEELING_Y;
@@ -1667,6 +1686,10 @@ Window_ActorCommand.prototype.update_position = function(i) {
 			this._np[0] += REM_BHD_BC_FOOTJ_X;
 			this._np[1] += REM_BHD_BC_FOOTJ_Y;	
 		}
+		else if(Karryn.isInRimjobSexPose()) {
+			this._np[0] += REM_BHD_BC_RIMMING_X;
+			this._np[1] += REM_BHD_BC_RIMMING_Y;	
+		}
 		else if(Karryn.isInKneelingBJSexPose()) {
 			this._np[0] += REM_BHD_BC_BJ_KNEELING_X;
 			this._np[1] += REM_BHD_BC_BJ_KNEELING_Y;	
@@ -1819,6 +1842,10 @@ Window_ActorCommand.prototype.update_position = function(i) {
 		else if(Karryn.isInFootjobSexPose()) {
 			this._np[0] += REM_BHD_BC_FOOTJ_X;
 			this._np[1] += REM_BHD_BC_FOOTJ_Y;	
+		}
+		else if(Karryn.isInRimjobSexPose()) {
+			this._np[0] += REM_BHD_BC_RIMMING_X;
+			this._np[1] += REM_BHD_BC_RIMMING_Y;	
 		}
 		else if(Karryn.isInKneelingBJSexPose()) {
 			this._np[0] += REM_BHD_BC_BJ_KNEELING_X;

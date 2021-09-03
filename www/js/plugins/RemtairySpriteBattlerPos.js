@@ -78,7 +78,7 @@ Game_Actor.prototype.setSpriteBattlerPosData = function(poseName) {
 		this._sbp_current_x = 930;
 		this._sbp_current_y = -240;
 	} else if(poseName == POSE_DOWN_ORGASM) {
-		this._sbp_current_x = 880;
+		this._sbp_current_x = 920;
 		this._sbp_current_y = -150;
 	} else if(poseName == POSE_DOWN_FALLDOWN) {
 		this._sbp_current_x = 1090;

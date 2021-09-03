@@ -4148,12 +4148,31 @@ Game_Actor.prototype.dmgFormula_karrynKiss = function(target, kissingLvl) {
 	result.desireCockWeight = 3;
 	result.desireTarget = AREA_MOUTH;
 
+	let cutInId = false;
+	let enemyCock = target.enemyCock();
+
 	//this.setSpriteBattlerPosToMouth();
 	if(kissingLvl === KISS_LVL_ONE) {
-		this.setTachieCutIn(CUTIN_KARRYN_KISS_ONE_HUMAN_DEFAULT_ID);
+		if(enemyCock.includes('normal')) 
+			cutInId = CUTIN_KARRYN_KISS_ONE_HUMAN_NORMAL_ID;
+		else if(enemyCock.includes('pale')) 
+			cutInId = CUTIN_KARRYN_KISS_ONE_HUMAN_PALE_ID;
+		else if(enemyCock.includes('black')) 
+			cutInId = CUTIN_KARRYN_KISS_ONE_HUMAN_BLACK_ID;
+		else
+			cutInId = CUTIN_KARRYN_KISS_ONE_HUMAN_NORMAL_ID;
+		this.setTachieCutIn(cutInId);
 	}
 	else if(kissingLvl === KISS_LVL_TWO) {
-		this.setTachieCutIn(CUTIN_KARRYN_KISS_TWO_HUMAN_DEFAULT_ID);
+		if(enemyCock.includes('normal')) 
+			cutInId = CUTIN_KARRYN_KISS_TWO_HUMAN_NORMAL_ID;
+		else if(enemyCock.includes('pale')) 
+			cutInId = CUTIN_KARRYN_KISS_TWO_HUMAN_PALE_ID;
+		else if(enemyCock.includes('black')) 
+			cutInId = CUTIN_KARRYN_KISS_TWO_HUMAN_BLACK_ID;
+		else
+			cutInId = CUTIN_KARRYN_KISS_TWO_HUMAN_NORMAL_ID;
+		this.setTachieCutIn(cutInId);
 	}
 	
 	target.addToEnemyKissedCountRecord(this);

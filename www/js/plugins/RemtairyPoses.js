@@ -2358,7 +2358,6 @@ Game_Actor.prototype.setFootjobSexPose = function(karrynSkill) {
 		this.setTachieHat('close_1');
 	}
 	this.setTachieHead('close_1');
-	
 	this.setTachieSemenFaceExtension('close_');
 
 	this.setMaxTachieSemenBellyId(1);
@@ -3542,16 +3541,20 @@ Game_Actor.prototype.setDefeatedLevel2Pose = function() {
 	this.setSpankablePose(true);
 	this.setHasTachiePubic(true);
 	
-	this.setTachieHat(1);
-	this.setTachieEyes('yoko1');
-	this.setTachieEyebrows('koma1');
-	this.setTachieMouth('ahe1');
-	this.setTachieHoppe(1);
-	this.setTachieClitToyInFrontOfMainToys(false);
-	this.setTachieAnalToyInFrontOfEverything(true);
-	
-	if(Karryn.isCensored())
-		this.setTachieBody('1_cen');
+	if(!this.isWearingGlovesAndHat()) {
+		if(Karryn.isCensored())
+			this.setTachieBody('naked_1_cen');
+		else
+			this.setTachieBody('naked_1');
+		this.resetTachieHat();
+	}
+	else {
+		if(Karryn.isCensored())
+			this.setTachieBody('1_cen');
+		else
+			this.setTachieBody('1');
+		this.setTachieHat(1);
+	}
 	
 	this.setMaxTachieSemenAnalId(1);
 	this.setMaxTachieSemenBackId(1);
@@ -3944,12 +3947,22 @@ DKTools.PreloadManager.preloadKarrynPoses = function() {
 		DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_bs1.png', hue: 0, caching: true });
 		DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_bs2.png', hue: 0, caching: true });
 		DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_bs3.png', hue: 0, caching: true });
-		DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_fg_sc_human.png', hue: 0, caching: true });
+		DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_fg_sc_human_normal.png', hue: 0, caching: true });
+		DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_fg_sc_human_pale.png', hue: 0, caching: true });
+		DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_fg_sc_human_black.png', hue: 0, caching: true });
 		DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_flaunt1.png', hue: 0, caching: true });
-		DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ks1_e_human.png', hue: 0, caching: true });
-		DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ks2_e_human.png', hue: 0, caching: true });
-		DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ks1_k_human.png', hue: 0, caching: true });
-		DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ks2_k_human.png', hue: 0, caching: true });
+		DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ks1_e_human_normal.png', hue: 0, caching: true });
+		DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ks1_e_human_pale.png', hue: 0, caching: true });
+		DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ks1_e_human_black.png', hue: 0, caching: true });
+		DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ks2_e_human_normal.png', hue: 0, caching: true });
+		DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ks2_e_human_pale.png', hue: 0, caching: true });
+		DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ks2_e_human_black.png', hue: 0, caching: true });
+		DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ks1_k_human_normal.png', hue: 0, caching: true });
+		DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ks1_k_human_pale.png', hue: 0, caching: true });
+		DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ks1_k_human_black.png', hue: 0, caching: true });
+		DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ks2_k_human_normal.png', hue: 0, caching: true });
+		DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ks2_k_human_pale.png', hue: 0, caching: true });
+		DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ks2_k_human_black.png', hue: 0, caching: true });
 		DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_or1.png', hue: 0, caching: true });
 		DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_or2.png', hue: 0, caching: true });
 		DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_bb_human.png', hue: 0, caching: true });
@@ -3994,7 +4007,9 @@ DKTools.PreloadManager.preloadKarrynPoses = function() {
 			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_bk_slime_cen.png', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_bk_werewolf_cen.png', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_bk_yeti_cen.png', hue: 0, caching: true });
-			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_m_human_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_m_human_normal_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_m_human_pale_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_m_human_black_cen.png', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_ps_goblin_dark_cen.png', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_ps_goblin_normal_cen.png', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_ps_human_cut_black_cen.png', hue: 0, caching: true });
@@ -4012,7 +4027,9 @@ DKTools.PreloadManager.preloadKarrynPoses = function() {
 			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_ps_orc_normal_cen.png', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_ps_slime_cen.png', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_ps_werewolf_cen.png', hue: 0, caching: true });
-			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_an_human_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_an_human_normal_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_an_human_pale_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_an_human_black_cen.png', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_ck_goblin_dark_cen.png', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_ck_goblin_normal_cen.png', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_ck_human_cut_black_cen.png', hue: 0, caching: true });
@@ -4033,8 +4050,12 @@ DKTools.PreloadManager.preloadKarrynPoses = function() {
 			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_ck_yeti_cen.png', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_ct_human_cen.png', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_ps_human_cen.png', hue: 0, caching: true });
-			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_toyA_1_in_human_cen.png', hue: 0, caching: true });
-			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_toyA_1_play_human_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_toyA_1_in_human_normal_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_toyA_1_in_human_pale_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_toyA_1_in_human_black_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_toyA_1_play_human_normal_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_toyA_1_play_human_pale_cen.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_toyA_1_play_human_black_cen.png', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_toyC_1_in_human_cen.png', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_toyC_1_play_human_cen.png', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_toyP_1_in_human_cen.png', hue: 0, caching: true });
@@ -4076,7 +4097,9 @@ DKTools.PreloadManager.preloadKarrynPoses = function() {
 			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_bk_slime.png', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_bk_werewolf.png', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_bk_yeti.png', hue: 0, caching: true });
-			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_m_human.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_m_human_normal.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_m_human_pale.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_m_human_black.png', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_ps_goblin_dark.png', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_ps_goblin_normal.png', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_ps_human_cut_black.png', hue: 0, caching: true });
@@ -4094,7 +4117,9 @@ DKTools.PreloadManager.preloadKarrynPoses = function() {
 			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_ps_orc_normal.png', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_ps_slime.png', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_ps_werewolf.png', hue: 0, caching: true });
-			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_an_human.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_an_human_normal.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_an_human_black.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_an_human_pale.png', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_ck_goblin_dark.png', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_ck_goblin_normal.png', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_ck_human_cut_black.png', hue: 0, caching: true });
@@ -4115,8 +4140,12 @@ DKTools.PreloadManager.preloadKarrynPoses = function() {
 			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_ck_yeti.png', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_ct_human.png', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_ps_human.png', hue: 0, caching: true });
-			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_toyA_1_in_human.png', hue: 0, caching: true });
-			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_toyA_1_play_human.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_toyA_1_in_human_normal.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_toyA_1_in_human_pale.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_toyA_1_in_human_black.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_toyA_1_play_human_normal.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_toyA_1_play_human_black.png', hue: 0, caching: true });
+			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_toyA_1_play_human_pale.png', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_toyC_1_in_human.png', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_toyC_1_play_human.png', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_toyP_1_in_human.png', hue: 0, caching: true });

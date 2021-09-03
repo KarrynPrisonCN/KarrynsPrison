@@ -26,7 +26,7 @@ const REM_CUT_IN_WAITRESS_SERVING_Y_OFFSET = 0;
 const REM_CUT_IN_WAITRESS_SEX_X_OFFSET = 0;
 const REM_CUT_IN_WAITRESS_SEX_Y_OFFSET = 0;
 
-const REM_CUT_IN_RECEPTIONIST_X_OFFSET = 900; //受付嬢
+const REM_CUT_IN_RECEPTIONIST_X_OFFSET = 70; //受付嬢
 const REM_CUT_IN_RECEPTIONIST_Y_OFFSET = 0;
 
 const REM_CUT_IN_GLORY_X_OFFSET = 0; //Glory
@@ -130,11 +130,15 @@ const CUTIN_PETTING_BUTT_TYPE_END = 48;
 const CUTIN_PETTING_BUTT_GOBLIN_ID = 49;
 
 const CUTIN_PETTING_ANAL_TYPE_START = 51;
-const CUTIN_PETTING_ANAL_HUMAN_DEFAULT_ID = 52;
+const CUTIN_PETTING_ANAL_HUMAN_NORMAL_ID = 52;
+const CUTIN_PETTING_ANAL_HUMAN_PALE_ID = 53;
+const CUTIN_PETTING_ANAL_HUMAN_BLACK_ID = 54;
 const CUTIN_PETTING_ANAL_TYPE_END = 60;
 
 const CUTIN_SUCKING_FINGERS_ENEMY_TYPE_START = 61;
-const CUTIN_SUCKING_FINGERS_ENEMY_HUMAN_DEFAULT_ID = 62;
+const CUTIN_SUCKING_FINGERS_ENEMY_HUMAN_NORMAL_ID = 62;
+const CUTIN_SUCKING_FINGERS_ENEMY_HUMAN_PALE_ID = 63;
+const CUTIN_SUCKING_FINGERS_ENEMY_HUMAN_BLACK_ID = 64;
 const CUTIN_SUCKING_FINGERS_ENEMY_TYPE_END = 70;
 
 const CUTIN_SPANKING_ONE_NAME = 71;
@@ -147,19 +151,27 @@ const CUTIN_KARRYN_ORGASM_ONE_ID = 75;
 const CUTIN_KARRYN_ORGASM_TWO_ID = 76;
 
 const CUTIN_KARRYN_KISS_ONE_TYPE_START = 81;
-const CUTIN_KARRYN_KISS_ONE_HUMAN_DEFAULT_ID = 82;
+const CUTIN_KARRYN_KISS_ONE_HUMAN_NORMAL_ID = 82;
+const CUTIN_KARRYN_KISS_ONE_HUMAN_PALE_ID = 83;
+const CUTIN_KARRYN_KISS_ONE_HUMAN_BLACK_ID = 84;
 const CUTIN_KARRYN_KISS_ONE_TYPE_END = 90;
 
 const CUTIN_KARRYN_KISS_TWO_TYPE_START = 91;
-const CUTIN_KARRYN_KISS_TWO_HUMAN_DEFAULT_ID = 92;
+const CUTIN_KARRYN_KISS_TWO_HUMAN_NORMAL_ID = 92;
+const CUTIN_KARRYN_KISS_TWO_HUMAN_PALE_ID = 93;
+const CUTIN_KARRYN_KISS_TWO_HUMAN_BLACK_ID = 94;
 const CUTIN_KARRYN_KISS_TWO_TYPE_END = 100;
 
 const CUTIN_ENEMY_KISS_ONE_TYPE_START = 101;
-const CUTIN_ENEMY_KISS_ONE_HUMAN_DEFAULT_ID = 102;
+const CUTIN_ENEMY_KISS_ONE_HUMAN_NORMAL_ID = 102;
+const CUTIN_ENEMY_KISS_ONE_HUMAN_PALE_ID = 103;
+const CUTIN_ENEMY_KISS_ONE_HUMAN_BLACK_ID = 104;
 const CUTIN_ENEMY_KISS_ONE_TYPE_END = 110;
 
 const CUTIN_ENEMY_KISS_TWO_TYPE_START = 111;
-const CUTIN_ENEMY_KISS_TWO_HUMAN_DEFAULT_ID = 112;
+const CUTIN_ENEMY_KISS_TWO_HUMAN_NORMAL_ID = 112;
+const CUTIN_ENEMY_KISS_TWO_HUMAN_PALE_ID = 113;
+const CUTIN_ENEMY_KISS_TWO_HUMAN_BLACK_ID = 114;
 const CUTIN_ENEMY_KISS_TWO_TYPE_END = 120;
 
 const CUTIN_TOY_PINK_ROTOR_INSERT_TYPE_START = 121;
@@ -179,11 +191,15 @@ const CUTIN_TOY_PENIS_DILDO_PLAY_HUMAN_DEFAULT_ID = 152;
 const CUTIN_TOY_PENIS_DILDO_PLAY_TYPE_END = 160;
 
 const CUTIN_TOY_ANAL_BEADS_INSERT_TYPE_START = 161;
-const CUTIN_TOY_ANAL_BEADS_INSERT_HUMAN_DEFAULT_ID = 162;
+const CUTIN_TOY_ANAL_BEADS_INSERT_HUMAN_NORMAL_ID = 162;
+const CUTIN_TOY_ANAL_BEADS_INSERT_HUMAN_PALE_ID = 163;
+const CUTIN_TOY_ANAL_BEADS_INSERT_HUMAN_BLACK_ID = 164;
 const CUTIN_TOY_ANAL_BEADS_INSERT_TYPE_END = 170;
 
 const CUTIN_TOY_ANAL_BEADS_PLAY_TYPE_START = 171;
-const CUTIN_TOY_ANAL_BEADS_PLAY_HUMAN_DEFAULT_ID = 172;
+const CUTIN_TOY_ANAL_BEADS_PLAY_HUMAN_NORMAL_ID = 172;
+const CUTIN_TOY_ANAL_BEADS_PLAY_HUMAN_PALE_ID = 173;
+const CUTIN_TOY_ANAL_BEADS_PLAY_HUMAN_BLACK_ID = 174;
 const CUTIN_TOY_ANAL_BEADS_PLAY_TYPE_END = 180;
 
 const CUTIN_KARRYN_COCK_PETTING_TYPE_START = 300;
@@ -208,7 +224,9 @@ const CUTIN_KARRYN_COCK_PETTING_YETI_NORMAL_ID = 318;
 const CUTIN_KARRYN_COCK_PETTING_TYPE_END = 400;
 
 const CUTIN_EJACULATE_MOUTH_TYPE_START = 401;
-const CUTIN_EJACULATE_MOUTH_HUMAN_DEFAULT_ID = 402;
+const CUTIN_EJACULATE_MOUTH_HUMAN_NORMAL_ID = 402;
+const CUTIN_EJACULATE_MOUTH_HUMAN_PALE_ID = 403;
+const CUTIN_EJACULATE_MOUTH_HUMAN_BLACK_ID = 404;
 const CUTIN_EJACULATE_MOUTH_TYPE_END = 420;
 
 const CUTIN_EJACULATE_BUKKAKE_REG_TYPE_START = 601;
@@ -479,11 +497,23 @@ Game_Actor.prototype.setCutInWaitAndDirection = function(cutInId) {
 		goalY 		= REM_CUT_IN_BOTTOM_Y + 70; 		//goalY = CutInが終わる時のY位置
 		directionX = REM_CUT_IN_SPEED_X; 		//directionX = CutInのX方向
 		directionY = REM_CUT_IN_SPEED_Y; 		//directionY = CutInのY方向
-		if(cutInId === CUTIN_PETTING_ANAL_HUMAN_DEFAULT_ID) {
-			fileNameNormal 			= 'cutin_pt_an_human'; //fileNameNormal　= CutInアニメなしのファイルネーム
-			fileNameNormalCensored 	= 'cutin_pt_an_human_cen'; //fileNameNormalCensored　= CutInアニメなしモザイクありのファイルネーム
-			fileNameAnime 			= 'cutin_pt_an_human_anime'; //fileNameAnime = CutInアニメありのファイルネーム
-			fileNameAnimeCensored 	= 'cutin_pt_an_human_anime_cen'; //fileNameAnimeCensored = CutInアニメありモザイクありのファイルネーム
+		if(cutInId === CUTIN_PETTING_ANAL_HUMAN_NORMAL_ID) {
+			fileNameNormal 			= 'cutin_pt_an_human_normal'; //fileNameNormal　= CutInアニメなしのファイルネーム
+			fileNameNormalCensored 	= 'cutin_pt_an_human_normal_cen'; //fileNameNormalCensored　= CutInアニメなしモザイクありのファイルネーム
+			fileNameAnime 			= 'cutin_pt_an_human_normal_anime'; //fileNameAnime = CutInアニメありのファイルネーム
+			fileNameAnimeCensored 	= 'cutin_pt_an_human_normal_anime_cen'; //fileNameAnimeCensored = CutInアニメありモザイクありのファイルネーム
+		}
+		else if(cutInId === CUTIN_PETTING_ANAL_HUMAN_PALE_ID) {
+			fileNameNormal 			= 'cutin_pt_an_human_pale'; //fileNameNormal　= CutInアニメなしのファイルネーム
+			fileNameNormalCensored 	= 'cutin_pt_an_human_pale_cen'; //fileNameNormalCensored　= CutInアニメなしモザイクありのファイルネーム
+			fileNameAnime 			= 'cutin_pt_an_human_pale_anime'; //fileNameAnime = CutInアニメありのファイルネーム
+			fileNameAnimeCensored 	= 'cutin_pt_an_human_pale_anime_cen'; //fileNameAnimeCensored = CutInアニメありモザイクありのファイルネーム
+		}
+		else if(cutInId === CUTIN_PETTING_ANAL_HUMAN_BLACK_ID) {
+			fileNameNormal 			= 'cutin_pt_an_human_black'; //fileNameNormal　= CutInアニメなしのファイルネーム
+			fileNameNormalCensored 	= 'cutin_pt_an_human_black_cen'; //fileNameNormalCensored　= CutInアニメなしモザイクありのファイルネーム
+			fileNameAnime 			= 'cutin_pt_an_human_black_anime'; //fileNameAnime = CutInアニメありのファイルネーム
+			fileNameAnimeCensored 	= 'cutin_pt_an_human_black_anime_cen'; //fileNameAnimeCensored = CutInアニメありモザイクありのファイルネーム
 		}
 	}
 	else if(cutInId > CUTIN_SUCKING_FINGERS_ENEMY_TYPE_START && cutInId < CUTIN_SUCKING_FINGERS_ENEMY_TYPE_END) {		//指を吸わせる ↑
@@ -494,12 +524,26 @@ Game_Actor.prototype.setCutInWaitAndDirection = function(cutInId) {
 		goalY 		= REM_CUT_IN_TOP_Y + 220; 		//goalY = CutInが終わる時のY位置
 		directionX = 0; 		//directionX = CutInのX方向
 		directionY = -1 * REM_CUT_IN_SPEED_Y; 		//directionY = CutInのY方向
-		if(cutInId === CUTIN_SUCKING_FINGERS_ENEMY_HUMAN_DEFAULT_ID) {
-			fileNameNormal 			= 'cutin_fg_sc_human'; //fileNameNormal　= CutInアニメなしのファイルネーム
-			fileNameNormalCensored 	= 'cutin_fg_sc_human'; //fileNameNormalCensored　= CutInアニメなしモザイクありのファイルネーム
-			fileNameAnime 			= 'cutin_fg_sc_human_anime'; //fileNameAnime = CutInアニメありのファイルネーム
-			fileNameAnimeCensored 	= 'cutin_fg_sc_human_anime'; //fileNameAnimeCensored = CutInアニメありモザイクありのファイルネーム
+		if(cutInId === CUTIN_SUCKING_FINGERS_ENEMY_HUMAN_NORMAL_ID) {
+			fileNameNormal 			= 'cutin_fg_sc_human_normal'; //fileNameNormal　= CutInアニメなしのファイルネーム
+			fileNameNormalCensored 	= 'cutin_fg_sc_human_normal'; //fileNameNormalCensored　= CutInアニメなしモザイクありのファイルネーム
+			fileNameAnime 			= 'cutin_fg_sc_human_normal_anime'; //fileNameAnime = CutInアニメありのファイルネーム
+			fileNameAnimeCensored 	= 'cutin_fg_sc_human_normal_anime'; //fileNameAnimeCensored = CutInアニメありモザイクありのファイルネーム
 		}
+		else if(cutInId === CUTIN_SUCKING_FINGERS_ENEMY_HUMAN_PALE_ID) {
+			fileNameNormal 			= 'cutin_fg_sc_human_pale'; //fileNameNormal　= CutInアニメなしのファイルネーム
+			fileNameNormalCensored 	= 'cutin_fg_sc_human_pale'; //fileNameNormalCensored　= CutInアニメなしモザイクありのファイルネーム
+			fileNameAnime 			= 'cutin_fg_sc_human_pale_anime'; //fileNameAnime = CutInアニメありのファイルネーム
+			fileNameAnimeCensored 	= 'cutin_fg_sc_human_pale_anime'; //fileNameAnimeCensored = CutInアニメありモザイクありのファイルネーム
+		}
+		else if(cutInId === CUTIN_SUCKING_FINGERS_ENEMY_HUMAN_BLACK_ID) {
+			fileNameNormal 			= 'cutin_fg_sc_human_black'; //fileNameNormal　= CutInアニメなしのファイルネーム
+			fileNameNormalCensored 	= 'cutin_fg_sc_human_black'; //fileNameNormalCensored　= CutInアニメなしモザイクありのファイルネーム
+			fileNameAnime 			= 'cutin_fg_sc_human_black_anime'; //fileNameAnime = CutInアニメありのファイルネーム
+			fileNameAnimeCensored 	= 'cutin_fg_sc_human_black_anime'; //fileNameAnimeCensored = CutInアニメありモザイクありのファイルネーム
+		}
+		
+		
 	}
 	else if(cutInId === CUTIN_SPANKING_ONE_NAME) {
 		wait = 54; 		//wait = CutInの時間
@@ -549,11 +593,23 @@ Game_Actor.prototype.setCutInWaitAndDirection = function(cutInId) {
 		goalY 		= REM_CUT_IN_TOP_Y + 160; 		//goalY = CutInが終わる時のY位置
 		directionX = -1 * REM_CUT_IN_SPEED_X; 		//directionX = CutInのX方向
 		directionY = 0; 		//directionY = CutInのY方向
-		if(cutInId === CUTIN_EJACULATE_MOUTH_HUMAN_DEFAULT_ID) {
-			fileNameNormal 			= 'cutin_ej_m_human'; //fileNameNormal　= CutInアニメなしのファイルネーム
-			fileNameNormalCensored 	= 'cutin_ej_m_human_cen'; //fileNameNormalCensored　= CutInアニメなしモザイクありのファイルネーム
-			fileNameAnime 			= 'cutin_ej_m_human_anime'; //fileNameAnime = CutInアニメありのファイルネーム
-			fileNameAnimeCensored 	= 'cutin_ej_m_human_anime_cen'; //fileNameAnimeCensored = CutInアニメありモザイクありのファイルネーム
+		if(cutInId === CUTIN_EJACULATE_MOUTH_HUMAN_NORMAL_ID) {
+			fileNameNormal 			= 'cutin_ej_m_human_normal'; //fileNameNormal　= CutInアニメなしのファイルネーム
+			fileNameNormalCensored 	= 'cutin_ej_m_human_normal_cen'; //fileNameNormalCensored　= CutInアニメなしモザイクありのファイルネーム
+			fileNameAnime 			= 'cutin_ej_m_human_normal_anime'; //fileNameAnime = CutInアニメありのファイルネーム
+			fileNameAnimeCensored 	= 'cutin_ej_m_human_normal_anime_cen'; //fileNameAnimeCensored = CutInアニメありモザイクありのファイルネーム
+		}
+		else if(cutInId === CUTIN_EJACULATE_MOUTH_HUMAN_PALE_ID) {
+			fileNameNormal 			= 'cutin_ej_m_human_pale'; //fileNameNormal　= CutInアニメなしのファイルネーム
+			fileNameNormalCensored 	= 'cutin_ej_m_human_pale_cen'; //fileNameNormalCensored　= CutInアニメなしモザイクありのファイルネーム
+			fileNameAnime 			= 'cutin_ej_m_human_pale_anime'; //fileNameAnime = CutInアニメありのファイルネーム
+			fileNameAnimeCensored 	= 'cutin_ej_m_human_pale_anime_cen'; //fileNameAnimeCensored = CutInアニメありモザイクありのファイルネーム
+		}
+		else if(cutInId === CUTIN_EJACULATE_MOUTH_HUMAN_BLACK_ID) {
+			fileNameNormal 			= 'cutin_ej_m_human_black'; //fileNameNormal　= CutInアニメなしのファイルネーム
+			fileNameNormalCensored 	= 'cutin_ej_m_human_black_cen'; //fileNameNormalCensored　= CutInアニメなしモザイクありのファイルネーム
+			fileNameAnime 			= 'cutin_ej_m_human_black_anime'; //fileNameAnime = CutInアニメありのファイルネーム
+			fileNameAnimeCensored 	= 'cutin_ej_m_human_black_anime_cen'; //fileNameAnimeCensored = CutInアニメありモザイクありのファイルネーム
 		}
 	}
 	else if(cutInId > CUTIN_EJACULATE_BUKKAKE_REG_TYPE_START && cutInId < CUTIN_EJACULATE_BUKKAKE_REG_TYPE_END) {
@@ -1295,12 +1351,26 @@ Game_Actor.prototype.setCutInWaitAndDirection = function(cutInId) {
 		goalY 		= REM_CUT_IN_TOP_Y + 190; 		//goalY = CutInが終わる時のY位置
 		directionX = -1 * REM_CUT_IN_SPEED_X; 		//directionX = CutInのX方向
 		directionY = 0; 		//directionY = CutInのY方向
-		if(cutInId === CUTIN_KARRYN_KISS_ONE_HUMAN_DEFAULT_ID) {
-			fileNameNormal 			= 'cutin_ks1_k_human'; //fileNameNormal　= CutInアニメなしのファイルネーム
-			fileNameNormalCensored 	= 'cutin_ks1_k_human'; //fileNameNormalCensored　= CutInアニメなしモザイクありのファイルネーム
-			fileNameAnime 			= 'cutin_ks1_k_human_anime'; //fileNameAnime = CutInアニメありのファイルネーム
-			fileNameAnimeCensored 	= 'cutin_ks1_k_human_anime'; //fileNameAnimeCensored = CutInアニメありモザイクありのファイルネーム
+		if(cutInId === CUTIN_KARRYN_KISS_ONE_HUMAN_NORMAL_ID) {
+			fileNameNormal 			= 'cutin_ks1_k_human_normal'; //fileNameNormal　= CutInアニメなしのファイルネーム
+			fileNameNormalCensored 	= 'cutin_ks1_k_human_normal'; //fileNameNormalCensored　= CutInアニメなしモザイクありのファイルネーム
+			fileNameAnime 			= 'cutin_ks1_k_human_normal_anime'; //fileNameAnime = CutInアニメありのファイルネーム
+			fileNameAnimeCensored 	= 'cutin_ks1_k_human_normal_anime'; //fileNameAnimeCensored = CutInアニメありモザイクありのファイルネーム
 		}
+		else if(cutInId === CUTIN_KARRYN_KISS_ONE_HUMAN_PALE_ID) {
+			fileNameNormal 			= 'cutin_ks1_k_human_pale'; //fileNameNormal　= CutInアニメなしのファイルネーム
+			fileNameNormalCensored 	= 'cutin_ks1_k_human_pale'; //fileNameNormalCensored　= CutInアニメなしモザイクありのファイルネーム
+			fileNameAnime 			= 'cutin_ks1_k_human_pale_anime'; //fileNameAnime = CutInアニメありのファイルネーム
+			fileNameAnimeCensored 	= 'cutin_ks1_k_human_pale_anime'; //fileNameAnimeCensored = CutInアニメありモザイクありのファイルネーム
+		}
+		else if(cutInId === CUTIN_KARRYN_KISS_ONE_HUMAN_BLACK_ID) {
+			fileNameNormal 			= 'cutin_ks1_k_human_black'; //fileNameNormal　= CutInアニメなしのファイルネーム
+			fileNameNormalCensored 	= 'cutin_ks1_k_human_black'; //fileNameNormalCensored　= CutInアニメなしモザイクありのファイルネーム
+			fileNameAnime 			= 'cutin_ks1_k_human_black_anime'; //fileNameAnime = CutInアニメありのファイルネーム
+			fileNameAnimeCensored 	= 'cutin_ks1_k_human_black_anime'; //fileNameAnimeCensored = CutInアニメありモザイクありのファイルネーム
+		}
+		
+		
 	}
 	else if(cutInId > CUTIN_KARRYN_KISS_TWO_TYPE_START && cutInId < CUTIN_KARRYN_KISS_TWO_TYPE_END) {		//カリンからキス2 ←
 		wait = 74; 		//wait = CutInの時間
@@ -1310,11 +1380,23 @@ Game_Actor.prototype.setCutInWaitAndDirection = function(cutInId) {
 		goalY 		= REM_CUT_IN_TOP_Y + 250; 		//goalY = CutInが終わる時のY位置
 		directionX = -1 * REM_CUT_IN_SPEED_X; 		//directionX = CutInのX方向
 		directionY = 0; 		//directionY = CutInのY方向
-		if(cutInId === CUTIN_KARRYN_KISS_TWO_HUMAN_DEFAULT_ID) {
-			fileNameNormal 			= 'cutin_ks2_k_human'; //fileNameNormal　= CutInアニメなしのファイルネーム
-			fileNameNormalCensored 	= 'cutin_ks2_k_human'; //fileNameNormalCensored　= CutInアニメなしモザイクありのファイルネーム
-			fileNameAnime 			= 'cutin_ks2_k_human_anime'; //fileNameAnime = CutInアニメありのファイルネーム
-			fileNameAnimeCensored 	= 'cutin_ks2_k_human_anime'; //fileNameAnimeCensored = CutInアニメありモザイクありのファイルネーム
+		if(cutInId === CUTIN_KARRYN_KISS_TWO_HUMAN_NORMAL_ID) {
+			fileNameNormal 			= 'cutin_ks2_k_human_normal'; //fileNameNormal　= CutInアニメなしのファイルネーム
+			fileNameNormalCensored 	= 'cutin_ks2_k_human_normal'; //fileNameNormalCensored　= CutInアニメなしモザイクありのファイルネーム
+			fileNameAnime 			= 'cutin_ks2_k_human_normal_anime'; //fileNameAnime = CutInアニメありのファイルネーム
+			fileNameAnimeCensored 	= 'cutin_ks2_k_human_normal_anime'; //fileNameAnimeCensored = CutInアニメありモザイクありのファイルネーム
+		}
+		else if(cutInId === CUTIN_KARRYN_KISS_TWO_HUMAN_PALE_ID) {
+			fileNameNormal 			= 'cutin_ks2_k_human_pale'; //fileNameNormal　= CutInアニメなしのファイルネーム
+			fileNameNormalCensored 	= 'cutin_ks2_k_human_pale'; //fileNameNormalCensored　= CutInアニメなしモザイクありのファイルネーム
+			fileNameAnime 			= 'cutin_ks2_k_human_pale_anime'; //fileNameAnime = CutInアニメありのファイルネーム
+			fileNameAnimeCensored 	= 'cutin_ks2_k_human_pale_anime'; //fileNameAnimeCensored = CutInアニメありモザイクありのファイルネーム
+		}
+		else if(cutInId === CUTIN_KARRYN_KISS_TWO_HUMAN_BLACK_ID) {
+			fileNameNormal 			= 'cutin_ks2_k_human_black'; //fileNameNormal　= CutInアニメなしのファイルネーム
+			fileNameNormalCensored 	= 'cutin_ks2_k_human_black'; //fileNameNormalCensored　= CutInアニメなしモザイクありのファイルネーム
+			fileNameAnime 			= 'cutin_ks2_k_human_black_anime'; //fileNameAnime = CutInアニメありのファイルネーム
+			fileNameAnimeCensored 	= 'cutin_ks2_k_human_black_anime'; //fileNameAnimeCensored = CutInアニメありモザイクありのファイルネーム
 		}
 	}
 	else if(cutInId > CUTIN_ENEMY_KISS_ONE_TYPE_START && cutInId < CUTIN_ENEMY_KISS_ONE_TYPE_END) {		//敵からキス1 →
@@ -1325,12 +1407,25 @@ Game_Actor.prototype.setCutInWaitAndDirection = function(cutInId) {
 		goalY 		= REM_CUT_IN_TOP_Y + 190; 		//goalY = CutInが終わる時のY位置
 		directionX = REM_CUT_IN_SPEED_X; 		//directionX = CutInのX方向
 		directionY = 0; 		//directionY = CutInのY方向
-		if(cutInId === CUTIN_ENEMY_KISS_ONE_HUMAN_DEFAULT_ID) {
-			fileNameNormal 			= 'cutin_ks1_e_human'; //fileNameNormal　= CutInアニメなしのファイルネーム
-			fileNameNormalCensored 	= 'cutin_ks1_e_human'; //fileNameNormalCensored　= CutInアニメなしモザイクありのファイルネーム
-			fileNameAnime 			= 'cutin_ks1_e_human_anime'; //fileNameAnime = CutInアニメありのファイルネーム
-			fileNameAnimeCensored 	= 'cutin_ks1_e_human_anime'; //fileNameAnimeCensored = CutInアニメありモザイクありのファイルネーム
+		if(cutInId === CUTIN_ENEMY_KISS_ONE_HUMAN_NORMAL_ID) {
+			fileNameNormal 			= 'cutin_ks1_e_human_normal'; //fileNameNormal　= CutInアニメなしのファイルネーム
+			fileNameNormalCensored 	= 'cutin_ks1_e_human_normal'; //fileNameNormalCensored　= CutInアニメなしモザイクありのファイルネーム
+			fileNameAnime 			= 'cutin_ks1_e_human_normal_anime'; //fileNameAnime = CutInアニメありのファイルネーム
+			fileNameAnimeCensored 	= 'cutin_ks1_e_human_normal_anime'; //fileNameAnimeCensored = CutInアニメありモザイクありのファイルネーム
 		}
+		else if(cutInId === CUTIN_ENEMY_KISS_ONE_HUMAN_PALE_ID) {
+			fileNameNormal 			= 'cutin_ks1_e_human_pale'; //fileNameNormal　= CutInアニメなしのファイルネーム
+			fileNameNormalCensored 	= 'cutin_ks1_e_human_pale'; //fileNameNormalCensored　= CutInアニメなしモザイクありのファイルネーム
+			fileNameAnime 			= 'cutin_ks1_e_human_pale_anime'; //fileNameAnime = CutInアニメありのファイルネーム
+			fileNameAnimeCensored 	= 'cutin_ks1_e_human_pale_anime'; //fileNameAnimeCensored = CutInアニメありモザイクありのファイルネーム
+		}
+		else if(cutInId === CUTIN_ENEMY_KISS_ONE_HUMAN_BLACK_ID) {
+			fileNameNormal 			= 'cutin_ks1_e_human_black'; //fileNameNormal　= CutInアニメなしのファイルネーム
+			fileNameNormalCensored 	= 'cutin_ks1_e_human_black'; //fileNameNormalCensored　= CutInアニメなしモザイクありのファイルネーム
+			fileNameAnime 			= 'cutin_ks1_e_human_black_anime'; //fileNameAnime = CutInアニメありのファイルネーム
+			fileNameAnimeCensored 	= 'cutin_ks1_e_human_black_anime'; //fileNameAnimeCensored = CutInアニメありモザイクありのファイルネーム
+		}
+		
 	}
 	else if(cutInId > CUTIN_ENEMY_KISS_TWO_TYPE_START && cutInId < CUTIN_ENEMY_KISS_TWO_TYPE_END) {		//敵からキス2 →
 		wait = 74; 		//wait = CutInの時間
@@ -1340,11 +1435,23 @@ Game_Actor.prototype.setCutInWaitAndDirection = function(cutInId) {
 		goalY 		= REM_CUT_IN_TOP_Y + 250; 		//goalY = CutInが終わる時のY位置
 		directionX = REM_CUT_IN_SPEED_X; 		//directionX = CutInのX方向
 		directionY = 0; 		//directionY = CutInのY方向
-		if(cutInId === CUTIN_ENEMY_KISS_TWO_HUMAN_DEFAULT_ID) {
-			fileNameNormal 			= 'cutin_ks2_e_human'; //fileNameNormal　= CutInアニメなしのファイルネーム
-			fileNameNormalCensored 	= 'cutin_ks2_e_human'; //fileNameNormalCensored　= CutInアニメなしモザイクありのファイルネーム
-			fileNameAnime 			= 'cutin_ks2_e_human_anime'; //fileNameAnime = CutInアニメありのファイルネーム
-			fileNameAnimeCensored 	= 'cutin_ks2_e_human_anime'; //fileNameAnimeCensored = CutInアニメありモザイクありのファイルネーム
+		if(cutInId === CUTIN_ENEMY_KISS_TWO_HUMAN_NORMAL_ID) {
+			fileNameNormal 			= 'cutin_ks2_e_human_normal'; //fileNameNormal　= CutInアニメなしのファイルネーム
+			fileNameNormalCensored 	= 'cutin_ks2_e_human_normal'; //fileNameNormalCensored　= CutInアニメなしモザイクありのファイルネーム
+			fileNameAnime 			= 'cutin_ks2_e_human_normal_anime'; //fileNameAnime = CutInアニメありのファイルネーム
+			fileNameAnimeCensored 	= 'cutin_ks2_e_human_normal_anime'; //fileNameAnimeCensored = CutInアニメありモザイクありのファイルネーム
+		}
+		else if(cutInId === CUTIN_ENEMY_KISS_TWO_HUMAN_PALE_ID) {
+			fileNameNormal 			= 'cutin_ks2_e_human_pale'; //fileNameNormal　= CutInアニメなしのファイルネーム
+			fileNameNormalCensored 	= 'cutin_ks2_e_human_pale'; //fileNameNormalCensored　= CutInアニメなしモザイクありのファイルネーム
+			fileNameAnime 			= 'cutin_ks2_e_human_pale_anime'; //fileNameAnime = CutInアニメありのファイルネーム
+			fileNameAnimeCensored 	= 'cutin_ks2_e_human_pale_anime'; //fileNameAnimeCensored = CutInアニメありモザイクありのファイルネーム
+		}
+		else if(cutInId === CUTIN_ENEMY_KISS_TWO_HUMAN_BLACK_ID) {
+			fileNameNormal 			= 'cutin_ks2_e_human_black'; //fileNameNormal　= CutInアニメなしのファイルネーム
+			fileNameNormalCensored 	= 'cutin_ks2_e_human_black'; //fileNameNormalCensored　= CutInアニメなしモザイクありのファイルネーム
+			fileNameAnime 			= 'cutin_ks2_e_human_black_anime'; //fileNameAnime = CutInアニメありのファイルネーム
+			fileNameAnimeCensored 	= 'cutin_ks2_e_human_black_anime'; //fileNameAnimeCensored = CutInアニメありモザイクありのファイルネーム
 		}
 	}
 	else if(cutInId > CUTIN_TOY_PINK_ROTOR_INSERT_TYPE_START && cutInId < CUTIN_TOY_PINK_ROTOR_INSERT_TYPE_END) {
@@ -1415,11 +1522,23 @@ Game_Actor.prototype.setCutInWaitAndDirection = function(cutInId) {
 		goalY 		= REM_CUT_IN_TOP_Y; 		//goalY = CutInが終わる時のY位置
 		directionX = REM_CUT_IN_SPEED_X; 		//directionX = CutInのX方向
 		directionY = -1 * REM_CUT_IN_SPEED_Y; 		//directionY = CutInのY方向
-		if(cutInId === CUTIN_TOY_ANAL_BEADS_INSERT_HUMAN_DEFAULT_ID) {
-			fileNameNormal 			= 'cutin_toyA_1_in_human'; //fileNameNormal　= CutInアニメなしのファイルネーム
-			fileNameNormalCensored 	= 'cutin_toyA_1_in_human_cen'; //fileNameNormalCensored　= CutInアニメなしモザイクありのファイルネーム
-			fileNameAnime 			= 'cutin_toyA_1_in_human_anime'; //fileNameAnime = CutInアニメありのファイルネーム
-			fileNameAnimeCensored 	= 'cutin_toyA_1_in_human_anime_cen'; //fileNameAnimeCensored = CutInアニメありモザイクありのファイルネーム
+		if(cutInId === CUTIN_TOY_ANAL_BEADS_INSERT_HUMAN_NORMAL_ID) {
+			fileNameNormal 			= 'cutin_toyA_1_in_human_normal'; //fileNameNormal　= CutInアニメなしのファイルネーム
+			fileNameNormalCensored 	= 'cutin_toyA_1_in_human_normal_cen'; //fileNameNormalCensored　= CutInアニメなしモザイクありのファイルネーム
+			fileNameAnime 			= 'cutin_toyA_1_in_human_normal_anime'; //fileNameAnime = CutInアニメありのファイルネーム
+			fileNameAnimeCensored 	= 'cutin_toyA_1_in_human_normal_anime_cen'; //fileNameAnimeCensored = CutInアニメありモザイクありのファイルネーム
+		}
+		else if(cutInId === CUTIN_TOY_ANAL_BEADS_INSERT_HUMAN_PALE_ID) {
+			fileNameNormal 			= 'cutin_toyA_1_in_human_pale'; //fileNameNormal　= CutInアニメなしのファイルネーム
+			fileNameNormalCensored 	= 'cutin_toyA_1_in_human_pale_cen'; //fileNameNormalCensored　= CutInアニメなしモザイクありのファイルネーム
+			fileNameAnime 			= 'cutin_toyA_1_in_human_pale_anime'; //fileNameAnime = CutInアニメありのファイルネーム
+			fileNameAnimeCensored 	= 'cutin_toyA_1_in_human_pale_anime_cen'; //fileNameAnimeCensored = CutInアニメありモザイクありのファイルネーム
+		}
+		else if(cutInId === CUTIN_TOY_ANAL_BEADS_INSERT_HUMAN_BLACK_ID) {
+			fileNameNormal 			= 'cutin_toyA_1_in_human_black'; //fileNameNormal　= CutInアニメなしのファイルネーム
+			fileNameNormalCensored 	= 'cutin_toyA_1_in_human_black_cen'; //fileNameNormalCensored　= CutInアニメなしモザイクありのファイルネーム
+			fileNameAnime 			= 'cutin_toyA_1_in_human_black_anime'; //fileNameAnime = CutInアニメありのファイルネーム
+			fileNameAnimeCensored 	= 'cutin_toyA_1_in_human_black_anime_cen'; //fileNameAnimeCensored = CutInアニメありモザイクありのファイルネーム
 		}
 	}
 	else if(cutInId > CUTIN_TOY_ANAL_BEADS_PLAY_TYPE_START && cutInId < CUTIN_TOY_ANAL_BEADS_PLAY_TYPE_END) {
@@ -1430,11 +1549,23 @@ Game_Actor.prototype.setCutInWaitAndDirection = function(cutInId) {
 		goalY 		= REM_CUT_IN_TOP_Y + 100; 		//goalY = CutInが終わる時のY位置
 		directionX = REM_CUT_IN_SPEED_X; 		//directionX = CutInのX方向
 		directionY = -1 * REM_CUT_IN_SPEED_Y; 		//directionY = CutInのY方向
-		if(cutInId === CUTIN_TOY_ANAL_BEADS_PLAY_HUMAN_DEFAULT_ID) {
-			fileNameNormal 			= 'cutin_toyA_1_play_human'; //fileNameNormal　= CutInアニメなしのファイルネーム
-			fileNameNormalCensored 	= 'cutin_toyA_1_play_human_cen'; //fileNameNormalCensored　= CutInアニメなしモザイクありのファイルネーム
-			fileNameAnime 			= 'cutin_toyA_1_play_human_anime'; //fileNameAnime = CutInアニメありのファイルネーム
-			fileNameAnimeCensored 	= 'cutin_toyA_1_play_human_anime_cen'; //fileNameAnimeCensored = CutInアニメありモザイクありのファイルネーム
+		if(cutInId === CUTIN_TOY_ANAL_BEADS_PLAY_HUMAN_NORMAL_ID) {
+			fileNameNormal 			= 'cutin_toyA_1_play_human_normal'; //fileNameNormal　= CutInアニメなしのファイルネーム
+			fileNameNormalCensored 	= 'cutin_toyA_1_play_human_normal_cen'; //fileNameNormalCensored　= CutInアニメなしモザイクありのファイルネーム
+			fileNameAnime 			= 'cutin_toyA_1_play_human_normal_anime'; //fileNameAnime = CutInアニメありのファイルネーム
+			fileNameAnimeCensored 	= 'cutin_toyA_1_play_human_normal_anime_cen'; //fileNameAnimeCensored = CutInアニメありモザイクありのファイルネーム
+		}
+		else if(cutInId === CUTIN_TOY_ANAL_BEADS_PLAY_HUMAN_PALE_ID) {
+			fileNameNormal 			= 'cutin_toyA_1_play_human_pale'; //fileNameNormal　= CutInアニメなしのファイルネーム
+			fileNameNormalCensored 	= 'cutin_toyA_1_play_human_pale_cen'; //fileNameNormalCensored　= CutInアニメなしモザイクありのファイルネーム
+			fileNameAnime 			= 'cutin_toyA_1_play_human_pale_anime'; //fileNameAnime = CutInアニメありのファイルネーム
+			fileNameAnimeCensored 	= 'cutin_toyA_1_play_human_pale_anime_cen'; //fileNameAnimeCensored = CutInアニメありモザイクありのファイルネーム
+		}
+		else if(cutInId === CUTIN_TOY_ANAL_BEADS_PLAY_HUMAN_BLACK_ID) {
+			fileNameNormal 			= 'cutin_toyA_1_play_human_black'; //fileNameNormal　= CutInアニメなしのファイルネーム
+			fileNameNormalCensored 	= 'cutin_toyA_1_play_human_black_cen'; //fileNameNormalCensored　= CutInアニメなしモザイクありのファイルネーム
+			fileNameAnime 			= 'cutin_toyA_1_play_human_black_anime'; //fileNameAnime = CutInアニメありのファイルネーム
+			fileNameAnimeCensored 	= 'cutin_toyA_1_play_human_black_anime_cen'; //fileNameAnimeCensored = CutInアニメありモザイクありのファイルネーム
 		}
 	}
 	else if(cutInId === CUTIN_KARRYN_FLAUNT_ONE_ID) {
@@ -1802,9 +1933,9 @@ Game_Actor.prototype.getCutInArray = function() {
 		return this.cutInArray_PettingButt();
 	else if(cutInId === CUTIN_PETTING_BUTT_GOBLIN_ID)
 		return this.cutInArray_PettingButtGoblin();
-	else if(cutInId === CUTIN_PETTING_ANAL_HUMAN_DEFAULT_ID)
+	else if(cutInId === CUTIN_PETTING_ANAL_HUMAN_NORMAL_ID)
 		return this.cutInArray_PettingAnal();
-	else if(cutInId === CUTIN_SUCKING_FINGERS_ENEMY_HUMAN_DEFAULT_ID)
+	else if(cutInId === CUTIN_SUCKING_FINGERS_ENEMY_HUMAN_NORMAL_ID)
 		return this.cutInArray_SuckingEnemyFingers();
 	else if(cutInId === CUTIN_SPANKING_ONE_NAME)
 		return this.cutInArray_SpankingOne();
@@ -1812,7 +1943,7 @@ Game_Actor.prototype.getCutInArray = function() {
 		return this.cutInArray_SpankingTwo();
 	else if(cutInId === CUTIN_SPANKING_THREE_NAME)
 		return this.cutInArray_SpankingThree();
-	else if(cutInId === CUTIN_EJACULATE_MOUTH_HUMAN_DEFAULT_ID)
+	else if(cutInId === CUTIN_EJACULATE_MOUTH_HUMAN_NORMAL_ID)
 		return this.cutInArray_EjaculateMouth();
 		
 	else if(cutInId === CUTIN_EJACULATE_BUKKAKE_REG_HUMAN_CUT_NORMAL_ID)
@@ -1869,13 +2000,13 @@ Game_Actor.prototype.getCutInArray = function() {
 	else if(cutInId === CUTIN_EJACULATE_ANALCREAMPIE_MIRROR_LIZARDMAN_NORMAL_ID)
 		return this.cutInArray_EjaculateAnalCreampie(CUTIN_EJACULATE_ANALCREAMPIE_MIRROR_LIZARDMAN_NORMAL_ID);
 
-	else if(cutInId === CUTIN_KARRYN_KISS_ONE_HUMAN_DEFAULT_ID)
+	else if(cutInId === CUTIN_KARRYN_KISS_ONE_HUMAN_NORMAL_ID)
 		return this.cutInArray_KarrynKissOne();
-	else if(cutInId === CUTIN_ENEMY_KISS_ONE_HUMAN_DEFAULT_ID)
+	else if(cutInId === CUTIN_ENEMY_KISS_ONE_HUMAN_NORMAL_ID)
         return this.cutInArray_EnemyKissOne();
-	else if(cutInId === CUTIN_KARRYN_KISS_TWO_HUMAN_DEFAULT_ID)
+	else if(cutInId === CUTIN_KARRYN_KISS_TWO_HUMAN_NORMAL_ID)
 		return this.cutInArray_KarrynKissTwo();
-	else if(cutInId === CUTIN_ENEMY_KISS_TWO_HUMAN_DEFAULT_ID)
+	else if(cutInId === CUTIN_ENEMY_KISS_TWO_HUMAN_NORMAL_ID)
         return this.cutInArray_EnemyKissTwo();
 	else if(cutInId === CUTIN_KARRYN_FLAUNT_ONE_ID)
 		return this.cutInArray_KarrynFlaunt();
@@ -1893,9 +2024,9 @@ Game_Actor.prototype.getCutInArray = function() {
         return this.cutInArray_PenisDildo_EnemyInsert();
 	else if(cutInId === CUTIN_TOY_PENIS_DILDO_PLAY_HUMAN_DEFAULT_ID)
         return this.cutInArray_PenisDildo_EnemyPlay();
-	else if(cutInId === CUTIN_TOY_ANAL_BEADS_INSERT_HUMAN_DEFAULT_ID)
+	else if(cutInId === CUTIN_TOY_ANAL_BEADS_INSERT_HUMAN_NORMAL_ID)
         return this.cutInArray_AnalBeads_EnemyInsert();
-	else if(cutInId === CUTIN_TOY_ANAL_BEADS_PLAY_HUMAN_DEFAULT_ID)
+	else if(cutInId === CUTIN_TOY_ANAL_BEADS_PLAY_HUMAN_NORMAL_ID)
         return this.cutInArray_AnalBeads_EnemyPlay();
 	
 	

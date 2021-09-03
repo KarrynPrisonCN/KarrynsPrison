@@ -678,7 +678,8 @@ Game_Actor.prototype.postDamage_basicPetting_receptionistBattle = function(targe
 		this.receptionistBattle_makeSexualNoise(0.35, false);
 	}
 	
-	this.addToActorPettedWhileWorkingRecord();
+	if(area != AREA_HANDSHAKE)
+		this.addToActorPettedWhileWorkingRecord();
 };
 
 Game_Actor.prototype.postDamage_basicSpanking_receptionistBattle = function(target, spankLvl) {
@@ -1877,7 +1878,7 @@ Game_Actor.prototype.customReq_receptionistBattle_Breather = function() {
 	return true;
 };
 Game_Actor.prototype.dmgFormula_receptionistBattle_Breather = function() {
-	let percent = Math.max(0.12, this.hrg * 9);
+	let percent = Math.max(0.15, this.hrg * 9);
 	let dmg = this.maxstamina * percent;
 	return Math.round(dmg);
 };

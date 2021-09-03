@@ -1566,7 +1566,7 @@ Game_Actor.prototype.checkForNewSpecialPassives = function() {
 		this.learnNewPassive(PASSIVE_BLOWBANG_COUNT_TWO_ID);
 		this.addToPassiveReqExtra(PASSIVE_BLOWBANG_COUNT_THREE_ID, this._recordBlowbangCount);
 	}
-	else if(this.meetsPassiveReq(PASSIVE_BLOWBANG_COUNT_THREE_ID, this._recordBlowbangCount && this.hasPassive(PASSIVE_BLOWBANG_COUNT_TWO_ID))) {
+	else if(this.meetsPassiveReq(PASSIVE_BLOWBANG_COUNT_THREE_ID, this._recordBlowbangCount) && this.hasPassive(PASSIVE_BLOWBANG_COUNT_TWO_ID)) {
 		this.learnNewPassive(PASSIVE_BLOWBANG_COUNT_THREE_ID);
 	}
 	

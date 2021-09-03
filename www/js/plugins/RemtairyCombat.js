@@ -2331,6 +2331,13 @@ Game_Battler.prototype.dmgFormula_clothesPull = function(target) {
 	if(target.isClothingMaxDamaged())
 		target.stripOffPanties();
 	
+	if(!Karryn.isInShowEnemyImageOnlyDuringValidSelectionPose()) {
+		if(Karryn.isInDrawEnemiesAtHalfWidthPose())
+			this.startAnimation(261, false, 0);
+		else
+			this.startAnimation(262, false, 0);
+	}
+	
 	let elementType = this.getStance();
 	return this.dmgFormula_attackDmg(target, elementType, 0.6, 0.5, 0.4, 0.3, DEFAULT_DEF_STR_MULTI, 1, true);
 };

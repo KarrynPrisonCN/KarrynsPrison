@@ -1,8 +1,8 @@
 ﻿var Remtairy = Remtairy || {};
 Remtairy.Voices = Remtairy.Voices || {};
 
-var VAR_VOICE_CACHE_LIMIT = 10;
-var VAR_MOAN_CACHE_LIMIT = 10;
+var VAR_VOICE_CACHE_LIMIT = 0;
+var VAR_MOAN_CACHE_LIMIT = 4;
 
 //=============================================================================
  /*:
@@ -299,28 +299,27 @@ AudioManager.playEnemyVoiceSe = function(enemyVoice) {
 
 BattleManager.playEnemyVoice_Talk = function(enemy, enemyVolume) {
 	let enemyVoiceArray = [];
-	let enemyType = enemy.enemyType();
 	if(!enemyVolume) enemyVolume = 90;
 	
-	if(enemyType.contains('thug')) {
+	if(enemy.isThugType) {
 		enemyVoiceArray.push('voice_thug_hehe1');
 		enemyVoiceArray.push('voice_thug_hehe2');
 		enemyVoiceArray.push('voice_thug_hey1');
 		enemyVoiceArray.push('voice_thug_hey2');
 		enemyVoiceArray.push('voice_thug_hey3');
 	}
-	else if(enemyType.contains('goblin')) {
+	else if(enemy.isGoblinType) {
 		enemyVoiceArray.push('voice_goblin_hehe1');
 		enemyVoiceArray.push('voice_goblin_hehe2');
 		enemyVoiceArray.push('voice_goblin_hehe3');
 		enemyVoiceArray.push('voice_goblin_hehe4');
 	}
-	else if(enemyType.contains('lizardman')) {
+	else if(enemy.isLizardmanType) {
 		enemyVoiceArray.push('voice_lizardman_hey1');
 		enemyVoiceArray.push('voice_lizardman_hey2');
 		enemyVoiceArray.push('voice_lizardman_hey3');
 	}
-	else if(enemyType.contains('orc')) {
+	else if(enemy.isOrcType) {
 		enemyVoiceArray.push('voice_orc_hehe1');
 		enemyVoiceArray.push('voice_orc_hehe2');
 		enemyVoiceArray.push('voice_orc_hey1');
@@ -346,43 +345,42 @@ BattleManager.playEnemyVoice_Talk = function(enemy, enemyVolume) {
 
 BattleManager.playEnemyVoice_Skill = function(enemy, enemyVolume) {
 	let enemyVoiceArray = [];
-	let enemyType = enemy.enemyType();
 	if(!enemyVolume) enemyVolume = 90;
 	
-	if(enemyType.contains('thug')) {
+	if(enemy.isThugType) {
 		enemyVoiceArray.push('voice_thug_hey3');
 		enemyVoiceArray.push('voice_thug_hey4');
 		enemyVoiceArray.push('voice_thug_hey5');
 	}
-	else if(enemyType.contains('goblin')) {
+	else if(enemy.isGoblinType) {
 		enemyVoiceArray.push('voice_goblin_skill1');
 		enemyVoiceArray.push('voice_goblin_skill2');
 		enemyVoiceArray.push('voice_goblin_skill3');
 		enemyVoiceArray.push('voice_goblin_skill4');
 	}
-	else if(enemyType.contains('lizardman')) {
+	else if(enemy.isLizardmanType) {
 		enemyVoiceArray.push('voice_lizardman_skill1');
 		enemyVoiceArray.push('voice_lizardman_skill2');
 		enemyVoiceArray.push('voice_lizardman_skill3');
 		enemyVoiceArray.push('voice_lizardman_skill4');
 	}
-	else if(enemyType.contains('orc')) {
+	else if(enemy.isOrcType) {
 		enemyVoiceArray.push('voice_orc_skill2');
 		enemyVoiceArray.push('voice_orc_skill3');
 		enemyVoiceArray.push('voice_orc_skill4');
 	}
-	else if(enemyType.contains('yeti')) {
+	else if(enemy.isYetiType) {
 		enemyVoiceArray.push('voice_yeti_skill1');
 		enemyVoiceArray.push('voice_yeti_skill2');
 		enemyVoiceArray.push('voice_yeti_skill3');
 		enemyVoiceArray.push('voice_yeti_skill4');
 	}
-	else if(enemyType.contains('werewolf')) {
+	else if(enemy.isWerewolfType) {
 		enemyVoiceArray.push('voice_werewolf_skill1');
 		enemyVoiceArray.push('voice_werewolf_skill2');
 		enemyVoiceArray.push('voice_werewolf_skill3');
 	}
-	else if(enemyType.contains('slime')) {
+	else if(enemy.isSlimeType) {
 		
 	}
 	else {
@@ -408,22 +406,22 @@ BattleManager.playEnemyVoice_SideJob = function(enemy, enemyVolume) {
 	let enemyType = enemy.enemyType();
 	if(!enemyVolume) enemyVolume = 90;
 	
-	if(enemyType.contains('thug')) {
+	if(enemy.isThugType) {
 		enemyVoiceArray.push('voice_thug_hey1');
 		enemyVoiceArray.push('voice_thug_hey2');
 		enemyVoiceArray.push('voice_thug_hey3');
 	}
-	else if(enemyType.contains('goblin')) {
+	else if(enemy.isGoblinType) {
 		enemyVoiceArray.push('voice_goblin_hey1');
 		enemyVoiceArray.push('voice_goblin_hey2');
 		enemyVoiceArray.push('voice_goblin_hey3');
 	}
-	else if(enemyType.contains('lizardman')) {
+	else if(enemy.isLizardmanType) {
 		enemyVoiceArray.push('voice_lizardman_hey1');
 		enemyVoiceArray.push('voice_lizardman_hey2');
 		enemyVoiceArray.push('voice_lizardman_hey3');
 	}
-	else if(enemyType.contains('orc')) {
+	else if(enemy.isOrcType) {
 		enemyVoiceArray.push('voice_orc_hehe1');
 		enemyVoiceArray.push('voice_orc_hey1');
 		enemyVoiceArray.push('voice_orc_skill1');

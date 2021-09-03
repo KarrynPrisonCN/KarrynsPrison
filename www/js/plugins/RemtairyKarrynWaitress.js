@@ -905,6 +905,7 @@ Game_Actor.prototype.waitressBattle_askedForFlash = function(target) {
 	BattleManager._logWindow.push('addText', TextManager.waitressEnemyAskingForWaitressToFlash.format(target.displayName(), this.displayName()));
 	//AudioManager.playSe({name:'+Voice_Enemy_a', pan:0, pitch:100, volume:50});
 	BattleManager.playEnemyVoice_SideJob(target);
+	target.startAnimation(261, false, 0);
 			
 	let flashReqMet = this.waitressBattle_flashRequirementMet();
 	
@@ -924,6 +925,7 @@ Game_Actor.prototype.waitressBattle_askedToDrink = function(target) {
 	BattleManager._logWindow.push('addText', TextManager.waitressEnemyAskingForWaitressToDrink.format(target.displayName(), this.displayName()));
 	//AudioManager.playSe({name:'+Voice_Enemy_a', pan:0, pitch:100, volume:70});
 	BattleManager.playEnemyVoice_SideJob(target);
+	target.startAnimation(223, false, 0);
 			
 	if(this.isNotAcceptingAnyAlcohol()) {
 		BattleManager._logWindow.push('addText', TextManager.waitressRefusesDrink.format(this.displayName()));
@@ -3354,7 +3356,7 @@ Game_Enemy.prototype.waitressBattle_selectNormalAction = function(target) {
 		let randomTarget = tableMembers[Math.randomInt(tableMembers.length)];
 		BattleManager._logWindow.push('addText', TextManager.waitressBarEnemyChatting.format(this.displayName(), randomTarget.displayName()));
 		//AudioManager.playSe({name:'+Voice_Enemy_d', pan:0, pitch:100, volume:50});
-		BattleManager.playEnemyVoice_SideJob(this);
+		BattleManager.playEnemyVoice_SideJob(this, 50);
 		if(Math.random() < 0.5) 
 			this.waitressBattle_enemyDrink(1);
 	}
@@ -3367,7 +3369,7 @@ Game_Enemy.prototype.waitressBattle_selectNormalAction = function(target) {
 		BattleManager._logWindow.push('addText', TextManager.waitressBarEnemyTellsJoke.format(this.displayName()));
 		$gameTroop.waitressBattle_setTableJoker(this);
 		//AudioManager.playSe({name:'+Voice_Enemy_a', pan:0, pitch:100, volume:70});
-		BattleManager.playEnemyVoice_SideJob(this);
+		BattleManager.playEnemyVoice_SideJob(this, 70);
 	}
 	else if(barAction === BAR_ACTION_HEAR_JOKE) {
 		BattleManager._logWindow.push('addText', TextManager.waitressBarEnemyHearsJoke.format(this.displayName(), jokerDisplayName.displayName()));
@@ -3453,6 +3455,9 @@ Game_Enemy.prototype.waitressBattle_action_leavesBar = function() {
 };
 Game_Enemy.prototype.waitressBattle_action_askForWaitress = function(halfTimeLimit) {
 	BattleManager._logWindow.push('addText', TextManager.waitressEnemyCallingForWaitress.format(this.displayName()));
+	BattleManager.playEnemyVoice_SideJob(this);
+	this.startAnimation(223, false, 0);
+	
 	let timeLimit = 0;
 	if(this.isTipsy) {
 		timeLimit = BAR_TAKE_ORDER_TIPSY_TIME_LIMIT;
@@ -3470,7 +3475,7 @@ Game_Enemy.prototype.waitressBattle_action_cheerAtBrawl = function() {
 	if(this._bar_currentDrink === ALCOHOL_TYPE_NOTHING) {
 		BattleManager._logWindow.push('addText', TextManager.waitressEnemyCheerForBrawlNoDrink.format(this.displayName()));
 		//AudioManager.playSe({name:'+Voice_Enemy_c', pan:0, pitch:100, volume:50});
-		BattleManager.playEnemyVoice_SideJob(this);
+		BattleManager.playEnemyVoice_SideJob(this, 50);
 	}
 	else {
 		BattleManager._logWindow.push('addText', TextManager.waitressEnemyCheerForBrawlYesDrink.format(this.displayName()));
@@ -3512,7 +3517,7 @@ Game_Enemy.prototype.waitressBattle_action_joinBrawl = function() {
 	this.waitressBattle_enterBarBrawl();
 	BattleManager._logWindow.push('addText', TextManager.waitressBrawlJoin.format(this.displayName()));
 	//AudioManager.playSe({name:'+Voice_Enemy_d', pan:0, pitch:100, volume:50});
-	BattleManager.playEnemyVoice_SideJob(this);
+	BattleManager.playEnemyVoice_SideJob(this, 50);
 };
 
 Game_Enemy.prototype.waitressBattle_action_harassWaitress = function(target) {

@@ -390,6 +390,7 @@ Game_Actor.prototype.customExecution_karrynFlaunt = function() {
 	this.gainEnergyExp(10, $gameTroop.getAverageEnemyExperienceLvl());
 	this.addToActorFlauntCountRecord(); 
 	BattleManager._logWindow.push('addText', TextManager.karrynFlauntMessage);
+	this.startAnimation(153, false, 0);
 	this.setTachieCutIn(CUTIN_KARRYN_FLAUNT_ONE_ID);
 	BattleManager.actionRemLines(KARRYN_LINE_KARRYN_FLAUNT);
 	
@@ -400,6 +401,8 @@ Game_Actor.prototype.customExecution_karrynFlaunt = function() {
 };
 
 Game_Actor.prototype.afterEval_karrynFlaunt = function(target) {
+	//this.setTachieCutIn(CUTIN_KARRYN_FLAUNT_ONE_ID);
+	//BattleManager.actionRemLines(KARRYN_LINE_KARRYN_FLAUNT);
 	this.resetAttackSkillConsUsage();
 	this.resetSexSkillConsUsage(false);
 	if(!target._thisTurnFlaunted) {
@@ -777,6 +780,7 @@ Game_Actor.prototype.afterEval_surrender = function() {
 	this.resetAttackSkillConsUsage();
 	this.resetEndurePleasureStanceCost();
 	this.resetSexSkillConsUsage(false);
+	this._tempRecordUsedPostOrgasmRevival = true;
 };
 
 /////////

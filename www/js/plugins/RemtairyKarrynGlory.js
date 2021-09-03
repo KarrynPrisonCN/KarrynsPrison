@@ -1514,7 +1514,7 @@ Game_Actor.prototype.afterEval_gloryMasturbateSkill = function(area, toyPlay) {
 	
 	if(this.tachieRightArm.includes('suck_fingers') || this.tachieLeftArm.includes('suck_fingers'))
 		sexualNoise -= 1.5;
-	if(!this.isAroused) 
+	if(!this.isAroused()) 
 		sexualNoise -= 1;
 	
 	if(area == AREA_PUSSY || area == AREA_ANAL) {
