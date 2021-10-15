@@ -4,7 +4,7 @@ Remtairy.Results = Remtairy.Results || {};
 const RESULTS_EXP_MAX_LINES = 18;
 const RESULTS_EXP_LINE_HEIGHT = 0.9;
 
-const RESULTS_PASSIVES_MAX_LINES = 15;
+const RESULTS_PASSIVES_MAX_LINES = 19;
 const RESULTS_PASSIVES_LINE_HEIGHT = 1;
 
 const RESULTS_STAMINA_PER_PLVL = 34;
@@ -115,6 +115,7 @@ Game_Actor.prototype.getStaminaGrowthRate = function(useExpRate) {
 	if(this.isUsingThisTitle(TITLE_ID_BATHROOM_QUEEN)) growthRate *= 1.75;
 	else if(this.isUsingThisTitle(TITLE_ID_EVASION_ONE)) growthRate *= 0.8;
 	else if(this.isUsingThisTitle(TITLE_ID_EVASION_TWO)) growthRate *= 0.6;
+	else if(this.isUsingThisTitle(TITLE_ID_NONSTOP_SHOW)) growthRate *= 1.3;
 	
 	if(useExpRate) growthRate *= this.exr;
 	growthRate *= $gameParty.difficultyGrowthRate();
@@ -145,6 +146,7 @@ Game_Actor.prototype.getEnergyGrowthRate = function(useExpRate) {
 	growthRate *= $gameParty.difficultyGrowthRate();
 	
 	if(this.isUsingThisTitle(TITLE_ID_CUM_GUZZLER)) growthRate *= 1.33;
+	else if(this.isUsingThisTitle(TITLE_ID_DANCING_ORGASM)) growthRate *= 1.2;
 	
 	return growthRate;
 };
@@ -331,6 +333,7 @@ Game_Actor.prototype.getCharmGrowthRate = function(useExpRate) {
 	
 	if(this.isUsingThisTitle(TITLE_ID_FIRST_KISS_TO_ANUS)) growthRate *= 1.42;
 	else if(this.isUsingThisTitle(TITLE_ID_BUSTY_BARMAID)) growthRate *= 1.15;
+	else if(this.isUsingThisTitle(TITLE_ID_TEN_DANCE_COMBO)) growthRate *= 1.25;
 	
 	if(useExpRate) growthRate *= this.exr;
 	
@@ -660,11 +663,14 @@ Game_Party.prototype.checkForNewPassives = function() {
 };
 
 Game_Party.prototype.applyEndOfBattleSpecial = function() {
-	if(Karryn.isInReceptionistPose()) {
+	if($gameParty.isInReceptionistBattle) {
 		this.applyEndOfBattleSpecial_receptionistBattle();
 	}
 	else if($gameParty.isInGloryBattle) {
 		this.applyEndOfBattleSpecial_gloryBattle();
+	}
+	else if($gameParty.isInStripperBattle) {
+		this.applyEndOfBattleSpecial_stripperBattle();
 	}
 };
 
@@ -681,7 +687,7 @@ Game_Party.prototype.applyEndOfBattleSpecial = function() {
 Scene_Battle.prototype.resultsTitleText = function() {
 	let title = TextManager.resultsVictory;
 	
-	if($gameParty.isInWaitressBattle || Karryn.isInReceptionistPose()) {
+	if($gameParty.isInWaitressBattle || $gameParty.isInReceptionistBattle) {
 		title = TextManager.resultsJobBattleEnd;
 		return title;
 	}
@@ -689,7 +695,10 @@ Scene_Battle.prototype.resultsTitleText = function() {
 		title = TextManager.gloryBattleEnd;
 		return title;
 	}
-	
+	else if($gameParty.isInStripperBattle) {
+		title = TextManager.stripperBattleEnd;
+		return title;
+	}
 	
 	
 	if(Karryn.isInMasturbationCouchPose()) {
@@ -1277,13 +1286,23 @@ Window_VictoryPassives.prototype.drawActorNewPassives = function(actor, index) {
 	//this.makeFontSmaller();
 	
     let newPassives = actor._newPassivesUnlocked;
-	for(let i = 0; i < newPassives.length; i++) {
-		let name = TextManager.skillName(newPassives[i]);
-		let wy = -this._scrollY + this.lineHeight() * (i) * RESULTS_PASSIVES_LINE_HEIGHT;
-		let textColor = $dataSkills[newPassives[i]].passiveColor;
-		if(textColor) this.changeTextColor(this.textColor(textColor));
-		this.drawText(name, x, wy, (this.width - 240)/2, 'left');
-	
+	for(let i = 0; i < newPassives.length && i < RESULTS_PASSIVES_MAX_LINES; i++) {
+		if(i === RESULTS_PASSIVES_MAX_LINES - 1 && newPassives.length > RESULTS_PASSIVES_MAX_LINES) {
+			let diff = newPassives.length - RESULTS_PASSIVES_MAX_LINES + 1;
+			let moreText = TextManager.RemResultsTooManyPassivesUnlocked.format(diff);
+			this.changeTextColor(this.normalColor());
+			let wy = -this._scrollY + this.lineHeight() * (i) * RESULTS_PASSIVES_LINE_HEIGHT + this.lineHeight() * 0.1;
+			this.drawTextEx(moreText, x, wy);
+		}
+		else {
+			let name = TextManager.skillName(newPassives[i]);
+			name = TextManager.convertEscapeCharacters(name);
+			name = TextManager.convertExtraEscapeCharacters(name);
+			let wy = -this._scrollY + this.lineHeight() * (i) * RESULTS_PASSIVES_LINE_HEIGHT;
+			let textColor = $dataSkills[newPassives[i]].passiveColor;
+			if(textColor) this.changeTextColor(this.textColor(textColor));
+			this.drawText(name, x, wy, (this.width - 240)/2, 'left');
+		}
 	}
 	
 	this.changeTextColor(this.normalColor());
@@ -1351,9 +1370,18 @@ Window_VictoryPassives.prototype.isMouseOverPassives = function() {
 	let mouseIsOverPassives = x >= this._scrollX + this.standardPadding() * 2 + Window_Base._faceWidth 
 		&& x <= (this.width - 240)/2
 		&& y >= bufferY;
-		
-	if(y > (REM_OLIVIA_TOOLTIP_PASSIVE_LINEHEIGHT * $gameActors.actor(ACTOR_KARRYN_ID)._newPassivesUnlocked.length) + bufferY)
-		mouseIsOverPassives = false;
+	
+	let newPassivesUnlockedLength = $gameActors.actor(ACTOR_KARRYN_ID)._newPassivesUnlocked.length;
+	if(newPassivesUnlockedLength > RESULTS_PASSIVES_MAX_LINES) {
+		if(y > (REM_OLIVIA_TOOLTIP_PASSIVE_LINEHEIGHT * (RESULTS_PASSIVES_MAX_LINES - 1) + bufferY))
+			mouseIsOverPassives = false;
+	}
+	else {
+		if(y > (REM_OLIVIA_TOOLTIP_PASSIVE_LINEHEIGHT * newPassivesUnlockedLength + bufferY))
+			mouseIsOverPassives = false;
+	}
+	
+	
 	
 	if(mouseIsOverPassives) 
 		this.tooltipWindow().setXYPos_passives(x, y - 20);

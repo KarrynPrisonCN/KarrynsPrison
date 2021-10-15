@@ -66,7 +66,7 @@ Remtairy.Energy.Game_Actor_performAction = Game_Actor.prototype.performAction;
 Game_Actor.prototype.performAction = function(action) {
 	Remtairy.Energy.Game_Actor_performAction.call(this, action);
 
-	if(!action.isActorWillpowerSkill() && !action.isEndMentalPhaseSkill()) {
+	if(!action.isActorWillpowerSkill() && !action.isEndMentalPhaseSkill() && !action.isActorDontMasturbateInBattleSkill()) {
 		if(action.isActorCombatStanceSkill()) {
 			this._tempSexStanceCost = 0;
 		}
@@ -360,7 +360,7 @@ Game_Actor.prototype.showEval_karrynFlaunt = function() {
 	if(this.isInCombatPose()) {
 		return true;
 	}
-	else if(this.isInJobPose() || this.justOrgasmed()) {
+	else if((this.isInJobPose() && !this.isInStripperSexPose()) || this.justOrgasmed()) {
 		return false;
 	}
 	else if(this.isInDownPose()) {
@@ -390,7 +390,7 @@ Game_Actor.prototype.customExecution_karrynFlaunt = function() {
 	this.gainEnergyExp(10, $gameTroop.getAverageEnemyExperienceLvl());
 	this.addToActorFlauntCountRecord(); 
 	BattleManager._logWindow.push('addText', TextManager.karrynFlauntMessage);
-	this.startAnimation(153, false, 0);
+	this.startAnimation($dataSkills[SKILL_KARRYN_FLAUNT_ID].animationId, false, 0);
 	this.setTachieCutIn(CUTIN_KARRYN_FLAUNT_ONE_ID);
 	BattleManager.actionRemLines(KARRYN_LINE_KARRYN_FLAUNT);
 	
@@ -398,13 +398,17 @@ Game_Actor.prototype.customExecution_karrynFlaunt = function() {
 		if(Math.random() < 0.4)
 			this.addHornyState();
 	}
+	
+	this._tempCombatStanceCost = 0;
+	this._tempSexStanceCost = 0;
+	this.resetAttackSkillConsUsage();
+	this.resetSexSkillConsUsage(false);
 };
 
 Game_Actor.prototype.afterEval_karrynFlaunt = function(target) {
 	//this.setTachieCutIn(CUTIN_KARRYN_FLAUNT_ONE_ID);
 	//BattleManager.actionRemLines(KARRYN_LINE_KARRYN_FLAUNT);
-	this.resetAttackSkillConsUsage();
-	this.resetSexSkillConsUsage(false);
+	
 	if(!target._thisTurnFlaunted) {
 		target._thisTurnFlaunted = true;
 		target.addToEnemyFlauntedCountRecord(this);

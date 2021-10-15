@@ -829,6 +829,7 @@ Window_Base.prototype.obtainEscapeString = function(textState) {
     }
 };
 
+
 Yanfly.Message.Window_Base_processEscapeCharacter =
     Window_Base.prototype.processEscapeCharacter;
 Window_Base.prototype.processEscapeCharacter = function(code, textState) {
@@ -842,6 +843,7 @@ Window_Base.prototype.processEscapeCharacter = function(code, textState) {
     if (id === 1) this.contents.fontBold = !this.contents.fontBold;
     if (id === 2) this.contents.fontItalic = !this.contents.fontItalic;
     break;
+	/*
   case 'FS':
     var size = this.obtainEscapeParam(textState);
     this.contents.fontSize = size;
@@ -865,6 +867,7 @@ Window_Base.prototype.processEscapeCharacter = function(code, textState) {
   case 'PY':
     textState.y = this.obtainEscapeParam(textState);
     break;
+	*/
   default:
     Yanfly.Message.Window_Base_processEscapeCharacter.call(this,
      code, textState);
@@ -1211,10 +1214,6 @@ Yanfly.Message.Window_Message_startMessage =
 Window_Message.prototype.startMessage = function() {
     this._nameWindow.deactivate();
     Yanfly.Message.Window_Message_startMessage.call(this);
-	//REM
-	if(this._positionType === 2 && this._background === 1) {
-		this._textState.y = MAP_CHAT_TEXT_TRANSPARENT_WINDOW_HEIGHT_PADDING;
-	}
 };
 
 Yanfly.Message.Window_Message_terminateMessage =

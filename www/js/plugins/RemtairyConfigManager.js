@@ -39,6 +39,7 @@ ConfigManager.remCutinsSmootherLoading = false;
 ConfigManager.remSmootherCGLoading = false;
 ConfigManager.remCutinsDisabled = false;
 ConfigManager.remShowSexualDamagePopup = true;
+ConfigManager.disableFootjobs = false;
 ConfigManager.disableRimjobs = false;
 ConfigManager.disableSmegma = false;
 ConfigManager.keepVoicePlayback = false;
@@ -51,7 +52,13 @@ ConfigManager.remLanguage = RemLanguageEN;
 ConfigManager.displayPubic = true;
 ConfigManager.displayPleasureAsPercent = true;
 ConfigManager.shorterDefeatBattles = false;
-ConfigManager.masterVolume = 80;
+ConfigManager.masterVolume = 100;
+ConfigManager.voiceVolume = 100;
+ConfigManager.moanVolume = 30;
+ConfigManager.seVolume = 50;
+ConfigManager.bgmVolume = 50;
+ConfigManager.maleVolume = 50;
+
 
 ConfigManager.edictsOutlineColorObtainable = 0;
 ConfigManager.edictsOutlineColorMeetReq = 0;
@@ -76,6 +83,48 @@ ConfigManager.cheatInstantRiotsFour = false;
 ConfigManager.cheatWaitressLog = false;
 ConfigManager.cheatDisableAutosave = false;
 
+Object.defineProperty(ConfigManager, 'bgmVolume', {
+    get: function() {
+        return AudioManager._bgmVolume;
+    },
+    set: function(value) {
+        AudioManager.bgmVolume = value;
+		AudioManager.meVolume = value;
+    },
+    configurable: true
+});
+
+Object.defineProperty(ConfigManager, 'bgsVolume', {
+    get: function() {
+        return AudioManager.seVolume;
+    },
+    set: function(value) {
+        AudioManager.bgsVolume = value;
+    },
+    configurable: true
+});
+
+Object.defineProperty(ConfigManager, 'meVolume', {
+    get: function() {
+        return AudioManager._bgmVolume;
+    },
+    set: function(value) {
+        AudioManager.meVolume = value;
+    },
+    configurable: true
+});
+
+Object.defineProperty(ConfigManager, 'seVolume', {
+    get: function() {
+        return AudioManager.seVolume;
+    },
+    set: function(value) {
+        AudioManager.seVolume = value;
+		AudioManager.bgsVolume = value;
+    },
+    configurable: true
+});
+
 Object.defineProperty(ConfigManager, 'voiceVolume', {
     get: function() {
         return AudioManager.voiceVolume;
@@ -96,14 +145,25 @@ Object.defineProperty(ConfigManager, 'moanVolume', {
     configurable: true
 });
 
+Object.defineProperty(ConfigManager, 'maleVolume', {
+    get: function() {
+        return AudioManager.maleVolume;
+    },
+    set: function(value) {
+        AudioManager.maleVolume = value;
+    },
+    configurable: true
+});
 
 Remtairy.CM.ConfigManager_applyData = ConfigManager.applyData;
 ConfigManager.applyData = function(config) {
 	Remtairy.CM.ConfigManager_applyData.call(this, config);
 	
-	this.remLanguage = config['remLanguage'];
-	if(this.remLanguage !== RemLanguageJP && this.remLanguage !== RemLanguageEN)
-		this.remLanguage = KARRYN_PRISON_LANGUAGE;
+	//this.remLanguage = config['remLanguage'];
+	//if(this.remLanguage !== RemLanguageJP && this.remLanguage !== RemLanguageEN)
+	//	this.remLanguage = KARRYN_PRISON_LANGUAGE;
+	this.remLanguage = this.readRemConfig(config, 'remLanguage');
+
 	
 	this.synchFps = this.readRemConfig(config, 'synchFps');
 	this.safeMode = config['safeMode'];
@@ -119,6 +179,7 @@ ConfigManager.applyData = function(config) {
 	this.remCutinsDisabled = this.readRemConfig(config, 'remCutinsDisabled');
 	this.remShowSexualDamagePopup = this.readRemConfig(config, 'remShowSexualDamagePopup');
 	
+	this.disableFootjobs = this.readRemConfig(config, 'disableFootjobs');
 	this.disableRimjobs = this.readRemConfig(config, 'disableRimjobs');
 	this.disableSmegma = this.readRemConfig(config, 'disableSmegma');
 	
@@ -129,9 +190,13 @@ ConfigManager.applyData = function(config) {
 	this.remMaleDialogueAppear = this.readRemConfig(config, 'remMaleDialogueAppear');
 	this.displayPleasureAsPercent = this.readRemConfig(config, 'displayPleasureAsPercent');
 	
-	this.voiceVolume = this.readVolume(config, 'voiceVolume');
-    this.moanVolume = this.readVolume(config, 'moanVolume');
-	this.masterVolume = this.readRemConfig(config, 'masterVolume');
+	this.voiceVolume = this.readRemVolume(config, 'voiceVolume');
+    this.moanVolume = this.readRemVolume(config, 'moanVolume');
+	this.masterVolume = this.readRemVolume(config, 'masterVolume');
+	this.bgmVolume = this.readRemVolume(config, 'bgmVolume');
+    this.seVolume = this.readRemVolume(config, 'seVolume');
+	this.maleVolume = this.readRemVolume(config, 'maleVolume');
+	
 	
 	this.sortPassivesAscending = this.readRemConfig(config, 'sortPassivesAscending');
 	this.cancelSkipMentalPhase = this.readRemConfig(config, 'cancelSkipMentalPhase');
@@ -173,7 +238,29 @@ ConfigManager.makeData = function() {
 	config.synchFps = this.synchFps;
 	config.voiceVolume = this.voiceVolume;
     config.moanVolume = this.moanVolume;
+	config.maleVolume = this.maleVolume;
 	return config;
+};
+
+ConfigManager.readRemVolume = function(config, name) {
+    let value = config[name];
+    if (value !== undefined) {
+        return Number(value).clamp(0, 100);
+    } else {
+        if(name == 'masterVolume')
+			return 100;
+		else if(name == 'moanVolume')
+			return 30;
+		else if(name == 'voiceVolume')
+			return 100;
+		else if(name == 'seVolume')
+			return 50;
+		else if(name == 'bgmVolume')
+			return 50;
+		else if(name == 'maleVolume')
+			return 50;
+		
+    }
 };
 
 
@@ -188,8 +275,7 @@ ConfigManager.readRemConfig = function(config, name) {
 			return 2;
 		else if(name == 'remMaleDialogueAppear')
 			return 3;
-		else if(name == 'masterVolume')
-			return 80;
+		
 		
 		else if(name == 'pixelMovement')
 			return true;
@@ -207,6 +293,8 @@ ConfigManager.readRemConfig = function(config, name) {
 			return true;
 		else if(name == 'displayPleasureAsPercent')
 			return true;
+		else if(name == 'disableFootjobs')
+			return false;
 		else if(name == 'disableRimjobs')
 			return false;
 		else if(name == 'disableSmegma')
@@ -268,6 +356,7 @@ ConfigManager.readRemConfig = function(config, name) {
 			return false;
 		else if(name == 'displayPubic')
 			return true;
+		
 		else if(name == 'remLanguage')
 			return KARRYN_PRISON_LANGUAGE;
 		else return false;
@@ -279,7 +368,7 @@ ConfigManager.readConfigMessageSpeed = function(config, name) {
 	if(value !== undefined) {
 		return value;
 	} else {
-		return 9;
+		return 10;
 	}
 };
 
@@ -301,7 +390,7 @@ Window_Options.prototype.addRemOptions = function() {
 	this.addCommand(TextManager.pixelMovement, 'pixelMovement');
 	this.addCommand(TextManager.remLanguage, 'remLanguage');
 	
-	
+	this.addCommand(TextManager.yanflyOptionsDisableRimjob, 'disableFootjobs');
 	this.addCommand(TextManager.yanflyOptionsDisableRimjob, 'disableRimjobs');
 	this.addCommand(TextManager.yanflyOptionsDisableSmegma, 'disableSmegma');
 	

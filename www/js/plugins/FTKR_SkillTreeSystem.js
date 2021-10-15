@@ -3078,6 +3078,8 @@ function Scene_STS() {
         let name = skill ? skill.name : '';
 		if(skill == void 0) {}
 		else {
+			if(skill.hasRemNameDefault) name = skill.remNameDefault;
+			
 			if(TextManager.isEnglish) {
 				if(skill.hasRemNameEN) name = skill.remNameEN; 
 			}
@@ -3093,6 +3095,12 @@ function Scene_STS() {
 			else if(TextManager.isKorean) {
 				if(skill.hasRemNameKR) name = skill.remNameKR; 
 			}
+			else if(TextManager.isRussian) {
+				if(skill.hasRemNameRU) name = skill.remNameRU; 
+			}
+			
+			//name = this.convertEscapeCharacters(name);
+			name = this.convertExtraEscapeCharacters(name);
 		}
 		
         let params = [this._actor._name, name];
@@ -3101,9 +3109,11 @@ function Scene_STS() {
 	
 	//mod
 	Window_Base.prototype.drawStsDescTitleCenter = function(format, x, y, width, skill) {
-        var name = skill ? skill.name : '';
+        let name = skill ? skill.name : '';
 		if(skill == void 0) {}
 		else {
+			if(skill.hasRemNameDefault) name = skill.remNameDefault;
+			
 			if(TextManager.isEnglish) {
 				if(skill.hasRemNameEN) name = skill.remNameEN; 
 			}
@@ -3119,17 +3129,24 @@ function Scene_STS() {
 			else if(TextManager.isKorean) {
 				if(skill.hasRemNameKR) name = skill.remNameKR; 
 			}
+			else if(TextManager.isRussian) {
+				if(skill.hasRemNameRU) name = skill.remNameRU; 
+			}
+			
+			//name = this.convertEscapeCharacters(name);
+			name = this.convertExtraEscapeCharacters(name);
 		}
 		
-        var params = [this._actor._name, name];
+        let params = [this._actor._name, name];
         this.drawFormatTextCenterEx(format, x, y, params, width);
     };
 
     //スキルの説明文を表示する関数
     Window_Base.prototype.drawStsDescription = function(x, y, width, skill) {
-        var texts = this.getStsDesc(skill).split('\n');
-        var dy = this.lineHeight();
-        for (var i = 0; i < texts.length; i++) {
+        let texts = this.getStsDesc(skill).split('\n');
+        let dy = this.lineHeight();
+
+        for (let i = 0; i < texts.length; i++) {
             if (FTKR.STS.skillStatus.adjustWidth) {
                 this.drawStsFormatText(texts[i], x, y + dy * i, [], width);
             } else {
@@ -3279,21 +3296,32 @@ function Scene_STS() {
         Window_Base.prototype.ftItemName = function(item) {
 			if(item == void 0) {}
 			else {
+				let name = item.name;
+				if(item.hasRemNameDefault) name = item.remNameDefault;
+				
 				if(TextManager.isEnglish) {
-					if(item.hasRemNameEN) return item.remNameEN; 
+					if(item.hasRemNameEN) name = item.remNameEN; 
 				}
 				else if(TextManager.isJapanese) {
-					if(item.hasRemNameJP) return item.remNameJP; 
+					if(item.hasRemNameJP) name = item.remNameJP; 
 				}
 				else if(TextManager.isSChinese) {
-					if(item.hasRemNameSCH) return item.remNameSCH; 
+					if(item.hasRemNameSCH) name = item.remNameSCH; 
 				}
 				else if(TextManager.isTChinese) {
-					if(item.hasRemNameTCH) return item.remNameTCH; 
+					if(item.hasRemNameTCH) name = item.remNameTCH; 
 				}
 				else if(TextManager.isKorean) {
-					if(item.hasRemNameKR) return item.remNameKR; 
+					if(item.hasRemNameKR) name = item.remNameKR; 
 				}
+				else if(TextManager.isRussian) {
+					if(item.hasRemNameRU) name = item.remNameRU; 
+				}
+				
+				//name = this.convertEscapeCharacters(name);
+				name = this.convertExtraEscapeCharacters(name);
+				
+				return name;
 			}
             return !!item ? item.name : '';
         };
@@ -3309,21 +3337,29 @@ function Scene_STS() {
         Window_Base.prototype.ftItemDesc = function(item) {
 			if(item == void 0) {}
 			else {
+				let desc = item.description;
+				if(item.hasRemDescDefault) desc = item.remDescDefault;
+				
 				if(TextManager.isEnglish) {
-					if(item.hasRemDescEN) return item.remDescEN; 
+					if(item.hasRemDescEN) desc = item.remDescEN; 
 				}
 				else if(TextManager.isJapanese) {
-					if(item.hasRemDescJP) return item.remDescJP; 
+					if(item.hasRemDescJP) desc = item.remDescJP; 
 				}
 				else if(TextManager.isSChinese) {
-					if(item.hasRemDescSCH) return item.remDescSCH; 
+					if(item.hasRemDescSCH) desc = item.remDescSCH; 
 				}
 				else if(TextManager.isTChinese) {
-					if(item.hasRemDescTCH) return item.remDescTCH; 
+					if(item.hasRemDescTCH) desc = item.remDescTCH; 
 				}
 				else if(TextManager.isKorean) {
-					if(item.hasRemDescKR) return item.remDescKR; 
+					if(item.hasRemDescKR) desc = item.remDescKR; 
 				}
+				else if(TextManager.isRussian) {
+					if(item.hasRemDescRU) desc = item.remDescRU; 
+				}
+				
+				return this.convertEscapeCharacters(desc);
 			}
             return !!item ? item.description : '';
         };
@@ -4283,11 +4319,29 @@ function Scene_STS() {
 					if (preskill) {
 						this.changePaintOpacity(actor.isStsLearnedSkill(preskill.id));
 						var name = preskill.name;
-						if(TextManager.isEnglish && preskill.hasRemNameEN) name = preskill.remNameEN;
-						else if(TextManager.isJapanese && preskill.hasRemNameJP) name = preskill.remNameJP;
-						else if(TextManager.isTChinese && preskill.hasRemNameTCH) name = preskill.remNameTCH;
-						else if(TextManager.isSChinese && preskill.hasRemNameSCH) name = preskill.remNameSCH;
-						else if(TextManager.isKorean && preskill.hasRemNameKR) name = preskill.remNameKR;
+						if(preskill.hasRemNameDefault) name = preskill.remNameDefault;
+						
+						if(TextManager.isEnglish) {
+							if(preskill.hasRemNameEN) name = preskill.remNameEN;
+						}
+						else if(TextManager.isJapanese) {
+							if(preskill.hasRemNameJP) name = preskill.remNameJP;
+						}
+						else if(TextManager.isTChinese) {
+							if(preskill.hasRemNameTCH) name = preskill.remNameTCH;
+						}
+						else if(TextManager.isSChinese) {
+							if(preskill.hasRemNameSCH) name = preskill.remNameSCH;
+						}
+						else if(TextManager.isKorean) {
+							if(preskill.hasRemNameKR) name = preskill.remNameKR;
+						}
+						else if(TextManager.isRussian) {
+							if(preskill.hasRemNameRU) name = preskill.remNameRU;
+						}
+						
+						name = this.convertEscapeCharacters(name);
+						name = this.convertExtraEscapeCharacters(name);
 						
 						if($dataSkills[preskill.id].stypeId === SKILLTYPE_EDICTS_ID) {
 							if($dataSkills[preskill.id].hasTag(TAG_RESEARCH_EDICT) || $dataSkills[preskill.id].hasTag(TAG_INSURANCE_BUY_EDICT)) {
@@ -4312,47 +4366,59 @@ function Scene_STS() {
 			//}
 			
 			let selectedSkill = actor.stsSkill(this._skillId);
-			this.changePaintOpacity(actor.evalStsFormula(selectedSkill.sts.required, true, false)) ;
-			if(TextManager.isEnglish && selectedSkill.hasRemMessageEN[2]) {
-				this.drawTextEx(selectedSkill.remMessageEN[2], x, y + lh * i);
-				i++;
+			this.changePaintOpacity(actor.evalStsFormula(selectedSkill.sts.required, true, false));
+			let remMsg2 = false;
+			if(selectedSkill.hasRemMessageDefault[2]) remMsg2 = selectedSkill.remMessageDefault[2];
+			
+			if(TextManager.isEnglish) {
+				if(selectedSkill.hasRemMessageEN[2]) remMsg2 = selectedSkill.remMessageEN[2];
 			}
-			else if(TextManager.isJapanese && selectedSkill.hasRemMessageJP[2]) {
-				this.drawTextEx(selectedSkill.remMessageJP[2], x, y + lh * i);
-				i++;
+			else if(TextManager.isJapanese) {
+				if(selectedSkill.hasRemMessageJP[2]) remMsg2 = selectedSkill.remMessageJP[2];
 			}
-			else if(TextManager.isSChinese && selectedSkill.hasRemMessageSCH[2]) {
-				this.drawTextEx(selectedSkill.remMessageSCH[2], x, y + lh * i);
-				i++;
+			else if(TextManager.isSChinese) {
+				if(selectedSkill.hasRemMessageSCH[2]) remMsg2 = selectedSkill.remMessageSCH[2];
 			}
-			else if(TextManager.isTChinese && selectedSkill.hasRemMessageTCH[2]) {
-				this.drawTextEx(selectedSkill.remMessageTCH[2], x, y + lh * i);
-				i++;
+			else if(TextManager.isTChinese) {
+				if(selectedSkill.hasRemMessageTCH[2]) remMsg2 = selectedSkill.remMessageTCH[2];
 			}
-			else if(TextManager.isKorean && selectedSkill.hasRemMessageKR[2]) {
-				this.drawTextEx(selectedSkill.remMessageKR[2], x, y + lh * i);
+			else if(TextManager.isKorean) {
+				if(selectedSkill.hasRemMessageKR[2]) remMsg2 = selectedSkill.remMessageKR[2];
+			} 
+			else if(TextManager.isRussian) {
+				if(selectedSkill.hasRemMessageRU[2]) remMsg2 = selectedSkill.remMessageRU[2];
+			}
+			
+			if(remMsg2) {
+				this.drawTextEx(remMsg2, x, y + lh * i);
 				i++;
 			}
 			
 			this.changePaintOpacity(actor.evalStsFormula(selectedSkill.sts.required_b, true, false)) ;
-			if(TextManager.isEnglish && selectedSkill.hasRemMessageEN[3]) {
-				this.drawTextEx(selectedSkill.remMessageEN[3], x, y + lh * i);
-				i++;
+			let remMsg3 = false;
+			if(selectedSkill.hasRemMessageDefault[3]) remMsg3 = selectedSkill.remMessageDefault[3];
+			
+			if(TextManager.isEnglish) {
+				if(selectedSkill.hasRemMessageEN[3]) remMsg3 = selectedSkill.remMessageEN[3];
 			}
-			else if(TextManager.isJapanese && selectedSkill.hasRemMessageJP[3]) {
-				this.drawTextEx(selectedSkill.remMessageJP[3], x, y + lh * i);
-				i++;
+			else if(TextManager.isJapanese) {
+				if(selectedSkill.hasRemMessageJP[3]) remMsg3 = selectedSkill.remMessageJP[3];
 			}
-			else if(TextManager.isSChinese && selectedSkill.hasRemMessageSCH[3]) {
-				this.drawTextEx(selectedSkill.remMessageSCH[3], x, y + lh * i);
-				i++;
+			else if(TextManager.isSChinese) {
+				if(selectedSkill.hasRemMessageSCH[3]) remMsg3 = selectedSkill.remMessageSCH[3];
 			}
-			else if(TextManager.isTChinese && selectedSkill.hasRemMessageTCH[3]) {
-				this.drawTextEx(selectedSkill.remMessageTCH[3], x, y + lh * i);
-				i++;
+			else if(TextManager.isTChinese) {
+				if(selectedSkill.hasRemMessageTCH[3]) remMsg3 = selectedSkill.remMessageTCH[3];
 			}
-			else if(TextManager.isKorean && selectedSkill.hasRemMessageKR[3]) {
-				this.drawTextEx(selectedSkill.remMessageKR[3], x, y + lh * i);
+			else if(TextManager.isKorean) {
+				if(selectedSkill.hasRemMessageKR[3]) remMsg3 = selectedSkill.remMessageKR[3];
+			} 
+			else if(TextManager.isRussian) {
+				if(selectedSkill.hasRemMessageRU[3]) remMsg3 = selectedSkill.remMessageRU[3];
+			}
+			
+			if(remMsg3) {
+				this.drawTextEx(remMsg3, x, y + lh * i);
 				i++;
 			}
 			

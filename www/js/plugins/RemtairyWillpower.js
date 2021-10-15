@@ -77,22 +77,60 @@ Window_SkillList.prototype.drawSoloItemCost = function(item, cost, wx, wy, dw, s
       dw -= Math.max(iconWidth, this.textWidth(text));
     } else if (Yanfly.Param.SCICostStyle === 2) {
 		if(item.id === ITEM_WILL_COST_ID) {
-			//text += ' ' + item.name;
-			if(TextManager.isEnglish && item.hasRemNameEN) text += ' ' + item.remNameEN;
-			else if(TextManager.isJapanese && item.hasRemNameJP) text += ' ' + item.remNameJP;
-			else if(TextManager.isSChinese && item.hasRemNameSCH) text += ' ' + item.remNameSCH;
-			else if(TextManager.isTChinese && item.hasRemNameTCH) text += ' ' + item.remNameTCH;
-			else if(TextManager.isKorean && item.hasRemNameKR) text += ' ' + item.remNameKR;
-			else text += ' ' + item.name;
+			let itemName = item.name;
+			if(item.hasRemNameDefault) itemName = item.remNameDefault;
+			
+			if(TextManager.isEnglish) {
+				if(item.hasRemNameEN) itemName = item.remNameEN;
+			}
+			else if(TextManager.isJapanese) {
+				if(item.hasRemNameJP) itemName = item.remNameJP;
+			}
+			else if(TextManager.isSChinese) {
+				if(item.hasRemNameSCH) itemName = item.remNameSCH;
+			}
+			else if(TextManager.isTChinese) {
+				if(item.hasRemNameTCH) itemName = item.remNameTCH;
+			}
+			else if(TextManager.isKorean) {
+				if(item.hasRemNameKR) itemName = item.remNameKR;
+			}
+			else if(TextManager.isRussian) {
+				if(item.hasRemNameRU) itemName = item.remNameRU;
+			}
+			
+			itemName = this.convertEscapeCharacters(itemName);
+			itemName = this.convertExtraEscapeCharacters(itemName);
+			
+			text += ' ' + itemName;
 		}
 		else if(item.id === ITEM_SECOND_COST_ID) {
-			//text += ' ' + item.name;
-			if(TextManager.isEnglish && item.hasRemNameEN) text += '' + item.remNameEN;
-			else if(TextManager.isJapanese && item.hasRemNameJP) text += '' + item.remNameJP;
-			else if(TextManager.isSChinese && item.hasRemNameSCH) text += '' + item.remNameSCH;
-			else if(TextManager.isTChinese && item.hasRemNameTCH) text += '' + item.remNameTCH;
-			else if(TextManager.isKorean && item.hasRemNameKR) text += '' + item.remNameKR;
-			else text += ' ' + item.name;
+			let itemName = item.name;
+			if(item.hasRemNameDefault) itemName = item.remNameDefault;
+			
+			if(TextManager.isEnglish) {
+				if(item.hasRemNameEN) itemName = item.remNameEN;
+			}
+			else if(TextManager.isJapanese) {
+				if(item.hasRemNameJP) itemName = item.remNameJP;
+			}
+			else if(TextManager.isSChinese) {
+				if(item.hasRemNameSCH) itemName = item.remNameSCH;
+			}
+			else if(TextManager.isTChinese) {
+				if(item.hasRemNameTCH) itemName = item.remNameTCH;
+			}
+			else if(TextManager.isKorean) {
+				if(item.hasRemNameKR) itemName = item.remNameKR;
+			}
+			else if(TextManager.isRussian) {
+				if(item.hasRemNameRU) itemName = item.remNameRU;
+			}
+			
+			itemName = this.convertEscapeCharacters(itemName);
+			itemName = this.convertExtraEscapeCharacters(itemName);
+			
+			text += ' ' + itemName;
 		}
 		else {
 			let iconWidth = Window_Base._iconWidth;
@@ -262,8 +300,9 @@ Game_Actor.prototype.maxWill = function() {
 };
 
 Game_Actor.prototype.willRegenMultipler = function() {
-	var percentToOrgasm = this.currentPercentOfOrgasm(true) / 100;
-	var multipler = 1 - (percentToOrgasm * 0.5);
+	if(this.isInMapPose() && !this.isInWaitressServingPose()) return 1;
+	let percentToOrgasm = this.currentPercentOfOrgasm(true) / 100;
+	let multipler = 1 - (percentToOrgasm * 0.5);
 	return multipler;
 };
 
@@ -573,8 +612,11 @@ Game_Actor.prototype.showEval_consciousDesires = function(area) {
 	if($gameParty.isInWaitressBattle) {
 		if(!this.hasPassive(PASSIVE_BAR_WAITRESS_SEX_COUNT_ONE_ID)) return false; 
 	}
-	else if(this.isInReceptionistPose()) {
+	else if($gameParty.isInReceptionistBattle) {
 		if(!this.hasPassive(PASSIVE_RECEPTIONIST_VISITOR_SEX_COUNT_ONE_ID)) return false; 
+	}
+	else if($gameParty.isInStripperBattle) {
+		if(!this.hasPassive(PASSIVE_STRIPPER_PATRON_SEX_COUNT_ONE_ID)) return false; 
 	}
 	
 	if(area == AREA_COCK) return this.hasEdict(EDICT_RELEASE_COCK_DESIRE);	

@@ -393,12 +393,7 @@ TextManager.stateTooltipText = function(battler, stateId) {
 	else if(stateId === STATE_DANCE_COMBO_COUNT_ID) {
 		return TextManager.StateStripperActorDanceCombo.format(battler._stripper_danceCombo);
 	}
-	else if(stateId === STATE_STAGE_CONDOM_COUNTER_ID) {
-		if($gameParty._stripper_stageCondomCount === 1)
-			return TextManager.StateStripperStageCondomSingular.format(battler._stripper_stageCondomCount);
-		else
-			return TextManager.StateStripperStageCondomPlural.format(battler._stripper_stageCondomCount);
-	}
+
 
 	
 	return '';
@@ -961,7 +956,7 @@ TextManager.cockDesireTooltipText = function() {
 			text += '\n';
 		}
 		
-		if(Karryn.showLevelOneSubjugatedEdicts()) {
+		if(Karryn.showLevelOneSubjugatedEdicts() && !ConfigManager.disableFootjobs) {
 			req = actor.footjobCockDesireRequirement();
 			if(TextManager.isEnglish) {
 				text += '\\I[40]';

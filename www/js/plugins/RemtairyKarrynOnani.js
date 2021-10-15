@@ -617,7 +617,12 @@ Game_Actor.prototype.dmgFormula_masInBattleSkill = function(area, useRightHand, 
 	
 	
 	let staminaDmg = target.skillCost_karrynOnaniInBattleSkills();
-
+	if(useHalberd && this.hasPassive(PASSIVE_MASTURBATED_HALBERD_COUNT_TWO_ID)) {
+		staminaDmg *= 0.9;
+		if(this.hasPassive(PASSIVE_MASTURBATED_HALBERD_COUNT_THREE_ID) && this._todayMasturbatedUsingHalberdCount > 0) {
+			staminaDmg *= Math.max(0.5, 1 - (this._todayMasturbatedUsingHalberdCount * 0.05));
+		}
+	}
 	
 	let result = target.result();
 	result.pleasureDamage = targetPleasureGain;
@@ -1932,7 +1937,7 @@ Game_Actor.prototype.masturbationSleepQuality = function() {
 		else if(this.hasPassive(PASSIVE_MASTURBATED_COUCH_COUNT_ONE_ID))
 			sleepLvl += 1;
 	}
-	else if(this.isAroused()) {
+	else if(this.isAroused() && !$gameSwitches.value(SWITCH_BOSS_CLEAR_BONUS_ID)) {
 		if(this.hasPassive(PASSIVE_MASTURBATED_COUCH_COUNT_THREE_ID))
 			sleepLvl -= 3;
 		else if(this.hasPassive(PASSIVE_MASTURBATED_COUCH_COUNT_TWO_ID))

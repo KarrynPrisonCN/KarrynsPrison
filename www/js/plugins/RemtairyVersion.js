@@ -14,8 +14,7 @@ Remtairy.Version = Remtairy.Version || {};
  */
 //=============================================================================
 
-const KARRYN_PRISON_GAME_VERSION = 72;
-const KARRYN_PRISON_GAME_IS_DEMO = false;
+const KARRYN_PRISON_GAME_VERSION = 74;
 
 ///////////
 // Game Party
@@ -24,9 +23,6 @@ const KARRYN_PRISON_GAME_IS_DEMO = false;
 //Game Version
 Game_Party.prototype.getGameVersion = function() {
 	return this._karrynPrisonVersion;
-};
-Game_Party.prototype.getDemoStatus = function() {
-	return this._karrynPrisonDemoStatus;
 };
 Game_Party.prototype.isDemoVersion = function() {
 	return this._karrynPrisonDemoStatus === true;
@@ -544,8 +540,8 @@ Game_Party.prototype.updateGameVersion = function() {
 	}
 	
 	if(saveFileGameVersion < 38) {
-		actor.learnSkill(SKILL_SKEWER_2_ID); 
-		actor.learnSkill(SKILL_SLAM_2_ID); 
+		actor.learnSkill(SKILL_KARRYN_SKEWER_2_ID); 
+		actor.learnSkill(SKILL_KARRYN_SLAM_2_ID); 
 		actor._flagEquippedRadioOrgasmTitleForWholeDay = false;
 		
 	}
@@ -574,7 +570,7 @@ Game_Party.prototype.updateGameVersion = function() {
 			Karryn.learnSkill(EDICT_LEVEL_ONE_IS_NOT_RIOTING);
 		}
 		
-		actor.learnSkill(SKILL_LIGHT_KICK_ID);
+		actor.learnSkill(SKILL_KARRYN_LIGHT_KICK_ID);
 		actor.learnSkill(SKILL_KARRYN_ANALSEX_SELECTOR_ID); 
 		actor.learnSkill(SKILL_KARRYN_ANALSEX_SELECTOR_CANT_ID); 
 		actor.learnSkill(SKILL_KARRYN_PUSSYSEX_SELECTOR_ID); 
@@ -1456,33 +1452,367 @@ Game_Party.prototype.updateGameVersion = function() {
 	}
 	
 	if(saveFileGameVersion < 72) {
-		for(let skillId = 16; skillId < 443; ++skillId) {
-			let skill = $dataSkills[skillId];
-			
-			if(skill.hasTag(TAG_ACCESSORY_EDICT)) {
-				if(!actor.hasEdict(skillId)) {
-					this.gainItem($dataArmors[skillId], -1 * (this.maxItems($dataArmors[skillId]) + 1), true);
-				}
-				else if(actor.isEquippingThisAccessory(skillId)) {
-					if(this.numItems($dataArmors[skillId], true) > 0)
-						this.gainItem($dataArmors[skillId], -1 * this.maxItems($dataArmors[skillId]), false);
-				}
-				else if(this.numItems($dataArmors[skillId], true) > 1) {
-					this.gainItem($dataArmors[skillId], -1 * (this.numItems($dataArmors[skillId] - 1), false));
-				}
-			}
-			
-		}
-		
-		
+		this.fixDupedAccessories(actor);
 	}
+	
+	if(saveFileGameVersion < 73) {
+		for(let i = STRIPPER_SKILL_START; i <= STRIPPER_SKILL_END; i++) {
+			actor.learnSkill(i); 
+		}
+		this.update_addToAllWanted_Records_v73();
+		this._stripperBattle_intermissionPhase = false;
+		actor.setupPassiveReqBaseArray();
+		actor.resetTachiePole();
+		actor.resetTachieCondomBra();
+		actor.resetTachieCondomBelt();
+		actor.resetTachieCondomChikubi();
+		actor.resetTachieCondomHead();
+		actor.resetTachieCondomLeg();
+		actor.resetTachieCondomPantsu();
+		actor.resetTachieCondomButt();
+		actor.resetTachieCondomFloor();
+		actor._barLocation = BAR_LOCATION_STANDBY;
+		actor._stripperBattle_intermissionPhase = true;
+		actor._playthroughRecordStripperBattleTotalShiftsCount = 0;
+		actor._todayStripperBattleCondomWornCount = 0;
+		actor._todayMasturbatedUsingHalberdCount = 0;
+		actor._recordStripClubDancingOrgasmMaxCount = 0;
+		actor._tempRecordStripClubDancingOrgasmCount = 0;
+		actor._tempRecordStripClubEnteredIntermission = false;
+		actor._tempRecordStripClubEnteredVIP = false;
+		actor._playthroughRecordStripperBattleDancedFullTwelveMinShowCount = 0;
+		actor._recordStripClubMaxCondomsWornCount = 0;
+		actor._tempRecordFullStripClubVIP = false;
+		actor._recordStripClubFullVIPCocksCount = 0;
+		actor._tempRecordStripClubCondomEjaculationCount = 0;
+		actor._todayTriggeredNightMode = false;
+		
+		if(actor.meetsPassiveReq(PASSIVE_JOB_PETTING_COUNT_THREE_ID, actor._recordPettedWhileWorkingCount))
+			actor.addToPassiveReqExtra(PASSIVE_JOB_PETTING_COUNT_THREE_ID, actor._recordPettedWhileWorkingCount);
+		if(actor.meetsPassiveReq(PASSIVE_MASTURBATED_HALBERD_COUNT_TWO_ID, actor._recordMasturbatedUsingHalberdCount))
+			actor.addToPassiveReqExtra(PASSIVE_MASTURBATED_HALBERD_COUNT_TWO_ID, actor._recordMasturbatedUsingHalberdCount);
+		if(actor.meetsPassiveReq(PASSIVE_SIGHT_MOUTH_THREE_ID, actor._recordEnemySawMouthPostFirstPublicOrgasmCount))
+			actor.addToPassiveReqExtra(PASSIVE_SIGHT_MOUTH_THREE_ID, actor._recordEnemySawMouthPostFirstPublicOrgasmCount);
+		if(actor.meetsPassiveReq(PASSIVE_SIGHT_BOOBS_THREE_ID, actor._recordEnemySawBoobsPostFirstPublicOrgasmCount))
+			actor.addToPassiveReqExtra(PASSIVE_SIGHT_BOOBS_THREE_ID, actor._recordEnemySawBoobsPostFirstPublicOrgasmCount);
+		if(actor.meetsPassiveReq(PASSIVE_SIGHT_PUSSY_THREE_ID, actor._recordEnemySawPussyPostFirstPublicOrgasmCount))
+			actor.addToPassiveReqExtra(PASSIVE_SIGHT_PUSSY_THREE_ID, actor._recordEnemySawPussyPostFirstPublicOrgasmCount);
+		if(actor.meetsPassiveReq(PASSIVE_SIGHT_BUTT_THREE_ID, actor._recordEnemySawButtPostFirstPublicOrgasmCount))
+			actor.addToPassiveReqExtra(PASSIVE_SIGHT_BUTT_THREE_ID, actor._recordEnemySawButtPostFirstPublicOrgasmCount);
+	}
+	if(saveFileGameVersion < 74) {
+		actor._playthroughRecordStripClubStripperOrgasmIntermissionCount = 0;
+		
+		if(actor.meetsPassiveReq(PASSIVE_SIGHT_PLEASURE_TWO_ID, actor._recordSightPleasure))
+			actor.addToPassiveReqExtra(PASSIVE_SIGHT_PLEASURE_TWO_ID, actor._recordSightPleasure);
+		if(actor.meetsPassiveReq(PASSIVE_SIGHT_ORGASM_TWO_ID, actor._recordOrgasmFromSightCount))
+			actor.addToPassiveReqExtra(PASSIVE_SIGHT_ORGASM_TWO_ID, actor._recordOrgasmFromSightCount);
+		if(actor.meetsPassiveReq(PASSIVE_TALK_PLEASURE_TWO_ID, actor._recordTalkPleasure))
+			actor.addToPassiveReqExtra(PASSIVE_TALK_PLEASURE_TWO_ID, actor._recordTalkPleasure);
+		if(actor.meetsPassiveReq(PASSIVE_TALK_ORGASM_TWO_ID, actor._recordOrgasmFromTalkCount))
+			actor.addToPassiveReqExtra(PASSIVE_TALK_ORGASM_TWO_ID, actor._recordOrgasmFromTalkCount);
+		if(actor.meetsPassiveReq(PASSIVE_TALK_MOUTH_THREE_ID, actor._recordTalkedAtAboutMouthPostFirstDefeatCount))
+			actor.addToPassiveReqExtra(PASSIVE_TALK_MOUTH_THREE_ID, actor._recordTalkedAtAboutMouthPostFirstDefeatCount);
+		if(actor.meetsPassiveReq(PASSIVE_TALK_BOOBS_THREE_ID, actor._recordTalkedAtAboutBoobsPostFirstDefeatCount))
+			actor.addToPassiveReqExtra(PASSIVE_TALK_BOOBS_THREE_ID, actor._recordTalkedAtAboutBoobsPostFirstDefeatCount);
+		if(actor.meetsPassiveReq(PASSIVE_TALK_BUTT_THREE_ID, actor._recordTalkedAtAboutPussyPostFirstDefeatCount))
+			actor.addToPassiveReqExtra(PASSIVE_TALK_BUTT_THREE_ID, actor._recordTalkedAtAboutPussyPostFirstDefeatCount);
+		if(actor.meetsPassiveReq(PASSIVE_TALK_BUTT_TWO_ID, actor._recordTalkedAtAboutButtPostFirstDefeatCount))
+			actor.addToPassiveReqExtra(PASSIVE_TALK_BUTT_TWO_ID, actor._recordTalkedAtAboutButtPostFirstDefeatCount);
+		if(actor.meetsPassiveReq(PASSIVE_TALK_COCK_THREE_ID, actor._recordTalkedAtAboutCockPostFirstDefeatCount))
+			actor.addToPassiveReqExtra(PASSIVE_TALK_COCK_THREE_ID, actor._recordTalkedAtAboutCockPostFirstDefeatCount);
+		if(actor.meetsPassiveReq(PASSIVE_ORGASM_PEOPLE_FOUR_ID, actor._recordOrgasmPresencePeople))
+			actor.addToPassiveReqExtra(PASSIVE_ORGASM_PEOPLE_FOUR_ID, actor._recordOrgasmPresencePeople);
+	}
+	
 	
 	//demo update
 	if(this.isDemoVersion() && !KARRYN_PRISON_GAME_IS_DEMO) {
 		if($gameSwitches.value(SWITCH_WON_BOSS_BATTLE_LV2_ID) && Prison.prisonLevelTwoIsAnarchy()) {
 			Prison.firstSubjugationPrisonLevelTwo();
+			$gameSwitches.setValue(58, false); //Visited 3rd floor
 		}
-		$gameSwitches.setValue(58, false);
+		
+		if(actor.meetsPassiveReq(PASSIVE_MAX_MOUTH_DESIRE_FOUR_ID, actor._recordMaxReached150MouthDesireCount))
+			actor.addToPassiveReqExtra(PASSIVE_MAX_MOUTH_DESIRE_FOUR_ID, actor._recordMaxReached150MouthDesireCount);
+		if(actor.meetsPassiveReq(PASSIVE_SUCKED_FINGERS_COUNT_THREE_ID, actor._recordFingersSuckedCount))
+			actor.addToPassiveReqExtra(PASSIVE_SUCKED_FINGERS_COUNT_THREE_ID, actor._recordFingersSuckedCount);
+		if(actor.meetsPassiveReq(PASSIVE_SUCKED_FINGERS_PEOPLE_TWO_ID, actor._recordFingersSuckedPeople))
+			actor.addToPassiveReqExtra(PASSIVE_SUCKED_FINGERS_PEOPLE_TWO_ID, actor._recordFingersSuckedPeople);
+		if(actor.meetsPassiveReq(PASSIVE_KISS_COUNT_TWO_ID, actor._recordKissedCount))
+			actor.addToPassiveReqExtra(PASSIVE_KISS_COUNT_TWO_ID, actor._recordKissedCount);
+		if(actor.meetsPassiveReq(PASSIVE_KISS_PEOPLE_THREE_ID, actor._recordKissedPeople))
+			actor.addToPassiveReqExtra(PASSIVE_KISS_PEOPLE_THREE_ID, actor._recordKissedPeople);
+		if(actor.meetsPassiveReq(PASSIVE_KISS_USAGE_ONE_ID, actor._recordKissUsageCount))
+			actor.addToPassiveReqExtra(PASSIVE_KISS_USAGE_ONE_ID, actor._recordKissUsageCount);
+		if(actor.meetsPassiveReq(PASSIVE_MOUTH_PLEASURE_ONE_ID, actor._recordMouthPleasure))
+			actor.addToPassiveReqExtra(PASSIVE_MOUTH_PLEASURE_ONE_ID, actor._recordMouthPleasure);
+		if(actor.meetsPassiveReq(PASSIVE_HJ_PEOPLE_TWO_ID, actor._recordHandjobPeople))
+			actor.addToPassiveReqExtra(PASSIVE_HJ_PEOPLE_TWO_ID, actor._recordHandjobPeople);
+		if(actor.meetsPassiveReq(PASSIVE_HJ_USAGE_ONE_ID, actor._recordHandjobUsageCount))
+			actor.addToPassiveReqExtra(PASSIVE_HJ_USAGE_ONE_ID, actor._recordHandjobUsageCount);
+		if(actor.meetsPassiveReq(PASSIVE_COCK_PETTING_PEOPLE_ONE_ID, actor._recordCockPettedPeople))
+			actor.addToPassiveReqExtra(PASSIVE_COCK_PETTING_PEOPLE_ONE_ID, actor._recordCockPettedPeople);
+		if(actor.meetsPassiveReq(PASSIVE_BJ_PEOPLE_TWO_ID, actor._recordBlowjobPeople))
+			actor.addToPassiveReqExtra(PASSIVE_BJ_PEOPLE_TWO_ID, actor._recordBlowjobPeople);
+		if(actor.meetsPassiveReq(PASSIVE_BJ_USAGE_ONE_ID, actor._recordBlowjobUsageCount))
+			actor.addToPassiveReqExtra(PASSIVE_BJ_USAGE_ONE_ID, actor._recordBlowjobUsageCount);
+		if(actor.meetsPassiveReq(PASSIVE_SWALLOW_ML_TWO_ID, actor._recordSwallowML))
+			actor.addToPassiveReqExtra(PASSIVE_SWALLOW_ML_TWO_ID, actor._recordSwallowML);
+		if(actor.meetsPassiveReq(PASSIVE_MAX_BOOBS_DESIRE_FOUR_ID, actor._recordMaxReached150BoobsDesireCount))
+			actor.addToPassiveReqExtra(PASSIVE_MAX_BOOBS_DESIRE_FOUR_ID, actor._recordMaxReached150BoobsDesireCount);
+		if(actor.meetsPassiveReq(PASSIVE_BOOBS_PETTED_COUNT_THREE_ID, actor._recordBoobsPettedCount))
+			actor.addToPassiveReqExtra(PASSIVE_BOOBS_PETTED_COUNT_THREE_ID, actor._recordBoobsPettedCount);
+		if(actor.meetsPassiveReq(PASSIVE_BOOBS_PETTED_PEOPLE_TWO_ID, actor._recordBoobsPettedPeople))
+			actor.addToPassiveReqExtra(PASSIVE_BOOBS_PETTED_PEOPLE_TWO_ID, actor._recordBoobsPettedPeople);
+		if(actor.meetsPassiveReq(PASSIVE_NIPPLES_PETTED_COUNT_THREE_ID, actor._recordNipplesPettedCount))
+			actor.addToPassiveReqExtra(PASSIVE_NIPPLES_PETTED_COUNT_THREE_ID, actor._recordNipplesPettedCount);
+		if(actor.meetsPassiveReq(PASSIVE_NIPPLES_PETTED_PEOPLE_TWO_ID, actor._recordNipplesPettedPeople))
+			actor.addToPassiveReqExtra(PASSIVE_NIPPLES_PETTED_PEOPLE_TWO_ID, actor._recordNipplesPettedPeople);
+		if(actor.meetsPassiveReq(PASSIVE_TITTYFUCK_PEOPLE_TWO_ID, actor._recordTittyFuckPeople))
+			actor.addToPassiveReqExtra(PASSIVE_TITTYFUCK_PEOPLE_TWO_ID, actor._recordTittyFuckPeople);
+		if(actor.meetsPassiveReq(PASSIVE_TITTYFUCK_USAGE_ONE_ID, actor._recordTittyFuckUsageCount))
+			actor.addToPassiveReqExtra(PASSIVE_TITTYFUCK_USAGE_ONE_ID, actor._recordTittyFuckUsageCount);
+		if(actor.meetsPassiveReq(PASSIVE_BOOBS_PLEASURE_ONE_ID, actor._recordBoobsPleasure + actor._recordNipplesPleasure))
+			actor.addToPassiveReqExtra(PASSIVE_BOOBS_PLEASURE_ONE_ID, actor._recordBoobsPleasure + actor._recordNipplesPleasure);
+		if(actor.meetsPassiveReq(PASSIVE_MAX_PUSSY_DESIRE_FOUR_ID, actor._recordMaxReached150PussyDesireCount))
+			actor.addToPassiveReqExtra(PASSIVE_MAX_PUSSY_DESIRE_FOUR_ID, actor._recordMaxReached150PussyDesireCount);
+		if(actor.meetsPassiveReq(PASSIVE_CLIT_PETTED_COUNT_THREE_ID, actor._recordClitPettedCount))
+			actor.addToPassiveReqExtra(PASSIVE_CLIT_PETTED_COUNT_THREE_ID, actor._recordClitPettedCount);
+		if(actor.meetsPassiveReq(PASSIVE_CLIT_PETTED_PEOPLE_TWO_ID, actor._recordClitPettedPeople))
+			actor.addToPassiveReqExtra(PASSIVE_CLIT_PETTED_PEOPLE_TWO_ID, actor._recordClitPettedPeople);
+		if(actor.meetsPassiveReq(PASSIVE_CUNNILINGUS_PEOPLE_TWO_ID, actor._recordCunnilingusPeople))
+			actor.addToPassiveReqExtra(PASSIVE_CUNNILINGUS_PEOPLE_TWO_ID, actor._recordCunnilingusPeople);
+		if(actor.meetsPassiveReq(PASSIVE_PUSSY_PETTED_COUNT_THREE_ID, actor._recordPussyPettedCount))
+			actor.addToPassiveReqExtra(PASSIVE_PUSSY_PETTED_COUNT_THREE_ID, actor._recordPussyPettedCount);
+		if(actor.meetsPassiveReq(PASSIVE_PUSSY_PETTED_PEOPLE_TWO_ID, actor._recordPussyPettedPeople))
+			actor.addToPassiveReqExtra(PASSIVE_PUSSY_PETTED_PEOPLE_TWO_ID, actor._recordPussyPettedPeople);
+		if(actor.meetsPassiveReq(PASSIVE_PUSSY_SEX_COUNT_TWO_ID, actor._recordPussyFuckedCount))
+			actor.addToPassiveReqExtra(PASSIVE_PUSSY_SEX_COUNT_TWO_ID, actor._recordPussyFuckedCount);
+		if(actor.meetsPassiveReq(PASSIVE_PUSSY_SEX_PEOPLE_TWO_ID, actor._recordPussyFuckedPeople))
+			actor.addToPassiveReqExtra(PASSIVE_PUSSY_SEX_PEOPLE_TWO_ID, actor._recordPussyFuckedPeople);
+		if(actor.meetsPassiveReq(PASSIVE_PUSSY_SEX_USAGE_ONE_ID, actor._recordPussySexUsageCount))
+			actor.addToPassiveReqExtra(PASSIVE_PUSSY_SEX_USAGE_ONE_ID, actor._recordPussySexUsageCount);
+		if(actor.meetsPassiveReq(PASSIVE_PUSSY_PLEASURE_ONE_ID, actor._recordPussyPleasure + actor._recordClitPleasure))
+			actor.addToPassiveReqExtra(PASSIVE_PUSSY_PLEASURE_ONE_ID, actor._recordPussyPleasure + actor._recordClitPleasure);
+		if(actor.meetsPassiveReq(PASSIVE_MAX_BUTT_DESIRE_FOUR_ID, actor._recordMaxReached150ButtDesireCount))
+			actor.addToPassiveReqExtra(PASSIVE_MAX_BUTT_DESIRE_FOUR_ID, actor._recordMaxReached150ButtDesireCount);
+		if(actor.meetsPassiveReq(PASSIVE_BUTT_PETTED_COUNT_THREE_ID, actor._recordButtPettedCount))
+			actor.addToPassiveReqExtra(PASSIVE_BUTT_PETTED_COUNT_THREE_ID, actor._recordButtPettedCount);
+		if(actor.meetsPassiveReq(PASSIVE_BUTT_PETTED_PEOPLE_TWO_ID, actor._recordButtPettedPeople))
+			actor.addToPassiveReqExtra(PASSIVE_BUTT_PETTED_PEOPLE_TWO_ID, actor._recordButtPettedPeople);
+		if(actor.meetsPassiveReq(PASSIVE_BUTT_SPANKED_PEOPLE_TWO_ID, actor._recordButtSpankedPeople))
+			actor.addToPassiveReqExtra(PASSIVE_BUTT_SPANKED_PEOPLE_TWO_ID, actor._recordButtSpankedPeople);
+		if(actor.meetsPassiveReq(PASSIVE_ANAL_PETTED_COUNT_THREE_ID, actor._recordAnalPettedCount))
+			actor.addToPassiveReqExtra(PASSIVE_ANAL_PETTED_COUNT_THREE_ID, actor._recordAnalPettedCount);
+		if(actor.meetsPassiveReq(PASSIVE_ANAL_PETTED_PEOPLE_TWO_ID, actor._recordAnalPettedPeople))
+			actor.addToPassiveReqExtra(PASSIVE_ANAL_PETTED_PEOPLE_TWO_ID, actor._recordAnalPettedPeople);
+		if(actor.meetsPassiveReq(PASSIVE_ANAL_SEX_COUNT_TWO_ID, actor._recordAnalFuckedCount))
+			actor.addToPassiveReqExtra(PASSIVE_ANAL_SEX_COUNT_TWO_ID, actor._recordAnalFuckedCount);
+		if(actor.meetsPassiveReq(PASSIVE_ANAL_SEX_PEOPLE_TWO_ID, actor._recordAnalFuckedPeople))
+			actor.addToPassiveReqExtra(PASSIVE_ANAL_SEX_PEOPLE_TWO_ID, actor._recordAnalFuckedPeople);
+		if(actor.meetsPassiveReq(PASSIVE_ANAL_SEX_USAGE_ONE_ID, actor._recordAnalSexUsageCount))
+			actor.addToPassiveReqExtra(PASSIVE_ANAL_SEX_USAGE_ONE_ID, actor._recordAnalSexUsageCount);
+		if(actor.meetsPassiveReq(PASSIVE_ANAL_PLEASURE_ONE_ID, actor._recordButtPleasure + actor._recordAnalPleasure))
+			actor.addToPassiveReqExtra(PASSIVE_ANAL_PLEASURE_ONE_ID, actor._recordButtPleasure + actor._recordAnalPleasure);
+		if(actor.meetsPassiveReq(PASSIVE_MAX_COCK_DESIRE_FOUR_ID, actor._recordMaxReached150CockDesireCount))
+			actor.addToPassiveReqExtra(PASSIVE_MAX_COCK_DESIRE_FOUR_ID, actor._recordMaxReached150CockDesireCount);
+		if(actor.meetsPassiveReq(PASSIVE_SEE_JERKOFF_COUNT_TWO_ID, actor._recordSeeJerkOffCount))
+			actor.addToPassiveReqExtra(PASSIVE_SEE_JERKOFF_COUNT_TWO_ID, actor._recordSeeJerkOffCount);
+		if(actor.meetsPassiveReq(PASSIVE_KARRYN_STARE_COCK_THREE_ID, actor._recordCockStareUsageCount))
+			actor.addToPassiveReqExtra(PASSIVE_KARRYN_STARE_COCK_THREE_ID, actor._recordCockStareUsageCount);
+		if(actor.meetsPassiveReq(PASSIVE_TALK_MOUTH_TWO_ID, actor._recordTalkedAtAboutMouthPostFirstDefeatCount))
+			actor.addToPassiveReqExtra(PASSIVE_TALK_MOUTH_TWO_ID, actor._recordTalkedAtAboutMouthPostFirstDefeatCount);
+		if(actor.meetsPassiveReq(PASSIVE_TALK_BOOBS_TWO_ID, actor._recordTalkedAtAboutBoobsPostFirstDefeatCount))
+			actor.addToPassiveReqExtra(PASSIVE_TALK_BOOBS_TWO_ID, actor._recordTalkedAtAboutBoobsPostFirstDefeatCount);
+		if(actor.meetsPassiveReq(PASSIVE_TALK_PUSSY_TWO_ID, actor._recordTalkedAtAboutPussyPostFirstDefeatCount))
+			actor.addToPassiveReqExtra(PASSIVE_TALK_PUSSY_TWO_ID, actor._recordTalkedAtAboutPussyPostFirstDefeatCount);
+		if(actor.meetsPassiveReq(PASSIVE_TALK_BUTT_TWO_ID, actor._recordTalkedAtAboutButtPostFirstDefeatCount))
+			actor.addToPassiveReqExtra(PASSIVE_TALK_BUTT_TWO_ID, actor._recordTalkedAtAboutButtPostFirstDefeatCount);
+		if(actor.meetsPassiveReq(PASSIVE_TALK_COCK_TWO_ID, actor._recordTalkedAtAboutCockPostFirstDefeatCount))
+			actor.addToPassiveReqExtra(PASSIVE_TALK_COCK_TWO_ID, actor._recordTalkedAtAboutCockPostFirstDefeatCount);
+		if(actor.meetsPassiveReq(PASSIVE_TALK_PLEASURE_ONE_ID, actor._recordTalkPleasure))
+			actor.addToPassiveReqExtra(PASSIVE_TALK_PLEASURE_ONE_ID, actor._recordTalkPleasure);
+		if(actor.meetsPassiveReq(PASSIVE_SIGHT_MOUTH_TWO_ID, actor._recordEnemySawMouthPostFirstPublicOrgasmCount))
+			actor.addToPassiveReqExtra(PASSIVE_SIGHT_MOUTH_TWO_ID, actor._recordEnemySawMouthPostFirstPublicOrgasmCount);
+		if(actor.meetsPassiveReq(PASSIVE_SIGHT_BOOBS_TWO_ID, actor._recordEnemySawBoobsPostFirstPublicOrgasmCount))
+			actor.addToPassiveReqExtra(PASSIVE_SIGHT_BOOBS_TWO_ID, actor._recordEnemySawBoobsPostFirstPublicOrgasmCount);
+		if(actor.meetsPassiveReq(PASSIVE_SIGHT_PUSSY_TWO_ID, actor._recordEnemySawPussyPostFirstPublicOrgasmCount))
+			actor.addToPassiveReqExtra(PASSIVE_SIGHT_PUSSY_TWO_ID, actor._recordEnemySawPussyPostFirstPublicOrgasmCount);
+		if(actor.meetsPassiveReq(PASSIVE_SIGHT_BUTT_TWO_ID, actor._recordEnemySawButtPostFirstPublicOrgasmCount))
+			actor.addToPassiveReqExtra(PASSIVE_SIGHT_BUTT_TWO_ID, actor._recordEnemySawButtPostFirstPublicOrgasmCount);
+		if(actor.meetsPassiveReq(PASSIVE_SIGHT_PLEASURE_ONE_ID, actor._recordSightPleasure))
+			actor.addToPassiveReqExtra(PASSIVE_SIGHT_PLEASURE_ONE_ID, actor._recordSightPleasure);
+		if(actor.meetsPassiveReq(PASSIVE_WAITRESS_FLASH_COUNT_TWO_ID, actor._recordWaitressFlashedCount))
+			actor.addToPassiveReqExtra(PASSIVE_WAITRESS_FLASH_COUNT_TWO_ID, actor._recordWaitressFlashedCount);
+		if(actor.meetsPassiveReq(PASSIVE_CLOTHES_STRIPPED_TWO_ID, actor._recordClothesStrippedPostFirstPublicOrgasmCount))
+			actor.addToPassiveReqExtra(PASSIVE_CLOTHES_STRIPPED_TWO_ID, actor._recordClothesStrippedPostFirstPublicOrgasmCount);
+		if(actor.meetsPassiveReq(PASSIVE_PANTIES_STRIPPED_TWO_ID, actor._recordPantiesStrippedPostFirstPublicOrgasmCount))
+			actor.addToPassiveReqExtra(PASSIVE_PANTIES_STRIPPED_TWO_ID, actor._recordPantiesStrippedPostFirstPublicOrgasmCount);
+		if(actor.meetsPassiveReq(PASSIVE_MASTURBATED_COUCH_COUNT_TWO_ID, actor._recordMasturbatedCouchTotalCount))
+			actor.addToPassiveReqExtra(PASSIVE_MASTURBATED_COUCH_COUNT_TWO_ID, actor._recordMasturbatedCouchTotalCount);
+		if(actor.meetsPassiveReq(PASSIVE_MASTURBATED_INBATTLE_COUNT_TWO_ID, actor._recordMasturbatedInBattlePresencePeople))
+			actor.addToPassiveReqExtra(PASSIVE_MASTURBATED_INBATTLE_COUNT_TWO_ID, actor._recordMasturbatedInBattlePresencePeople);
+		if(actor.meetsPassiveReq(PASSIVE_MASTURBATED_HALBERD_COUNT_TWO_ID, actor._recordMasturbatedUsingHalberdCount))
+			actor.addToPassiveReqExtra(PASSIVE_MASTURBATED_HALBERD_COUNT_TWO_ID, actor._recordMasturbatedUsingHalberdCount);
+		if(actor.meetsPassiveReq(PASSIVE_MAX_ALL_DESIRE_FOUR_ID, actor._recordMaxReached750TotalDesireCount))
+			actor.addToPassiveReqExtra(PASSIVE_MAX_ALL_DESIRE_FOUR_ID, actor._recordMaxReached750TotalDesireCount);
+		if(actor.meetsPassiveReq(PASSIVE_KICK_COUNTER_SEX_COUNT_THREE_ID, actor._recordSexPose_KickCounterCount))
+			actor.addToPassiveReqExtra(PASSIVE_KICK_COUNTER_SEX_COUNT_THREE_ID, actor._recordSexPose_KickCounterCount);
+		if(actor.meetsPassiveReq(PASSIVE_DOUBLE_PEN_COUNT_TWO_ID, actor._recordDoublePenetrationCount))
+			actor.addToPassiveReqExtra(PASSIVE_DOUBLE_PEN_COUNT_TWO_ID, actor._recordDoublePenetrationCount);
+		if(actor.meetsPassiveReq(PASSIVE_TRIPLE_PEN_COUNT_TWO_ID, actor._recordTriplePenetrationCount))
+			actor.addToPassiveReqExtra(PASSIVE_TRIPLE_PEN_COUNT_TWO_ID, actor._recordTriplePenetrationCount);
+		if(actor.meetsPassiveReq(PASSIVE_BLOWBANG_COUNT_THREE_ID, actor._recordBlowbangCount))
+			actor.addToPassiveReqExtra(PASSIVE_BLOWBANG_COUNT_THREE_ID, actor._recordBlowbangCount);
+		if(actor.meetsPassiveReq(PASSIVE_URINAL_COUNT_THREE_ID, actor._recordUrinalCount))
+			actor.addToPassiveReqExtra(PASSIVE_URINAL_COUNT_THREE_ID, actor._recordUrinalCount);
+		if(actor.meetsPassiveReq(PASSIVE_JOB_PETTING_COUNT_TWO_ID, actor._recordPettedWhileWorkingCount))
+			actor.addToPassiveReqExtra(PASSIVE_JOB_PETTING_COUNT_TWO_ID, actor._recordPettedWhileWorkingCount);
+		if(actor.meetsPassiveReq(PASSIVE_BAR_WAITRESS_SEX_COUNT_TWO_ID, actor._recordBarWaitressSexCount))
+			actor.addToPassiveReqExtra(PASSIVE_BAR_WAITRESS_SEX_COUNT_TWO_ID, actor._recordBarWaitressSexCount);
+		if(actor.meetsPassiveReq(PASSIVE_RECEPTIONIST_VISITOR_SEX_COUNT_TWO_ID, actor._recordSexualPartnersVisitor))
+			actor.addToPassiveReqExtra(PASSIVE_RECEPTIONIST_VISITOR_SEX_COUNT_TWO_ID, actor._recordSexualPartnersVisitor);
+		if(actor.meetsPassiveReq(PASSIVE_NIGHT_BATTLE_COUNT_TWO_ID, actor._recordNightBattleCompletedCount))
+			actor.addToPassiveReqExtra(PASSIVE_NIGHT_BATTLE_COUNT_TWO_ID, actor._recordNightBattleCompletedCount);
+		if(actor.meetsPassiveReq(PASSIVE_FLOOR_EJACULATION_COUNT_TWO_ID, actor._recordFloorEjaculationCount))
+			actor.addToPassiveReqExtra(PASSIVE_FLOOR_EJACULATION_COUNT_TWO_ID, actor._recordFloorEjaculationCount);
+		if(actor.meetsPassiveReq(PASSIVE_BUKKAKE_COUNT_TWO_ID, actor._recordBukkakeTotalCount))
+			actor.addToPassiveReqExtra(PASSIVE_BUKKAKE_COUNT_TWO_ID, actor._recordBukkakeTotalCount);
+		if(actor.meetsPassiveReq(PASSIVE_FACE_BUKKAKE_COUNT_ONE_ID, actor._recordBukkakeFaceCount))
+			actor.addToPassiveReqExtra(PASSIVE_FACE_BUKKAKE_COUNT_ONE_ID, actor._recordBukkakeFaceCount);
+		if(actor.meetsPassiveReq(PASSIVE_PUSSY_CREAMPIE_ML_TWO_ID, actor._recordPussyCreampieML))
+			actor.addToPassiveReqExtra(PASSIVE_PUSSY_CREAMPIE_ML_TWO_ID, actor._recordPussyCreampieML);
+		if(actor.meetsPassiveReq(PASSIVE_ANAL_CREAMPIE_ML_TWO_ID, actor._recordAnalCreampieML))
+			actor.addToPassiveReqExtra(PASSIVE_ANAL_CREAMPIE_ML_TWO_ID, actor._recordAnalCreampieML);
+		if(actor.meetsPassiveReq(PASSIVE_TOTAL_TOYS_INSERT_COUNT_TWO_ID, actor._recordTotalToysInsertedCount))
+			actor.addToPassiveReqExtra(PASSIVE_TOTAL_TOYS_INSERT_COUNT_TWO_ID, actor._recordTotalToysInsertedCount);
+		if(actor.meetsPassiveReq(PASSIVE_PINK_ROTOR_INSERT_COUNT_TWO_ID, actor._recordClitToyInsertedCount))
+			actor.addToPassiveReqExtra(PASSIVE_PINK_ROTOR_INSERT_COUNT_TWO_ID, actor._recordClitToyInsertedCount);
+		if(actor.meetsPassiveReq(PASSIVE_DILDO_INSERT_COUNT_TWO_ID, actor._recordPussyToyInsertedCount))
+			actor.addToPassiveReqExtra(PASSIVE_DILDO_INSERT_COUNT_TWO_ID, actor._recordPussyToyInsertedCount);
+		if(actor.meetsPassiveReq(PASSIVE_ANAL_BEADS_INSERT_COUNT_TWO_ID, actor._recordAnalToyInsertedCount))
+			actor.addToPassiveReqExtra(PASSIVE_ANAL_BEADS_INSERT_COUNT_TWO_ID, actor._recordAnalToyInsertedCount);
+		if(actor.meetsPassiveReq(PASSIVE_TOYS_PLEASURE_ONE_ID, actor._recordToysPleasure))
+			actor.addToPassiveReqExtra(PASSIVE_TOYS_PLEASURE_ONE_ID, actor._recordToysPleasure);
+		if(actor.meetsPassiveReq(PASSIVE_COCKINESS_COUNT_TWO_ID, actor._recordCockinessGainedValue))
+			actor.addToPassiveReqExtra(PASSIVE_COCKINESS_COUNT_TWO_ID, actor._recordCockinessGainedValue);
+		if(actor.meetsPassiveReq(PASSIVE_TAUNT_COUNT_THREE_ID, actor._recordTauntPeople))
+			actor.addToPassiveReqExtra(PASSIVE_TAUNT_COUNT_THREE_ID, actor._recordTauntPeople);
+		if(actor.meetsPassiveReq(PASSIVE_FLAUNT_COUNT_THREE_ID, actor._recordFlauntPeople))
+			actor.addToPassiveReqExtra(PASSIVE_FLAUNT_COUNT_THREE_ID, actor._recordFlauntPeople);
+		if(actor.meetsPassiveReq(PASSIVE_SUBDUED_ERECT_COUNT_TWO_ID, actor._recordSubduedErectEnemiesWithAttack))
+			actor.addToPassiveReqExtra(PASSIVE_SUBDUED_ERECT_COUNT_TWO_ID, actor._recordSubduedErectEnemiesWithAttack);
+		if(actor.meetsPassiveReq(PASSIVE_COCKKICK_COUNT_TWO_ID, actor._recordCockKickUsageCount))
+			actor.addToPassiveReqExtra(PASSIVE_COCKKICK_COUNT_TWO_ID, actor._recordCockKickUsageCount);
+		if(actor.meetsPassiveReq(PASSIVE_RIMJOB_PEOPLE_TWO_ID, actor._recordRimjobPeople))
+			actor.addToPassiveReqExtra(PASSIVE_RIMJOB_PEOPLE_TWO_ID, actor._recordRimjobPeople);
+		if(actor.meetsPassiveReq(PASSIVE_RIMJOB_USAGE_ONE_ID, actor._recordRimjobUsageCount))
+			actor.addToPassiveReqExtra(PASSIVE_RIMJOB_USAGE_ONE_ID, actor._recordRimjobUsageCount);
+		if(actor.meetsPassiveReq(PASSIVE_FOOTJOB_PEOPLE_TWO_ID, actor._recordFootjobPeople))
+			actor.addToPassiveReqExtra(PASSIVE_FOOTJOB_PEOPLE_TWO_ID, actor._recordFootjobPeople);
+		if(actor.meetsPassiveReq(PASSIVE_FOOTJOB_USAGE_ONE_ID, actor._recordFootjobUsageCount))
+			actor.addToPassiveReqExtra(PASSIVE_FOOTJOB_USAGE_ONE_ID, actor._recordFootjobUsageCount);
+		if(actor.meetsPassiveReq(PASSIVE_SADISM_PLEASURE_ONE_ID, actor._recordSadismPleasure))
+			actor.addToPassiveReqExtra(PASSIVE_SADISM_PLEASURE_ONE_ID, actor._recordSadismPleasure);
+		if(actor.meetsPassiveReq(PASSIVE_DEFEATED_COUNT_FOUR_ID, actor._recordDefeatedTotal))
+			actor.addToPassiveReqExtra(PASSIVE_DEFEATED_COUNT_FOUR_ID, actor._recordDefeatedTotal);
+		if(actor.meetsPassiveReq(PASSIVE_DOGEZA_COUNT_ONE_ID, actor._recordDogezaPeople))
+			actor.addToPassiveReqExtra(PASSIVE_DOGEZA_COUNT_ONE_ID, actor._recordDogezaPeople);
+		if(actor.meetsPassiveReq(PASSIVE_MASOCHISM_PLEASURE_ONE_ID, actor._recordMasochismPleasure))
+			actor.addToPassiveReqExtra(PASSIVE_MASOCHISM_PLEASURE_ONE_ID, actor._recordMasochismPleasure);
+		if(actor.meetsPassiveReq(PASSIVE_ORGASM_COUNT_FOUR_ID, actor._recordOrgasmCount))
+			actor.addToPassiveReqExtra(PASSIVE_ORGASM_COUNT_FOUR_ID, actor._recordOrgasmCount);
+		if(actor.meetsPassiveReq(PASSIVE_ORGASM_ML_TWO_ID, actor._recordOrgasmML))
+			actor.addToPassiveReqExtra(PASSIVE_ORGASM_ML_TWO_ID, actor._recordOrgasmML);
+		if(actor.meetsPassiveReq(PASSIVE_ORGASM_PEOPLE_THREE_ID, actor._recordOrgasmPresencePeople))
+			actor.addToPassiveReqExtra(PASSIVE_ORGASM_PEOPLE_THREE_ID, actor._recordOrgasmPresencePeople);
+		if(actor.meetsPassiveReq(PASSIVE_PUSSY_JUICE_ML_TWO_ID, actor._recordPussyDripTenthML))
+			actor.addToPassiveReqExtra(PASSIVE_PUSSY_JUICE_ML_TWO_ID, actor._recordPussyDripTenthML);
+		if(actor.meetsPassiveReq(PASSIVE_KISS_ORGASM_TWO_ID, actor._recordOrgasmFromKissCount))
+			actor.addToPassiveReqExtra(PASSIVE_KISS_ORGASM_TWO_ID, actor._recordOrgasmFromKissCount);
+		if(actor.meetsPassiveReq(PASSIVE_BUKKAKE_ORGASM_TWO_ID, actor._recordOrgasmFromBukkakeCount))
+			actor.addToPassiveReqExtra(PASSIVE_BUKKAKE_ORGASM_TWO_ID, actor._recordOrgasmFromBukkakeCount);
+		if(actor.meetsPassiveReq(PASSIVE_HJ_ORGASM_TWO_ID, actor._recordOrgasmFromHandjobCount))
+			actor.addToPassiveReqExtra(PASSIVE_HJ_ORGASM_TWO_ID, actor._recordOrgasmFromHandjobCount);
+		if(actor.meetsPassiveReq(PASSIVE_BJ_ORGASM_TWO_ID, actor._recordOrgasmFromBlowjobCount))
+			actor.addToPassiveReqExtra(PASSIVE_BJ_ORGASM_TWO_ID, actor._recordOrgasmFromBlowjobCount);
+		if(actor.meetsPassiveReq(PASSIVE_TITTYFUCK_ORGASM_TWO_ID, actor._recordOrgasmFromTittyFuckCount))
+			actor.addToPassiveReqExtra(PASSIVE_TITTYFUCK_ORGASM_TWO_ID, actor._recordOrgasmFromTittyFuckCount);
+		if(actor.meetsPassiveReq(PASSIVE_CUNNILINGUS_ORGASM_TWO_ID, actor._recordOrgasmFromCunnilingusCount))
+			actor.addToPassiveReqExtra(PASSIVE_CUNNILINGUS_ORGASM_TWO_ID, actor._recordOrgasmFromCunnilingusCount);
+		if(actor.meetsPassiveReq(PASSIVE_PUSSY_SEX_ORGASM_TWO_ID, actor._recordOrgasmFromPussySexCount))
+			actor.addToPassiveReqExtra(PASSIVE_PUSSY_SEX_ORGASM_TWO_ID, actor._recordOrgasmFromPussySexCount);
+		if(actor.meetsPassiveReq(PASSIVE_PUSSY_CREAMPIE_ORGASM_TWO_ID, actor._recordOrgasmFromPussyCreampieCount))
+			actor.addToPassiveReqExtra(PASSIVE_PUSSY_CREAMPIE_ORGASM_TWO_ID, actor._recordOrgasmFromPussyCreampieCount);
+		if(actor.meetsPassiveReq(PASSIVE_ANAL_SEX_ORGASM_TWO_ID, actor._recordOrgasmFromAnalSexCount))
+			actor.addToPassiveReqExtra(PASSIVE_ANAL_SEX_ORGASM_TWO_ID, actor._recordOrgasmFromAnalSexCount);
+		if(actor.meetsPassiveReq(PASSIVE_ANAL_CREAMPIE_ORGASM_TWO_ID, actor._recordOrgasmFromAnalCreampieCount))
+			actor.addToPassiveReqExtra(PASSIVE_ANAL_CREAMPIE_ORGASM_TWO_ID, actor._recordOrgasmFromAnalCreampieCount);
+		if(actor.meetsPassiveReq(PASSIVE_SWALLOW_ORGASM_TWO_ID, actor._recordOrgasmFromCumSwallowCount))
+			actor.addToPassiveReqExtra(PASSIVE_SWALLOW_ORGASM_TWO_ID, actor._recordOrgasmFromCumSwallowCount);
+		if(actor.meetsPassiveReq(PASSIVE_TALK_ORGASM_TWO_ID, actor._recordOrgasmFromTalkCount))
+			actor.addToPassiveReqExtra(PASSIVE_TALK_ORGASM_TWO_ID, actor._recordOrgasmFromTalkCount);
+		if(actor.meetsPassiveReq(PASSIVE_SIGHT_ORGASM_TWO_ID, actor._recordOrgasmFromSightCount))
+			actor.addToPassiveReqExtra(PASSIVE_SIGHT_ORGASM_TWO_ID, actor._recordOrgasmFromSightCount);
+		if(actor.meetsPassiveReq(PASSIVE_TOYS_ORGASM_TWO_ID, actor._recordOrgasmFromToysCount))
+			actor.addToPassiveReqExtra(PASSIVE_TOYS_ORGASM_TWO_ID, actor._recordOrgasmFromToysCount);
+		if(actor.meetsPassiveReq(PASSIVE_PETTING_ORGASM_TWO_ID, actor._recordOrgasmFromPettingCount))
+			actor.addToPassiveReqExtra(PASSIVE_PETTING_ORGASM_TWO_ID, actor._recordOrgasmFromPettingCount);
+		if(actor.meetsPassiveReq(PASSIVE_MASTURBATE_ORGASM_TWO_ID, actor._recordOrgasmFromMasturbationCount))
+			actor.addToPassiveReqExtra(PASSIVE_MASTURBATE_ORGASM_TWO_ID, actor._recordOrgasmFromMasturbationCount);
+		if(actor.meetsPassiveReq(PASSIVE_SADISM_ORGASM_TWO_ID, actor._recordOrgasmFromSadismCount))
+			actor.addToPassiveReqExtra(PASSIVE_SADISM_ORGASM_TWO_ID, actor._recordOrgasmFromSadismCount);
+		if(actor.meetsPassiveReq(PASSIVE_MASOCHISM_ORGASM_TWO_ID, actor._recordOrgasmFromMasochismCount))
+			actor.addToPassiveReqExtra(PASSIVE_MASOCHISM_ORGASM_TWO_ID, actor._recordOrgasmFromMasochismCount);
+		if(actor.meetsPassiveReq(PASSIVE_SPANKING_ORGASM_TWO_ID, actor._recordOrgasmFromSpankingCount))
+			actor.addToPassiveReqExtra(PASSIVE_SPANKING_ORGASM_TWO_ID, actor._recordOrgasmFromSpankingCount);
+		if(actor.meetsPassiveReq(PASSIVE_HORNY_COUNT_TWO_ID, actor._recordHornyCount))
+			actor.addToPassiveReqExtra(PASSIVE_HORNY_COUNT_TWO_ID, actor._recordHornyCount);
+		if(actor.meetsPassiveReq(PASSIVE_OFFBALANCE_COUNT_THREE_ID, actor._recordDebuffOffBalancedPostFirstDefeatCount))
+			actor.addToPassiveReqExtra(PASSIVE_OFFBALANCE_COUNT_THREE_ID, actor._recordDebuffOffBalancedPostFirstDefeatCount);
+		if(actor.meetsPassiveReq(PASSIVE_FALLEN_COUNT_THREE_ID, actor._recordDebuffFallenPostFirstDefeatCount))
+			actor.addToPassiveReqExtra(PASSIVE_FALLEN_COUNT_THREE_ID, actor._recordDebuffFallenPostFirstDefeatCount);
+		if(actor.meetsPassiveReq(PASSIVE_DOWNSTAMINA_COUNT_THREE_ID, actor._recordDebuffDownStaminaPostFirstDefeatCount))
+			actor.addToPassiveReqExtra(PASSIVE_DOWNSTAMINA_COUNT_THREE_ID, actor._recordDebuffDownStaminaPostFirstDefeatCount);
+		if(actor.meetsPassiveReq(PASSIVE_SEXUAL_PARTNERS_TOTAL_FOUR_ID, actor._recordSexualPartnersTotal))
+			actor.addToPassiveReqExtra(PASSIVE_SEXUAL_PARTNERS_TOTAL_FOUR_ID, actor._recordSexualPartnersTotal);
+		if(actor.meetsPassiveReq(PASSIVE_VIRGINS_TOTAL_THREE_ID, actor._recordVirginitiesTakenTotal))
+			actor.addToPassiveReqExtra(PASSIVE_VIRGINS_TOTAL_THREE_ID, actor._recordVirginitiesTakenTotal);
+		if(actor.meetsPassiveReq(PASSIVE_SEXUAL_PARTNERS_GOBLIN_THREE_ID, actor._recordSexualPartnersGoblin))
+			actor.addToPassiveReqExtra(PASSIVE_SEXUAL_PARTNERS_GOBLIN_THREE_ID, actor._recordSexualPartnersGoblin);
+		if(actor.meetsPassiveReq(PASSIVE_SEXUAL_PARTNERS_THUG_THREE_ID, actor._recordSexualPartnersThug))
+			actor.addToPassiveReqExtra(PASSIVE_SEXUAL_PARTNERS_THUG_THREE_ID, actor._recordSexualPartnersThug);
+		if(actor.meetsPassiveReq(PASSIVE_SEXUAL_PARTNERS_GUARD_THREE_ID, actor._recordSexualPartnersGuard))
+			actor.addToPassiveReqExtra(PASSIVE_SEXUAL_PARTNERS_GUARD_THREE_ID, actor._recordSexualPartnersGuard);
+		if(actor.meetsPassiveReq(PASSIVE_SEXUAL_PARTNERS_NERD_THREE_ID, actor._recordSexualPartnersNerd))
+			actor.addToPassiveReqExtra(PASSIVE_SEXUAL_PARTNERS_NERD_THREE_ID, actor._recordSexualPartnersNerd);
+		if(actor.meetsPassiveReq(PASSIVE_SEXUAL_PARTNERS_ROGUE_THREE_ID, actor._recordSexualPartnersRogue))
+			actor.addToPassiveReqExtra(PASSIVE_SEXUAL_PARTNERS_ROGUE_THREE_ID, actor._recordSexualPartnersRogue);
+		if(actor.meetsPassiveReq(PASSIVE_SEXUAL_PARTNERS_SLIME_THREE_ID, actor._recordSexualPartnersSlime))
+			actor.addToPassiveReqExtra(PASSIVE_SEXUAL_PARTNERS_SLIME_THREE_ID, actor._recordSexualPartnersSlime);
+		
+		if(actor.meetsPassiveReq(PASSIVE_SIGHT_PLEASURE_TWO_ID, actor._recordSightPleasure))
+			actor.addToPassiveReqExtra(PASSIVE_SIGHT_PLEASURE_TWO_ID, actor._recordSightPleasure);
+		if(actor.meetsPassiveReq(PASSIVE_SIGHT_ORGASM_TWO_ID, actor._recordOrgasmFromSightCount))
+			actor.addToPassiveReqExtra(PASSIVE_SIGHT_ORGASM_TWO_ID, actor._recordOrgasmFromSightCount);
+		if(actor.meetsPassiveReq(PASSIVE_TALK_PLEASURE_TWO_ID, actor._recordTalkPleasure))
+			actor.addToPassiveReqExtra(PASSIVE_TALK_PLEASURE_TWO_ID, actor._recordTalkPleasure);
+		if(actor.meetsPassiveReq(PASSIVE_TALK_ORGASM_TWO_ID, actor._recordOrgasmFromTalkCount))
+			actor.addToPassiveReqExtra(PASSIVE_TALK_ORGASM_TWO_ID, actor._recordOrgasmFromTalkCount);
+		if(actor.meetsPassiveReq(PASSIVE_TALK_MOUTH_THREE_ID, actor._recordTalkedAtAboutMouthPostFirstDefeatCount))
+			actor.addToPassiveReqExtra(PASSIVE_TALK_MOUTH_THREE_ID, actor._recordTalkedAtAboutMouthPostFirstDefeatCount);
+		if(actor.meetsPassiveReq(PASSIVE_TALK_BOOBS_THREE_ID, actor._recordTalkedAtAboutBoobsPostFirstDefeatCount))
+			actor.addToPassiveReqExtra(PASSIVE_TALK_BOOBS_THREE_ID, actor._recordTalkedAtAboutBoobsPostFirstDefeatCount);
+		if(actor.meetsPassiveReq(PASSIVE_TALK_BUTT_THREE_ID, actor._recordTalkedAtAboutPussyPostFirstDefeatCount))
+			actor.addToPassiveReqExtra(PASSIVE_TALK_BUTT_THREE_ID, actor._recordTalkedAtAboutPussyPostFirstDefeatCount);
+		if(actor.meetsPassiveReq(PASSIVE_TALK_BUTT_TWO_ID, actor._recordTalkedAtAboutButtPostFirstDefeatCount))
+			actor.addToPassiveReqExtra(PASSIVE_TALK_BUTT_TWO_ID, actor._recordTalkedAtAboutButtPostFirstDefeatCount);
+		if(actor.meetsPassiveReq(PASSIVE_TALK_COCK_THREE_ID, actor._recordTalkedAtAboutCockPostFirstDefeatCount))
+			actor.addToPassiveReqExtra(PASSIVE_TALK_COCK_THREE_ID, actor._recordTalkedAtAboutCockPostFirstDefeatCount);
+		
+		
+		
 	}
 	
 	actor.cacheDesireTooltips();
@@ -1570,7 +1900,6 @@ Game_Party.prototype.fixWantedWithUndefinedBattlernum = function() {
 }; 
 
 Game_Party.prototype.fixCharacterCreatorSwitches = function() {
-	console.log('fixCharacterCreatorSwitches');
 	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
 	
 	if(!actor.hasSkill(CHARA_CREATE_TWO_BOOBS_ID) && !actor.hasSkill(CHARA_CREATE_TWO_NIPPLES_ID) && !actor.hasSkill(CHARA_CREATE_TWO_CLIT_ID) && !actor.hasSkill(CHARA_CREATE_TWO_PUSSY_ID) && !actor.hasSkill(CHARA_CREATE_TWO_BUTT_ID) && !actor.hasSkill(CHARA_CREATE_TWO_ANAL_ID) && !actor.hasSkill(CHARA_CREATE_TWO_MOUTH_ID) && !actor.hasSkill(CHARA_CREATE_TWO_BODY_ID)) {
@@ -1600,6 +1929,28 @@ Game_Party.prototype.fixCharacterCreatorSwitches = function() {
 		console.log(actor.hasSkill(CHARA_CREATE_THREE_MAZO_ID));
 	}
 }; 
+
+
+
+Game_Party.prototype.fixDupedAccessories = function(actor) {
+	for(let skillId = 16; skillId < 443; ++skillId) {
+		let skill = $dataSkills[skillId];
+		
+		if(skill.hasTag(TAG_ACCESSORY_EDICT)) {
+			if(!actor.hasEdict(skillId)) {
+				this.gainItem($dataArmors[skillId], -1 * (this.maxItems($dataArmors[skillId]) + 1), true);
+			}
+			else if(actor.isEquippingThisAccessory(skillId)) {
+				if(this.numItems($dataArmors[skillId], true) > 0)
+					this.gainItem($dataArmors[skillId], -1 * this.maxItems($dataArmors[skillId]), false);
+			}
+			else if(this.numItems($dataArmors[skillId], true) > 1) {
+				this.gainItem($dataArmors[skillId], -1 * (this.numItems($dataArmors[skillId] - 1), false));
+			}
+		}
+		
+	}
+};
 
 // Updates
 Game_Party.prototype.update_addToAllWanted_Records_v8 = function() {
@@ -1700,6 +2051,16 @@ Game_Party.prototype.update_addToAllWanted_Records_v62 = function() {
 			wanted._enemyRecordCockStaredAtCount = 0;
 	}
 };
+
+Game_Party.prototype.update_addToAllWanted_Records_v73 = function() {
+	for(let i = 0; i < $gameParty._wantedEnemies.length; ++i) {
+		let wanted = $gameParty._wantedEnemies[i];
+		if(!wanted._enemyRecordStripClubCondomEjaculationCount)
+			wanted._enemyRecordStripClubCondomEjaculationCount = 0;
+	}
+};
+
+
 
 Game_Party.prototype.update_setActorPassivesObtainedOnArray = function() {
 	let actor = $gameActors.actor(ACTOR_KARRYN_ID);

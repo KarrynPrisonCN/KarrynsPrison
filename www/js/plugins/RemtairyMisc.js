@@ -141,7 +141,13 @@ const TAG_MIND_TRAINING_EDICT  = 'MindTraining';
 const TAG_END_TRAINING_EDICT  = 'EndTraining';
 const TAG_NO_TREE_REQ_EDICT  = 'NoTreeReq';
 
+var $remDescEN = null;
+var $remDescJP = null;
 
+var $remMapEN = null;
+var $remMapJP = null;
+
+var $remEff = null;
 
 ///////////////
 // Game CharacterBase
@@ -311,10 +317,11 @@ Game_BattlerBase.prototype.skillMpCost = function(skill) {
 Game_Enemy.prototype.displayVisualHpGaugeWindow = function() {
 	//if(Karryn.isInDrawEnemiesAtHalfWidthPose()) return false;
 	if(Karryn.isInDontShowEnemyHealthGaugePose()) return false;
+	if(Karryn.isInShowEnemyGaugeOnlyDuringValidSelectionPose() && (!SceneManager._scene._enemyWindow.isOpenAndActive() || !this._selectionShowName)) return false;
 	
-	let validShow = !this._tagDontDrawGauge || 
-	(Karryn.isInShowEnemyGaugeOnlyDuringValidSelectionPose() && this._tagDontDrawGauge && (SceneManager._scene._enemyWindow.isOpenAndActive() && this._selectionShowName));
-	return validShow;
+	//let validShow = !this._tagDontDrawGauge || 
+	//(Karryn.isInShowEnemyGaugeOnlyDuringValidSelectionPose() && (SceneManager._scene._enemyWindow.isOpenAndActive() && this._selectionShowName));
+	return !this._tagDontDrawGauge;
 };
 
 Game_Actor.prototype.displayVisualHpGaugeWindow = function() {
@@ -324,10 +331,11 @@ Game_Actor.prototype.displayVisualHpGaugeWindow = function() {
 Game_Enemy.prototype.displayVisualPleasureGaugeWindow = function() {
 	//if(Karryn.isInDrawEnemiesAtHalfWidthPose()) return false;
 	if(Karryn.isInDontShowEnemyPleasureGaugePose()) return false;
+	if(Karryn.isInShowEnemyGaugeOnlyDuringValidSelectionPose() && (!SceneManager._scene._enemyWindow.isOpenAndActive() || !this._selectionShowName)) return false;
 	
-	let validShow = !this._tagDontDrawGauge || 
-	(Karryn.isInShowEnemyGaugeOnlyDuringValidSelectionPose() && (SceneManager._scene._enemyWindow.isOpenAndActive() && this._selectionShowName));
-	return validShow;
+	//let validShow = !this._tagDontDrawGauge || 
+	//(Karryn.isInShowEnemyGaugeOnlyDuringValidSelectionPose() && (SceneManager._scene._enemyWindow.isOpenAndActive() && this._selectionShowName));
+	return !this._tagDontDrawGauge;
 };
 
 Game_Actor.prototype.displayVisualPleasureGaugeWindow = function() {
@@ -395,6 +403,14 @@ Window_Message.prototype.processEscapeCharacter = function(code, textState) {
         code, textState);
       break;
     }
+};
+
+Remtairy.Misc.Window_Message_startMessage = Window_Message.prototype.startMessage;
+Window_Message.prototype.startMessage = function() {
+    Remtairy.Misc.Window_Message_startMessage.call(this);
+	if(this._positionType === 2 && this._background === 1) {
+		this._textState.y = MAP_CHAT_TEXT_TRANSPARENT_WINDOW_HEIGHT_PADDING;
+	}
 };
 
 /////////
@@ -827,28 +843,32 @@ Window_EquipSlot.prototype.drawItemName = function(item, x, y, width) {
         this.resetTextColor();
         this.drawIcon(item.iconIndex, x + 2, y + REM_Y_ICON_PADDING);
 		
+		let itemName = item.name;
+		if(item.hasRemNameDefault) itemName = item.remNameDefault;
+		
 		if(TextManager.isEnglish) {
-			if(item.hasRemNameEN == false) this.drawText(item.name, x + iconBoxWidth, y, width - iconBoxWidth);
-			this.drawText(item.remNameEN, x + iconBoxWidth, y, width - iconBoxWidth);
+			if(item.hasRemNameEN) itemName = item.remNameEN;
 		}
 		else if(TextManager.isJapanese) {
-			if(item.hasRemNameJP == false) this.drawText(item.name, x + iconBoxWidth, y, width - iconBoxWidth);
-			this.drawText(item.remNameJP, x + iconBoxWidth, y, width - iconBoxWidth);
+			if(item.hasRemNameJP) itemName = item.remNameJP;
 		}
 		else if(TextManager.isTChinese) {
-			if(item.hasRemNameTCH == false) this.drawText(item.name, x + iconBoxWidth, y, width - iconBoxWidth);
-			this.drawText(item.remNameTCH, x + iconBoxWidth, y, width - iconBoxWidth);
+			if(item.hasRemNameTCH) itemName = item.remNameTCH;
 		}
 		else if(TextManager.isSChinese) {
-			if(item.hasRemNameSCH == false) this.drawText(item.name, x + iconBoxWidth, y, width - iconBoxWidth);
-			this.drawText(item.remNameSCH, x + iconBoxWidth, y, width - iconBoxWidth);
+			if(item.hasRemNameSCH) itemName = item.remNameSCH;
 		}
 		else if(TextManager.isKorean) {
-			if(item.hasRemNameKR == false) this.drawText(item.name, x + iconBoxWidth, y, width - iconBoxWidth);
-			this.drawText(item.remNameKR, x + iconBoxWidth, y, width - iconBoxWidth);
+			if(item.hasRemNameKR) itemName = item.remNameKR;
 		}
-		else
-			this.drawText(item.name, x + iconBoxWidth, y, width - iconBoxWidth);
+		else if(TextManager.isRussian) {
+			if(item.hasRemNameRU) itemName = item.remNameRU;
+		}
+		
+		itemName = this.convertEscapeCharacters(itemName);
+		itemName = this.convertExtraEscapeCharacters(itemName);
+		
+		this.drawText(itemName, x + iconBoxWidth, y, width - iconBoxWidth);
     }
 };
 
@@ -1507,11 +1527,29 @@ Window_StatCompare.prototype.drawCritDmgRem = function(x, y) {
 Window_StatCompare.prototype.drawStateRem = function(stateId, x, y) {
 	this.changeTextColor(this.systemColor());
 	var text = $dataStates[stateId].name; 
-	if(TextManager.isEnglish && $dataStates[stateId].hasRemNameEN) text = $dataStates[stateId].remNameEN;
-	else if(TextManager.isJapanese && $dataStates[stateId].hasRemNameJP) text = $dataStates[stateId].remNameJP;
-	else if(TextManager.isSChinese && $dataStates[stateId].hasRemNameSCH) text = $dataStates[stateId].remNameSCH;
-	else if(TextManager.isTChinese && $dataStates[stateId].hasRemNameTCH) text = $dataStates[stateId].remNameTCH;
-	else if(TextManager.isKorean && $dataStates[stateId].hasRemNameKR) text = $dataStates[stateId].remNameKR;
+	if($dataStates[stateId].hasRemNameDefault) text = $dataStates[stateId].remNameDefault;
+	
+	if(TextManager.isEnglish) {
+		if($dataStates[stateId].hasRemNameEN) text = $dataStates[stateId].remNameEN;
+	}
+	else if(TextManager.isJapanese) {
+		if($dataStates[stateId].hasRemNameJP) text = $dataStates[stateId].remNameJP;
+	}
+	else if(TextManager.isSChinese) {
+		if($dataStates[stateId].hasRemNameSCH) text = $dataStates[stateId].remNameSCH;
+	}
+	else if(TextManager.isTChinese) {
+		if($dataStates[stateId].hasRemNameTCH) text = $dataStates[stateId].remNameTCH;
+	}
+	else if(TextManager.isKorean) {
+		if($dataStates[stateId].hasRemNameKR) text = $dataStates[stateId].remNameKR;
+	}
+	else if(TextManager.isRussian) {
+		if($dataStates[stateId].hasRemNameRU) text = $dataStates[stateId].remNameRU;
+	}
+	
+	text = this.convertEscapeCharacters(text);
+	text = this.convertExtraEscapeCharacters(text);
 	
 	text += TextManager.resistName;
 	this.drawText(text, x, y, this._paramNameWidth);
@@ -1626,12 +1664,30 @@ Window_StatCompare.prototype.drawEquipSet = function() {
 		let text = '';
 		
 		if(item) {
-			if(TextManager.isEnglish && item.hasRemNameEN) text = item.remNameEN;
-			else if(TextManager.isJapanese && item.hasRemNameJP) text = item.remNameJP;
-			else if(TextManager.isSChinese && item.hasRemNameSCH) text = item.remNameSCH;
-			else if(TextManager.isTChinese && item.hasRemNameTCH) text = item.remNameTCH;
-			else if(TextManager.isKorean && item.hasRemNameKR) text = item.remNameKR;
-			else text = item.name;
+			text = item.name;
+			if(item.hasRemNameDefault) text = item.remNameDefault;
+			
+			if(TextManager.isEnglish) {
+				if(item.hasRemNameEN) text = item.remNameEN;
+			}
+			else if(TextManager.isJapanese) {
+				if(item.hasRemNameJP) text = item.remNameJP;
+			}
+			else if(TextManager.isSChinese) {
+				if(item.hasRemNameSCH) text = item.remNameSCH;
+			}
+			else if(TextManager.isTChinese) {
+				if(item.hasRemNameTCH) text = item.remNameTCH;
+			}
+			else if(TextManager.isKorean) {
+				if(item.hasRemNameKR) text = item.remNameKR;
+			}
+			else if(TextManager.isRussian) {
+				if(item.hasRemNameRU) text = item.remNameRU;
+			}
+			
+			text = this.convertEscapeCharacters(text);
+			text = this.convertExtraEscapeCharacters(text);
 		}
 		else {
 			text = TextManager.yanflySaveEmpty;
@@ -1742,6 +1798,8 @@ Window_Help.prototype.drawBattlerWithIcons = function(battler) {
     this.drawActorIcons(battler, wx, wy, ww);
 };
 
+
+
 ////////
 // Window TreeType
 ///////////
@@ -1754,11 +1812,29 @@ Window_TreeType.prototype.drawItemName = function(item, x, y, width) {
         this.resetTextColor();
 		
 		let name = item.name;
-		if(TextManager.isEnglish && item.hasRemNameEN) name = item.remNameEN;
-		else if(TextManager.isJapanese && item.hasRemNameJP) name = item.remNameJP;
-		else if(TextManager.isSChinese && item.hasRemNameSCH) name = item.remNameSCH;
-		else if(TextManager.isTChinese && item.hasRemNameTCH) name = item.remNameTCH;
-		else if(TextManager.isKorean && item.hasRemNameKR) name = item.remNameKR;
+		if(item.hasRemNameDefault) name = item.remNameDefault;
+		
+		if(TextManager.isEnglish) {
+			if(item.hasRemNameEN) name = item.remNameEN;
+		}
+		else if(TextManager.isJapanese) {
+			if(item.hasRemNameJP) name = item.remNameJP;
+		}
+		else if(TextManager.isSChinese) {
+			if(item.hasRemNameSCH) name = item.remNameSCH;
+		}
+		else if(TextManager.isTChinese) {
+			if(item.hasRemNameTCH) name = item.remNameTCH;
+		}
+		else if(TextManager.isKorean) {
+			if(item.hasRemNameKR) name = item.remNameKR;
+		}
+		else if(TextManager.isRussian) {
+			if(item.hasRemNameRU) name = item.remNameRU;
+		}
+		
+		name = this.convertEscapeCharacters(name);
+		name = this.convertExtraEscapeCharacters(name);
 		
 		let hasIcon = item.iconIndex;
 		if(hasIcon) {
@@ -1876,11 +1952,30 @@ Window_Base.prototype.drawItemName = function(item, x, y, width) {
 		this.drawIcon(item.iconIndex, x + padding, y + REM_Y_ICON_PADDING);
 		
 		let name = item.name;
-		if(TextManager.isEnglish && item.hasRemNameEN) name = item.remNameEN;
-		else if(TextManager.isJapanese && item.hasRemNameJP) name = item.remNameJP;
-		else if(TextManager.isSChinese && item.hasRemNameSCH) name = item.remNameSCH;
-		else if(TextManager.isTChinese && item.hasRemNameTCH) name = item.remNameTCH;
-		else if(TextManager.isKorean && item.hasRemNameKR) name = item.remNameKR;
+		if(item.hasRemNameDefault) name = item.remNameDefault;
+		
+		if(TextManager.isEnglish) {
+			if(item.hasRemNameEN) name = item.remNameEN;
+		}
+		else if(TextManager.isJapanese) {
+			if(item.hasRemNameJP) name = item.remNameJP;
+		}
+		else if(TextManager.isSChinese) {
+			if(item.hasRemNameSCH) name = item.remNameSCH;
+		}
+		else if(TextManager.isTChinese) {
+			if(item.hasRemNameTCH) name = item.remNameTCH;
+		}
+		else if(TextManager.isKorean) {
+			if(item.hasRemNameKR) name = item.remNameKR;
+		}
+		else if(TextManager.isRussian) {
+			if(item.hasRemNameRU) name = item.remNameRU;
+		}
+		
+		name = this.convertEscapeCharacters(name);
+		name = this.convertExtraEscapeCharacters(name);
+		
 		this.drawText(name, x + iconBoxWidth, y, width - iconBoxWidth);
     }
 };
@@ -1894,25 +1989,54 @@ Window_Selectable.prototype.drawItemName = function(item, x, y, width) {
 		this.drawIcon(item.iconIndex, x + padding, y + REM_Y_ICON_PADDING);
 		
 		let name = item.name;
-		if(TextManager.isEnglish && item.hasRemNameEN) name = item.remNameEN;
-		else if(TextManager.isJapanese && item.hasRemNameJP) name = item.remNameJP;
-		else if(TextManager.isTChinese && item.hasRemNameTCH) name = item.remNameTCH;
-		else if(TextManager.isSChinese && item.hasRemNameSCH) name = item.remNameSCH;
-		else if(TextManager.isKorean && item.hasRemNameKR) name = item.remNameKR;
+		if(item.hasRemNameDefault) name = item.remNameDefault;
+		
+		if(TextManager.isEnglish) {
+			if(item.hasRemNameEN) name = item.remNameEN;
+		}
+		else if(TextManager.isJapanese) {
+			if(item.hasRemNameJP) name = item.remNameJP;
+		}
+		else if(TextManager.isSChinese) {
+			if(item.hasRemNameSCH) name = item.remNameSCH;
+		}
+		else if(TextManager.isTChinese) {
+			if(item.hasRemNameTCH) name = item.remNameTCH;
+		}
+		else if(TextManager.isKorean) {
+			if(item.hasRemNameKR) name = item.remNameKR;
+		}
+		else if(TextManager.isRussian) {
+			if(item.hasRemNameRU) name = item.remNameRU;
+		}
+		
+		name = this.convertEscapeCharacters(name);
+		name = this.convertExtraEscapeCharacters(name);
+
 		this.drawText(name, x + iconBoxWidth, y, width - iconBoxWidth);
     }
 };
 
-
 //////////////
 //////////////////
-// Window Base
+// Text Manager
 /////////////////
 //////////////
 
+TextManager.convertEscapeCharacters = function(text) {
+    text = text.replace(/\\/g, '\x1b');
+    text = text.replace(/\x1b\x1b/g, '\\');
+    text = text.replace(/\x1bV\[(\d+)\]/gi, function() {
+        return $gameVariables.value(parseInt(arguments[1]));
+    }.bind(this));
+    text = text.replace(/\x1bV\[(\d+)\]/gi, function() {
+        return $gameVariables.value(parseInt(arguments[1]));
+    }.bind(this));
+    text = text.replace(/\x1bG/gi, TextManager.currencyUnit);
+    return text;
+};
 
-Remtairy.Misc.Window_Base_convertExtraEscapeCharacters = Window_Base.prototype.convertExtraEscapeCharacters;
-Window_Base.prototype.convertExtraEscapeCharacters = function(text) {
+TextManager.convertExtraEscapeCharacters = function(text) {
 	//REM_SLVL[n]
 	text = text.replace(/\x1bREM_SLVL\[(\d+)\]/gi, function() {
         return this.remMiscSLVL(parseInt(arguments[1]));
@@ -1982,7 +2106,7 @@ Window_Base.prototype.convertExtraEscapeCharacters = function(text) {
 	text = text.replace(/\x1bREM_CANT\[(\d+)\]/gi, function() {
         return this.remMiscSkillCant(parseInt(arguments[1]));
     }.bind(this));
-	//REM_CANT[n]
+	//REM_TITLE_FIRST_EQUIP[n]
 	text = text.replace(/\x1bREM_TITLE_FIRST_EQUIP\[(\d+)\]/gi, function() {
         return this.remMiscSkillTitleFirstEquip(parseInt(arguments[1]));
     }.bind(this));
@@ -1994,23 +2118,43 @@ Window_Base.prototype.convertExtraEscapeCharacters = function(text) {
 	text = text.replace(/\x1bREM_VARIABLE_ICON\[(\d+)\]/gi, function() {
         return this.remMiscVariableIcon(parseInt(arguments[1]));
     }.bind(this));
+	//REM_DESC[n]
+	text = text.replace(/\x1bREM_DESC\[(\w+)\]/gi, function() {
+        return this.convertExtraEscapeCharacters(this.convertEscapeCharacters('' + this.remMiscDescriptionText(arguments[1], false)));
+    }.bind(this));
+	//REM_MAP[n]
+	text = text.replace(/\x1bREM_MAP\[(\w+)\]/gi, function() {
+        return this.convertExtraEscapeCharacters(this.convertEscapeCharacters('' + this.remMiscMapText(arguments[1], false)));
+    }.bind(this));
+	//REM_EFF[n]
+	text = text.replace(/\x1bREM_EFF\[(\w+)\]/gi, function() {
+        return this.convertExtraEscapeCharacters(this.convertEscapeCharacters('' + this.remMiscEffText(arguments[1], false)));
+    }.bind(this));
+	
+	
+	return text;
+};
+
+Remtairy.Misc.Window_Base_convertExtraEscapeCharacters = Window_Base.prototype.convertExtraEscapeCharacters;
+Window_Base.prototype.convertExtraEscapeCharacters = function(text) {
+	text = TextManager.convertExtraEscapeCharacters(text);
 	
 	return Remtairy.Misc.Window_Base_convertExtraEscapeCharacters.call(this, text);
 };
 
-Window_Base.prototype.remMiscMapName = function(n) {
+TextManager.remMiscMapName = function(n) {
     //var name = DataManager.getMapLocationDisplayNameMapId(n);
 	let name = $gameParty.getMapName(n);
 	return name;
 };
 
-Window_Base.prototype.remMiscSLVL = function(n) {
+TextManager.remMiscSLVL = function(n) {
     let actor = n >= 1 ? $gameActors.actor(n) : null;
     return actor ? actor.slutLvl : '';
 };
 
 
-Window_Base.prototype.remMiscSD_SKR = function(n) {
+TextManager.remMiscSD_SKR = function(n) {
     let actor = $gameActors.actor(ACTOR_KARRYN_ID);
 	let text = '';
 	
@@ -2027,53 +2171,53 @@ Window_Base.prototype.remMiscSD_SKR = function(n) {
 	return text;
 };
 
-Window_Base.prototype.remMiscFatigueRecovery = function(n) {
+TextManager.remMiscFatigueRecovery = function(n) {
 	return $gameActors.actor(ACTOR_KARRYN_ID).fatigueRecoveryNumber();
 };
 
-Window_Base.prototype.remMiscBarRepIncomeMultipler = function(n) {
+TextManager.remMiscBarRepIncomeMultipler = function(n) {
 	return Math.round($gameParty.getBarReputationIncomeMultipler() * 100) - 100;
 };
 
-Window_Base.prototype.remMiscBarStartingMugs = function(n) {
+TextManager.remMiscBarStartingMugs = function(n) {
 	return $gameParty.waitressBattle_startingMugs();
 };
-Window_Base.prototype.remMiscBarStartingGlasses = function(n) {
+TextManager.remMiscBarStartingGlasses = function(n) {
 	return $gameParty.waitressBattle_startingGlasses();
 };
 
-Window_Base.prototype.remMiscAvailableVisitorRooms = function(n) {
+TextManager.remMiscAvailableVisitorRooms = function(n) {
 	return $gameParty.maxAvailableVisitorRooms();
 };
 
-Window_Base.prototype.remMiscGloryHoleRepStaffEff = function(n) {
+TextManager.remMiscGloryHoleRepStaffEff = function(n) {
 	return Math.round($gameParty.gloryHoleReputationEffect_staffEfficiency() * 100);
 };
 
-Window_Base.prototype.remMiscRelationPassiveCount = function(n) {
+TextManager.remMiscRelationPassiveCount = function(n) {
 	return $gameActors.actor(ACTOR_KARRYN_ID).relationsPassiveCount();
 };
 
 
-Window_Base.prototype.remMiscRejectAlcoholCost = function(n) {
+TextManager.remMiscRejectAlcoholCost = function(n) {
 	return $gameActors.actor(ACTOR_KARRYN_ID).rejectAlcoholWillCost();
 };
 
-Window_Base.prototype.remMiscTrayDescription = function(n) {
+TextManager.remMiscTrayDescription = function(n) {
 	return $gameActors.actor(ACTOR_KARRYN_ID).trayContentsText();
 };
 
-Window_Base.prototype.remMiscEdictDescription = function(n) {
+TextManager.remMiscEdictDescription = function(n) {
 	return TextManager.edictsDesc(n);
 };
 
-Window_Base.prototype.remMiscSmegmaDescription = function(n) {
+TextManager.remMiscSmegmaDescription = function(n) {
 	return TextManager.smegmaDesc(n);
 };
 
 
 
-Window_Base.prototype.remMiscSkillCant = function(n) {
+TextManager.remMiscSkillCant = function(n) {
 	let text = '';
 
 	if(n === SKILL_KARRYN_KISS_SELECTOR_CANT_ID) 
@@ -2105,7 +2249,7 @@ Window_Base.prototype.remMiscSkillCant = function(n) {
 	return text;
 };
 
-Window_Base.prototype.remMiscSkillTitleFirstEquip = function(n) {
+TextManager.remMiscSkillTitleFirstEquip = function(n) {
 	if($gameActors.actor(ACTOR_KARRYN_ID).titleHasBeenEquippedOnceBefore(n)) {
 		return '';
 	}
@@ -2114,11 +2258,11 @@ Window_Base.prototype.remMiscSkillTitleFirstEquip = function(n) {
 	}
 };
 
-Window_Base.prototype.remMiscDailyReport = function(n) {
+TextManager.remMiscDailyReport = function(n) {
 	return this.convertEscapeCharacters(this.remDailyReportText(n));
 };
 
-Window_Base.prototype.remMiscVariableIcon = function(n) {
+TextManager.remMiscVariableIcon = function(n) {
 	let text = '\\I[';
 	text += $gameVariables.value(n);
 	text += ']';
@@ -2126,12 +2270,79 @@ Window_Base.prototype.remMiscVariableIcon = function(n) {
 };
 
 
-Window_Base.prototype.remMiscInvasionChance = function(n) {
+TextManager.remMiscInvasionChance = function(n) {
     let actor = $gameActors.actor(ACTOR_KARRYN_ID);
 	let invasionChance = actor.getInvasionChance();
 	return Math.max(Math.round(invasionChance), 0);
 };
 
+TextManager.remMiscDescriptionText = function(id, useEN) {
+	let descText = '';
+    if(TextManager.isEnglish || useEN) {
+		if($remDescEN[id] && $remDescEN[id].text) {
+			for(let i = 0; i < $remDescEN[id].text.length; i++) {
+				descText += $remDescEN[id].text[i];
+				if(i + 1 < $remDescEN[id].text.length) descText += '\n';
+			}
+			return descText;
+		}
+		else return 'REM_DESC ' + id;
+	}
+	else if(TextManager.isJapanese) {
+		if($remDescJP[id] && $remDescJP[id].text) {
+			for(let i = 0; i < $remDescJP[id].text.length; i++) {
+				descText += $remDescJP[id].text[i];
+				if(i + 1 < $remDescJP[id].text.length) descText += '\n';
+			}
+			return descText;
+		}
+		else return this.remMiscDescriptionText(id, true);
+	}
+	else {
+		return this.remMiscDescriptionText(id, true);
+	}
+};
+
+TextManager.remMiscMapText = function(id, useEN) {
+	let mapText = '';
+    if(TextManager.isEnglish || useEN) {
+		if($remMapEN[id] && $remMapEN[id].text) {
+			for(let i = 0; i < $remMapEN[id].text.length; i++) {
+				mapText += $remMapEN[id].text[i];
+				if(i + 1 < $remMapEN[id].text.length) mapText += '\n';
+			}
+			return mapText;
+		}
+		else return 'REM_MAP ' + id;
+	}
+	else if(TextManager.isJapanese) {
+		if($remMapJP[id] && $remMapJP[id].text) {
+			for(let i = 0; i < $remMapJP[id].text.length; i++) {
+				mapText += $remMapJP[id].text[i];
+				if(i + 1 < $remMapJP[id].text.length) mapText += '\n';
+			}
+			return mapText;
+		}
+		else return this.remMiscMapText(id, true);
+	}
+	else {
+		return this.remMiscMapText(id, true);
+	}
+};
+
+TextManager.remMiscEffText = function(id) {
+	let effText = '';
+
+	if($remEff[id] && $remEff[id].text) {
+		for(let i = 0; i < $remEff[id].text.length; i++) {
+			effText += $remEff[id].text[i];
+			if(i + 1 < $remEff[id].text.length) effText += '\n';
+		}
+		return effText;
+	}
+	else return 'REM_EFF ' + id;
+
+};
 
 /////////
 // Window VisualPleasureGauge
@@ -2219,7 +2430,7 @@ Window_VisualPleasureGauge.prototype.updateWindowPosition = function() {
     let battler = this._battler;
 
 	
-	if($gameParty.isInStripperBattle && !Karryn.isInStripperSexPose()) {
+	if($gameParty.isInStripperBattle) {
 		this.x = battler.spritePosX();
 		this.x -= Math.ceil(this.width / 2); 
 		this.x += STRIP_CLUB_ENEMY_PLEASURE_GAUGE_X;
@@ -2559,6 +2770,8 @@ Window_ActorCommand.prototype.windowHeight = function() {
     return 8;
 };
 
+
+
 ////////////////
 // Game Action
 ////////////////
@@ -2872,6 +3085,16 @@ Game_Battler.prototype.energyGaugeColor2 = function() {
 // Game Party
 //////////////////
 
+Game_Party.prototype.maxGold = function() {
+    if($gameParty.isDemoVersion())
+		return 3000;
+	else
+		return 999999;
+};
+Game_Party.prototype.maxItems = function(item) {
+    return 1;
+};
+
 //unused
 Game_Party.prototype.glossaryManager = function() {
 	for(var id = GLOSSARY_START; id < GLOSSARY_END; id+=2) {
@@ -2887,10 +3110,9 @@ Game_Party.prototype.glossaryManager = function() {
 	}
 };
 
-//unused?
+//unused
 Game_Party.prototype.getFloorDamageRate = function() {
-	var multipler = 1; 
-	
+	let multipler = 1; 
 	return multipler;
 };
 
@@ -3027,7 +3249,7 @@ Sprite_AoeRect.prototype.updateAoEImage = function() {
 		target._selectionAoeRow = 0;
 		target._selectionAoeColumn = 0;
 		
-		if(skillId === SKILL_CLEAVE_1_ID || skillId === SKILL_CLEAVE_2_ID) {
+		if(skillId === SKILL_KARRYN_CLEAVE_1_ID || skillId === SKILL_KARRYN_CLEAVE_2_ID) {
 			if(rowHeight === 2) {
 				target._hasSelectionVariables = true;
 				target._selectionAoeBufferY = REM_SELECTION_SIZE_TWO_Y_BUFFER;
@@ -3228,7 +3450,35 @@ DataManager.processRemTMNotetags_RemtairyMisc_StateIcons = function(group) {
 	}
 };
 
+Remtairy.Misc.DataManager_loadDatabase = DataManager.loadDatabase;
+DataManager.loadDatabase = function() {
+	Remtairy.Misc.DataManager_loadDatabase.call(this);
+	this.loadRemLocFile('$remDescEN', 'RemDesc_EN.json');
+	this.loadRemLocFile('$remDescJP', 'RemDesc_JP.json');
+	
+	this.loadRemLocFile('$remMapEN', 'RemMap_EN.json');
+	this.loadRemLocFile('$remMapJP', 'RemMap_JP.json');
+	
+	this.loadRemLocFile('$remEff', 'RemEff.json');
+};
 
+DataManager.loadRemLocFile = function(name, src) {
+    var xhr = new XMLHttpRequest();
+    var url = 'loc/' + src;
+    xhr.open('GET', url);
+    xhr.overrideMimeType('application/json');
+    xhr.onload = function() {
+        if (xhr.status < 400) {
+            window[name] = JSON.parse(xhr.responseText);
+            DataManager.onLoad(window[name]);
+        }
+    };
+    xhr.onerror = this._mapLoader || function() {
+        DataManager._errorUrl = DataManager._errorUrl || url;
+    };
+    window[name] = null;
+    xhr.send();
+};
 
 ////////
 /////////

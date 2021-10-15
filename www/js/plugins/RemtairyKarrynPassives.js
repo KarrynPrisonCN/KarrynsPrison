@@ -23,7 +23,7 @@ const PASSIVES_LIST_ONE_END_ID = 299;
 const PASSIVES_LIST_TWO_START_ID = 701;
 const PASSIVES_LIST_TWO_END_ID = 977;
 const PASSIVES_LIST_THREE_START_ID = 2101;
-const PASSIVES_LIST_THREE_END_ID = 2104;
+const PASSIVES_LIST_THREE_END_ID = 2109;
 
 const PASSIVES_LIST_CC1_START_ID = 980;
 const PASSIVES_LIST_CC1_END_ID = 987;
@@ -248,18 +248,39 @@ Window_SkillList.prototype.drawItemName = function(item, x, y, width) {
     if (item) {
 		let iconBoxWidth = this.lineHeight();
 		let skillId = item.id;
-		let name = item.name;
-		if(TextManager.isJapanese && item.hasRemNameJP) name = item.remNameJP;
-		else if(TextManager.isEnglish && item.hasRemNameEN) name = item.remNameEN;
-		else if(TextManager.isTChinese && item.hasRemNameTCH) name = item.remNameTCH;
-		else if(TextManager.isSChinese && item.hasRemNameSCH) name = item.remNameSCH;
-		else if(TextManager.isKorean && item.hasRemNameKR) name = item.remNameKR;
+		let name = item.name;	
+		if(item.hasRemNameDefault) name = item.remNameDefault;
+
+		if(TextManager.isEnglish) {
+			if(item.hasRemNameEN) name = item.remNameEN;
+		}
+		else if(TextManager.isJapanese) {
+			if(item.hasRemNameJP) name = item.remNameJP;
+		}
+		else if(TextManager.isTChinese) {
+			if(item.hasRemNameTCH) name = item.remNameTCH;
+		}
+		else if(TextManager.isSChinese) {
+			if(item.hasRemNameSCH) name = item.remNameSCH;
+		}
+		else if(TextManager.isKorean) {
+			if(item.hasRemNameKR) name = item.remNameKR;
+		}
+		else if(TextManager.isRussian) {
+			if(item.hasRemNameRU) name = item.remNameRU;
+		}
 		
 		if(ConfigManager.disableSmegma) {
 			name = TextManager.disabledSmegmaSkillName(skillId, name);
 		}
 		
+
+		name = this.convertEscapeCharacters(name);
+		name = this.convertExtraEscapeCharacters(name);
+
+		
 		//Passive list
+
 	
 		let textColor = item.passiveColor;
 		this.changeTextColor(this.textColor(textColor));
@@ -268,7 +289,6 @@ Window_SkillList.prototype.drawItemName = function(item, x, y, width) {
 		this.contents.fontSize = PASSIVE_NAME_LIST_DATE_FONT_SIZE;
 		this.changeTextColor(this.textColor(8));
 		let obtainedText = TextManager.PassiveObtainedOn;
-		//console.log(skillId);
 
 		this.drawText(obtainedText.format(this._actor._passivesObtainedOn_keySkillID_valueDate[item.id]), x + width * 0.77, y, width * 0.25, 'left');
 		
@@ -835,13 +855,13 @@ Game_Actor.prototype.setupPassiveReqBaseArray = function() {
 	this._passiveRequirement_base[PASSIVE_COCKKICK_COUNT_THREE_ID] = 65;
 	
 	this._passiveRequirement_base[PASSIVE_FOOTJOB_COUNT_ONE_ID] = 1;
-	this._passiveRequirement_base[PASSIVE_FOOTJOB_COUNT_TWO_ID] = 20;
-	this._passiveRequirement_base[PASSIVE_FOOTJOB_PEOPLE_ONE_ID] = 10;
-	this._passiveRequirement_base[PASSIVE_FOOTJOB_PEOPLE_TWO_ID] = 25;
-	this._passiveRequirement_base[PASSIVE_FOOTJOB_PEOPLE_THREE_ID] = 34;
-	this._passiveRequirement_base[PASSIVE_FOOTJOB_USAGE_ONE_ID] = 15;
-	this._passiveRequirement_base[PASSIVE_FOOTJOB_USAGE_TWO_ID] = 30;
-	this._passiveRequirement_base[PASSIVE_FOOTJOB_USAGE_THREE_ID] = 60;
+	this._passiveRequirement_base[PASSIVE_FOOTJOB_COUNT_TWO_ID] = 9;
+	this._passiveRequirement_base[PASSIVE_FOOTJOB_PEOPLE_ONE_ID] = 5;
+	this._passiveRequirement_base[PASSIVE_FOOTJOB_PEOPLE_TWO_ID] = 15;
+	this._passiveRequirement_base[PASSIVE_FOOTJOB_PEOPLE_THREE_ID] = 30;
+	this._passiveRequirement_base[PASSIVE_FOOTJOB_USAGE_ONE_ID] = 12;
+	this._passiveRequirement_base[PASSIVE_FOOTJOB_USAGE_TWO_ID] = 23;
+	this._passiveRequirement_base[PASSIVE_FOOTJOB_USAGE_THREE_ID] = 34;
 	
 	this._passiveRequirement_base[PASSIVE_SADISM_PLEASURE_ONE_ID] = 2000;
 	this._passiveRequirement_base[PASSIVE_SADISM_PLEASURE_TWO_ID] = 25000;
@@ -858,13 +878,13 @@ Game_Actor.prototype.setupPassiveReqBaseArray = function() {
 	this._passiveRequirement_base[PASSIVE_DOGEZA_COUNT_THREE_ID] = 80;
 	
 	this._passiveRequirement_base[PASSIVE_RIMJOB_COUNT_ONE_ID] = 1;
-	this._passiveRequirement_base[PASSIVE_RIMJOB_COUNT_TWO_ID] = 20;
-	this._passiveRequirement_base[PASSIVE_RIMJOB_PEOPLE_ONE_ID] = 10;
-	this._passiveRequirement_base[PASSIVE_RIMJOB_PEOPLE_TWO_ID] = 25;
-	this._passiveRequirement_base[PASSIVE_RIMJOB_PEOPLE_THREE_ID] = 34;
-	this._passiveRequirement_base[PASSIVE_RIMJOB_USAGE_ONE_ID] = 15;
-	this._passiveRequirement_base[PASSIVE_RIMJOB_USAGE_TWO_ID] = 30;
-	this._passiveRequirement_base[PASSIVE_RIMJOB_USAGE_THREE_ID] = 60;
+	this._passiveRequirement_base[PASSIVE_RIMJOB_COUNT_TWO_ID] = 9;
+	this._passiveRequirement_base[PASSIVE_RIMJOB_PEOPLE_ONE_ID] = 5;
+	this._passiveRequirement_base[PASSIVE_RIMJOB_PEOPLE_TWO_ID] = 15;
+	this._passiveRequirement_base[PASSIVE_RIMJOB_PEOPLE_THREE_ID] = 30;
+	this._passiveRequirement_base[PASSIVE_RIMJOB_USAGE_ONE_ID] = 12;
+	this._passiveRequirement_base[PASSIVE_RIMJOB_USAGE_TWO_ID] = 23;
+	this._passiveRequirement_base[PASSIVE_RIMJOB_USAGE_THREE_ID] = 34;
 	
 	this._passiveRequirement_base[PASSIVE_MASOCHISM_PLEASURE_ONE_ID] = 2000;
 	this._passiveRequirement_base[PASSIVE_MASOCHISM_PLEASURE_TWO_ID] = 25000;
@@ -883,6 +903,10 @@ Game_Actor.prototype.setupPassiveReqBaseArray = function() {
 	this._passiveRequirement_base[PASSIVE_STRIPPER_PATRON_SEX_COUNT_ONE_ID] = 1;
 	this._passiveRequirement_base[PASSIVE_STRIPPER_PATRON_SEX_COUNT_TWO_ID] = 7;
 	this._passiveRequirement_base[PASSIVE_STRIPPER_PATRON_SEX_COUNT_THREE_ID] = 12;
+	this._passiveRequirement_base[PASSIVE_STRIPPER_PATRON_CONDOM_COUNT_ONE_ID] = 15;
+	this._passiveRequirement_base[PASSIVE_STRIPPER_PATRON_CONDOM_COUNT_TWO_ID] = 20;
+	this._passiveRequirement_base[PASSIVE_STRIPPER_PATRON_CONDOM_COUNT_THREE_ID] = 60;
+	
 	this._passiveRequirement_base[PASSIVE_JOB_PETTING_COUNT_ONE_ID] = 10;
 	this._passiveRequirement_base[PASSIVE_JOB_PETTING_COUNT_TWO_ID] = 35;
 	this._passiveRequirement_base[PASSIVE_JOB_PETTING_COUNT_THREE_ID] = 70;
@@ -1271,6 +1295,9 @@ Game_Actor.prototype.relationsPassiveCount = function() {
 	
 	if(this.hasPassive(PASSIVE_RECEPTIONIST_VISITOR_SEX_COUNT_TWO_ID)) count += 2;
 	else if(this.hasPassive(PASSIVE_RECEPTIONIST_VISITOR_SEX_COUNT_ONE_ID)) count += 1;
+	
+	if(this.hasPassive(PASSIVE_STRIPPER_PATRON_SEX_COUNT_TWO_ID)) count += 2;
+	else if(this.hasPassive(PASSIVE_STRIPPER_PATRON_SEX_COUNT_ONE_ID)) count += 1;
 	
 	if(this.hasPassive(PASSIVE_JOB_PETTING_COUNT_TWO_ID)) count += 2;
 	else if(this.hasPassive(PASSIVE_JOB_PETTING_COUNT_ONE_ID)) count += 1;
@@ -1952,8 +1979,11 @@ Game_Actor.prototype.setupRecords = function() {
 	this._recordStripClubStripperBattleCount = 0;
 	this._recordStripClubStripperSexCount = 0;
 	this._recordStripClubStripperMaxDanceCombo = 0;
+	this._recordStripClubDancingOrgasmMaxCount = 0;
 	this._recordStripClubCondomEjaculationCount = 0;
 	this._recordStripClubCondomWornCount = 0;
+	this._recordStripClubMaxCondomsWornCount = 0;
+	this._recordStripClubFullVIPCocksCount = 0;
 	
 };
 
@@ -2102,6 +2132,12 @@ Game_Actor.prototype.clearTempRecords = function() {
 	this._tempRecordSpankMarksLeftButtcheek = 0;
 	this._tempRecordSpankMarksRightButtcheek = 0;
 	
+	this._tempRecordStripClubDancingOrgasmCount = 0;
+	this._tempRecordStripClubCondomEjaculationCount = 0;
+	this._tempRecordStripClubEnteredIntermission = false;
+	this._tempRecordStripClubEnteredVIP = false;
+	this._tempRecordFullStripClubVIP = false;
+	
 	this._gotOrgasmFromSkillType = false;
 	this.resetGotHitBySkillType();
 };
@@ -2195,7 +2231,10 @@ Game_Actor.prototype.setupPlaythroughRecords = function() {
 	
 	//Stripper
 	this._playthroughRecordStripClubStripperBattleCount = 0;
+	this._playthroughRecordStripperBattleTotalShiftsCount = 0;
+	this._playthroughRecordStripperBattleDancedFullTwelveMinShowCount = 0;
 	this._playthroughRecordStripClubStripperOrgasmOnStageCount = 0;
+	this._playthroughRecordStripClubStripperOrgasmIntermissionCount = 0;
 	this._playthroughRecordStripClubCondomEjaculationCount = 0;
 	this._playthroughRecordStripClubCondomWornCount = 0;
 	
@@ -2536,6 +2575,7 @@ Game_Actor.prototype.addToActorHandjobRecord = function(firstCount, enemy, first
 	}
 	
 	this.addToActorBlowbangRecord();
+	this.addToActorStripVIPCocksRecord();
 };
 Game_Actor.prototype.addToActorBlowjobRecord = function(firstCount, enemy, firstCountTemp) {
 	this._recordBlowjobCount++;
@@ -2593,6 +2633,7 @@ Game_Actor.prototype.addToActorBlowjobRecord = function(firstCount, enemy, first
 	this.addToActorBlowbangRecord();
 	this.addToActorSoloCellRecord();
 	this.addToActorPilloryRecord();
+	this.addToActorStripVIPCocksRecord();
 };
 Game_Actor.prototype.addToActorTittyFuckRecord = function(firstCount, enemy, firstCountTemp) {
 	this._recordTittyFuckCount++;
@@ -2626,6 +2667,7 @@ Game_Actor.prototype.addToActorTittyFuckRecord = function(firstCount, enemy, fir
 	}
 	
 	this.addToActorSoloCellRecord();
+	this.addToActorStripVIPCocksRecord();
 };
 Game_Actor.prototype.addToActorCunnilingusRecord = function(firstCount, enemy, firstCountTemp) {
 	this._recordCunnilingusCount++;
@@ -2819,6 +2861,7 @@ Game_Actor.prototype.addToActorPussyFuckedRecord = function(firstCount, enemy, f
 	this.addToActorUrinalRecord();
 	this.addToActorSoloCellRecord();
 	this.addToActorPilloryRecord();
+	this.addToActorStripVIPCocksRecord();
 };
 Game_Actor.prototype.addToActorAnalFuckedRecord = function(firstCount, enemy, firstCountTemp) {
 	this._recordAnalFuckedCount++;
@@ -2861,6 +2904,7 @@ Game_Actor.prototype.addToActorAnalFuckedRecord = function(firstCount, enemy, fi
 	this.addToActorUrinalRecord();
 	this.addToActorSoloCellRecord();
 	this.addToActorPilloryRecord();
+	this.addToActorStripVIPCocksRecord();
 };
 Game_Actor.prototype.addToActorBukkakeTotalRecord = function(firstCount, enemy, firstCountTemp) {
 	this._recordBukkakeTotalCount++;
@@ -3017,13 +3061,13 @@ Game_Actor.prototype.addToActorDoubleAndTriplePenetrationRecord = function() {
 };
 
 Game_Actor.prototype.addToActorUrinalRecord = function() {
-	if(this.isInDefeatedLevel2Pose()) {
+	if(!this._tempRecordUrinal && this.isInDefeatedLevel2Pose()) {
 		let filledBodySlots = 0;
 		
 		if(this.isBodySlotInserted(ANAL_ID)) filledBodySlots++;
 		if(this.isBodySlotInserted(PUSSY_ID)) filledBodySlots++;
 		
-		if(filledBodySlots > 0 && !this._tempRecordUrinal) {
+		if(filledBodySlots > 0) {
 			this._recordUrinalCount++;
 			this._tempRecordUrinal = true;
 		}
@@ -3031,7 +3075,7 @@ Game_Actor.prototype.addToActorUrinalRecord = function() {
 };
 
 Game_Actor.prototype.addToActorSoloCellRecord = function() {
-	if(this.isInDefeatedLevel3Pose()) {
+	if(!this._tempRecordSoloCell && this.isInDefeatedLevel3Pose()) {
 		let filledBodySlots = 0;
 		
 		if(this.isBodySlotInserted(ANAL_ID)) filledBodySlots++;
@@ -3039,7 +3083,7 @@ Game_Actor.prototype.addToActorSoloCellRecord = function() {
 		if(this.isBodySlotInserted(MOUTH_ID)) filledBodySlots++;
 		if(this.isBodySlotInserted(BOOBS_ID)) filledBodySlots++;
 		
-		if(filledBodySlots > 0 && !this._tempRecordSoloCell) {
+		if(filledBodySlots > 0) {
 			this._recordSoloCellCount++; 
 			this._tempRecordSoloCell = true;
 		}
@@ -3047,32 +3091,52 @@ Game_Actor.prototype.addToActorSoloCellRecord = function() {
 };
 
 Game_Actor.prototype.addToActorPilloryRecord = function() {
-	if(this.isInDefeatedLevel4Pose()) {
+	if(!this._tempRecordPillory && this.isInDefeatedLevel4Pose()) {
 		let filledBodySlots = 0;
 		
 		if(this.isBodySlotInserted(ANAL_ID)) filledBodySlots++;
 		if(this.isBodySlotInserted(PUSSY_ID)) filledBodySlots++;
 		if(this.isBodySlotInserted(MOUTH_ID)) filledBodySlots++;
 		
-		if(filledBodySlots > 0 && !this._tempRecordPillory) {
+		if(filledBodySlots > 0) {
 			this._recordPilloryCount++;
 			this._tempRecordPillory = true;
 		}
 	}
 };
 
+Game_Actor.prototype.addToActorStripVIPCocksRecord = function() {
+	if(!this._tempRecordFullStripClubVIP && this.isInStripperSexPose()) {
+		let filledBodySlots = 0;
+		
+		if(this.isBodySlotInserted(ANAL_ID)) filledBodySlots++;
+		if(this.isBodySlotInserted(PUSSY_ID)) filledBodySlots++;
+		if(this.isBodySlotInserted(MOUTH_ID)) filledBodySlots++;
+		if(this.isBodySlotInserted(BOOBS_ID)) filledBodySlots++;
+		if(this.isBodySlotInserted(RIGHT_HAND_ID)) filledBodySlots++;
+		if(this.isBodySlotInserted(LEFT_HAND_ID)) filledBodySlots++;
+		
+		if(filledBodySlots === 6) {
+			this._recordStripClubFullVIPCocksCount++;
+			this._tempRecordFullStripClubVIP = true;
+		}
+	}
+};
+
 Game_Actor.prototype.addToActorBlowbangRecord = function() {
-	let filledBodySlots = 0;
-	
-	//if(this.isBodySlotInserted(MOUTH_ID)) filledBodySlots++;
-	if(this.isBodySlotInserted(RIGHT_HAND_ID)) filledBodySlots++;
-	if(this.isBodySlotInserted(LEFT_HAND_ID)) filledBodySlots++;
-	
-	if(filledBodySlots > 0 && this.isBodySlotInserted(MOUTH_ID) && !this._tempRecordBlowbang && this.isInDefeatedLevel1Pose()) {
-		this._recordBlowbangCount++; 
-		this._tempRecordBlowbangCount++;
-		this._todayBlowbangCount++;
-		this._tempRecordBlowbang = true;
+	if(this.isInDefeatedLevel1Pose() && !this._tempRecordBlowbang) {
+		let filledBodySlots = 0;
+		
+		//if(this.isBodySlotInserted(MOUTH_ID)) filledBodySlots++;
+		if(this.isBodySlotInserted(RIGHT_HAND_ID)) filledBodySlots++;
+		if(this.isBodySlotInserted(LEFT_HAND_ID)) filledBodySlots++;
+		
+		if(filledBodySlots > 0 && this.isBodySlotInserted(MOUTH_ID)) {
+			this._recordBlowbangCount++; 
+			this._tempRecordBlowbangCount++;
+			this._todayBlowbangCount++;
+			this._tempRecordBlowbang = true;
+		}
 	}
 };
 
@@ -3697,6 +3761,7 @@ Game_Actor.prototype.addToActorMasturbatedGloryHoleRecord = function() {
 };	
 Game_Actor.prototype.addToActorMasturbatedUsingHalberdRecord = function() { 
 	this._recordMasturbatedUsingHalberdCount++;
+	this._todayMasturbatedUsingHalberdCount++;
 };	
 Game_Actor.prototype.addToActorMasturbatedInBattlePresenceRecord = function(firstCount) {
 	if(firstCount) this._recordMasturbatedInBattlePresencePeople++;
@@ -4259,6 +4324,12 @@ Game_Actor.prototype.addToAnalToySelfInsertedRecord = function() {
 	}
 };
 
+Game_Actor.prototype.addToStripperBattleCondomWornRecord = function() { 
+	this._recordStripClubCondomWornCount++;
+	this._playthroughRecordStripClubCondomWornCount++;
+	this._todayStripperBattleCondomWornCount++;
+};
+
 ///////////////
 // Calculate Sensitivity Rating
 /////////////////////
@@ -4267,7 +4338,7 @@ Game_Actor.prototype.calculateMouthSensitivityRating = function() {
 	let rating = 0.4;
 
 	if(this.hasPassive(PASSIVE_TALK_MOUTH_TWO_ID) && this._tempRecordTalkedAtAboutMouthPeople > 0)
-		rating += Math.min(0.4, this._tempRecordTalkedAtAboutMouthPeople * 0.01);
+		rating += Math.min(0.4, this._tempRecordTalkedAtAboutMouthPeople * 0.02);
 
 	if(this.hasPassive(PASSIVE_SUCKED_FINGERS_COUNT_ONE_ID)) rating += 0.15;
 
@@ -4692,12 +4763,19 @@ Game_Actor.prototype.calculateSightSensitivityRating = function() {
 	if(this.hasPassive(PASSIVE_SIGHT_PLEASURE_ONE_ID)) rating += 0.25;
 	
 	if(this.hasPassive(PASSIVE_SIGHT_BOOBS_TWO_ID) && this._todayEnemySawBoobsPeople > 0) 
-		rating += Math.min(0.4, this._todayEnemySawBoobsPeople * 0.005);
+		rating += Math.min(0.4, this._todayEnemySawBoobsPeople * 0.02);
 	
 	if(this.hasPassive(PASSIVE_CLOTHES_STRIPPED_TWO_ID) && this.isNaked())
 		rating += 0.3;
 	if(this.hasPassive(PASSIVE_PANTIES_STRIPPED_THREE_ID) && !this.isWearingPanties())
 		rating += 0.3;
+	
+	if(this.hasPassive(PASSIVE_SIGHT_PLEASURE_TWO_ID) && this._todayEnemySawPeople > 0) 
+		rating += Math.min(0.9, this._todayEnemySawPeople * 0.03);
+	
+	if(this.hasPassive(PASSIVE_STRIPPER_PATRON_CONDOM_COUNT_THREE_ID) && this._todayStripperBattleCondomWornCount > 0)
+		rating += 0.2 + (this._todayStripperBattleCondomWornCount * 0.04);
+	else if(this.hasPassive(PASSIVE_STRIPPER_PATRON_CONDOM_COUNT_TWO_ID)) rating += 0.2;
 	
 	if(this.hasPassive(PASSIVE_CLOTHES_STRIPPED_THREE_ID) && this.isNaked()) {
 		let charm = this.charm;
@@ -4714,8 +4792,6 @@ Game_Actor.prototype.calculateSightSensitivityRating = function() {
 			rating += this.charm * 0.005;
 		}
 	}
-	
-	
 	
 	
 	this._sightSensitivityRating = Math.min(9.99, rating);
@@ -5442,8 +5518,6 @@ Game_Actor.prototype.passiveParamBonus = function(paramId) {
 			paramBonus -= this._todayOrgasmCount;
 	}
 	else if(paramId === PARAM_ENDURANCE_ID) {
-		if(this.hasPassive(PASSIVE_JOB_PETTING_COUNT_ONE_ID)) 
-			paramBonus += 1;
 		if(this.hasPassive(PASSIVE_MASOCHISM_PLEASURE_ONE_ID)) 
 			paramBonus += 1;
 		if(this.hasPassive(PASSIVE_PUSSY_SEX_USAGE_FOUR_ID) && this._todayPussyFuckedPeople > 0) 
@@ -5515,7 +5589,7 @@ Game_Actor.prototype.passiveParamRate = function(paramId) {
 	}
 	else if(paramId === PARAM_MIND_ID) {
 		if(this.hasPassive(PASSIVE_TALK_PLEASURE_TWO_ID) && this._tempRecordTalkedAtPeople > 0)
-			passiveRate *= 1 - Math.min(0.5, this._tempRecordTalkedAtPeople * 0.02);
+			passiveRate *= 1 - Math.min(0.5, this._tempRecordTalkedAtPeople * 0.033);
 		if(this.hasPassive(PASSIVE_ORGASM_PEOPLE_TWO_ID) && this._tempRecordOrgasmPresencePeople > 0)
 			passiveRate *= 1 - Math.min(0.5, this._tempRecordOrgasmPresencePeople * 0.006);
 		if(this.hasPassive(PASSIVE_DOUBLE_PEN_COUNT_THREE_ID) && this._tempRecordDoublePenetrationCount > 0)
@@ -5530,12 +5604,18 @@ Game_Actor.prototype.passiveParamRate = function(paramId) {
 			passiveRate *= 0.9;
 	}
 	else if(paramId === PARAM_CHARM_ID) {
-		if(this.isInMasturbationInBattlePose()) { 
-			if(this.hasPassive(PASSIVE_MASTURBATED_INBATTLE_COUNT_TWO_ID)) 
+		if(this.hasPassive(PASSIVE_MASTURBATED_INBATTLE_COUNT_TWO_ID)) { 
+			if(this.isInMasturbationInBattlePose()) 
 				passiveRate *= 1.15;
 		}
 		if(this.hasPassive(PASSIVE_BJ_PEOPLE_THREE_ID) && this.isBodySlotPenis(MOUTH_ID)) 
 			passiveRate *= 1.1;
+		
+		if(this.hasPassive(PASSIVE_MASTURBATED_HALBERD_COUNT_TWO_ID)) { 
+			if(this.isUsingHalberd() || ($gameParty.isInStripperBattle && !this.isInStripperSexPose())) 
+				passiveRate *= 1.1;
+		}
+		
 	}
 	
 	
@@ -5631,7 +5711,7 @@ Game_Actor.prototype.passiveSParamRate = function(id) {
 	
 	if(id === SPARAM_WPATK_ID) {
 		if(this.hasPassive(PASSIVE_TALK_ORGASM_TWO_ID) && this._tempRecordTalkedAtPeople > 0)
-			passiveRate *= 1 - Math.min(0.33, this._tempRecordTalkedAtPeople * 0.005);
+			passiveRate *= 1 - Math.min(0.33, this._tempRecordTalkedAtPeople * 0.006);
 		else if(this.hasPassive(PASSIVE_TALK_PEOPLE_ONE_ID) && this._tempRecordTalkedAtPeople > 0)
 			passiveRate *= 1 + Math.min(0.25, this._tempRecordTalkedAtPeople * 0.008);
 		if(this.hasPassive(PASSIVE_SADISM_PLEASURE_TWO_ID))
@@ -5650,7 +5730,7 @@ Game_Actor.prototype.passiveSParamRate = function(id) {
 	}
 	else if(id === SPARAM_WPDEF_ID) {
 		if(this.hasPassive(PASSIVE_SIGHT_ORGASM_TWO_ID) && this._tempRecordEnemySawPeople > 0)
-			passiveRate *= 1 - Math.min(0.33, this._tempRecordEnemySawPeople * 0.005);
+			passiveRate *= 1 - Math.min(0.33, this._tempRecordEnemySawPeople * 0.006);
 		else if(this.hasPassive(PASSIVE_SIGHT_PEOPLE_ONE_ID) && this._tempRecordEnemySawPeople > 0)
 			passiveRate *= 1 + Math.min(0.25, this._tempRecordEnemySawPeople * 0.008);
 		
@@ -5866,7 +5946,7 @@ Game_Actor.prototype.karrynPassiveSightElementRate = function() { //Sight Resist
 		elementBonus += this._todayOrgasmCount * 0.02;
 	
 	if(this.hasPassive(PASSIVE_TALK_BOOBS_TWO_ID) && this._tempRecordTalkedAtAboutBoobsPeople > 0)
-		elementBonus += Math.min(0.3, this._tempRecordTalkedAtAboutBoobsPeople * 0.015);
+		elementBonus += Math.min(0.3, this._tempRecordTalkedAtAboutBoobsPeople * 0.03);
 	
 	if(this.hasPassive(PASSIVE_ORGASM_PEOPLE_TWO_ID)) elementBonus += 0.14;
 	else if(this.hasPassive(PASSIVE_ORGASM_PEOPLE_ONE_ID)) elementBonus += 0.07;
@@ -5880,7 +5960,7 @@ Game_Actor.prototype.karrynPassiveSightElementRate = function() { //Sight Resist
 		elementBonus += 0.06;
 	
 	if(this.hasPassive(PASSIVE_TOTAL_TOYS_INSERT_COUNT_TWO_ID) && (this._tempRecordTotalToysInsertedCount > 0 || this._tempRecordTotalToysUsedByEnemyCount > 0))
-		elementBonus += this._tempRecordTotalToysInsertedCount * 0.3 + this._tempRecordTotalToysUsedByEnemyCount * 0.1;
+		elementBonus += this._tempRecordTotalToysInsertedCount * 0.03 + this._tempRecordTotalToysUsedByEnemyCount * 0.01;
 	
 	
 	if(this.hasPassive(PASSIVE_MASOCHISM_PLEASURE_ONE_ID) && Karryn.wasDefeatedYesterday()) 
@@ -5923,7 +6003,7 @@ Game_Actor.prototype.karrynPassiveSightElementRate = function() { //Sight Resist
 	if(this.hasPassive(PASSIVE_TIED_SEX_COUNT_ONE_ID) && this.isNotInRestrainedPose()) elementBonus += 0.07;
 	
 	if(this.hasPassive(PASSIVE_PILLORY_SEX_COUNT_ONE_ID) && (Prison.currentlyPrisonLevelThree() || Prison.currentlyPrisonLevelFour() || Prison.currentlyPrisonLevelFive())) elementBonus += 0.06;
-
+	
 	return elementBonus;
 };
 
@@ -5936,9 +6016,6 @@ Game_Actor.prototype.karrynPassiveStripElementRate = function() { //Strip Resist
 		elementBonus += this._todayOrgasmCount * 0.02;
 	
 	if(this.hasPassive(PASSIVE_SIGHT_ORGASM_ONE_ID)) elementBonus += 0.15;
-	
-	if(this.hasPassive(PASSIVE_SIGHT_PLEASURE_TWO_ID) && this._todayEnemySawPeople > 0) 
-		elementBonus += Math.min(0.6, this._todayEnemySawPeople * 0.01);
 
 	if(this.hasPassive(PASSIVE_PUSSY_JUICE_ML_TWO_ID) && this.isWet) elementBonus += 0.12;
 	else if(this.hasPassive(PASSIVE_PUSSY_JUICE_ML_ONE_ID) && this.isWet) elementBonus += 0.06;
@@ -5999,12 +6076,12 @@ Game_Actor.prototype.karrynPassivePettingElementRate = function() { //Petting Re
 		elementBonus += this._todayOrgasmCount * 0.02;
 	
 	if(this.hasPassive(PASSIVE_TALK_BUTT_TWO_ID) && this._tempRecordTalkedAtAboutButtPeople > 0)
-		elementBonus += Math.min(0.4, this._tempRecordTalkedAtAboutButtPeople * 0.015);
+		elementBonus += Math.min(0.3, this._tempRecordTalkedAtAboutButtPeople * 0.03);
 	if(this.hasPassive(PASSIVE_TALK_PLEASURE_ONE_ID) && this._tempRecordTalkedAtPeople > 0)
-		elementBonus += Math.min(0.4, this._tempRecordTalkedAtPeople * 0.02);
+		elementBonus += Math.min(0.4, this._tempRecordTalkedAtPeople * 0.03);
 	
 	if(this.hasPassive(PASSIVE_SIGHT_BUTT_TWO_ID) && this._todayEnemySawButtPeople > 0) 
-		elementBonus += Math.min(0.4, this._todayEnemySawButtPeople * 0.01);
+		elementBonus += Math.min(0.3, this._todayEnemySawButtPeople * 0.03);
 	
 	if(this.hasPassive(PASSIVE_CLOTHES_STRIPPED_ONE_ID) && this.isNaked()) 
 		elementBonus += 0.14;
@@ -6083,7 +6160,7 @@ Game_Actor.prototype.karrynPassiveSexElementRate = function() { //Sex Resist
 		elementBonus += this._todayOrgasmCount * 0.02;
 	
 	if(this.hasPassive(PASSIVE_TALK_COCK_ONE_ID) && this._tempRecordTalkedAtAboutCockPeople > 0)
-		elementBonus += Math.min(0.3, this._tempRecordTalkedAtAboutCockPeople * 0.0133);
+		elementBonus += Math.min(0.3, this._tempRecordTalkedAtAboutCockPeople * 0.03);
 	
 	if(this.hasPassive(PASSIVE_SEXUAL_PARTNERS_TOTAL_FIVE_ID)) elementBonus += 0.32;
 	else if(this.hasPassive(PASSIVE_SEXUAL_PARTNERS_TOTAL_FOUR_ID)) elementBonus += 0.24;
@@ -6171,6 +6248,7 @@ Game_Actor.prototype.postBattlePleasure = function() {
 };
 
 //TRG = Pleasure/Per turn in regen phase
+//Bonus PPT
 Game_Actor.prototype.bonusPpt = function() { 
 	let totalValue = 0;
 	let sightValue = 0;
@@ -6184,6 +6262,9 @@ Game_Actor.prototype.bonusPpt = function() {
 			nakedValue += 6;
 		}
 		if(this.hasPassive(PASSIVE_SIGHT_PLEASURE_TWO_ID)) {
+			nakedValue += 12;
+		}
+		else if(this.hasPassive(PASSIVE_SIGHT_PLEASURE_ONE_ID)) {
 			nakedValue += 6;
 		}
 		if(this.hasPassive(PASSIVE_CLOTHES_STRIPPED_FOUR_ID)) {
@@ -6260,7 +6341,7 @@ Game_Actor.prototype.bonusPpt = function() {
 				sightValue = 0;
 			}
 			else {
-				sightValue *= 0.1;
+				sightValue *= 0.75;
 			}
 			toyValue *= 0.3;
 		}
@@ -6274,13 +6355,25 @@ Game_Actor.prototype.bonusPpt = function() {
 	}
 	
 	let stripperSightValue = 0;
-	if($gameParty.isInStripperBattle && !this.isInStripperSexPose() && !$gameParty.stripperBattle_intermissionPhase()) {
-		stripperSightValue = this.getStripperBattleBonusPptSightValueCache();
+	if($gameParty.isInStripperBattle && !$gameParty.stripperBattle_intermissionPhase()) {
+		if(!this.isInStripperSexPose())
+			stripperSightValue += this.getStripperBattleBonusPptSightValueCache();
+		
+		let condomValue = this._stripper_wornCondomTotalCount;
+		let condomRate = 0;
+		
+		if(this.hasPassive(PASSIVE_STRIPPER_PATRON_CONDOM_COUNT_TWO_ID)) 
+			condomRate += 18;
+		if(this.isUsingThisTitle(TITLE_ID_FULLCONDOM_ALCHEMIST))
+			condomRate *= 1.2;
+		
+		stripperSightValue = Math.max(0, stripperSightValue);
+		stripperSightValue += Math.max(0, ((condomValue * condomRate) * this.elementRate(ELEMENT_SIGHT_ID) * this.sightSensitivity()));
 	}
 	
 	if(sightValue > 0 || stripperSightValue > 0) {
 		sightValue = Math.round(sightValue * this.elementRate(ELEMENT_SIGHT_ID) * this.sightSensitivity());
-		sightValue += stripperSightValue;
+		sightValue += Math.round(stripperSightValue);
 		this.justGotHitBySkillType(JUST_SKILLTYPE_PASSIVE_SIGHT);
 		this.addToActorSightPleasureRecord(sightValue);
 		if(ConfigManager.displayPleasureAsPercent) {
@@ -6676,19 +6769,21 @@ Game_Actor.prototype.passiveEnemyAngerEffect = function(target) {
 // Ejaculation Stock
 //////////
 
-Game_Actor.prototype.passivePostBukkakeBonusEjaculationStock = function() { 
+Game_Actor.prototype.passivePostBukkakeBonusEjaculationStock = function(enemy) { 
 	let chance = 0;
-
-	if(this.hasPassive(PASSIVE_BUKKAKE_ORGASM_TWO_ID)) chance += 0.3;
+	chance -= enemy._ejaculationCount * 0.2;
+	
+	if(this.hasPassive(PASSIVE_BUKKAKE_ORGASM_TWO_ID)) chance += 0.25;
 	
 	if(Math.random() < chance) return true;
 	else return false;
 };
 
-Game_Actor.prototype.passivePostSwallowBonusEjaculationStock = function() { 
+Game_Actor.prototype.passivePostSwallowBonusEjaculationStock = function(enemy) { 
 	let chance = 0;
+	chance -= enemy._ejaculationCount * 0.2;
 
-	if(this.hasPassive(PASSIVE_SWALLOW_ML_FOUR_ID)) chance += 0.3;
+	if(this.hasPassive(PASSIVE_SWALLOW_ML_FOUR_ID)) chance += 0.25;
 	
 	if(Math.random() < chance) return true;
 	else return false;
@@ -7114,7 +7209,8 @@ Game_Actor.prototype.footjobCockDesireRequirement = function(karrynSkillUse) {
 		if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) req += 15;
 		else req += 30;
 	}
-
+	
+	if(ConfigManager.disableFootjobs) return 999;
 	return req; 
 };
 
@@ -7504,7 +7600,7 @@ Game_Actor.prototype.calculateMaxCockDesire = function() { //max cock desire
 	
 	if(this.hasPassive(PASSIVE_TOILET_COCK_APPEARED_COUNT_ONE_ID)) upperLimit += 5;
 	
-	if(this.hasPassive(PASSIVE_MASTURBATED_HALBERD_COUNT_ONE_ID)) upperLimit += 5;
+	if(this.hasPassive(PASSIVE_MASTURBATED_HALBERD_COUNT_THREE_ID)) upperLimit += 5;
 	
 	if(this.hasPassive(PASSIVE_SEE_JERKOFF_COUNT_THREE_ID)) upperLimit += 15;
 	else if(this.hasPassive(PASSIVE_SEE_JERKOFF_COUNT_TWO_ID)) upperLimit += 10;
@@ -7558,6 +7654,8 @@ Game_Actor.prototype.calculateMaxCockDesire = function() { //max cock desire
 	
 	if(this.hasPassive(PASSIVE_SUCKED_FINGERS_PEOPLE_TWO_ID)) upperLimit += 10;
 	else if(this.hasPassive(PASSIVE_SUCKED_FINGERS_PEOPLE_ONE_ID)) upperLimit += 5;
+	
+	if(this.hasPassive(PASSIVE_STRIPPER_PATRON_CONDOM_COUNT_ONE_ID)) upperLimit += 5;
 	
 	if(this.slutLvl <= 100) {
 		upperLimit += Math.floor(this.slutLvl / 5);
@@ -7902,6 +8000,8 @@ Game_Actor.prototype.startingCockDesire = function() { //Starting Cock
 	
 	if(this.hasPassive(PASSIVE_PUSSY_CREAMPIE_ORGASM_ONE_ID)) desire += 3;
 	if(this.hasPassive(PASSIVE_PUSSY_SEX_ORGASM_ONE_ID)) desire += 3;
+	
+	if(this.hasPassive(PASSIVE_BUKKAKE_ORGASM_TWO_ID)) desire += 5;
 
 	if(this.hasPassive(PASSIVE_COCK_PETTING_PEOPLE_THREE_ID)) desire += 5;
 	
@@ -7970,9 +8070,9 @@ Game_Actor.prototype.regenerateDesires = function() {
 	if(this.hasPassive(PASSIVE_SIGHT_BUTT_ONE_ID)) regenButtDesire += 3;
 	
 	if(this.hasPassive(PASSIVE_SIGHT_MOUTH_TWO_ID) && this._todayEnemySawMouthPeople > 0) 
-		regenMouthDesire += Math.min(15, this._todayEnemySawMouthPeople * 0.8);
+		regenMouthDesire += Math.min(15, this._todayEnemySawMouthPeople * 1.2);
 	if(this.hasPassive(PASSIVE_SIGHT_PUSSY_TWO_ID) && this._todayEnemySawPussyPeople > 0) 
-		regenPussyDesire += Math.min(15, this._todayEnemySawPussyPeople * 0.8);
+		regenPussyDesire += Math.min(15, this._todayEnemySawPussyPeople * 1.2);
 	
 	
 	if(this.hasPassive(PASSIVE_DOUBLE_PEN_COUNT_TWO_ID) && (!this.isBodySlotPenis(PUSSY_ID) || !this.isBodySlotPenis(ANAL_ID))) 
@@ -8197,6 +8297,20 @@ Game_Actor.prototype.regenerateDesires = function() {
 			regenRandomDesire[i] *= gloryDesireRegenMultipler;
 		};
 	}
+	else if($gameParty.isInStripperBattle) {
+		let stripperDesireRegenMultipler = 0.7 * this.jobDesireMultipler();
+		if(!this.isInStripperSexPose())
+			stripperDesireRegenMultipler *= 0.5;
+		
+		regenMouthDesire *= stripperDesireRegenMultipler;
+		regenBoobsDesire *= stripperDesireRegenMultipler;
+		regenButtDesire *= stripperDesireRegenMultipler;
+		regenPussyDesire *= stripperDesireRegenMultipler;
+		regenCockDesire *= stripperDesireRegenMultipler;
+		for(let i = 0; i < regenRandomDesire.length; ++i) {
+			regenRandomDesire[i] *= stripperDesireRegenMultipler;
+		};
+	}
 
 	//Commit
 	this.gainBoobsDesire(regenBoobsDesire, false, true);
@@ -8279,7 +8393,7 @@ Game_Actor.prototype.gainMouthDesirePassiveMultipler = function() { //Mouth desi
 	if(this.hasPassive(PASSIVE_TALK_MOUTH_ONE_ID)) multi += 0.05;
 	
 	if(this.hasPassive(PASSIVE_SIGHT_MOUTH_THREE_ID) && this._tempRecordEnemySawMouthPeople > 0)
-		multi += Math.min(1, this._tempRecordEnemySawMouthPeople * 0.05);
+		multi += Math.min(1, this._tempRecordEnemySawMouthPeople * 0.1);
 	
 	if(this.hasPassive(PASSIVE_MASOCHISM_ORGASM_ONE_ID) && Karryn.wasDefeatedYesterday()) 
 		multi += this.masochismLvl() * 0.015;
@@ -8319,7 +8433,7 @@ Game_Actor.prototype.gainBoobsDesirePassiveMultipler = function() { //Boobs desi
 	if(this.hasPassive(PASSIVE_TALK_BOOBS_ONE_ID)) multi += 0.05;
 	
 	if(this.hasPassive(PASSIVE_SIGHT_BOOBS_THREE_ID) && this._tempRecordEnemySawBoobsPeople > 0)
-		multi += Math.min(1, this._tempRecordEnemySawBoobsPeople * 0.05);
+		multi += Math.min(1, this._tempRecordEnemySawBoobsPeople * 0.1);
 	
 	if(this.hasPassive(PASSIVE_WAITRESS_FLASH_COUNT_ONE_ID)) multi += 0.05;
 	
@@ -8363,7 +8477,7 @@ Game_Actor.prototype.gainPussyDesirePassiveMultipler = function() { //Pussy desi
 	if(this.hasPassive(PASSIVE_TALK_PUSSY_ONE_ID)) multi += 0.05;
 	
 	if(this.hasPassive(PASSIVE_SIGHT_PUSSY_THREE_ID) && this._tempRecordEnemySawPussyPeople > 0)
-		multi += Math.min(1, this._tempRecordEnemySawPussyPeople * 0.05);
+		multi += Math.min(1, this._tempRecordEnemySawPussyPeople * 0.1);
 	
 	if(this.hasPassive(PASSIVE_MASOCHISM_ORGASM_ONE_ID) && Karryn.wasDefeatedYesterday()) 
 		multi += this.masochismLvl() * 0.015;
@@ -8400,7 +8514,7 @@ Game_Actor.prototype.gainButtDesirePassiveMultipler = function() { //Butt desire
 	if(this.hasPassive(PASSIVE_TALK_BUTT_ONE_ID)) multi += 0.05;
 	
 	if(this.hasPassive(this.PASSIVE_SIGHT_BUTT_THREE_ID) && this._tempRecordEnemySawButtPeople > 0)
-		multi += Math.min(1, this._tempRecordEnemySawButtPeople * 0.05);
+		multi += Math.min(1, this._tempRecordEnemySawButtPeople * 0.1);
 	
 	if(this.hasPassive(PASSIVE_MASOCHISM_ORGASM_ONE_ID) && Karryn.wasDefeatedYesterday()) 
 		multi += this.masochismLvl() * 0.015;
@@ -8451,7 +8565,7 @@ Game_Actor.prototype.gainCockDesirePassiveMultipler = function() { //Cock desire
 	}
 	
 	if(this.hasPassive(PASSIVE_TALK_COCK_TWO_ID) && this._todayTalkedAtAboutCockPeople > 0)
-		multi += Math.min(1, this._todayTalkedAtAboutCockPeople * 0.033);
+		multi += Math.min(1, this._todayTalkedAtAboutCockPeople * 0.05);
 	if(this.hasPassive(PASSIVE_URINAL_COUNT_ONE_ID) && ($gameParty.isInGloryBattle || Karryn.isInDefeatedLevel2Pose())) 
 		multi += 0.1;
 	if(this.hasPassive(PASSIVE_PILLORY_SEX_COUNT_ONE_ID) && (Prison.currentlyPrisonLevelThree() || Prison.currentlyPrisonLevelFour() || Prison.currentlyPrisonLevelFive())) 
@@ -8493,7 +8607,6 @@ Game_Actor.prototype.gainCockDesirePassiveMultipler = function() { //Cock desire
 	
 	if(this.hasPassive(PASSIVE_SUCKED_FINGERS_PEOPLE_TWO_ID) && this._tempRecordFingersSuckedPeople > 0) 
 		multi += this._tempRecordFingersSuckedPeople * 0.033;
-	
 	
 	multi += (this.masochismLvl() + this.sadismLvl()) * 0.01;
 
@@ -8709,7 +8822,7 @@ Game_Actor.prototype.passivePussyJuiceDrip = function() {
 	}
 	
 	if(this.hasPassive(PASSIVE_TALK_PUSSY_TWO_ID))
-			value += Math.min(4, this._tempRecordTalkedAtAboutPussyPeople * 0.5);
+		value += Math.min(4, this._tempRecordTalkedAtAboutPussyPeople * 0.4);
 		
 	if(this.hasPassive(PASSIVE_ORGASM_COUNT_FIVE_ID)) value += this._todayOrgasmCount;
 	if(this.hasPassive(PASSIVE_PANTIES_STRIPPED_TWO_ID) && !this.isWearingPanties()) value += 2;

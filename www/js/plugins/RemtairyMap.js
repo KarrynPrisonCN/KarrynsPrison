@@ -93,6 +93,10 @@ const MAP_BAR_BGM_VOLUME = 75;
 const MAP_TOILET_BGM_NAME = 'Prison_Others2';
 const MAP_TOILET_BGM_VOLUME = 80;
 
+//Strip Club BGM
+const MAP_STRIP_CLUB_BGM_NAME = 'Bar1';
+const MAP_STRIP_CLUB_BGM_VOLUME = 75;
+
 //Map Borders
 const MAP_LOWER_BORDERS_NORMAL = "MapBorders_Normal";
 const MAP_LOWER_BORDERS_CHAT = "MapBorders_Chat";
@@ -253,6 +257,7 @@ const MAP_ID_LVL3_DEFEAT_SOLITARY_CELL = 61;
 const MAP_ID_CELL_BLOCK_NORTH_WEST = 58;
 const MAP_ID_CELL_BLOCK_NORTH_EAST = 57;
 const MAP_ID_COMMON_AREA_NORTH_EAST = 59;
+const MAP_ID_STRIP_CLUB = 74;
 
 const MAP_ID_LVL4_STAIRS_TO_LVL3 = 64;
 const MAP_ID_LVL4_MUSHROOM_FARM = 66;
@@ -532,6 +537,10 @@ Scene_Map.prototype.changeBGMOnTransfer = function() {
 		else if(Prison.prisonLevelThreeIsAnarchy() || Prison.prisonLevelThreeIsUnknown()) {
 			bgmName = MAP_LEVEL_THREE_ANARCHY_BGM_NAME;
 			bgmVolume = MAP_LEVEL_THREE_ANARCHY_BGM_VOLUME;
+		}
+		else if(mapId === MAP_ID_STRIP_CLUB) {
+			bgmName = MAP_STRIP_CLUB_BGM_NAME;
+			bgmVolume = MAP_STRIP_CLUB_BGM_VOLUME;
 		}
 		else if(mapId === MAP_ID_COMMON_AREA_SOUTH_EAST && $gameParty.isNightMode()) {
 			if(sluttyVersionBgm) {
@@ -1285,21 +1294,6 @@ Window_Message.prototype.adjustWindowSettings = function() {
 		Remtairy.Map.Window_Message_adjustWindowSettings.call(this);
 };
 
-//Moved to YEP_MessageCore
-/*
-Window_Message.prototype.startMessage = function() {
-	this._nameWindow.deactivate();
-    this._textState = {};
-    this._textState.index = 0;
-    this._textState.text = this.convertEscapeCharacters($gameMessage.allText());
-    this.newPage(this._textState);
-    this.updatePlacement();
-    this.updateBackground();
-	if(this._positionType === 2 && this._background === 1) {
-		this._textState.y = MAP_CHAT_TEXT_TRANSPARENT_WINDOW_HEIGHT_PADDING;
-	}
-    this.open();
-};*/
 
 
 //////////

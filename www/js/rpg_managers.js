@@ -2798,6 +2798,8 @@ PluginManager._scripts      = [];
 PluginManager._errorUrls    = [];
 PluginManager._parameters   = {};
 
+var $mods = []
+
 PluginManager.setup = function(plugins) {
     plugins.forEach(function(plugin) {
         if (plugin.status && !this._scripts.contains(plugin.name)) {
@@ -2836,4 +2838,24 @@ PluginManager.loadScript = function(name) {
 
 PluginManager.onError = function(e) {
     this._errorUrls.push(e.target._url);
+};
+
+PluginManager.setupMods = function(mods) {
+    mods.forEach(function(mod) {
+        if(mod.status && !this._scripts.contains(mod.name)) {
+			this.setParameters(mod.name, mod.parameters);
+            this.loadModScript(mod.name + '.js');
+            this._scripts.push(mod.name);
+        }
+    }, this);
+};
+PluginManager.loadModScript = function(name) {
+    var url = 'mods/' + name;
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = url;
+    script.async = false;
+    script.onerror = this.onError.bind(this);
+    script._url = url;
+    document.body.appendChild(script);
 };

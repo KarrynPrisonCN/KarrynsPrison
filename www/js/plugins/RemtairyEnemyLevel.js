@@ -369,7 +369,7 @@ Game_Enemy.prototype.enemyLvl_difficultyBase_PrisonLevelThree = function() {
 	
 	let mapId = $gameMap._mapId;
 	
-	if($gameParty.isRiotBattle() || $gameParty.isNightBattle() || mapId === MAP_ID_LVL3_DEFEAT_SOLITARY_CELL || mapId === MAP_ID_COMMON_AREA_NORTH_EAST)
+	if($gameParty.isRiotBattle() || $gameParty.isNightBattle() || $gameParty.isInStripperBattle || mapId === MAP_ID_LVL3_DEFEAT_SOLITARY_CELL || mapId === MAP_ID_COMMON_AREA_NORTH_EAST)
 		lvl += ENEMY_LVL_PRISON_LEVEL_THREE_PLUS_FOUR;
 	else if(mapId === MAP_ID_CELL_BLOCK_NORTH_EAST || mapId === MAP_ID_GYM || mapId === MAP_ID_LVL3_GUARD_STATION)
 		lvl += ENEMY_LVL_PRISON_LEVEL_THREE_PLUS_THREE;

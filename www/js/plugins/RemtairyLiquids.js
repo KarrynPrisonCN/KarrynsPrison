@@ -1302,7 +1302,7 @@ Game_Actor.prototype.resetLiquidsExceptPussyJuice = function() {
 //Clean Up Liquids
 Game_Actor.prototype.cleanUpLiquids = function() {
 	if(this.hasPassive(PASSIVE_FACE_BUKKAKE_COUNT_TWO_ID)) {
-		let multiValue = 0.5;
+		let multiValue = 0.75;
 		let flatMinusValue = 0.15;
 		
 		this._minimumLiquidBukkakeFace = Math.round(Math.max(this._liquidBukkakeFace * ((Math.random() * multiValue) - flatMinusValue), this._minimumLiquidBukkakeFace));
@@ -1314,15 +1314,15 @@ Game_Actor.prototype.cleanUpLiquids = function() {
 	}
 	
 	if(this.hasPassive(PASSIVE_BUKKAKE_COUNT_THREE_ID)) {
-		let multiValue = 0.4;
+		let multiValue = 0.5;
 		let flatMinusValue = 0.25;
 		
 		if(this.hasPassive(PASSIVE_BUKKAKE_COUNT_FIVE_ID)) {
-			multiValue = 0.6;
+			multiValue = 0.9;
 			flatMinusValue = 0.1;
 		}
 		else if(this.hasPassive(PASSIVE_BUKKAKE_COUNT_FOUR_ID)) {
-			multiValue = 0.5;
+			multiValue = 0.75;
 			flatMinusValue = 0.15;
 		}
 		
@@ -1362,12 +1362,12 @@ Game_Actor.prototype.cleanUpLiquids = function() {
 	}
 	
 	if(this.hasPassive(PASSIVE_PUSSY_CREAMPIE_ML_THREE_ID)) {
-		let multiValue = 0.4;
+		let multiValue = 0.5;
 		let flatMinusValue = 0.25;
 		
 		if(this.hasPassive(PASSIVE_PUSSY_CREAMPIE_ML_FIVE_ID)) {
-			multiValue = 0.5;
-			flatMinusValue = 0.15;
+			multiValue = 0.7;
+			flatMinusValue = 0.1;
 		}
 	
 		this._minimumLiquidCreampiePussy = Math.round(Math.max(this._liquidCreampiePussy * ((Math.random() * multiValue) - flatMinusValue), this._minimumLiquidCreampiePussy));
@@ -1379,12 +1379,12 @@ Game_Actor.prototype.cleanUpLiquids = function() {
 	}
 	
 	if(this.hasPassive(PASSIVE_ANAL_CREAMPIE_ML_THREE_ID)) {
-		let multiValue = 0.4;
+		let multiValue = 0.5;
 		let flatMinusValue = 0.25;
 		
 		if(this.hasPassive(PASSIVE_ANAL_CREAMPIE_ML_FIVE_ID)) {
-			multiValue = 0.5;
-			flatMinusValue = 0.15;
+			multiValue = 0.7;
+			flatMinusValue = 0.1;
 		}
 	
 		this._minimumLiquidCreampieAnal = Math.round(Math.max(this._liquidCreampieAnal * ((Math.random() * multiValue) - flatMinusValue), this._minimumLiquidCreampieAnal));
@@ -1424,12 +1424,26 @@ Game_Actor.prototype.cleanUpLiquids = function() {
 	this._liquidGloryCumOnRightWall = [0, 0, 0, 0, 0 , 0, 0, 0, 0];
 	this._liquidGloryCumOnRightHole = [0, 0];
 	this._liquidGloryCumOnRightToilet = [0, 0, 0, 0];
+	
+	//Stripper
+	this._stripper_stageCondomCount = 0;
+	this._stripper_beltCondomCount = 0;
+	this._stripper_buttCondomCount = 0;
+	this._stripper_braCondomCount = 0;
+	this._stripper_nipplesCondomCount = 0;
+	this._stripper_headCondomCount = 0;
+	this._stripper_wornCondomTotalCount = 0;
+	
 	this.setCacheChanged();
 }; 
 
 
 Game_Actor.prototype.increaseLiquidPussyJuice = function(liquid) {
+	let previouslyIsWet = this.isWet;
 	this._liquidPussyJuice += liquid;
+	if(!previouslyIsWet && this.isWet) {
+		this.refresh();
+	}
 }; 
 
 Game_Actor.prototype.increaseLiquidDroolMouth = function(liquid) {

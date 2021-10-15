@@ -137,10 +137,10 @@ Imported.RS_MessageAlign = true;
     };
     
     Window_Message.prototype.setAlignLeft = function(textState) {
-        var padding = this.textPadding();
+        //var padding = this.textPadding();
         textState.tx = this.calcTextWidth(textState.text.slice(textState.index));
-        textState.x = ( this.newLineX() + padding );
-        textState.left = textState.x;
+        //textState.x = ( this.newLineX() + padding );
+        //textState.left = textState.x;
     };
     
     Window_Message.prototype.setAlignCenter = function(textState) {

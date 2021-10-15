@@ -1,8 +1,8 @@
 ﻿var Remtairy = Remtairy || {};
 Remtairy.Voices = Remtairy.Voices || {};
 
-var VAR_VOICE_CACHE_LIMIT = 0;
-var VAR_MOAN_CACHE_LIMIT = 4;
+var VAR_VOICE_CACHE_LIMIT = 5;
+var VAR_MOAN_CACHE_LIMIT = 5;
 
 //=============================================================================
  /*:
@@ -17,12 +17,18 @@ var VAR_MOAN_CACHE_LIMIT = 4;
  */
 //=============================================================================
 
+AudioManager._bgmVolume      = 80;
+AudioManager._bgsVolume      = 80;
+AudioManager._meVolume       = 80;
+AudioManager._seVolume       = 80;
 AudioManager._remVoiceVolume       = 100;
 AudioManager._remCurrentVoice     = null;
 AudioManager._remVoiceBuffer      = null;
-AudioManager._remMoanVolume       = 100;
+AudioManager._remMoanVolume       = 30;
 AudioManager._remCurrentMoan     = null;
 AudioManager._remMoanBuffer      = null;
+AudioManager._remEnemyVoiceVolume       = 80;
+
 
 //////////////////
 //////////////////
@@ -46,14 +52,26 @@ Object.defineProperty(AudioManager, 'moanVolume', {
     },
     set: function(value) {
         this._remMoanVolume = value;
-        this.updateVoiceParameters(this._remCurrentMoan);
+        this.updateMoanParameters(this._remCurrentMoan);
+    },
+    configurable: true
+});
+Object.defineProperty(AudioManager, 'maleVolume', {
+    get: function() {
+        return this._remEnemyVoiceVolume;
+    },
+    set: function(value) {
+        this._remEnemyVoiceVolume = value;
     },
     configurable: true
 });
 
+
 //////////
 // Voice
 AudioManager.playVoice = function(voice, pos) {
+	return false;
+	if(!$gameTemp.isPlaytest()) { return; } //todo remove
 	if(this.voiceVolume === 0) {
 		this.stopVoice();
 		return;
@@ -68,7 +86,7 @@ AudioManager.playVoice = function(voice, pos) {
 		else {
 			this._remVoiceBuffer.stop();
 			this.updateVoiceParameters(voice);
-			this._remVoiceBuffer.play(false, pos || 0);
+			this._remVoiceBuffer.play(false);
 		}
     } 
 	else {
@@ -77,7 +95,8 @@ AudioManager.playVoice = function(voice, pos) {
 			let folder = 'voice';
             this._remVoiceBuffer = this.createBuffer(folder, voice.name);
             this.updateVoiceParameters(voice);
-            this._remVoiceBuffer.play(false, pos || 0);
+            this._remVoiceBuffer.play(false);
+			this._remVoiceBuffer.addStopListener(Karryn.moanMasterManager.bind(this));
         }
     }
     this.updateCurrentVoice(voice, pos);
@@ -159,6 +178,8 @@ AudioManager.isVoicePlaying = function() {
 //////////
 // Moan
 AudioManager.playMoan = function(moan, pos) {
+	return false;
+	if(!$gameTemp.isPlaytest()) { return; } //todo remove
 	if(this.moanVolume === 0) {
 		this.stopMoan();
 		return;
@@ -273,7 +294,7 @@ AudioManager.playEnemyVoiceSe = function(enemyVoice) {
             return audio.isPlaying();
         });
         var buffer = this.createBuffer('enemy', enemyVoice.name);
-        this.updateSeParameters(buffer, enemyVoice);
+        this.updateEnemyVoiceParameters(buffer, enemyVoice);
         buffer.play(false);
         this._seBuffers.push(buffer);
     }
@@ -294,8 +315,149 @@ AudioManager.playEnemyVoiceSe = function(enemyVoice) {
     }
 };
 
-/////////
+AudioManager.updateEnemyVoiceParameters = function(buffer, enemyVoice) {
+    this.updateBufferParameters(buffer, this._remEnemyVoiceVolume, enemyVoice);
+};
+
+///////////////
+// Game Actor
+//////////////
+
+//Moan Master Manager
+//Moan Manager
+Game_Actor.prototype.moanMasterManager = function() {
+	let moanFileName = false;
+	let givingBJ = this.isBodySlotPenis(MOUTH_ID);
+	let pussyInserted = this.isBodySlotPenis(PUSSY_ID);
+	let analInserted = this.isBodySlotPenis(ANAL_ID);
+	
+	if(givingBJ) {
+		moanFileName = 'fera_exp1_01';
+	}
+	else if(pussyInserted || analInserted) {
+		moanFileName = 'sex_exp1_01';
+	}
+	
+	if(moanFileName) {
+		AudioManager.playMoan({name:moanFileName, pan:0, pitch:100, volume:100});
+	}
+	else {
+		AudioManager.stopMoan();
+	}
+};
+
+///////////////
+/////////////////
 // Battle Manager
+/////////////////
+////////////////
+
+BattleManager.battleVoiceManager = function(target, item, targetResult) {
+	let skillId = item.id;
+
+	if(target.isActor()) {
+		let isEnemyAttackSkill = item.hasTag(TAG_ENEMY_ATTACK_SKILL);
+		let isEnemyPettingSkill = item.hasTag(TAG_ENEMY_PETTING_SKILL);
+		let isEnemySexSkill = item.hasTag(TAG_ENEMY_SEX_SKILL);
+		
+		if(isEnemyAttackSkill) {
+			this.playKarrynVoice_Damage(target, targetResult);
+		}
+		else {
+			Karryn.moanMasterManager();
+		}
+	}
+	else {
+		let isActorAttackSkill = item.hasTag(TAG_ACTOR_ATTACK_SKILL) || item.hasTag(TAG_KICK_SKILL);
+		let isActorSexSkill = item.hasTag(TAG_ACTOR_SEX_SKILL);
+		
+		if(isActorAttackSkill) {
+			this.playKarrynVoice_Attack(skillId, targetResult);
+		}
+		else {
+			Karryn.moanMasterManager();
+		}	
+	}
+};
+
+BattleManager.playKarrynVoice_Attack = function(skillId, result) {
+	let karrynVoiceArray = [];
+	let isCritical = result.critical;
+	
+	let isBasicAttack = (skillId === SKILL_KARRYN_HALBERD_STRIKE_ID || skillId === SKILL_KARRYN_HALBERD_SLASH_ID || skillId === SKILL_KARRYN_HALBERD_THRUST_ID || 
+		skillId === SKILL_KARRYN_KICK_STRIKE_ID || skillId === SKILL_KARRYN_KICK_SLASH_ID || skillId === SKILL_KARRYN_KICK_THRUST_ID || 
+		skillId === SKILL_KARRYN_COUNTER_HALBERD_STRIKE_ID || skillId === SKILL_KARRYN_COUNTER_HALBERD_SLASH_ID || skillId === SKILL_KARRYN_COUNTER_HALBERD_THRUST_ID || 
+		skillId === SKILL_KARRYN_COUNTER_KICK_STRIKE_ID || skillId === SKILL_KARRYN_COUNTER_KICK_SLASH_ID || skillId === SKILL_KARRYN_COUNTER_KICK_THRUST_ID);
+
+	if(isCritical) {
+		if(isBasicAttack) {
+			karrynVoiceArray.push('attack_critical_exp1_01');
+			karrynVoiceArray.push('attack_critical_exp1_02');
+			karrynVoiceArray.push('attack_critical_exp1_03');
+		}
+	}
+	else {
+		if(isBasicAttack) {
+			karrynVoiceArray.push('attack_normal_exp1_01');
+			karrynVoiceArray.push('attack_normal_exp1_02');
+			karrynVoiceArray.push('attack_normal_exp1_03');
+			karrynVoiceArray.push('attack_normal_exp1_04');
+		}
+	}
+	
+	karrynVoiceArray = ['evade_exp2_01','test_1']
+	
+	if(karrynVoiceArray.length > 0) {
+		let voiceFileName = karrynVoiceArray[Math.randomInt(karrynVoiceArray.length)];
+		AudioManager.playVoice({name:voiceFileName, pan:0, pitch:100, volume:100});
+	}
+};
+
+BattleManager.playKarrynVoice_Damage = function(target, result) {
+	let karrynVoiceArray = [];
+	let isCritical = result.critical;
+	let karrynIsInDefendStance = target.isStateAffected(STATE_GUARD_ID);
+	let karrynIsInCounterStance = target.isStateAffected(STATE_COUNTER_STANCE_ID);
+	
+	if(result.evaded) {
+		karrynVoiceArray.push('evade_exp1_01');
+		karrynVoiceArray.push('evade_exp1_02');
+		karrynVoiceArray.push('evade_exp1_03');
+	}
+	else if(karrynIsInDefendStance || karrynIsInCounterStance) {
+		karrynVoiceArray.push('defend_exp1_01');
+		karrynVoiceArray.push('defend_exp1_02');
+	}
+	else {
+		if(isCritical) {
+			karrynVoiceArray.push('damage_critical_exp1_01');
+			karrynVoiceArray.push('damage_critical_exp1_02');
+		}
+		else {
+			karrynVoiceArray.push('damage_normal_exp1_01');
+			karrynVoiceArray.push('damage_normal_exp1_02');
+			karrynVoiceArray.push('damage_normal_exp1_03');
+			karrynVoiceArray.push('damage_normal_exp1_04');
+		}
+	}
+	
+	if(karrynVoiceArray.length > 0) {
+		let voiceFileName = karrynVoiceArray[Math.randomInt(karrynVoiceArray.length)];
+		AudioManager.playVoice({name:voiceFileName, pan:0, pitch:100, volume:100});
+	}
+};
+
+BattleManager.playKarrynVoice_RemLine = function(lineId) {
+	let voiceFileName = false;
+	
+	voiceFileName = lineId;
+	
+	//if(lineId.includes('orgasm_')) voiceFileName = 'karryn_orgasm_exp0_1'
+	voiceFileName = 'test_2'
+	
+	if(voiceFileName)
+		AudioManager.playVoice({name:voiceFileName, pan:0, pitch:100, pos:0, volume: 100});
+};
 
 BattleManager.playEnemyVoice_Talk = function(enemy, enemyVolume) {
 	let enemyVoiceArray = [];

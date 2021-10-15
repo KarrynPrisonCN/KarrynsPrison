@@ -210,7 +210,7 @@ Game_Troop.prototype.getAverageEnemyExperienceLvl = function() {
 	let count = 0;
 
 	this.members().forEach(function(enemy) {
-		if(enemy.isAppeared() && !enemy.isOnlooker) {
+		if(enemy && enemy.isAppeared() && !enemy.isOnlooker) {
 			count++;
 			totalLvl += enemy.enemyExperienceLvl();
 		}
@@ -325,7 +325,7 @@ Game_Enemy.prototype.lizardmanParamRate = function(paramId) {
 	return rate;
 };
 Game_Enemy.prototype.displayLizardmanNumStateIcon = function(count) {
-	if(Karryn.isInJobPose()) return false;
+	if(Karryn.isInJobPose() && !Karryn.isInStripperSexPose() && !Karryn.isInWaitressSexPose()) return false;
 	if(count === 6) return $gameTroop.getCountOfLizardmanPresent() >= 6;
 	else return $gameTroop.getCountOfLizardmanPresent() === count;
 };
@@ -1104,14 +1104,27 @@ Game_Troop.prototype.reorderImagesOnSelection = function() {
 					if(spot === 5 && rowHeight >= 2 || spot === 4 && rowHeight >= 3) 
 						spot = 6;
 					
-					if(spot < 6) {
-						x = ENEMY_NAME_HALFSPECIAL_FIRST_COL_X;
-						y = ENEMY_NAME_HALFSPECIAL_STARTING_Y + ENEMY_NAME_HALFSPECIAL_HEIGHT_SPACING * (spot + (rowHeight - 1));
+					if($gameParty.isInStripperBattle) {
+						if(spot < 5) {
+							x = STRIP_CLUB_LEFT_SEAT_A_X;
+							y = STRIP_CLUB_SEAT_A_Y + ((STRIP_CLUB_SEAT_B_Y - STRIP_CLUB_SEAT_A_Y) * (spot + (rowHeight - 1)));
+						}
+						else {
+							x = STRIP_CLUB_RIGHT_SEAT_A_X;
+							y = STRIP_CLUB_SEAT_A_Y + ((STRIP_CLUB_SEAT_B_Y - STRIP_CLUB_SEAT_A_Y) * (spot - 5 + (rowHeight - 1)));
+						}
 					}
 					else {
-						x = ENEMY_NAME_HALFSPECIAL_SECOND_COL_X;
-						y = ENEMY_NAME_HALFSPECIAL_STARTING_Y + ENEMY_NAME_HALFSPECIAL_HEIGHT_SPACING * (spot - 6 + (rowHeight - 1));
+						if(spot < 6) {
+							x = ENEMY_NAME_HALFSPECIAL_FIRST_COL_X;
+							y = ENEMY_NAME_HALFSPECIAL_STARTING_Y + ENEMY_NAME_HALFSPECIAL_HEIGHT_SPACING * (spot + (rowHeight - 1));
+						}
+						else {
+							x = ENEMY_NAME_HALFSPECIAL_SECOND_COL_X;
+							y = ENEMY_NAME_HALFSPECIAL_STARTING_Y + ENEMY_NAME_HALFSPECIAL_HEIGHT_SPACING * (spot - 6 + (rowHeight - 1));
+						}
 					}
+					
 					
 					this._enemies[i]._screenX = x;
 					this._enemies[i]._screenY = y;
@@ -3045,10 +3058,7 @@ Game_Party.prototype.respawnAnarchyEnemies = function(forceRespawn) {
 	if(this.prisonLevelOneIsAnarchy() || forceRespawn) {
 		$gameSelfSwitches.setValue([MAP_ID_VISITOR_ROOM_BROKEN, 2, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_VISITOR_CENTER_BROKEN, 30, "D"], false);
-		$gameSelfSwitches.setValue([MAP_ID_BAR_BROKEN, 3, "D"], false);
-		$gameSelfSwitches.setValue([MAP_ID_BAR_BROKEN, 5, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_BAR_BROKEN, 6, "D"], false);
-		$gameSelfSwitches.setValue([MAP_ID_BAR_BROKEN, 7, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_BAR_BROKEN, 8, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_BAR_BROKEN, 9, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_BAR_BROKEN, 10, "D"], false);
@@ -3062,14 +3072,19 @@ Game_Party.prototype.respawnAnarchyEnemies = function(forceRespawn) {
 		$gameSelfSwitches.setValue([MAP_ID_LVL1_HALLWAY, 12, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_WORKSHOP, 5, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_WORKSHOP, 6, "D"], false);
-		$gameSelfSwitches.setValue([MAP_ID_WORKSHOP, 7, "D"], false);
-		$gameSelfSwitches.setValue([MAP_ID_LAUNDRY, 4, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_LAUNDRY, 5, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_DISH_WASHING, 6, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_DISH_WASHING, 7, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_RECEPTION, 30, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_RECEPTION, 31, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_RECEPTION, 41, "D"], false);
+		if(mapId !== MAP_ID_LVL1_GUARD_STATION) {
+			$gameSelfSwitches.setValue([MAP_ID_BAR_BROKEN, 5, "D"], false);
+			$gameSelfSwitches.setValue([MAP_ID_BAR_BROKEN, 3, "D"], false);
+			$gameSelfSwitches.setValue([MAP_ID_BAR_BROKEN, 7, "D"], false);
+			$gameSelfSwitches.setValue([MAP_ID_LAUNDRY, 4, "D"], false);
+			$gameSelfSwitches.setValue([MAP_ID_WORKSHOP, 7, "D"], false);
+		}
 	}
 	if(this.prisonLevelTwoIsAnarchy() || forceRespawn) {
 		$gameSelfSwitches.setValue([MAP_ID_STORE_BROKEN, 3, "D"], false);
@@ -3079,7 +3094,6 @@ Game_Party.prototype.respawnAnarchyEnemies = function(forceRespawn) {
 		$gameSelfSwitches.setValue([MAP_ID_READING_ROOM, 5, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_READING_ROOM, 6, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_CLASSROOM, 3, "D"], false);
-		$gameSelfSwitches.setValue([MAP_ID_CLASSROOM, 4, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_CLASSROOM, 5, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_CLASSROOM, 6, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_LVL2_HALLWAY_FLOODED, 13, "D"], false); 
@@ -3090,13 +3104,16 @@ Game_Party.prototype.respawnAnarchyEnemies = function(forceRespawn) {
 		$gameSelfSwitches.setValue([MAP_ID_STAFF_LOUNGE, 5, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_STAFF_LOUNGE, 6, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_RESEARCH, 4, "D"], false);
-		$gameSelfSwitches.setValue([MAP_ID_RESEARCH, 5, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_RESEARCH, 6, "D"], false);
-		$gameSelfSwitches.setValue([MAP_ID_RESEARCH, 7, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_MEETING_ROOM, 4, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_MEETING_ROOM, 6, "D"], false);
-		$gameSelfSwitches.setValue([MAP_ID_MEETING_ROOM, 7, "D"], false);
-		$gameSelfSwitches.setValue([MAP_ID_MEETING_ROOM, 8, "D"], false);
+		if(mapId !== MAP_ID_LVL2_GUARD_STATION) {
+			$gameSelfSwitches.setValue([MAP_ID_CLASSROOM, 4, "D"], false);
+			$gameSelfSwitches.setValue([MAP_ID_RESEARCH, 5, "D"], false);
+			$gameSelfSwitches.setValue([MAP_ID_RESEARCH, 7, "D"], false);
+			$gameSelfSwitches.setValue([MAP_ID_MEETING_ROOM, 7, "D"], false);
+			$gameSelfSwitches.setValue([MAP_ID_MEETING_ROOM, 8, "D"], false);
+		}
 	}
 	if(this.prisonLevelThreeIsAnarchy() || forceRespawn) {
 		$gameSelfSwitches.setValue([MAP_ID_COMMON_AREA_SOUTH_EAST, 3, "D"], false);
@@ -3106,8 +3123,6 @@ Game_Party.prototype.respawnAnarchyEnemies = function(forceRespawn) {
 		$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_SOUTH, 35, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_SOUTH, 36, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_SOUTH, 37, "D"], false);
-		$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_SOUTH, 38, "D"], false);
-		$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_SOUTH, 39, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_SOUTH, 41, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_SOUTH, 42, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_SOUTH, 43, "D"], false);
@@ -3120,18 +3135,13 @@ Game_Party.prototype.respawnAnarchyEnemies = function(forceRespawn) {
 		$gameSelfSwitches.setValue([MAP_ID_SHOWER_BLOCK_NORTH, 3, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_SHOWER_BLOCK_NORTH, 4, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_SHOWER_BLOCK_NORTH, 6, "D"], false);
-		$gameSelfSwitches.setValue([MAP_ID_SHOWER_BLOCK_NORTH, 7, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_GYM, 7, "D"], false);
-		$gameSelfSwitches.setValue([MAP_ID_GYM, 8, "D"], false);
-		$gameSelfSwitches.setValue([MAP_ID_GYM, 9, "D"], false);
+		$gameSelfSwitches.setValue([MAP_ID_GYM, 8, "D"], false);	
 		$gameSelfSwitches.setValue([MAP_ID_GYM, 10, "D"], false);
-		$gameSelfSwitches.setValue([MAP_ID_GYM, 11, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_GYM, 12, "D"], false);
-		$gameSelfSwitches.setValue([MAP_ID_GYM, 13, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_GYM, 14, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_GYM, 21, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_GYM, 22, "D"], false);
-		$gameSelfSwitches.setValue([MAP_ID_GYM, 23, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_NORTH_WEST, 10, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_NORTH_WEST, 30, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_NORTH_WEST, 31, "D"], false);
@@ -3139,54 +3149,63 @@ Game_Party.prototype.respawnAnarchyEnemies = function(forceRespawn) {
 		$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_NORTH_WEST, 33, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_NORTH_WEST, 34, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_NORTH_WEST, 35, "D"], false);
-		$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_NORTH_WEST, 36, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_NORTH_WEST, 27, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_NORTH_WEST, 28, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_NORTH_WEST, 29, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_NORTH_EAST, 24, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_NORTH_EAST, 26, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_NORTH_EAST, 27, "D"], false);
-		$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_NORTH_EAST, 28, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_NORTH_EAST, 20, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_NORTH_EAST, 21, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_NORTH_EAST, 22, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_NORTH_EAST, 4, "D"], false);
+		if(mapId !== MAP_ID_LVL3_GUARD_STATION) {
+			$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_SOUTH, 39, "D"], false);
+			$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_SOUTH, 38, "D"], false);
+			$gameSelfSwitches.setValue([MAP_ID_SHOWER_BLOCK_NORTH, 7, "D"], false);
+			$gameSelfSwitches.setValue([MAP_ID_GYM, 9, "D"], false);
+			$gameSelfSwitches.setValue([MAP_ID_GYM, 11, "D"], false);
+			$gameSelfSwitches.setValue([MAP_ID_GYM, 13, "D"], false);
+			$gameSelfSwitches.setValue([MAP_ID_GYM, 23, "D"], false);
+			$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_NORTH_WEST, 36, "D"], false);
+			$gameSelfSwitches.setValue([MAP_ID_CELL_BLOCK_NORTH_EAST, 28, "D"], false);
+		}
 	}
 	if(this.prisonLevelFourIsAnarchy() || forceRespawn) {
 		$gameSelfSwitches.setValue([MAP_ID_LVL4_MUSHROOM_FARM, 3, "D"], false);
-		$gameSelfSwitches.setValue([MAP_ID_LVL4_MUSHROOM_FARM, 7, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_LVL4_MUSHROOM_FARM, 8, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_LVL4_MUSHROOM_FARM, 9, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_LVL4_MUSHROOM_FARM, 6, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_LVL4_MUSHROOM_FARM, 10, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_LVL4_CHICKEN_PASTURE, 10, "D"], false);
-		$gameSelfSwitches.setValue([MAP_ID_LVL4_CHICKEN_PASTURE, 12, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_LVL4_CHICKEN_PASTURE, 15, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_LVL4_CHICKEN_PASTURE, 17, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_LVL4_UNDERGROUND_POOL, 6, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_LVL4_UNDERGROUND_POOL, 9, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_LVL4_UNDERGROUND_POOL, 10, "D"], false);
-		$gameSelfSwitches.setValue([MAP_ID_LVL4_UNDERGROUND_POOL, 12, "D"], false);
-		$gameSelfSwitches.setValue([MAP_ID_LVL4_UNDERGROUND_POOL, 13, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_LVL4_UNDERGROUND_POOL, 14, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_LVL4_UNDERGROUND_POOL, 15, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_LVL4_UNDERGROUND_POOL, 16, "D"], false);
-		$gameSelfSwitches.setValue([MAP_ID_LVL4_UNDERGROUND_POOL, 17, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_LVL4_UNDERGROUND_POOL, 18, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_LVL4_BASKETBALL_COURT, 3, "D"], false);
-		$gameSelfSwitches.setValue([MAP_ID_LVL4_BASKETBALL_COURT, 9, "D"], false);
-		$gameSelfSwitches.setValue([MAP_ID_LVL4_BASKETBALL_COURT, 10, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_LVL4_BASKETBALL_COURT, 11, "D"], false);
-		$gameSelfSwitches.setValue([MAP_ID_LVL4_BASKETBALL_COURT, 12, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_LVL4_BASKETBALL_COURT, 13, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_LVL4_BASKETBALL_COURT, 14, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_LVL4_BASKETBALL_COURT, 15, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_LVL4_BASKETBALL_COURT, 16, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_LVL4_YETI_CAVERN, 5, "D"], false);
-		$gameSelfSwitches.setValue([MAP_ID_LVL4_YETI_CAVERN, 6, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_LVL4_YETI_CAVERN, 10, "D"], false);
 		$gameSelfSwitches.setValue([MAP_ID_LVL4_YETI_CAVERN, 11, "D"], false);
 		if(mapId !== MAP_ID_LVL4_GUARD_STATION) {
+			$gameSelfSwitches.setValue([MAP_ID_LVL4_MUSHROOM_FARM, 7, "D"], false);
+			$gameSelfSwitches.setValue([MAP_ID_LVL4_CHICKEN_PASTURE, 12, "D"], false);
+			$gameSelfSwitches.setValue([MAP_ID_LVL4_UNDERGROUND_POOL, 12, "D"], false);
+			$gameSelfSwitches.setValue([MAP_ID_LVL4_UNDERGROUND_POOL, 13, "D"], false);
+			$gameSelfSwitches.setValue([MAP_ID_LVL4_UNDERGROUND_POOL, 17, "D"], false);
+			$gameSelfSwitches.setValue([MAP_ID_LVL4_BASKETBALL_COURT, 12, "D"], false);
+			$gameSelfSwitches.setValue([MAP_ID_LVL4_BASKETBALL_COURT, 10, "D"], false);
+			$gameSelfSwitches.setValue([MAP_ID_LVL4_BASKETBALL_COURT, 9, "D"], false);
+			$gameSelfSwitches.setValue([MAP_ID_LVL4_YETI_CAVERN, 6, "D"], false);
 			$gameSelfSwitches.setValue([MAP_ID_LVL4_AMBUSH, 3, "D"], false);
 			$gameSelfSwitches.setValue([MAP_ID_LVL4_AMBUSH, 4, "D"], false);
 			$gameSelfSwitches.setValue([MAP_ID_LVL4_AMBUSH, 5, "D"], false);

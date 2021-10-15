@@ -798,7 +798,7 @@ Game_BattlerBase.prototype.masochismSensitivity = function() {
 ///////
 
 Game_BattlerBase.prototype.dontDisplayStateLogMessages = function() {
-	return this.isAlive();
+	return !this.isAlive();
 };
 
 //////////
@@ -821,6 +821,11 @@ Game_BattlerBase.prototype.increaseHornyStateTurns = function(value) {
 
 Game_BattlerBase.prototype.addStunTillEndOfTurnState = function() {
 	this.addState(STATE_STUN_TILL_TURN_END_ID);
+};
+
+
+Game_BattlerBase.prototype.startWarmups = function() {
+	return;
 };
 
 

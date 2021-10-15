@@ -134,6 +134,7 @@ BattleManager.startAction = function() {
     if (!this._action.item()) return this.endAction();
 	
 	let itemId = this._action.item().id;
+	//console.log(subject.name() + ' ' + itemId); //for testing all skills being used
 	
 	if(itemId === SKILL_DO_NOTHING_ID) {
 		subject.doNothing();
@@ -193,83 +194,59 @@ Window_BattleLog.prototype.displayAction = function(subject, item, target) {
 		secondVariable = targetName;
 	}
     if(DataManager.isSkill(item)) {
-		let skillId = item.id;
+		let skillId = item.id; 
+		//console.log(skillId); //for testing all skills being used
 		if(skillId === SKILL_MINION_THROW_ATTACK_ID && $gameParty._minionThrow_ammoName)
 			thirdVariable = $gameParty._minionThrow_ammoName;
 		else if(skillId === SKILL_FEMALE_ORGASM_ONE_ID || skillId === SKILL_FEMALE_ORGASM_TWO_ID) 
 			secondVariable = TextManager.karrynOrgasmNameType(subject);
 		
+		let stateMsg0 = false;
+		let stateMsg1 = false;
+		if(item.message1) stateMsg0 = item.message1;
+		if(item.message2) stateMsg1 = item.message2;
+		if(item.hasRemMessageDefault[0]) stateMsg0 = item.remMessageDefault[0];
+		if(item.hasRemMessageDefault[1]) stateMsg1 = item.remMessageDefault[1];
+		
 		if(TextManager.isEnglish) {
-			if(item.hasRemMessageEN[0]) {
-				this.push('addText', item.remMessageEN[0].format(subject.displayName(), secondVariable, thirdVariable));
-			}
-			else if (item.message1) {
-				this.push('addText', subject.displayName() + item.message1.format(item.name));		
-			}
-			if(item.hasRemMessageEN[1]) {
-				this.push('addText', item.remMessageEN[1].format(subject.displayName(), secondVariable, thirdVariable));
-			}
-			else if (item.message2) {
-				this.push('addText', item.message2.format(item.name));		
-			}			
+			if(item.hasRemMessageEN[0]) stateMsg0 = item.remMessageEN[0];
+			if(item.hasRemMessageEN[1]) stateMsg1 = item.remMessageEN[1];
 		}
 		else if(TextManager.isJapanese) {
-			if(item.hasRemMessageJP[0]) {
-				this.push('addText', item.remMessageJP[0].format(subject.displayName(), secondVariable, thirdVariable));
-			}
-			else if (item.message1) {
-				this.push('addText', subject.displayName() + item.message1.format(item.name));		
-			}
-			if(item.hasRemMessageJP[1]) {
-				this.push('addText', item.remMessageJP[1].format(subject.displayName(), secondVariable, thirdVariable));
-			}
-			else if (item.message2) {
-				this.push('addText', item.message2.format(item.name));		
-			}		
+			if(item.hasRemMessageJP[0]) stateMsg0 = item.remMessageJP[0];
+			if(item.hasRemMessageJP[1]) stateMsg1 = item.remMessageJP[1];
 		}
 		else if(TextManager.isSChinese) {
-			if(item.hasRemMessageSCH[0]) {
-				this.push('addText', item.remMessageSCH[0].format(subject.displayName(), secondVariable, thirdVariable));
-			}
-			else if (item.message1) {
-				this.push('addText', subject.displayName() + item.message1.format(item.name));		
-			}
-			if(item.hasRemMessageSCH[1]) {
-				this.push('addText', item.remMessageSCH[1].format(subject.displayName(), secondVariable, thirdVariable));
-			}
-			else if (item.message2) {
-				this.push('addText', item.message2.format(item.name));		
-			}			
+			if(item.hasRemMessageSCH[0]) stateMsg0 = item.remMessageSCH[0];
+			if(item.hasRemMessageSCH[1]) stateMsg1 = item.remMessageSCH[1];		
 		}
 		else if(TextManager.isTChinese) {
-			if(item.hasRemMessageTCH[0]) {
-				this.push('addText', item.remMessageTCH[0].format(subject.displayName(), secondVariable, thirdVariable));
-			}
-			else if (item.message1) {
-				this.push('addText', subject.displayName() + item.message1.format(item.name));		
-			}
-			if(item.hasRemMessageTCH[1]) {
-				this.push('addText', item.remMessageTCH[1].format(subject.displayName(), secondVariable, thirdVariable));
-			}
-			else if (item.message2) {
-				this.push('addText', item.message2.format(item.name));		
-			}			
+			if(item.hasRemMessageTCH[0]) stateMsg0 = item.remMessageTCH[0];
+			if(item.hasRemMessageTCH[1]) stateMsg1 = item.remMessageTCH[1];
 		}
 		else if(TextManager.isKorean) {
-			if(item.hasRemMessageKR[0]) {
-				this.push('addText', item.remMessageKR[0].format(subject.displayName(), secondVariable, thirdVariable));
-			}
-			else if (item.message1) {
-				this.push('addText', subject.displayName() + item.message1.format(item.name));		
-			}
-			if(item.hasRemMessageKR[1]) {
-				this.push('addText', item.remMessageKR[1].format(subject.displayName(), secondVariable, thirdVariable));
-			}
-			else if (item.message2) {
-				this.push('addText', item.message2.format(item.name));		
-			}			
+			if(item.hasRemMessageKR[0]) stateMsg0 = item.remMessageKR[0];
+			if(item.hasRemMessageKR[1]) stateMsg1 = item.remMessageKR[1];	
 		}
-    } else {
+		else if(TextManager.isRussian) {
+			if(item.hasRemMessageRU[0]) stateMsg0 = item.remMessageRU[0];
+			if(item.hasRemMessageRU[1]) stateMsg1 = item.remMessageRU[1];	
+		}
+		
+		
+		
+		if(stateMsg0) {
+			stateMsg0 = this.convertEscapeCharacters(stateMsg0);
+			stateMsg0 = this.convertExtraEscapeCharacters(stateMsg0);
+			this.push('addText', stateMsg0.format(subject.displayName(), secondVariable, thirdVariable));
+		}
+		if(stateMsg1) {
+			stateMsg1 = this.convertEscapeCharacters(stateMsg1);
+			stateMsg1 = this.convertExtraEscapeCharacters(stateMsg1);
+			this.push('addText', stateMsg1.format(subject.displayName(), secondVariable, thirdVariable));
+		}
+    } 
+	else {
         this.push('addText', TextManager.useItem.format(subject.displayName(), item.name));
     }
     if (this._methods.length === numMethods) {

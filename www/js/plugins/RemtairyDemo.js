@@ -1,6 +1,9 @@
-﻿//=============================================================================
+var Remtairy = Remtairy || {};
+Remtairy.Demo = Remtairy.Demo || {};
+
+//=============================================================================
  /*:
- * @plugindesc Debug Test
+ * @plugindesc Demo
  * @author Remtairy
  *
  * @help
@@ -11,7 +14,5 @@
  */
 //=============================================================================
 
-const DEBUG_MODE = true;
+const KARRYN_PRISON_GAME_IS_DEMO = false;
 
-const KARRYN_PRISON_LANGUAGE = RemLanguageEN;
-//const KARRYN_PRISON_LANGUAGE = RemLanguageJP;

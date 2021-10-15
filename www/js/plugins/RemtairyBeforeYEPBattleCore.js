@@ -209,6 +209,8 @@ Game_Action.prototype.apply = function(target) {
 	}
 	
 	if(this.isEnemyAttackSkill()) result.skillTypeEnemyAttack = true;
+
+	BattleManager.battleVoiceManager(target, this.item(), result);
 };
 
 Game_Action.prototype.executeDamage = function(target, value) {
@@ -355,10 +357,11 @@ Window_BattleLog.prototype.displayMiss = function(target) {
 //Evasion
 Window_BattleLog.prototype.displayEvasion = function(target) {
     let fmt;
-    if (target.result().physical) {
+    if(target.result().physical) {
 		fmt = TextManager.evasion;
         //this.push('performEvasion', target);
-    } else {
+    } 
+	else {
         fmt = TextManager.magicEvasion;
         this.push('performMagicEvasion', target);
     }
@@ -366,8 +369,8 @@ Window_BattleLog.prototype.displayEvasion = function(target) {
 };
 
 Window_BattleLog.prototype.displayCritical = function(target) {
-    if (target.result().critical) {
-        if (target.isActor()) {
+    if(target.result().critical) {
+        if(target.isActor()) {
 			this.push('addText', TextManager.criticalToActor);
         } else {
 			this.push('addText', TextManager.criticalToEnemy);

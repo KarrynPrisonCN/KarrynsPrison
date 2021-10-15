@@ -342,7 +342,10 @@ const EDICT_COLD_SHOWERS = 625;
 const EDICT_UNARMED_ATTACK_TRAINING_III = 626;
 const EDICT_UNARMED_DEFENSE_TRAINING_III = 627;
 
-const EDICT_BUILD_STRIP_CLUB = 628; //temp
+const EDICT_BUILD_STRIP_CLUB = 628;
+const EDICT_SHARE_ALCOHOL_WITH_CLUB = 629;
+const EDICT_BUILD_CLUB_VIP = 630;
+const EDICT_TAX_CLUB_CONDOM_IMPORTS = 631; 
 
 const EDICT_INSURANCE_EXPLANATION_1 = 1868;
 const EDICT_INSURANCE_EXPLANATION_2 = 1869;
@@ -803,7 +806,7 @@ Game_Actor.prototype.edictsFatigueRestOffice = function() {
 	else if(this.hasEdict(EDICT_OFFICE_HEAVY_DUTY_LOCK)) recovery += 3;
 	
 	let fatigueRate = 1 + this.fatigue * bonusRecovery;
-	return Math.round(recovery * fatigueRate);
+	return Math.min(100, Math.round(recovery * fatigueRate));
 };
 
 Game_Actor.prototype.edictsFatigueRestOutside = function(prisonLevel) {
@@ -857,7 +860,7 @@ Game_Actor.prototype.edictsFatigueRestOutside = function(prisonLevel) {
 	
 
 	let fatigueRate = 1 + this.fatigue * bonusRecovery;
-	return Math.round(recovery * fatigueRate);
+	return Math.min(100, Math.round(recovery * fatigueRate));
 };
 
 // Sleep quality
@@ -1141,7 +1144,11 @@ Game_Actor.prototype.edictsLevelThreeRiotChance = function() {
 	if(Karryn.hasEdict(EDICT_NEGOTIATE_WITH_SUBJUGATED_INMATES)) edictsRate += 1;
 	
 	//Strip Club Edicts
-	
+	if(Karryn.hasEdict(EDICT_BUILD_STRIP_CLUB)) {
+		if(Karryn.hasEdict(EDICT_TAX_CLUB_CONDOM_IMPORTS)) 
+			chance += 2 * edictsRate;
+		chance -= 3 * edictsRate;
+	}
 	
 	//Gym Edicts
 	if(Karryn.hasEdict(EDICT_GYM_POLICY_STANDARD)) {
@@ -1166,7 +1173,7 @@ Game_Actor.prototype.edictsLevelThreeRiotChance = function() {
 	if(Karryn.hasEdict(EDICT_COLD_SHOWERS)) chance += 2 * edictsRate;
 	
 	//Lizardman
-	if(Karryn.hasEdict(EDICT_THE_LIZARDMAN_PROBLEM)) chance += 5;
+	if(Karryn.hasEdict(EDICT_THE_LIZARDMAN_PROBLEM)) chance += 6;
 	
 	//Orc
 	if(Karryn.hasEdict(EDICT_REJECT_THE_ORCS)) chance += 3 * edictsRate;
@@ -1582,11 +1589,15 @@ Game_Actor.prototype.variablePrisonIncome = function() {
 		income += Math.round(workshopIncome * workshopIncomeRate);
 	}
 	
+
 	//Reading Room
-	if(Karryn.hasEdict(EDICT_ALLOW_BORROWING_ADULT_BOOKS)) {
-		if(Karryn.hasEdict(EDICT_STOCK_WITH_BODYBUILDING_BOOKS)) 
-			income += 100;
-		
+	if(Karryn.hasEdict(EDICT_REPAIR_READING_ROOM)) {
+		if(Karryn.hasEdict(EDICT_STOCK_WITH_ADULT_BOOKS)) {
+			if(Karryn.hasEdict(EDICT_ALLOW_BORROWING_ADULT_BOOKS)) 
+				income += 100;
+		}
+		if(Karryn.hasEdict(EDICT_READING_ROOM_ENTRANCE_FEE))
+			income += 50;
 	}
 
 	return income;

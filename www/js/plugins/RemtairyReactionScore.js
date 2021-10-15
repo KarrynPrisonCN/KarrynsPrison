@@ -57,6 +57,47 @@ Game_Actor.prototype.getReactionScore = function() {
 			score += this.reactionScore_sadismLevel(3);
 		}
 	}
+	else if($gameParty.isInStripperBattle) {
+		if(this.isInStripperSexPose()) {
+			score += this.reactionScore_jobStripperPassive();
+			score += this.getReactionDuringSexScore(0.7, 0.7);
+			score += this.reactionScore_slutLevel();
+			score += this.reactionScore_masochismLevel(3);
+			score += this.reactionScore_sadismLevel(3);
+		}
+		else if(this.isInStripperBoobsPose()) {
+			score += this.reactionScore_jobStripperPassive();
+			score += this.reactionScore_sightBoobsPassive();
+			score += this.reactionScore_exhibitionPassive() * 0.33;
+			score += this.reactionScore_slutLevel(0.2);
+			score += this.reactionScore_masochismLevel(3);
+			score += this.reactionScore_sadismLevel(3);
+		}
+		else if(this.isInStripperPussyPose()) {
+			score += this.reactionScore_jobStripperPassive();
+			score += this.reactionScore_sightPussyPassive();
+			score += this.reactionScore_exhibitionPassive() * 0.33;
+			score += this.reactionScore_slutLevel(0.2);
+			score += this.reactionScore_masochismLevel(3);
+			score += this.reactionScore_sadismLevel(3);
+		}
+		else if(this.isInStripperButtPose()) {
+			score += this.reactionScore_jobStripperPassive();
+			score += this.reactionScore_sightButtPassive();
+			score += this.reactionScore_exhibitionPassive() * 0.33;
+			score += this.reactionScore_slutLevel(0.2);
+			score += this.reactionScore_masochismLevel(3);
+			score += this.reactionScore_sadismLevel(3);
+		}
+		else if(this.isInStripperMouthPose()) {
+			score += this.reactionScore_jobStripperPassive();
+			score += this.reactionScore_sightMouthPassive();
+			score += this.reactionScore_exhibitionPassive() * 0.33;
+			score += this.reactionScore_slutLevel(0.2);
+			score += this.reactionScore_masochismLevel(3);
+			score += this.reactionScore_sadismLevel(3);
+		}
+	}
 	else if(this.isInDefeatedLevel1Pose()) {
 		score += this.getReactionDuringSexScore(0.8, 1);
 		score += this.reactionScore_slutLevel();
@@ -111,6 +152,16 @@ Game_Actor.prototype.getReactionScore = function() {
 		score += this.reactionScore_slutLevel(0.2);
 		score += this.reactionScore_masochismLevel(7);
 	}
+	else if(this.isInWerewolfBackPose()) {
+		score += this.getReactionDuringSexScore(0.5, 3);
+		score += this.reactionScore_slutLevel(0.2);
+		score += this.reactionScore_masochismLevel(7);
+	}
+	else if(this.isInYetiPaizuriSexPose() || this.isInYetiCarryPose()) {
+		score += this.getReactionDuringSexScore(0.5, 3);
+		score += this.reactionScore_slutLevel(0.2);
+		score += this.reactionScore_masochismLevel(7);
+	}
 	else if(this.isInFootjobSexPose()) {
 		score += this.getReactionDuringSexScore(0.8, 1);
 		score += this.reactionScore_slutLevel();
@@ -122,6 +173,12 @@ Game_Actor.prototype.getReactionScore = function() {
 		score += this.reactionScore_slutLevel();
 		score += this.reactionScore_masochismLevel(9);
 		score += this.reactionScore_sadismLevel(1);
+	}
+	else if(this.isInKarrynCowgirlPose()) {
+		score += this.getReactionDuringSexScore(0.8, 1);
+		score += this.reactionScore_slutLevel();
+		score += this.reactionScore_masochismLevel(3);
+		score += this.reactionScore_sadismLevel(7);
 	}
 	else if(this.isInSexPose()) {
 		score += this.getReactionDuringSexScore(0.8, 1);
@@ -1171,8 +1228,7 @@ Game_Actor.prototype.reactionScore_downStaminaPassive = function() {
 };
 
 // Job Passives
-// Max 30
-
+// Max 40
 Game_Actor.prototype.reactionScore_jobWaitressPassive = function() {
 	let score = 0;
 	if(this.hasPassive(PASSIVE_BAR_WAITRESS_SEX_COUNT_THREE_ID)) score += 30;
@@ -1187,6 +1243,7 @@ Game_Actor.prototype.reactionScore_jobReceptionistPassive = function() {
 	if(this.hasPassive(PASSIVE_RECEPTIONIST_VISITOR_SEX_COUNT_THREE_ID)) score += 30;
 	else if(this.hasPassive(PASSIVE_RECEPTIONIST_VISITOR_SEX_COUNT_TWO_ID)) score += 20;
 	else if(this.hasPassive(PASSIVE_RECEPTIONIST_VISITOR_SEX_COUNT_ONE_ID)) score += 10;
+	score += Math.min(10, $gameParty._receptionistNotoriety);
 	return score;
 };
 
@@ -1238,6 +1295,27 @@ Game_Actor.prototype.reactionScore_gloryHolePassive = function() {
 	if(this.hasPassive(PASSIVE_MASTURBATED_GLORYHOLE_COUNT_THREE_ID)) score += 30;
 	else if(this.hasPassive(PASSIVE_MASTURBATED_GLORYHOLE_COUNT_TWO_ID)) score += 20;
 	else if(this.hasPassive(PASSIVE_MASTURBATED_GLORYHOLE_COUNT_ONE_ID)) score += 10;
+	return score;
+};
+
+//Stripper
+//Max 70
+Game_Actor.prototype.reactionScore_jobStripperPassive = function() {
+	let score = 0;
+	if(this.hasPassive(PASSIVE_STRIPPER_PATRON_SEX_COUNT_THREE_ID)) score += 30;
+	else if(this.hasPassive(PASSIVE_STRIPPER_PATRON_SEX_COUNT_TWO_ID)) score += 20;
+	else if(this.hasPassive(PASSIVE_STRIPPER_PATRON_SEX_COUNT_ONE_ID)) score += 10;
+	if(this.hasPassive(PASSIVE_STRIPPER_PATRON_CONDOM_COUNT_THREE_ID)) score += 30;
+	else if(this.hasPassive(PASSIVE_STRIPPER_PATRON_CONDOM_COUNT_TWO_ID)) score += 20;
+	else if(this.hasPassive(PASSIVE_STRIPPER_PATRON_CONDOM_COUNT_ONE_ID)) score += 10;
+	score += Math.min(10, $gameParty._stripClubReputation);
+	return score;
+};
+
+Game_Actor.prototype.patronCondomReactionScore = function() {
+	let score = 0;
+	score += this.getReactionScore() * 0.4;
+	score += this.reactionScore_jobStripperPassive() * 1.4;
 	return score;
 };
 

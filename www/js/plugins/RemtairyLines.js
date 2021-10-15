@@ -324,6 +324,14 @@ const KARRYN_LINE_GLORY_HOLE_APPEAR_FIRST = 7301;
 const KARRYN_LINE_GLORY_HOLE_APPEAR_MID = 7302;
 
 const KARRYN_LINE_STRIPPER_BATTLE_START = 7400;
+const KARRYN_LINE_STRIPPER_MOUTH_DANCE = 7401;
+const KARRYN_LINE_STRIPPER_BOOBS_DANCE = 7402;
+const KARRYN_LINE_STRIPPER_PUSSY_DANCE = 7403;
+const KARRYN_LINE_STRIPPER_BUTT_DANCE = 7404;
+const KARRYN_LINE_STRIPPER_CONDOM_WEAR = 7405;
+const KARRYN_LINE_STRIPPER_VIP_START = 7406;
+const KARRYN_LINE_STRIPPER_STRIP_CLOTHES = 7407;
+
 
 var $remLines = null;
 var $remLinesCH = null;
@@ -335,9 +343,26 @@ var $remLinesCH = null;
 Remtairy.Lines.DataManager_loadDatabase = DataManager.loadDatabase;
 DataManager.loadDatabase = function() {
 	Remtairy.Lines.DataManager_loadDatabase.call(this);
-	this.loadDataFile('$remLines', 'RemLines.json');
-	this.loadDataFile('$remLinesCH', 'RemLines_CH.json');
-	
+	this.loadRemLocFile('$remLines', 'RemLines.json');
+	this.loadRemLocFile('$remLinesCH', 'RemLines_CH.json');
+};
+
+DataManager.loadRemLocFile = function(name, src) {
+    var xhr = new XMLHttpRequest();
+    var url = 'loc/' + src;
+    xhr.open('GET', url);
+    xhr.overrideMimeType('application/json');
+    xhr.onload = function() {
+        if (xhr.status < 400) {
+            window[name] = JSON.parse(xhr.responseText);
+            DataManager.onLoad(window[name]);
+        }
+    };
+    xhr.onerror = this._mapLoader || function() {
+        DataManager._errorUrl = DataManager._errorUrl || url;
+    };
+    window[name] = null;
+    xhr.send();
 };
 
 ////////////////
@@ -1152,6 +1177,32 @@ Rem_Lines.prototype.getLineArray = function() {
 	else if(this._lineType === KARRYN_LINE_GLORY_HOLE_APPEAR_MID) {
 		lineArray = this.karrynline_glory_holeAppearMid(lineArray);
 	}
+	
+	else if(this._lineType === KARRYN_LINE_STRIPPER_BATTLE_START) {
+		lineArray = this.karrynline_strip_battleStart(lineArray);
+	}
+	else if(this._lineType === KARRYN_LINE_STRIPPER_MOUTH_DANCE) {
+		lineArray = this.karrynline_strip_mouthDance(lineArray);
+	}
+	else if(this._lineType === KARRYN_LINE_STRIPPER_BOOBS_DANCE) {
+		lineArray = this.karrynline_strip_boobsDance(lineArray);
+	}
+	else if(this._lineType === KARRYN_LINE_STRIPPER_PUSSY_DANCE) {
+		lineArray = this.karrynline_strip_pussyDance(lineArray);
+	}
+	else if(this._lineType === KARRYN_LINE_STRIPPER_BUTT_DANCE) {
+		lineArray = this.karrynline_strip_buttDance(lineArray);
+	}
+	else if(this._lineType === KARRYN_LINE_STRIPPER_CONDOM_WEAR) {
+		lineArray = this.karrynline_strip_condomWear(lineArray);
+	}
+	else if(this._lineType === KARRYN_LINE_STRIPPER_VIP_START) {
+		lineArray = this.karrynline_strip_vipStart(lineArray);
+	}
+	else if(this._lineType === KARRYN_LINE_STRIPPER_STRIP_CLOTHES) {
+		lineArray = this.karrynline_strip_stripClothes(lineArray);
+	}
+	
 	
 	else if(this._lineType === KARRYN_LINE_RECEPTIONIST_START) {
 		lineArray = this.karrynline_receptionist_battleStart(lineArray);
@@ -2030,7 +2081,7 @@ Rem_Lines.prototype.karrynline_Sight_Random = function(lineArray) {
 		lineArray.push(['karryn_sight_exp1_4', false, false]);
 	}
 	else {
-		lineArray.push(['karryn_sight_exp0_1', false, false]);
+		lineArray.push(['karryn_sight_exp0_1', false, true]);
 		lineArray.push(['karryn_sight_exp0_2', false, false]);
 		lineArray.push(['karryn_sight_exp0_3', false, false]);
 		lineArray.push(['karryn_sight_exp0_4', false, false]);
@@ -2187,7 +2238,8 @@ Rem_Lines.prototype.karrynline_Sight_Boobs = function(lineArray) {
 			lineArray.push(['karryn_sight_boobs_exp2_1', false, false]);
 			lineArray.push(['karryn_sight_boobs_exp2_2', false, false]);
 			lineArray.push(['karryn_sight_boobs_exp2_3', false, false]);
-			lineArray.push(['karryn_sight_boobs_exp2_4', false, false]);
+			if(actor.sadismLvl() > actor.masochismLvl())
+				lineArray.push(['karryn_sight_boobs_exp2_4', false, false]);
 			lineArray.push(['karryn_sight_boobs_exp2_5', false, false]);
 		}
 		else if(reactionScore >= VAR_DEF_RS_LV1_REQ && hasFirstBoobsPassive) {
@@ -3685,7 +3737,8 @@ Rem_Lines.prototype.karrynline_enemyPetting_Nipples = function(lineArray) {
 		lineArray.push(['enemy_petting_nipples_exp2_2', false, false]);
 		lineArray.push(['enemy_petting_nipples_exp2_3', false, false]);
 		lineArray.push(['enemy_petting_nipples_exp2_4', false, false]);
-		lineArray.push(['enemy_petting_nipples_exp2_5', false, false]);
+		if(actor.masochismLvl() > actor.sadismLvl())
+			lineArray.push(['enemy_petting_nipples_exp2_5', false, false]);
 	}
 	else {
 		lineArray.push(['enemy_petting_nipples_exp1_1', false, false]);
@@ -5234,7 +5287,7 @@ Rem_Lines.prototype.karrynline_karrynGenericOrgasm = function(lineArray) {
 	let isFirstOrgasm = actor._recordOrgasmCount <= 1;
 	
 	if(isFirstOrgasm) {
-		lineArray.push(['karryn_orgasm_exp0_1', false, false]);
+		lineArray.push(['karryn_orgasm_exp0_1', false, true]);
 	}
 	else if(orgasmReactionScore >= VAR_DEF_RS_LV3_REQ) {
 		lineArray.push(['karryn_orgasm_exp3_1', false, false]);
@@ -5251,7 +5304,8 @@ Rem_Lines.prototype.karrynline_karrynGenericOrgasm = function(lineArray) {
 		lineArray.push(['karryn_orgasm_exp2_1', false, false]);
 		lineArray.push(['karryn_orgasm_exp2_2', false, false]);
 		lineArray.push(['karryn_orgasm_exp2_3', false, false]);
-		lineArray.push(['karryn_orgasm_exp2_4', false, false]);
+		if(!Karryn.isInMasturbationCouchPose())
+			lineArray.push(['karryn_orgasm_exp2_4', false, false]);
 		lineArray.push(['karryn_orgasm_exp2_5', false, false]);
 		lineArray.push(['karryn_orgasm_exp2_6', false, false]);
 		lineArray.push(['karryn_orgasm_exp2_7', false, false]);
@@ -5275,6 +5329,8 @@ Rem_Lines.prototype.karrynline_karrynSpecificOrgasm = function(lineArray) {
 	let orgasmReactionScore = actor.getOrgasmReactionScore();
 	let orgasmTypeId = actor._gotOrgasmFromSkillType;
 	let isFirstOrgasm = false;
+	
+	if(actor._recordOrgasmCount <= 1) return lineArray;
 	
 	if(orgasmTypeId === JUST_SKILLTYPE_ENEMY_SIGHT || orgasmTypeId === JUST_SKILLTYPE_PASSIVE_SIGHT) {
 		isFirstOrgasm = actor._recordOrgasmFromSightCount <= 1;
@@ -7827,7 +7883,8 @@ Rem_Lines.prototype.karrynline_karrynPoseStart_StandingHandjob = function(lineAr
 		lineArray.push(['karryn_posestart_handjob_exp2_2', false, false]);
 		lineArray.push(['karryn_posestart_handjob_exp2_3', false, false]);
 		lineArray.push(['karryn_posestart_handjob_exp2_4', false, false]);
-		lineArray.push(['karryn_posestart_handjob_exp2_5', false, false]);
+		if(actor.sadismLvl() > actor.masochismLvl())
+			lineArray.push(['karryn_posestart_handjob_exp2_5', false, false]);
 	}
 	else {
 		lineArray.push(['karryn_posestart_handjob_exp1_1', false, false]);
@@ -9077,6 +9134,246 @@ Rem_Lines.prototype.karrynline_glory_holeAppearMid = function(lineArray) {
 	return lineArray;
 };
 
+Rem_Lines.prototype.karrynline_strip_battleStart = function(lineArray) {
+	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
+	let reactionScore = actor.getReactionScore();
+	
+	if($gameSwitches.value(SWITCH_AFTER_FIRST_STRIP_ID)) {
+		if(reactionScore >= VAR_DEF_RS_LV3_REQ) {
+			lineArray.push(['karryn_stripper_start_exp3_1', false, false]);
+			lineArray.push(['karryn_stripper_start_exp3_2', false, false]);
+			lineArray.push(['karryn_stripper_start_exp3_3', false, false]);
+			lineArray.push(['karryn_stripper_start_exp3_4', false, false]);
+		}
+		else if(reactionScore >= VAR_DEF_RS_LV2_REQ) {
+			lineArray.push(['karryn_stripper_start_exp2_1', false, false]);
+			lineArray.push(['karryn_stripper_start_exp2_2', false, false]);
+			lineArray.push(['karryn_stripper_start_exp2_3', false, false]);
+		}
+		else {
+			lineArray.push(['karryn_stripper_start_exp1_1', false, false]);
+			lineArray.push(['karryn_stripper_start_exp1_2', false, false]);
+			lineArray.push(['karryn_stripper_start_exp1_3', false, false]);
+		}
+	}
+	else {
+		lineArray.push(['karryn_stripper_start_exp0_1', false, false]);
+	}
+	
+	
+	return lineArray;
+};
+Rem_Lines.prototype.karrynline_strip_mouthDance = function(lineArray) {
+	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
+	let reactionScore = actor.getReactionScore();
+	let rightArmIsFera = actor.tachieRightArm.includes('fera');
+	
+	if(reactionScore >= VAR_DEF_RS_LV3_REQ) {
+		if(rightArmIsFera) {
+			lineArray.push(['karryn_stripper_mouth_dance_exp3_4', false, false]);
+			lineArray.push(['karryn_stripper_mouth_dance_exp3_5', false, false]);
+			lineArray.push(['karryn_stripper_mouth_dance_exp3_6', false, false]);
+			lineArray.push(['karryn_stripper_mouth_dance_exp3_7', false, false]);
+		}
+		else {
+			lineArray.push(['karryn_stripper_mouth_dance_exp3_1', false, false]);
+			lineArray.push(['karryn_stripper_mouth_dance_exp3_2', false, false]);
+			lineArray.push(['karryn_stripper_mouth_dance_exp3_3', false, false]);
+		}
+	}
+	else if(reactionScore >= VAR_DEF_RS_LV2_REQ) {
+		lineArray.push(['karryn_stripper_mouth_dance_exp2_1', false, false]);
+		lineArray.push(['karryn_stripper_mouth_dance_exp2_2', false, false]);
+		lineArray.push(['karryn_stripper_mouth_dance_exp2_3', false, false]);
+	}
+	else {
+		lineArray.push(['karryn_stripper_mouth_dance_exp1_1', false, false]);
+		lineArray.push(['karryn_stripper_mouth_dance_exp1_2', false, false]);
+		lineArray.push(['karryn_stripper_mouth_dance_exp1_3', false, false]);
+	}
+	
+	return lineArray;
+};
+Rem_Lines.prototype.karrynline_strip_boobsDance = function(lineArray) {
+	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
+	let reactionScore = actor.getReactionScore();
+	
+	if(reactionScore >= VAR_DEF_RS_LV3_REQ) {
+		lineArray.push(['karryn_stripper_boobs_dance_exp3_1', false, false]);
+		lineArray.push(['karryn_stripper_boobs_dance_exp3_2', false, false]);
+		lineArray.push(['karryn_stripper_boobs_dance_exp3_3', false, false]);
+		lineArray.push(['karryn_stripper_boobs_dance_exp3_4', false, false]);
+		lineArray.push(['karryn_stripper_boobs_dance_exp3_5', false, false]);
+	}
+	else if(reactionScore >= VAR_DEF_RS_LV2_REQ) {
+		lineArray.push(['karryn_stripper_boobs_dance_exp2_1', false, false]);
+		lineArray.push(['karryn_stripper_boobs_dance_exp2_2', false, false]);
+		lineArray.push(['karryn_stripper_boobs_dance_exp2_3', false, false]);
+		lineArray.push(['karryn_stripper_boobs_dance_exp2_4', false, false]);
+	}
+	else {
+		lineArray.push(['karryn_stripper_boobs_dance_exp1_1', false, false]);
+		lineArray.push(['karryn_stripper_boobs_dance_exp1_2', false, false]);
+		lineArray.push(['karryn_stripper_boobs_dance_exp1_3', false, false]);
+	}
+	
+	return lineArray;
+};
+Rem_Lines.prototype.karrynline_strip_pussyDance = function(lineArray) {
+	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
+	let reactionScore = actor.getReactionScore();
+	let rightArmIsKupa = actor.tachieRightArm.includes('kupa');
+	
+	if(reactionScore >= VAR_DEF_RS_LV3_REQ) {
+		if(rightArmIsKupa) {
+			lineArray.push(['karryn_stripper_pussy_dance_exp3_5', false, false]);
+			lineArray.push(['karryn_stripper_pussy_dance_exp3_6', false, false]);
+			lineArray.push(['karryn_stripper_pussy_dance_exp3_7', false, false]);
+		}
+		else {
+			lineArray.push(['karryn_stripper_pussy_dance_exp3_1', false, false]);
+			lineArray.push(['karryn_stripper_pussy_dance_exp3_2', false, false]);
+			lineArray.push(['karryn_stripper_pussy_dance_exp3_3', false, false]);
+			lineArray.push(['karryn_stripper_pussy_dance_exp3_4', false, false]);
+		}
+	}
+	else if(reactionScore >= VAR_DEF_RS_LV2_REQ) {
+		lineArray.push(['karryn_stripper_pussy_dance_exp2_1', false, false]);
+		lineArray.push(['karryn_stripper_pussy_dance_exp2_2', false, false]);
+		lineArray.push(['karryn_stripper_pussy_dance_exp2_3', false, false]);
+		lineArray.push(['karryn_stripper_pussy_dance_exp2_4', false, false]);
+		lineArray.push(['karryn_stripper_pussy_dance_exp2_5', false, false]);
+	}
+	else {
+		lineArray.push(['karryn_stripper_pussy_dance_exp1_1', false, false]);
+		lineArray.push(['karryn_stripper_pussy_dance_exp1_2', false, false]);
+		lineArray.push(['karryn_stripper_pussy_dance_exp1_3', false, false]);
+	}
+	
+	return lineArray;
+};
+Rem_Lines.prototype.karrynline_strip_buttDance = function(lineArray) {
+	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
+	let reactionScore = actor.getReactionScore();
+	let rightArmIsKupa = actor.tachieRightArm.includes('kupa');
+	
+	if(reactionScore >= VAR_DEF_RS_LV3_REQ) {
+		if(rightArmIsKupa) {
+			lineArray.push(['karryn_stripper_butt_dance_exp3_5', false, false]);
+			lineArray.push(['karryn_stripper_butt_dance_exp3_6', false, false]);
+			lineArray.push(['karryn_stripper_butt_dance_exp3_7', false, false]);
+		}
+		else {
+			lineArray.push(['karryn_stripper_butt_dance_exp3_1', false, false]);
+			lineArray.push(['karryn_stripper_butt_dance_exp3_2', false, false]);
+			lineArray.push(['karryn_stripper_butt_dance_exp3_3', false, false]);
+			lineArray.push(['karryn_stripper_butt_dance_exp3_4', false, false]);
+		}
+	}
+	else if(reactionScore >= VAR_DEF_RS_LV2_REQ) {
+		lineArray.push(['karryn_stripper_butt_dance_exp2_1', false, false]);
+		lineArray.push(['karryn_stripper_butt_dance_exp2_2', false, false]);
+		lineArray.push(['karryn_stripper_butt_dance_exp2_3', false, false]);
+		lineArray.push(['karryn_stripper_butt_dance_exp2_4', false, false]);
+		lineArray.push(['karryn_stripper_butt_dance_exp2_5', false, false]);
+	}
+	else {
+		lineArray.push(['karryn_stripper_butt_dance_exp1_1', false, false]);
+		lineArray.push(['karryn_stripper_butt_dance_exp1_2', false, false]);
+		lineArray.push(['karryn_stripper_butt_dance_exp1_3', false, false]);
+	}
+	
+	return lineArray;
+};
+Rem_Lines.prototype.karrynline_strip_condomWear = function(lineArray) {
+	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
+	let reactionScore = actor.getReactionScore();
+	
+	if(actor._recordStripClubCondomWornCount === 1) {
+		lineArray.push(['karryn_stripper_patron_tip_condom_exp0_1', false, false]);
+	}
+	else {
+		if(reactionScore >= VAR_DEF_RS_LV3_REQ) {
+			lineArray.push(['karryn_stripper_patron_tip_condom_exp3_1', false, false]);
+			lineArray.push(['karryn_stripper_patron_tip_condom_exp3_2', false, false]);
+			lineArray.push(['karryn_stripper_patron_tip_condom_exp3_3', false, false]);
+			lineArray.push(['karryn_stripper_patron_tip_condom_exp3_4', false, false]);
+			lineArray.push(['karryn_stripper_patron_tip_condom_exp3_5', false, false]);
+		}
+		else if(reactionScore >= VAR_DEF_RS_LV2_REQ) {
+			lineArray.push(['karryn_stripper_patron_tip_condom_exp2_1', false, false]);
+			lineArray.push(['karryn_stripper_patron_tip_condom_exp2_2', false, false]);
+			lineArray.push(['karryn_stripper_patron_tip_condom_exp2_3', false, false]);
+			lineArray.push(['karryn_stripper_patron_tip_condom_exp2_4', false, false]);
+			lineArray.push(['karryn_stripper_patron_tip_condom_exp2_5', false, false]);
+		}
+		else {
+			lineArray.push(['karryn_stripper_patron_tip_condom_exp1_1', false, false]);
+			lineArray.push(['karryn_stripper_patron_tip_condom_exp1_2', false, false]);
+			lineArray.push(['karryn_stripper_patron_tip_condom_exp1_3', false, false]);
+		}
+	}
+	
+
+	return lineArray;
+};
+
+Rem_Lines.prototype.karrynline_strip_stripClothes = function(lineArray) {
+	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
+	let reactionScore = actor.getReactionScore();
+	
+	if(reactionScore >= VAR_DEF_RS_LV3_REQ) {
+		lineArray.push(['karryn_stripper_strip_clothes_exp3_1', false, false]);
+		lineArray.push(['karryn_stripper_strip_clothes_exp3_2', false, false]);
+		lineArray.push(['karryn_stripper_strip_clothes_exp3_3', false, false]);
+		lineArray.push(['karryn_stripper_strip_clothes_exp3_4', false, false]);
+	}
+	else if(reactionScore >= VAR_DEF_RS_LV2_REQ) {
+		lineArray.push(['karryn_stripper_strip_clothes_exp2_1', false, false]);
+		lineArray.push(['karryn_stripper_strip_clothes_exp2_2', false, false]);
+		lineArray.push(['karryn_stripper_strip_clothes_exp2_3', false, false]);
+	}
+	else {
+		lineArray.push(['karryn_stripper_strip_clothes_exp1_1', false, false]);
+		lineArray.push(['karryn_stripper_strip_clothes_exp1_2', false, false]);
+		lineArray.push(['karryn_stripper_strip_clothes_exp1_3', false, false]);
+	}
+	
+	return lineArray;
+};
+
+
+Rem_Lines.prototype.karrynline_strip_vipStart = function(lineArray) {
+	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
+	let reactionScore = actor.getReactionScore();
+	
+	if(actor._recordStripClubStripperSexCount > 0) {
+		if(reactionScore >= VAR_DEF_RS_LV3_REQ) {
+			lineArray.push(['karryn_stripper_vip_start_exp3_1', false, false]);
+			lineArray.push(['karryn_stripper_vip_start_exp3_2', false, false]);
+			if(!actor.isVirgin())
+				lineArray.push(['karryn_stripper_vip_start_exp3_3', false, false]);
+			if(actor.hasPassive(PASSIVE_SWALLOW_ML_TWO_ID))
+				lineArray.push(['karryn_stripper_vip_start_exp3_4', false, false]);
+		}
+		else if(reactionScore >= VAR_DEF_RS_LV2_REQ) {
+			lineArray.push(['karryn_stripper_vip_start_exp2_1', false, false]);
+			lineArray.push(['karryn_stripper_vip_start_exp2_2', false, false]);
+			lineArray.push(['karryn_stripper_vip_start_exp2_3', false, false]);
+		}
+		else {
+			lineArray.push(['karryn_stripper_vip_start_exp1_1', false, false]);
+			lineArray.push(['karryn_stripper_vip_start_exp1_2', false, false]);
+			lineArray.push(['karryn_stripper_vip_start_exp1_3', false, false]);
+		}
+	}
+	else {
+		lineArray.push(['karryn_stripper_vip_start_exp0_1', false, false]);
+	}
+	
+	return lineArray;
+};
+
 Rem_Lines.prototype.karrynline_receptionist_battleStart = function(lineArray) {
 	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
 	let reactionScore = actor.getReactionScore();
@@ -10191,19 +10488,25 @@ Remtairy.Lines.BattleManager_processActionSequence =
     BattleManager.processActionSequence;
 BattleManager.processActionSequence = function(actionName, actionArgs) {
 	// Rem Lines: #
-	if (['REM LINE'].contains(actionName)) {
+	if(['REM LINE'].contains(actionName)) {
 		return this.actionRemLines(actionArgs[0]);
     }
 	return Remtairy.Lines.BattleManager_processActionSequence.call(this, actionName, actionArgs);
 };
 
 BattleManager.actionRemLines = function(lineType) {
+	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
 	let lineArray = this.getRemLineArray(lineType);
 	if(!lineArray) return false;
 	let lineId = lineArray[LINEARRAY_LINE_ID];
 	let lineIsMale = lineArray[LINEARRAY_IS_MALE];
 	let lineIsVoiced = lineArray[LINEARRAY_IS_VOICED];
 	let linesText = '';
+	let callEmoteManagerAfterRemLine = false;
+	if(actor.isInStripperMouthPose() && actor.isStateAffected(STATE_STRIPPER_MOUTH_POSE_SETUP_ID)) {
+		callEmoteManagerAfterRemLine = true;
+	}
+	
 	if(TextManager.isEnglish) linesText = $remLines[lineId].en; 
 	else if(TextManager.isJapanese) linesText = $remLines[lineId].jp;
 	else {
@@ -10211,7 +10514,7 @@ BattleManager.actionRemLines = function(lineType) {
 		else if(TextManager.isSChinese) linesText = $remLinesCH[lineId].sch; 
 	}
 	
-	if(!lineIsMale) {
+	if(!lineIsMale && !callEmoteManagerAfterRemLine) {
 		Karryn.emoteMasterManager();
 	}
 	
@@ -10220,16 +10523,21 @@ BattleManager.actionRemLines = function(lineType) {
 	BattleManager._lastRemLineId = lineId;
 	BattleManager._lastRemLineIsVoiced = lineIsVoiced;
 	
+	if(lineIsVoiced || !lineIsMale) {
+		BattleManager.playKarrynVoice_RemLine(lineId);
+	}
+	
 	for(let i = 0; i < linesText.length; i++) {
-		
-
-		//AudioManager.playVoice({name:'test', pan:0, pitch:100, pos:0, volume: 80});
-		
 		this._logWindow.displayRemLine(linesText[i]);
 	}
 	if(!lineIsMale && ConfigManager.karrynLinesPrompt && !$gameTroop.isAllDead()) {
 		$gameMessage.forceButtonInput();
 	}
+	
+	if(!lineIsMale && callEmoteManagerAfterRemLine) {
+		Karryn.emoteMasterManager();
+	}
+	
     return false;
 };
 

@@ -1998,6 +1998,15 @@ Game_Troop.prototype.calculateGloryGuestsSpawnLimit = function() {
 		spawnLimit += 1;
 	}
 	
+	//Jobs
+	if($gameSwitches.value(SWITCH_TODAY_WAITRESS_BATTLE_ID)) {
+		spawnLimit += 1;
+	}
+	if($gameSwitches.value(SWITCH_TODAY_STRIPPER_BATTLE_ID)) {
+		spawnLimit += 1;
+	}
+	
+	//Reputation
 	if($gameParty._gloryReputation >= 10) {
 		spawnLimit += 5 + Math.round(($gameParty._gloryReputation - 10) * 0.2);
 	}

@@ -21,16 +21,16 @@ const BM_PLVL4_NORMAL_BGM_VOLUME = 90;
 //Prison level boss battle bgm
 //Yasu Tutorial Battle
 const BM_TUTORIAL_BGM_NAME = "Battle3";
-const BM_TUTORIAL_BGM_VOLUME = 85;
+const BM_TUTORIAL_BGM_VOLUME = 80;
 //Tonkin Battle 
 const BM_PLVL1_BOSS_BGM_NAME = "Battle3";
-const BM_PLVL1_BOSS_BGM_VOLUME = 85;
+const BM_PLVL1_BOSS_BGM_VOLUME = 80;
 //Dr. Cargill Battle 
 const BM_PLVL2_BOSS_BGM_NAME = "Battle3"; 
-const BM_PLVL2_BOSS_BGM_VOLUME = 85;
+const BM_PLVL2_BOSS_BGM_VOLUME = 80;
 //Aron Battle -> アロン登場後
 const BM_PLVL3_BOSS_START_BGM_NAME = "Battle3"; 
-const BM_PLVL3_BOSS_START_BGM_VOLUME = 85;
+const BM_PLVL3_BOSS_START_BGM_VOLUME = 80;
 const BM_PLVL3_BOSS_ARON_BGM_NAME = "Battle4"; 
 const BM_PLVL3_BOSS_ARON_BGM_VOLUME = 80;
 //Noinim Battle 
@@ -89,10 +89,10 @@ const BM_GLORY_SEX_BGM_PITCH = 100;
 const BM_GLORY_SEX_BGM_VOLUME = 95;
 
 //stripper show
-const BM_STRIPPER_SHOW_BGM_NAME = "Job1";
+const BM_STRIPPER_SHOW_BGM_NAME = "Job2";
 const BM_STRIPPER_SHOW_BGM_PAN = 0;
 const BM_STRIPPER_SHOW_BGM_PITCH = 100;
-const BM_STRIPPER_SHOW_BGM_VOLUME = 95;
+const BM_STRIPPER_SHOW_BGM_VOLUME = 80;
 
 //stripper sex
 const BM_STRIPPER_SEX_BGM_NAME = "H_Job1";
@@ -1097,25 +1097,28 @@ BattleManager.displayStartMessages = function() {
 ///////////
 
 Game_Action.prototype.isActorAttackSkill = function() {
-    if (this.isSkill()) {
+    if(this.isSkill()) {
         return this.item().hasTag(TAG_ACTOR_ATTACK_SKILL);
-    } else {
+    } 
+	else {
         return false;
     }
 };
 
 Game_Action.prototype.isActorSexSkill = function() {
-    if (this.isSkill()) {
+    if(this.isSkill()) {
         return this.item().hasTag(TAG_ACTOR_SEX_SKILL);
-    } else {
+    } 
+	else {
         return false;
     }
 };
 
 Game_Action.prototype.isActorKickSkill = function() {
-    if (this.isSkill()) {
+    if(this.isSkill()) {
         return this.item().hasTag(TAG_KICK_SKILL);
-    } else {
+    } 
+	else {
         return false;
     }
 };
@@ -1128,35 +1131,46 @@ Game_Action.prototype.isActorCombatStanceSkill = function() {
 		//console.log(skillId);
 		
 		return skillId === SKILL_CAUTIOUS_STANCE_ID || skillId === SKILL_DEFENSIVE_STANCE_ID || skillId === SKILL_COUNTER_STANCE_ID || (skillId >= SKILL_CAUTIOUS_REVITALIZE_ID && skillId <= SKILL_COUNTER_FIX_CLOTHES_ID);
-
-
-
-    } else {
+    } 
+	else {
         return false;
     }
 };
 
 Game_Action.prototype.isActorSexStanceSkill = function() {
-    if (this.isSkill()) {
+    if(this.isSkill()) {
         let skillId = this._item._itemId;
 		return skillId === SKILL_ENDURE_PLEASURE_ID || skillId === SKILL_WAIT_OUT_PLEASURE_ID || skillId === SKILL_OPEN_PLEASURE_ID;
 		
-    } else {
+    } 
+	else {
         return false;
     }
 };
 
 Game_Action.prototype.isActorWillpowerSkill = function() {
-    if (this.isSkill()) {
+    if(this.isSkill()) {
         let skillId = this._item._itemId;
 		return (skillId >= WILLPOWER_SKILL_START && skillId <= WILLPOWER_SKILL_END);
-    } else {
+    } 
+	else {
         return false;
     }
 };
 
+Game_Action.prototype.isActorDontMasturbateInBattleSkill = function() {
+    if(this.isSkill()) {
+        let skillId = this._item._itemId;
+		return skillId === SKILL_KARRYN_DONT_MASTURBATE_ID;
+    } 
+	else {
+        return false;
+    }
+};
+
+
 Game_Action.prototype.isEnemyAttackSkill = function() {
-    if (this.isSkill()) {
+    if(this.isSkill()) {
         return this.item().hasTag(TAG_ENEMY_ATTACK_SKILL);
     } else {
         return false;
@@ -1390,7 +1404,7 @@ BattleManager.checkBattleEndJobs = function() {
 		}
 	}
 	else if(Karryn.isInWaitressSexPose()) {
-		if ($gameParty.isAllDead()) {
+		if($gameParty.isAllDead()) {
             this.processDefeat();
             return true;
         } 
@@ -1424,19 +1438,30 @@ BattleManager.checkBattleEndJobs = function() {
 		}
 	}
 	else if($gameParty.isInStripperBattle) {
-		if($gameParty.stripperBattle_getCurrentTimeInSeconds() >= $gameParty._stripperBattle_timeLimit) {
-			this.processVictory();
-            return true;
-		}
-		else if($gameTroop.isAllDead()) {
-			if(Karryn.hasNoStamina() && Karryn.hasNoEnergy()) {
+		if(Karryn.isInStripperSexPose()) {
+			if($gameTroop.isAllDead()) {
+				if(Karryn.hasNoStamina() && Karryn.hasNoEnergy()) {
+					this.processDefeat();
+					return true;
+				}
+				this.processVictory();
+				return true;
+			}
+			else if($gameParty.isAllDead()) {
 				this.processDefeat();
 				return true;
 			}
-			this.processVictory();
+		}
+		
+		else if($gameTroop._stripClub_timesUp) {
+			BattleManager.processVictory();
 			return true;
 		}
-		else if($gameParty.isAllDead()) {
+		else if($gameTroop.stripperBattle_noMorePatrons()) {
+			this.processVictory();
+            return true;
+		}
+		else if($gameParty.isAllDead() || actor.hasNoStamina()) {
             this.processDefeat();
             return true;
 		}

@@ -194,6 +194,10 @@ Game_Party.prototype.setBarReputation = function(value) {
 	let minBarRep = this.getMinimumBarReputation();
 	
 	this._barReputation = Math.max(minBarRep, value);
+	
+	if($gameParty.isDemoVersion()) 
+		this._barReputation = Math.min(this._barReputation, 10);
+	
 	$gameVariables.setValue(VARIABLE_BAR_REPUTATION_ID, this._barReputation);
 };
 Game_Party.prototype.increaseBarReputation = function(value) {
@@ -252,6 +256,7 @@ Game_Party.prototype.postWaitressBattleCleanup  = function() {
 	
 	actor.resetAlcoholRate(true);
 	actor.changeToWardenClothing();
+	actor._barLocation = BAR_LOCATION_STANDBY;
 	actor.waitressBattle_fullResetTray();
 };
 
@@ -323,6 +328,7 @@ Game_Party.prototype.getBarIncome = function() {
 	if(Karryn.hasEdict(EDICT_DONT_PAY_WAITERS)) barIncome -= 70;
 	else if(Karryn.hasEdict(EDICT_USE_INMATE_WAITERS)) barIncome -= 30;
 	
+	if(Karryn.hasEdict(EDICT_SHARE_ALCOHOL_WITH_CLUB)) barIncome -= 100;
 	
 	if(Karryn.hasEdict(EDICT_LIZARDMEN_FREE_DRINKS)) barIncome *= 0.7;
 	
@@ -880,19 +886,22 @@ Game_Actor.prototype.afterEval_tableTakeOrder = function(target) {
 	//has a drink
 	else {
 		let clothesMaxDamaged = this.isClothingMaxDamaged();
-		let askingForFlash = false;
-		
-		if(!clothesMaxDamaged) {
-			askingForFlash = Math.random() < 0.5;
+		let metCharmReq = this.inBattleCharm > target.charm;
+		let timeLimitMetForFlashRequest = target._bar_TimelimitUntilNextFlashRequest <= $gameParty.waitressBattle_getCurrentTimeInSeconds();
+
+		if(this.isTipsy && target.isTipsy && Math.random() < 0.33) {
+			//asking for flash
+			if(!clothesMaxDamaged && metCharmReq && timeLimitMetForFlashRequest) {
+				this.waitressBattle_askedForFlash(target);
+			}
+			//asking to drink
+			else if(target._bar_currentDrink !== ALCOHOL_TYPE_NOTHING && target._bar_currentDrink !== ALCOHOL_TYPE_WATER){
+				this.waitressBattle_askedToDrink(target);
+			}
 		}
-		
-		//asking for flash
-		if(askingForFlash) {
-			this.waitressBattle_askedForFlash(target);
-		}
-		//asking to drink
-		else if(target._bar_currentDrink !== ALCOHOL_TYPE_NOTHING){
-			this.waitressBattle_askedToDrink(target);
+		else {
+			BattleManager._logWindow.push('addText', TextManager.waitressEnemyDidntCallForWaitress.format(target.displayName()));
+			AudioManager.playSe({name:'Cancel1', pan:0, pitch:100, volume:100});
 		}
 	}
 	
@@ -904,7 +913,7 @@ Game_Actor.prototype.afterEval_tableTakeOrder = function(target) {
 Game_Actor.prototype.waitressBattle_askedForFlash = function(target) {
 	BattleManager._logWindow.push('addText', TextManager.waitressEnemyAskingForWaitressToFlash.format(target.displayName(), this.displayName()));
 	//AudioManager.playSe({name:'+Voice_Enemy_a', pan:0, pitch:100, volume:50});
-	BattleManager.playEnemyVoice_SideJob(target);
+	BattleManager.playEnemyVoice_SideJob(target, 70);
 	target.startAnimation(261, false, 0);
 			
 	let flashReqMet = this.waitressBattle_flashRequirementMet();
@@ -924,7 +933,7 @@ Game_Actor.prototype.waitressBattle_askedForFlash = function(target) {
 Game_Actor.prototype.waitressBattle_askedToDrink = function(target) {
 	BattleManager._logWindow.push('addText', TextManager.waitressEnemyAskingForWaitressToDrink.format(target.displayName(), this.displayName()));
 	//AudioManager.playSe({name:'+Voice_Enemy_a', pan:0, pitch:100, volume:70});
-	BattleManager.playEnemyVoice_SideJob(target);
+	BattleManager.playEnemyVoice_SideJob(target, 70);
 	target.startAnimation(223, false, 0);
 			
 	if(this.isNotAcceptingAnyAlcohol()) {
@@ -1045,6 +1054,7 @@ Game_Actor.prototype.afterEval_waitressSex_drinkMug = function() {
 		$gameParty.addWaitressTips(tipValue);
 	}
 	
+	this.setAllowTachieEmoteUpdate(false);
 	this.updateTachieStraw();
 	this.emoteWaitressSexPose();
 	
@@ -1058,7 +1068,10 @@ Game_Actor.prototype.updateTachieStraw = function() {
 	let mugAmount = this._karrynMugAmount;
 	let mugContent = this._karrynMugContent;
 	
-	if(mugAmount === 0) {
+	if(this.isBodySlotPenis(MOUTH_ID)) {
+		this.resetTachieStraw();
+	}
+	else if(mugAmount === 0) {
 		this.setTachieStraw('empty');
 	}
 	else {
@@ -1691,11 +1704,11 @@ Game_Actor.prototype.customReq_kickOutBar = function() {
 Game_Actor.prototype.afterEval_kickOutBar = function(target) {
 	target.waitressBattle_addCurrentDrinkToTable();
 	this._hp -= this.staminaCostToKickOutBar(target);
-	if(!target.isStateAffected(STATE_BAR_SLEEP_ID) && !target._bar_InBrawl) {
-		$gameParty.increaseWaitressCustomerSatisfaction(-5);
+	if(target.isStateAffected(STATE_BAR_SLEEP_ID) || target._bar_InBrawl) {
+		this._playthroughRecordWaitressBattleProperKickingCount++;
 	}
 	else {
-		this._playthroughRecordWaitressBattleProperKickingCount++;
+		$gameParty.increaseWaitressCustomerSatisfaction(-5);
 	}
 	$gameTroop._barSeats[target._barSeatId] = false;
 	this.gainStaminaExp(15, target.enemyExperienceLvl());
@@ -1986,6 +1999,22 @@ Game_Actor.prototype.startWaitressSex = function(enemy) {
 	
 	$gameTroop.setAllEnemiesToAroused();
 	
+	$gameTroop.aliveMembers().forEach(function(member) {
+		member.removeState(STATE_BAR_SLEEP_ID);
+		member.removeState(STATE_BAR_DRINKING_ALE_ID);
+		member.removeState(STATE_BAR_DRINKING_WHITE_GLASS_ID);
+		member.removeState(STATE_BAR_DRINKING_ORANGE_GLASS_ID);
+    });
+	
+	this.clearStateCounters();
+	this.removeState(STATE_AVAILABLE_MUGS_ID);
+	this.removeState(STATE_AVAILABLE_GLASSES_ID);
+	this.removeState(STATE_BAR_TABLE_A_ID);
+	this.removeState(STATE_BAR_TABLE_B_ID);
+	this.removeState(STATE_BAR_TABLE_C_ID);
+	this.removeState(STATE_BAR_TABLE_D_ID);
+	this.removeState(STATE_ACCEPTING_NO_ALCOHOL_ID);
+	
 	if(enemy) {
 		BattleManager._logWindow.push('addText', TextManager.waitressBarEnemyStartSex.format(enemy.displayName(), this.displayName()));
 		AudioManager.playSe({name:'Blow6', pan:0, pitch:80, volume:100});
@@ -2001,25 +2030,7 @@ Game_Actor.prototype.startWaitressSex = function(enemy) {
 	this.stripOffPanties();
 	this.stripOffClothing();
 	
-	this.clearStateCounters();
-	this.removeState(STATE_AVAILABLE_MUGS_ID);
-	this.removeState(STATE_AVAILABLE_GLASSES_ID);
-	this.removeState(STATE_BAR_TABLE_A_ID);
-	this.removeState(STATE_BAR_TABLE_B_ID);
-	this.removeState(STATE_BAR_TABLE_C_ID);
-	this.removeState(STATE_BAR_TABLE_D_ID);
-	this.removeState(STATE_ACCEPTING_NO_ALCOHOL_ID);
 	
-	$gameTroop.aliveMembers().forEach(function(member) {
-		member.removeState(STATE_BAR_SLEEP_ID);
-		member.removeState(STATE_BAR_DRINKING_ALE_ID);
-		member.removeState(STATE_BAR_DRINKING_WHITE_GLASS_ID);
-		member.removeState(STATE_BAR_DRINKING_ORANGE_GLASS_ID);
-    });
-
-	BattleManager.changeBattleback(BATTLEBACK1_BAR_WAITRESS_SEX_NAME, null);
-
-	//BattleManager.playBattleBgm();
 	this._recordBarWaitressSexCount++;
 };
 
@@ -2402,6 +2413,8 @@ Game_Troop.prototype.waitressBattle_brawlers = function() {
 Game_Troop.prototype.waitressBattle_getAliveMembersOfTable = function(table) {
     let members = [];
 	
+	if(!this._barSeats) return members;
+	
 	if(table === BAR_TABLE_A_ENEMY_ID) {
 		if(this._barSeats[BAR_TABLE_A_LEFT_SEAT] && this._barSeats[BAR_TABLE_A_LEFT_SEAT].isAlive()) 
 			members.push(this._barSeats[BAR_TABLE_A_LEFT_SEAT]);
@@ -2435,6 +2448,8 @@ Game_Troop.prototype.waitressBattle_getAliveMembersOfTable = function(table) {
 };
 Game_Troop.prototype.waitressBattle_getAwakeMembersOfTable = function(table) {
     let members = [];
+	
+	if(!this._barSeats) return members;
 	
 	if(table === BAR_TABLE_A_ENEMY_ID) {
 		if(this._barSeats[BAR_TABLE_A_LEFT_SEAT] && this._barSeats[BAR_TABLE_A_LEFT_SEAT].isAwake_waitressBattle()) 
@@ -3356,7 +3371,7 @@ Game_Enemy.prototype.waitressBattle_selectNormalAction = function(target) {
 		let randomTarget = tableMembers[Math.randomInt(tableMembers.length)];
 		BattleManager._logWindow.push('addText', TextManager.waitressBarEnemyChatting.format(this.displayName(), randomTarget.displayName()));
 		//AudioManager.playSe({name:'+Voice_Enemy_d', pan:0, pitch:100, volume:50});
-		BattleManager.playEnemyVoice_SideJob(this, 50);
+		//BattleManager.playEnemyVoice_SideJob(this, 40);
 		if(Math.random() < 0.5) 
 			this.waitressBattle_enemyDrink(1);
 	}
@@ -3369,7 +3384,7 @@ Game_Enemy.prototype.waitressBattle_selectNormalAction = function(target) {
 		BattleManager._logWindow.push('addText', TextManager.waitressBarEnemyTellsJoke.format(this.displayName()));
 		$gameTroop.waitressBattle_setTableJoker(this);
 		//AudioManager.playSe({name:'+Voice_Enemy_a', pan:0, pitch:100, volume:70});
-		BattleManager.playEnemyVoice_SideJob(this, 70);
+		BattleManager.playEnemyVoice_SideJob(this, 40);
 	}
 	else if(barAction === BAR_ACTION_HEAR_JOKE) {
 		BattleManager._logWindow.push('addText', TextManager.waitressBarEnemyHearsJoke.format(this.displayName(), jokerDisplayName.displayName()));
@@ -3451,11 +3466,11 @@ Game_Enemy.prototype.waitressBattle_action_leavesBar = function() {
 	this.clearActions();
     this.clearStates();
 	this._bar_InBrawl = false;
-    SoundManager.playEscape();
+    //SoundManager.playEscape();
 };
 Game_Enemy.prototype.waitressBattle_action_askForWaitress = function(halfTimeLimit) {
 	BattleManager._logWindow.push('addText', TextManager.waitressEnemyCallingForWaitress.format(this.displayName()));
-	BattleManager.playEnemyVoice_SideJob(this);
+	BattleManager.playEnemyVoice_SideJob(this, 90);
 	this.startAnimation(223, false, 0);
 	
 	let timeLimit = 0;
@@ -3517,7 +3532,7 @@ Game_Enemy.prototype.waitressBattle_action_joinBrawl = function() {
 	this.waitressBattle_enterBarBrawl();
 	BattleManager._logWindow.push('addText', TextManager.waitressBrawlJoin.format(this.displayName()));
 	//AudioManager.playSe({name:'+Voice_Enemy_d', pan:0, pitch:100, volume:50});
-	BattleManager.playEnemyVoice_SideJob(this, 50);
+	//BattleManager.playEnemyVoice_SideJob(this, 50);
 };
 
 Game_Enemy.prototype.waitressBattle_action_harassWaitress = function(target) {
@@ -3622,8 +3637,11 @@ Game_Enemy.prototype.waitressSex_refillWaitressMug = function(target) {
 			BattleManager._logWindow.push('addText', TextManager.waitressEnemyRefillsKarrynMug.format(this.displayName(), target.displayName()));
 			AudioManager.playSe({name:'+Waitress_Ale1', pan:0, pitch:100, volume:70});
 			target._karrynMugAmount = ALCOHOL_CAPACITY_ALE;
-			if(this.tachieStraw !== REM_TACHIE_NULL)
+			if(this.tachieStraw !== REM_TACHIE_NULL) {
+				target.setAllowTachieEmoteUpdate(false);
 				target.updateTachieStraw();
+				target.emoteWaitressSexPose();
+			}
 			//target.setCacheChanged();
 			this.setUsedSkillThisTurn(true);
 			return true;

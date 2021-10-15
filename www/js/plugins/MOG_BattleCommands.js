@@ -126,6 +126,12 @@ const REM_BHD_BC_GLORY_BATTLE_STAND_LEFT_Y = 50;
 const REM_BHD_BC_GLORY_BATTLE_STAND_RIGHT_X = -540;
 const REM_BHD_BC_GLORY_BATTLE_STAND_RIGHT_Y = 50;
 
+const REM_BHD_BC_STRIP_BATTLE_STAGE_X = 300;
+const REM_BHD_BC_STRIP_BATTLE_STAGE_Y = -300;
+
+const REM_BHD_BC_STRIP_BATTLE_VIP_X = -540;
+const REM_BHD_BC_STRIP_BATTLE_VIP_Y = 30;
+
 //=============================================================================
 // MOG_BattleCommands.js
 //=============================================================================
@@ -682,6 +688,14 @@ Window_ActorCommand.prototype.create_layout = function() {
 		this._layout.x += REM_BHD_BC_GLORY_BATTLE_STAND_RIGHT_X;
 		this._layout.y += REM_BHD_BC_GLORY_BATTLE_STAND_RIGHT_Y;
 	}
+	else if(Karryn.isInStripperSexPose()) {
+		this._layout.x += REM_BHD_BC_STRIP_BATTLE_VIP_X;
+		this._layout.y += REM_BHD_BC_STRIP_BATTLE_VIP_Y;	
+	}
+	else if($gameParty.isInStripperBattle) {
+		this._layout.x += REM_BHD_BC_STRIP_BATTLE_STAGE_X;
+		this._layout.y += REM_BHD_BC_STRIP_BATTLE_STAGE_Y;	
+	}
 	
 	this.addChild(this._layout);
 };
@@ -931,6 +945,14 @@ Window_ActorCommand.prototype.create_com_name = function() {
 		this._com_name.x += REM_BHD_BC_GLORY_BATTLE_STAND_RIGHT_X;
 		this._com_name.y += REM_BHD_BC_GLORY_BATTLE_STAND_RIGHT_Y; 
 	}
+	else if(Karryn.isInStripperSexPose()) {
+		this._com_name.x += REM_BHD_BC_STRIP_BATTLE_VIP_X;
+		this._com_name.y += REM_BHD_BC_STRIP_BATTLE_VIP_Y;	
+	}
+	else if($gameParty.isInStripperBattle) {
+		this._com_name.x += REM_BHD_BC_STRIP_BATTLE_STAGE_X;
+		this._com_name.y += REM_BHD_BC_STRIP_BATTLE_STAGE_Y;	
+	}
 
 
 	this._com_name.bitmap.fontSize = REM_BHD_BC_NAME_FONT_SIZE;
@@ -1136,6 +1158,14 @@ Window_ActorCommand.prototype.refresh_bitmap_com = function() {
 			this._com_sprites[i].x += REM_BHD_BC_GLORY_BATTLE_STAND_RIGHT_X;
 			this._com_sprites[i].y += REM_BHD_BC_GLORY_BATTLE_STAND_RIGHT_Y;
 		}
+		else if(Karryn.isInStripperSexPose()) {
+			this._com_sprites[i].x += REM_BHD_BC_STRIP_BATTLE_VIP_X;
+			this._com_sprites[i].y += REM_BHD_BC_STRIP_BATTLE_VIP_Y;	
+		}
+		else if($gameParty.isInStripperBattle) {
+			this._com_sprites[i].x += REM_BHD_BC_STRIP_BATTLE_STAGE_X;
+			this._com_sprites[i].y += REM_BHD_BC_STRIP_BATTLE_STAGE_Y;	
+		}
 		
 	};
 };
@@ -1236,30 +1266,30 @@ Window_ActorCommand.prototype.update_input_commands = function() {
 //==============================
 Window_ActorCommand.prototype.update_side_input = function() {
 	if (this.isOpenAndActive()) {
-	if (Input.isRepeated('right')) {
-		SoundManager.playCursor(); 
-		if (this._com_mode_b === 1) {
-		    //this._index--;	    
-	     	//if (this._index < 0) {this._index = (this.maxCom() - 1)};
-			this._index++;	    
-		    if (this._index > (this.maxCom() - 1)) {this._index = 0};	
-		} else {
-            this._index++;	    
-		    if (this._index > (this.maxCom() - 1)) {this._index = 0};		
-		}
-    };
-    if (Input.isRepeated('left')) {
-		SoundManager.playCursor();
-		if (this._com_mode_b === 1) {
-            //this._index++;	    
-		    //if (this._index > (this.maxCom() - 1)) {this._index = 0};	
-			this._index--;	    
-	     	if (this._index < 0) {this._index = (this.maxCom() - 1)};
-		} else {
- 		    this._index--;	    
-	     	if (this._index < 0) {this._index = (this.maxCom() - 1)};	
-		}
-    };
+		if (Input.isRepeated('right')) {
+			SoundManager.playCursor(); 
+			if (this._com_mode_b === 1) {
+				//this._index--;	    
+				//if (this._index < 0) {this._index = (this.maxCom() - 1)};
+				this._index++;	    
+				if (this._index > (this.maxCom() - 1)) {this._index = 0};	
+			} else {
+				this._index++;	    
+				if (this._index > (this.maxCom() - 1)) {this._index = 0};		
+			}
+		};
+		if (Input.isRepeated('left')) {
+			SoundManager.playCursor();
+			if (this._com_mode_b === 1) {
+				//this._index++;	    
+				//if (this._index > (this.maxCom() - 1)) {this._index = 0};	
+				this._index--;	    
+				if (this._index < 0) {this._index = (this.maxCom() - 1)};
+			} else {
+				this._index--;	    
+				if (this._index < 0) {this._index = (this.maxCom() - 1)};	
+			}
+		};
 	};
 };
 
@@ -1601,6 +1631,14 @@ Window_ActorCommand.prototype.refresh_ring_command = function() {
 			this._com_sprites[i].x += REM_BHD_BC_GLORY_BATTLE_STAND_RIGHT_X;
 			this._com_sprites[i].y += REM_BHD_BC_GLORY_BATTLE_STAND_RIGHT_Y;
 		}
+		else if(Karryn.isInStripperSexPose()) {
+			this._com_sprites[i].x += REM_BHD_BC_STRIP_BATTLE_VIP_X;
+			this._com_sprites[i].y += REM_BHD_BC_STRIP_BATTLE_VIP_Y;	
+		}
+		else if($gameParty.isInStripperBattle) {
+			this._com_sprites[i].x += REM_BHD_BC_STRIP_BATTLE_STAGE_X;
+			this._com_sprites[i].y += REM_BHD_BC_STRIP_BATTLE_STAGE_Y;	
+		}
 		
 		this._com_sprites[i].visible = true;
 		this._com_sprites[i].opacity = 0;
@@ -1766,6 +1804,14 @@ Window_ActorCommand.prototype.update_position = function(i) {
 			this._np[0] += REM_BHD_BC_GLORY_BATTLE_STAND_RIGHT_X;
 			this._np[1] += REM_BHD_BC_GLORY_BATTLE_STAND_RIGHT_Y;	
 		}
+		else if(Karryn.isInStripperSexPose()) {
+			this._np[0] += REM_BHD_BC_STRIP_BATTLE_VIP_X;
+			this._np[1] += REM_BHD_BC_STRIP_BATTLE_VIP_Y;	
+		}
+		else if($gameParty.isInStripperBattle) {
+			this._np[0] += REM_BHD_BC_STRIP_BATTLE_STAGE_X;
+			this._np[1] += REM_BHD_BC_STRIP_BATTLE_STAGE_Y;	
+		}
 		
 	} else {
 		this.update_ring_command(i,this._index);
@@ -1922,6 +1968,14 @@ Window_ActorCommand.prototype.update_position = function(i) {
 		else if(Karryn.isInToiletStandRightPose()) {
 			this._np[0] += REM_BHD_BC_GLORY_BATTLE_STAND_RIGHT_X;
 			this._np[1] += REM_BHD_BC_GLORY_BATTLE_STAND_RIGHT_Y;	
+		}
+		else if(Karryn.isInStripperSexPose()) {
+			this._np[0] += REM_BHD_BC_STRIP_BATTLE_VIP_X;
+			this._np[1] += REM_BHD_BC_STRIP_BATTLE_VIP_Y;	
+		}
+		else if($gameParty.isInStripperBattle) {
+			this._np[0] += REM_BHD_BC_STRIP_BATTLE_STAGE_X;
+			this._np[1] += REM_BHD_BC_STRIP_BATTLE_STAGE_Y;	
 		}
 	};
 	this._com_sprites[i].x = this.sprite_move_to(this._com_sprites[i].x,this._np[0],this.com_move_speed());

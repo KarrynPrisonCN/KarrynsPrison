@@ -545,9 +545,11 @@ Sprite_Character.prototype.refreshMiniLabel = function() {
 //=============================================================================
 
 Scene_Map.prototype.refreshAllMiniLabels = function() {
-    var length = this._spriteset._characterSprites.length;
-    for (var i = 0; i < length; ++i) {
-      var sp = this._spriteset._characterSprites[i];
+	if(!this._spriteset) 
+		this.createDisplayObjects();
+    let length = this._spriteset._characterSprites.length;
+    for (let i = 0; i < length; ++i) {
+      let sp = this._spriteset._characterSprites[i];
       sp.refreshMiniLabel();
     }
 };

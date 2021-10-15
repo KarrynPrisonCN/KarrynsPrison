@@ -196,6 +196,12 @@ Game_Enemy.prototype.enemyBattleAIGeneric = function() {
 		ranChanceFactor = Math.min(ranChanceFactor, lowerLimit);
 		
 		let wantSex = (Math.randomInt(ranChanceFactor)) > Math.max(0, (this.anger() - this.currentPercentOfOrgasm(true)));
+		let canStartSex = true;
+		
+		if(target.isPreparingToUseKickSkill() && target.currentAction()) {
+			if(this.counterCondition_kickCounter(target, target.currentAction()))
+				canStartSex = false;
+		}
 		
 		if(this.isHorny && !this.isAngry) 
 			wantSex = true;
@@ -206,7 +212,7 @@ Game_Enemy.prototype.enemyBattleAIGeneric = function() {
 			return;
 		}
 		//If I want sex and I'm erect, can I start a sex pose?
-		else if(wantSex && this.isErect) {
+		else if(wantSex && this.isErect && canStartSex) {
 			if(this.tryStartSexPose(target, VAR_ENEMYAI_TRY_START_SEX_ATTEMPTS)) return;
 		}
 		//Nothing else to do, Petting-Talk-Sight
@@ -384,7 +390,125 @@ Game_Enemy.prototype.enemyBattleAIStripperSex = function(target) {
 	if(this.usedSkillThisTurn())
 		return;
 	
+	this._lastAITarget = $gameActors.actor(ACTOR_KARRYN_ID);
+	let pussyInserted = target.pussySexPoseSkillsIsEnabled();
+	let analInserted = target.analSexPoseSkillsIsEnabled();
+	let boobsInserted = target.tittyFuckPoseSkillsIsEnabled();
+	let mouthInserted = target.blowjobPoseSkillsIsEnabled();
+	let isUsingPussy = this.isUsingBodySlotPenis(PUSSY_ID);
+	let isUsingAnal = this.isUsingBodySlotPenis(ANAL_ID);
+	let isUsingBoobs = this.isUsingBodySlotPenis(BOOBS_ID);
+	let isUsingMouth = this.isUsingBodySlotPenis(MOUTH_ID);
+	let isUsingRightHand = this.isUsingBodySlotPenis(RIGHT_HAND_ID);
+	let isUsingLeftHand = this.isUsingBodySlotPenis(LEFT_HAND_ID);
 	
+	if(this._stripClub_isHoldingUsedCondom) {
+		this.stripperBattle_getRidOfCondom();
+		return;
+	}
+	
+	if(isUsingPussy || isUsingAnal || isUsingBoobs || isUsingMouth) {
+		let array = this.getPoseSkills().slice(0);
+		let success = false;
+		
+		if(isUsingAnal || isUsingPussy) {
+			if(!this._aiPettingSkills) {}
+			else {
+				if(!boobsInserted) {
+					if(this._aiPettingSkills.includes(SKILL_ENEMY_PETTING_SELECTOR_BOOBS_ID))
+						array.push(SKILL_ENEMY_PETTING_SELECTOR_BOOBS_ID);
+				}
+				if(!analInserted) {
+					if(this._aiPettingSkills.includes(SKILL_ENEMY_PETTING_SELECTOR_BUTT_ID))
+						array.push(SKILL_ENEMY_PETTING_SELECTOR_BUTT_ID);
+				}
+				if(!pussyInserted) {
+					if(this._aiPettingSkills.includes(SKILL_ENEMY_PETTING_SELECTOR_PUSSY_ID))
+						array.push(SKILL_ENEMY_PETTING_SELECTOR_PUSSY_ID);
+				}
+			}
+		}
+		else if(isUsingBoobs) {
+			if(!this._aiPettingSkills) {}
+			else {	
+				if(this._aiPettingSkills.includes(SKILL_ENEMY_PETTING_SELECTOR_BOOBS_ID))
+					array.push(SKILL_ENEMY_PETTING_SELECTOR_BOOBS_ID);
+			}
+		}
+		
+		if(this.currentPercentOfOrgasm(true) < 66) {
+			if(this._aiTalkSightSkills)
+				array = array.concat(this._aiTalkSightSkills);
+		}
+		
+		while(array.length > 0 && !success) {
+			let index = Math.randomInt(array.length);
+			let skillId = array.splice(index,1)[0];
+			success = this.meetsSkillConditionsEval($dataSkills[skillId], target);
+			if(success) {
+				this.useAISkill(skillId,target);
+				this.setUsedSkillThisTurn(true);
+				return;
+			}
+		}
+	}
+	else if(!pussyInserted || !analInserted || !boobsInserted || !mouthInserted) {
+		let array = [];
+		if(this.canInsertPussy(target) && this.weaknessToPussy() >= 1)
+			array.push(SKILL_ENEMY_POSEJOIN_STRIPPER_VIP_PUSSY_ID);
+		if(this.canInsertAnal(target) && this.weaknessToAnal() >= 1)
+			array.push(SKILL_ENEMY_POSEJOIN_STRIPPER_VIP_ANAL_ID);
+		if(this.canInsertMouth(target) && this.weaknessToBlowjob() >= 1)
+			array.push(SKILL_ENEMY_POSEJOIN_STRIPPER_VIP_MOUTH_ID);
+		if(this.canInsertBoobs(target) && this.weaknessToTittyFuck() >= 1)
+			array.push(SKILL_ENEMY_POSEJOIN_STRIPPER_VIP_BOOBS_ID);
+		
+		if(array.length > 0) {
+			let index = Math.randomInt(array.length);
+			let skillId = array.splice(index,1)[0];
+			this.useAISkill(skillId,target);
+			this.setUsedSkillThisTurn(true);
+			return;
+		}
+	
+	}
+	else if(isUsingRightHand || isUsingLeftHand) {
+		let array = this.getPoseSkills().slice(0);
+		let success = false;
+		
+		if(this._aiTalkSightSkills)
+			array = array.concat(this._aiTalkSightSkills);
+		
+		while(array.length > 0 && !success) {
+			let index = Math.randomInt(array.length);
+			let skillId = array.splice(index,1)[0];
+			success = this.meetsSkillConditionsEval($dataSkills[skillId], target);
+			if(success) {
+				this.useAISkill(skillId,target);
+				this.setUsedSkillThisTurn(true);
+				return;
+			}
+		}
+	}
+	else if(!target.isBodySlotPenis(RIGHT_HAND_ID) || !target.isBodySlotPenis(LEFT_HAND_ID)) {
+		let array = [];
+		if(this.canInsertRightHand(target))
+			array.push(SKILL_ENEMY_POSEJOIN_STRIPPER_VIP_RIGHT_HJ_ID);
+		if(this.canInsertLeftHand(target))
+			array.push(SKILL_ENEMY_POSEJOIN_STRIPPER_VIP_LEFT_HJ_ID);
+		
+		if(array.length > 0) {
+			let index = Math.randomInt(array.length);
+			let skillId = array.splice(index,1)[0];
+			this.useAISkill(skillId,target);
+			this.setUsedSkillThisTurn(true);
+			return;
+		}
+
+	}
+	
+	this.genericPettingTalkSight(target);
+	return;
 };
 
 
@@ -410,7 +534,7 @@ Game_Enemy.prototype.enemyBattleAIDefeatedLevel1 = function(target) {
 	}
 	//Third: Check if using right hand or left hand
 	if(insertedIntoHand) {
-		if(Math.random() * 100 < this.currentPercentOfOrgasm(true)) {
+		if(Math.randomInt(100) < this.currentPercentOfOrgasm(true)) {
 			if(this.usePoseSkill(target))
 				return;
 		}
@@ -489,7 +613,7 @@ Game_Enemy.prototype.enemyBattleAIDefeatedLevel2 = function(target) {
 			if(success) {
 				this.useAISkill(skillId,target);
 				this.setUsedSkillThisTurn(true);
-				return true;
+				return;
 			}
 		}
 	}
@@ -605,7 +729,7 @@ Game_Enemy.prototype.enemyBattleAIDefeatedLevel3 = function(target) {
 			if(success) {
 				this.useAISkill(skillId,target);
 				this.setUsedSkillThisTurn(true);
-				return true;
+				return;
 			}
 		}
 	}
@@ -720,7 +844,7 @@ Game_Enemy.prototype.enemyBattleAIDefeatedLevel4 = function(target) {
 			if(success) {
 				this.useAISkill(skillId,target);
 				this.setUsedSkillThisTurn(true);
-				return true;
+				return;
 			}
 		}
 	}
@@ -740,8 +864,8 @@ Game_Enemy.prototype.enemyBattleAIDefeatedLevel4 = function(target) {
 			let skillId = array.splice(index,1)[0];
 			this.useAISkill(skillId,target);
 			this.setUsedSkillThisTurn(true);
+			return;
 		}
-		return;
 	}
 	//Third: Insert into Other1, Other2, Other3 if they are free and not already in one of them
 	//else, grope/talk
@@ -801,11 +925,13 @@ Game_Enemy.prototype.enemyBattleAIDefeatedGuard = function(target) {
 		if(this.canInsertBoobs(target) && this.weaknessToTittyFuck() >= 1)
 			array.push(SKILL_ENEMY_POSEJOIN_DEFEAT_GUARD_BOOBS_ID);
 		
-		let index = Math.randomInt(array.length);
-		let skillId = array.splice(index,1)[0];
-		this.useAISkill(skillId,target);
-		this.setUsedSkillThisTurn(true);
-		return;
+		if(array.length > 0) {
+			let index = Math.randomInt(array.length);
+			let skillId = array.splice(index,1)[0];
+			this.useAISkill(skillId,target);
+			this.setUsedSkillThisTurn(true);
+			return;
+		}
 	}
 	
 	this.defeatedGuard_PettingTalkSight(target);

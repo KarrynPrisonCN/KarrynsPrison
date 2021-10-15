@@ -50,7 +50,6 @@ const POSE_TOILET_STAND_RIGHT = 'toilet_stand_right';
 
 //Stripper
 const POSE_STRIPPER_INTERMISSION = 'stripper_intermission';
-const POSE_STRIPPER_STANDBY = 'stripper_standby';
 const POSE_STRIPPER_MOUTH = 'stripper_mouth';
 const POSE_STRIPPER_BOOBS = 'stripper_boobs';
 const POSE_STRIPPER_PUSSY = 'stripper_pussy';
@@ -149,6 +148,15 @@ Game_Actor.prototype.completeResetBodyParts = function () {
 	this.resetTachieStraw();
 	this.resetTachieTie();
 	this.resetTachieLegs();
+	this.resetTachiePole();
+	this.resetTachieCondomBra();
+	this.resetTachieCondomBelt();
+	this.resetTachieCondomChikubi();
+	this.resetTachieCondomHead();
+	this.resetTachieCondomFloor();
+	//this.resetTachieCondomLeg();
+	//this.resetTachieCondomPantsu();
+	this.resetTachieCondomButt();
 	
 	this.setTachieRightArmInFrontOfBody(true);
 	this.setTachieRightArmInFrontOfHeadAndBehindBody(false);
@@ -824,6 +832,7 @@ Game_Actor.prototype.setWardenMapPoseExtensions = function() {
 		this.resetTachieRightArm();
 		this.resetTachieLeftArm();
 		this.resetTachieFrontA();
+		this.resetTachieFrontB();
 	}
 	else {
 		this.resetTachieSemenBoobsExtension();
@@ -1330,14 +1339,22 @@ Game_Actor.prototype.isInCombatPose = function() {
 };
 
 
-
 Game_Actor.prototype.isInJobPose = function() {
 	return $gameParty.isInWaitressBattle || $gameParty.isInReceptionistBattle || $gameParty.isInGloryBattle || $gameParty.isInStripperBattle;
 };
 
+Game_Actor.prototype.isInShowSpankMarkPose = function() {
+	return this.isInDefeatedLevel4Pose();
+};
+
+
 Game_Actor.prototype.isAttackable = function() {
 	return (this.isInCombatPose() && this.stamina >= 1);
 };
+Game_Actor.prototype.canAttack = function(target) {
+	return this.isAttackable();
+};
+
 
 
 ///////
@@ -3189,42 +3206,8 @@ Game_Actor.prototype.setToiletStandRightPose = function() {
 
 Game_Actor.prototype.setStripperIntermissionPose = function() {
 	this.setPose(POSE_STRIPPER_INTERMISSION, false);
+	this.setSpriteBattlerPosData(POSE_STRIPPER_INTERMISSION);
 	this.setHasTachiePubic(false);
-};
-
-Game_Actor.prototype.isInStripperStandbyPose = function() {
-	return this.poseName == POSE_STRIPPER_STANDBY;
-};
-Game_Actor.prototype.setStripperStandbyPose = function() {
-	this.setAllowTachieUpdate(false);
-	let pose = this.poseName;
-	let notAlreadyInSamePose = pose != POSE_STRIPPER_STANDBY;
-	
-	if(notAlreadyInSamePose)
-		this.setPose(POSE_STRIPPER_STANDBY);
-	
-	this.setPosePanties();
-	this.setSpankablePose(false);
-	this.setHasTachiePubic(true);
-	
-	this.setSpriteBattlerPosData(POSE_STRIPPER_STANDBY);
-	this.setAllBodySlotsFree();
-	
-	//temp
-	this.setTachieBoobs(1)
-	this.setTachieRightArm(1)
-	this.setTachieLeftArm(1)
-	this.setTachieMouth(1)
-	this.setTachieEyebrows(1)
-	this.setTachieEyes(1)
-	this.setTachieRightArmInFrontOfLeftArm(false);
-	this.setTachieRightArmInFrontOfBody(false);
-	this.setTachieLeftArmInFrontOfBody(false);
-	this.setTachieRightArmInFrontOfBoobs(false);
-	this.setTachieLeftArmInFrontOfBoobs(false);
-	
-	this.emoteMasterManager_StripperBattle();
-	this.setAllowTachieUpdate(true);
 };
 
 Game_Actor.prototype.isInStripperMouthPose = function() {
@@ -3238,20 +3221,20 @@ Game_Actor.prototype.setStripperMouthPose = function() {
 	if(notAlreadyInSamePose)
 		this.setPose(POSE_STRIPPER_MOUTH);
 	
-	this.setPosePanties();
 	this.setSpankablePose(false);
-	this.setHasTachiePubic(false);
+	this.setHasTachiePubic(true);
 	
 	this.setSpriteBattlerPosData(POSE_STRIPPER_MOUTH);
 	this.setAllBodySlotsFree();
 	
-	//temp
-	this.setTachieBoobs(1)
-	this.setTachieMouth(1)
-	this.setTachieEyes(1)
+	this.setTachiePole(1);
+	this.setTachieHead(1);
+	this.setTachieLeftArm('normal_1');
+	this.setTachieRightArm('normal_1');
+	this.setMaxTachieWetId(3);
 	
-	if(notAlreadyInSamePose)
-		this.emoteMasterManager_StripperBattle();
+
+	this.emoteStripperMouthPose();
 	this.setAllowTachieUpdate(true);
 };
 
@@ -3266,22 +3249,17 @@ Game_Actor.prototype.setStripperBoobsPose = function() {
 	if(notAlreadyInSamePose)
 		this.setPose(POSE_STRIPPER_BOOBS);
 	
-	this.setPosePanties();
 	this.setSpankablePose(false);
 	this.setHasTachiePubic(true);
 	
 	this.setSpriteBattlerPosData(POSE_STRIPPER_BOOBS);
 	this.setAllBodySlotsFree();
 	
-	//temp
-	this.setTachieBoobs(1)
-	this.setTachieRightArm(1)
-	this.setTachieLeftArm(1)
-	this.setTachieMouth(1)
-	this.setTachieEyes(1)
+	this.setTachiePole(1);
+	this.setTachieHead(1);
+	this.setMaxTachieWetId(3);
 	
-	if(notAlreadyInSamePose)
-		this.emoteMasterManager_StripperBattle();
+	this.emoteStripperBoobsPose();
 	this.setAllowTachieUpdate(true);
 };
 
@@ -3296,21 +3274,16 @@ Game_Actor.prototype.setStripperPussyPose = function() {
 	if(notAlreadyInSamePose)
 		this.setPose(POSE_STRIPPER_PUSSY);
 	
-	this.setPosePanties();
 	this.setSpankablePose(false);
 	this.setHasTachiePubic(true);
 	
 	this.setSpriteBattlerPosData(POSE_STRIPPER_PUSSY);
 	this.setAllBodySlotsFree();
 	
-	//temp
-	this.setTachieBoobs(1)
-	this.setTachieMouth(1)
-	this.setTachieEyebrows(1)
-	this.setTachieEyes(1)
+	this.setTachieRightArm('normal_1');
+	this.setMaxTachieWetId(3);
 	
-	if(notAlreadyInSamePose)
-		this.emoteMasterManager_StripperBattle();
+	this.emoteStripperPussyPose();
 	this.setAllowTachieUpdate(true);
 };
 
@@ -3325,20 +3298,17 @@ Game_Actor.prototype.setStripperButtPose = function() {
 	if(notAlreadyInSamePose)
 		this.setPose(POSE_STRIPPER_BUTT);
 	
-	this.setPosePanties();
 	this.setSpankablePose(false);
 	this.setHasTachiePubic(false);
 	
 	this.setSpriteBattlerPosData(POSE_STRIPPER_BUTT);
 	this.setAllBodySlotsFree();
 	
-	//temp
-	this.setTachieBoobs(1)
-	this.setTachieMouth(1)
-	this.setTachieEyes(1)
+	this.setTachiePole(1);
+	this.setTachieRightArm('normal_1');
+	this.setMaxTachieWetId(3);
 	
-	if(notAlreadyInSamePose)
-		this.emoteMasterManager_StripperBattle();
+	this.emoteStripperButtPose();
 	this.setAllowTachieUpdate(true);
 };
 
@@ -3346,8 +3316,58 @@ Game_Actor.prototype.isInStripperSexPose = function() {
 	return this.poseName == POSE_STRIPPER_VIP;
 };
 Game_Actor.prototype.setStripperSexPose = function() {
+	this.setAllowTachieUpdate(false);
+	
+	this.setPose(POSE_STRIPPER_VIP);
+	this.setSpriteBattlerPosData(POSE_STRIPPER_VIP);
+	this.setAllBodySlotsFree();
+	this.setClitToyInsertablePose(false);
+	this.setPussyToyInsertablePose(false);
+	this.setAnalToyInsertablePose(false);
+	this.setSpankablePose(true);
+	this.setHasTachiePubic(true);
+	
+	if(Karryn.isCensored())
+		this.setTachieBody('1_cen');
+	else
+		this.setTachieBody('1');
+	
+	this.setTachieHead('normal');
+	this.setTachieSemenFaceExtension('normal_');
+	this.setTachieBoobs('normal');
+	this.setTachieSemenBoobsExtension('normal_');
+	this.setTachieRightArm('normal');
+	this.setTachieLeftArm('normal');
+	this.setTachieSemenLeftArmExtension('normal_');
+	this.setTachieSemenRightArmExtension('normal_');
+	
+	this.setMaxTachieSemenAnalId(1);
+	this.setMaxTachieSemenBellyId(1);
+	this.setMaxTachieSemenBoobsId(1);
+	this.setMaxTachieSemenButtId(1);
+	this.setMaxTachieSemenCrotchId(1);
+	this.setMaxTachieSemenFaceId(1);
+	this.setMaxTachieSemenLeftArmId(1);
+	this.setMaxTachieSemenRightArmId(1);
+	this.setMaxTachieSemenLeftLegId(1);
+	this.setMaxTachieSemenRightLegId(1);
+	this.setMaxTachieWetId(1);
+	
+	this.setBodyPartFree_PettingOnly(THIGHS_ID);
+	this.setBodyPartFree_PettingOnly(NIPPLES_ID);
+	this.setBodyPartFree_PettingOnly(CLIT_ID);
+	this.setBodyPartUnavailable(STOMACH_ID);
+	this.setBodyPartUnavailable(FEET_ID);
 	
 	
+	$gameMap.changeBattleback(BATTLEBACK1_STRIPCLUB_STRIPPER_SEX_NAME, null);
+	BattleManager.changeBattleback(BATTLEBACK1_STRIPCLUB_STRIPPER_SEX_NAME, null);
+	
+	BattleManager.playSpecialBgm_StripperSex();
+	this.emoteStripperVIPPose();
+	this.setAllowTachieUpdate(true);
+	
+	BattleManager.actionRemLines(KARRYN_LINE_STRIPPER_VIP_START);
 };
 
 
@@ -3455,7 +3475,7 @@ Game_Actor.prototype.isInShowEnemyGaugeOnlyDuringValidSelectionPose = function()
 	return this.isInDefeatedPose() || this.isInWaitressSexPose() || this.isInStripperSexPose();
 };
 Game_Actor.prototype.isInDontShowEnemyHealthGaugePose = function() {
-	return $gameParty.isInWaitressBattle || this.isInDefeatedPose() || $gameParty.isInGloryBattle || ($gameParty.isInStripperBattle && !this.isInStripperSexPose());
+	return $gameParty.isInWaitressBattle || this.isInDefeatedPose() || $gameParty.isInGloryBattle || $gameParty.isInStripperBattle;
 };
 Game_Actor.prototype.isInDontShowEnemyPleasureGaugePose = function() {
 	return $gameParty.isInWaitressBattle || this.isInDefeatedPose() || $gameParty.isInGloryBattle;
@@ -3943,7 +3963,7 @@ Game_Actor.prototype.refreshPose = function(onlyChangeIfDifferent) {
 // Preload Karryn Poses
 
 DKTools.PreloadManager.preloadKarrynPoses = function() {
-	if(DEBUG_MODE && ConfigManager.remCutinsSmootherLoading && ConfigManager.remCutinsFast) {
+	if(false && DEBUG_MODE && ConfigManager.remCutinsSmootherLoading && !ConfigManager.remCutinsDisabled && ConfigManager.remCutinsFast) {
 		DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_bs1.png', hue: 0, caching: true });
 		DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_bs2.png', hue: 0, caching: true });
 		DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_bs3.png', hue: 0, caching: true });
@@ -3965,13 +3985,15 @@ DKTools.PreloadManager.preloadKarrynPoses = function() {
 		DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ks2_k_human_black.png', hue: 0, caching: true });
 		DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_or1.png', hue: 0, caching: true });
 		DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_or2.png', hue: 0, caching: true });
-		DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_bb_human.png', hue: 0, caching: true });
+		DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_bb_human_normal.png', hue: 0, caching: true });
+		DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_bb_human_pale.png', hue: 0, caching: true });
+		DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_bb_human_black.png', hue: 0, caching: true });
 		DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_bt_goblin.png', hue: 0, caching: true });
 		DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_bt_human.png', hue: 0, caching: true });
 		DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_pt_ns_human.png', hue: 0, caching: true });
 		
 		
-		if(false) { //todo replace with config
+		if(Karryn.isCensored()) { 
 			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_an_goblin_dark_cen.png', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_an_goblin_normal_cen.png', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/pictures/cutin_ej_an_human_cut_black_cen.png', hue: 0, caching: true });
@@ -4164,22 +4186,17 @@ DKTools.PreloadManager.preloadKarrynPoses = function() {
 		DKTools.PreloadManager.preloadImage({ path: 'img/karryn/down_stamina/', hue: 0, caching: true });
 		DKTools.PreloadManager.preloadImage({ path: 'img/karryn/evade/', hue: 0, caching: true });
 		DKTools.PreloadManager.preloadImage({ path: 'img/karryn/kick/', hue: 0, caching: true });
-		DKTools.PreloadManager.preloadImage({ path: 'img/karryn/map/', hue: 0, caching: true });
-		DKTools.PreloadManager.preloadImage({ path: 'img/karryn/receptionist/', hue: 0, caching: true });
+		//DKTools.PreloadManager.preloadImage({ path: 'img/karryn/map/', hue: 0, caching: true });
+		//DKTools.PreloadManager.preloadImage({ path: 'img/karryn/receptionist/', hue: 0, caching: true });
 		DKTools.PreloadManager.preloadImage({ path: 'img/karryn/standby/', hue: 0, caching: true });
 		DKTools.PreloadManager.preloadImage({ path: 'img/karryn/unarmed/', hue: 0, caching: true });
 		
 		if(DEBUG_MODE) {
 			DKTools.PreloadManager.preloadImage({ path: 'img/karryn/bj_kneeling/', hue: 0, caching: true });
-			DKTools.PreloadManager.preloadImage({ path: 'img/karryn/cowgirl_karryn/', hue: 0, caching: true });
-			DKTools.PreloadManager.preloadImage({ path: 'img/karryn/cowgirl_reverse/', hue: 0, caching: true });
-			DKTools.PreloadManager.preloadImage({ path: 'img/karryn/cowgirl_lizardman/', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/karryn/defeated_guard/', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/karryn/defeated_level1/', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/karryn/defeated_level2/', hue: 0, caching: true });
-			DKTools.PreloadManager.preloadImage({ path: 'img/karryn/defeated_level3/', hue: 0, caching: true });
-			DKTools.PreloadManager.preloadImage({ path: 'img/karryn/defeated_level4/', hue: 0, caching: true });
-			//DKTools.PreloadManager.preloadImage({ path: 'img/karryn/defeated_level5/', hue: 0, caching: true });
+			
 			//DKTools.PreloadManager.preloadImage({ path: 'img/karryn/down_dogeza/', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/karryn/down_org/', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/karryn/footj/', hue: 0, caching: true });
@@ -4194,16 +4211,30 @@ DKTools.PreloadManager.preloadKarrynPoses = function() {
 			DKTools.PreloadManager.preloadImage({ path: 'img/karryn/rimming/', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/karryn/slime_piledriver/', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/karryn/thug_gb/', hue: 0, caching: true });
-			DKTools.PreloadManager.preloadImage({ path: 'img/karryn/werewolf_back/', hue: 0, caching: true });
-			DKTools.PreloadManager.preloadImage({ path: 'img/karryn/yeti_paizuri/', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/karryn/yeti_carry/', hue: 0, caching: true });
 			DKTools.PreloadManager.preloadImage({ path: 'img/karryn/waitress_table/', hue: 0, caching: true });
-			DKTools.PreloadManager.preloadImage({ path: 'img/karryn/toilet_sit_left/', hue: 0, caching: true });
-			DKTools.PreloadManager.preloadImage({ path: 'img/karryn/toilet_sit_right/', hue: 0, caching: true });
-			DKTools.PreloadManager.preloadImage({ path: 'img/karryn/toilet_sitting/', hue: 0, caching: true });
-			DKTools.PreloadManager.preloadImage({ path: 'img/karryn/toilet_stand_left/', hue: 0, caching: true });
-			DKTools.PreloadManager.preloadImage({ path: 'img/karryn/toilet_stand_right/', hue: 0, caching: true });
 			
+			
+			if(!KARRYN_PRISON_GAME_IS_DEMO) {
+				DKTools.PreloadManager.preloadImage({ path: 'img/karryn/cowgirl_karryn/', hue: 0, caching: true });
+				DKTools.PreloadManager.preloadImage({ path: 'img/karryn/cowgirl_reverse/', hue: 0, caching: true });
+				DKTools.PreloadManager.preloadImage({ path: 'img/karryn/cowgirl_lizardman/', hue: 0, caching: true });
+				DKTools.PreloadManager.preloadImage({ path: 'img/karryn/defeated_level3/', hue: 0, caching: true });
+				DKTools.PreloadManager.preloadImage({ path: 'img/karryn/defeated_level4/', hue: 0, caching: true });
+				//DKTools.PreloadManager.preloadImage({ path: 'img/karryn/defeated_level5/', hue: 0, caching: true });
+				DKTools.PreloadManager.preloadImage({ path: 'img/karryn/werewolf_back/', hue: 0, caching: true });
+				DKTools.PreloadManager.preloadImage({ path: 'img/karryn/yeti_paizuri/', hue: 0, caching: true });
+				DKTools.PreloadManager.preloadImage({ path: 'img/karryn/stripper_mouth/', hue: 0, caching: true });
+				DKTools.PreloadManager.preloadImage({ path: 'img/karryn/stripper_boobs/', hue: 0, caching: true });
+				DKTools.PreloadManager.preloadImage({ path: 'img/karryn/stripper_pussy/', hue: 0, caching: true });
+				DKTools.PreloadManager.preloadImage({ path: 'img/karryn/stripper_butt/', hue: 0, caching: true });
+				DKTools.PreloadManager.preloadImage({ path: 'img/karryn/stripper_vip/', hue: 0, caching: true });
+				DKTools.PreloadManager.preloadImage({ path: 'img/karryn/toilet_sit_left/', hue: 0, caching: true });
+				DKTools.PreloadManager.preloadImage({ path: 'img/karryn/toilet_sit_right/', hue: 0, caching: true });
+				DKTools.PreloadManager.preloadImage({ path: 'img/karryn/toilet_sitting/', hue: 0, caching: true });
+				DKTools.PreloadManager.preloadImage({ path: 'img/karryn/toilet_stand_left/', hue: 0, caching: true });
+				DKTools.PreloadManager.preloadImage({ path: 'img/karryn/toilet_stand_right/', hue: 0, caching: true });
+			}
 		}
 	
 	}

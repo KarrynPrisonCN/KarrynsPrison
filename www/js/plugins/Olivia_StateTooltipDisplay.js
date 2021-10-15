@@ -729,15 +729,19 @@ Window_StateIconTooltip.prototype.setupPassiveText = function() {
 		let passivePos = 0;
 		let newPassivesUnlockedArray = this._battler._newPassivesUnlocked;
 
-		while(passivePos < newPassivesUnlockedArray.length) {
+		while(passivePos < Math.min(RESULTS_PASSIVES_MAX_LINES, newPassivesUnlockedArray.length)) {
 			if(this._mousePosY_passives >= passivePos * lineheight && this._mousePosY_passives <= (passivePos + 1) * lineheight) {
 				break;
 			}
 			else passivePos++;
 		}
 
-		if(passivePos < newPassivesUnlockedArray.length) {
-			this._text += TextManager.skillDesc(newPassivesUnlockedArray[passivePos]) + '\n';
+		if(passivePos < Math.min(RESULTS_PASSIVES_MAX_LINES, newPassivesUnlockedArray.length)) {
+			let text = TextManager.skillDesc(newPassivesUnlockedArray[passivePos]);
+			text = TextManager.convertEscapeCharacters(text);
+			text = TextManager.convertExtraEscapeCharacters(text);
+			text += '\n';
+			this._text += text;
 		}
 		
 	}

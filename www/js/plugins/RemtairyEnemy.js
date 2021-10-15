@@ -350,6 +350,31 @@ Game_Enemy.prototype.setupSelectionVariables = function() {
 };
 
 
+Game_Enemy.prototype.startWarmups = function() {
+	let warmup = 0;
+	
+	warmup = this.warmupEval_rogueCharge();
+	this.setWarmup(SKILL_ROGUE_CHARGE_ID, warmup);
+	
+	warmup = this.warmupEval_rogueTrip();
+	this.setWarmup(SKILL_ROGUE_TRIP_ID, warmup);
+	
+	warmup = this.warmupEval_rogueDisarm();
+	this.setWarmup(SKILL_ROGUE_DISARM_ID, warmup);
+	
+	warmup = this.warmupEval_mobCallLizardman();
+	this.setWarmup(SKILL_LIZARDMAN_CHARGE_ID, warmup);
+	this.setWarmup(SKILL_LIZARDMAN_CHARGE_PLUS_ONE_ID, warmup + 1);
+	this.setWarmup(SKILL_LIZARDMAN_CHARGE_PLUS_TWO_ID, warmup + 2);
+	this.setWarmup(SKILL_LIZARDMAN_CALL_ID, warmup);
+
+	warmup = 1;
+	this.setWarmup(SKILL_ENEMY_STRONG_PUNCH_BLUNT_ID, warmup);
+	this.setWarmup(SKILL_ENEMY_WILD_SWING_BLUNT_ID, warmup);
+	this.setWarmup(SKILL_ENEMY_DOUBLE_THRUSTS_PIERCE_ID, warmup);
+	this.setWarmup(SKILL_ENEMY_LUNGE_PIERCE_ID, warmup);
+	this.setWarmup(SKILL_ENEMY_WEREWOLF_TWO_CLAWS_ID, warmup);
+};
 
 ///////
 // Enemy Type
@@ -480,10 +505,9 @@ Game_Enemy.prototype.showNoneStanceState = function() {
 ///////
 
 Game_Enemy.prototype.dontDisplayStateLogMessages = function() {
-	if(this.isVisitorType) return false;
-	if($gameParty.isInGloryBattle) return false;
-	
-	return this.isAlive();
+	if(this.isVisitorType) return true;
+	if($gameParty.isInGloryBattle) return true;
+	return !this.isAlive();
 };
 
 /////////
@@ -1036,7 +1060,7 @@ Game_Enemy.prototype.bonusPpt = function() {
 	let karrynCharm = Karryn.inBattleCharm;
 	let enemyCharmReq = this.charm;
 	
-	if(enemyCharmReq >= 999) return 0;
+	if(this.enemy().params[PARAM_CHARM_ID] >= 999) return 0;
 	
 	let pleasureGain = 0;
 	if(enemyCharmReq > karrynCharm) {
@@ -1556,11 +1580,15 @@ Game_Enemy.prototype.battlerName = function() {
 			}
 		}
 		
+		
 		if(this.isWanted) {
 			return this._wantedBattlerName + suffixFileName;
 		}
 		else if(this.isUnique || this.isBossType) {
-			return this.enemy().battlerName + suffixFileName;
+			if(this.enemy().battlerName.includes('mas_target') || this.enemy().battlerName.includes('blank'))
+				return this.enemy().battlerName;
+			else
+				return this.enemy().battlerName + suffixFileName;
 		}
 		else {
 			return this.enemyType() + '_' + this.battlerNameNum() + suffixFileName;
@@ -2129,6 +2157,7 @@ Game_Enemy.prototype.canInsertAnal = function(target, actorSkill) {
 	return target.canGetAnalInserted(actorSkill) && this.isErect;
 };
 Game_Enemy.prototype.canInsertFeet = function(target, actorSkill) { 
+	if(ConfigManager.disableFootjobs) return false;
 	return target.canGetFeetInserted(actorSkill) && this.isErect;
 };
 

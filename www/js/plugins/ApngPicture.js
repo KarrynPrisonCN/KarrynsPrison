@@ -718,7 +718,7 @@
             Object.keys(this._cachePolicy).forEach(function(name) {
 				return;
                 if (this._cachePolicy[name] === 2) {
-					if(ConfigManager.remCutinsSmootherLoading && !ConfigManager.remCutinsFast)
+					if(ConfigManager.remCutinsSmootherLoading && !ConfigManager.remCutinsDisabled && !ConfigManager.remCutinsFast)
 						this.createSprite(name)
                 }
             }, this);
@@ -891,6 +891,7 @@
      */
     Sprite.prototype.addApngChild = function(name) {
         this.destroyApngIfNeed();
+		SceneManager.setupApngLoaderIfNeed();
         this._apngSprite = this.loadApngSprite(name);
         if (this._apngSprite) {
             if (this.isApngCache()) {

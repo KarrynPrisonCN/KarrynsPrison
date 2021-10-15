@@ -126,6 +126,7 @@ Wanted_Enemy.prototype.initialize = function(enemy, date, wantedListId) {
 	this._enemyRecordAnalCreampieCount = enemy._enemyRecordAnalCreampieCount;
 	this._enemyRecordBeingServedInGloryHoleCount = enemy._enemyRecordBeingServedInGloryHoleCount;
 	this._enemyRecordGloryBattleEjaculationCount = enemy._enemyRecordGloryBattleEjaculationCount;
+	this._enemyRecordStripClubCondomEjaculationCount = enemy._enemyRecordStripClubCondomEjaculationCount;
 	this._enemyRecordTotalEjaculationCount = enemy._enemyRecordTotalEjaculationCount;
 	this._enemyRecordOrgasmPresenceCount = enemy._enemyRecordOrgasmPresenceCount;
 	this._enemyRecordMasturbatedInBattlePresenceCount = enemy._enemyRecordMasturbatedInBattlePresenceCount;
@@ -247,6 +248,7 @@ Game_Enemy.prototype.setupWanted = function(wantedStatus) {
 		this._enemyRecordAnalCreampieCount = wantedStatus._enemyRecordAnalCreampieCount;
 		this._enemyRecordGloryBattleEjaculationCount = wantedStatus._enemyRecordGloryBattleEjaculationCount;
 		this._enemyRecordBeingServedInGloryHoleCount = wantedStatus._enemyRecordBeingServedInGloryHoleCount;
+		this._enemyRecordStripClubCondomEjaculationCount = wantedStatus._enemyRecordStripClubCondomEjaculationCount;
 		this._enemyRecordTotalEjaculationCount = wantedStatus._enemyRecordTotalEjaculationCount;
 		this._enemyRecordOrgasmPresenceCount = wantedStatus._enemyRecordOrgasmPresenceCount;
 		this._enemyRecordMasturbatedInBattlePresenceCount = wantedStatus._enemyRecordMasturbatedInBattlePresenceCount;
@@ -352,6 +354,7 @@ Game_Enemy.prototype.setupEnemyRecords = function() {
 	this._enemyRecordAnalCreampieCount = 0;
 	this._enemyRecordBeingServedInGloryHoleCount = 0;
 	this._enemyRecordGloryBattleEjaculationCount = 0;
+	this._enemyRecordStripClubCondomEjaculationCount = 0;
 	this._enemyRecordTotalEjaculationCount = 0;
 	this._enemyRecordOrgasmPresenceCount = 0;
 	this._enemyRecordMasturbatedInBattlePresenceCount = 0;
@@ -409,6 +412,7 @@ Game_Enemy.prototype.setupEnemyTempRecords = function() {
 	this._enemyTempRecordFaceBukkakeCount = 0;
 	this._enemyTempRecordTotalEjaculationCount = 0;
 	this._enemyTempRecordBeingServedInGloryHoleCount = 0;
+	this._enemyTempRecordStripClubCondomEjaculationCount = 0;
 	
 	this._enemyTempRecordKickCounteredCount = 0;
 	
@@ -785,6 +789,19 @@ Game_Enemy.prototype.addToEnemyGloryBattleEjaculationCountRecord = function(acto
 			let wantedStatus = Prison.getWantedEnemyById(this.getWantedId());
 			wantedStatus._enemyRecordGloryBattleEjaculationCount = this._enemyRecordGloryBattleEjaculationCount;
 		}
+	}
+};
+
+Game_Enemy.prototype.addToEnemyStripClubCondomEjaculationCountRecord = function(actor) {
+	this._enemyRecordStripClubCondomEjaculationCount++;
+	this._enemyTempRecordStripClubCondomEjaculationCount++;
+	this._enemyRecordTotalEjaculationCount++;
+	this._enemyTempRecordTotalEjaculationCount++;
+
+	if(this.isWanted) {
+		let wantedStatus = Prison.getWantedEnemyById(this.getWantedId());
+		wantedStatus._enemyRecordStripClubCondomEjaculationCount = this._enemyRecordStripClubCondomEjaculationCount;
+		wantedStatus._enemyRecordTotalEjaculationCount = this._enemyRecordTotalEjaculationCount;
 	}
 };
 

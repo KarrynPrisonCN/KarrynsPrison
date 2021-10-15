@@ -182,7 +182,7 @@ const CLOTHES_RECEPTIONIST_START = 400;
 const CLOTHES_RECEPTIONIST_MAXSTAGES = 3;
 
 const CLOTHES_STRIPPER_START = 100;
-const CLOTHES_STRIPPER_MAXSTAGES = 4;
+const CLOTHES_STRIPPER_MAXSTAGES = 3;
 
 const PANTIES_STARTER_ID = 1;
 
@@ -655,6 +655,10 @@ Karryn.emoteMapPose = function(goingToSleep, goingToOnani, calledFromCommons) {
 	$gameActors.actor(ACTOR_KARRYN_ID).emoteMapPose(goingToSleep, goingToOnani, calledFromCommons);
 };
 
+Karryn.moanMasterManager = function() { 
+	$gameActors.actor(ACTOR_KARRYN_ID).moanMasterManager();
+};
+
 
 Karryn.setAllowTachieUpdate = function(status) { 
 	$gameActors.actor(ACTOR_KARRYN_ID).setAllowTachieUpdate(status);
@@ -688,6 +692,10 @@ Karryn.setKarrynReceptionistSprite = function() {
 Karryn.hasTachieCutInOnScreen = function() { 
 	return $gameActors.actor(ACTOR_KARRYN_ID).hasTachieCutInOnScreen();
 };
+Karryn.setTachieCutIn = function(n) { 
+	$gameActors.actor(ACTOR_KARRYN_ID).setTachieCutIn(n);
+};
+
 
 Karryn.isWearingGlovesAndHat = function() { 
 	return $gameActors.actor(ACTOR_KARRYN_ID).isWearingGlovesAndHat();
@@ -737,6 +745,11 @@ Karryn.isInDownStaminaPose = function() {
 Karryn.isInSexPose = function() { 
 	return $gameActors.actor(ACTOR_KARRYN_ID).isInSexPose();
 };
+Karryn.isInShowSpankMarkPose = function() { 
+	return $gameActors.actor(ACTOR_KARRYN_ID).isInShowSpankMarkPose();
+};
+
+
 Karryn.isInNoStaminaIsDefeatPose = function() { 
 	return $gameActors.actor(ACTOR_KARRYN_ID).isInNoStaminaIsDefeatPose();
 };
@@ -905,9 +918,6 @@ Karryn.isInToiletStandRightPose = function() {
 	return $gameActors.actor(ACTOR_KARRYN_ID).isInToiletStandRightPose();
 };
 
-Karryn.isInStripperStandbyPose = function() { 
-	return $gameActors.actor(ACTOR_KARRYN_ID).isInStripperStandbyPose();
-};
 Karryn.isInStripperMouthPose = function() { 
 	return $gameActors.actor(ACTOR_KARRYN_ID).isInStripperMouthPose();
 };
@@ -1035,6 +1045,9 @@ Karryn.addHornyState = function() {
 Karryn.wasDefeatedYesterday = function() { 
 	return $gameActors.actor(ACTOR_KARRYN_ID).wasDefeatedYesterday();
 };
+Karryn.wasDefeatedToday = function() { 
+	return $gameActors.actor(ACTOR_KARRYN_ID).wasDefeatedToday();
+};
 
 
 Karryn.orgasmLockOn = function() { 
@@ -1113,6 +1126,7 @@ Object.defineProperty(Game_Actor.prototype, 'inBattleCharm', {
 		
 		if(this.isUsingThisTitle(TITLE_ID_TOILET_EAT_ORGASM)) multipler *= 1.07;
 		else if(this.isUsingThisTitle(TITLE_ID_DAY_COUNT_THREE)) multipler *= 0.73;
+		else if(this.isUsingThisTitle(TITLE_ID_STRIP_CLUB_REP)) multipler *= 1.15;
 		
 		if(this.isInEnemiesJoinArousedAndStayArousedPose()) {
 			multipler *= 1.4;
@@ -1447,7 +1461,7 @@ Game_Actor.prototype.setupKarrynSkills = function() {
 	for(let i = 51; i <= 63; i++) {
 		this.learnSkill(i);
 	}
-	this.learnSkill(SKILL_LIGHT_KICK_ID);
+	this.learnSkill(SKILL_KARRYN_LIGHT_KICK_ID);
 	
 	//counterattack skills
 	for(let i = 1059; i <= 1064; i++) {
@@ -1921,9 +1935,9 @@ Game_Actor.prototype.fatigueGainRate = function() {
 	if(this.isUsingStoreItem(STORE_ITEM_ENERGY_DRINK)) rate *= 0.8;
 	
 	if(this.hasPassive(PASSIVE_ORGASM_ML_TWO_ID) && this._todayOrgasmML > 0)
-		rate *= 1 + Math.min(0.33, this._todayOrgasmML * 0.0003);
+		rate *= 1 + Math.min(1, this._todayOrgasmML * 0.0015);
 	if(this.hasPassive(PASSIVE_HJ_COUNT_ONE_ID) && this._tempRecordHandjobPeople > 0)
-		rate *= 1 + Math.min(0.33, this._tempRecordHandjobPeople * 0.01);
+		rate *= 1 + Math.min(0.33, this._tempRecordHandjobPeople * 0.015);
 	
 	if(this.hasGift(GIFT_ID_EMPEROR_LV4_FATIGUE_GAIN)) rate *= 0.85;
 	
@@ -1941,7 +1955,7 @@ Game_Actor.prototype.fatigueRecoveryRate = function() {
 	rate *= this.titlesfatigueRecoveryRate();
 	
 	if(this.hasPassive(PASSIVE_ORGASM_ML_TWO_ID) && this._todayOrgasmML > 0)
-		rate *= 1 + Math.min(1, this._todayOrgasmML * 0.003);
+		rate *= 1 + Math.min(0.6, this._todayOrgasmML * 0.002);
 	
 	if(Prison.easyMode()) rate *= 1.5;
 	
@@ -1955,7 +1969,7 @@ Game_Actor.prototype.fatigueRecoveryNumber = function() {
 	else 
 		num = this.edictsFatigueRestOutside();
 
-	if(this.isAroused() && !this._todayMasturbatedBeforeRest) {
+	if(this.isAroused() && !this._todayMasturbatedBeforeRest && !$gameSwitches.value(SWITCH_BOSS_CLEAR_BONUS_ID)) {
 		num *= this.fatigueRecoveryNumberRateWhenAroused();
 	}
 
@@ -2321,8 +2335,8 @@ Game_Actor.prototype.paramRate = function(paramId) {
 			if(this.isUsingThisTitle(TITLE_ID_GOURMET_FOODIE)) rate *= 1.075;
 			else rate *= 1.05;
 		}
-			
 	}
+
 	
 	if(this.isUsingStoreItem(STORE_ITEM_ENERGY_DRINK)) rate *= 0.95;
 	
@@ -3163,9 +3177,9 @@ Game_Actor.prototype.counterTotal = function() {
 
 Game_Actor.prototype.overblowProtectionRate = function() {
 	let op = 0.75;
-	
+
 	if(Prison.easyMode()) op -= 0.15;
-	
+
 	if(this.isUsingHalberd()) {
 		if(this.hasEdict(EDICT_HALBERD_DEFENSIVE_FOUR)) op -= 0.15;
 		else if(this.hasEdict(EDICT_HALBERD_DEFENSIVE_TWO)) op -= 0.1;
@@ -3174,28 +3188,29 @@ Game_Actor.prototype.overblowProtectionRate = function() {
 		if(this.hasEdict(EDICT_UNARMED_DEFENSE_TRAINING_II)) op -= 0.08;
 	}
 	
-	
 	if(this.hasEdict(EDICT_RESEARCH_YETI_STUDY)) op -= 0.07;
-	
+
 	if(this.hasEdict(EDICT_SPEC_DEFENSIVE_MIND_FOCUS) && this.isStateAffected(STATE_FOCUS_ID)) 
 		op -= this.willpowerFocusOverblowProtectionEffect();
-	
-	op -= (this._accessoryBonusLvl - 1) * 0.04
-	
+
+	if(this._accessoryBonusLvl > 0)
+		op -= (this._accessoryBonusLvl - 1) * 0.04
+
+
 	if(this.isEquippingThisAccessory(NECKLACE_RUBY_ID)) {
 		if(this.isUsingThisTitle(TITLE_ID_ASPIRING_HERO)) op -= 0.05;
 		else op -= 0.1;
 	}
-	
+
 	if(this.hasGift(GIFT_ID_EMPEROR_LV3_OVERBLOW_PROTECTION)) op -= 0.07;
-	
+
 	if(this.isGuarding) {
 		op *= 0.5;
 	}
 	else if(this.isStateAffected(STATE_COUNTER_STANCE_ID)) {
 		op *= 0.8;
 	}
-	
+
 	return Math.max(op, 0.1);
 };
 
@@ -3505,6 +3520,7 @@ Game_Actor.prototype.getTachieAnalToyExtension = function() {
 /////////
 
 Game_Actor.prototype.getTachieSpankMarkRightButtId = function() {
+	if(!this.isInShowSpankMarkPose()) return 0;
 	let spankMarkId = 0;
 	if(this._tempRecordSpankMarksRightButtcheek >= 12)
 		spankMarkId = 3;
@@ -3515,6 +3531,7 @@ Game_Actor.prototype.getTachieSpankMarkRightButtId = function() {
 	return spankMarkId;
 };
 Game_Actor.prototype.getTachieSpankMarkLeftButtId = function() {
+	if(!this.isInShowSpankMarkPose()) return 0;
 	let spankMarkId = 0;
 	if(this._tempRecordSpankMarksLeftButtcheek >= 12)
 		spankMarkId = 3;
@@ -3523,6 +3540,395 @@ Game_Actor.prototype.getTachieSpankMarkLeftButtId = function() {
 	if(this._tempRecordSpankMarksLeftButtcheek >= 2)
 		spankMarkId = 1;
 	return spankMarkId;
+};
+
+/////////
+// Draw Tachie
+
+// Imported from Saba_Tachie.js, all credits to Saba
+Game_Actor.prototype.drawTachieCache = function(cache, bitmap, x, y, rect, scale) {
+	let xx = -rect.x < 0 ? 0 : -rect.x;
+	let yy = -rect.y < 0 ? 0 : -rect.y;
+	let ww = rect.width / scale;
+	let w = rect.width;
+	if (w <= 0 || w + xx > cache.width) {
+		w = cache.width - xx;
+		ww = w / scale;
+	}
+	if (xx + ww > cache.width) {
+		let xScale = (cache.width - xx) * 1.0 / ww;
+		ww = cache.width - xx;
+		w *= xScale;
+	}
+	let hh = rect.height / scale;
+	let h = rect.height;
+	if (h <= 0 || h + yy > cache.height) {
+		h = cache.height - yy;
+		hh = h / scale;
+	}
+	if (yy + hh > cache.height) {
+		let yScale = (cache.height - yy) * 1.0 / hh;
+		hh = cache.height - yy;
+		h *= yScale;
+	}
+	//console.log('' + xx + ' ' + yy + ' ' + ww + ' ' + hh + ' ' + x + ' ' + y + ' ' + w + ' ' + h)
+	
+	//let offsetArray = actor.getBattlePoseOffetArray();
+	//x += offsetArray[0];
+	//xx -= offsetArray[0];
+	//w += offsetArray[0];
+	
+	bitmap.blt(cache, xx, yy, ww, hh, x, y, w, h);
+};
+
+Game_Actor.prototype.drawTachieBody = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieBodyFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieHead = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieHeadFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieGlasses = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieGlassesFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieTie = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieTieFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieLeftArm = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieLeftArmFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieRightArm = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieRightArmFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieHat = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieHatFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieClitToy = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieClitToyFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachiePussyToy = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachiePussyToyFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieAnalToy = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieAnalToyFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieWeapon = function(saba, bitmap) {
+	//var tone = Karryn.tachieHalberdTone();
+	//saba.drawTachieFileWithTone(this.tachieWeaponFile(), bitmap, this, tone);
+	saba.drawTachieFile(this.tachieWeaponFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachiePanties = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachiePantiesFile(), bitmap, this);
+};
+
+Game_Actor.prototype.drawTachieHolePussy = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieHolePussyFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieHoleAnus = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieHoleAnusFile(), bitmap, this);
+};
+
+Game_Actor.prototype.drawTachieClothes = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieClothesFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieSkirt = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieSkirtFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieLegs = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieLegsFile(), bitmap, this);
+};
+
+Game_Actor.prototype.drawTachieMug = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieMugFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieStraw = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieStrawFile(), bitmap, this);
+};
+
+Game_Actor.prototype.drawTachieLeftHole = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieLeftHoleFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieRightHole = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieRightHoleFile(), bitmap, this);
+};
+
+Game_Actor.prototype.drawTachieVisitorA = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieVisitorAFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieVisitorB = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieVisitorBFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieVisitorC = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieVisitorCFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieVisitorD = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieVisitorDFile(), bitmap, this);
+};
+
+Game_Actor.prototype.drawTachiePole = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachiePoleFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieCondomBelt = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieCondomBeltFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieCondomBra = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieCondomBraFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieCondomChikubi = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieCondomChikubiFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieCondomHead = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieCondomHeadFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieCondomFloor = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieCondomFloorFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieCondomLeg = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieCondomLegFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieCondomPantsu = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieCondomPantsuFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieCondomButt = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieCondomButtFile(), bitmap, this);
+};
+
+Game_Actor.prototype.drawTachieBack = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieBackEFile(), bitmap, this);
+	saba.drawTachieFile(this.tachieBackDFile(), bitmap, this);
+	saba.drawTachieFile(this.tachieBackCFile(), bitmap, this);
+	saba.drawTachieFile(this.tachieBackBFile(), bitmap, this);
+	saba.drawTachieFile(this.tachieBackAFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieFront = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieFrontEFile(), bitmap, this);
+	//saba.drawTachieFile(this.tachieSemenFrontEFile(), bitmap, this);
+	saba.drawTachieFile(this.tachieFrontDFile(), bitmap, this);
+	saba.drawTachieFile(this.tachieSemenFrontDFile(), bitmap, this);
+	saba.drawTachieFile(this.tachieFrontCFile(), bitmap, this);
+	saba.drawTachieFile(this.tachieSemenFrontCFile(), bitmap, this);
+	saba.drawTachieFile(this.tachieFrontBFile(), bitmap, this);
+	saba.drawTachieFile(this.tachieSemenFrontBFile(), bitmap, this);
+	saba.drawTachieFile(this.tachieFrontAFile(), bitmap, this);
+	saba.drawTachieFile(this.tachieSemenFrontAFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieBoobs = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieBoobsFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieLeftBoob = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieLeftBoobFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieRightBoob = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieRightBoobFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieBoobsErection = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieBoobsErectionFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachiePubic = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachiePubicFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieButt = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieButtFile(), bitmap, this);
+};
+
+Game_Actor.prototype.drawTachieCock = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieCockFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieCockBoobs = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieCockBoobsFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieCockMouth = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieCockMouthFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieCockFeet = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieCockFeetFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieCockPussy = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieCockPussyFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieCockAnal = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieCockAnalFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieCockRightArm = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieCockRightArmFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieCockLeftArm = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieCockLeftArmFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieHoppe = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieHoppeFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieSweat = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieSweatFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieHair = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieHairFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieEyes = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieEyesFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieEyebrows = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieEyebrowsFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieMouth = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieMouthFile(), bitmap, this);
+};
+
+Game_Actor.prototype.drawTachieSpankMarkLeftButt = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieSpankMarkLeftButtFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieSpankMarkRightButt = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieSpankMarkRightButtFile(), bitmap, this);
+};
+
+Game_Actor.prototype.drawTachieSemenWet = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieSemenWetFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieWetPanties = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieWetPantiesFile(), bitmap, this);
+};
+
+Game_Actor.prototype.drawTachieSemenCrotch = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieSemenCrotchFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieSemenCrotchPanties = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieSemenCrotchPantiesFile(), bitmap, this);
+};
+
+Game_Actor.prototype.drawTachieSemenRightArm = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieSemenRightArmFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieSemenLeftArm = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieSemenLeftArmFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieSemenRightLeg = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieSemenRightLegFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieSemenLeftLeg = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieSemenLeftLegFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieSemenBoobs = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieSemenBoobsFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieSemenRightBoob = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieSemenRightBoobFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieSemenLeftBoob = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieSemenLeftBoobFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieSemenBelly = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieSemenBellyFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieSemenBack = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieSemenBackFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieSemenDesk = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieSemenDeskFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieSemenButt = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieSemenButtFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieSemenButtAreas = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieSemenButtTopLeftFile(), bitmap, this);
+	saba.drawTachieFile(this.tachieSemenButtBottomLeftFile(), bitmap, this);
+	saba.drawTachieFile(this.tachieSemenButtTopRightFile(), bitmap, this);
+	saba.drawTachieFile(this.tachieSemenButtBottomRightFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieSemenButtLeft = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieSemenButtLeftFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieSemenButtRight = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieSemenButtRightFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieSemenAnal = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieSemenAnalFile(), bitmap, this);
+};
+
+Game_Actor.prototype.drawTachieSemenFace = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieSemenFaceFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieSemenMouth = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieSemenMouthFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieSemenCockMouth = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieSemenCockMouthFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieSemenCockBoobs = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieSemenCockBoobsFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieSemenCockLeftArm = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieSemenCockLeftArmFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieSemenCockRightArm = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieSemenCockRightArmFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieSemenCockPussy = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieSemenCockPussyFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieSemenCockAnal = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieSemenCockAnalFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieSemenCockFeet = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieSemenCockFeetFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieSemenCockNormal = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieSemenCockNormalFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieSemenHoleLeft = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieSemenHoleLeftFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieSemenHoleRight = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieSemenHoleRightFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieSemenToiletSeat = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieSemenToiletSeatFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieWetToiletSeat = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieWetToiletSeatFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieGlorySemenLeftWall = function(saba, bitmap) {
+	for(let i = 0; i < this._liquidGloryCumOnLeftWall.length; ++i)
+		saba.drawTachieFile(this.tachieSemenGloryLeftWallFile(i), bitmap, this);
+};
+Game_Actor.prototype.drawTachieGlorySemenRightWall = function(saba, bitmap) {
+	for(let i = 0; i < this._liquidGloryCumOnRightWall.length; ++i)
+		saba.drawTachieFile(this.tachieSemenGloryRightWallFile(i), bitmap, this);
+};
+Game_Actor.prototype.drawTachieGlorySemenLeftHole = function(saba, bitmap) {
+	for(let i = 0; i < this._liquidGloryCumOnLeftHole.length; ++i)
+		saba.drawTachieFile(this.tachieSemenGloryLeftHoleFile(i), bitmap, this);
+};
+Game_Actor.prototype.drawTachieGlorySemenRightHole = function(saba, bitmap) {
+	for(let i = 0; i < this._liquidGloryCumOnRightHole.length; ++i)
+		saba.drawTachieFile(this.tachieSemenGloryRightHoleFile(i), bitmap, this);
+};
+Game_Actor.prototype.drawTachieGlorySemenLeftToilet = function(saba, bitmap) {
+	for(let i = 0; i < this._liquidGloryCumOnLeftToilet.length; ++i)
+		saba.drawTachieFile(this.tachieSemenGloryLeftToiletFile(i), bitmap, this);
+};
+Game_Actor.prototype.drawTachieGlorySemenRightToilet = function(saba, bitmap) {
+	for(let i = 0; i < this._liquidGloryCumOnRightToilet.length; ++i)
+		saba.drawTachieFile(this.tachieSemenGloryRightToiletFile(i), bitmap, this);
+};
+
+Game_Actor.prototype.drawTachieDroolMouth = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieDroolMouthFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieDroolFingers = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieDroolFingersFile(), bitmap, this);
+};
+Game_Actor.prototype.drawTachieDroolNipples = function(saba, bitmap) {
+	saba.drawTachieFile(this.tachieDroolNipplesFile(), bitmap, this);
+};
+
+Game_Actor.prototype.drawTachieFace = function(saba, bitmap, tachieFace) {
+	if(tachieFace == 0) {
+		tachieFace = this.tachieFace;
+	}
+	if(tachieFace == 0) {
+		return;
+	}
+	let file = this.tachieBaseId + 'face_' + tachieFace;
+	saba.drawTachieFile(file, bitmap, this);
 };
 
 ///////
@@ -3585,15 +3991,32 @@ Game_Actor.prototype.postOrgasmToys = function(orgasmCount) {
 	let chance = orgasmCount - 1;
 	if(this.hasPassive(PASSIVE_TOYS_ORGASM_TWO_ID))
 		chance = 0;
-		
+	
+	/*
 	if(this.isWearingClitToy() && Math.random() < (chance * 0.25)) {
 		this.removeClitToy();
 	}
-	if(this.isWearingPussyToy() && Math.random() < (chance * 0.25)) {
+	*/
+	if(this.isWearingPussyToy() && Math.random() < (chance * 0.2)) {
 		this.removePussyToy();
 	}
-	if(this.isWearingAnalToy() && Math.random() < (chance * 0.25)) {
+	if(this.isWearingAnalToy() && Math.random() < (chance * 0.2)) {
 		this.removeAnalToy();
+	}
+	
+	if($gameParty.isInGloryBattle) {
+		if(!this.isWearingPussyToy()) {
+			if(this.tachieLeftArm.includes('toyP'))
+				this.toiletBattle_resetLeftArmToNormal();
+			if(this.tachieRightArm.includes('toyP'))
+				this.toiletBattle_resetRightArmToNormal();
+		}
+		if(!this.isWearingAnalToy()) {
+			if(this.tachieLeftArm.includes('toyA'))
+				this.toiletBattle_resetLeftArmToNormal();
+			if(this.tachieRightArm.includes('toyA'))
+				this.toiletBattle_resetRightArmToNormal();
+		}
 	}
 };
 
@@ -3973,7 +4396,7 @@ Game_Actor.prototype.getPantiesType = function() {
 
 Game_Actor.prototype.showPantiesStateIcon = function() { 
 	if(this.isNaked() || !DEBUG_MODE) return false;
-	else if(this.isInWaitressSexPose() || $gameParty.isInGloryBattle) return false;
+	else if(this.isInWaitressSexPose() || $gameParty.isInGloryBattle || $gameParty.isInStripperBattle) return false;
 	else if(this.isInCombatPose() || this.isInDownPose() || this.isInJobPose()) return true;
 	else return false;
 };
@@ -4067,6 +4490,9 @@ Game_Actor.prototype.refreshNightModeSettings = function() {
 			else if(semenRightArmId.includes('2')) points += 1;
 		}
 	}
+	else {
+		return;
+	}
 
 	if(points >= 5) {
 		$gameSwitches.setValue(SWITCH_NIGHT_MODE_ID, true);
@@ -4087,6 +4513,18 @@ Game_Actor.prototype.refreshNightModeSettings = function() {
 		
 		if($gameVariables.value(VARIABLE_FIRST_EXHIB_PROGRESS_ID) === 0) 
 			$gameVariables.setValue(VARIABLE_FIRST_EXHIB_PROGRESS_ID, 1);
+		
+		this._todayTriggeredNightMode = true;
+	}
+	else if(this._todayTriggeredNightMode) {
+		if(this.isClothingMaxDamaged()) {
+			this._todayTriggeredNightMode = false;
+			this.refreshNightModeSettings();
+		}
+		else {
+			this.damageClothing(CLOTHES_WARDEN_START);
+			this.refreshNightModeSettings();
+		}
 	}
 	else {
 		this.resetNightModeSettings();
@@ -4095,6 +4533,7 @@ Game_Actor.prototype.refreshNightModeSettings = function() {
 Game_Actor.prototype.resetNightModeSettings = function() { 
 	$gameSwitches.setValue(SWITCH_NIGHT_MODE_ID, false);
 	$gameSwitches.setValue(SWITCH_NIGHT_MODE_EB_HALLWAY_ID, false);
+	this._todayTriggeredNightMode = false;
 };
 
 Game_Actor.prototype.stepsForTurn = function() {
@@ -4676,6 +5115,7 @@ Game_Actor.prototype.isUsingAnyStoreItem = function() {
 
 Game_Actor.prototype.resetTodayRecords = function() {
 	this._startOfInvasionBattle = false;
+	this._todayTriggeredNightMode = false;
 	
 	this._todayTalkedAtAboutMouthPeople = 0;
 	this._todayTalkedAtAboutBoobsPeople = 0;
@@ -4795,6 +5235,7 @@ Game_Actor.prototype.resetTodayRecords = function() {
 	
 	this._todaySubduedMetalEnemiesCount = 0;
 	this._todayMasturbatedBeforeRest = false;
+	this._todayMasturbatedUsingHalberdCount = 0;
 	this._todayServedGuardInBar = 0;
 	this._todayServedGuardInStripClub = 0;
 	this._todayServedGuardInGuardBattle = 0;
@@ -4802,7 +5243,11 @@ Game_Actor.prototype.resetTodayRecords = function() {
 	this._todayServedGuardInGuardDefeat = 0;
 	this._todayToiletBattleSexualPartners = 0;
 	this._todayLevelTwoDefeatSexualPartners = 0;
+	this._todayStripperBattleCondomWornCount = 0;
+	
 	$gameVariables.setValue(VARIABLE_DEFEATED_SPRITES_ID, 0);
+	$gameVariables.setValue(VARIABLE_STRIP_CLUB_STAGE_CONDOMS_ID, 0);
+	$gameVariables.setValue(VARIABLE_STRIP_CLUB_TOTAL_CONDOMS_ID, 0);
 };
 
 // Yesterday Defeat
@@ -4810,6 +5255,11 @@ Game_Actor.prototype.wasDefeatedYesterday = function() {
 	return $gameParty._lastDefeatedDate + 1 >= Prison.date;
 };
 
+// Today Defeated
+// For first defeated common event
+Game_Actor.prototype.wasDefeatedToday = function() {
+	return $gameSwitches.value(SWITCH_TODAY_WAITRESS_DEFEAT_ID) || $gameSwitches.value(SWITCH_TODAY_RECEPTIONIST_DEFEAT_ID) || $gameSwitches.value(SWITCH_TODAY_GLORYHOLE_DEFEAT_ID) || $gameSwitches.value(SWITCH_TODAY_STRIPPER_DEFEAT_ID);
+};
 
 /////////
 // Metal Exp Rate
@@ -6112,6 +6562,7 @@ Game_Actor.prototype.canGetLeftHandInserted = function(actorSkill) {
 };
 
 Game_Actor.prototype.canGetFeetInserted = function(actorSkill) { 
+	if(ConfigManager.disableFootjobs) return false;
 	let req = this.footjobCockDesireRequirement();
 	let insertable = actorSkill || this.isClothingAtStageAccessFeet();
 

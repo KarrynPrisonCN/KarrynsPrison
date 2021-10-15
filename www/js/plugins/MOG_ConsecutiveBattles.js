@@ -723,14 +723,16 @@ TimeNumber.prototype.refreshTimeNumber = function() {
 	if(this._minuteValue === 0 && this._secondValue == '00') {return};
 	if(!showTopRightTimer) {
 		this.removeChild(this._layout);
-		this._number.bitmap.clear();
-		this.removeChild(this._number);
+		if(this._number) {
+			this._number.bitmap.clear();
+			this.removeChild(this._number);
+		}
 		this._minuteValue = 0;
 		this._secondValue = '00';
 		return;
 	}
 
-	if(showTopRightTimer)
+	if(showTopRightTimer && this._number)
 		this._number.bitmap.clear();	
 	this._minuteValue = $gameParty.getTimeMinutesNumber();
 	this._secondValue = '' + $gameParty.getTimeSecondsNumber();

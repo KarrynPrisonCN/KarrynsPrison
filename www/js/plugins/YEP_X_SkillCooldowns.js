@@ -899,12 +899,11 @@ Game_BattlerBase.prototype.setWarmup = function(skillId, value) {
 };
 
 Game_BattlerBase.prototype.startWarmups = function() {
+	return;
     if (this._warmupTurns === undefined) this.clearWarmups();
 	if(this.isActor()) return;
-    //for (var i = 0; i < this.allSkills().length; ++i) {
-    //  var skill = this.allSkills()[i];
-	for (let i = SKILL_WARMUP_POTENTIAL_START_ID; i < SKILL_WARMUP_POTENTIAL_END_ID; ++i) {
-      var skill = this.skills()[i];
+    for (var i = 0; i < this.allSkills().length; ++i) {
+      var skill = this.allSkills()[i];
       if (!skill) continue;
       var warmup = skill.warmup;
       if (skill.warmupEval.length > 0) {

@@ -271,7 +271,9 @@ const STATE_COCKPET_TARGET_NOT_ERECT_ID = 193;
 const STATE_COCKPET_TARGET_ERECT_COUNTED_ID = 194;
 const STATE_JUST_GOKKUND_ID = 195;
 const STATE_DANCE_COMBO_COUNT_ID = 196;
-const STATE_STAGE_CONDOM_COUNTER_ID = 197;
+const STATE_STRIPPER_STANDBY_ID = 197;
+const STATE_STRIPPER_MOUTH_POSE_SETUP_ID = 198;
+const STATE_PATRON_JUST_GOT_RID_OF_CONDOM_ID = 199;
 
 const BRACELET_ROPE_ID = 17;
 const BRACELET_STRING_ID = 18;
@@ -379,6 +381,10 @@ const JUST_SKILLTYPE_KARRYN_TOY_PLAY_CLIT = 73;
 const JUST_SKILLTYPE_KARRYN_TOY_PLAY_PUSSY = 74;
 const JUST_SKILLTYPE_KARRYN_TOY_PLAY_ANAL = 75;
 
+const JUST_SKILLTYPE_ENEMY_TOSSED_CONDOM_STAGE = 80;
+const JUST_SKILLTYPE_ENEMY_TIPPED_CONDOM = 81;
+const JUST_SKILLTYPE_KARRYN_STRIP_CLOTHES = 82;
+
 //Skill IDs
 
 const SKILL_END_MENTAL_PHASE_ID = 2;
@@ -389,13 +395,20 @@ const SKILL_DEBUG_SURRENDER_ID = 13;
 const SKILL_DEBUG_DEFEAT_ALL_ID = 14;
 const SKILL_DEBUG_STRIP_CLOTHES_ID = 15;
 
-const SKILL_SLAM_1_ID = 53;
-const SKILL_CLEAVE_1_ID = 57;
-const SKILL_CLEAVE_2_ID = 58;
-const SKILL_SKEWER_1_ID = 61;
-const SKILL_SKEWER_2_ID = 62;
-const SKILL_SLAM_2_ID = 63;
-const SKILL_LIGHT_KICK_ID = 68;
+const SKILL_KARRYN_HALBERD_STRIKE_ID = 51;
+const SKILL_KARRYN_HEAD_STRIKE_ID = 52;
+const SKILL_KARRYN_SLAM_1_ID = 53;
+const SKILL_KARRYN_COCK_KICK_ID = 54;
+const SKILL_KARRYN_HALBERD_SLASH_ID = 55;
+const SKILL_KARRYN_ARM_SLASH_ID = 56;
+const SKILL_KARRYN_CLEAVE_1_ID = 57;
+const SKILL_KARRYN_CLEAVE_2_ID = 58;
+const SKILL_KARRYN_HALBERD_THRUST_ID = 59;
+const SKILL_KARRYN_LEG_THRUST_ID = 60;
+const SKILL_KARRYN_SKEWER_1_ID = 61;
+const SKILL_KARRYN_SKEWER_2_ID = 62;
+const SKILL_KARRYN_SLAM_2_ID = 63;
+const SKILL_KARRYN_LIGHT_KICK_ID = 68;
 
 const SKILL_FIX_CLOTHES_ID = 70;
 const SKILL_REVITALIZE_ID = 71;
@@ -469,6 +482,14 @@ const SKILL_KARRYN_FOOTJOB_SELECTOR_ID = 1055;
 const SKILL_KARRYN_FOOTJOB_SELECTOR_CANT_ID = 1056;
 const SKILL_KARRYN_START_FOOTJOB_ID = 1057;
 const SKILL_KARRYN_FOOTJOB_POSESKILL_ID = 1058;
+
+const SKILL_KARRYN_COUNTER_HALBERD_STRIKE_ID = 1059;
+const SKILL_KARRYN_COUNTER_HALBERD_SLASH_ID = 1060;
+const SKILL_KARRYN_COUNTER_HALBERD_THRUST_ID = 1061;
+const SKILL_KARRYN_COUNTER_KICK_STRIKE_ID = 1062;
+const SKILL_KARRYN_COUNTER_KICK_SLASH_ID = 1063;
+const SKILL_KARRYN_COUNTER_KICK_THRUST_ID = 1064;
+
 const SKILL_KARRYN_COCK_STARE_SELECTOR_ID = 1065;
 const SKILL_KARRYN_COCK_STARE_SELECTOR_CANT_ID = 1066;
 const SKILL_KARRYN_COCK_STARE_ONE_ID = 1067;
@@ -500,15 +521,29 @@ const SKILL_COUNTER_FIX_CLOTHES_ID = 1090;
 const SKILL_KARRYN_COCK_STARE_TOILET_ID = 1091;
 const SKILL_KARRYN_COCK_PETTING_TOILET_ID = 1092;
 
+const SKILL_ROGUE_CHARGE_ID = 1157;
+const SKILL_ROGUE_TRIP_ID = 1158;
+const SKILL_ROGUE_DISARM_ID = 1159;
 const SKILL_CARGILL_CHARGE_ID = 1165;
 const SKILL_CARGILL_REVIVE_ID = 1166;
 const SKILL_CARGILL_SLIMEHEAL_ID = 1167;
 const SKILL_CARGILL_DEBUFF_ID = 1168;
 const SKILL_LIZARDMAN_CHARGE_ID = 1176;
+const SKILL_LIZARDMAN_CHARGE_PLUS_ONE_ID = 1177;
+const SKILL_LIZARDMAN_CHARGE_PLUS_TWO_ID = 1178;
+const SKILL_LIZARDMAN_CALL_ID = 1179;
 const SKILL_MINION_THROW_LOAD_AMMO_ID = 1182;
 const SKILL_MINION_THROW_ATTACK_ID = 1183;
 
+const SKILL_ENEMY_STRONG_PUNCH_BLUNT_ID = 1234;
+const SKILL_ENEMY_WILD_SWING_BLUNT_ID = 1235;
+const SKILL_ENEMY_STRONG_SLASH_SLASH_ID = 1236;
+const SKILL_ENEMY_DOUBLE_THRUSTS_PIERCE_ID = 1237;
 const SKILL_ENEMY_CLOTHES_PULL_ID = 1238;
+const SKILL_ENEMY_LUNGE_PIERCE_ID = 1239;
+const SKILL_ENEMY_WEREWOLF_TWO_CLAWS_ID = 1260;
+
+const SKILL_KARRYN_DONT_MASTURBATE_ID = 1326;
 
 const SKILL_ENEMY_AI_GENERIC_ID = 1351;
 const SKILL_ENEMY_AI_TUTORIAL_ID = 1353;
@@ -716,6 +751,12 @@ const SKILL_ENEMY_POSEJOIN_DEFEAT_LV4_OTHER1_ID = 1746;
 const SKILL_ENEMY_POSEJOIN_DEFEAT_LV4_OTHER2_ID = 1747;
 const SKILL_ENEMY_POSEJOIN_DEFEAT_LV4_OTHER3_ID = 1748;
 const SKILL_ENEMY_POSEJOIN_DEFEAT_LV4_OTHER4_ID = 1749;
+const SKILL_ENEMY_POSEJOIN_STRIPPER_VIP_PUSSY_ID = 1755;
+const SKILL_ENEMY_POSEJOIN_STRIPPER_VIP_ANAL_ID = 1756;
+const SKILL_ENEMY_POSEJOIN_STRIPPER_VIP_MOUTH_ID = 1757;
+const SKILL_ENEMY_POSEJOIN_STRIPPER_VIP_BOOBS_ID = 1758;
+const SKILL_ENEMY_POSEJOIN_STRIPPER_VIP_RIGHT_HJ_ID = 1759;
+const SKILL_ENEMY_POSEJOIN_STRIPPER_VIP_LEFT_HJ_ID = 1760;
 
 const SKILL_KARRYN_INVITE_RIGHTHAND_ID = 1781;
 const SKILL_KARRYN_INVITE_LEFTHAND_ID = 1782;
@@ -739,6 +780,7 @@ const SKILL_ENEMY_POSESKILL_SLIMEJOIN_MOUTH_ID = 1811;
 const SKILL_ENEMY_POSESKILL_SLIMEJOIN_PUSSY_ID = 1812;
 const SKILL_ENEMY_POSESWITCH_GOBLINCL_PUSSY_ID = 1813;
 
+const SKILL_STRIPPER_BREATHER_STAGE_ID = 1860;
 const SKILL_STRIPPER_ENTER_INTERMISSION_ID = 1862;
 const SKILL_STRIPPER_EXIT_INTERMISSION_ID = 1866;
 
@@ -746,8 +788,6 @@ const ACTION_SPEED_FAST_FIRST_PRIORITY = 9999;
 const ACTION_SPEED_FAST_SECOND_PRIORITY = 8888;
 const ACTION_SPEED_FAST_THIRD_PRIORITY = 7777;
 
-const SKILL_WARMUP_POTENTIAL_START_ID = 1151;
-const SKILL_WARMUP_POTENTIAL_END_ID = 1300;
 
 //////////////
 /////////////////
@@ -1457,6 +1497,19 @@ Game_Actor.prototype.evasionCostMultipler = function() {
 };
 
 ///////
+// Kick Prep
+////////
+
+Game_Actor.prototype.isPreparingToUseKickSkill = function() {
+	if(this.isInCombatPose() && this._lastBattleSkill) {
+		if(this._lastBattleSkill.object() && this._lastBattleSkill.hasTag(TAG_KICK_SKILL)) {
+			return true;
+		}
+	}
+	return false;
+};
+
+///////
 // Cock Kick
 ///////
 
@@ -1895,7 +1948,7 @@ Game_Action.prototype.getRandomTargets = function(number, unit) {
 	let targets = [];
 	let skillId = this.item().id;
 	for (let i = 0; i < number; ++i) {
-		if(skillId === SKILL_SKEWER_1_ID || skillId === SKILL_SKEWER_2_ID) {
+		if(skillId === SKILL_KARRYN_SKEWER_1_ID || skillId === SKILL_KARRYN_SKEWER_2_ID) {
 			targets.push(unit.randomSkewerTarget());
 		}
 		else 
@@ -1909,7 +1962,7 @@ Remtairy.Combat.Game_Action_numTargets = Game_Action.prototype.numTargets;
 Game_Action.prototype.numTargets = function() {
     if (this.isForRandom()) {
 		let skillId = this.item().id;
-		if(skillId === SKILL_SKEWER_1_ID  || skillId === SKILL_SKEWER_2_ID) {
+		if(skillId === SKILL_KARRYN_SKEWER_1_ID  || skillId === SKILL_KARRYN_SKEWER_2_ID) {
 			let numOfHits = 1;
 			if($gameActors.actor(ACTOR_KARRYN_ID).hasEdict(EDICT_SKEWER_TRAINING_THREE)) {
 				numOfHits++;
@@ -2745,11 +2798,29 @@ Window_BattleSkill.prototype.drawItemName = function(item, x, y, width) {
     if (item) {
 		let iconBoxWidth = this.lineHeight();
 		let name = item.name;
-		if(TextManager.isJapanese && item.hasRemNameJP) name = item.remNameJP;
-		else if(TextManager.isEnglish && item.hasRemNameEN) name = item.remNameEN;
-		else if(TextManager.isTChinese && item.hasRemNameTCH) name = item.remNameTCH;
-		else if(TextManager.isSChinese && item.hasRemNameSCH) name = item.remNameSCH;
-		else if(TextManager.isKorean && item.hasRemNameKR) name = item.remNameKR;
+		if(item.hasRemNameDefault) name = item.remNameDefault;
+		
+		if(TextManager.isJapanese) {
+			if(item.hasRemNameJP) name = item.remNameJP;
+		}
+		else if(TextManager.isEnglish) {
+			if(item.hasRemNameEN) name = item.remNameEN;
+		}
+		else if(TextManager.isTChinese) {
+			if(item.hasRemNameTCH) name = item.remNameTCH;
+		}
+		else if(TextManager.isSChinese) {
+			if(item.hasRemNameSCH) name = item.remNameSCH;
+		}
+		else if(TextManager.isKorean) {
+			if(item.hasRemNameKR) name = item.remNameKR;
+		}
+		else if(TextManager.isRussian) {
+			if(item.hasRemNameRU) name = item.remNameRU;
+		}
+		
+		name = this.convertEscapeCharacters(name);
+		name = this.convertExtraEscapeCharacters(name);
 		
 		this.resetTextColor();
 		this.drawIcon(item.iconIndex, x + WINDOW_BATTLESKILL_ICON_X + WINDOW_BATTLESKILL_PADDING_X, y + WINDOW_BATTLESKILL_ICON_Y, WINDOW_BATTLESKILL_ICON_SCALE);

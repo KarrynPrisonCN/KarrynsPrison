@@ -4,7 +4,7 @@ Remtairy.TextManager = Remtairy.TextManager || {};
 var Imported = Imported || {};
 Imported.RemtairyTextManager = true;
 
-const RemVersionText = '9A.p2';
+const RemVersionText = '9B.j';
 
 //=============================================================================
  /*:
@@ -33,6 +33,7 @@ const RemLanguageEN = 1;
 const RemLanguageTCH = 2;
 const RemLanguageSCH = 3;
 const RemLanguageKR = 4;
+const RemLanguageRU = 5;
 
 //Basic Strings
 const LevelNameEN = "Level";
@@ -472,6 +473,10 @@ const RCMenuFatigueLevelFourTextEN = "\\C[7]Karryn is exhausted... \\C[0](\\C[18
 const RCMenuFatigueLevelFourTextJP = "\\C[7]疲労感：かなり疲弊している………。 \\C[0](\\C[18]全ステータス-40％ / 撤退不可\\C[0])";
 const RCMenuFatigueLevelFiveTextEN = "\\C[7]Karryn is dead tired...... \\C[0](\\C[18]Stats -50%, Can't Escape\\C[0])";
 const RCMenuFatigueLevelFiveTextJP = "\\C[7]疲労感：完全に疲労困憊になっている…………。 \\C[0](\\C[18]全ステータス-50％ / 撤退不可\\C[0])";
+const RCMenuFatigueLevelFourHardTextEN = "\\C[7]Karryn is exhausted... \\C[0](\\C[18]Stats -40%\\C[0])";
+const RCMenuFatigueLevelFourHardTextJP = "\\C[7]疲労感：かなり疲弊している………。 \\C[0](\\C[18]全ステータス-40％\\C[0])";
+const RCMenuFatigueLevelFiveHardTextEN = "\\C[7]Karryn is dead tired...... \\C[0](\\C[18]Stats -50%\\C[0])";
+const RCMenuFatigueLevelFiveHardTextJP = "\\C[7]疲労感：完全に疲労困憊になっている…………。 \\C[0](\\C[18]全ステータス-50％\\C[0])";
 
 const RCMenuArousedLevelOneTextEN = "\\C[27]Karryn is currently aroused...\\C[0]";
 const RCMenuArousedLevelOneTextJP = "\\C[27]興奮状態：発情している…。\\C[0]";
@@ -892,9 +897,9 @@ const StatusRecordFootjobEN = "Gave %1 footjobs to %2 different people.";
 const StatusRecordFootjobJP = "私が足でシゴいたチンポは%2本。合計で%1回足コキをした。";
 const StatusRecordFootjobSlutEN = "Gave only %1 footjobs to %2 different people.♥";
 const StatusRecordFootjobSlutJP = "私に足でシコられたチンポは%2本♥全部で%1回もチンポを踏みまくってやったわ♥";
-const StatusRecordRimjobEN = "Gave only %1 rimjobs to %2 different people.";
+const StatusRecordRimjobEN = "Gave %1 rimjobs to %2 different people.";
 const StatusRecordRimjobJP = "私がアナルを舐めた男は%2人。合計で%1回ケツ舐めをした。";
-const StatusRecordRimjobSlutEN = "Gave %1 rimjobs to %2 different people.♥";
+const StatusRecordRimjobSlutEN = "Gave only %1 rimjobs to %2 different people.♥";
 const StatusRecordRimjobSlutJP = "私にケツ穴を舐めさせてくれた殿方は%2人♥全部で%1回もケツフェラさせて頂いたわ♥";
 const StatusRecordCunniEN = "Received cunnilingus %1 times from %2 different people.";
 const StatusRecordCunniJP = "私をクンニした男は%2人。合計で%1回マンコを舐められている。";
@@ -967,9 +972,9 @@ const StatusBattleEffectIsWetEN = "Karryn is \\C[23]wet\\C[0]! She is now able t
 const StatusBattleEffectIsWetJP = "【マンコ：\\C[23]濡れている！\\C[0]】挿入可能。";
 const StatusBattleEffectNotWetEN = "Karryn is currently not wet. She will not receive any vaginal penetration.";
 const StatusBattleEffectNotWetJP = "【マンコ：濡れていない】挿入不可。";
-const StatusBattleEffectIsWearingPantiesEN = "Karryn is wearing panties. Her clothes need to be heavily displaced\nbefore her nether regions are accessible.";
+const StatusBattleEffectIsWearingPantiesEN = "Karryn is wearing panties. Her clothes need to be heavily displaced before her nether regions are accessible.";
 const StatusBattleEffectIsWearingPantiesJP = "【パンティ：履いている】服を脱がされない限り下半身への接触は守られる。";
-const StatusBattleEffectIsNotWearingPantiesEN = "Karryn is \\C[27]not wearing any panties\\C[0]! Her clothes only need to be moderately displaced\nbefore her nether regions are accessible.";
+const StatusBattleEffectIsNotWearingPantiesEN = "Karryn is \\C[27]not wearing any panties\\C[0]! Her clothes only need to be moderately displaced before her nether regions are accessible.";
 const StatusBattleEffectIsNotWearingPantiesJP = "【パンティ：\\C[27]履いてない！\\C[0]】服を脱がされれば下半身への接触を許してしまう。";
 const StatusBattleEffectIsVirginPublishedEN = "Karryn is a \\C[27]known virgin\\C[0]! Her charm during battle is increased.";
 const StatusBattleEffectIsVirginPublishedJP = "【性体験の情報：\\C[27]処女だと知られてしまっている！\\C[0]】バトル中は魅力アップ。";
@@ -999,7 +1004,7 @@ const StatusBattleEffectWeakenJP = "【状態：\\C[18]脱力\\C[0]】腕力、�
 const StatusBattleEffectDizzyEN = "Karryn is \\C[18]dizzy\\C[0]! Her accuracy and evasion are decreased.";
 const StatusBattleEffectDizzyJP = "【状態：\\C[18]めまい\\C[0]】命中力、回避力ダウン。";
 const StatusBattleEffectSlowEN = "Karryn is \\C[18]slowed\\C[0]! Her agility is greatly decreased.";
-const StatusBattleEffectSlowJP = "【状態：\\C[18]鈍い\\C[0]】素早さが大幅ダウン！";
+const StatusBattleEffectSlowJP = "【状態：\\C[18]スロー\\C[0]】素早さが大幅ダウン！";
 const StatusBattleEffectVulnerableEN = "Karryn is currently \\C[18]vulnerable\\C[0]! Her defense is decreased.";
 const StatusBattleEffectVulnerableJP = "【状態：\\C[18]放心\\C[0]】防御力ダウン。";
 const StatusBattleEffectPoisonEN = "Karryn is \\C[18]poisoned\\C[0]! Her stamina decreases every turn instead of regenerating.";
@@ -1019,8 +1024,8 @@ const StatusBattleEffectSexComboOneJP = "【SEXコンボ：\\C[2]%1連続目\\C[
 const StatusBattleEffectSexComboTwoEN = "Consecutively using the same type of non-petting sexual skill on the same person will also greatly increase pleasure damage and cost.";
 const StatusBattleEffectSexComboTwoJP = "更に同じ相手に同じ性スキルを連続使用で、快楽ダメージとスキルコストが大幅アップ【愛撫は除く】";
 
-const StatusBattleEffectDanceComboEN = "Karryn has used her stripper skills \\C[2]%1 consecutive times\\C[0]! The pleasure damage and cost of her next stripper skill will be increased.";
-const StatusBattleEffectDanceComboJP = "";
+const StatusBattleEffectDanceComboEN = "Karryn has used her stripper skills \\C[2]%1 consecutive times\\C[0]! The pleasure damage and stamina cost of her next stripper skill will be increased.";
+const StatusBattleEffectDanceComboJP = "【ダンスコンボ：\\C[2]%1連続目\\C[0]】次のダンススキルの快楽ダメージと体力コストがアップ。";
 
 
 //Tooltipsは戦闘画面のステートTooltipに表示される
@@ -1270,14 +1275,10 @@ const StateReceptionistVisitorLineJP = "並んで待機中";
 const StateReceptionistVisitorDeskEN = "%1 is standing in front of the desk.";
 const StateReceptionistVisitorDeskJP = "カリンの前に立っている";
 
-const StateStripperActorDanceComboEN = "Karryn has used her stripper skills \\C[2]%1 consecutive times\\C[0]!\nThe pleasure damage and cost of her next stripper skill will be increased.";
-const StateStripperActorDanceComboJP = "";
-const StateStripperStageCondomSingularEN = "There is a used condom on the stage.";
-const StateStripperStageCondomSingularJP = "";
-const StateStripperStageCondomPluralEN = "There are %1 used condoms on the stage.";
-const StateStripperStageCondomPluralJP = "";
+const StateStripperActorDanceComboEN = "Karryn has used her stripper skills \\C[2]%1 consecutive times\\C[0]!\nThe pleasure damage and stamina cost of her next stripper skill will be increased.";
+const StateStripperActorDanceComboJP = "【ダンスコンボ！%1連続目】\n次のダンススキル使用時：\n\\I[42]快楽ダメージ アップ\n\\I[42]体力コスト アップ";
 
-const DesireTooltipsMouthIntroEN = "Karryn's Mouth Desire represents her desire\nto have other men's body parts in her mouth\nand to taste their various bodily fluids.";
+const DesireTooltipsMouthIntroEN = "Karryn's Mouth Desire represents her desire\nto have men's body parts in her mouth\nand to taste their various bodily fluids.";
 const DesireTooltipsMouthIntroJP = "\\C[1]【口欲】\\C[0]\n\\C[27]カリンの性感帯の１つ、クチの欲求。\\C[0]\nその舌は男のカラダのあらゆる部分を感じ、\n分泌される汁を味わい尽くしてしまう。\n何度もしゃぶり、体液を飲まされる事で\n口内から全身に渡って性衝動が溢れていく。";
 const DesireTooltipsBoobsIntroEN = "Karryn's Boobs Desire represents her desire\nto have her perfect breasts be squeezed,\nto have her nipples be squeezed hard,\nand to have hard objects inbetween them.";
 const DesireTooltipsBoobsIntroJP = "\\C[1]【乳欲】\\C[0]\n\\C[27]カリンの性感帯の１つ、おっぱいの欲求。\\C[0]\n完璧に実った乳房は揉みしだかれる事を、\n硬く突起した乳首はイジり倒される事を望んでいる。\n胸への刺激は恋のようなドキドキを生み、\n強い性衝動へと駆られてしまう。";
@@ -1567,6 +1568,8 @@ const RemWardenLevelLimitReachedJP = "\\I[353]\\C[8]看守レベルが上限に�
 
 const RemResultsPassivesTitleEN = "New Passives Unlocked!!";
 const RemResultsPassivesTitleJP = "新パッシブ解放！！";
+const RemResultsTooManyPassivesUnlockedEN = "\\C[8]\\I[25]Plus %1 more other Passives!";
+const RemResultsTooManyPassivesUnlockedJP = "\\C[8]\\I[25]その他%1パッシブ";
 
 const RemDailyReportDayCountEN = "\\#\\{\\{Day %1: Daily Report\\}\\}";
 const RemDailyReportDayCountJP = "\\#\\{\\{■ 報告書 ～%1日目～ ■\\}\\}";
@@ -1610,10 +1613,10 @@ const RemDailyReportToiletRep_AlmostDecayEN = "\\I[234]Bathroom Reputation is ab
 const RemDailyReportToiletRep_AlmostDecayJP = "\\I[234]トイレの評判：\\C[8]ガタ落ち\\C[0] \\I[24]個室で休憩すると対策可能";
 const RemDailyReportToiletRep_DecayedEN = "\\I[234]\\C[8]Bathroom Reputation has decayed by -1.\\C[0]";
 const RemDailyReportToiletRep_DecayedJP = "\\I[234]\\C[8]トイレの評判：マイナス1\\C[0]";
-const RemDailyReportStripClubRep_AlmostDecayEN = "\\I[]Strip Club Reputation is about to \\C[8]decay\\C[0]. Work as a stripper today to prevent it.";
-const RemDailyReportStripClubRep_AlmostDecayJP = "\\I[]ストリップクラブの評判：\\C[8]ガタ落ち\\C[0] \\I[24]ストリッパーのバイトで対策可能";
-const RemDailyReportStripClubRep_DecayedEN = "\\I[]\\C[8]Strip Club Reputation has decayed by -1.\\C[0]";
-const RemDailyReportStripClubRep_DecayedJP = "\\I[]\\C[8]ストリップクラブの評判：マイナス1\\C[0]";
+const RemDailyReportStripClubRep_AlmostDecayEN = "\\I[21]Strip Club Reputation is about to \\C[8]decay\\C[0]. Work as a stripper today to prevent it.";
+const RemDailyReportStripClubRep_AlmostDecayJP = "\\I[21]ストリップクラブの評判：\\C[8]ガタ落ち\\C[0] \\I[24]ストリッパーのバイトで対策可能";
+const RemDailyReportStripClubRep_DecayedEN = "\\I[21]\\C[8]Strip Club Reputation has decayed by -1.\\C[0]";
+const RemDailyReportStripClubRep_DecayedJP = "\\I[21]\\C[8]ストリップクラブの評判：マイナス1\\C[0]";
 
 const RemParamGainedStrengthEN = "Strength increased by %1!"; //unused
 const RemParamGainedStrengthJP = "腕力が %1 上がった！"; //unused
@@ -1810,13 +1813,17 @@ const RemYanflyOptions_KarrynLinesPrompt_JP = "\\i[273]カリンのセリフは�
 const RemYanflyOptions_KarrynLinesPrompt_Help_EN = "The battle is paused after Karryn speaks until the confirm key is pressed.\nTurning this option OFF will skip this pause for most of Karryn's battle dialogues.";
 const RemYanflyOptions_KarrynLinesPrompt_Help_JP = "バトル中にカリンが話す時は自動送りするかどうかの設定が出来ます。\nON：カリン発言時のみ、決定キーを押すまで戦闘メッセージは停止します。\nOFF：カリンのセリフも含めて、戦闘メッセージは全て自動送りされます。";
 const RemYanflyOptions_Disable_Rimjobs_EN = "\\i[273]Disable Rimjobs";
-const RemYanflyOptions_Disable_Rimjobs_JP = "\\i[273]『ケツ舐め』プレイの非表示";
+const RemYanflyOptions_Disable_Rimjobs_JP = "\\i[273]『ケツ舐め』を非表示";
 const RemYanflyOptions_Disable_Rimjobs_Help_EN = "Prevents all rimjob content from occuring while this is option is on.\nNote that this game's progression and full content is designed with rimjobs in mind.\nOnly select this option if it'd otherwise keep you from wanting to play this game.";
-const RemYanflyOptions_Disable_Rimjobs_Help_JP = "ON：アナル舐めシーンが一切発生しなくなります。\nOFF：カリンが男のアナルを舐めるシーンが発生します。\n※このフェチを閲覧したくない場合のみ選択して下さい。";
+const RemYanflyOptions_Disable_Rimjobs_Help_JP = "ON：アナル舐めシーンが一切発生しなくなります。\nOFF：カリンが男のアナルを舐めるシーンが発生します。\n※ゲーム進行に影響する事をご注意下さい。";
+const RemYanflyOptions_Disable_Footjobs_EN = "\\i[273]Disable Footjobs";
+const RemYanflyOptions_Disable_Footjobs_JP = "\\i[273]『足コキ』を非表示";
+const RemYanflyOptions_Disable_Footjobs_Help_EN = "Prevents all footjob content from occuring while this is option is on.\nNote that this game's progression and full content is designed with footjobs in mind.\nOnly select this option if it'd otherwise keep you from wanting to play this game.";
+const RemYanflyOptions_Disable_Footjobs_Help_JP = "足コキシーンが一切発生しなくなります。\nOFF：カリンが足コキするシーンが発生します。\n※ゲーム進行に影響する事をご注意下さい。";
 const RemYanflyOptions_Disable_Smegma_EN = "\\i[273]Disable Smegma";
 const RemYanflyOptions_Disable_Smegma_JP = "\\i[273]チンカス描写の非表示";
 const RemYanflyOptions_Disable_Smegma_Help_EN = "Prevents all mentions and descriptions of smegma in battle dialogs.\nNote that while this doesn't affect gameplay, it would reduce the variance in dialog.\nOnly select this option if it'd otherwise keep you from wanting to play this game.";
-const RemYanflyOptions_Disable_Smegma_Help_JP = "ON：チンカスの描写が一切発生しなくなります。\nOFF：カリンがチンカスの匂いを嗅いだり、舐めたりするセリフが発生します。\n※このフェチを閲覧したくない場合のみ選択して下さい。";
+const RemYanflyOptions_Disable_Smegma_Help_JP = "ON：チンカスの描写が一切発生しなくなります。\nOFF：カリンがチンカスの匂いを嗅いだり、舐めたりするセリフが発生します。\n※セリフのバリエーションが減少する事にご注意下さい。";
 
 const RemYanflyOptions_DisplayPleasureAsPercent_EN = "\\i[273]Display Pleasure As Percentage";
 const RemYanflyOptions_DisplayPleasureAsPercent_JP = "\\i[273]快楽度を％で表示";
@@ -1833,9 +1840,9 @@ const RemYanflyOptions_MasterVolume_EN = "\\i[274]Master Volume";
 const RemYanflyOptions_MasterVolume_JP = "\\i[274]マスター音量";
 const RemYanflyOptions_MasterVolume_Help_EN = "Adjusts the overall volume of the game.";
 const RemYanflyOptions_MasterVolume_Help_JP = "ゲーム全体のボリュームを設定出来ます。";
-const RemYanflyOptions_BGMVolume_EN = "\\i[274]BGM Volume";
-const RemYanflyOptions_BGMVolume_JP = "\\i[274]BGM";
-const RemYanflyOptions_BGMVolume_Help_EN = "Adjusts the volume of the background music.";
+const RemYanflyOptions_BGMVolume_EN = "\\i[274]Music Volume";
+const RemYanflyOptions_BGMVolume_JP = "\\i[274]BGMの音量";
+const RemYanflyOptions_BGMVolume_Help_EN = "Adjusts the volume of the music.";
 const RemYanflyOptions_BGMVolume_Help_JP = "ゲーム内で流れる音楽のボリュームを設定出来ます。";
 const RemYanflyOptions_BGSVolume_EN = "\\i[274]BGS Volume";
 const RemYanflyOptions_BGSVolume_JP = "\\i[274]ループ効果音";
@@ -1845,18 +1852,22 @@ const RemYanflyOptions_MEVolume_EN = "\\i[274]ME Volume";
 const RemYanflyOptions_MEVolume_JP = "\\i[274]演出音";
 const RemYanflyOptions_MEVolume_Help_EN = "Adjusts the volume of the melody effects such as fanfares.";
 const RemYanflyOptions_MEVolume_Help_JP = "休息のときやファンファーレに流れる音楽のボリュームを設定出来ます。";
-const RemYanflyOptions_SEVolume_EN = "\\i[274]SE Volume";
-const RemYanflyOptions_SEVolume_JP = "\\i[274]SE";
+const RemYanflyOptions_SEVolume_EN = "\\i[274]Sound Volume";
+const RemYanflyOptions_SEVolume_JP = "\\i[274]効果音の音量";
 const RemYanflyOptions_SEVolume_Help_EN = "Adjusts the volume of the sound effects.";
-const RemYanflyOptions_SEVolume_Help_JP = "効果音のボリュームを設定出来ます。";
+const RemYanflyOptions_SEVolume_Help_JP = "SEのボリュームを設定出来ます。";
 const RemYanflyOptions_VoiceVolume_EN = "\\i[274]Voice Volume";
-const RemYanflyOptions_VoiceVolume_JP = "\\i[274]通常ボイス";
+const RemYanflyOptions_VoiceVolume_JP = "\\i[274]通常ボイスの音量";
 const RemYanflyOptions_VoiceVolume_Help_EN = "Adjusts the volume of Karryn's spoken dialogue.";
-const RemYanflyOptions_VoiceVolume_Help_JP = "カリンのセリフのボリュームを設定出来ます。";
-const RemYanflyOptions_MoansVolume_EN = "\\i[274]Moans Volume";
-const RemYanflyOptions_MoansVolume_JP = "\\i[274]あえぎ声";
+const RemYanflyOptions_VoiceVolume_Help_JP = "カリンが話すセリフのボリュームを設定出来ます。";
+const RemYanflyOptions_MoansVolume_EN = "\\i[274]Moan Volume";
+const RemYanflyOptions_MoansVolume_JP = "\\i[274]あえぎ声の音量";
 const RemYanflyOptions_MoansVolume_Help_EN = "Adjusts the volume of Karryn's moans.";
 const RemYanflyOptions_MoansVolume_Help_JP = "カリンのあえぎ声のボリュームを設定出来ます。";
+const RemYanflyOptions_MaleVolume_EN = "\\i[274]Male Volume";
+const RemYanflyOptions_MaleVolume_JP = "\\i[274]男性ボイスの音量";
+const RemYanflyOptions_MaleVolume_Help_EN = "Adjusts the volume of male sounds like grunts and laughter.";
+const RemYanflyOptions_MaleVolume_Help_JP = "男が発する笑い声や呼び声のボリュームを設定出来ます。";
 const RemYanflyOptions_KeepVoicePlayback_EN = "\\i[274]Keep Voice Playback";
 const RemYanflyOptions_KeepVoicePlayback_JP = "\\i[274]メッセージ送り後もボイスを再生";
 const RemYanflyOptions_KeepVoicePlayback_Help_EN = "Normally any voice being played gets cut off after you hit the confirm key.\nTurning this option ON will have voices keep playing until a new voice is played."
@@ -2228,8 +2239,8 @@ const RemGlossaryCatHelpJP = "やぁ、よく来たね！\n僕は物知りボー
 const RemGlossaryHelpEN = "To select a note to read, use the up and down arrow keys! \nIf the note you're reading has more than one page,\nuse the right and left arrow to change pages!";
 const RemGlossaryHelpJP = "jp To select a note to read, use the up and down arrow keys! \nIf the note you're reading has more than one page,\nuse the right and left arrow to change pages!";
 
-const RemErrorMessageEN = "If your error message says 'Array buffer allocation failed' or 'Out of memory', then your game has run out of memory so please close all other programs, ESPECIALLY BROWSER WINDOWS, before running Karryn's Prison. For all other errors, if your game files or save file haven't been modified, please take a screenshot of this screen and report it to the #kp-bug-reports channel on our Discord! Please also tell us what version of the game you are running, as well as many details of what happened before your error occurred! (v." + RemVersionText + ")";
-const RemErrorMessageJP = "申し訳ありません。エラーが発生しました！メッセージ「Array buffer allocation failed」「Out of memory」が表示される場合、PCのメモリが不足しています。ゲームを起動する前に他のソフトウェア、特にブラウザソフトを全て閉じて下さい。その他エラーの場合は現在のバージョン、エラー発生時の状態、そしてこのエラー画面のスクリーンショットをRemtairyのDiscordにある「#バグ報告」チャンネルに添付していただければ、迅速に対応させていただきます。エラー発生前後の具体的な状況もお知らせ頂くと幸いです。お手数おかけして申し訳ございませんが、どうぞよろしくお願い致します！ (v."  + RemVersionText + ")";
+const RemErrorMessageEN = "If your error message says 'Array buffer allocation failed' or 'resolution' or 'Out of memory', then your game has run out of memory so please close all other programs, ESPECIALLY BROWSER WINDOWS, before running Karryn's Prison. For all other errors, if your game files or save file haven't been modified, please take a screenshot of this screen and report it to the #kp-bug-reports channel on our Discord! Please also tell us what version of the game you are running, as well as many details of what happened before your error occurred! (v." + RemVersionText + ")";
+const RemErrorMessageJP = "申し訳ありません。エラーが発生しました！メッセージ「'Array buffer allocation failed'」「'resolution'」「Out of memory」が表示される場合、PCのメモリが不足しています。ゲームを起動する前に他のソフトウェア、特にブラウザソフトを全て閉じて下さい。その他エラーの場合は現在のバージョン、エラー発生時の状態、そしてこのエラー画面のスクリーンショットをRemtairyのDiscordにある「#バグ報告」チャンネルに添付していただければ、迅速に対応させていただきます。エラー発生前後の具体的な状況もお知らせ頂くと幸いです。お手数おかけして申し訳ございませんが、どうぞよろしくお願い致します！ (v."  + RemVersionText + ")";
 
 const RemEquipTypesEN = ["","Weapon","Accessory","Title","Load Equip Set", "Save Equip Set"];
 const RemEquipTypesJP = ["","武器"," ｱｸｾｻﾘｰ ","称号","装備セットをロード", "装備セットをセーブ"];
@@ -2278,8 +2289,8 @@ const RemSkillTypesJP = ["",
 "受付嬢",
 "トイレ",
 "オナニー",
-"Stripper",
-"Intermission"
+"ストリッパー",
+"インターミッション"
 ];
 
 //Enemy Types
@@ -2567,6 +2578,31 @@ const RemGloryGuestShowedThroughLeftHoleJP = "\\C[27]左の穴からチンポが
 const RemGloryGuestShowedThroughRightHoleEN = "\\C[27]A cock appears from the hole on the right!";
 const RemGloryGuestShowedThroughRightHoleJP = "\\C[27]右の穴からチンポが現れた！";
 
+const RemStripperBattleEndEN = "Karryn's show has ended.";
+const RemStripperBattleEndJP = "■ ストリップタイム 終了 ■";
+const RemStripperEnemyTossCondomOntoStageEN = "%1 tosses a condom onto the stage.";
+const RemStripperEnemyTossCondomOntoStageJP = "%1はコンドームを床に投げた。";
+const RemStripperEnemyTipsCondomToBeltEN = "%1 ties a condom to %2's garter belt!";
+const RemStripperEnemyTipsCondomToBeltJP = "%1は%2のガーターベルトにコンドームを付けた！";
+const RemStripperEnemyTipsCondomToBraEN = "%1 ties a condom to %2's bra!";
+const RemStripperEnemyTipsCondomToBraJP = "%1は%2のブラにコンドームを付けた！";
+const RemStripperEnemyTipsCondomToNippleEN = "%1 ties a condom to %2's erect nipple!";
+const RemStripperEnemyTipsCondomToNippleJP = "%1は%2の勃起乳首にコンドームを付けた！";
+const RemStripperEnemyTipsCondomToHairbandEN = "%1 ties a condom to %2's bunny hairband!";
+const RemStripperEnemyTipsCondomToHairbandJP = "%1は%2のヘアバンドにコンドームを付けた！";
+const RemStripperEnemyTipsCondomToSidetailEN = "%1 ties a condom to %2's sidetail!";
+const RemStripperEnemyTipsCondomToSidetailJP = "%1は%2のサイドテールにコンドームを付けた！";
+const RemStripperEnemyEntersStripClubEN = "\\C[8]%1 takes a seat in front of the stage.";
+const RemStripperEnemyEntersStripClubJP = "\\C[8]%1が席に着いた。";
+const RemStripperEnemyLeavesStripClubHappyEN = "\\C[8]%1 gets up and leaves with a smile.";
+const RemStripperEnemyLeavesStripClubHappyJP = "\\C[8]%1はスッキリした表情で立ち去った。";
+const RemStripperEnemyLeavesStripClubUnhappyEN = "\\C[8]%1 gets up and leaves frustrated.";
+const RemStripperEnemyLeavesStripClubUnhappyJP = "\\C[8]%1は不満げな表情で立ち去った。";
+const RemStripperEnemyJoinVIPSingularEN = "\\C[8]%1 holds the hand of the remaining patron and brings them to the private room......";
+const RemStripperEnemyJoinVIPSingularJP = "\\C[8]残った客は%1に手を引かれて、カーテンをくぐった……。";
+const RemStripperEnemyJoinVIPPluralEN = "\\C[8]%1 holds the hands of the remaining patrons and brings them to the private room......";
+const RemStripperEnemyJoinVIPPluralJP = "\\C[8]残った客達は%1に手を引かれて、カーテンをくぐった……。";
+
 const RemMidBattleEnemyReinforcementEN = "\\C[2]%1 arrives as enemy reinforcement!";
 const RemMidBattleEnemyReinforcementJP = "\\C[2]増援に%1が現れた！";
 
@@ -2577,61 +2613,46 @@ const RemMidBattleEnemyReinforcementJP = "\\C[2]増援に%1が現れた！";
 Object.defineProperties(TextManager, {
 	isJapanese: {
 		get: function() { 
-		
-			//if(!$gameTemp.isPlaytest() || !ConfigManager.remLanguage)
-			//	return (RemLanguage === RemLanguageJP);
-			//return (ConfigManager.remLanguage === RemLanguageJP);
+			return (ConfigManager.remLanguage === RemLanguageJP);
+			/*
+			if(!$gameTemp.isPlaytest() || !ConfigManager.remLanguage)
+				return (RemLanguage === RemLanguageJP);
+			return (ConfigManager.remLanguage === RemLanguageJP);
 			if($gameTemp.isPlaytest()) {
 				return (ConfigManager.remLanguage === RemLanguageJP);
 			}
 			else {
 				return KARRYN_PRISON_LANGUAGE === RemLanguageJP;
 			}
+			*/
 		}, configurable: true
 	},
 	isEnglish: {
 		get: function() { 
-			//if(!$gameTemp.isPlaytest() || !ConfigManager.remLanguage)
-			//	return (RemLanguage === RemLanguageEN);
-			//return (ConfigManager.remLanguage === RemLanguageEN);
-			if($gameTemp.isPlaytest()) {
-				return (ConfigManager.remLanguage === RemLanguageEN);
-			}
-			else {
-				return KARRYN_PRISON_LANGUAGE === RemLanguageEN;
-			}
+			return (ConfigManager.remLanguage === RemLanguageEN);
 		}, configurable: true
 	},
 	isTChinese: {
 		get: function() { 
-			if($gameTemp.isPlaytest()) {
-				return (ConfigManager.remLanguage === RemLanguageTCH);
-			}
-			else {
-				return KARRYN_PRISON_LANGUAGE === RemLanguageTCH;
-			}
+			return (ConfigManager.remLanguage === RemLanguageTCH);
 		}, configurable: true
 	},
 	isSChinese: {
 		get: function() { 
-			if($gameTemp.isPlaytest()) {
-				return (ConfigManager.remLanguage === RemLanguageSCH);
-			}
-			else {
-				return KARRYN_PRISON_LANGUAGE === RemLanguageSCH;
-			}
+			return (ConfigManager.remLanguage === RemLanguageSCH);
 		}, configurable: true
 	},
 	isKorean: {
 		get: function() { 
-			if($gameTemp.isPlaytest()) {
-				return (ConfigManager.remLanguage === RemLanguageKR);
-			}
-			else {
-				return KARRYN_PRISON_LANGUAGE === RemLanguageKR;
-			}
+			return (ConfigManager.remLanguage === RemLanguageKR);
 		}, configurable: true
 	},
+	isRussian: {
+		get: function() { 
+			return (ConfigManager.remLanguage === RemLanguageRU);
+		}, configurable: true
+	},
+	
 	
 	
 	wpAtk: {
@@ -3321,6 +3342,18 @@ Object.defineProperties(TextManager, {
 		get: function() { 
 			if(this.isJapanese) return RCMenuFatigueLevelFiveTextJP;
 			else if(this.isEnglish) return RCMenuFatigueLevelFiveTextEN;
+		}, configurable: true
+	},
+	RCMenuFatigueLevelFourHardText: { 
+		get: function() { 
+			if(this.isJapanese) return RCMenuFatigueLevelFourHardTextJP;
+			else if(this.isEnglish) return RCMenuFatigueLevelFourHardTextEN;
+		}, configurable: true
+	},
+	RCMenuFatigueLevelFiveHardText: { 
+		get: function() { 
+			if(this.isJapanese) return RCMenuFatigueLevelFiveHardTextJP;
+			else if(this.isEnglish) return RCMenuFatigueLevelFiveHardTextEN;
 		}, configurable: true
 	},
 	RCMenuArousedLevelOneText: { 
@@ -5495,18 +5528,6 @@ Object.defineProperties(TextManager, {
 			else if(this.isEnglish) return StateStripperActorDanceComboEN;
 		}, configurable: true
 	},
-	StateStripperStageCondomSingular: { 
-		get: function() { 
-			if(this.isJapanese) return StateStripperStageCondomSingularJP;
-			else if(this.isEnglish) return StateStripperStageCondomSingularEN;
-		}, configurable: true
-	},
-	StateStripperStageCondomPlural: { 
-		get: function() { 
-			if(this.isJapanese) return StateStripperStageCondomPluralJP;
-			else if(this.isEnglish) return StateStripperStageCondomPluralEN;
-		}, configurable: true
-	},
 	
 	DesireTooltipsMouthIntro: { 
 		get: function() { 
@@ -5902,6 +5923,13 @@ Object.defineProperties(TextManager, {
 			else if(this.isEnglish) return RemResultsPassivesTitleEN;
 		}, configurable: true
 	},	
+	RemResultsTooManyPassivesUnlocked: { 
+		get: function() { 
+			if(this.isJapanese) return RemResultsTooManyPassivesUnlockedJP;
+			else if(this.isEnglish) return RemResultsTooManyPassivesUnlockedEN;
+		}, configurable: true
+	},
+	
 	
 	RemDailyReportDayCount: { 
 		get: function() { 
@@ -6650,6 +6678,19 @@ Object.defineProperties(TextManager, {
 			else if(this.isEnglish) return RemYanflyOptions_Disable_Rimjobs_Help_EN;
 		}, configurable: true
 	},
+	yanflyOptionsDisableFootjob: { 
+		get: function() { 
+			if(this.isJapanese) return RemYanflyOptions_Disable_Footjobs_JP;
+			else if(this.isEnglish) return RemYanflyOptions_Disable_Footjobs_EN;
+		}, configurable: true
+	},
+	yanflyOptionsDisableFootjobHelp: { 
+		get: function() { 
+			if(this.isJapanese) return RemYanflyOptions_Disable_Footjobs_Help_JP;
+			else if(this.isEnglish) return RemYanflyOptions_Disable_Footjobs_Help_EN;
+		}, configurable: true
+	},
+	
 	yanflyOptionsDisableSmegma: { 
 		get: function() { 
 			if(this.isJapanese) return RemYanflyOptions_Disable_Smegma_JP;
@@ -6776,6 +6817,18 @@ Object.defineProperties(TextManager, {
 			else if(this.isEnglish) return RemYanflyOptions_MoansVolume_Help_EN;
 		}, configurable: true
 	},
+	yanflyOptionsMaleVolume: { 
+		get: function() { 
+			if(this.isJapanese) return RemYanflyOptions_MaleVolume_JP;
+			else if(this.isEnglish) return RemYanflyOptions_MaleVolume_EN;
+		}, configurable: true
+	},
+	yanflyOptionsMaleVolumeHelp: { 
+		get: function() { 
+			if(this.isJapanese) return RemYanflyOptions_MaleVolume_Help_JP;
+			else if(this.isEnglish) return RemYanflyOptions_MaleVolume_Help_EN;
+		}, configurable: true
+	},
 	yanflyOptionsKeepVoicePlayback: { 
 		get: function() { 
 			if(this.isJapanese) return RemYanflyOptions_KeepVoicePlayback_JP;
@@ -6876,6 +6929,8 @@ Object.defineProperties(TextManager, {
 			else if(this.isEnglish) return RemYanflyOptions_DisplayPubicHair_Help_EN;
 		}, configurable: true
 	},
+	
+	
 	yanflyOptionsShowSexualDamagePopup: { 
 		get: function() { 
 			if(this.isJapanese) return RemYanflyOptions_ShowSexualDamagePopup_JP;
@@ -8376,6 +8431,82 @@ Object.defineProperties(TextManager, {
 		}, configurable: true
 	},
 	
+	
+	stripperBattleEnd: { 
+		get: function() { 
+			if(this.isJapanese) return RemStripperBattleEndJP;
+			else if(this.isEnglish) return RemStripperBattleEndEN;
+		}, configurable: true
+	},
+	RemStripperEnemyTossCondomOntoStage: { 
+		get: function() { 
+			if(this.isJapanese) return RemStripperEnemyTossCondomOntoStageJP;
+			else if(this.isEnglish) return RemStripperEnemyTossCondomOntoStageEN;
+		}, configurable: true
+	},
+	RemStripperEnemyTipsCondomToBelt: { 
+		get: function() { 
+			if(this.isJapanese) return RemStripperEnemyTipsCondomToBeltJP;
+			else if(this.isEnglish) return RemStripperEnemyTipsCondomToBeltEN;
+		}, configurable: true
+	},
+	RemStripperEnemyTipsCondomToBra: { 
+		get: function() { 
+			if(this.isJapanese) return RemStripperEnemyTipsCondomToBraJP;
+			else if(this.isEnglish) return RemStripperEnemyTipsCondomToBraEN;
+		}, configurable: true
+	},
+	RemStripperEnemyTipsCondomToNipple: { 
+		get: function() { 
+			if(this.isJapanese) return RemStripperEnemyTipsCondomToNippleJP;
+			else if(this.isEnglish) return RemStripperEnemyTipsCondomToNippleEN;
+		}, configurable: true
+	},
+	RemStripperEnemyTipsCondomToHairband: { 
+		get: function() { 
+			if(this.isJapanese) return RemStripperEnemyTipsCondomToHairbandJP;
+			else if(this.isEnglish) return RemStripperEnemyTipsCondomToHairbandEN;
+		}, configurable: true
+	},
+	RemStripperEnemyTipsCondomToSidetail: { 
+		get: function() { 
+			if(this.isJapanese) return RemStripperEnemyTipsCondomToSidetailJP;
+			else if(this.isEnglish) return RemStripperEnemyTipsCondomToSidetailEN;
+		}, configurable: true
+	},
+	RemStripperEnemyLeavesStripClubHappy: { 
+		get: function() { 
+			if(this.isJapanese) return RemStripperEnemyLeavesStripClubHappyJP;
+			else if(this.isEnglish) return RemStripperEnemyLeavesStripClubHappyEN;
+		}, configurable: true
+	},
+	RemStripperEnemyLeavesStripClubUnhappy: { 
+		get: function() { 
+			if(this.isJapanese) return RemStripperEnemyLeavesStripClubUnhappyJP;
+			else if(this.isEnglish) return RemStripperEnemyLeavesStripClubUnhappyEN;
+		}, configurable: true
+	},
+	RemStripperEnemyEntersStripClub: { 
+		get: function() { 
+			if(this.isJapanese) return RemStripperEnemyEntersStripClubJP;
+			else if(this.isEnglish) return RemStripperEnemyEntersStripClubEN;
+		}, configurable: true
+	},
+	RemStripperEnemyJoinVIPSingular: { 
+		get: function() { 
+			if(this.isJapanese) return RemStripperEnemyJoinVIPSingularJP;
+			else if(this.isEnglish) return RemStripperEnemyJoinVIPSingularEN;
+		}, configurable: true
+	},
+	RemStripperEnemyJoinVIPPlural: { 
+		get: function() { 
+			if(this.isJapanese) return RemStripperEnemyJoinVIPPluralJP;
+			else if(this.isEnglish) return RemStripperEnemyJoinVIPPluralEN;
+		}, configurable: true
+	},
+
+
+	
 	midBattleEnemyReinforcement: { 
 		get: function() { 
 			if(this.isJapanese) return RemMidBattleEnemyReinforcementJP;
@@ -8966,37 +9097,60 @@ TextManager.skillTypes = function(index) {
 };
 
 TextManager.skillName = function(skillId) {
-	var skill = $dataSkills[skillId];
-	var text = skill.name;
+	let skill = $dataSkills[skillId];
+	let text = skill.name;
 	
-	if(TextManager.isJapanese && skill.hasRemNameJP) 
-		text = skill.remNameJP;
-	else if(TextManager.isEnglish && skill.hasRemNameEN) 
-		text = skill.remNameEN;
-	else if(TextManager.isTChinese && skill.hasRemNameTCH) 
-		text = skill.remNameTCH;
-	else if(TextManager.isSChinese && skill.hasRemNameSCH) 
-		text = skill.remNameSCH;
-	else if(TextManager.isKorean && skill.hasRemNameKR) 
-		text = skill.remNameKR;
+	if(skill.hasRemNameDefault) text = skill.remNameDefault;
+	
+	if(TextManager.isEnglish) {
+		if(skill.hasRemNameEN) text = skill.remNameEN;
+	}
+	else if(TextManager.isJapanese) {
+		if(skill.hasRemNameJP) text = skill.remNameJP;
+	}
+	else if(TextManager.isTChinese) {
+		if(skill.hasRemNameTCH) text = skill.remNameTCH;
+	}
+	else if(TextManager.isSChinese) {
+		if(skill.hasRemNameSCH) text = skill.remNameSCH;
+	}
+	else if(TextManager.isKorean) {
+		if(skill.hasRemNameKR) text = skill.remNameKR;
+	}
+	else if(TextManager.isRussian) {
+		if(skill.hasRemNameRU) text = skill.remNameRU;
+	}
+	
+	//text = TextManager.convertEscapeCharacters(text);
 
 	return text;
 };
 
 TextManager.skillDesc = function(skillId) {
-	var skill = $dataSkills[skillId];
-	var text = skill.description;
+	let skill = $dataSkills[skillId];
+	let text = skill.description;
+	if(skill.hasRemDescDefault) text = skill.remDescDefault;
+
+	if(TextManager.isJapanese) {
+		if(skill.hasRemDescJP) text = skill.remDescJP;
+	}
+	else if(TextManager.isEnglish) {
+		if(skill.hasRemDescEN) text = skill.remDescEN;
+	}
+	else if(TextManager.isTChinese) {
+		if(skill.hasRemDescTCH) text = skill.remDescTCH;
+	}
+	else if(TextManager.isSChinese) {
+		if(skill.hasRemDescSCH) text = skill.remDescSCH;
+	}
+	else if(TextManager.isKorean) {
+		if(skill.hasRemDescKR) text = skill.remDescKR;
+	} 
+	else if(TextManager.isRussian) {
+		if(skill.hasRemDescRU) text = skill.remDescRU;
+	} 
 	
-	if(TextManager.isJapanese && skill.hasRemDescJP) 
-		text = skill.remDescJP;
-	else if(TextManager.isEnglish && skill.hasRemDescEN) 
-		text = skill.remDescEN;
-	else if(TextManager.isTChinese && skill.hasRemDescTCH) 
-		text = skill.remDescTCH;
-	else if(TextManager.isSChinese && skill.hasRemDescSCH) 
-		text = skill.remDescSCH;
-	else if(TextManager.isKorean && skill.hasRemDescKR) 
-		text = skill.remDescKR;
+	//text = TextManager.convertEscapeCharacters(text);
 
 	return text;
 };
@@ -9206,7 +9360,7 @@ TextManager.smegmaDesc = function(skillId) {
 			if(ConfigManager.disableSmegma)
 				return "dicks";
 			else
-				return "dick cheese";
+				return "dick cheeses";
 		}
 		break;
 	
@@ -9672,36 +9826,48 @@ DataManager.processRemTMNotetags_RemtairyTextManager = function(group) {
 		let obj = group[n];
 		let notedata = obj.note.split(/[\r\n]+/);
 
+		obj.remNameDefault = "";
 		obj.remNameEN = "";
 		obj.remNameJP = "";
 		obj.remNameTCH = "";
 		obj.remNameSCH = "";
 		obj.remNameKR = "";
+		obj.remNameRU = "";
+		obj.hasRemNameDefault = false;
 		obj.hasRemNameEN = false;
 		obj.hasRemNameJP = false;
 		obj.hasRemNameSCH = false;
 		obj.hasRemNameTCH = false;
 		obj.hasRemNameKR = false;
+		obj.hasRemNameRU = false;
+		obj.remDescDefault = "";
 		obj.remDescEN = "";
 		obj.remDescJP = "";
 		obj.remDescTCH = "";
 		obj.remDescSCH = "";
 		obj.remDescKR = "";
+		obj.remDescRU = "";
+		obj.hasRemDescDefault = false;
 		obj.hasRemDescEN = false;
 		obj.hasRemDescJP = false;
 		obj.hasRemDescSCH = false;
 		obj.hasRemDescTCH = false;
 		obj.hasRemDescKR = false;
+		obj.hasRemDescRU = false;
+		obj.remMessageDefault = ['','','',''];
 		obj.remMessageEN = ['','','',''];
 		obj.remMessageJP = ['','','',''];
 		obj.remMessageSCH = ['','','',''];
 		obj.remMessageTCH = ['','','',''];
 		obj.remMessageKR = ['','','',''];
+		obj.remMessageRU = ['','','',''];
+		obj.hasRemMessageDefault = [false,false,false,false];
 		obj.hasRemMessageEN = [false,false,false,false];
 		obj.hasRemMessageJP = [false,false,false,false];
 		obj.hasRemMessageSCH = [false,false,false,false];
 		obj.hasRemMessageTCH = [false,false,false,false];
 		obj.hasRemMessageKR = [false,false,false,false];
+		obj.hasRemMessageRU = [false,false,false,false];
 		let evalMode = 'none';
 
 		for (let i = 0; i < notedata.length; i++) {
@@ -9709,6 +9875,9 @@ DataManager.processRemTMNotetags_RemtairyTextManager = function(group) {
 			if (line.match(/<(?:REM NAME JP)>/i)) {
 				evalMode = 'rem name jp';
 			}
+			else if (line.match(/<(?:REM NAME ALL)>/i)) {
+				evalMode = 'rem name all';
+			} 
 			else if (line.match(/<(?:REM NAME EN)>/i)) {
 				evalMode = 'rem name en';
 			} 
@@ -9724,6 +9893,9 @@ DataManager.processRemTMNotetags_RemtairyTextManager = function(group) {
 			else if (line.match(/<(?:REM DESC JP)>/i)) {
 				evalMode = 'rem desc jp';
 			} 
+			else if (line.match(/<(?:REM DESC ALL)>/i)) {
+				evalMode = 'rem desc all';
+			} 
 			else if (line.match(/<(?:REM DESC EN)>/i)) {
 				evalMode = 'rem desc en';
 			} 
@@ -9735,6 +9907,12 @@ DataManager.processRemTMNotetags_RemtairyTextManager = function(group) {
 			} 
 			else if (line.match(/<(?:REM DESC KR)>/i)) {
 				evalMode = 'rem desc kr';
+			} 
+			else if (line.match(/<(?:REM DESC RU)>/i)) {
+				evalMode = 'rem desc ru';
+			} 
+			else if (line.match(/<(?:REM MESSAGE1 ALL)>/i)) {
+				evalMode = 'rem message1 all';
 			} 
 			else if (line.match(/<(?:REM MESSAGE1 EN)>/i)) {
 				evalMode = 'rem message1 en';
@@ -9751,6 +9929,12 @@ DataManager.processRemTMNotetags_RemtairyTextManager = function(group) {
 			else if (line.match(/<(?:REM MESSAGE1 KR)>/i)) {
 				evalMode = 'rem message1 kr';
 			} 
+			else if (line.match(/<(?:REM MESSAGE1 RU)>/i)) {
+				evalMode = 'rem message1 ru';
+			} 
+			else if (line.match(/<(?:REM MESSAGE2 ALL)>/i)) {
+				evalMode = 'rem message2 all';
+			} 
 			else if (line.match(/<(?:REM MESSAGE2 EN)>/i)) {
 				evalMode = 'rem message2 en';
 			} 
@@ -9765,6 +9949,12 @@ DataManager.processRemTMNotetags_RemtairyTextManager = function(group) {
 			} 
 			else if (line.match(/<(?:REM MESSAGE2 KR)>/i)) {
 				evalMode = 'rem message2 kr';
+			} 
+			else if (line.match(/<(?:REM MESSAGE2 RU)>/i)) {
+				evalMode = 'rem message2 ru';
+			} 
+			else if (line.match(/<(?:REM MESSAGE3 ALL)>/i)) {
+				evalMode = 'rem message3 all';
 			} 
 			else if (line.match(/<(?:REM MESSAGE3 EN)>/i)) {
 				evalMode = 'rem message3 en';
@@ -9781,6 +9971,12 @@ DataManager.processRemTMNotetags_RemtairyTextManager = function(group) {
 			else if (line.match(/<(?:REM MESSAGE3 KR)>/i)) {
 				evalMode = 'rem message3 kr';
 			} 
+			else if (line.match(/<(?:REM MESSAGE3 RU)>/i)) {
+				evalMode = 'rem message3 ru';
+			} 
+			else if (line.match(/<(?:REM MESSAGE4 ALL)>/i)) {
+				evalMode = 'rem message4 all';
+			} 
 			else if (line.match(/<(?:REM MESSAGE4 EN)>/i)) {
 				evalMode = 'rem message4 en';
 			} 
@@ -9796,24 +9992,31 @@ DataManager.processRemTMNotetags_RemtairyTextManager = function(group) {
 			else if (line.match(/<(?:REM MESSAGE4 KR)>/i)) {
 				evalMode = 'rem message4 kr';
 			} 
-			else if (line.match(/<\/(?:REM NAME EN|REM NAME JP|REM DESC EN|REM DESC JP)>/i)) {
+			else if (line.match(/<(?:REM MESSAGE4 RU)>/i)) {
+				evalMode = 'rem message4 ru';
+			} 
+			else if (line.match(/<\/(?:REM NAME EN|REM NAME JP|REM NAME ALL|REM DESC ALL|REM DESC EN|REM DESC JP)>/i)) {
 				evalMode = 'none';
 			} 
-			else if (line.match(/<\/(?:REM NAME SCH|REM NAME TCH|REM NAME KR|REM DESC SCH|REM DESC TCH|REM DESC KR)>/i)) {
+			else if (line.match(/<\/(?:REM NAME SCH|REM NAME TCH|REM NAME KR|REM NAME RU|REM DESC SCH|REM DESC TCH|REM DESC KR|REM DESC RU)>/i)) {
 				evalMode = 'none';
 			} 
-			else if (line.match(/<\/(?:REM MESSAGE1 EN|REM MESSAGE1 JP|REM MESSAGE2 EN|REM MESSAGE2 JP)>/i)) {
+			else if (line.match(/<\/(?:REM MESSAGE1 EN|REM MESSAGE1 JP|REM MESSAGE1 ALL|REM MESSAGE2 EN|REM MESSAGE2 JP|REM MESSAGE2 ALL)>/i)) {
 				evalMode = 'none';
 			} 
-			else if (line.match(/<\/(?:REM MESSAGE1 SCH|REM MESSAGE1 TCH|REM MESSAGE1 KR|REM MESSAGE2 SCH|REM MESSAGE2 TCH|REM MESSAGE2 KR)>/i)) {
+			else if (line.match(/<\/(?:REM MESSAGE1 SCH|REM MESSAGE1 TCH|REM MESSAGE1 KR|REM MESSAGE1 RU|REM MESSAGE2 SCH|REM MESSAGE2 TCH|REM MESSAGE2 KR|REM MESSAGE2 RU)>/i)) {
 				evalMode = 'none';
 			} 
-			else if (line.match(/<\/(?:REM MESSAGE3 EN|REM MESSAGE3 JP|REM MESSAGE4 EN|REM MESSAGE4 JP)>/i)) {
+			else if (line.match(/<\/(?:REM MESSAGE3 EN|REM MESSAGE3 JP|REM MESSAGE3 ALL|REM MESSAGE4 EN|REM MESSAGE4 JP|REM MESSAGE4 ALL)>/i)) {
 				evalMode = 'none';
 			} 
-			else if (line.match(/<\/(?:REM MESSAGE3 SCH|REM MESSAGE3 TCH|REM MESSAGE3 KR|REM MESSAGE4 SCH|REM MESSAGE4 TCH|REM MESSAGE4 KR)>/i)) {
+			else if (line.match(/<\/(?:REM MESSAGE3 SCH|REM MESSAGE3 TCH|REM MESSAGE3 KR|REM MESSAGE3 RU|REM MESSAGE4 SCH|REM MESSAGE4 TCH|REM MESSAGE4 KR|REM MESSAGE4 RU)>/i)) {
 				evalMode = 'none';
 			} 
+			else if (evalMode === 'rem name all') {
+				obj.remNameDefault = line;
+				obj.hasRemNameDefault = true;
+			}
 			else if (evalMode === 'rem name en') {
 				obj.remNameEN = line;
 				obj.hasRemNameEN = true;
@@ -9833,6 +10036,15 @@ DataManager.processRemTMNotetags_RemtairyTextManager = function(group) {
 			else if (evalMode === 'rem name kr') {
 				obj.remNameKR = line;
 				obj.hasRemNameKR = true;
+			}
+			else if (evalMode === 'rem name ru') {
+				obj.remNameRU = line;
+				obj.hasRemNameRU = true;
+			}
+			else if (evalMode === 'rem desc all') {
+				if(obj.remDescDefault.length > 0) obj.remDescDefault += "\n";
+				obj.remDescDefault += line;
+				obj.hasRemDescDefault = true;
 			}
 			else if (evalMode === 'rem desc en') {
 				if(obj.remDescEN.length > 0) obj.remDescEN += "\n";
@@ -9859,6 +10071,15 @@ DataManager.processRemTMNotetags_RemtairyTextManager = function(group) {
 				obj.remDescKR += line;
 				obj.hasRemDescKR = true;
 			}
+			else if (evalMode === 'rem desc ru') {
+				if(obj.remDescRU.length > 0) obj.remDescRU += "\n";
+				obj.remDescRU += line;
+				obj.hasRemDescRU = true;
+			}
+			else if (evalMode === 'rem message1 all') {
+				obj.remMessageDefault[0] = line;
+				obj.hasRemMessageDefault[0] = true;
+			}
 			else if (evalMode === 'rem message1 en') {
 				obj.remMessageEN[0] = line;
 				obj.hasRemMessageEN[0] = true;
@@ -9878,6 +10099,14 @@ DataManager.processRemTMNotetags_RemtairyTextManager = function(group) {
 			else if (evalMode === 'rem message1 kr') {
 				obj.remMessageKR[0] = line;
 				obj.hasRemMessageKR[0] = true;
+			}
+			else if (evalMode === 'rem message1 ru') {
+				obj.remMessageRU[0] = line;
+				obj.hasRemMessageRU[0] = true;
+			}
+			else if (evalMode === 'rem message2 all') {
+				obj.remMessageDefault[1] = line;
+				obj.hasRemMessageDefault[1] = true;
 			}
 			else if (evalMode === 'rem message2 en') {
 				obj.remMessageEN[1] = line;
@@ -9899,6 +10128,14 @@ DataManager.processRemTMNotetags_RemtairyTextManager = function(group) {
 				obj.remMessageKR[1] = line;
 				obj.hasRemMessageKR[1] = true;
 			}
+			else if (evalMode === 'rem message2 ru') {
+				obj.remMessageRU[1] = line;
+				obj.hasRemMessageRU[1] = true;
+			}
+			else if (evalMode === 'rem message3 all') {
+				obj.remMessageDefault[2] = line;
+				obj.hasRemMessageDefault[2] = true;
+			}
 			else if (evalMode === 'rem message3 en') {
 				obj.remMessageEN[2] = line;
 				obj.hasRemMessageEN[2] = true;
@@ -9919,6 +10156,14 @@ DataManager.processRemTMNotetags_RemtairyTextManager = function(group) {
 				obj.remMessageKR[2] = line;
 				obj.hasRemMessageKR[2] = true;
 			}
+			else if (evalMode === 'rem message3 ru') {
+				obj.remMessageRU[2] = line;
+				obj.hasRemMessageRU[2] = true;
+			}
+			else if (evalMode === 'rem message4 all') {
+				obj.remMessageDefault[3] = line;
+				obj.hasRemMessageDefault[3] = true;
+			}
 			else if (evalMode === 'rem message4 en') {
 				obj.remMessageEN[3] = line;
 				obj.hasRemMessageEN[3] = true;
@@ -9938,6 +10183,10 @@ DataManager.processRemTMNotetags_RemtairyTextManager = function(group) {
 			else if (evalMode === 'rem message4 kr') {
 				obj.remMessageKR[3] = line;
 				obj.hasRemMessageKR[3] = true;
+			}
+			else if (evalMode === 'rem message4 ru') {
+				obj.remMessageRU[3] = line;
+				obj.hasRemMessageRU[3] = true;
 			}
 		}
 	}
@@ -10087,22 +10336,30 @@ Game_BattlerBase.prototype.mostImportantStateText = function() {
 	if(this.dontDisplayStateLogMessages()) return '';
     let states = this.states();
     for (let i = 0; i < states.length; i++) {
-		if(TextManager.isEnglish && states[i].hasRemMessageEN[2]) {
-			return states[i].remMessageEN[2];
+		let stateText = false;
+		if(states[i].hasRemMessageDefault[2]) stateText = states[i].remMessageDefault[2];
+		
+		if(TextManager.isEnglish) {
+			if(states[i].hasRemMessageEN[2]) stateText = states[i].remMessageEN[2];
 		}
-		else if(TextManager.isJapanese && states[i].hasRemMessageJP[2]) {
-			return states[i].remMessageJP[2];
+		else if(TextManager.isJapanese) {
+			if(states[i].hasRemMessageJP[2]) stateText = states[i].remMessageJP[2];
 		}
-		else if(TextManager.isSChinese && states[i].hasRemMessageSCH[2]) {
-			return states[i].remMessageSCH[2];
+		else if(TextManager.isSChinese) {
+			if(states[i].hasRemMessageSCH[2]) stateText = states[i].remMessageSCH[2];
 		}
-		else if(TextManager.isTChinese && states[i].hasRemMessageTCH[2]) {
-			return states[i].remMessageTCH[2];
+		else if(TextManager.isTChinese) {
+			if(states[i].hasRemMessageTCH[2]) stateText = states[i].remMessageTCH[2];
 		}
-		else if(TextManager.isKorean && states[i].hasRemMessageKR[2]) {
-			return states[i].remMessageKR[2];
+		else if(TextManager.isKorean) {
+			if(states[i].hasRemMessageKR[2]) stateText = states[i].remMessageKR[2];
+		} 
+		else if(TextManager.isRussian) {
+			if(states[i].hasRemMessageRU[2]) stateText = states[i].remMessageRU[2];
 		}
         
+		if(stateText) return TextManager.convertEscapeCharacters(stateText);
+		
 		if (states[i].message3) {
             return states[i].message3;
         }
@@ -10122,38 +10379,48 @@ Window_BattleLog.prototype.displayAddedStates = function(target) {
 		let displayStateMsg = true;
 		
 		if(target.isActor()) {
-			if(TextManager.isEnglish && state.hasRemMessageEN[0]) {
-				stateMsg = state.remMessageEN[0];
+			if(state.hasRemMessageDefault[0]) stateMsg = state.remMessageDefault[0];
+			
+			if(TextManager.isEnglish) {
+				if(state.hasRemMessageEN[0]) stateMsg = state.remMessageEN[0];
 			}	
-			else if(TextManager.isJapanese && state.hasRemMessageJP[0]) {
-				stateMsg = state.remMessageJP[0];
+			else if(TextManager.isJapanese) {
+				if(state.hasRemMessageJP[0]) stateMsg = state.remMessageJP[0];
 			}
-			else if(TextManager.isSChinese && state.hasRemMessageSCH[0]) {
-				stateMsg = state.remMessageSCH[0];
+			else if(TextManager.isSChinese) {
+				if(state.hasRemMessageSCH[0]) stateMsg = state.remMessageSCH[0];
 			}	
-			else if(TextManager.isTChinese && state.hasRemMessageTCH[0]) {
-				stateMsg = state.remMessageTCH[0];
+			else if(TextManager.isTChinese) {
+				if(state.hasRemMessageTCH[0]) stateMsg = state.remMessageTCH[0];
+			}
+			else if(TextManager.isKorean) {
+				if(state.hasRemMessageKR[0]) stateMsg = state.remMessageKR[0];
 			}	
-			else if(TextManager.isKorean && state.hasRemMessageKR[0]) {
-				stateMsg = state.remMessageKR[0];
-			}				
+			else if(TextManager.isRussian) {
+				if(state.hasRemMessageRU[0]) stateMsg = state.remMessageRU[0];
+			}
 		}
 		else { //target is enemy
-			if(TextManager.isEnglish && state.hasRemMessageEN[1]) {
-				stateMsg = state.remMessageEN[1];
+			if(state.hasRemMessageDefault[1]) stateMsg = state.remMessageDefault[1];
+			
+			if(TextManager.isEnglish) {
+				if(state.hasRemMessageEN[1]) stateMsg = state.remMessageEN[1];
 			}	
-			else if(TextManager.isJapanese && state.hasRemMessageJP[1]) {
-				stateMsg = state.remMessageJP[1];
+			else if(TextManager.isJapanese) {
+				if(state.hasRemMessageJP[1]) stateMsg = state.remMessageJP[1];
 			}
-			else if(TextManager.isSChinese && state.hasRemMessageSCH[1]) {
-				stateMsg = state.remMessageSCH[1];
+			else if(TextManager.isSChinese) {
+				if(state.hasRemMessageSCH[1]) stateMsg = state.remMessageSCH[1];
+			}	
+			else if(TextManager.isTChinese) {
+				if(state.hasRemMessageTCH[1]) stateMsg = state.remMessageTCH[1];
 			}
-			else if(TextManager.isTChinese && state.hasRemMessageTCH[1]) {
-				stateMsg = state.remMessageTCH[1];
+			else if(TextManager.isKorean) {
+				if(state.hasRemMessageKR[1]) stateMsg = state.remMessageKR[1];
 			}	
-			else if(TextManager.isKorean && state.hasRemMessageKR[1]) {
-				stateMsg = state.remMessageKR[1];
-			}	
+			else if(TextManager.isRussian) {
+				if(state.hasRemMessageRU[1]) stateMsg = state.remMessageRU[1];
+			}
 			
 			if($gameParty.isInGloryBattle) displayStateMsg = false;
 		}
@@ -10163,9 +10430,10 @@ Window_BattleLog.prototype.displayAddedStates = function(target) {
 				this.push('performCollapse', target);
 			}
 			if(stateMsg) {
+				stateMsg = this.convertEscapeCharacters(stateMsg);
 				this.push('popBaseLine');
 				this.push('pushBaseLine');
-				this.push('addText', target.displayName() + stateMsg);
+				this.push('addText', stateMsg.format(target.displayName()));
 				this.push('waitForEffect');
 			}
 		}
@@ -10179,75 +10447,38 @@ Window_BattleLog.prototype.displayRemovedStates = function(target) {
 	if($gameParty.isInGloryBattle && target.isEnemy()) return;
 	
     target.result().removedStateObjects().forEach(function(state) {
+		let stateMsg = false;
+		if(state.message4) stateMsg = state.message4;
+		if(state.hasRemMessageDefault[3]) stateMsg = state.remMessageDefault[3];
+		
 		if(TextManager.isEnglish) {
-			if(state.hasRemMessageEN[3]) {
-				this.push('popBaseLine');
-				this.push('pushBaseLine');
-				this.push('addText', target.displayName() + state.remMessageEN[3]);
-			}
-			else if (state.message4) {
-				this.push('popBaseLine');
-				this.push('pushBaseLine');
-				this.push('addText', target.displayName() + state.message4);
-			}
+			if(state.hasRemMessageEN[3]) stateMsg = state.remMessageEN[3];
 		}
 		else if(TextManager.isJapanese) {
-			if(state.hasRemMessageJP[3]) {
-				this.push('popBaseLine');
-				this.push('pushBaseLine');
-				this.push('addText', target.displayName() + state.remMessageJP[3]);
-			}
-			else if (state.message4) {
-				this.push('popBaseLine');
-				this.push('pushBaseLine');
-				this.push('addText', target.displayName() + state.message4);			
-			}
+			if(state.hasRemMessageJP[3]) stateMsg = state.remMessageJP[3];
 		}
 		else if(TextManager.isSChinese) {
-			if(state.hasRemMessageSCH[3]) {
-				this.push('popBaseLine');
-				this.push('pushBaseLine');
-				this.push('addText', target.displayName() + state.remMessageSCH[3]);
-			}
-			else if (state.message4) {
-				this.push('popBaseLine');
-				this.push('pushBaseLine');
-				this.push('addText', target.displayName() + state.message4);
-			}
+			if(state.hasRemMessageSCH[3]) stateMsg = state.remMessageSCH[3];
 		}
 		else if(TextManager.isTChinese) {
-			if(state.hasRemMessageTCH[3]) {
-				this.push('popBaseLine');
-				this.push('pushBaseLine');
-				this.push('addText', target.displayName() + state.remMessageTCH[3]);
-			}
-			else if (state.message4) {
-				this.push('popBaseLine');
-				this.push('pushBaseLine');
-				this.push('addText', target.displayName() + state.message4);
-			}
+			if(state.hasRemMessageTCH[3]) stateMsg = state.remMessageTCH[3];
 		}
 		else if(TextManager.isKorean) {
-			if(state.hasRemMessageKR[3]) {
-				this.push('popBaseLine');
-				this.push('pushBaseLine');
-				this.push('addText', target.displayName() + state.remMessageKR[3]);
-			}
-			else if (state.message4) {
-				this.push('popBaseLine');
-				this.push('pushBaseLine');
-				this.push('addText', target.displayName() + state.message4);
-			}
+			if(state.hasRemMessageKR[3]) stateMsg = state.remMessageKR[3];
 		}
-		else if (state.message4) {
+		else if(TextManager.isRussian) {
+			if(state.hasRemMessageRU[3]) stateMsg = state.remMessageRU[3];
+		}
+		
+		if(stateMsg) {
+			stateMsg = this.convertEscapeCharacters(stateMsg);
 			this.push('popBaseLine');
 			this.push('pushBaseLine');
-			this.push('addText', target.displayName() + state.message4);
-        }
+			this.push('addText', stateMsg.format(target.displayName()));
+		}
+		
     }, this);
 };
-
-
 
 
 /////////
@@ -10255,22 +10486,32 @@ Window_BattleLog.prototype.displayRemovedStates = function(target) {
 /////////////
 
 Game_Enemy.prototype.originalName = function() {
-	if(TextManager.isEnglish && this.enemy().hasRemNameEN) {
-		return this.enemy().remNameEN;
+	let name = this.enemy().name;
+	if(this.enemy().hasRemNameDefault) name = this.enemy().remNameDefault;
+	
+	if(TextManager.isEnglish) {
+		if(this.enemy().hasRemNameEN) name = this.enemy().remNameEN;
 	}
-	else if(TextManager.isJapanese && this.enemy().hasRemNameJP) {
-		return this.enemy().remNameJP;
+	else if(TextManager.isJapanese) {
+		if(this.enemy().hasRemNameJP) name = this.enemy().remNameJP;
 	}
-	else if(TextManager.isSChinese && this.enemy().hasRemNameSCH) {
-		return this.enemy().remNameSCH;
+	else if(TextManager.isSChinese) {
+		if(this.enemy().hasRemNameSCH) name = this.enemy().remNameSCH;
 	}
-	else if(TextManager.isTChinese && this.enemy().hasRemNameTCH) {
-		return this.enemy().remNameTCH;
+	else if(TextManager.isTChinese) {
+		if(this.enemy().hasRemNameTCH) name = this.enemy().remNameTCH;
 	}
-	else if(TextManager.isKorean && this.enemy().hasRemNameKR) {
-		return this.enemy().remNameKR;
+	else if(TextManager.isKorean) {
+		if(this.enemy().hasRemNameKR) name = this.enemy().remNameKR;
 	}
-	return this.enemy().name;
+	else if(TextManager.isRussian) {
+		if(this.enemy().hasRemNameRU) name = this.enemy().remNameRU;
+	}
+	
+	name = TextManager.convertEscapeCharacters(name);
+	name = TextManager.convertExtraEscapeCharacters(name);
+	
+	return name;
 };
 
 ////////////
@@ -10278,22 +10519,32 @@ Game_Enemy.prototype.originalName = function() {
 //////////////////
 
 Game_Actor.prototype.name = function() {
-	if(TextManager.isEnglish && this.actor().hasRemNameEN) {
-		return this.actor().remNameEN;
+	let name = this._name;
+	if(this.actor().hasRemNameDefault) name = this.actor().remNameDefault;
+	
+	if(TextManager.isEnglish) {
+		if(this.actor().hasRemNameEN) name = this.actor().remNameEN;
 	}
-	else if(TextManager.isJapanese && this.actor().hasRemNameJP) {
-		return this.actor().remNameJP;
+	else if(TextManager.isJapanese) {
+		if(this.actor().hasRemNameJP) name = this.actor().remNameJP;
 	}
-	else if(TextManager.isSChinese && this.actor().hasRemNameSCH) {
-		return this.actor().remNameSCH;
+	else if(TextManager.isSChinese) {
+		if(this.actor().hasRemNameSCH) name = this.actor().remNameSCH;
 	}
-	else if(TextManager.isTChinese && this.actor().hasRemNameTCH) {
-		return this.actor().remNameTCH;
+	else if(TextManager.isTChinese) {
+		if(this.actor().hasRemNameTCH) name = this.actor().remNameTCH;
 	}
-	else if(TextManager.isKorean && this.actor().hasRemNameKR) {
-		return this.actor().remNameKR;
+	else if(TextManager.isKorean) {
+		if(this.actor().hasRemNameKR) name = this.actor().remNameKR;
 	}
-	return this._name;
+	else if(TextManager.isRussian) {
+		if(this.actor().hasRemNameRU) name = this.actor().remNameRU;
+	}
+	
+	name = TextManager.convertEscapeCharacters(name);
+	name = TextManager.convertExtraEscapeCharacters(name);
+	
+	return name;
 };
 
 ////////
@@ -10303,30 +10554,32 @@ Game_Actor.prototype.name = function() {
 Window_Help.prototype.setItem = function(item) {
 	if(!item) {
 		this.setText(item ? item.description : '');
+		return;
 	}
+	
+	let helpText = item.description;
+	if(item.hasRemDescDefault) helpText = item.remDescDefault;
 
-	else if(TextManager.isEnglish) {
-		if(item.hasRemDescEN == false) this.setText(item ? item.description : '');
-		else this.setText(item ? item.remDescEN : '');
+	if(TextManager.isEnglish) {
+		if(item.hasRemDescEN) helpText = item.remDescEN;
 	}
 	else if(TextManager.isJapanese) {
-		if(item.hasRemDescJP == false) this.setText(item ? item.description : '');
-		else this.setText(item ? item.remDescJP : '');
+		if(item.hasRemDescJP) helpText = item.remDescJP;
 	}
 	else if(TextManager.isSChinese) {
-		if(item.hasRemDescSCH == false) this.setText(item ? item.description : '');
-		else this.setText(item ? item.remDescSCH : '');
+		if(item.hasRemDescSCH) helpText = item.remDescSCH;
 	}
 	else if(TextManager.isTChinese) {
-		if(item.hasRemDescTCH == false) this.setText(item ? item.description : '');
-		else this.setText(item ? item.remDescTCH : '');
+		if(item.hasRemDescTCH) helpText = item.remDescTCH;
 	}
 	else if(TextManager.isKorean) {
-		if(item.hasRemDescKR == false) this.setText(item ? item.description : '');
-		else this.setText(item ? item.remDescKR : '');
+		if(item.hasRemDescKR) helpText = item.remDescKR;
 	}
-	else
-		this.setText(item ? item.description : '');
+	else if(TextManager.isRussian) {
+		if(item.hasRemDescRU) helpText = item.remDescRU;
+	}
+
+	this.setText(helpText);
 };
 
 

@@ -147,6 +147,10 @@ Game_Party.prototype.setReceptionistSatisfaction = function(value) {
 	let minSat = this.getMinimumReceptionistSatisfaction();
 	
 	this._receptionistSatisfaction = Math.max(minSat, value);
+	
+	if($gameParty.isDemoVersion()) 
+		this._receptionistSatisfaction = Math.min(this._receptionistSatisfaction, 10);
+	
 	$gameVariables.setValue(VARIABLE_RECEPTIONIST_SATISFACTION_ID, this._receptionistSatisfaction);
 };
 Game_Party.prototype.increaseReceptionistSatisfaction = function(value) {
@@ -166,6 +170,10 @@ Game_Party.prototype.setReceptionistFame = function(value) {
 	//if(Karryn.hasThisTitle(TITLE_ID_SCANDELOUS_IDOL)) minFame += 1; 
 	
 	this._receptionistFame = Math.max(minFame, value);
+	
+	if($gameParty.isDemoVersion()) 
+		this._receptionistFame = Math.min(this._receptionistFame, 10);
+	
 	$gameVariables.setValue(VARIABLE_RECEPTIONIST_FAME_ID, this._receptionistFame);
 };
 Game_Party.prototype.increaseReceptionistFame = function(value) {
@@ -179,6 +187,10 @@ Game_Party.prototype.setReceptionistNotoriety = function(value) {
 	//if(Karryn.hasThisTitle(TITLE_ID_SCANDELOUS_IDOL)) minNotoriety += 3; 
 	
 	this._receptionistNotoriety = Math.max(minNotoriety, value);
+	
+	if($gameParty.isDemoVersion()) 
+		this._receptionistNotoriety = Math.min(this._receptionistNotoriety, 10);
+	
 	if(!DEBUG_MODE) this._receptionistNotoriety = 0;
 	$gameVariables.setValue(VARIABLE_RECEPTIONIST_NOTORIETY_ID, this._receptionistNotoriety);
 };
@@ -400,6 +412,9 @@ Game_Party.prototype.applyEndOfBattleSpecial_receptionistBattle = function() {
 	
 	if($gameSwitches.value(SWITCH_DEFEATED_IN_LEVEL_ONE_ID)) {
 		dissatisfactionFromDefeat = 2;
+		
+		if($gameTroop.receptionistBattle_countGoblins() > 0)
+			$gameSwitches.setValue(SWITCH_TODAY_GOBLIN_BAR_STORAGE_ID, true);
 	}
 	
 	for(let i = 0; i < $gameTroop._visitorSeats.length; ++i) {
@@ -422,10 +437,6 @@ Game_Party.prototype.applyEndOfBattleSpecial_receptionistBattle = function() {
 			
 		}
 	}
-	
-	if($gameTroop.receptionistBattle_countGoblins() > 0)
-		$gameSwitches.setValue(SWITCH_TODAY_GOBLIN_BAR_STORAGE_ID, true);
-	
 };
 
 Game_Party.prototype.increaseReceptionistVisitorSatisfaction_General = function(value) {
@@ -693,7 +704,7 @@ Game_Actor.prototype.postDamage_basicSpanking_receptionistBattle = function(targ
 		this.receptionistBattle_makeSexualNoise(0.75, false);
 	}
 	
-	this.addToActorPettedWhileWorkingRecord();
+	//this.addToActorPettedWhileWorkingRecord();
 };
 
 Game_Actor.prototype.postDamage_basicSex_receptionistBattle = function(target, sexAct) {
@@ -3808,12 +3819,14 @@ Game_Enemy.prototype.receptionistBattle_leaveDeskQueue = function() {
 	if(queueLength > 0) {
 		for(let i = 0; i < queueLength; ++i) {
 			let visitor = $gameTroop._deskQueue[i];
-			if(i === 0) {
-				visitor.setVisitorLocationToDesk();
-			}
-			else {
-				//visitor.setVisitorLocationToLine();
-				visitor.setStateCounter(STATE_VISITOR_LOCATION_LINE_ID, i);
+			if(visitor) {
+				if(i === 0) {
+					visitor.setVisitorLocationToDesk();
+				}
+				else {
+					//visitor.setVisitorLocationToLine();
+					visitor.setStateCounter(STATE_VISITOR_LOCATION_LINE_ID, i);
+				}
 			}
 		}
 	}

@@ -29,15 +29,10 @@ const ENEMY_NAMES_GENERIC_JP = [
 	"ハンク", "チャラ", "エリック", "グース", "ルイス", "ジミー", "フィル", "エリック", "カーン", "マサル", "ピヨヒコ", "ヨシヒコ", "メレブ",  "カネダ", 
 	"ジョン", "バリー", "ハル", "クラーク", "カル", "オリバー", "カーター", "ラルフ", "ブンケン", "ロニー", "ウォーリー", "ディック", "ナナシ", "テツオ", 
 	"ビクター", "アーサー", "サイモン", "バート", "フロイド", "タツ", "ジャック", "ネッガー", "フルフル", "タックン", "カンチ", "ユキヒロ", "モトキ",  
-	"リック", "カール", "シェーン", "モーガン", "グレン", "ダリル", "デール", "メルル", "ハーシェル", "ガバナー", "ボブ", "ロン", "タナカ", "ヤマダ",
 	"トビン", "ヒース", "グレゴリー", "ジェフリー", "サイモン", "ドワイト", "セディク", "トクッチ", "ヒロキ", "サトウ", "ホッパ", "チャン", "ピーター", 
 	"レン", "ジョージ", "ダレク", "ベン", "ダン", "アドル", "クリスティン", "ドギ", "ダルク", "ファクト", "ルタ", "ジェンマ", "チェスター", "ゴードン", 
-	"マックス", "ベック", "ヤッキー", "マッピー", "ハリソン", "フォード", "ネッゴ", "サバタ", "ドンロゴ", "ネベレベ", "ギギル", "バボーン", "サンチョ",
-	"ニン", "ロキンコム", "バリガンデ", "サリカード", "ネモ", "ルヌ", "チョンモ", "メメンサ", "バギカンツ", "パンキ", "シシヌ", "スモマー", "リギ", "ボグ",
-	"ラム", "シュタイン", "スリポス", "グリーオ", "ガマス", "カルギジェ", "ザッキーノ", "ヤマサ", "タケシ", "タロー", "ケンイチ", "ロメオ", "ヤマガタ", 
 	"トーマス", "ブルック", "ヨジ", "カーメン", "ガバチョ", "ヴァルガス", "ポン", "タケ", "ヤマ", "ニキ", "タマオ", "ガリクソン", "ヒデ", "アリ", "デンシャ",
 	"コビー", "キシャ", "ポッポ", "ホーク", "モゲタ", "カツオ", "ナミヘー", "タマ", "ヨネスケ", "シンノス", "ヒロシ", "ノハラ", "ドルマン", "タイサ", "ビッグズ", 
-	"ロック", "ルター", "ニコラス", "ヒカル", "ショウ", "キラ", "ライト", "タイラー", "よし夫", "太郎", "次郎", "三郎", "ユバル", "ハラリ", "メンデス",
 	"ゼイン", "リアム", "ナイル", "ホーラン", "ソリマチ", "ザクトン", "ナスィン", "ブリンク", "ワン", "エイト", "トゥー", "ソニー", "ノラ", "チンミ",
 	"パープス", "リムル", "ジオ", "セシール", "セガール", "アンソニー", "パイディ", "モミマン", "パーン", "ロードス", "オッチョ", "セーキ", "アリ", "バーグ",
 	"ココシ", "カカシ", "ナルティ", "バギ", "ゴメス", "ボリバン", "アール", "ベギモン", "カーチュギ", "ユインプ", "イギシ", "カメン", "ナナシ", "マーク",
@@ -56,7 +51,6 @@ const ENEMY_NAMES_THUG_JP = [
 	"ランブル", "クレイン", "トミィ", "ジュアン", "ダイゴ", "ジョンソン", "キャリマン", "ラリー", "ジョニー", "ナリド", "タンク", "ディック", "ウェッジ", 
 	"ジョーイ", "ホアス", "マウス", "ヴァニラ", "アイス", "ジョジョ", "ディオ", "ブランドー", "スピード", "ワゴン", "ウェスト", "サウス", "ノース", 
 	"クール", "ジェイ", "シンカン", "ゼンリツ", "セン", "ブルース", "ウィルス", "ロミオ", "カフィ", "パーパ", "ニコ", "ピアズ", "オイゲン", "ウェスト",
-	"マルコメ", "メミソ", "ソジボウ", "ムサシ", "コジロー", "タケシ", "シンジ", "ゲンドゥ", "コーゾー", "ガルバロス", "オウジ", "ヒロイ", "テンガイ",
 	"ムゲン", "ユーゲン", "オオガミ", "イチロウ", "ヨネダ", "イッキ", "ユウイチ", "シシド", "コウセイ", "オカ", "ニコ", "ドッグ", "ワンワン", "ポンチ",
 	"ウェイジ",
 	
@@ -72,12 +66,10 @@ const ENEMY_NAMES_GOBLIN_EN = [
 ];
 
 const ENEMY_NAMES_GOBLIN_JP = [
-	"ゴビィ", "ゴブ吉", "ゴブ蔵", "ゴブーリキ", "ゴブマン", "ゴブっち", "ゴブッコ", "ゴブロク", "ゴブワン", "ゴブイチ", "ゴブシ", "ゴブーブ",
-	"ゴブゴブ", "ゴブティン", "ゴブ夫", "ゴブドー", "ゴブツー", "ゴブ松", "ゴブデン", "ゴブ徳", "ゴブ郎", "ゴブップ", "ゴーブー", "ゴブ太", "ゴブユキ",
-	"ゴブポン", "ゴブブゴ", "ゴブラ", "ゴブメン", "ゴブシ", "ゴブシチ", "ゴブドット", "ゴブ美", "ゴブちゃん", "ゴブさん", "ゴブくん", "ゴブちん",
-	"ゴブエイ", "ゴブビー", "ゴブスィ", "ゴブ平", "ゴブォ", "ゴブキャノン", "ゴブデス", "ゴブダヨ", "ゴブナンダ", "ゴブデシタ", "ゴブター", "ゴブチュー",
-	"ゴブース", "ゴブミドリ", "ゴブ旦那", "ゴブイク", "ゴブンブル", "ゴブピー", "ゴブッス", "ゴブワズ", "ゴブナウ", "ゴブーカー", "ゴブイキ",
-	"ゴブナマ", "ゴブレム",
+	"ゴビィ", "ゴブッコ", "ゴブロク", "ゴブワン", "ゴブイチ", "ゴブシ", "ゴブーブ", "ゴブナマ", "ゴブレム",
+	"ゴブゴブ", "ゴブティン", "ゴブ夫", "ゴブドー", "ゴブツー", "ゴブデン", "ゴブップ", "ゴーブー", "ゴブユキ",
+	"ゴブポン", "ゴブブゴ", "ゴブラ", "ゴブメン", "ゴブシ", "ゴブシチ", "ゴブドット", "ゴブイキ",
+	"ゴブース", "ゴブミドリ", "ゴブイク", "ゴブンブル", "ゴブピー", "ゴブッス", "ゴブワズ", "ゴブナウ", "ゴブーカー", 
 
 	"御米", //January Ci-ens
 	"大根御" //August 2021 Ci-ens
@@ -94,23 +86,21 @@ const ENEMY_NAMES_NERD_EN = [
 ];
 
 const ENEMY_NAMES_NERD_JP = [
-	"キバ", "オブ", "秋葉", "久保", "ケン", "田中", "スエオ", "佐藤", "日野", "飯山", "三善", "鶴巻", "本田", "園田", "庵野",
-	"富野", "パヤオ", "岡田", "トシオ", "コーヘー", "森", "タッキー", "モーレツ", "トラ", "ノアナ", "手塚", "テツ", "スシオ", "モマイラ",
-	"常考", "ハカー", "橋田", "イタル", "ネーヨ", "マンドクセ", "ニチャン", "ヌルポ", "プギャー", "宮崎", "辻谷", "赤堀", "サトル", "のんき",
-	"ダイコン", "ガイナ", "カラー", "マサユキ", "前田", "乙", "伊集院", "ナード", "ギーグ", "ヒロシ", "中原", "先生", "Mr.X", "カムイ", "富樫", "小鳥遊",
-	"丹生谷", "一色", "まこと", "宮むぅ", "お兄ちゃん", "岩田", "ミツオ", "さちなま", "れむ", "エレ", "メテオ", "おまめ", "京", "マッド", "ピーエー",
-	"サクラ", "ダブ", "ゴンゾウ", "ライデン", "マッパ", "旭", "エーワン", "ユーフォ", "ライジングサン", "シャフ", "ウィット", "アイジー", "トリガ", "ポンズ",
-	"ジェイシ", "ピロット", "サルゥ", "カラー", "ベース", "ツイン", "トームス", "ディーン", "ビヨンド", "サイゲ", "アーク", "ビィビィ", "ゼスト",
+	"キバ", "オブ", "ケン", "田中", "スエオ", "佐藤", "日野", "飯山", "三善", "鶴巻", "本田", "園田", 
+	"富野", "パヤオ", "岡田", "トシオ", "コーヘー", "森", "タッキー", "モーレツ", "トラ", "ノアナ", "テツ", "スシオ", "モマイラ",
+	"ハカー", "橋田", "イタル", "ネーヨ", "マンドクセ", "ニチャン", "ヌルポ", "プギャー", "カイヨー", "ホット",
+	"ダイコン", "ガイナ", "カラー", "マサユキ", "ナード", "ギーグ", "ヒロシ", "トリガ", "ポンズ", "ダイキ", "ディオー",
+	"サクラ", "ダブ", "ゴンゾウ", "ライデン", "マッパ", "エーワン", "ユーフォ", "ライジングサン", "シャフ", "ウィット", "アイジー", 
 	"カドカワ", "ガンホウ", "メッグ", "ファンザ", "アトラス", "ファルコ", "バンナム", "ハル", "プラチナム", "マベラス", "レッド", "ロケット",
-	"ミスト", "メヴィウス", "メトロ", "フリュ", "エニクス", "アイオウ",	"アカベー", "パルテノン", "エフシィ", "クロック", "アップ", "ディオー",
-	"たぬき", "スタック", "メイビー", "縁", "ニトロ", "プラス", "オーガス", "ライアー", "レイル", "スカイ", "ルネ", "ゆず", "キテル", 
-	"宇宙", "エヌエルス", "タマ", "トイハ", "テンガ", "ライド", "ギガ", "キイ", "ミンク", "メイト", "レンズ", "エイシス", "ハッピー", "ライフ",
-	"アルター", "寿", "グッスマ", "アニプレ", "ホビジャ", "マックス", "アクアマ", "ファット", "ユニオン", "プラム", "ブロッコ", "カイヨー", "ホット", "ダイキ",
+	"ミスト", "メヴィウス", "メトロ", "フリュ", "エニクス", "アイオウ",	"アカベー", "パルテノン", "エフシィ", "クロック", "アップ",
+	"たぬき", "スタック", "メイビー", "ニトロ", "プラス", "オーガス", "ライアー", "レイル", "スカイ", "ルネ", "ゆず", "キテル", 
+	"エヌエルス", "タマ", "トイハ", "テンガ", "ライド", "ギガ", "キイ", "ミンク", "メイト", "レンズ", "エイシス", "ハッピー", "ライフ",
+	"アルター", "グッスマ", "アニプレ", "ホビジャ", "マックス", "アクアマ", "ファット", "ユニオン", "プラム", "ブロッコ",
 	"ムーン", "バインディン", "マウス", "シックス", "チューブ", "フロッグ", "ネイティブ"
 ];
 
 const ENEMY_NAMES_NERD_CH = [
-	"赔钱" //January Ci-ens
+	"赔钱, 狷狂" //January Ci-ens
 ];
 
 const ENEMY_NAMES_NERD_KR = [
@@ -133,7 +123,8 @@ const ENEMY_NAMES_ROGUE_JP = [
 	"レオナルド", "アントニオ", "ニッコ", "マルコ", "クリス", "ベン", "ジェイムズ", "チャーリー", "スティド", "ウッズ", "朧丸", "カゲ",
 	"レイナルド", "ウィスパー", "ウェイド", "ウィルソン", "ユッタ", "キリン", "モンカ", "ユウ", "グラビィ", "セイクロ", "ニンジャ", "バック",
 
-	"バラバラさん" //May Ci-ens
+	"バラバラさん", //May Ci-ens
+	"月輝夜" //September 2021 Ci-ens
 ];
 
 const ENEMY_NAMES_HOMELESS_EN = [
@@ -978,6 +969,32 @@ Game_Troop.prototype.makePrefix = function(enemy) {
 			availablePrefixSet.push(ENEMY_PREFIX_DRUNK);
 	}	
 	
+	//Strip Club
+	if($gameParty.isInStripperBattle) {
+		if(Karryn.hasEdict(EDICT_SHARE_ALCOHOL_WITH_CLUB)) {
+			availablePrefixSet.push(ENEMY_PREFIX_DRUNK, ENEMY_PREFIX_DRUNK, ENEMY_PREFIX_DRUNK, ENEMY_PREFIX_DRUNK);
+			if(enemy.isLizardmanType) 
+				availablePrefixSet.push(ENEMY_PREFIX_DRUNK, ENEMY_PREFIX_DRUNK);	
+			if(Karryn.hasEdict(EDICT_BAR_DRINK_MENU_III))
+				availablePrefixSet.push(ENEMY_PREFIX_DRUNK, ENEMY_PREFIX_DRUNK, ENEMY_PREFIX_DRUNK, ENEMY_PREFIX_DRUNK, ENEMY_PREFIX_DRUNK);
+		}
+		if(Karryn.hasEdict(EDICT_TAX_CLUB_CONDOM_IMPORTS))
+			availablePrefixSet.push(ENEMY_PREFIX_ANGRY, ENEMY_PREFIX_ANGRY, ENEMY_PREFIX_ANGRY, ENEMY_PREFIX_ANGRY, ENEMY_PREFIX_ANGRY, ENEMY_PREFIX_ANGRY);
+
+		if(Karryn.hasEdict(EDICT_APPEASE_THE_LIZARDMEN) && enemy.isLizardmanType) 
+			availablePrefixSet.push(ENEMY_PREFIX_HORNY, ENEMY_PREFIX_HORNY, ENEMY_PREFIX_VIRGIN, ENEMY_PREFIX_VIRGIN);	
+		if(Karryn.hasEdict(EDICT_REACH_UNDERSTANDING_WITH_ORCS) && enemy.isOrcType) 
+			availablePrefixSet.push(ENEMY_PREFIX_HORNY, ENEMY_PREFIX_HORNY, ENEMY_PREFIX_VIRGIN, ENEMY_PREFIX_VIRGIN);	
+		if(Karryn.hasEdict(EDICT_GIVE_IN_TO_NERD_BLACKMAIL) && enemy.isNerdType) 
+			availablePrefixSet.push(ENEMY_PREFIX_HORNY, ENEMY_PREFIX_HORNY, ENEMY_PREFIX_VIRGIN, ENEMY_PREFIX_VIRGIN);	
+		if(Karryn.hasEdict(EDICT_FIGHT_ROGUE_DISTRACTIONS_WITH_DISTRACTIONS) && enemy.isRogueType) 
+			availablePrefixSet.push(ENEMY_PREFIX_HORNY, ENEMY_PREFIX_HORNY, ENEMY_PREFIX_VIRGIN, ENEMY_PREFIX_VIRGIN);	
+		if(Karryn.hasEdict(EDICT_THUGS_STRESS_RELIEF) && enemy.isThugType) 
+			availablePrefixSet.push(ENEMY_PREFIX_HORNY, ENEMY_PREFIX_HORNY, ENEMY_PREFIX_VIRGIN, ENEMY_PREFIX_VIRGIN);
+		if(Karryn.hasEdict(EDICT_BAIT_GOBLINS) && enemy.isBaitType) 
+			availablePrefixSet.push(ENEMY_PREFIX_HORNY, ENEMY_PREFIX_HORNY, ENEMY_PREFIX_VIRGIN, ENEMY_PREFIX_VIRGIN);
+	}	
+	
 	//Specific battles
 	if($gameParty.isRiotBattle()) {
 		availablePrefixSet.push(ENEMY_PREFIX_ANGRY, ENEMY_PREFIX_GOOD);
@@ -1009,6 +1026,8 @@ Game_Troop.prototype.makePrefix = function(enemy) {
 Game_Troop.prototype.setPrefixTypeAndName = function(enemy, availablePrefixSet) {
 	let randomSetType = availablePrefixSet[Math.randomInt(availablePrefixSet.length)];
 	let set = false;
+	
+	//randomSetType = ENEMY_PREFIX_ANGRY;
 	
 	switch(randomSetType) {
 		case ENEMY_PREFIX_BAD:

@@ -11,6 +11,7 @@
  */
 //=============================================================================
 
+const DEBUG_MODE = true;
 const TESTING_CHAT_BOX = false;
 const TESTING_OBTAIN_ALL_PASSIVES = true;
 const TESTING_DELETE_ALL_PASSIVES = false;
@@ -25,7 +26,7 @@ const TESTING_BOOBS_DESIRE = 125;
 const TESTING_MOUTH_DESIRE = 125;
 const TESTING_PUSSY_DESIRE = 125;
 const TESTING_BUTT_DESIRE = 125;
-const TESTING_LIQUID_ALL = true;
+const TESTING_LIQUID_ALL = false;
 const TESTING_LIQUID_VAR = 115;
 const TESTING_ALWAYS_FIRST = false;
 const TESTING_ENEMY_MAX_ANGER = false;
@@ -143,6 +144,19 @@ SceneManager.debugCommand = function() {
 				
 			}
 		}
+		else if($gameParty.isInStripperBattle) {
+			actor._stripper_beltCondomCount = Math.randomInt(4) + 1;
+			actor._stripper_buttCondomCount = Math.randomInt(4) + 1;
+			actor._stripper_braCondomCount = Math.randomInt(4) + 1;
+			actor._stripper_nipplesCondomCount = Math.randomInt(2) + 1;
+			actor._stripper_headCondomCount = Math.randomInt(4) + 1;
+			actor.stripperBattle_recalculateWornCondomTotal();
+			$gameTroop.stripperBattle_activePatrons().forEach(function(member) {
+				member._stripClub_isExcited = true;
+				return;
+			});
+			//actor.afterEval_stripperInviteVIP();
+		}
 		
 		//console.log($gameParty.getHeadcountOfWantedPerverts())
 		$gameParty.increaseReceptionistNotoriety(15);
@@ -238,9 +252,11 @@ Game_Actor.prototype.debugLearnSkills = function() {
 		this.learnSkill(EDICT_RELEASE_COCK_DESIRE);
 		this.learnSkill(EDICT_EDGING_CONTROL); 
 		this.learnSkill(EDICT_RESIST_ORGASM); 
+		this.learnSkill(EDICT_CAUTIOUS_STANCE); 
 		this.learnSkill(EDICT_DEFENSIVE_STANCE); 
 		this.learnSkill(EDICT_SLAM_TRAINING_ONE); 
 		this.learnSkill(EDICT_SKEWER_TRAINING_ONE); 
+		this.learnSkill(EDICT_STRIKE_TRAINING_TWO);
 
 		this.learnSkill(EDICT_OFFICE_BED_UPGRADE_ONE);
 		this.learnSkill(EDICT_OFFICE_BED_UPGRADE_TWO); 
@@ -256,6 +272,9 @@ Game_Actor.prototype.debugLearnSkills = function() {
 		
 		this.learnSkill(EDICT_REPAIR_TOILET);
 		this.learnSkill(EDICT_REFIT_MIDDLE_STALL);
+		
+		this.learnSkill(EDICT_BUILD_STRIP_CLUB);
+		this.learnSkill(EDICT_BUILD_CLUB_VIP);
 		
 		//this.learnSkill(CHARA_CREATE_THREE_SADO_ID);
 	}
@@ -355,11 +374,13 @@ Game_Troop.prototype.debugMakeAllEnemiesDefeated = function() {
 Game_Troop.prototype.debugConsoleLogEnemyInfo = function() {
 	this.aliveMembers().forEach(function(enemy) {
 		console.log(enemy.name());
+		//console.log(enemy.enemy().params[PARAM_CHARM_ID])
+		//console.log(enemy);
 		//console.log(enemy.pleasure);
 		//console.log(enemy.stamina);
 		//console.log(enemy.energy);
 		//console.log(enemy._ejaculationStock);
-		console.log(enemy.states());
+		//console.log(enemy.states());
 
 	}, this);
 };
@@ -432,5 +453,5 @@ Game_Party.prototype.debug_clearMapEnemies = function() {
 };
 
 Karryn.isCensored = function() {
-	return TextManager.isJapanese;
+	return JAPAN_MODE || KARRYN_PRISON_LANGUAGE === RemLanguageJP || ConfigManager.remLanguage === RemLanguageJP;
 };

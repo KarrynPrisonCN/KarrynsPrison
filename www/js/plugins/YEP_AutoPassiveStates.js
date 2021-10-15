@@ -280,11 +280,11 @@ DataManager.isDatabaseLoaded = function() {
   if (!Yanfly.APS.DataManager_isDatabaseLoaded.call(this)) return false;
   if (!Yanfly._loaded_YEP_AutoPassiveStates) {
     this.processAPSNotetags1($dataActors, Yanfly.Param.APSActorPas);
-    this.processAPSNotetags1($dataClasses);
+    //this.processAPSNotetags1($dataClasses);
     this.processAPSNotetags1($dataEnemies, Yanfly.Param.APSEnemyPas);
-    this.processAPSNotetags1($dataSkills);
-    this.processAPSNotetags1($dataWeapons);
-    this.processAPSNotetags1($dataArmors);
+    //this.processAPSNotetags1($dataSkills);
+    //this.processAPSNotetags1($dataWeapons);
+    //this.processAPSNotetags1($dataArmors);
     this.processAPSNotetags2($dataStates);
     Yanfly._loaded_YEP_AutoPassiveStates = true;
   }
@@ -607,14 +607,16 @@ Game_Enemy.prototype.passiveStatesRaw = function() {
     if (this._passiveStatesRaw !== undefined) return this._passiveStatesRaw;
     var array = Game_BattlerBase.prototype.passiveStatesRaw.call(this);
     array = array.concat(this.getPassiveStateData(this.enemy()));
+	/*
     //for (var i = 0; i < this.skills().length; ++i) {
     //  var skill = this.skills()[i];
     //  array = array.concat(this.getPassiveStateData(skill));
     //}
+	*/
     this._passiveStatesRaw = array.filter(Yanfly.Util.onlyUnique)
     return this._passiveStatesRaw;
 };
-
+/*
 if (!Game_Enemy.prototype.skills) {
     Game_Enemy.prototype.skills = function() {
       var skills = []
@@ -625,7 +627,7 @@ if (!Game_Enemy.prototype.skills) {
       return skills;
     }
 };
-
+*/
 //=============================================================================
 // Game_Unit
 //=============================================================================

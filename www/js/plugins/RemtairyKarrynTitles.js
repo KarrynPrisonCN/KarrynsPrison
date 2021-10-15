@@ -15,7 +15,7 @@ Remtairy.KarrynTitles = Remtairy.KarrynTitles || {};
 //=============================================================================
 
 const TITLE_LIST_START_ID = 53;
-const TITLE_LIST_END_ID = 180;
+const TITLE_LIST_END_ID = 190;
 
 const TITLE_ID_EMPEROR_SECRETARY = 2;
 const TITLE_ID_NEWBIE = 3;
@@ -159,6 +159,13 @@ const TITLE_ID_SEX_SKILL_LIGHT_KICK = 180;
 const TITLE_ID_DAY_COUNT_ONE = 181;
 const TITLE_ID_DAY_COUNT_TWO = 182;
 const TITLE_ID_DAY_COUNT_THREE = 183;
+const TITLE_ID_PRO_STRIPPER = 184;
+const TITLE_ID_TEN_DANCE_COMBO = 185;
+const TITLE_ID_DANCING_ORGASM = 186;
+const TITLE_ID_NONSTOP_SHOW = 187;
+const TITLE_ID_FULLCONDOM_ALCHEMIST = 188;
+const TITLE_ID_STRIP_CLUB_REP = 189;
+const TITLE_ID_CROWDED_VIP = 190;
 
 //////
 // Scene Equip
@@ -187,12 +194,29 @@ Game_Actor.prototype.getTitleText = function() {
 	if(!this.equips()[EQUIP_SLOT_TITLE_ID]) return '';
 	let titleItem = this.equips()[EQUIP_SLOT_TITLE_ID];
 	let titleText = '';
+	if(titleItem.hasRemNameDefault) titleText = titleItem.remNameDefault;
 	
-	if(TextManager.isEnglish && titleItem.hasRemNameEN) titleText = titleItem.remNameEN;
-	else if(TextManager.isJapanese && titleItem.hasRemNameJP) titleText = titleItem.remNameJP;
-	else if(TextManager.isSChinese && titleItem.hasRemNameSCH) titleText = titleItem.remNameSCH;
-	else if(TextManager.isTChinese && titleItem.hasRemNameTCH) titleText = titleItem.remNameTCH;
-	else if(TextManager.isKorean && titleItem.hasRemNameKR) titleText = titleItem.remNameKR;
+	if(TextManager.isEnglish) {
+		if(titleItem.hasRemNameEN) titleText = titleItem.remNameEN;
+	}
+	else if(TextManager.isJapanese) {
+		if(titleItem.hasRemNameJP) titleText = titleItem.remNameJP;
+	}
+	else if(TextManager.isSChinese) {
+		if(titleItem.hasRemNameSCH) titleText = titleItem.remNameSCH;
+	}
+	else if(TextManager.isTChinese) {
+		if(titleItem.hasRemNameTCH) titleText = titleItem.remNameTCH;
+	}
+	else if(TextManager.isKorean) {
+		if(titleItem.hasRemNameKR) titleText = titleItem.remNameKR;
+	}
+	else if(TextManager.isRussian) {
+		if(titleItem.hasRemNameRU) titleText = titleItem.remNameRU;
+	}
+	
+	titleText = TextManager.convertEscapeCharacters(titleText);
+	titleText = TextManager.convertExtraEscapeCharacters(titleText);
 	
 	return titleText;
 };
@@ -298,6 +322,20 @@ Game_Actor.prototype.registerFirstTimeTitleEquip = function() {
 			}
 			else if(id === TITLE_ID_FINAL_DESTINATION) {
 				$gameParty.increaseGloryReputation(2);
+			}
+			
+			//Stripper
+			else if(id === TITLE_ID_TEN_DANCE_COMBO) {
+				$gameParty.increaseStripClubReputation(1);
+			}
+			else if(id === TITLE_ID_DANCING_ORGASM) {
+				$gameParty.increaseStripClubReputation(1);
+			}
+			else if(id === TITLE_ID_NONSTOP_SHOW) {
+				$gameParty.increaseStripClubReputation(1);
+			}
+			else if(id === TITLE_ID_CROWDED_VIP) {
+				$gameParty.increaseStripClubReputation(1);
 			}
 		}
 		
@@ -739,6 +777,27 @@ Game_Party.prototype.checkForNewTitle = function() {
 		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_DAY_COUNT_THREE]);
 	}
 	
+	if(!actor.hasThisTitle(TITLE_ID_PRO_STRIPPER) && actor._playthroughRecordStripperBattleTotalShiftsCount >= 30) {
+		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_PRO_STRIPPER]);
+	}
+	if(!actor.hasThisTitle(TITLE_ID_TEN_DANCE_COMBO) && actor._recordStripClubStripperMaxDanceCombo >= 10) {
+		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_TEN_DANCE_COMBO]);
+	}
+	if(!actor.hasThisTitle(TITLE_ID_DANCING_ORGASM) && actor._recordStripClubDancingOrgasmMaxCount >= 5) {
+		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_DANCING_ORGASM]);
+	}
+	if(!actor.hasThisTitle(TITLE_ID_NONSTOP_SHOW) && actor._playthroughRecordStripperBattleDancedFullTwelveMinShowCount >= 1) {
+		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_NONSTOP_SHOW]);
+	}
+	if(!actor.hasThisTitle(TITLE_ID_FULLCONDOM_ALCHEMIST) && actor._recordStripClubMaxCondomsWornCount >= 16) {
+		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_FULLCONDOM_ALCHEMIST]);
+	}
+	if(!actor.hasThisTitle(TITLE_ID_STRIP_CLUB_REP) && $gameParty._stripClubReputation >= 30) {
+		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_STRIP_CLUB_REP]);
+	}
+	if(!actor.hasThisTitle(TITLE_ID_CROWDED_VIP) && actor._recordStripClubFullVIPCocksCount >= 1) {
+		this._newTitlesGainedItem.push($dataArmors[TITLE_ID_CROWDED_VIP]);
+	}
 	
 	///////////////
 	//New Title Text
@@ -747,13 +806,33 @@ Game_Party.prototype.checkForNewTitle = function() {
 		
 		this.gainTitle(item.id);
 		
-		if(TextManager.isEnglish && item.hasRemNameEN) this._newTitlesGainedName.push(item.remNameEN);
-		else if(TextManager.isJapanese && item.hasRemNameJP) this._newTitlesGainedName.push(item.remNameJP);
-		else if(TextManager.isSChinese && item.hasRemNameSCH) this._newTitlesGainedName.push(item.remNameSCH);
-		else if(TextManager.isTChinese && item.hasRemNameTCH) this._newTitlesGainedName.push(item.remNameTCH);
-		else if(TextManager.isKorean && item.hasRemNameKR) this._newTitlesGainedName.push(item.remNameKR);
-		else this._newTitlesGainedName.push(item.name);
+		let titleText = item.name;
 		
+		if(item.hasRemNameDefault) titleText = item.remNameDefault;
+		
+		if(TextManager.isEnglish) {
+			if(item.hasRemNameEN) titleText = item.remNameEN;
+		}
+		else if(TextManager.isJapanese) {
+			if(item.hasRemNameJP) titleText = item.remNameJP;
+		}
+		else if(TextManager.isSChinese) {
+			if(item.hasRemNameSCH) titleText = item.remNameSCH;
+		}
+		else if(TextManager.isTChinese) {
+			if(item.hasRemNameTCH) titleText = item.remNameTCH;
+		}
+		else if(TextManager.isKorean) {
+			if(item.hasRemNameKR) titleText = item.remNameKR;
+		}
+		else if(TextManager.isRussian) {
+			if(item.hasRemNameRU) titleText = item.remNameRU;
+		}
+		
+		titleText = TextManager.convertEscapeCharacters(titleText);
+		titleText = TextManager.convertExtraEscapeCharacters(titleText);
+		
+		this._newTitlesGainedName.push(titleText);
 		this._newTitlesGainedIcon.push(item.iconIndex);
 	}
 };
@@ -866,6 +945,8 @@ Game_Actor.prototype.titlesParamBonus = function(paramId) {
 		if(this.hasThisTitle(TITLE_ID_SLEEPY_BEAUTY)) bonus += 1;
 		if(this.hasThisTitle(TITLE_ID_FIRST_KISS_TO_ANUS)) bonus += 1;
 		if(this.hasThisTitle(TITLE_ID_GLORIOUS_HOLES)) bonus += 1;
+		if(this.hasThisTitle(TITLE_ID_PRO_STRIPPER)) bonus += 1;
+		if(this.hasThisTitle(TITLE_ID_STRIP_CLUB_REP)) bonus += 1;
 	}
 	else if(paramId === PARAM_MAXENERGY_ID) {
 		if(this.hasThisTitle(TITLE_ID_FIX_CLOTHES_TWO)) bonus += 2;
@@ -1045,6 +1126,9 @@ Game_Actor.prototype.titlesElementRate = function(elementId) {
 		else if(this.isUsingThisTitle(TITLE_ID_DAY_COUNT_ONE)) elementRate += 0.15;
 		else if(this.isUsingThisTitle(TITLE_ID_DAY_COUNT_TWO)) elementRate += 0.2;
 		else if(this.isUsingThisTitle(TITLE_ID_DAY_COUNT_THREE)) elementRate -= 0.27;
+		else if(this.isUsingThisTitle(TITLE_ID_FULL_ORDER_THREE)) elementRate -= 0.25;
+		else if(this.isUsingThisTitle(TITLE_ID_STRIP_CLUB_REP)) elementRate -= 0.15;
+		
 	}
 	else if(elementId === ELEMENT_SIGHT_ID) {
 		if(this.isUsingThisTitle(TITLE_ID_BEAUTIFUL_WARDEN)) elementRate += 0.1;
@@ -1061,6 +1145,7 @@ Game_Actor.prototype.titlesElementRate = function(elementId) {
 		else if(this.isUsingThisTitle(TITLE_ID_TOILET_EAT_ORGASM)) elementRate += 0.2;
 		else if(this.isUsingThisTitle(TITLE_ID_SEX_SKILL_COCKSTARE_TWO)) elementRate -= 0.1;
 		else if(this.isUsingThisTitle(TITLE_ID_SEX_SKILL_FOOTJOB_ONE)) elementRate += 0.15;
+		else if(this.isUsingThisTitle(TITLE_ID_PRO_STRIPPER)) elementRate -= 0.15;
 	}
 	else if(elementId === ELEMENT_STRIP_ID) {
 		if(this.isUsingThisTitle(TITLE_ID_FIX_CLOTHES_TWO)) elementRate -= 0.4;
@@ -1075,6 +1160,7 @@ Game_Actor.prototype.titlesElementRate = function(elementId) {
 		else if(this.isUsingThisTitle(TITLE_ID_EVASION_THREE)) elementRate -= 0.15;
 		else if(this.isUsingThisTitle(TITLE_ID_SEX_SKILL_KISS_TWO)) elementRate -= 0.1;
 		else if(this.isUsingThisTitle(TITLE_ID_SEX_SKILL_HANDJOB_ONE)) elementRate += 0.2;
+		else if(this.isUsingThisTitle(TITLE_ID_FULLCONDOM_ALCHEMIST)) elementRate += 0.3;
 	}
 	else if(elementId === ELEMENT_PETTING_ID) {
 		if(this.isUsingThisTitle(TITLE_ID_VISITOR_FIRST_KISS)) elementRate += 0.2;
@@ -1084,12 +1170,15 @@ Game_Actor.prototype.titlesElementRate = function(elementId) {
 		else if(this.isUsingThisTitle(TITLE_ID_SEX_SKILL_KISS_ONE)) elementRate += 0.15;
 		else if(this.isUsingThisTitle(TITLE_ID_SEX_SKILL_TITJOB_ONE)) elementRate += 0.15;
 		else if(this.isUsingThisTitle(TITLE_ID_SEX_SKILL_ANALSEX_ONE)) elementRate += 0.15;
+		else if(this.isUsingThisTitle(TITLE_ID_STRIP_CLUB_REP)) elementRate -= 0.15;
+		else if(this.isUsingThisTitle(TITLE_ID_CROWDED_VIP)) elementRate += 0.2;
 	}
 	else if(elementId === ELEMENT_SEX_ID) {
 		if(this.isUsingThisTitle(TITLE_ID_CUM_GUZZLER)) elementRate += 0.25;
 		else if(this.isUsingThisTitle(TITLE_ID_GLORIOUS_HOLES)) elementRate -= 0.1;
 		else if(this.isUsingThisTitle(TITLE_ID_SEX_SKILL_COCKSTARE_ONE)) elementRate += 0.15;
 		else if(this.isUsingThisTitle(TITLE_ID_SEX_SKILL_ANALSEX_TWO)) elementRate -= 0.1;
+		else if(this.isUsingThisTitle(TITLE_ID_CROWDED_VIP)) elementRate += 0.2;
 	}
 	
 	return elementRate;
@@ -1464,6 +1553,7 @@ Game_Actor.prototype.titlesFatigueGainRate = function() {
 	if(this.hasThisTitle(TITLE_ID_TOILET_RESTER)) rate *= 0.95;
 	
 	if(this.isUsingThisTitle(TITLE_ID_TOILET_RESTER)) rate *= 0.85;
+	else if(this.isUsingThisTitle(TITLE_ID_PRO_STRIPPER)) rate *= 0.85;
 	
 	return rate;
 };

@@ -325,7 +325,7 @@ Window_StatusInfo.prototype.drawPrimary = function() {
 		
 		this.drawDarkRect(rectX, y, lineWidth, lineHeight);
 		this.changeTextColor(this.systemColor());
-		this.drawText(valueName, textX, y, lineWidth, 'left');
+		this.drawText(valueName, textX, y, lineWidth * 0.7, 'left');
 		this.changeTextColor(this.normalColor());
 		this.drawText(valueNum.toLocaleString(), rectX, y, lineWidth - this.textPadding(), 'right');
     }
@@ -423,7 +423,7 @@ Window_StatusInfo.prototype.drawPrimary = function() {
 		
 		this.drawDarkRect(rectX, y, lineWidth, lineHeight);
 		this.changeTextColor(this.systemColor());
-		this.drawText(valueName, textX, y, lineWidth, 'left');
+		this.drawText(valueName, textX, y, lineWidth * 0.7, 'left');
 		this.changeTextColor(this.normalColor());
 		this.drawText(valueNum, rectX, y, lineWidth - this.textPadding(), 'right');
     }
@@ -512,7 +512,7 @@ Window_StatusInfo.prototype.drawSecondary = function() {
 		
 		this.drawDarkRect(rectX, y, lineWidth, lineHeight);
 		this.changeTextColor(this.systemColor());
-		this.drawText(valueName, textX, y, lineWidth, 'left');
+		this.drawText(valueName, textX, y, lineWidth * 0.7, 'left');
 		this.changeTextColor(this.normalColor());
 		this.drawText(valueNum, rectX, y, lineWidth - this.textPadding(), 'right');
 	}	
@@ -581,7 +581,7 @@ Window_StatusInfo.prototype.drawSecondary = function() {
 			
 			this.drawDarkRect(rectX, y, lineWidth, lineHeight);
 			this.changeTextColor(this.systemColor());
-			this.drawText(valueName, textX, y, lineWidth, 'left');
+			this.drawText(valueName, textX, y, lineWidth * 0.7, 'left');
 			this.setResistColor(valueNum);
 			this.drawText(valueNumText, rectX, y, lineWidth - this.textPadding(), 'right');
 			
@@ -864,7 +864,7 @@ Window_StatusInfo.prototype.drawDesires = function() {
 				valueName = TextManager.profileRecordBlowjob;
 				valueNum = actor.blowjobMouthDesireRequirement();
 			}
-			else if(i === 3 && Karryn.showLevelOneSubjugatedEdicts() && !ConfigManager.disableRimjobs) {
+			else if(i === 3 && !ConfigManager.disableRimjobs) {
 				valueName = TextManager.profileRecordRimjob;
 				valueNum = actor.rimjobMouthDesireRequirement();
 			}
@@ -965,7 +965,7 @@ Window_StatusInfo.prototype.drawDesires = function() {
 				valueName = TextManager.profileRecordPussyPetting;
 				valueNum = actor.pussyPettingPussyDesireRequirement();
 			}
-			else if(i === 4 && Karryn.showLevelOneSubjugatedEdicts()) {
+			else if(i === 4) {
 				valueName = TextManager.profileRecordPussyToy;
 				valueNum = actor.pussyToyPussyDesireRequirement();
 			}
@@ -1080,7 +1080,7 @@ Window_StatusInfo.prototype.drawDesires = function() {
 				valueName = TextManager.profileRecordTittyFuck;
 				valueNum = actor.tittyFuckCockDesireRequirement();
 			}
-			else if(i === 4 && Karryn.showLevelOneSubjugatedEdicts()) {
+			else if(i === 4 && !ConfigManager.disableFootjobs) {
 				valueName = TextManager.profileRecordFootjob;
 				valueNum = actor.footjobCockDesireRequirement();
 			}
@@ -1096,15 +1096,15 @@ Window_StatusInfo.prototype.drawDesires = function() {
 				valueName = TextManager.profileRecordFaceBukkake;
 				valueNum = actor.faceBukkakeCockDesireRequirement();
 			}
-			else if(i === 8 && Karryn.hasPassive(PASSIVE_BJ_COUNT_ONE_ID)) {
+			else if(i === 8) {
 				valueName = TextManager.profileRecordSwallow;
 				valueNum = actor.mouthSwallowCockDesireRequirement();
 			}
-			else if(i === 9 && Karryn.hasPassive(PASSIVE_FIRST_SEX_ID)) {
+			else if(i === 9) {
 				valueName = TextManager.profileRecordPussyCreampie;
 				valueNum = actor.pussyCreampieCockDesireRequirement();
 			}
-			else if(i === 10 && Karryn.hasPassive(PASSIVE_FIRST_ANAL_SEX_ID)) {
+			else if(i === 10) {
 				valueName = TextManager.profileRecordAnalCreampie;
 				valueNum = actor.analCreampieCockDesireRequirement();
 			}
@@ -1376,6 +1376,7 @@ Window_StatusInfo.prototype.drawProfile = function() {
 		let recordFirstTextX = 175;
 		let recordSecondTextX = 230;
 		if(TextManager.isJapanese) recordSecondTextX = 248;
+		else if(TextManager.isRussian) recordSecondTextX = 240;
 		let recordFirstLineY = -5;
 		let recordSecondLineY = 12;
 		
@@ -1392,6 +1393,7 @@ Window_StatusInfo.prototype.drawProfile = function() {
 		let lastLocationName = false;
 		
 		if(i === 7 && ConfigManager.disableRimjobs) continue;
+		if(i === 6 && ConfigManager.disableFootjobs) continue;
 		
 		if(i === 0) {
 			recordName = TextManager.profileRecordKiss;
@@ -1488,7 +1490,7 @@ Window_StatusInfo.prototype.drawProfile = function() {
 				lastName = actor._lastTittyFuckName;
 			}
 		}
-		else if(i === 6) {
+		else if(i === 6 && !ConfigManager.disableFootjobs) {
 			recordName = TextManager.profileRecordFootjob;
 			firstDate = actor._firstFootjobDate;
 			lastDate = actor._lastFootjobDate;
@@ -2202,7 +2204,7 @@ Window_Base.prototype.drawMapName = function(x, y, width) {
 //////
 // Daily Reports
 
-Window_Base.prototype.remDailyReportText = function(id) {
+TextManager.remDailyReportText = function(id) {
 	let actor = $gameActors.actor(ACTOR_KARRYN_ID);
 	let text = '';
 
@@ -2862,8 +2864,18 @@ Window_MenuStatus.prototype.drawKarrynStatus = function() {
 		if(fatigueLevel === 1) fatigueText = TextManager.RCMenuFatigueLevelOneText;
 		else if(fatigueLevel === 2) fatigueText = TextManager.RCMenuFatigueLevelTwoText;
 		else if(fatigueLevel === 3) fatigueText = TextManager.RCMenuFatigueLevelThreeText;
-		else if(fatigueLevel === 4) fatigueText = TextManager.RCMenuFatigueLevelFourText;
-		else if(fatigueLevel === 5) fatigueText = TextManager.RCMenuFatigueLevelFiveText;
+		else if(fatigueLevel === 4) {
+			if(Prison.hardMode())
+				fatigueText = TextManager.RCMenuFatigueLevelFourHardText;
+			else
+				fatigueText = TextManager.RCMenuFatigueLevelFourText;
+		}
+		else if(fatigueLevel === 5) {
+			if(Prison.hardMode())
+				fatigueText = TextManager.RCMenuFatigueLevelFiveHardText;
+			else
+				fatigueText = TextManager.RCMenuFatigueLevelFiveText;
+		}
 		
 		this.drawTextEx(fatigueText, x, line * lh, true);
 		line += statusLineChange;
